@@ -65,6 +65,7 @@
   "enabledMcpjsonServers": [
     "supabase",
     "sequential-thinking",
-    "actor-critic-thinking"
+    "actor-critic-thinking",
+    "next-devtools"
   ]
 }
