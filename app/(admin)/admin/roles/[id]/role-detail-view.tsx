@@ -160,7 +160,7 @@ export function RoleDetailView({ role, availablePermissions }: RoleDetailViewPro
                           p.label.toLowerCase().includes(search.toLowerCase())
                         )
                       })
-                      .map((perm) => {
+                      .map((perm, index) => {
                         const isAssigned = hasPermission(perm.permission)
                         const isWc = isWildcard(perm.permission)
                         const isDisabled =
@@ -169,12 +169,12 @@ export function RoleDetailView({ role, availablePermissions }: RoleDetailViewPro
 
                         return (
                           <div
-                            key={perm.permission}
+                            key={`${module}-${perm.permission}-${index}`}
                             className="flex items-center justify-between p-3 rounded-xl border border-border/50 hover:bg-primary/5 hover:border-primary/30 transition-all duration-200"
                           >
                             <div className="flex items-center gap-3">
                               <Checkbox
-                                id={perm.permission}
+                                id={`${module}-${perm.permission}-${index}`}
                                 checked={isAssigned}
                                 disabled={isDisabled}
                                 onCheckedChange={(checked) => {
@@ -187,7 +187,7 @@ export function RoleDetailView({ role, availablePermissions }: RoleDetailViewPro
                               />
                               <div>
                                 <label
-                                  htmlFor={perm.permission}
+                                  htmlFor={`${module}-${perm.permission}-${index}`}
                                   className="text-sm font-medium cursor-pointer text-foreground"
                                 >
                                   {perm.label}

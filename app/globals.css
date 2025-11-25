@@ -196,6 +196,23 @@
     @apply bg-primary/40;
   }
 
+  /* Sidebar navigation scrollbar - visible and styled */
+  nav::-webkit-scrollbar {
+    @apply w-1.5;
+  }
+
+  nav::-webkit-scrollbar-track {
+    @apply bg-primary/5 rounded-full my-2;
+  }
+
+  nav::-webkit-scrollbar-thumb {
+    @apply bg-primary/30 rounded-full;
+  }
+
+  nav::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/50;
+  }
+
   /* Selection color */
   ::selection {
     @apply bg-primary/20 text-primary;

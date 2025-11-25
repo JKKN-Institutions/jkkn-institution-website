@@ -1,12 +1,25 @@
 'use client'
 
-import { Bell, Search, Sun, Moon } from 'lucide-react'
+import { Bell, Search, Sun, Moon, User, Settings, LogOut } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { signOut } from '@/app/actions/auth'
 
 interface AdminHeaderProps {
   userName: string
+  userEmail: string
+  userRole: string
 }
 
 const pageTitles: Record<string, string> = {
@@ -22,7 +35,7 @@ const pageTitles: Record<string, string> = {
   '/admin/settings': 'Settings',
 }
 
-export function AdminHeader({ userName }: AdminHeaderProps) {
+export function AdminHeader({ userName, userEmail, userRole }: AdminHeaderProps) {
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
@@ -30,6 +43,14 @@ export function AdminHeader({ userName }: AdminHeaderProps) {
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  // Get user initials for avatar
+  const userInitials = userName
+    ?.split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2) || '?'
 
   const getPageTitle = () => {
     // Check exact match first
@@ -56,7 +77,7 @@ export function AdminHeader({ userName }: AdminHeaderProps) {
   }
 
   return (
-    <header className="glass-header sticky top-0 z-30">
+    <header className="glass-header border-b border-border/50 flex-shrink-0">
       <div className="px-4 lg:px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Page Title - with padding for mobile menu button */}
@@ -99,18 +120,73 @@ export function AdminHeader({ userName }: AdminHeaderProps) {
             {/* Divider */}
             <div className="h-8 w-px bg-border mx-2 hidden md:block" />
 
-            {/* User Greeting with Badge */}
-            <div className="hidden md:flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">
-                Welcome,{' '}
-                <span className="font-semibold text-foreground">
-                  {userName?.split(' ')[0] || 'User'}
-                </span>
-              </span>
-              <span className="badge-brand">
-                Online
-              </span>
-            </div>
+            {/* User Profile Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-3 p-1.5 rounded-xl hover:bg-primary/5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20">
+                  {/* Avatar First */}
+                  <Avatar className="h-10 w-10 border-2 border-primary/20">
+                    <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-white font-semibold text-sm">
+                      {userInitials}
+                    </AvatarFallback>
+                  </Avatar>
+                  {/* Name and Email */}
+                  <div className="hidden md:flex flex-col items-start">
+                    <span className="text-sm font-semibold text-foreground">
+                      {userName || 'User'}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {userEmail}
+                    </span>
+                  </div>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-72 glass-card border-border/50">
+                <DropdownMenuLabel className="pb-3">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="h-12 w-12 border-2 border-primary/20">
+                      <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-white font-semibold">
+                        {userInitials}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm text-foreground truncate">
+                        {userName || 'User'}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {userEmail}
+                      </p>
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 mt-1">
+                        {userRole}
+                      </span>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-border/50" />
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link href="/admin/profile" className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    My Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link href="/admin/settings" className="flex items-center gap-2">
+                    <Settings className="h-4 w-4" />
+                    Settings
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-border/50" />
+                <form action={signOut}>
+                  <button
+                    type="submit"
+                    className="relative flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none hover:bg-destructive/10 dark:hover:bg-destructive/20 text-destructive transition-colors [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </button>
+                </form>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>

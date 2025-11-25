@@ -18,6 +18,8 @@ import {
   Menu,
   X,
   Sparkles,
+  ExternalLink,
+  Globe,
 } from 'lucide-react'
 
 interface NavItem {
@@ -30,9 +32,6 @@ interface NavItem {
 
 interface AdminSidebarProps {
   userPermissions: string[]
-  userName: string
-  userEmail: string
-  userRole: string
 }
 
 const navigationItems: NavItem[] = [
@@ -103,9 +102,6 @@ const navigationItems: NavItem[] = [
 
 export function AdminSidebar({
   userPermissions,
-  userName,
-  userEmail,
-  userRole,
 }: AdminSidebarProps) {
   const pathname = usePathname()
   const [expandedItems, setExpandedItems] = useState<string[]>([])
@@ -224,8 +220,8 @@ export function AdminSidebar({
         </Link>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1.5 overflow-y-auto scrollbar-hide">
+      {/* Navigation - Scrollbar visible inside only */}
+      <nav className="flex-1 p-4 space-y-1.5 overflow-y-auto overflow-x-hidden">
         <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 mb-3">
           Main Menu
         </div>
@@ -234,35 +230,19 @@ export function AdminSidebar({
         ))}
       </nav>
 
-      {/* User Info with Glassmorphism */}
+      {/* View Website Link */}
       <div className="p-4 border-t border-sidebar-border">
-        <div className="glass-card rounded-xl p-3 mb-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 brand-gradient rounded-full flex items-center justify-center shadow-sm">
-              <span className="text-white font-medium text-sm">
-                {userName
-                  ?.split(' ')
-                  .map((n) => n[0])
-                  .join('')
-                  .toUpperCase() || '?'}
-              </span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-foreground truncate">{userName || 'User'}</p>
-              <p className="text-xs text-muted-foreground truncate">{userRole}</p>
-            </div>
-          </div>
-        </div>
-
-        <form action="/auth/logout" method="post">
-          <button
-            type="submit"
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/10 rounded-xl transition-all duration-200"
-          >
-            <LogOut className="h-4 w-4" />
-            Sign out
-          </button>
-        </form>
+        <Link
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => setIsMobileOpen(false)}
+          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-primary hover:bg-primary/10 rounded-xl transition-all duration-200 group"
+        >
+          <Globe className="h-4 w-4 group-hover:scale-110 transition-transform" />
+          View Website
+          <ExternalLink className="h-3 w-3 opacity-60" />
+        </Link>
       </div>
     </>
   )

@@ -86,7 +86,7 @@ export default async function AdminLayout({
   const userData = await getUserData(session.user.id)
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex h-screen overflow-hidden bg-background">
       {/* Decorative gradient background */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
@@ -95,20 +95,19 @@ export default async function AdminLayout({
       </div>
 
       {/* Sidebar */}
-      <AdminSidebar
-        userPermissions={userData.permissions}
-        userName={userData.name}
-        userEmail={userData.email}
-        userRole={userData.role}
-      />
+      <AdminSidebar userPermissions={userData.permissions} />
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-h-screen lg:pl-0">
-        {/* Header */}
-        <AdminHeader userName={userData.name} />
+      {/* Main Content Area with Fixed Header */}
+      <div className="flex-1 flex flex-col h-screen overflow-hidden">
+        {/* Fixed Header */}
+        <AdminHeader
+          userName={userData.name}
+          userEmail={userData.email}
+          userRole={userData.role}
+        />
 
-        {/* Page Content */}
-        <main className="flex-1 p-4 lg:p-6">{children}</main>
+        {/* Scrollable Page Content */}
+        <main className="flex-1 overflow-y-auto p-4 lg:p-6">{children}</main>
       </div>
     </div>
   )

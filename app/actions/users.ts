@@ -633,3 +633,98 @@ export async function getUserActivityLogs(params?: {
     totalPages: Math.ceil((count || 0) / limit),
   }
 }
+
+/**
+ * Export activity logs as CSV
+ */
+export async function exportActivityLogsToCSV(params?: {
+  userId?: string
+  module?: string
+  action?: string
+}) {
+  const supabase = await createServerSupabaseClient()
+  const { userId, module, action } = params || {}
+
+  // Fetch ALL matching logs (no pagination)
+  let query = supabase
+    .from('user_activity_logs')
+    .select('*, profiles:user_id(full_name, email)')
+    .order('created_at', { ascending: false })
+
+  // Apply filters
+  if (userId) {
+    query = query.eq('user_id', userId)
+  }
+  if (module) {
+    query = query.eq('module', module)
+  }
+  if (action) {
+    query = query.eq('action', action)
+  }
+
+  const { data, error } = await query
+
+  if (error) {
+    console.error('Error fetching activity logs:', error)
+    throw new Error('Failed to fetch activity logs')
+  }
+
+  if (!data || data.length === 0) {
+    throw new Error('No data to export')
+  }
+
+  // Convert to CSV format
+  const headers = [
+    'Date',
+    'Time',
+    'User Name',
+    'User Email',
+    'Action',
+    'Module',
+    'Resource Type',
+    'Resource ID',
+    'IP Address',
+    'Metadata',
+  ]
+
+  const csvRows = [headers.join(',')]
+
+  data.forEach((log: any) => {
+    const date = new Date(log.created_at)
+    const dateStr = date.toLocaleDateString('en-US')
+    const timeStr = date.toLocaleTimeString('en-US')
+    const userName = log.profiles?.full_name || 'Unknown User'
+    const userEmail = log.profiles?.email || 'N/A'
+    const action = log.action || ''
+    const module = log.module || ''
+    const resourceType = log.resource_type || ''
+    const resourceId = log.resource_id || ''
+    const ipAddress = log.ip_address || ''
+    const metadata = log.metadata ? JSON.stringify(log.metadata).replace(/"/g, '""') : ''
+
+    // Escape commas and quotes in CSV
+    const escapeCSV = (str: string) => {
+      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        return `"${str}"`
+      }
+      return str
+    }
+
+    const row = [
+      escapeCSV(dateStr),
+      escapeCSV(timeStr),
+      escapeCSV(userName),
+      escapeCSV(userEmail),
+      escapeCSV(action),
+      escapeCSV(module),
+      escapeCSV(resourceType),
+      escapeCSV(resourceId),
+      escapeCSV(ipAddress),
+      escapeCSV(metadata),
+    ]
+
+    csvRows.push(row.join(','))
+  })
+
+  return csvRows.join('\n')
+}

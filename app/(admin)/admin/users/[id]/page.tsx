@@ -4,7 +4,7 @@ import { getRoles } from '@/app/actions/roles'
 import { UserDetailView } from './user-detail-view'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, Edit, User, Sparkles } from 'lucide-react'
+import { ArrowLeft, Edit, User, Sparkles, Activity } from 'lucide-react'
 
 interface UserDetailPageProps {
   params: Promise<{ id: string }>
@@ -47,12 +47,20 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
             </div>
           </div>
 
-          <Button asChild className="bg-primary hover:bg-primary/90 shadow-brand">
-            <Link href={`/admin/users/${id}/edit`}>
-              <Edit className="mr-2 h-4 w-4" />
-              Edit User
-            </Link>
-          </Button>
+          <div className="flex gap-2">
+            <Button asChild variant="outline">
+              <Link href={`/admin/users/${id}/activity`}>
+                <Activity className="mr-2 h-4 w-4" />
+                View Activity
+              </Link>
+            </Button>
+            <Button asChild className="bg-primary hover:bg-primary/90 shadow-brand">
+              <Link href={`/admin/users/${id}/edit`}>
+                <Edit className="mr-2 h-4 w-4" />
+                Edit User
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
 
