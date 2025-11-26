@@ -73,7 +73,7 @@ export default async function UserActivityPage({
   const initials =
     user.full_name
       ?.split(' ')
-      .map((n) => n[0])
+      .map((n: string) => n[0])
       .join('')
       .toUpperCase() || user.email[0].toUpperCase()
 

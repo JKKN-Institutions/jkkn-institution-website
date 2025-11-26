@@ -22,7 +22,7 @@ import type { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/
  *   filter: 'user_id=eq.' + userId
  * })
  */
-export function useRealtimeTable<T = any>(
+export function useRealtimeTable<T extends { [key: string]: any } = { [key: string]: any }>(
   tableName: string,
   callbacks?: {
     onInsert?: (payload: RealtimePostgresChangesPayload<T>) => void
@@ -110,7 +110,7 @@ export function useRealtimeTable<T = any>(
  * @example
  * const { data, isLoading, error } = useRealtimeList('user_activity_logs', initialLogs)
  */
-export function useRealtimeList<T extends { id: string }>(
+export function useRealtimeList<T extends { id: string; [key: string]: any }>(
   tableName: string,
   initialData: T[] = [],
   filter?: string
@@ -157,7 +157,7 @@ export function useRealtimeList<T extends { id: string }>(
  * @example
  * const { data, isLoading } = useRealtimeRecord('profiles', userId, initialProfile)
  */
-export function useRealtimeRecord<T extends { id: string }>(
+export function useRealtimeRecord<T extends { id: string; [key: string]: any }>(
   tableName: string,
   recordId: string,
   initialData?: T
@@ -248,7 +248,7 @@ export function useRealtimeCount(
  * @example
  * const { presences, trackPresence } = usePresence('dashboard', { userId, userName })
  */
-export function usePresence<T = any>(channelName: string, userInfo?: T) {
+export function usePresence<T extends { [key: string]: any } = { [key: string]: any }>(channelName: string, userInfo?: T) {
   const [presences, setPresences] = useState<Record<string, T>>({})
   const [isTracking, setIsTracking] = useState(false)
   const supabase = createClient()
