@@ -41,6 +41,531 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_component_registry: {
+        Row: {
+          category: string
+          created_at: string | null
+          default_props: Json | null
+          description: string | null
+          display_name: string
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          props_schema: Json
+          sort_order: number | null
+          supports_children: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          default_props?: Json | null
+          description?: string | null
+          display_name: string
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          props_schema?: Json
+          sort_order?: number | null
+          supports_children?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          default_props?: Json | null
+          description?: string | null
+          display_name?: string
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          props_schema?: Json
+          sort_order?: number | null
+          supports_children?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      cms_media_library: {
+        Row: {
+          alt_text: string | null
+          caption: string | null
+          created_at: string | null
+          file_name: string
+          file_path: string
+          file_size: number
+          file_type: string
+          file_url: string
+          folder: string | null
+          height: number | null
+          id: string
+          metadata: Json | null
+          mime_type: string
+          original_name: string
+          tags: string[] | null
+          updated_at: string | null
+          uploaded_by: string
+          width: number | null
+        }
+        Insert: {
+          alt_text?: string | null
+          caption?: string | null
+          created_at?: string | null
+          file_name: string
+          file_path: string
+          file_size: number
+          file_type: string
+          file_url: string
+          folder?: string | null
+          height?: number | null
+          id?: string
+          metadata?: Json | null
+          mime_type: string
+          original_name: string
+          tags?: string[] | null
+          updated_at?: string | null
+          uploaded_by: string
+          width?: number | null
+        }
+        Update: {
+          alt_text?: string | null
+          caption?: string | null
+          created_at?: string | null
+          file_name?: string
+          file_path?: string
+          file_size?: number
+          file_type?: string
+          file_url?: string
+          folder?: string | null
+          height?: number | null
+          id?: string
+          metadata?: Json | null
+          mime_type?: string
+          original_name?: string
+          tags?: string[] | null
+          updated_at?: string | null
+          uploaded_by?: string
+          width?: number | null
+        }
+        Relationships: []
+      }
+      cms_page_blocks: {
+        Row: {
+          component_name: string
+          created_at: string | null
+          custom_classes: string | null
+          custom_css: string | null
+          id: string
+          is_visible: boolean | null
+          page_id: string
+          parent_block_id: string | null
+          props: Json
+          responsive_settings: Json | null
+          sort_order: number
+          updated_at: string | null
+        }
+        Insert: {
+          component_name: string
+          created_at?: string | null
+          custom_classes?: string | null
+          custom_css?: string | null
+          id?: string
+          is_visible?: boolean | null
+          page_id: string
+          parent_block_id?: string | null
+          props?: Json
+          responsive_settings?: Json | null
+          sort_order?: number
+          updated_at?: string | null
+        }
+        Update: {
+          component_name?: string
+          created_at?: string | null
+          custom_classes?: string | null
+          custom_css?: string | null
+          id?: string
+          is_visible?: boolean | null
+          page_id?: string
+          parent_block_id?: string | null
+          props?: Json
+          responsive_settings?: Json | null
+          sort_order?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_page_blocks_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "cms_pages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cms_page_blocks_parent_block_id_fkey"
+            columns: ["parent_block_id"]
+            isOneToOne: false
+            referencedRelation: "cms_page_blocks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cms_page_fab_config: {
+        Row: {
+          animation: string | null
+          created_at: string | null
+          custom_action_icon: string | null
+          custom_action_label: string | null
+          custom_action_url: string | null
+          custom_css: string | null
+          delay_ms: number | null
+          directions_url: string | null
+          email_address: string | null
+          hide_on_scroll: boolean | null
+          id: string
+          is_enabled: boolean | null
+          page_id: string
+          phone_number: string | null
+          position: string | null
+          primary_action: string | null
+          show_directions: boolean | null
+          show_email: boolean | null
+          show_phone: boolean | null
+          show_whatsapp: boolean | null
+          theme: string | null
+          updated_at: string | null
+          whatsapp_number: string | null
+        }
+        Insert: {
+          animation?: string | null
+          created_at?: string | null
+          custom_action_icon?: string | null
+          custom_action_label?: string | null
+          custom_action_url?: string | null
+          custom_css?: string | null
+          delay_ms?: number | null
+          directions_url?: string | null
+          email_address?: string | null
+          hide_on_scroll?: boolean | null
+          id?: string
+          is_enabled?: boolean | null
+          page_id: string
+          phone_number?: string | null
+          position?: string | null
+          primary_action?: string | null
+          show_directions?: boolean | null
+          show_email?: boolean | null
+          show_phone?: boolean | null
+          show_whatsapp?: boolean | null
+          theme?: string | null
+          updated_at?: string | null
+          whatsapp_number?: string | null
+        }
+        Update: {
+          animation?: string | null
+          created_at?: string | null
+          custom_action_icon?: string | null
+          custom_action_label?: string | null
+          custom_action_url?: string | null
+          custom_css?: string | null
+          delay_ms?: number | null
+          directions_url?: string | null
+          email_address?: string | null
+          hide_on_scroll?: boolean | null
+          id?: string
+          is_enabled?: boolean | null
+          page_id?: string
+          phone_number?: string | null
+          position?: string | null
+          primary_action?: string | null
+          show_directions?: boolean | null
+          show_email?: boolean | null
+          show_phone?: boolean | null
+          show_whatsapp?: boolean | null
+          theme?: string | null
+          updated_at?: string | null
+          whatsapp_number?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_page_fab_config_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: true
+            referencedRelation: "cms_pages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cms_page_templates: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          created_by: string | null
+          default_blocks: Json | null
+          description: string | null
+          id: string
+          is_system: boolean | null
+          name: string
+          slug: string
+          thumbnail_url: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          default_blocks?: Json | null
+          description?: string | null
+          id?: string
+          is_system?: boolean | null
+          name: string
+          slug: string
+          thumbnail_url?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          default_blocks?: Json | null
+          description?: string | null
+          id?: string
+          is_system?: boolean | null
+          name?: string
+          slug?: string
+          thumbnail_url?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      cms_page_versions: {
+        Row: {
+          blocks_snapshot: Json
+          change_summary: string | null
+          created_at: string | null
+          created_by: string
+          description: string | null
+          fab_snapshot: Json | null
+          id: string
+          is_auto_save: boolean | null
+          is_published_version: boolean | null
+          page_id: string
+          seo_snapshot: Json | null
+          slug: string
+          title: string
+          version_number: number
+        }
+        Insert: {
+          blocks_snapshot?: Json
+          change_summary?: string | null
+          created_at?: string | null
+          created_by: string
+          description?: string | null
+          fab_snapshot?: Json | null
+          id?: string
+          is_auto_save?: boolean | null
+          is_published_version?: boolean | null
+          page_id: string
+          seo_snapshot?: Json | null
+          slug: string
+          title: string
+          version_number: number
+        }
+        Update: {
+          blocks_snapshot?: Json
+          change_summary?: string | null
+          created_at?: string | null
+          created_by?: string
+          description?: string | null
+          fab_snapshot?: Json | null
+          id?: string
+          is_auto_save?: boolean | null
+          is_published_version?: boolean | null
+          page_id?: string
+          seo_snapshot?: Json | null
+          slug?: string
+          title?: string
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_page_versions_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "cms_pages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cms_pages: {
+        Row: {
+          created_at: string | null
+          created_by: string
+          description: string | null
+          featured_image: string | null
+          id: string
+          is_homepage: boolean | null
+          metadata: Json | null
+          navigation_label: string | null
+          parent_id: string | null
+          password_hash: string | null
+          published_at: string | null
+          scheduled_publish_at: string | null
+          show_in_navigation: boolean | null
+          slug: string
+          sort_order: number | null
+          status: string
+          template_id: string | null
+          title: string
+          updated_at: string | null
+          updated_by: string | null
+          visibility: string
+        }
+        Insert: {
+          created_at?: string | null
+          created_by: string
+          description?: string | null
+          featured_image?: string | null
+          id?: string
+          is_homepage?: boolean | null
+          metadata?: Json | null
+          navigation_label?: string | null
+          parent_id?: string | null
+          password_hash?: string | null
+          published_at?: string | null
+          scheduled_publish_at?: string | null
+          show_in_navigation?: boolean | null
+          slug: string
+          sort_order?: number | null
+          status?: string
+          template_id?: string | null
+          title: string
+          updated_at?: string | null
+          updated_by?: string | null
+          visibility?: string
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string
+          description?: string | null
+          featured_image?: string | null
+          id?: string
+          is_homepage?: boolean | null
+          metadata?: Json | null
+          navigation_label?: string | null
+          parent_id?: string | null
+          password_hash?: string | null
+          published_at?: string | null
+          scheduled_publish_at?: string | null
+          show_in_navigation?: boolean | null
+          slug?: string
+          sort_order?: number | null
+          status?: string
+          template_id?: string | null
+          title?: string
+          updated_at?: string | null
+          updated_by?: string | null
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_pages_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "cms_pages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cms_pages_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "cms_page_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cms_seo_metadata: {
+        Row: {
+          canonical_url: string | null
+          created_at: string | null
+          custom_head_tags: string | null
+          id: string
+          last_analyzed_at: string | null
+          meta_description: string | null
+          meta_keywords: string[] | null
+          meta_title: string | null
+          og_description: string | null
+          og_image: string | null
+          og_title: string | null
+          og_type: string | null
+          page_id: string
+          robots_directive: string | null
+          seo_score: number | null
+          structured_data: Json | null
+          twitter_card: string | null
+          twitter_description: string | null
+          twitter_image: string | null
+          twitter_title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          canonical_url?: string | null
+          created_at?: string | null
+          custom_head_tags?: string | null
+          id?: string
+          last_analyzed_at?: string | null
+          meta_description?: string | null
+          meta_keywords?: string[] | null
+          meta_title?: string | null
+          og_description?: string | null
+          og_image?: string | null
+          og_title?: string | null
+          og_type?: string | null
+          page_id: string
+          robots_directive?: string | null
+          seo_score?: number | null
+          structured_data?: Json | null
+          twitter_card?: string | null
+          twitter_description?: string | null
+          twitter_image?: string | null
+          twitter_title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          canonical_url?: string | null
+          created_at?: string | null
+          custom_head_tags?: string | null
+          id?: string
+          last_analyzed_at?: string | null
+          meta_description?: string | null
+          meta_keywords?: string[] | null
+          meta_title?: string | null
+          og_description?: string | null
+          og_image?: string | null
+          og_title?: string | null
+          og_type?: string | null
+          page_id?: string
+          robots_directive?: string | null
+          seo_score?: number | null
+          structured_data?: Json | null
+          twitter_card?: string | null
+          twitter_description?: string | null
+          twitter_image?: string | null
+          twitter_title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_seo_metadata_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: true
+            referencedRelation: "cms_pages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       members: {
         Row: {
           chapter: string | null
@@ -335,6 +860,13 @@ export type Database = {
             referencedRelation: "roles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "user_roles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
     }
@@ -343,6 +875,10 @@ export type Database = {
     }
     Functions: {
       check_email_approved: { Args: { user_email: string }; Returns: boolean }
+      get_next_page_version_number: {
+        Args: { p_page_id: string }
+        Returns: number
+      }
       get_role_users_count: { Args: { role_uuid: string }; Returns: number }
       get_user_activity_stats: {
         Args: { days_back?: number; user_uuid: string }
@@ -373,6 +909,7 @@ export type Database = {
         Args: { required_permission: string; user_uuid: string }
         Returns: boolean
       }
+      is_super_admin: { Args: { user_uuid: string }; Returns: boolean }
       is_user_guest_only: { Args: { user_uuid: string }; Returns: boolean }
       log_user_activity: {
         Args: {

@@ -1,0 +1,197 @@
+'use client'
+
+import { type ReactNode } from 'react'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
+  GripVertical,
+  MoreVertical,
+  Trash2,
+  Copy,
+  ChevronUp,
+  ChevronDown,
+  Eye,
+  EyeOff,
+} from 'lucide-react'
+import { cn } from '@/lib/utils'
+import type { BlockData } from '@/lib/cms/registry-types'
+
+interface BlockWrapperProps {
+  block: BlockData
+  displayName: string
+  isSelected: boolean
+  isPreviewMode: boolean
+  isDragging: boolean
+  onSelect: () => void
+  onDelete: () => void
+  onDuplicate: () => void
+  onMoveUp: () => void
+  onMoveDown: () => void
+  onToggleVisibility: () => void
+  canMoveUp: boolean
+  canMoveDown: boolean
+  dragHandleProps: Record<string, unknown>
+  children: ReactNode
+}
+
+export function BlockWrapper({
+  block,
+  displayName,
+  isSelected,
+  isPreviewMode,
+  isDragging,
+  onSelect,
+  onDelete,
+  onDuplicate,
+  onMoveUp,
+  onMoveDown,
+  onToggleVisibility,
+  canMoveUp,
+  canMoveDown,
+  dragHandleProps,
+  children,
+}: BlockWrapperProps) {
+  const isHidden = !block.is_visible
+
+  if (isPreviewMode) {
+    // In preview mode, just render the component without wrapper UI
+    if (isHidden) return null
+    return <>{children}</>
+  }
+
+  return (
+    <div
+      className={cn(
+        'group relative',
+        isSelected && 'ring-2 ring-primary ring-offset-2',
+        isHidden && 'opacity-50',
+        isDragging && 'cursor-grabbing'
+      )}
+      onClick={(e) => {
+        e.stopPropagation()
+        onSelect()
+      }}
+    >
+      {/* Block Label & Controls - shown on hover or when selected */}
+      <div
+        className={cn(
+          'absolute -top-8 left-0 right-0 flex items-center justify-between',
+          'opacity-0 group-hover:opacity-100 transition-opacity',
+          isSelected && 'opacity-100'
+        )}
+      >
+        {/* Left side: Drag handle and label */}
+        <div className="flex items-center gap-2">
+          <button
+            {...dragHandleProps}
+            className="p-1 rounded bg-primary text-primary-foreground cursor-grab hover:bg-primary/90"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <GripVertical className="h-4 w-4" />
+          </button>
+          <span className="text-xs font-medium bg-primary text-primary-foreground px-2 py-1 rounded">
+            {displayName}
+            {isHidden && ' (Hidden)'}
+          </span>
+        </div>
+
+        {/* Right side: Quick actions */}
+        <div className="flex items-center gap-1">
+          <Button
+            variant="secondary"
+            size="icon"
+            className="h-6 w-6"
+            onClick={(e) => {
+              e.stopPropagation()
+              onMoveUp()
+            }}
+            disabled={!canMoveUp}
+          >
+            <ChevronUp className="h-3 w-3" />
+          </Button>
+          <Button
+            variant="secondary"
+            size="icon"
+            className="h-6 w-6"
+            onClick={(e) => {
+              e.stopPropagation()
+              onMoveDown()
+            }}
+            disabled={!canMoveDown}
+          >
+            <ChevronDown className="h-3 w-3" />
+          </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="secondary"
+                size="icon"
+                className="h-6 w-6"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <MoreVertical className="h-3 w-3" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onDuplicate()
+                }}
+              >
+                <Copy className="mr-2 h-4 w-4" />
+                Duplicate
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onToggleVisibility()
+                }}
+              >
+                {isHidden ? (
+                  <>
+                    <Eye className="mr-2 h-4 w-4" />
+                    Show
+                  </>
+                ) : (
+                  <>
+                    <EyeOff className="mr-2 h-4 w-4" />
+                    Hide
+                  </>
+                )}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="text-red-600 focus:text-red-600"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onDelete()
+                }}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
+
+      {/* Block Content */}
+      <div
+        className={cn(
+          'relative transition-all',
+          !isSelected && 'hover:outline hover:outline-2 hover:outline-dashed hover:outline-border'
+        )}
+      >
+        {children}
+      </div>
+    </div>
+  )
+}

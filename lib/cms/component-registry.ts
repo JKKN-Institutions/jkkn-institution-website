@@ -1,0 +1,626 @@
+import { lazy, type ComponentType } from 'react'
+import { z } from 'zod'
+import type {
+  ComponentRegistry,
+  ComponentRegistryEntry,
+  ComponentCategory,
+  BaseBlockProps,
+} from './registry-types'
+import {
+  HeroSectionPropsSchema,
+  TextEditorPropsSchema,
+  HeadingPropsSchema,
+  CallToActionPropsSchema,
+  TestimonialsPropsSchema,
+  FAQAccordionPropsSchema,
+  TabsBlockPropsSchema,
+  TimelinePropsSchema,
+  PricingTablesPropsSchema,
+  ImageBlockPropsSchema,
+  ImageGalleryPropsSchema,
+  VideoPlayerPropsSchema,
+  ImageCarouselPropsSchema,
+  BeforeAfterSliderPropsSchema,
+  LogoCloudPropsSchema,
+  ContainerPropsSchema,
+  GridLayoutPropsSchema,
+  FlexboxLayoutPropsSchema,
+  SpacerPropsSchema,
+  DividerPropsSchema,
+  SectionWrapperPropsSchema,
+} from './registry-types'
+
+// Re-export types
+export * from './registry-types'
+
+// ==========================================
+// Lazy-loaded component imports
+// ==========================================
+
+// Content blocks
+const HeroSection = lazy(() => import('@/components/cms-blocks/content/hero-section'))
+const TextEditor = lazy(() => import('@/components/cms-blocks/content/text-editor'))
+const Heading = lazy(() => import('@/components/cms-blocks/content/heading'))
+const CallToAction = lazy(() => import('@/components/cms-blocks/content/call-to-action'))
+const Testimonials = lazy(() => import('@/components/cms-blocks/content/testimonials'))
+const FAQAccordion = lazy(() => import('@/components/cms-blocks/content/faq-accordion'))
+const TabsBlock = lazy(() => import('@/components/cms-blocks/content/tabs-block'))
+const Timeline = lazy(() => import('@/components/cms-blocks/content/timeline'))
+const PricingTables = lazy(() => import('@/components/cms-blocks/content/pricing-tables'))
+
+// Media blocks
+const ImageBlock = lazy(() => import('@/components/cms-blocks/media/image-block'))
+const ImageGallery = lazy(() => import('@/components/cms-blocks/media/image-gallery'))
+const VideoPlayer = lazy(() => import('@/components/cms-blocks/media/video-player'))
+const ImageCarousel = lazy(() => import('@/components/cms-blocks/media/image-carousel'))
+const BeforeAfterSlider = lazy(() => import('@/components/cms-blocks/media/before-after-slider'))
+const LogoCloud = lazy(() => import('@/components/cms-blocks/media/logo-cloud'))
+
+// Layout blocks
+const Container = lazy(() => import('@/components/cms-blocks/layout/container'))
+const GridLayout = lazy(() => import('@/components/cms-blocks/layout/grid-layout'))
+const FlexboxLayout = lazy(() => import('@/components/cms-blocks/layout/flexbox-layout'))
+const Spacer = lazy(() => import('@/components/cms-blocks/layout/spacer'))
+const Divider = lazy(() => import('@/components/cms-blocks/layout/divider'))
+const SectionWrapper = lazy(() => import('@/components/cms-blocks/layout/section-wrapper'))
+
+// ==========================================
+// Component Registry
+// ==========================================
+
+export const COMPONENT_REGISTRY: ComponentRegistry = {
+  // ==========================================
+  // Content Blocks
+  // ==========================================
+  HeroSection: {
+    name: 'HeroSection',
+    displayName: 'Hero Section',
+    category: 'content',
+    description: 'Full-width hero section with background image/video, title, subtitle, and CTA buttons',
+    icon: 'Image',
+    component: HeroSection,
+    propsSchema: HeroSectionPropsSchema,
+    defaultProps: {
+      title: 'Welcome to JKKN',
+      subtitle: 'Excellence in Education',
+      backgroundType: 'image',
+      alignment: 'center',
+      overlay: true,
+      overlayOpacity: 0.5,
+      ctaButtons: [],
+      minHeight: '100vh',
+    },
+    supportsChildren: false,
+    keywords: ['hero', 'banner', 'header', 'landing'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title', required: true },
+      { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
+      { name: 'backgroundType', type: 'enum', label: 'Background Type', options: ['image', 'video', 'gradient'] },
+      { name: 'backgroundImage', type: 'url', label: 'Background Image URL' },
+      { name: 'backgroundVideo', type: 'url', label: 'Background Video URL' },
+      { name: 'alignment', type: 'enum', label: 'Alignment', options: ['left', 'center', 'right'] },
+      { name: 'overlay', type: 'boolean', label: 'Show Overlay' },
+      { name: 'overlayOpacity', type: 'number', label: 'Overlay Opacity', min: 0, max: 1, step: 0.1 },
+      { name: 'minHeight', type: 'string', label: 'Min Height', placeholder: '100vh' },
+    ],
+  },
+
+  TextEditor: {
+    name: 'TextEditor',
+    displayName: 'Rich Text',
+    category: 'content',
+    description: 'Rich text editor with formatting options',
+    icon: 'Type',
+    component: TextEditor,
+    propsSchema: TextEditorPropsSchema,
+    defaultProps: {
+      content: '',
+      alignment: 'left',
+      maxWidth: 'prose',
+    },
+    supportsChildren: false,
+    keywords: ['text', 'paragraph', 'content', 'wysiwyg'],
+    editableProps: [
+      { name: 'content', type: 'string', label: 'Content', multiline: true, required: true },
+      { name: 'alignment', type: 'enum', label: 'Alignment', options: ['left', 'center', 'right', 'justify'] },
+      { name: 'maxWidth', type: 'enum', label: 'Max Width', options: ['sm', 'md', 'lg', 'xl', 'full', 'prose'] },
+    ],
+  },
+
+  Heading: {
+    name: 'Heading',
+    displayName: 'Heading',
+    category: 'content',
+    description: 'Configurable heading with various levels and styles',
+    icon: 'Heading',
+    component: Heading,
+    propsSchema: HeadingPropsSchema,
+    defaultProps: {
+      text: 'Heading',
+      level: 'h2',
+      alignment: 'left',
+    },
+    supportsChildren: false,
+    keywords: ['heading', 'title', 'h1', 'h2', 'h3'],
+    editableProps: [
+      { name: 'text', type: 'string', label: 'Text', required: true },
+      { name: 'level', type: 'enum', label: 'Level', options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] },
+      { name: 'alignment', type: 'enum', label: 'Alignment', options: ['left', 'center', 'right'] },
+      { name: 'color', type: 'color', label: 'Color' },
+    ],
+  },
+
+  CallToAction: {
+    name: 'CallToAction',
+    displayName: 'Call to Action',
+    category: 'content',
+    description: 'CTA section with title, description and buttons',
+    icon: 'MousePointerClick',
+    component: CallToAction,
+    propsSchema: CallToActionPropsSchema,
+    defaultProps: {
+      title: 'Ready to Get Started?',
+      description: 'Join thousands of students who have chosen JKKN',
+      buttons: [],
+      alignment: 'center',
+    },
+    supportsChildren: false,
+    keywords: ['cta', 'action', 'button', 'conversion'],
+  },
+
+  Testimonials: {
+    name: 'Testimonials',
+    displayName: 'Testimonials',
+    category: 'content',
+    description: 'Display testimonials in carousel or grid layout',
+    icon: 'Quote',
+    component: Testimonials,
+    propsSchema: TestimonialsPropsSchema,
+    defaultProps: {
+      testimonials: [],
+      layout: 'carousel',
+      autoplay: true,
+      showRating: true,
+    },
+    supportsChildren: false,
+    keywords: ['testimonial', 'review', 'quote', 'feedback'],
+  },
+
+  FAQAccordion: {
+    name: 'FAQAccordion',
+    displayName: 'FAQ Accordion',
+    category: 'content',
+    description: 'Expandable FAQ section with search',
+    icon: 'HelpCircle',
+    component: FAQAccordion,
+    propsSchema: FAQAccordionPropsSchema,
+    defaultProps: {
+      faqs: [],
+      searchEnabled: true,
+      allowMultiple: false,
+    },
+    supportsChildren: false,
+    keywords: ['faq', 'accordion', 'questions', 'help'],
+  },
+
+  TabsBlock: {
+    name: 'TabsBlock',
+    displayName: 'Tabs',
+    category: 'content',
+    description: 'Tabbed content sections',
+    icon: 'LayoutList',
+    component: TabsBlock,
+    propsSchema: TabsBlockPropsSchema,
+    defaultProps: {
+      tabs: [],
+      variant: 'default',
+    },
+    supportsChildren: false,
+    keywords: ['tabs', 'tabbed', 'sections'],
+  },
+
+  Timeline: {
+    name: 'Timeline',
+    displayName: 'Timeline',
+    category: 'content',
+    description: 'Vertical timeline for events or milestones',
+    icon: 'Calendar',
+    component: Timeline,
+    propsSchema: TimelinePropsSchema,
+    defaultProps: {
+      events: [],
+      alternating: true,
+    },
+    supportsChildren: false,
+    keywords: ['timeline', 'history', 'events', 'milestones'],
+  },
+
+  PricingTables: {
+    name: 'PricingTables',
+    displayName: 'Pricing Tables',
+    category: 'content',
+    description: 'Compare pricing plans with features',
+    icon: 'CreditCard',
+    component: PricingTables,
+    propsSchema: PricingTablesPropsSchema,
+    defaultProps: {
+      plans: [],
+      columns: 3,
+    },
+    supportsChildren: false,
+    keywords: ['pricing', 'plans', 'subscription', 'compare'],
+  },
+
+  // ==========================================
+  // Media Blocks
+  // ==========================================
+  ImageBlock: {
+    name: 'ImageBlock',
+    displayName: 'Image',
+    category: 'media',
+    description: 'Single image with caption and link',
+    icon: 'Image',
+    component: ImageBlock,
+    propsSchema: ImageBlockPropsSchema,
+    defaultProps: {
+      src: '',
+      alt: '',
+      objectFit: 'cover',
+      lightbox: false,
+    },
+    supportsChildren: false,
+    keywords: ['image', 'photo', 'picture'],
+    editableProps: [
+      { name: 'src', type: 'url', label: 'Image URL', required: true },
+      { name: 'alt', type: 'string', label: 'Alt Text', required: true },
+      { name: 'caption', type: 'string', label: 'Caption' },
+      { name: 'width', type: 'number', label: 'Width (px)' },
+      { name: 'height', type: 'number', label: 'Height (px)' },
+      { name: 'objectFit', type: 'enum', label: 'Object Fit', options: ['cover', 'contain', 'fill', 'none'] },
+      { name: 'link', type: 'url', label: 'Link URL' },
+      { name: 'lightbox', type: 'boolean', label: 'Enable Lightbox' },
+    ],
+  },
+
+  ImageGallery: {
+    name: 'ImageGallery',
+    displayName: 'Image Gallery',
+    category: 'media',
+    description: 'Grid or masonry gallery with lightbox',
+    icon: 'Images',
+    component: ImageGallery,
+    propsSchema: ImageGalleryPropsSchema,
+    defaultProps: {
+      images: [],
+      layout: 'grid',
+      columns: 3,
+      lightbox: true,
+      gap: 4,
+    },
+    supportsChildren: false,
+    keywords: ['gallery', 'images', 'photos', 'grid'],
+  },
+
+  VideoPlayer: {
+    name: 'VideoPlayer',
+    displayName: 'Video Player',
+    category: 'media',
+    description: 'Embed YouTube, Vimeo or self-hosted videos',
+    icon: 'Video',
+    component: VideoPlayer,
+    propsSchema: VideoPlayerPropsSchema,
+    defaultProps: {
+      src: '',
+      provider: 'youtube',
+      autoplay: false,
+      controls: true,
+      loop: false,
+      muted: false,
+      aspectRatio: '16/9',
+    },
+    supportsChildren: false,
+    keywords: ['video', 'youtube', 'vimeo', 'embed'],
+  },
+
+  ImageCarousel: {
+    name: 'ImageCarousel',
+    displayName: 'Image Carousel',
+    category: 'media',
+    description: 'Sliding image carousel with navigation',
+    icon: 'GalleryHorizontal',
+    component: ImageCarousel,
+    propsSchema: ImageCarouselPropsSchema,
+    defaultProps: {
+      images: [],
+      autoplay: true,
+      interval: 5000,
+      showDots: true,
+      showArrows: true,
+    },
+    supportsChildren: false,
+    keywords: ['carousel', 'slider', 'slideshow'],
+  },
+
+  BeforeAfterSlider: {
+    name: 'BeforeAfterSlider',
+    displayName: 'Before/After Slider',
+    category: 'media',
+    description: 'Compare two images with a slider',
+    icon: 'SplitSquareHorizontal',
+    component: BeforeAfterSlider,
+    propsSchema: BeforeAfterSliderPropsSchema,
+    defaultProps: {
+      beforeImage: '',
+      afterImage: '',
+      beforeLabel: 'Before',
+      afterLabel: 'After',
+      startPosition: 50,
+    },
+    supportsChildren: false,
+    keywords: ['before', 'after', 'compare', 'slider'],
+  },
+
+  LogoCloud: {
+    name: 'LogoCloud',
+    displayName: 'Logo Cloud',
+    category: 'media',
+    description: 'Display partner/sponsor logos',
+    icon: 'Shapes',
+    component: LogoCloud,
+    propsSchema: LogoCloudPropsSchema,
+    defaultProps: {
+      logos: [],
+      layout: 'grid',
+      grayscale: true,
+      columns: 6,
+    },
+    supportsChildren: false,
+    keywords: ['logos', 'partners', 'sponsors', 'clients'],
+  },
+
+  // ==========================================
+  // Layout Blocks
+  // ==========================================
+  Container: {
+    name: 'Container',
+    displayName: 'Container',
+    category: 'layout',
+    description: 'Content wrapper with max-width and padding',
+    icon: 'Box',
+    component: Container,
+    propsSchema: ContainerPropsSchema,
+    defaultProps: {
+      maxWidth: 'xl',
+      padding: '4',
+      centered: true,
+    },
+    supportsChildren: true,
+    keywords: ['container', 'wrapper', 'section'],
+    editableProps: [
+      { name: 'maxWidth', type: 'enum', label: 'Max Width', options: ['sm', 'md', 'lg', 'xl', '2xl', 'full'] },
+      { name: 'padding', type: 'string', label: 'Padding', placeholder: '4' },
+      { name: 'centered', type: 'boolean', label: 'Centered' },
+      { name: 'background', type: 'color', label: 'Background Color' },
+    ],
+  },
+
+  GridLayout: {
+    name: 'GridLayout',
+    displayName: 'Grid Layout',
+    category: 'layout',
+    description: 'Responsive grid container',
+    icon: 'LayoutGrid',
+    component: GridLayout,
+    propsSchema: GridLayoutPropsSchema,
+    defaultProps: {
+      columns: 3,
+      gap: 4,
+      responsive: { sm: 1, md: 2, lg: 3 },
+    },
+    supportsChildren: true,
+    keywords: ['grid', 'columns', 'layout'],
+  },
+
+  FlexboxLayout: {
+    name: 'FlexboxLayout',
+    displayName: 'Flexbox Layout',
+    category: 'layout',
+    description: 'Flexible box container',
+    icon: 'LayoutPanelLeft',
+    component: FlexboxLayout,
+    propsSchema: FlexboxLayoutPropsSchema,
+    defaultProps: {
+      direction: 'row',
+      justify: 'start',
+      align: 'center',
+      wrap: true,
+      gap: 4,
+    },
+    supportsChildren: true,
+    keywords: ['flex', 'flexbox', 'layout', 'row', 'column'],
+  },
+
+  Spacer: {
+    name: 'Spacer',
+    displayName: 'Spacer',
+    category: 'layout',
+    description: 'Vertical spacing element',
+    icon: 'ArrowUpDown',
+    component: Spacer,
+    propsSchema: SpacerPropsSchema,
+    defaultProps: {
+      height: '8',
+      responsive: { sm: '4', md: '6', lg: '8' },
+    },
+    supportsChildren: false,
+    keywords: ['spacer', 'spacing', 'gap', 'margin'],
+    editableProps: [
+      { name: 'height', type: 'string', label: 'Height', placeholder: '8', description: 'Tailwind spacing value (4, 8, 16, etc.)' },
+    ],
+  },
+
+  Divider: {
+    name: 'Divider',
+    displayName: 'Divider',
+    category: 'layout',
+    description: 'Horizontal line separator',
+    icon: 'Minus',
+    component: Divider,
+    propsSchema: DividerPropsSchema,
+    defaultProps: {
+      style: 'solid',
+      thickness: 1,
+      width: 'full',
+    },
+    supportsChildren: false,
+    keywords: ['divider', 'separator', 'line', 'hr'],
+    editableProps: [
+      { name: 'style', type: 'enum', label: 'Style', options: ['solid', 'dashed', 'dotted'] },
+      { name: 'color', type: 'color', label: 'Color' },
+      { name: 'thickness', type: 'number', label: 'Thickness', min: 1, max: 10 },
+      { name: 'width', type: 'enum', label: 'Width', options: ['full', '3/4', '1/2', '1/4'] },
+    ],
+  },
+
+  SectionWrapper: {
+    name: 'SectionWrapper',
+    displayName: 'Section Wrapper',
+    category: 'layout',
+    description: 'Full-width section with background options',
+    icon: 'Square',
+    component: SectionWrapper,
+    propsSchema: SectionWrapperPropsSchema,
+    defaultProps: {
+      padding: '16',
+      fullWidth: true,
+    },
+    supportsChildren: true,
+    keywords: ['section', 'wrapper', 'background', 'full-width'],
+  },
+}
+
+// ==========================================
+// Helper Functions
+// ==========================================
+
+/**
+ * Get a component from the registry by name
+ */
+export function getComponent(name: string): ComponentType<BaseBlockProps> | null {
+  const entry = COMPONENT_REGISTRY[name]
+  if (!entry) {
+    console.warn(`Component "${name}" not found in registry`)
+    return null
+  }
+  return entry.component
+}
+
+/**
+ * Get component entry from registry
+ */
+export function getComponentEntry(name: string): ComponentRegistryEntry | null {
+  return COMPONENT_REGISTRY[name] || null
+}
+
+/**
+ * Validate component props against its schema
+ */
+export function validateProps<T>(
+  componentName: string,
+  props: unknown
+): { success: true; data: T } | { success: false; errors: z.ZodError } {
+  const entry = COMPONENT_REGISTRY[componentName]
+  if (!entry) {
+    return {
+      success: false,
+      errors: new z.ZodError([
+        {
+          code: 'custom',
+          path: [],
+          message: `Component "${componentName}" not found in registry`,
+        },
+      ]),
+    }
+  }
+
+  const result = entry.propsSchema.safeParse(props)
+  if (result.success) {
+    return { success: true, data: result.data as T }
+  }
+  return { success: false, errors: result.error }
+}
+
+/**
+ * Get default props for a component
+ */
+export function getDefaultProps(componentName: string): Record<string, unknown> {
+  const entry = COMPONENT_REGISTRY[componentName]
+  if (!entry) {
+    console.warn(`Component "${componentName}" not found in registry`)
+    return {}
+  }
+  return entry.defaultProps as Record<string, unknown>
+}
+
+/**
+ * Get all components in a category
+ */
+export function getComponentsByCategory(
+  category: ComponentCategory
+): ComponentRegistryEntry[] {
+  return Object.values(COMPONENT_REGISTRY).filter(
+    (entry) => entry.category === category
+  )
+}
+
+/**
+ * Search components by name or keywords
+ */
+export function searchComponents(query: string): ComponentRegistryEntry[] {
+  const lowerQuery = query.toLowerCase()
+  return Object.values(COMPONENT_REGISTRY).filter((entry) => {
+    const matchesName =
+      entry.name.toLowerCase().includes(lowerQuery) ||
+      entry.displayName.toLowerCase().includes(lowerQuery)
+    const matchesDescription = entry.description?.toLowerCase().includes(lowerQuery)
+    const matchesKeywords = entry.keywords?.some((kw) =>
+      kw.toLowerCase().includes(lowerQuery)
+    )
+    return matchesName || matchesDescription || matchesKeywords
+  })
+}
+
+/**
+ * Get all component names
+ */
+export function getComponentNames(): string[] {
+  return Object.keys(COMPONENT_REGISTRY)
+}
+
+/**
+ * Get all available categories
+ */
+export function getCategories(): ComponentCategory[] {
+  return ['content', 'media', 'layout', 'data']
+}
+
+/**
+ * Get category display name
+ */
+export function getCategoryDisplayName(category: ComponentCategory): string {
+  const names: Record<ComponentCategory, string> = {
+    content: 'Content',
+    media: 'Media',
+    layout: 'Layout',
+    data: 'Data',
+  }
+  return names[category]
+}
+
+/**
+ * Check if a component supports children (nested blocks)
+ */
+export function supportsChildren(componentName: string): boolean {
+  const entry = COMPONENT_REGISTRY[componentName]
+  return entry?.supportsChildren ?? false
+}

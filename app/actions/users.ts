@@ -26,8 +26,22 @@ const UpdateProfileSchema = z.object({
   date_of_joining: z.string().optional(),
 })
 
+const UpdateAvatarSchema = z.object({
+  userId: z.string().uuid('Invalid user ID'),
+  avatarUrl: z.string().url('Invalid URL').nullable(),
+})
+
 const AssignRoleSchema = z.object({
   userId: z.string().uuid('Invalid user ID'),
+  roleId: z.string().uuid('Invalid role ID'),
+})
+
+const BulkUserIdsSchema = z.object({
+  userIds: z.array(z.string().uuid('Invalid user ID')).min(1, 'Select at least one user'),
+})
+
+const BulkAssignRoleSchema = z.object({
+  userIds: z.array(z.string().uuid('Invalid user ID')).min(1, 'Select at least one user'),
   roleId: z.string().uuid('Invalid role ID'),
 })
 
@@ -596,11 +610,11 @@ export async function getUserActivityLogs(params?: {
   const supabase = await createServerSupabaseClient()
   const { userId, module, action, page = 1, limit = 50 } = params || {}
 
+  // Build base query - user_activity_logs.user_id references auth.users.id
+  // profiles.id also references auth.users.id (same UUID), so we can join manually
   let query = supabase
     .from('user_activity_logs')
-    .select('*, profiles:user_id(full_name, email, avatar_url)', {
-      count: 'exact',
-    })
+    .select('*', { count: 'exact' })
 
   // Apply filters
   if (userId) {
@@ -618,15 +632,55 @@ export async function getUserActivityLogs(params?: {
   const to = from + limit - 1
   query = query.range(from, to).order('created_at', { ascending: false })
 
-  const { data, error, count } = await query
+  const { data: logs, error, count } = await query
 
   if (error) {
     console.error('Error fetching activity logs:', error)
     throw new Error('Failed to fetch activity logs')
   }
 
+  // If no logs, return early
+  if (!logs || logs.length === 0) {
+    return {
+      data: [],
+      total: 0,
+      page,
+      limit,
+      totalPages: 0,
+    }
+  }
+
+  // Get unique user IDs and fetch their profiles
+  const userIds = [...new Set(logs.map((log) => log.user_id).filter(Boolean))]
+
+  let profilesMap: Record<string, { full_name: string | null; email: string | null; avatar_url: string | null }> = {}
+
+  if (userIds.length > 0) {
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, full_name, email, avatar_url')
+      .in('id', userIds)
+
+    if (profiles) {
+      profilesMap = profiles.reduce((acc, profile) => {
+        acc[profile.id] = {
+          full_name: profile.full_name,
+          email: profile.email,
+          avatar_url: profile.avatar_url,
+        }
+        return acc
+      }, {} as typeof profilesMap)
+    }
+  }
+
+  // Enrich logs with profile data
+  const enrichedLogs = logs.map((log) => ({
+    ...log,
+    profiles: log.user_id ? profilesMap[log.user_id] || null : null,
+  }))
+
   return {
-    data: data || [],
+    data: enrichedLogs,
     total: count || 0,
     page,
     limit,
@@ -648,7 +702,7 @@ export async function exportActivityLogsToCSV(params?: {
   // Fetch ALL matching logs (no pagination)
   let query = supabase
     .from('user_activity_logs')
-    .select('*, profiles:user_id(full_name, email)')
+    .select('*')
     .order('created_at', { ascending: false })
 
   // Apply filters
@@ -662,16 +716,44 @@ export async function exportActivityLogsToCSV(params?: {
     query = query.eq('action', action)
   }
 
-  const { data, error } = await query
+  const { data: logs, error } = await query
 
   if (error) {
     console.error('Error fetching activity logs:', error)
     throw new Error('Failed to fetch activity logs')
   }
 
-  if (!data || data.length === 0) {
+  if (!logs || logs.length === 0) {
     throw new Error('No data to export')
   }
+
+  // Get unique user IDs and fetch their profiles
+  const userIds = [...new Set(logs.map((log) => log.user_id).filter(Boolean))]
+
+  let profilesMap: Record<string, { full_name: string | null; email: string | null }> = {}
+
+  if (userIds.length > 0) {
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, full_name, email')
+      .in('id', userIds)
+
+    if (profiles) {
+      profilesMap = profiles.reduce((acc, profile) => {
+        acc[profile.id] = {
+          full_name: profile.full_name,
+          email: profile.email,
+        }
+        return acc
+      }, {} as typeof profilesMap)
+    }
+  }
+
+  // Enrich logs with profile data
+  const data = logs.map((log) => ({
+    ...log,
+    profiles: log.user_id ? profilesMap[log.user_id] || null : null,
+  }))
 
   // Convert to CSV format
   const headers = [
@@ -727,4 +809,404 @@ export async function exportActivityLogsToCSV(params?: {
   })
 
   return csvRows.join('\n')
+}
+
+/**
+ * Bulk assign a role to multiple users
+ */
+export async function bulkAssignRole(
+  userIds: string[],
+  roleId: string
+): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'users:roles:assign')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to assign roles' }
+  }
+
+  // Validate input
+  const validation = BulkAssignRoleSchema.safeParse({ userIds, roleId })
+  if (!validation.success) {
+    return {
+      success: false,
+      message: validation.error.flatten().fieldErrors.userIds?.[0] || 'Invalid input',
+    }
+  }
+
+  // Filter out users who already have this role
+  const { data: existingRoles } = await supabase
+    .from('user_roles')
+    .select('user_id')
+    .eq('role_id', roleId)
+    .in('user_id', userIds)
+
+  const existingUserIds = new Set(existingRoles?.map((r) => r.user_id) || [])
+  const usersToAssign = userIds.filter((id) => !existingUserIds.has(id))
+
+  if (usersToAssign.length === 0) {
+    return { success: false, message: 'All selected users already have this role' }
+  }
+
+  // Assign role to each user
+  const insertData = usersToAssign.map((userId) => ({
+    user_id: userId,
+    role_id: roleId,
+    assigned_by: user.id,
+  }))
+
+  const { error } = await supabase.from('user_roles').insert(insertData)
+
+  if (error) {
+    console.error('Error bulk assigning role:', error)
+    return { success: false, message: 'Failed to assign role to some users. Please try again.' }
+  }
+
+  // Log role changes for each user
+  const roleChangeData = usersToAssign.map((userId) => ({
+    user_id: userId,
+    role_id: roleId,
+    action: 'assigned',
+    changed_by: user.id,
+  }))
+  await supabase.from('user_role_changes').insert(roleChangeData)
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'bulk_assign_role',
+    module: 'users',
+    resourceType: 'user_roles',
+    resourceId: roleId,
+    metadata: { targetUserIds: usersToAssign, roleId, count: usersToAssign.length },
+  })
+
+  revalidatePath('/admin/users')
+
+  return {
+    success: true,
+    message: `Role assigned to ${usersToAssign.length} user${usersToAssign.length > 1 ? 's' : ''} successfully`,
+  }
+}
+
+/**
+ * Bulk activate multiple users
+ */
+export async function bulkActivateUsers(userIds: string[]): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'users:profiles:edit')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to activate users' }
+  }
+
+  // Validate input
+  const validation = BulkUserIdsSchema.safeParse({ userIds })
+  if (!validation.success) {
+    return {
+      success: false,
+      message: validation.error.flatten().fieldErrors.userIds?.[0] || 'Invalid input',
+    }
+  }
+
+  // Filter out current user if included
+  const usersToActivate = userIds.filter((id) => id !== user.id)
+
+  if (usersToActivate.length === 0) {
+    return { success: false, message: 'No valid users to activate' }
+  }
+
+  // Update member status for all users
+  const { error } = await supabase
+    .from('members')
+    .update({ status: 'active', updated_at: new Date().toISOString() })
+    .in('user_id', usersToActivate)
+
+  if (error) {
+    console.error('Error bulk activating users:', error)
+    return { success: false, message: 'Failed to activate some users. Please try again.' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'bulk_activate',
+    module: 'users',
+    resourceType: 'users',
+    resourceId: user.id,
+    metadata: { targetUserIds: usersToActivate, count: usersToActivate.length },
+  })
+
+  revalidatePath('/admin/users')
+
+  return {
+    success: true,
+    message: `${usersToActivate.length} user${usersToActivate.length > 1 ? 's' : ''} activated successfully`,
+  }
+}
+
+/**
+ * Update user avatar URL
+ */
+export async function updateAvatarUrl(
+  userId: string,
+  avatarUrl: string | null
+): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission (can edit own avatar or need users:profiles:edit)
+  const canEdit =
+    user.id === userId || (await checkPermission(user.id, 'users:profiles:edit'))
+  if (!canEdit) {
+    return { success: false, message: 'You do not have permission to update this avatar' }
+  }
+
+  // Validate input
+  const validation = UpdateAvatarSchema.safeParse({ userId, avatarUrl })
+  if (!validation.success) {
+    return {
+      success: false,
+      message: 'Invalid input',
+    }
+  }
+
+  // Update profile
+  const { error } = await supabase
+    .from('profiles')
+    .update({
+      avatar_url: avatarUrl,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', userId)
+
+  if (error) {
+    console.error('Error updating avatar:', error)
+    return { success: false, message: 'Failed to update avatar. Please try again.' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: avatarUrl ? 'update_avatar' : 'remove_avatar',
+    module: 'users',
+    resourceType: 'profile',
+    resourceId: userId,
+  })
+
+  revalidatePath('/admin/users')
+  revalidatePath(`/admin/users/${userId}`)
+
+  return { success: true, message: 'Avatar updated successfully' }
+}
+
+/**
+ * Export users to CSV
+ */
+export async function exportUsersToCSV(params?: {
+  userIds?: string[]
+  search?: string
+  roleId?: string
+  status?: string
+}) {
+  const supabase = await createServerSupabaseClient()
+  const { userIds, search, roleId, status } = params || {}
+
+  let query = supabase.from('profiles').select(
+    `
+      *,
+      members!members_profile_id_fkey (
+        id,
+        member_id,
+        chapter,
+        status,
+        membership_type
+      ),
+      user_roles!user_roles_user_id_fkey (
+        id,
+        roles (
+          id,
+          name,
+          display_name
+        )
+      )
+    `
+  )
+
+  // If specific user IDs are provided, filter by them
+  if (userIds && userIds.length > 0) {
+    query = query.in('id', userIds)
+  } else {
+    // Otherwise apply search/filter criteria
+    if (search) {
+      query = query.or(
+        `full_name.ilike.%${search}%,email.ilike.%${search}%,department.ilike.%${search}%`
+      )
+    }
+  }
+
+  query = query.order('created_at', { ascending: false })
+
+  const { data, error } = await query
+
+  if (error) {
+    console.error('Error fetching users for export:', error)
+    throw new Error('Failed to fetch users for export')
+  }
+
+  if (!data || data.length === 0) {
+    throw new Error('No users to export')
+  }
+
+  // Convert to CSV format
+  const headers = [
+    'Name',
+    'Email',
+    'Department',
+    'Designation',
+    'Employee ID',
+    'Roles',
+    'Status',
+    'Chapter',
+    'Membership Type',
+    'Phone',
+    'Joined Date',
+  ]
+
+  const csvRows = [headers.join(',')]
+
+  data.forEach((user: any) => {
+    const member = user.members?.[0]
+    const roles = user.user_roles
+      ?.map((ur: any) => ur.roles?.display_name)
+      .filter(Boolean)
+      .join('; ')
+
+    const formatDate = (dateStr: string | null) => {
+      if (!dateStr) return ''
+      const date = new Date(dateStr)
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      })
+    }
+
+    const escapeCSV = (str: string | null | undefined) => {
+      if (str === null || str === undefined) return ''
+      const strValue = String(str)
+      if (strValue.includes(',') || strValue.includes('"') || strValue.includes('\n')) {
+        return `"${strValue.replace(/"/g, '""')}"`
+      }
+      return strValue
+    }
+
+    const row = [
+      escapeCSV(user.full_name),
+      escapeCSV(user.email),
+      escapeCSV(user.department),
+      escapeCSV(user.designation),
+      escapeCSV(user.employee_id),
+      escapeCSV(roles),
+      escapeCSV(member?.status || 'pending'),
+      escapeCSV(member?.chapter),
+      escapeCSV(member?.membership_type),
+      escapeCSV(user.phone),
+      escapeCSV(formatDate(user.created_at)),
+    ]
+
+    csvRows.push(row.join(','))
+  })
+
+  return csvRows.join('\n')
+}
+
+/**
+ * Bulk deactivate multiple users
+ */
+export async function bulkDeactivateUsers(userIds: string[]): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'users:profiles:delete')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to deactivate users' }
+  }
+
+  // Validate input
+  const validation = BulkUserIdsSchema.safeParse({ userIds })
+  if (!validation.success) {
+    return {
+      success: false,
+      message: validation.error.flatten().fieldErrors.userIds?.[0] || 'Invalid input',
+    }
+  }
+
+  // Filter out current user if included
+  const usersToDeactivate = userIds.filter((id) => id !== user.id)
+
+  if (usersToDeactivate.length === 0) {
+    return { success: false, message: 'You cannot deactivate your own account' }
+  }
+
+  // Update member status for all users
+  const { error } = await supabase
+    .from('members')
+    .update({ status: 'inactive', updated_at: new Date().toISOString() })
+    .in('user_id', usersToDeactivate)
+
+  if (error) {
+    console.error('Error bulk deactivating users:', error)
+    return { success: false, message: 'Failed to deactivate some users. Please try again.' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'bulk_deactivate',
+    module: 'users',
+    resourceType: 'users',
+    resourceId: user.id,
+    metadata: { targetUserIds: usersToDeactivate, count: usersToDeactivate.length },
+  })
+
+  revalidatePath('/admin/users')
+
+  return {
+    success: true,
+    message: `${usersToDeactivate.length} user${usersToDeactivate.length > 1 ? 's' : ''} deactivated successfully`,
+  }
 }

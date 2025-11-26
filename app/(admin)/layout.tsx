@@ -1,6 +1,6 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { AdminSidebar } from '@/components/admin/admin-sidebar'
+import { ResponsiveNavigation } from '@/components/admin/responsive-navigation'
 import { AdminHeader } from '@/components/admin/admin-header'
 
 // Type for role relation from Supabase join
@@ -94,8 +94,8 @@ export default async function AdminLayout({
         <div className="absolute -bottom-40 right-1/3 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
       </div>
 
-      {/* Sidebar */}
-      <AdminSidebar userPermissions={userData.permissions} />
+      {/* Responsive Navigation (Desktop Sidebar + Mobile Bottom Nav) */}
+      <ResponsiveNavigation userPermissions={userData.permissions} />
 
       {/* Main Content Area with Fixed Header */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
@@ -106,8 +106,8 @@ export default async function AdminLayout({
           userRole={userData.role}
         />
 
-        {/* Scrollable Page Content */}
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6">{children}</main>
+        {/* Scrollable Page Content - Add padding bottom for mobile nav */}
+        <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-24 lg:pb-6">{children}</main>
       </div>
     </div>
   )

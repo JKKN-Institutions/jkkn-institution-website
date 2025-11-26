@@ -14,9 +14,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Shield, Users, Key, Edit, Trash2, Lock } from 'lucide-react'
+import { Shield, Users, Key, Edit, Trash2, Lock, Copy, Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { deleteRole } from '@/app/actions/roles'
+import { deleteRole, duplicateRole } from '@/app/actions/roles'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -56,6 +56,21 @@ const getRoleColor = (roleName: string) => {
 export function RolesList({ roles }: RolesListProps) {
   const router = useRouter()
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [duplicatingId, setDuplicatingId] = useState<string | null>(null)
+
+  const handleDuplicate = async (roleId: string) => {
+    setDuplicatingId(roleId)
+    const result = await duplicateRole(roleId)
+
+    if (result.success) {
+      toast.success(result.message)
+      router.refresh()
+    } else {
+      toast.error(result.message)
+    }
+
+    setDuplicatingId(null)
+  }
 
   const handleDelete = async (roleId: string) => {
     setDeletingId(roleId)
@@ -127,6 +142,22 @@ export function RolesList({ roles }: RolesListProps) {
                   <Eye className="h-4 w-4 mr-2" />
                   View
                 </Link>
+              </Button>
+
+              {/* Duplicate button - available for all roles */}
+              <Button
+                variant="outline"
+                size="sm"
+                className="hover:border-primary/30 hover:bg-primary/5"
+                onClick={() => handleDuplicate(role.id)}
+                disabled={duplicatingId === role.id}
+                title="Duplicate role"
+              >
+                {duplicatingId === role.id ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
               </Button>
 
               {!role.is_system_role && (

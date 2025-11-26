@@ -56,10 +56,14 @@
       "Skill(advanced-tables-components)",
       "Bash(if not exist \"components\\ui\" mkdir \"components\\ui\")",
       "Bash(npx supabase projects list)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(npm ls:*)",
+      "Skill(advanced-debugging)",
+      "mcp__supabase__get_logs"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "defaultMode": "plan"
   },
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [

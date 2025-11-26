@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState, useTransition, useCallback, useEffect } from 'react'
+import { useState, useTransition, useCallback, useEffect, useMemo } from 'react'
 import { DataTable } from '@/components/data-table/data-table'
 import { columns, type UserRow } from './columns'
 import { Input } from '@/components/ui/input'
@@ -12,10 +12,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Search, X } from 'lucide-react'
+import { Search, X, Download, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { getUsers } from '@/app/actions/users'
+import { getUsers, exportUsersToCSV } from '@/app/actions/users'
 import { getRoles } from '@/app/actions/roles'
+import { BulkActionsToolbar } from './bulk-actions-toolbar'
+import type { RowSelectionState } from '@tanstack/react-table'
+import { toast } from 'sonner'
 
 interface UsersTableProps {
   page: number
@@ -55,6 +58,56 @@ export function UsersTable({
   const [statusValue, setStatusValue] = useState(initialStatusFilter)
   const [page, setPage] = useState(initialPage)
   const [limit, setLimit] = useState(initialLimit)
+
+  // Row selection state
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+
+  // Get selected user IDs from row selection
+  const selectedUserIds = useMemo(() => {
+    return Object.keys(rowSelection)
+      .filter((key) => rowSelection[key])
+      .map((index) => data[parseInt(index)]?.id)
+      .filter(Boolean)
+  }, [rowSelection, data])
+
+  const handleClearSelection = useCallback(() => {
+    setRowSelection({})
+  }, [])
+
+  const handleRowSelectionChange = useCallback((selection: RowSelectionState) => {
+    setRowSelection(selection)
+  }, [])
+
+  // Export all users
+  const [isExporting, setIsExporting] = useState(false)
+  const handleExportAll = async () => {
+    setIsExporting(true)
+    try {
+      const csvContent = await exportUsersToCSV({
+        search: searchValue,
+        roleId: roleValue,
+        status: statusValue,
+      })
+
+      // Download the CSV
+      const bom = '\uFEFF'
+      const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.setAttribute('href', url)
+      link.setAttribute('download', `users-export-${new Date().toISOString().split('T')[0]}.csv`)
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+
+      toast.success('Users exported successfully')
+    } catch (error) {
+      toast.error('Failed to export users')
+    } finally {
+      setIsExporting(false)
+    }
+  }
 
   // Update URL params
   const updateUrlParams = useCallback(
@@ -178,6 +231,15 @@ export function UsersTable({
 
   return (
     <div className="space-y-4">
+      {/* Bulk Actions Toolbar */}
+      <BulkActionsToolbar
+        selectedCount={selectedUserIds.length}
+        selectedUserIds={selectedUserIds}
+        roles={roles}
+        onClearSelection={handleClearSelection}
+        onActionComplete={fetchData}
+      />
+
       {/* Toolbar */}
       <div className="flex flex-col sm:flex-row gap-4">
         {/* Search */}
@@ -224,6 +286,23 @@ export function UsersTable({
               <X className="h-4 w-4" />
             </Button>
           )}
+
+          <div className="h-8 w-px bg-border hidden sm:block" />
+
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            onClick={handleExportAll}
+            disabled={isExporting || isLoading}
+          >
+            {isExporting ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Download className="h-4 w-4" />
+            )}
+            Export All
+          </Button>
         </div>
       </div>
 
@@ -238,6 +317,8 @@ export function UsersTable({
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         isLoading={isLoading || isPending}
+        enableRowSelection={true}
+        onRowSelectionChange={handleRowSelectionChange}
       />
     </div>
   )

@@ -1,5 +1,6 @@
 import { getRoles } from '@/app/actions/roles'
 import { RolesList } from './roles-list'
+import { RolesPageClient } from './roles-page-client'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Plus, Shield, Sparkles } from 'lucide-react'
@@ -40,8 +41,8 @@ export default async function RolesPage() {
         </div>
       </div>
 
-      {/* Roles List */}
-      <RolesList roles={roles} />
+      {/* Roles Content with View Toggle */}
+      <RolesPageClient roles={roles} />
     </div>
   )
 }

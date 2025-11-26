@@ -497,6 +497,201 @@ export async function removePermissionFromRole(
 }
 
 /**
+ * Toggle a permission for a role (add if not present, remove if present)
+ */
+export async function togglePermission(
+  roleId: string,
+  permission: string,
+  currentlyHas: boolean
+): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'users:permissions:edit')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to manage role permissions' }
+  }
+
+  // Check if it's a system role
+  const { data: role } = await supabase
+    .from('roles')
+    .select('name, is_system_role')
+    .eq('id', roleId)
+    .single()
+
+  if (!role) {
+    return { success: false, message: 'Role not found' }
+  }
+
+  if (role.is_system_role) {
+    return { success: false, message: 'Cannot modify system role permissions' }
+  }
+
+  // Protect super_admin wildcard
+  if (role.name === 'super_admin' && permission === '*:*:*' && currentlyHas) {
+    return { success: false, message: 'Cannot remove wildcard permission from super_admin' }
+  }
+
+  if (currentlyHas) {
+    // Remove permission
+    const { error } = await supabase
+      .from('role_permissions')
+      .delete()
+      .eq('role_id', roleId)
+      .eq('permission', permission)
+
+    if (error) {
+      console.error('Error removing permission:', error)
+      return { success: false, message: 'Failed to remove permission' }
+    }
+
+    await logActivity({
+      userId: user.id,
+      action: 'remove_permission',
+      module: 'users',
+      resourceType: 'role_permission',
+      resourceId: roleId,
+      metadata: { permission },
+    })
+  } else {
+    // Add permission
+    const { error } = await supabase.from('role_permissions').insert({
+      role_id: roleId,
+      permission,
+    })
+
+    if (error) {
+      console.error('Error adding permission:', error)
+      return { success: false, message: 'Failed to add permission' }
+    }
+
+    await logActivity({
+      userId: user.id,
+      action: 'add_permission',
+      module: 'users',
+      resourceType: 'role_permission',
+      resourceId: roleId,
+      metadata: { permission },
+    })
+  }
+
+  revalidatePath('/admin/roles')
+  revalidatePath(`/admin/roles/${roleId}`)
+
+  return {
+    success: true,
+    message: currentlyHas ? 'Permission removed' : 'Permission added',
+  }
+}
+
+/**
+ * Duplicate a role with all its permissions
+ */
+export async function duplicateRole(roleId: string): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'users:roles:create')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to create roles' }
+  }
+
+  // Get original role with permissions
+  const { data: originalRole, error: fetchError } = await supabase
+    .from('roles')
+    .select('*, role_permissions(permission)')
+    .eq('id', roleId)
+    .single()
+
+  if (fetchError || !originalRole) {
+    return { success: false, message: 'Role not found' }
+  }
+
+  // Generate new name - find unique suffix
+  let suffix = 1
+  let newName = `${originalRole.name}_copy`
+  let newDisplayName = `${originalRole.display_name} (Copy)`
+
+  // Check if name already exists and increment suffix
+  const { data: existingRoles } = await supabase
+    .from('roles')
+    .select('name')
+    .like('name', `${originalRole.name}_copy%`)
+
+  if (existingRoles && existingRoles.length > 0) {
+    const existingNames = existingRoles.map((r) => r.name)
+    while (existingNames.includes(newName)) {
+      suffix++
+      newName = `${originalRole.name}_copy_${suffix}`
+      newDisplayName = `${originalRole.display_name} (Copy ${suffix})`
+    }
+  }
+
+  // Create new role
+  const { data: newRole, error: createError } = await supabase
+    .from('roles')
+    .insert({
+      name: newName,
+      display_name: newDisplayName,
+      description: originalRole.description,
+      is_system_role: false, // Duplicated roles are never system roles
+    })
+    .select()
+    .single()
+
+  if (createError) {
+    console.error('Error creating duplicated role:', createError)
+    return { success: false, message: createError.message }
+  }
+
+  // Copy permissions
+  if (originalRole.role_permissions?.length > 0) {
+    const permissions = originalRole.role_permissions.map(
+      (rp: { permission: string }) => ({
+        role_id: newRole.id,
+        permission: rp.permission,
+      })
+    )
+
+    const { error: permError } = await supabase.from('role_permissions').insert(permissions)
+
+    if (permError) {
+      console.error('Error copying permissions:', permError)
+      // Role was created but permissions failed - still return success with warning
+    }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'duplicate',
+    module: 'users',
+    resourceType: 'role',
+    resourceId: newRole.id,
+    metadata: { original_role_id: roleId, new_role_name: newName },
+  })
+
+  revalidatePath('/admin/roles')
+  return { success: true, message: `Role duplicated as "${newDisplayName}"` }
+}
+
+/**
  * Get all available permissions (for permission picker)
  */
 export async function getAvailablePermissions() {

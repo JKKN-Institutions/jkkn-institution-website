@@ -1,13 +1,14 @@
 'use client'
 
-import { useActionState, useEffect } from 'react'
+import { useActionState, useEffect, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { useFormStatus } from 'react-dom'
-import { updateUserProfile } from '@/app/actions/users'
+import { updateUserProfile, updateAvatarUrl } from '@/app/actions/users'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { AvatarUpload } from '@/components/ui/avatar-upload'
 import { Loader2, CheckCircle2, XCircle } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -16,6 +17,7 @@ interface UserEditFormProps {
     id: string
     email: string
     full_name: string | null
+    avatar_url: string | null
     phone: string | null
     department: string | null
     designation: string | null
@@ -43,8 +45,26 @@ function SubmitButton() {
 
 export function UserEditForm({ user }: UserEditFormProps) {
   const router = useRouter()
+  const [isPending, startTransition] = useTransition()
   const updateUserWithId = updateUserProfile.bind(null, user.id)
   const [state, formAction] = useActionState(updateUserWithId, {})
+
+  // Get initials for avatar fallback
+  const initials = user.full_name
+    ?.split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase() || user.email[0].toUpperCase()
+
+  // Handle avatar change
+  const handleAvatarChange = async (url: string | null) => {
+    startTransition(async () => {
+      const result = await updateAvatarUrl(user.id, url)
+      if (!result.success) {
+        toast.error(result.message || 'Failed to update avatar')
+      }
+    })
+  }
 
   useEffect(() => {
     if (state.success) {
@@ -73,6 +93,17 @@ export function UserEditForm({ user }: UserEditFormProps) {
           </AlertDescription>
         </Alert>
       )}
+
+      {/* Avatar Upload */}
+      <div className="flex justify-center py-4 border-b border-border/50">
+        <AvatarUpload
+          userId={user.id}
+          currentAvatarUrl={user.avatar_url}
+          fallbackText={initials}
+          onAvatarChange={handleAvatarChange}
+          disabled={isPending}
+        />
+      </div>
 
       {/* Email (Read-only) */}
       <div className="space-y-2">
