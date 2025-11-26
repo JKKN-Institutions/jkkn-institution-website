@@ -57,6 +57,11 @@ export default async function DynamicPage({ params }: PageProps) {
   const { slug } = await params
   const slugPath = slug.join('/')
 
+  // Don't handle admin routes - they should be handled by the (admin) route group
+  if (slugPath.startsWith('admin')) {
+    notFound()
+  }
+
   // Fetch the page
   const page = await getPageBySlug(slugPath)
 
