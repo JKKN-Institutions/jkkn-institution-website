@@ -38,6 +38,8 @@ interface BlockWrapperProps {
   canMoveDown: boolean
   dragHandleProps: Record<string, unknown>
   children: ReactNode
+  isContainer?: boolean
+  depth?: number
 }
 
 export function BlockWrapper({
@@ -56,6 +58,8 @@ export function BlockWrapper({
   canMoveDown,
   dragHandleProps,
   children,
+  isContainer = false,
+  depth = 0,
 }: BlockWrapperProps) {
   const isHidden = !block.is_visible
 
@@ -65,13 +69,23 @@ export function BlockWrapper({
     return <>{children}</>
   }
 
+  // Container indicator colors based on depth
+  const containerColors = [
+    'border-blue-300 bg-blue-50/30',
+    'border-green-300 bg-green-50/30',
+    'border-purple-300 bg-purple-50/30',
+    'border-orange-300 bg-orange-50/30',
+  ]
+
   return (
     <div
       className={cn(
         'group relative',
         isSelected && 'ring-2 ring-primary ring-offset-2',
         isHidden && 'opacity-50',
-        isDragging && 'cursor-grabbing'
+        isDragging && 'cursor-grabbing',
+        isContainer && 'border-2 border-dashed rounded-lg p-2',
+        isContainer && containerColors[depth % containerColors.length]
       )}
       onClick={(e) => {
         e.stopPropagation()

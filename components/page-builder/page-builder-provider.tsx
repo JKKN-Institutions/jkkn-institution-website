@@ -37,13 +37,14 @@ interface PageBuilderState {
 type PageBuilderAction =
   | { type: 'SET_PAGE'; payload: CmsPage }
   | { type: 'SET_BLOCKS'; payload: BlockData[] }
-  | { type: 'ADD_BLOCK'; payload: { componentName: string; insertAt?: number; props?: Record<string, unknown> } }
+  | { type: 'ADD_BLOCK'; payload: { componentName: string; insertAt?: number; props?: Record<string, unknown>; parentId?: string | null } }
   | { type: 'UPDATE_BLOCK'; payload: { id: string; props: Record<string, unknown> } }
   | { type: 'UPDATE_BLOCK_VISIBILITY'; payload: { id: string; isVisible: boolean } }
   | { type: 'DELETE_BLOCK'; payload: string }
   | { type: 'DUPLICATE_BLOCK'; payload: string }
-  | { type: 'REORDER_BLOCKS'; payload: { startIndex: number; endIndex: number } }
+  | { type: 'REORDER_BLOCKS'; payload: { startIndex: number; endIndex: number; parentId?: string | null } }
   | { type: 'MOVE_BLOCK'; payload: { id: string; direction: 'up' | 'down' } }
+  | { type: 'MOVE_BLOCK_TO_CONTAINER'; payload: { blockId: string; targetContainerId: string | null; insertAt?: number } }
   | { type: 'SELECT_BLOCK'; payload: string | null }
   | { type: 'UNDO' }
   | { type: 'REDO' }
@@ -105,27 +106,57 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
     }
 
     case 'ADD_BLOCK': {
-      const { componentName, insertAt, props } = action.payload
+      const { componentName, insertAt, props, parentId } = action.payload
       const defaultProps = getDefaultProps(componentName)
+
+      // Get siblings (blocks with same parent)
+      const siblings = state.blocks.filter(b => b.parent_block_id === (parentId || null))
+      const maxSortOrder = siblings.length > 0
+        ? Math.max(...siblings.map(b => b.sort_order)) + 1
+        : 0
+
       const newBlock: BlockData = {
         id: uuidv4(),
         component_name: componentName,
         props: { ...defaultProps, ...props },
-        sort_order: insertAt ?? state.blocks.length,
-        parent_block_id: null,
+        sort_order: insertAt ?? maxSortOrder,
+        parent_block_id: parentId || null,
         is_visible: true,
       }
 
       let newBlocks: BlockData[]
-      if (insertAt !== undefined && insertAt < state.blocks.length) {
-        // Insert at specific position and update sort_order for all blocks
-        newBlocks = [
-          ...state.blocks.slice(0, insertAt),
-          newBlock,
-          ...state.blocks.slice(insertAt),
-        ].map((block, index) => ({ ...block, sort_order: index }))
+      if (parentId) {
+        // Adding to a container - insert and reorder siblings
+        const otherBlocks = state.blocks.filter(b => b.parent_block_id !== parentId)
+        const siblingBlocks = state.blocks.filter(b => b.parent_block_id === parentId)
+
+        if (insertAt !== undefined && insertAt < siblingBlocks.length) {
+          const reorderedSiblings = [
+            ...siblingBlocks.slice(0, insertAt),
+            newBlock,
+            ...siblingBlocks.slice(insertAt),
+          ].map((block, index) => ({ ...block, sort_order: index }))
+          newBlocks = [...otherBlocks, ...reorderedSiblings]
+        } else {
+          newBlocks = [...state.blocks, newBlock]
+        }
+      } else if (insertAt !== undefined) {
+        // Root level insertion at specific position
+        const rootBlocks = state.blocks.filter(b => b.parent_block_id === null)
+        const nestedBlocks = state.blocks.filter(b => b.parent_block_id !== null)
+
+        if (insertAt < rootBlocks.length) {
+          const reorderedRoots = [
+            ...rootBlocks.slice(0, insertAt),
+            newBlock,
+            ...rootBlocks.slice(insertAt),
+          ].map((block, index) => ({ ...block, sort_order: index }))
+          newBlocks = [...reorderedRoots, ...nestedBlocks]
+        } else {
+          newBlocks = [...state.blocks, newBlock]
+        }
       } else {
-        // Add at the end
+        // Add at the end of root blocks
         newBlocks = [...state.blocks, newBlock]
       }
 
@@ -165,14 +196,39 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
     }
 
     case 'DELETE_BLOCK': {
-      const newBlocks = state.blocks
-        .filter((block) => block.id !== action.payload)
+      // Also delete all nested children recursively
+      const idsToDelete = new Set<string>([action.payload])
+      let foundMore = true
+      while (foundMore) {
+        foundMore = false
+        for (const block of state.blocks) {
+          if (block.parent_block_id && idsToDelete.has(block.parent_block_id) && !idsToDelete.has(block.id)) {
+            idsToDelete.add(block.id)
+            foundMore = true
+          }
+        }
+      }
+
+      const deletedBlock = state.blocks.find(b => b.id === action.payload)
+      const parentId = deletedBlock?.parent_block_id || null
+
+      // Filter out deleted blocks and reorder siblings
+      const remainingBlocks = state.blocks.filter((block) => !idsToDelete.has(block.id))
+
+      // Reorder siblings with the same parent
+      const siblings = remainingBlocks.filter(b => b.parent_block_id === parentId)
+      const otherBlocks = remainingBlocks.filter(b => b.parent_block_id !== parentId)
+      const reorderedSiblings = siblings
+        .sort((a, b) => a.sort_order - b.sort_order)
         .map((block, index) => ({ ...block, sort_order: index }))
+
+      const newBlocks = [...otherBlocks, ...reorderedSiblings]
+
       const stateWithHistory = pushToHistory(state, newBlocks)
       return {
         ...stateWithHistory,
         blocks: newBlocks,
-        selectedBlockId: state.selectedBlockId === action.payload ? null : state.selectedBlockId,
+        selectedBlockId: idsToDelete.has(state.selectedBlockId || '') ? null : state.selectedBlockId,
         isDirty: true,
       }
     }
@@ -249,6 +305,89 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
       }
     }
 
+    case 'MOVE_BLOCK_TO_CONTAINER': {
+      const { blockId, targetContainerId, insertAt } = action.payload
+      const block = state.blocks.find(b => b.id === blockId)
+      if (!block) return state
+
+      // Can't move a block into itself or its descendants
+      if (targetContainerId) {
+        let checkId: string | null = targetContainerId
+        while (checkId) {
+          if (checkId === blockId) return state // Would create circular reference
+          const parent = state.blocks.find(b => b.id === checkId)
+          checkId = parent?.parent_block_id || null
+        }
+      }
+
+      const oldParentId = block.parent_block_id
+
+      // Get all children of the block (they move with it)
+      const childIds = new Set<string>()
+      let foundMore = true
+      while (foundMore) {
+        foundMore = false
+        for (const b of state.blocks) {
+          if (b.parent_block_id && (childIds.has(b.parent_block_id) || b.parent_block_id === blockId) && !childIds.has(b.id)) {
+            childIds.add(b.id)
+            foundMore = true
+          }
+        }
+      }
+
+      // Calculate new sort order
+      const targetSiblings = state.blocks.filter(
+        b => b.parent_block_id === targetContainerId && b.id !== blockId && !childIds.has(b.id)
+      ).sort((a, b) => a.sort_order - b.sort_order)
+
+      const newSortOrder = insertAt !== undefined
+        ? insertAt
+        : targetSiblings.length
+
+      // Update the block's parent and sort order
+      let newBlocks = state.blocks.map(b => {
+        if (b.id === blockId) {
+          return { ...b, parent_block_id: targetContainerId, sort_order: newSortOrder }
+        }
+        return b
+      })
+
+      // Reorder old siblings
+      if (oldParentId !== targetContainerId) {
+        const oldSiblings = newBlocks
+          .filter(b => b.parent_block_id === oldParentId && b.id !== blockId && !childIds.has(b.id))
+          .sort((a, b) => a.sort_order - b.sort_order)
+          .map((b, i) => ({ ...b, sort_order: i }))
+
+        newBlocks = newBlocks.map(b => {
+          const updated = oldSiblings.find(s => s.id === b.id)
+          return updated || b
+        })
+      }
+
+      // Reorder new siblings (including the moved block)
+      const finalTargetSiblings = newBlocks
+        .filter(b => b.parent_block_id === targetContainerId && !childIds.has(b.id))
+        .sort((a, b) => {
+          if (a.id === blockId) return insertAt !== undefined ? insertAt - 0.5 : Number.MAX_VALUE
+          if (b.id === blockId) return insertAt !== undefined ? 0.5 - insertAt : -Number.MAX_VALUE
+          return a.sort_order - b.sort_order
+        })
+        .map((b, i) => ({ ...b, sort_order: i }))
+
+      newBlocks = newBlocks.map(b => {
+        const updated = finalTargetSiblings.find(s => s.id === b.id)
+        return updated || b
+      })
+
+      const stateWithHistory = pushToHistory(state, newBlocks)
+      return {
+        ...stateWithHistory,
+        blocks: newBlocks,
+        isDirty: true,
+      }
+    }
+
     case 'SELECT_BLOCK':
       return {
         ...state,
@@ -320,13 +459,15 @@ interface PageBuilderContextValue {
   // Convenience actions
   setPage: (page: CmsPage) => void
   setBlocks: (blocks: BlockData[]) => void
-  addBlock: (componentName: string, insertAt?: number, props?: Record<string, unknown>) => void
+  addBlock: (componentName: string, insertAt?: number, props?: Record<string, unknown>, parentId?: string | null) => void
+  addBlockToContainer: (componentName: string, containerId: string, insertAt?: number, props?: Record<string, unknown>) => void
   updateBlock: (id: string, props: Record<string, unknown>) => void
   updateBlockVisibility: (id: string, isVisible: boolean) => void
   deleteBlock: (id: string) => void
   duplicateBlock: (id: string) => void
   reorderBlocks: (startIndex: number, endIndex: number) => void
   moveBlock: (id: string, direction: 'up' | 'down') => void
+  moveBlockToContainer: (blockId: string, targetContainerId: string | null, insertAt?: number) => void
   selectBlock: (id: string | null) => void
   undo: () => void
   redo: () => void
@@ -338,6 +479,9 @@ interface PageBuilderContextValue {
   canUndo: boolean
   canRedo: boolean
   selectedBlock: BlockData | null
+  // Helper functions for nested blocks
+  getChildBlocks: (parentId: string | null) => BlockData[]
+  getRootBlocks: () => BlockData[]
 }
 
 const PageBuilderContext = createContext<PageBuilderContextValue | null>(null)
@@ -371,8 +515,12 @@ export function PageBuilderProvider({
     dispatch({ type: 'SET_BLOCKS', payload: blocks })
   }, [])
 
-  const addBlock = useCallback((componentName: string, insertAt?: number, props?: Record<string, unknown>) => {
-    dispatch({ type: 'ADD_BLOCK', payload: { componentName, insertAt, props } })
+  const addBlock = useCallback((componentName: string, insertAt?: number, props?: Record<string, unknown>, parentId?: string | null) => {
+    dispatch({ type: 'ADD_BLOCK', payload: { componentName, insertAt, props, parentId } })
+  }, [])
+
+  const addBlockToContainer = useCallback((componentName: string, containerId: string, insertAt?: number, props?: Record<string, unknown>) => {
+    dispatch({ type: 'ADD_BLOCK', payload: { componentName, insertAt, props, parentId: containerId } })
   }, [])
 
   const updateBlock = useCallback((id: string, props: Record<string, unknown>) => {
@@ -397,6 +545,10 @@ export function PageBuilderProvider({
 
   const moveBlock = useCallback((id: string, direction: 'up' | 'down') => {
     dispatch({ type: 'MOVE_BLOCK', payload: { id, direction } })
+  }, [])
+
+  const moveBlockToContainer = useCallback((blockId: string, targetContainerId: string | null, insertAt?: number) => {
+    dispatch({ type: 'MOVE_BLOCK_TO_CONTAINER', payload: { blockId, targetContainerId, insertAt } })
   }, [])
 
   const selectBlock = useCallback((id: string | null) => {
@@ -432,18 +584,33 @@ export function PageBuilderProvider({
   const canRedo = state.historyIndex < state.history.length - 1
   const selectedBlock = state.blocks.find((b) => b.id === state.selectedBlockId) || null
 
+  // Helper functions for nested blocks
+  const getChildBlocks = useCallback((parentId: string | null) => {
+    return state.blocks
+      .filter(b => b.parent_block_id === parentId)
+      .sort((a, b) => a.sort_order - b.sort_order)
+  }, [state.blocks])
+
+  const getRootBlocks = useCallback(() => {
+    return state.blocks
+      .filter(b => b.parent_block_id === null)
+      .sort((a, b) => a.sort_order - b.sort_order)
+  }, [state.blocks])
+
   const value: PageBuilderContextValue = {
     state,
     dispatch,
     setPage,
     setBlocks,
     addBlock,
+    addBlockToContainer,
     updateBlock,
     updateBlockVisibility,
     deleteBlock,
     duplicateBlock,
     reorderBlocks,
     moveBlock,
+    moveBlockToContainer,
     selectBlock,
     undo,
     redo,
@@ -454,6 +621,8 @@ export function PageBuilderProvider({
     canUndo,
     canRedo,
     selectedBlock,
+    getChildBlocks,
+    getRootBlocks,
   }
 
   return <PageBuilderContext.Provider value={value}>{children}</PageBuilderContext.Provider>

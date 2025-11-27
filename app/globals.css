@@ -53,6 +53,7 @@
   --color-brand-secondary: var(--brand-secondary);
   --color-brand-secondary-light: var(--brand-secondary-light);
   --color-brand-cream: var(--brand-cream);
+  --color-cream: var(--brand-cream);
 }
 
 :root {
@@ -394,6 +395,199 @@
 
   .shine:hover::after {
     transform: translateX(100%);
+  }
+
+  /* ===== MOBILE RESPONSIVE UTILITIES ===== */
+
+  /* Safe area padding for notched devices */
+  .safe-area-pt {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-area-pb {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-area-pl {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .safe-area-pr {
+    padding-right: env(safe-area-inset-right);
+  }
+
+  .safe-area-p {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Touch-friendly minimum sizes */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .touch-target-sm {
+    min-height: 36px;
+    min-width: 36px;
+  }
+
+  .touch-target-lg {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Prevent text selection on interactive elements */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Touch manipulation - prevents double-tap zoom */
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+
+  /* Prevent callout on long press (iOS) */
+  .no-callout {
+    -webkit-touch-callout: none;
+  }
+
+  /* Hardware acceleration for smooth animations */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Mobile-optimized scrolling */
+  .scroll-smooth-touch {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+  }
+
+  /* Snap scroll for carousels */
+  .snap-x-mandatory {
+    scroll-snap-type: x mandatory;
+  }
+
+  .snap-y-mandatory {
+    scroll-snap-type: y mandatory;
+  }
+
+  .snap-start {
+    scroll-snap-align: start;
+  }
+
+  .snap-center {
+    scroll-snap-align: center;
+  }
+
+  /* Hide on mobile, show on desktop */
+  .mobile-hidden {
+    @apply hidden sm:block;
+  }
+
+  /* Show on mobile, hide on desktop */
+  .mobile-only {
+    @apply block sm:hidden;
+  }
+
+  /* Tablet and up visibility */
+  .tablet-hidden {
+    @apply hidden md:block;
+  }
+
+  .tablet-only {
+    @apply block md:hidden;
+  }
+
+  /* Desktop and up visibility */
+  .desktop-hidden {
+    @apply hidden lg:block;
+  }
+
+  .desktop-only {
+    @apply block lg:hidden;
+  }
+
+  /* Responsive text truncation */
+  .truncate-mobile {
+    @apply truncate sm:overflow-visible sm:whitespace-normal;
+  }
+
+  /* Responsive line clamp */
+  .line-clamp-mobile-2 {
+    @apply line-clamp-2 sm:line-clamp-none;
+  }
+
+  .line-clamp-mobile-3 {
+    @apply line-clamp-3 sm:line-clamp-none;
+  }
+
+  /* Full width on mobile, auto on desktop */
+  .w-mobile-full {
+    @apply w-full sm:w-auto;
+  }
+
+  /* Stack on mobile, row on desktop */
+  .stack-mobile {
+    @apply flex flex-col sm:flex-row;
+  }
+
+  /* Reverse stack on mobile */
+  .stack-mobile-reverse {
+    @apply flex flex-col-reverse sm:flex-row;
+  }
+
+  /* Centered content on mobile */
+  .center-mobile {
+    @apply items-center justify-center sm:items-start sm:justify-start;
+  }
+
+  /* Mobile-friendly padding */
+  .p-mobile {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+
+  .px-mobile {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .py-mobile {
+    @apply py-4 sm:py-6 lg:py-8;
+  }
+
+  /* Mobile-friendly gaps */
+  .gap-mobile {
+    @apply gap-3 sm:gap-4 lg:gap-6;
+  }
+
+  .gap-mobile-sm {
+    @apply gap-2 sm:gap-3;
+  }
+
+  .gap-mobile-lg {
+    @apply gap-4 sm:gap-6 lg:gap-8;
+  }
+
+  /* Responsive border radius */
+  .rounded-mobile {
+    @apply rounded-lg sm:rounded-xl lg:rounded-2xl;
+  }
+
+  /* Bottom navigation spacer */
+  .pb-nav {
+    @apply pb-24 lg:pb-6;
+  }
+
+  /* Fixed header spacer */
+  .pt-header {
+    @apply pt-16 sm:pt-20;
   }
 }
 

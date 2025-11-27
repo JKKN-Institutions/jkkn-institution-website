@@ -59,7 +59,8 @@
       "Bash(mkdir:*)",
       "Bash(npm ls:*)",
       "Skill(advanced-debugging)",
-      "mcp__supabase__get_logs"
+      "mcp__supabase__get_logs",
+      "Skill(supabase-expert)"
     ],
     "deny": [],
     "ask": [],

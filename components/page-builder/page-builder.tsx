@@ -17,15 +17,35 @@ import { usePageBuilder, PageBuilderProvider } from './page-builder-provider'
 import { ComponentPalette } from './palette/component-palette'
 import { BuilderCanvas } from './canvas/builder-canvas'
 import { PropsPanel } from './properties/props-panel'
+import { SeoPanel } from './panels/seo-panel'
+import { FabPanel, type FabConfig } from './panels/fab-panel'
 import { TopToolbar } from './toolbar/top-toolbar'
-import { updatePageContent } from '@/app/actions/cms/pages'
+import { updatePageContent, updatePageSeo, updatePageFab } from '@/app/actions/cms/pages'
 import { toast } from 'sonner'
 import type { BlockData } from '@/lib/cms/registry-types'
 import { cn } from '@/lib/utils'
 import { getComponentEntry } from '@/lib/cms/component-registry'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Settings, Search, MessageCircle } from 'lucide-react'
+import type { SeoData } from '@/lib/utils/seo-analyzer'
 
 // Auto-save debounce delay in milliseconds
 const AUTO_SAVE_DELAY = 3000
+
+interface SeoMetadata {
+  id?: string
+  meta_title: string | null
+  meta_description: string | null
+  meta_keywords: string[] | null
+  canonical_url: string | null
+  og_title: string | null
+  og_description: string | null
+  og_image: string | null
+  twitter_title: string | null
+  twitter_description: string | null
+  twitter_image: string | null
+  structured_data: Record<string, unknown>[] | null
+}
 
 interface PageBuilderProps {
   pageId: string
@@ -33,6 +53,8 @@ interface PageBuilderProps {
   pageSlug: string
   pageStatus: 'draft' | 'published' | 'archived' | 'scheduled'
   initialBlocks: BlockData[]
+  initialSeoData?: SeoMetadata | null
+  initialFabConfig?: Partial<FabConfig> | null
 }
 
 // Drag overlay content component
@@ -48,16 +70,34 @@ function DragOverlayContent({ componentName }: { componentName: string }) {
   )
 }
 
-function PageBuilderContent({ pageId }: { pageId: string }) {
+function PageBuilderContent({
+  pageId,
+  pageSlug,
+  initialSeoData,
+  initialFabConfig,
+}: {
+  pageId: string
+  pageSlug: string
+  initialSeoData?: SeoMetadata | null
+  initialFabConfig?: Partial<FabConfig> | null
+}) {
   const {
     state,
     addBlock,
+    addBlockToContainer,
     reorderBlocks,
+    moveBlockToContainer,
     markSaved,
     setSaving,
+    getRootBlocks,
   } = usePageBuilder()
 
   const { blocks, isDirty, isSaving, isPreviewMode, device } = state
+
+  // Right panel tab state
+  const [rightPanelTab, setRightPanelTab] = useState<'properties' | 'seo' | 'fab'>('properties')
+  const [isSavingSeo, setIsSavingSeo] = useState(false)
+  const [isSavingFab, setIsSavingFab] = useState(false)
 
   // Drag state
   const [activeId, setActiveId] = useState<string | null>(null)
@@ -112,13 +152,24 @@ function PageBuilderContent({ pageId }: { pageId: string }) {
           }
 
           const overId = String(over.id)
+
+          // Check if dropped onto a container drop zone
+          if (overId.startsWith('container-drop-')) {
+            const containerId = over.data.current?.containerId
+            if (containerId) {
+              addBlockToContainer(componentName, containerId)
+              return
+            }
+          }
+
           // Dropped on the empty canvas or drop zone at the bottom
           if (overId === 'canvas-drop-zone' || overId === 'empty-canvas-drop-zone') {
             addBlock(componentName)
           } else {
             // Dropped over an existing block - insert before it
-            const overIndex = blocks.findIndex((b) => b.id === over.id)
-            const insertAt = overIndex >= 0 ? overIndex : blocks.length
+            const rootBlocks = getRootBlocks()
+            const overIndex = rootBlocks.findIndex((b) => b.id === over.id)
+            const insertAt = overIndex >= 0 ? overIndex : rootBlocks.length
             addBlock(componentName, insertAt)
           }
         }
@@ -128,17 +179,45 @@ function PageBuilderContent({ pageId }: { pageId: string }) {
       // Reordering existing blocks
       if (over && active.id !== over.id) {
         const overId = String(over.id)
-        if (overId !== 'canvas-drop-zone' && overId !== 'empty-canvas-drop-zone') {
-          const oldIndex = blocks.findIndex((b) => b.id === active.id)
-          const newIndex = blocks.findIndex((b) => b.id === over.id)
 
-          if (oldIndex !== -1 && newIndex !== -1) {
-            reorderBlocks(oldIndex, newIndex)
+        // Check if dropped onto a container drop zone
+        if (overId.startsWith('container-drop-')) {
+          const containerId = over.data.current?.containerId
+          if (containerId) {
+            moveBlockToContainer(String(active.id), containerId)
+            return
+          }
+        }
+
+        if (overId !== 'canvas-drop-zone' && overId !== 'empty-canvas-drop-zone') {
+          // Get the parent of the target block to reorder within the same level
+          const targetBlock = blocks.find((b) => b.id === over.id)
+          const sourceBlock = blocks.find((b) => b.id === active.id)
+
+          if (targetBlock && sourceBlock && targetBlock.parent_block_id === sourceBlock.parent_block_id) {
+            // Same parent - simple reorder within that level
+            const siblings = blocks
+              .filter((b) => b.parent_block_id === sourceBlock.parent_block_id)
+              .sort((a, b) => a.sort_order - b.sort_order)
+
+            const oldIndex = siblings.findIndex((b) => b.id === active.id)
+            const newIndex = siblings.findIndex((b) => b.id === over.id)
+
+            if (oldIndex !== -1 && newIndex !== -1) {
+              reorderBlocks(oldIndex, newIndex)
+            }
+          } else if (targetBlock && sourceBlock) {
+            // Different parents - move to target's container
+            moveBlockToContainer(
+              String(active.id),
+              targetBlock.parent_block_id,
+              targetBlock.sort_order
+            )
           }
         }
       }
     },
-    [blocks, addBlock, reorderBlocks]
+    [blocks, addBlock, addBlockToContainer, reorderBlocks, moveBlockToContainer, getRootBlocks]
   )
 
   // Save handler
@@ -202,6 +281,40 @@ function PageBuilderContent({ pageId }: { pageId: string }) {
     }
     await handleSave(true)
   }, [handleSave])
+
+  // SEO save handler
+  const handleSaveSeo = useCallback(async (seoData: Partial<SeoData>) => {
+    setIsSavingSeo(true)
+    try {
+      const result = await updatePageSeo(pageId, seoData)
+      if (result.success) {
+        toast.success('SEO settings saved')
+      } else {
+        toast.error(result.message || 'Failed to save SEO settings')
+      }
+    } catch {
+      toast.error('An error occurred while saving SEO settings')
+    } finally {
+      setIsSavingSeo(false)
+    }
+  }, [pageId])
+
+  // FAB save handler
+  const handleSaveFab = useCallback(async (fabConfig: Partial<FabConfig>) => {
+    setIsSavingFab(true)
+    try {
+      const result = await updatePageFab(pageId, fabConfig)
+      if (result.success) {
+        toast.success('FAB settings saved')
+      } else {
+        toast.error(result.message || 'Failed to save FAB settings')
+      }
+    } catch {
+      toast.error('An error occurred while saving FAB settings')
+    } finally {
+      setIsSavingFab(false)
+    }
+  }, [pageId])
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -277,10 +390,51 @@ function PageBuilderContent({ pageId }: { pageId: string }) {
             </div>
           </div>
 
-          {/* Right Sidebar - Properties Panel */}
+          {/* Right Sidebar - Properties/SEO/FAB Panel */}
           {!isPreviewMode && (
-            <div className="w-[350px] border-l border-border bg-card overflow-y-auto">
-              <PropsPanel />
+            <div className="w-[350px] border-l border-border bg-card flex flex-col overflow-hidden">
+              <Tabs
+                value={rightPanelTab}
+                onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab')}
+                className="flex flex-col h-full"
+              >
+                <div className="border-b border-border px-2 pt-2">
+                  <TabsList className="grid grid-cols-3 w-full">
+                    <TabsTrigger value="properties" className="flex items-center gap-1.5 text-xs">
+                      <Settings className="h-3.5 w-3.5" />
+                      Props
+                    </TabsTrigger>
+                    <TabsTrigger value="seo" className="flex items-center gap-1.5 text-xs">
+                      <Search className="h-3.5 w-3.5" />
+                      SEO
+                    </TabsTrigger>
+                    <TabsTrigger value="fab" className="flex items-center gap-1.5 text-xs">
+                      <MessageCircle className="h-3.5 w-3.5" />
+                      FAB
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
+                <TabsContent value="properties" className="flex-1 m-0 overflow-y-auto">
+                  <PropsPanel />
+                </TabsContent>
+                <TabsContent value="seo" className="flex-1 m-0 overflow-hidden">
+                  <SeoPanel
+                    pageId={pageId}
+                    pageSlug={pageSlug}
+                    initialSeoData={initialSeoData || undefined}
+                    onSave={handleSaveSeo}
+                    isSaving={isSavingSeo}
+                  />
+                </TabsContent>
+                <TabsContent value="fab" className="flex-1 m-0 overflow-hidden">
+                  <FabPanel
+                    pageId={pageId}
+                    initialConfig={initialFabConfig || undefined}
+                    onSave={handleSaveFab}
+                    isSaving={isSavingFab}
+                  />
+                </TabsContent>
+              </Tabs>
             </div>
           )}
         </div>
@@ -314,6 +468,8 @@ export function PageBuilder({
   pageSlug,
   pageStatus,
   initialBlocks,
+  initialSeoData,
+  initialFabConfig,
 }: PageBuilderProps) {
   const initialPage = {
     id: pageId,
@@ -324,7 +480,12 @@ export function PageBuilder({
 
   return (
     <PageBuilderProvider initialPage={initialPage} initialBlocks={initialBlocks}>
-      <PageBuilderContent pageId={pageId} />
+      <PageBuilderContent
+        pageId={pageId}
+        pageSlug={pageSlug}
+        initialSeoData={initialSeoData}
+        initialFabConfig={initialFabConfig}
+      />
     </PageBuilderProvider>
   )
 }

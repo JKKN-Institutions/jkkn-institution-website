@@ -408,3 +408,141 @@ export const SectionWrapperPropsSchema = z.object({
   id: z.string().optional(),
 })
 export type SectionWrapperProps = z.infer<typeof SectionWrapperPropsSchema> & BaseBlockProps
+
+// ==========================================
+// Data Blocks
+// ==========================================
+
+// Stats Counter Block
+export const StatItemSchema = z.object({
+  value: z.string(),
+  label: z.string(),
+  prefix: z.string().optional(),
+  suffix: z.string().optional(),
+  icon: z.string().optional(),
+})
+export type StatItem = z.infer<typeof StatItemSchema>
+
+export const StatsCounterPropsSchema = z.object({
+  stats: z.array(StatItemSchema).default([]),
+  layout: z.enum(['row', 'grid']).default('row'),
+  columns: z.number().min(1).max(6).default(4),
+  animate: z.boolean().default(true),
+  showIcons: z.boolean().default(true),
+  variant: z.enum(['default', 'cards', 'minimal']).default('default'),
+})
+export type StatsCounterProps = z.infer<typeof StatsCounterPropsSchema> & BaseBlockProps
+
+// Events List Block
+export const EventItemSchema = z.object({
+  id: z.string().optional(),
+  title: z.string(),
+  date: z.string(),
+  time: z.string().optional(),
+  location: z.string().optional(),
+  description: z.string().optional(),
+  image: z.string().optional(),
+  link: z.string().optional(),
+  category: z.string().optional(),
+})
+export type EventItem = z.infer<typeof EventItemSchema>
+
+export const EventsListPropsSchema = z.object({
+  title: z.string().default('Upcoming Events'),
+  events: z.array(EventItemSchema).default([]),
+  layout: z.enum(['list', 'grid', 'calendar']).default('list'),
+  showPastEvents: z.boolean().default(false),
+  maxItems: z.number().min(1).max(20).default(5),
+  showViewAll: z.boolean().default(true),
+  viewAllLink: z.string().default('/events'),
+  dataSource: z.enum(['manual', 'database']).default('manual'),
+})
+export type EventsListProps = z.infer<typeof EventsListPropsSchema> & BaseBlockProps
+
+// Faculty Directory Block
+export const FacultyMemberSchema = z.object({
+  id: z.string().optional(),
+  name: z.string(),
+  designation: z.string(),
+  department: z.string().optional(),
+  image: z.string().optional(),
+  email: z.string().optional(),
+  phone: z.string().optional(),
+  bio: z.string().optional(),
+  qualifications: z.array(z.string()).default([]),
+  specializations: z.array(z.string()).default([]),
+})
+export type FacultyMember = z.infer<typeof FacultyMemberSchema>
+
+export const FacultyDirectoryPropsSchema = z.object({
+  title: z.string().default('Our Faculty'),
+  faculty: z.array(FacultyMemberSchema).default([]),
+  layout: z.enum(['grid', 'list', 'compact']).default('grid'),
+  columns: z.number().min(1).max(5).default(4),
+  showDepartmentFilter: z.boolean().default(true),
+  showSearchBox: z.boolean().default(true),
+  maxItems: z.number().min(1).max(50).default(12),
+  dataSource: z.enum(['manual', 'database']).default('manual'),
+  departmentFilter: z.string().optional(),
+})
+export type FacultyDirectoryProps = z.infer<typeof FacultyDirectoryPropsSchema> & BaseBlockProps
+
+// Announcements Feed Block
+export const AnnouncementItemSchema = z.object({
+  id: z.string().optional(),
+  title: z.string(),
+  content: z.string(),
+  date: z.string(),
+  category: z.string().optional(),
+  priority: z.enum(['normal', 'important', 'urgent']).default('normal'),
+  link: z.string().optional(),
+  image: z.string().optional(),
+})
+export type AnnouncementItem = z.infer<typeof AnnouncementItemSchema>
+
+export const AnnouncementsFeedPropsSchema = z.object({
+  title: z.string().default('Announcements'),
+  announcements: z.array(AnnouncementItemSchema).default([]),
+  layout: z.enum(['list', 'cards', 'ticker']).default('list'),
+  maxItems: z.number().min(1).max(20).default(5),
+  showDate: z.boolean().default(true),
+  showCategory: z.boolean().default(true),
+  showViewAll: z.boolean().default(true),
+  viewAllLink: z.string().default('/announcements'),
+  autoScroll: z.boolean().default(false),
+  dataSource: z.enum(['manual', 'database']).default('manual'),
+})
+export type AnnouncementsFeedProps = z.infer<typeof AnnouncementsFeedPropsSchema> & BaseBlockProps
+
+// Blog Posts Grid Block
+export const BlogPostSchema = z.object({
+  id: z.string().optional(),
+  title: z.string(),
+  excerpt: z.string(),
+  date: z.string(),
+  author: z.string().optional(),
+  authorImage: z.string().optional(),
+  image: z.string().optional(),
+  category: z.string().optional(),
+  tags: z.array(z.string()).default([]),
+  link: z.string().optional(),
+  readTime: z.string().optional(),
+})
+export type BlogPost = z.infer<typeof BlogPostSchema>
+
+export const BlogPostsGridPropsSchema = z.object({
+  title: z.string().default('Latest News'),
+  posts: z.array(BlogPostSchema).default([]),
+  layout: z.enum(['grid', 'list', 'featured']).default('grid'),
+  columns: z.number().min(1).max(4).default(3),
+  maxItems: z.number().min(1).max(20).default(6),
+  showAuthor: z.boolean().default(true),
+  showDate: z.boolean().default(true),
+  showCategory: z.boolean().default(true),
+  showExcerpt: z.boolean().default(true),
+  showViewAll: z.boolean().default(true),
+  viewAllLink: z.string().default('/blog'),
+  categoryFilter: z.string().optional(),
+  dataSource: z.enum(['manual', 'database']).default('manual'),
+})
+export type BlogPostsGridProps = z.infer<typeof BlogPostsGridPropsSchema> & BaseBlockProps

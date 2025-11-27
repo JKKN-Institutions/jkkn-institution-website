@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useCallback } from 'react'
+import { Suspense, useCallback, type ReactNode } from 'react'
 import { useDroppable } from '@dnd-kit/core'
 import {
   SortableContext,
@@ -11,10 +11,11 @@ import { CSS } from '@dnd-kit/utilities'
 import { usePageBuilder } from '../page-builder-provider'
 import { BlockWrapper } from './block-wrapper'
 import { EmptyCanvas } from './empty-canvas'
-import { getComponent, getComponentEntry } from '@/lib/cms/component-registry'
+import { getComponent, getComponentEntry, supportsChildren } from '@/lib/cms/component-registry'
 import type { BlockData } from '@/lib/cms/registry-types'
 import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Plus } from 'lucide-react'
 
 interface SortableBlockProps {
   block: BlockData
@@ -28,6 +29,8 @@ interface SortableBlockProps {
   onToggleVisibility: () => void
   canMoveUp: boolean
   canMoveDown: boolean
+  children?: ReactNode
+  depth?: number
 }
 
 function SortableBlock({
@@ -42,6 +45,8 @@ function SortableBlock({
   onToggleVisibility,
   canMoveUp,
   canMoveDown,
+  children,
+  depth = 0,
 }: SortableBlockProps) {
   const {
     attributes,
@@ -64,6 +69,7 @@ function SortableBlock({
   // Get the component from registry
   const Component = getComponent(block.component_name)
   const entry = getComponentEntry(block.component_name)
+  const isContainer = supportsChildren(block.component_name)
 
   if (!Component || !entry) {
     return (
@@ -96,6 +102,8 @@ function SortableBlock({
         canMoveUp={canMoveUp}
         canMoveDown={canMoveDown}
         dragHandleProps={{ ...attributes, ...listeners }}
+        isContainer={isContainer}
+        depth={depth}
       >
         <Suspense fallback={<BlockSkeleton />}>
           <Component
@@ -103,7 +111,9 @@ function SortableBlock({
             id={block.id}
             isEditing={!isPreviewMode}
             isSelected={isSelected}
-          />
+          >
+            {children}
+          </Component>
         </Suspense>
       </BlockWrapper>
     </div>
@@ -120,15 +130,144 @@ function BlockSkeleton() {
   )
 }
 
+// Container drop zone for nested blocks
+interface ContainerDropZoneProps {
+  containerId: string
+  isPreviewMode: boolean
+  onAddBlock: (componentName: string) => void
+}
+
+function ContainerDropZone({ containerId, isPreviewMode, onAddBlock }: ContainerDropZoneProps) {
+  const { setNodeRef, isOver } = useDroppable({
+    id: `container-drop-${containerId}`,
+    data: { containerId },
+  })
+
+  if (isPreviewMode) return null
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={cn(
+        "p-4 border-2 border-dashed rounded-lg text-center transition-colors cursor-pointer group",
+        isOver
+          ? "border-primary bg-primary/10"
+          : "border-border/30 hover:border-primary/50"
+      )}
+      onClick={() => onAddBlock('Heading')}
+    >
+      <div className="flex items-center justify-center gap-2 text-muted-foreground group-hover:text-primary">
+        <Plus className="h-4 w-4" />
+        <span className="text-xs">
+          {isOver ? 'Drop here' : 'Add block to container'}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+// Recursive block renderer for nested blocks
+interface BlockTreeProps {
+  blocks: BlockData[]
+  parentId: string | null
+  selectedBlockId: string | null
+  isPreviewMode: boolean
+  onSelect: (id: string) => void
+  onDelete: (id: string) => void
+  onDuplicate: (id: string) => void
+  onMoveUp: (id: string) => void
+  onMoveDown: (id: string) => void
+  onToggleVisibility: (id: string) => void
+  onAddToContainer: (componentName: string, containerId: string) => void
+  depth?: number
+}
+
+function BlockTree({
+  blocks,
+  parentId,
+  selectedBlockId,
+  isPreviewMode,
+  onSelect,
+  onDelete,
+  onDuplicate,
+  onMoveUp,
+  onMoveDown,
+  onToggleVisibility,
+  onAddToContainer,
+  depth = 0,
+}: BlockTreeProps) {
+  // Get blocks at this level, sorted by sort_order
+  const levelBlocks = blocks
+    .filter(b => b.parent_block_id === parentId)
+    .sort((a, b) => a.sort_order - b.sort_order)
+
+  return (
+    <SortableContext items={levelBlocks.map(b => b.id)} strategy={verticalListSortingStrategy}>
+      <div className={cn("space-y-0", depth > 0 && "pl-0")}>
+        {levelBlocks.map((block, index) => {
+          const isContainer = supportsChildren(block.component_name)
+          const childBlocks = blocks.filter(b => b.parent_block_id === block.id)
+
+          return (
+            <SortableBlock
+              key={block.id}
+              block={block}
+              isSelected={selectedBlockId === block.id}
+              isPreviewMode={isPreviewMode}
+              onSelect={() => onSelect(block.id)}
+              onDelete={() => onDelete(block.id)}
+              onDuplicate={() => onDuplicate(block.id)}
+              onMoveUp={() => onMoveUp(block.id)}
+              onMoveDown={() => onMoveDown(block.id)}
+              onToggleVisibility={() => onToggleVisibility(block.id)}
+              canMoveUp={index > 0}
+              canMoveDown={index < levelBlocks.length - 1}
+              depth={depth}
+            >
+              {isContainer && (
+                <div className="min-h-[60px]">
+                  {childBlocks.length > 0 ? (
+                    <BlockTree
+                      blocks={blocks}
+                      parentId={block.id}
+                      selectedBlockId={selectedBlockId}
+                      isPreviewMode={isPreviewMode}
+                      onSelect={onSelect}
+                      onDelete={onDelete}
+                      onDuplicate={onDuplicate}
+                      onMoveUp={onMoveUp}
+                      onMoveDown={onMoveDown}
+                      onToggleVisibility={onToggleVisibility}
+                      onAddToContainer={onAddToContainer}
+                      depth={depth + 1}
+                    />
+                  ) : null}
+                  <ContainerDropZone
+                    containerId={block.id}
+                    isPreviewMode={isPreviewMode}
+                    onAddBlock={(name) => onAddToContainer(name, block.id)}
+                  />
+                </div>
+              )}
+            </SortableBlock>
+          )
+        })}
+      </div>
+    </SortableContext>
+  )
+}
+
 export function BuilderCanvas() {
   const {
     state,
     addBlock,
+    addBlockToContainer,
     selectBlock,
     deleteBlock,
     duplicateBlock,
     moveBlock,
     updateBlockVisibility,
+    getRootBlocks,
   } = usePageBuilder()
 
   const { blocks, selectedBlockId, isPreviewMode } = state
@@ -185,6 +324,13 @@ export function BuilderCanvas() {
     [blocks, updateBlockVisibility]
   )
 
+  const handleAddToContainer = useCallback(
+    (componentName: string, containerId: string) => {
+      addBlockToContainer(componentName, containerId)
+    },
+    [addBlockToContainer]
+  )
+
   const handleCanvasClick = useCallback(
     (e: React.MouseEvent) => {
       // Only deselect if clicking directly on canvas, not on a block
@@ -195,7 +341,9 @@ export function BuilderCanvas() {
     [selectBlock]
   )
 
-  if (blocks.length === 0 && !isPreviewMode) {
+  const rootBlocks = getRootBlocks()
+
+  if (rootBlocks.length === 0 && !isPreviewMode) {
     return (
       <EmptyCanvas onAddBlock={(name) => addBlock(name)} />
     )
@@ -209,26 +357,19 @@ export function BuilderCanvas() {
       )}
       onClick={handleCanvasClick}
     >
-      <SortableContext items={blocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
-        <div className="space-y-0">
-          {blocks.map((block, index) => (
-            <SortableBlock
-              key={block.id}
-              block={block}
-              isSelected={selectedBlockId === block.id}
-              isPreviewMode={isPreviewMode}
-              onSelect={() => handleBlockSelect(block.id)}
-              onDelete={() => handleBlockDelete(block.id)}
-              onDuplicate={() => handleBlockDuplicate(block.id)}
-              onMoveUp={() => handleBlockMoveUp(block.id)}
-              onMoveDown={() => handleBlockMoveDown(block.id)}
-              onToggleVisibility={() => handleBlockToggleVisibility(block.id)}
-              canMoveUp={index > 0}
-              canMoveDown={index < blocks.length - 1}
-            />
-          ))}
-        </div>
-      </SortableContext>
+      <BlockTree
+        blocks={blocks}
+        parentId={null}
+        selectedBlockId={selectedBlockId}
+        isPreviewMode={isPreviewMode}
+        onSelect={handleBlockSelect}
+        onDelete={handleBlockDelete}
+        onDuplicate={handleBlockDuplicate}
+        onMoveUp={handleBlockMoveUp}
+        onMoveDown={handleBlockMoveDown}
+        onToggleVisibility={handleBlockToggleVisibility}
+        onAddToContainer={handleAddToContainer}
+      />
 
       {/* Drop zone at the end */}
       {!isPreviewMode && (

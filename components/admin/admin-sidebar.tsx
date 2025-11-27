@@ -97,6 +97,32 @@ const navigationItems: NavItem[] = [
     href: '/admin/settings',
     icon: Settings,
     permission: 'system:settings:view',
+    children: [
+      {
+        title: 'General',
+        href: '/admin/settings/general',
+        icon: Settings,
+        permission: 'system:settings:view',
+      },
+      {
+        title: 'Appearance',
+        href: '/admin/settings/appearance',
+        icon: Image,
+        permission: 'system:settings:view',
+      },
+      {
+        title: 'Notifications',
+        href: '/admin/settings/notifications',
+        icon: Activity,
+        permission: 'system:settings:view',
+      },
+      {
+        title: 'System',
+        href: '/admin/settings/system',
+        icon: Shield,
+        permission: 'system:settings:view',
+      },
+    ],
   },
 ]
 

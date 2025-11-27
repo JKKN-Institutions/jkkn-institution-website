@@ -267,7 +267,10 @@ export async function getPageById(pageId: string): Promise<PageWithBlocks | null
     .single()
 
   if (error) {
-    console.error('Error fetching page:', error)
+    // PGRST116 = "Results contain 0 rows" - expected for non-existent pages
+    if (error.code !== 'PGRST116') {
+      console.error('Error fetching page:', error)
+    }
     return null
   }
 
@@ -283,11 +286,12 @@ export async function getPageById(pageId: string): Promise<PageWithBlocks | null
 
 /**
  * Get a page by slug (for public rendering)
+ * For homepage (empty slug), queries by is_homepage=true flag
  */
 export async function getPageBySlug(slug: string): Promise<PageWithBlocks | null> {
   const supabase = await createServerSupabaseClient()
 
-  const { data, error } = await supabase
+  let query = supabase
     .from('cms_pages')
     .select(
       `
@@ -307,13 +311,23 @@ export async function getPageBySlug(slug: string): Promise<PageWithBlocks | null
       cms_page_fab_config (*)
     `
     )
-    .eq('slug', slug)
     .eq('status', 'published')
     .eq('visibility', 'public')
-    .single()
+
+  // For homepage (empty slug), query by is_homepage flag
+  if (slug === '') {
+    query = query.eq('is_homepage', true)
+  } else {
+    query = query.eq('slug', slug)
+  }
+
+  const { data, error } = await query.single()
 
   if (error) {
-    console.error('Error fetching page by slug:', error)
+    // PGRST116 = "Results contain 0 rows" - this is expected for non-existent pages
+    if (error.code !== 'PGRST116') {
+      console.error('Error fetching page by slug:', error)
+    }
     return null
   }
 
@@ -1188,4 +1202,263 @@ export async function getPublishedPageSlugs(): Promise<string[]> {
   }
 
   return data?.map((p) => p.slug) || []
+}
+
+/**
+ * Update SEO metadata for a page
+ */
+export async function updatePageSeo(
+  pageId: string,
+  seoData: {
+    meta_title?: string | null
+    meta_description?: string | null
+    meta_keywords?: string[] | null
+    canonical_url?: string | null
+    robots_directive?: string | null
+    og_title?: string | null
+    og_description?: string | null
+    og_image?: string | null
+    og_type?: string | null
+    twitter_card?: string | null
+    twitter_title?: string | null
+    twitter_description?: string | null
+    twitter_image?: string | null
+    structured_data?: Record<string, unknown>[] | null
+    custom_head_tags?: string | null
+  }
+): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'cms:pages:edit')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to edit page SEO' }
+  }
+
+  // Check if SEO record exists
+  const { data: existingSeo } = await supabase
+    .from('cms_seo_metadata')
+    .select('id')
+    .eq('page_id', pageId)
+    .single()
+
+  // Calculate SEO score based on filled fields
+  let seoScore = 0
+  if (seoData.meta_title && seoData.meta_title.length >= 30 && seoData.meta_title.length <= 60) seoScore += 20
+  else if (seoData.meta_title) seoScore += 10
+  if (seoData.meta_description && seoData.meta_description.length >= 120 && seoData.meta_description.length <= 160) seoScore += 20
+  else if (seoData.meta_description) seoScore += 10
+  if (seoData.meta_keywords && seoData.meta_keywords.length > 0) seoScore += 10
+  if (seoData.og_title) seoScore += 10
+  if (seoData.og_description) seoScore += 10
+  if (seoData.og_image) seoScore += 10
+  if (seoData.twitter_title || seoData.og_title) seoScore += 5
+  if (seoData.twitter_description || seoData.og_description) seoScore += 5
+  if (seoData.twitter_image || seoData.og_image) seoScore += 5
+  if (seoData.canonical_url) seoScore += 5
+
+  const updateData = {
+    ...seoData,
+    seo_score: seoScore,
+    last_analyzed_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  }
+
+  if (existingSeo) {
+    // Update existing record
+    const { error } = await supabase
+      .from('cms_seo_metadata')
+      .update(updateData)
+      .eq('id', existingSeo.id)
+
+    if (error) {
+      console.error('Error updating SEO:', error)
+      return { success: false, message: 'Failed to update SEO settings' }
+    }
+  } else {
+    // Create new record
+    const { error } = await supabase.from('cms_seo_metadata').insert({
+      page_id: pageId,
+      ...updateData,
+    })
+
+    if (error) {
+      console.error('Error creating SEO:', error)
+      return { success: false, message: 'Failed to create SEO settings' }
+    }
+  }
+
+  // Update page timestamp
+  await supabase
+    .from('cms_pages')
+    .update({
+      updated_by: user.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', pageId)
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'edit_seo',
+    module: 'cms',
+    resourceType: 'page',
+    resourceId: pageId,
+    metadata: { seo_score: seoScore },
+  })
+
+  revalidatePath(`/admin/content/pages/${pageId}`)
+
+  return { success: true, message: 'SEO settings saved', data: { seo_score: seoScore } }
+}
+
+/**
+ * Get SEO metadata for a page
+ */
+export async function getPageSeo(pageId: string) {
+  const supabase = await createServerSupabaseClient()
+
+  const { data, error } = await supabase
+    .from('cms_seo_metadata')
+    .select('*')
+    .eq('page_id', pageId)
+    .single()
+
+  if (error && error.code !== 'PGRST116') {
+    console.error('Error fetching SEO:', error)
+    return null
+  }
+
+  return data
+}
+
+/**
+ * Update FAB configuration for a page
+ */
+export async function updatePageFab(
+  pageId: string,
+  fabConfig: {
+    is_enabled?: boolean
+    position?: string
+    theme?: string
+    primary_action?: string
+    custom_action_label?: string | null
+    custom_action_url?: string | null
+    custom_action_icon?: string | null
+    show_whatsapp?: boolean
+    show_phone?: boolean
+    show_email?: boolean
+    show_directions?: boolean
+    whatsapp_number?: string | null
+    phone_number?: string | null
+    email_address?: string | null
+    directions_url?: string | null
+    animation?: string
+    delay_ms?: number
+    hide_on_scroll?: boolean
+    custom_css?: string | null
+  }
+): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'cms:pages:edit')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to edit page FAB settings' }
+  }
+
+  // Check if FAB record exists
+  const { data: existingFab } = await supabase
+    .from('cms_page_fab_config')
+    .select('id')
+    .eq('page_id', pageId)
+    .single()
+
+  const updateData = {
+    ...fabConfig,
+    updated_at: new Date().toISOString(),
+  }
+
+  if (existingFab) {
+    // Update existing record
+    const { error } = await supabase
+      .from('cms_page_fab_config')
+      .update(updateData)
+      .eq('id', existingFab.id)
+
+    if (error) {
+      console.error('Error updating FAB config:', error)
+      return { success: false, message: 'Failed to update FAB settings' }
+    }
+  } else {
+    // Create new record
+    const { error } = await supabase.from('cms_page_fab_config').insert({
+      page_id: pageId,
+      ...updateData,
+    })
+
+    if (error) {
+      console.error('Error creating FAB config:', error)
+      return { success: false, message: 'Failed to create FAB settings' }
+    }
+  }
+
+  // Update page timestamp
+  await supabase
+    .from('cms_pages')
+    .update({
+      updated_by: user.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', pageId)
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'edit_fab',
+    module: 'cms',
+    resourceType: 'page',
+    resourceId: pageId,
+    metadata: { is_enabled: fabConfig.is_enabled },
+  })
+
+  revalidatePath(`/admin/content/pages/${pageId}`)
+
+  return { success: true, message: 'FAB settings saved' }
+}
+
+/**
+ * Get FAB configuration for a page
+ */
+export async function getPageFab(pageId: string) {
+  const supabase = await createServerSupabaseClient()
+
+  const { data, error } = await supabase
+    .from('cms_page_fab_config')
+    .select('*')
+    .eq('page_id', pageId)
+    .single()
+
+  if (error && error.code !== 'PGRST116') {
+    console.error('Error fetching FAB config:', error)
+    return null
+  }
+
+  return data
 }

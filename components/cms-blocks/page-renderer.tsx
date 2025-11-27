@@ -11,6 +11,7 @@ interface BlockData {
   sort_order: number
   parent_block_id: string | null
   is_visible: boolean
+  children?: BlockData[]
 }
 
 interface PageRendererProps {
@@ -42,6 +43,48 @@ function BlockError({ componentName }: { componentName: string }) {
   )
 }
 
+/**
+ * Build a tree structure from flat blocks array using parent_block_id
+ */
+function buildBlockTree(blocks: BlockData[]): BlockData[] {
+  // Create a map for quick lookup
+  const blockMap = new Map<string, BlockData>()
+  blocks.forEach((block) => {
+    blockMap.set(block.id, { ...block, children: [] })
+  })
+
+  const rootBlocks: BlockData[] = []
+
+  // Build the tree
+  blocks.forEach((block) => {
+    const blockWithChildren = blockMap.get(block.id)!
+    if (block.parent_block_id && blockMap.has(block.parent_block_id)) {
+      // Add as child to parent
+      const parent = blockMap.get(block.parent_block_id)!
+      if (!parent.children) parent.children = []
+      parent.children.push(blockWithChildren)
+    } else {
+      // Root level block
+      rootBlocks.push(blockWithChildren)
+    }
+  })
+
+  // Sort root blocks and all children by sort_order
+  const sortBlocks = (blocks: BlockData[]): BlockData[] => {
+    return blocks
+      .sort((a, b) => a.sort_order - b.sort_order)
+      .map((block) => ({
+        ...block,
+        children: block.children ? sortBlocks(block.children) : [],
+      }))
+  }
+
+  return sortBlocks(rootBlocks)
+}
+
+/**
+ * Recursively render a block and its children
+ */
 function RenderBlock({ block }: { block: BlockData }) {
   const Component = getComponent(block.component_name)
   const entry = getComponentEntry(block.component_name)
@@ -50,6 +93,22 @@ function RenderBlock({ block }: { block: BlockData }) {
     return <BlockError componentName={block.component_name} />
   }
 
+  // If component supports children and has children, render them nested
+  if (entry.supportsChildren && block.children && block.children.length > 0) {
+    return (
+      <Suspense fallback={<BlockSkeleton />}>
+        <Component {...block.props} id={block.id}>
+          {block.children
+            .filter((child) => child.is_visible)
+            .map((child) => (
+              <RenderBlock key={child.id} block={child} />
+            ))}
+        </Component>
+      </Suspense>
+    )
+  }
+
+  // Regular block without children
   return (
     <Suspense fallback={<BlockSkeleton />}>
       <Component {...block.props} id={block.id} />
@@ -58,10 +117,8 @@ function RenderBlock({ block }: { block: BlockData }) {
 }
 
 export function PageRenderer({ blocks }: PageRendererProps) {
-  // Filter to only visible blocks and sort by sort_order
-  const visibleBlocks = blocks
-    .filter((block) => block.is_visible)
-    .sort((a, b) => a.sort_order - b.sort_order)
+  // Filter to only visible blocks
+  const visibleBlocks = blocks.filter((block) => block.is_visible)
 
   if (visibleBlocks.length === 0) {
     return (
@@ -71,9 +128,12 @@ export function PageRenderer({ blocks }: PageRendererProps) {
     )
   }
 
+  // Build tree structure from flat blocks
+  const blockTree = buildBlockTree(visibleBlocks)
+
   return (
     <div className="page-content">
-      {visibleBlocks.map((block) => (
+      {blockTree.map((block) => (
         <RenderBlock key={block.id} block={block} />
       ))}
     </div>

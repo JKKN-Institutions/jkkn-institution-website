@@ -28,6 +28,12 @@ import {
   SpacerPropsSchema,
   DividerPropsSchema,
   SectionWrapperPropsSchema,
+  // Data block schemas
+  StatsCounterPropsSchema,
+  EventsListPropsSchema,
+  FacultyDirectoryPropsSchema,
+  AnnouncementsFeedPropsSchema,
+  BlogPostsGridPropsSchema,
 } from './registry-types'
 
 // Re-export types
@@ -63,6 +69,13 @@ const FlexboxLayout = lazy(() => import('@/components/cms-blocks/layout/flexbox-
 const Spacer = lazy(() => import('@/components/cms-blocks/layout/spacer'))
 const Divider = lazy(() => import('@/components/cms-blocks/layout/divider'))
 const SectionWrapper = lazy(() => import('@/components/cms-blocks/layout/section-wrapper'))
+
+// Data blocks
+const StatsCounter = lazy(() => import('@/components/cms-blocks/data/stats-counter'))
+const EventsList = lazy(() => import('@/components/cms-blocks/data/events-list'))
+const FacultyDirectory = lazy(() => import('@/components/cms-blocks/data/faculty-directory'))
+const AnnouncementsFeed = lazy(() => import('@/components/cms-blocks/data/announcements-feed'))
+const BlogPostsGrid = lazy(() => import('@/components/cms-blocks/data/blog-posts-grid'))
 
 // ==========================================
 // Component Registry
@@ -496,6 +509,171 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: true,
     keywords: ['section', 'wrapper', 'background', 'full-width'],
+  },
+
+  // ==========================================
+  // Data Blocks
+  // ==========================================
+  StatsCounter: {
+    name: 'StatsCounter',
+    displayName: 'Stats Counter',
+    category: 'data',
+    description: 'Animated statistics counter with icons',
+    icon: 'BarChart3',
+    component: StatsCounter,
+    propsSchema: StatsCounterPropsSchema,
+    defaultProps: {
+      stats: [],
+      layout: 'row',
+      columns: 4,
+      animate: true,
+      showIcons: true,
+      variant: 'default',
+    },
+    supportsChildren: false,
+    keywords: ['stats', 'counter', 'numbers', 'metrics', 'animated'],
+    editableProps: [
+      { name: 'stats', type: 'array', label: 'Statistics', description: 'Add statistics to display' },
+      { name: 'layout', type: 'enum', label: 'Layout', options: ['row', 'grid'] },
+      { name: 'columns', type: 'number', label: 'Columns (Grid)', min: 1, max: 6 },
+      { name: 'animate', type: 'boolean', label: 'Animate Numbers' },
+      { name: 'showIcons', type: 'boolean', label: 'Show Icons' },
+      { name: 'variant', type: 'enum', label: 'Style', options: ['default', 'cards', 'minimal'] },
+    ],
+  },
+
+  EventsList: {
+    name: 'EventsList',
+    displayName: 'Events List',
+    category: 'data',
+    description: 'Display upcoming events in list or grid format',
+    icon: 'Calendar',
+    component: EventsList,
+    propsSchema: EventsListPropsSchema,
+    defaultProps: {
+      title: 'Upcoming Events',
+      events: [],
+      layout: 'list',
+      showPastEvents: false,
+      maxItems: 5,
+      showViewAll: true,
+      viewAllLink: '/events',
+    },
+    supportsChildren: false,
+    keywords: ['events', 'calendar', 'upcoming', 'schedule'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'events', type: 'array', label: 'Events', description: 'Add events manually' },
+      { name: 'layout', type: 'enum', label: 'Layout', options: ['list', 'grid', 'calendar'] },
+      { name: 'showPastEvents', type: 'boolean', label: 'Show Past Events' },
+      { name: 'maxItems', type: 'number', label: 'Max Items', min: 1, max: 20 },
+      { name: 'showViewAll', type: 'boolean', label: 'Show View All Link' },
+      { name: 'viewAllLink', type: 'url', label: 'View All URL' },
+    ],
+  },
+
+  FacultyDirectory: {
+    name: 'FacultyDirectory',
+    displayName: 'Faculty Directory',
+    category: 'data',
+    description: 'Display faculty members with contact information',
+    icon: 'Users',
+    component: FacultyDirectory,
+    propsSchema: FacultyDirectoryPropsSchema,
+    defaultProps: {
+      title: 'Our Faculty',
+      faculty: [],
+      layout: 'grid',
+      columns: 4,
+      showDepartmentFilter: true,
+      showSearchBox: true,
+      maxItems: 12,
+    },
+    supportsChildren: false,
+    keywords: ['faculty', 'staff', 'team', 'directory', 'teachers'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'faculty', type: 'array', label: 'Faculty Members', description: 'Add faculty manually' },
+      { name: 'layout', type: 'enum', label: 'Layout', options: ['grid', 'list', 'compact'] },
+      { name: 'columns', type: 'number', label: 'Columns (Grid)', min: 1, max: 5 },
+      { name: 'showDepartmentFilter', type: 'boolean', label: 'Show Department Filter' },
+      { name: 'showSearchBox', type: 'boolean', label: 'Show Search Box' },
+      { name: 'maxItems', type: 'number', label: 'Max Items', min: 1, max: 50 },
+      { name: 'departmentFilter', type: 'string', label: 'Filter by Department' },
+    ],
+  },
+
+  AnnouncementsFeed: {
+    name: 'AnnouncementsFeed',
+    displayName: 'Announcements Feed',
+    category: 'data',
+    description: 'Display announcements with priority and categories',
+    icon: 'Bell',
+    component: AnnouncementsFeed,
+    propsSchema: AnnouncementsFeedPropsSchema,
+    defaultProps: {
+      title: 'Announcements',
+      announcements: [],
+      layout: 'list',
+      maxItems: 5,
+      showDate: true,
+      showCategory: true,
+      showViewAll: true,
+      viewAllLink: '/announcements',
+      autoScroll: false,
+    },
+    supportsChildren: false,
+    keywords: ['announcements', 'news', 'notifications', 'updates', 'notices'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'announcements', type: 'array', label: 'Announcements', description: 'Add announcements manually' },
+      { name: 'layout', type: 'enum', label: 'Display Style', options: ['list', 'cards', 'ticker'] },
+      { name: 'maxItems', type: 'number', label: 'Max Items', min: 1, max: 20 },
+      { name: 'showDate', type: 'boolean', label: 'Show Date' },
+      { name: 'showCategory', type: 'boolean', label: 'Show Category' },
+      { name: 'showViewAll', type: 'boolean', label: 'Show View All Link' },
+      { name: 'viewAllLink', type: 'url', label: 'View All URL' },
+      { name: 'autoScroll', type: 'boolean', label: 'Auto Scroll (Ticker)' },
+    ],
+  },
+
+  BlogPostsGrid: {
+    name: 'BlogPostsGrid',
+    displayName: 'Blog Posts Grid',
+    category: 'data',
+    description: 'Display blog posts in grid, list, or featured layout',
+    icon: 'FileText',
+    component: BlogPostsGrid,
+    propsSchema: BlogPostsGridPropsSchema,
+    defaultProps: {
+      title: 'Latest News',
+      posts: [],
+      layout: 'grid',
+      columns: 3,
+      showExcerpt: true,
+      showAuthor: true,
+      showDate: true,
+      showCategory: true,
+      maxItems: 6,
+      showViewAll: true,
+      viewAllLink: '/blog',
+    },
+    supportsChildren: false,
+    keywords: ['blog', 'posts', 'articles', 'news', 'content'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'posts', type: 'array', label: 'Blog Posts', description: 'Add posts manually' },
+      { name: 'layout', type: 'enum', label: 'Layout', options: ['grid', 'list', 'featured'] },
+      { name: 'columns', type: 'number', label: 'Columns (Grid)', min: 1, max: 4 },
+      { name: 'showExcerpt', type: 'boolean', label: 'Show Excerpt' },
+      { name: 'showAuthor', type: 'boolean', label: 'Show Author' },
+      { name: 'showDate', type: 'boolean', label: 'Show Date' },
+      { name: 'showCategory', type: 'boolean', label: 'Show Category' },
+      { name: 'maxItems', type: 'number', label: 'Max Items', min: 1, max: 20 },
+      { name: 'categoryFilter', type: 'string', label: 'Filter by Category' },
+      { name: 'showViewAll', type: 'boolean', label: 'Show View All Link' },
+      { name: 'viewAllLink', type: 'url', label: 'View All URL' },
+    ],
   },
 }
 

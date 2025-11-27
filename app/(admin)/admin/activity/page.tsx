@@ -4,8 +4,9 @@ import { isSuperAdmin } from '@/app/actions/permissions'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { ActivityLogTable } from './activity-log-table'
 import { Card } from '@/components/ui/card'
-import { Activity, Sparkles, Shield } from 'lucide-react'
+import { Activity, Shield } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
+import { ResponsivePageHeader } from '@/components/ui/responsive-page-header'
 
 interface ActivityPageProps {
   searchParams: Promise<{
@@ -51,40 +52,25 @@ export default async function ActivityPage({ searchParams }: ActivityPageProps) 
   const userId = params.userId || ''
 
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="glass-card rounded-2xl p-6 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-orange-500/10 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-        <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-start gap-4">
-            <div className="p-3 rounded-xl bg-orange-100 dark:bg-orange-900/30">
-              <Activity className="h-6 w-6 text-orange-600 dark:text-orange-400" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-semibold text-foreground">System Activity Log</h1>
-                <span className="badge-brand">
-                  <Sparkles className="h-3 w-3 mr-1" />
-                  Audit Trail
-                </span>
-              </div>
-              <p className="text-muted-foreground mt-1">
-                Monitor all user actions across the system
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-100 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800">
+    <div className="space-y-4 sm:space-y-6">
+      {/* Page Header - Mobile Responsive */}
+      <ResponsivePageHeader
+        icon={<Activity className="h-5 w-5 sm:h-6 sm:w-6 text-orange-600 dark:text-orange-400" />}
+        title="System Activity Log"
+        description="Monitor all user actions across the system"
+        badge="Audit Trail"
+        actions={
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-100 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800 w-full sm:w-auto justify-center">
             <Shield className="h-4 w-4 text-purple-600 dark:text-purple-400" />
             <span className="text-sm font-medium text-purple-900 dark:text-purple-200">
               Super Admin Only
             </span>
           </div>
-        </div>
-      </div>
+        }
+      />
 
-      {/* Activity Table */}
-      <Card className="glass-card border-0 p-6">
+      {/* Activity Table - Responsive padding */}
+      <Card className="glass-card border-0 p-4 sm:p-6 rounded-xl sm:rounded-2xl">
         <Suspense fallback={<ActivityTableSkeleton />}>
           <ActivityLogTable
             page={page}
