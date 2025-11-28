@@ -13,6 +13,7 @@ import {
   Settings,
   Activity,
   LucideIcon,
+  ArrowRight,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
@@ -44,17 +45,6 @@ const ICON_MAP: Record<string, LucideIcon> = {
   settings: Settings,
   activity: Activity,
   zap: Zap,
-}
-
-const ACTION_COLORS: Record<string, string> = {
-  'create_page': 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50',
-  'create_user': 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50',
-  'create_event': 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400 hover:bg-purple-200 dark:hover:bg-purple-900/50',
-  'view_analytics': 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 hover:bg-orange-200 dark:hover:bg-orange-900/50',
-  'manage_roles': 'bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400 hover:bg-pink-200 dark:hover:bg-pink-900/50',
-  'media_library': 'bg-cyan-100 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400 hover:bg-cyan-200 dark:hover:bg-cyan-900/50',
-  'site_settings': 'bg-gray-100 text-gray-600 dark:bg-gray-900/30 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-900/50',
-  'view_activity': 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400 hover:bg-yellow-200 dark:hover:bg-yellow-900/50',
 }
 
 export function QuickActionsWidget({ config }: WidgetProps) {
@@ -99,50 +89,92 @@ export function QuickActionsWidget({ config }: WidgetProps) {
   if (loading) {
     return (
       <div className="h-full flex items-center justify-center">
-        <Zap className="h-6 w-6 animate-pulse text-muted-foreground" />
+        <div className="relative">
+          <div className="absolute inset-0 bg-primary/20 rounded-full blur-lg animate-pulse" />
+          <Zap className="relative h-6 w-6 text-primary animate-pulse" />
+        </div>
       </div>
     )
   }
 
   return (
     <div className="h-full flex flex-col min-h-0">
-      {/* Header */}
-      <div className="flex items-center gap-2 mb-3 flex-shrink-0">
-        <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-secondary" />
-        <h3 className="font-semibold text-sm sm:text-base text-foreground">Quick Actions</h3>
+      {/* Header with Glass Effect */}
+      <div className="flex items-center justify-between mb-3 flex-shrink-0">
+        <div className="flex items-center gap-2.5">
+          <div className="p-2 rounded-xl bg-primary/10 backdrop-blur-sm">
+            <Zap className="h-4 w-4 text-primary" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-sm text-foreground">Quick Actions</h3>
+            <p className="text-[10px] text-muted-foreground">Shortcuts</p>
+          </div>
+        </div>
       </div>
 
-      {/* Actions Grid/List - scrollable if overflow */}
+      {/* Actions Grid - Glassmorphism Cards */}
       <div className={cn(
         'flex-1 min-h-0 overflow-y-auto',
         layout === 'grid' ? 'grid grid-cols-2 gap-2 auto-rows-max content-start' : 'flex flex-col gap-2'
       )}>
         {filteredActions.length > 0 ? (
-          filteredActions.map((action) => {
+          filteredActions.map((action, index) => {
             const Icon = ICON_MAP[action.icon] || Zap
-            const colorClass = ACTION_COLORS[action.action_key] || 'bg-muted text-muted-foreground hover:bg-muted/80'
 
             return (
               <Link
                 key={action.id}
                 href={action.link}
                 className={cn(
-                  'flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg sm:rounded-xl transition-all duration-200 touch-target',
-                  colorClass,
-                  layout === 'grid' ? 'flex-col text-center' : ''
+                  'group relative flex items-center p-3 rounded-xl transition-all duration-300',
+                  'bg-gradient-to-br from-white/50 to-white/20 dark:from-white/10 dark:to-white/5',
+                  'backdrop-blur-sm border border-primary/10 dark:border-primary/20',
+                  'hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-0.5',
+                  'hover:from-primary/5 dark:hover:from-primary/15',
+                  layout === 'grid' ? 'flex-col text-center gap-2' : 'gap-3'
                 )}
+                style={{ animationDelay: `${index * 50}ms` }}
               >
-                <Icon className={cn('h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0', layout === 'grid' && 'sm:h-6 sm:w-6')} />
-                <span className={cn('text-xs sm:text-sm font-medium truncate', layout === 'grid' && 'text-[10px] sm:text-xs')}>
+                {/* Icon with glow effect */}
+                <div className="relative">
+                  <div className="absolute inset-0 bg-primary/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className={cn(
+                    'relative p-2 rounded-xl transition-all duration-300',
+                    'bg-primary/10 group-hover:bg-primary group-hover:shadow-brand',
+                    layout === 'grid' ? 'p-2.5' : 'p-2'
+                  )}>
+                    <Icon className={cn(
+                      'transition-colors duration-300 text-primary group-hover:text-white',
+                      layout === 'grid' ? 'h-5 w-5' : 'h-4 w-4'
+                    )} />
+                  </div>
+                </div>
+
+                {/* Label */}
+                <span className={cn(
+                  'font-medium text-foreground group-hover:text-primary transition-colors',
+                  layout === 'grid' ? 'text-xs' : 'text-sm flex-1'
+                )}>
                   {action.label}
                 </span>
+
+                {/* Arrow for list layout */}
+                {layout === 'list' && (
+                  <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                )}
               </Link>
             )
           })
         ) : (
-          <div className="col-span-2 flex flex-col items-center justify-center h-full text-center py-4 sm:py-8">
-            <Zap className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground/30 mb-2" />
-            <p className="text-xs sm:text-sm text-muted-foreground">No actions available</p>
+          <div className="col-span-2 flex flex-col items-center justify-center h-full text-center py-8">
+            <div className="relative mb-3">
+              <div className="absolute inset-0 bg-primary/10 rounded-full blur-xl" />
+              <div className="relative p-4 rounded-2xl bg-primary/5 backdrop-blur-sm">
+                <Zap className="h-8 w-8 text-primary/30" />
+              </div>
+            </div>
+            <p className="text-sm font-medium text-muted-foreground">No actions available</p>
+            <p className="text-xs text-muted-foreground/70 mt-1">Actions will appear here</p>
           </div>
         )}
       </div>

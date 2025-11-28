@@ -7,11 +7,16 @@ import type { User } from '@supabase/supabase-js'
 
 interface Member {
   id: string
-  email: string
-  full_name: string
-  role: string
-  permissions: string[]
-  chapter_id: string
+  user_id: string
+  member_id: string | null
+  chapter: string | null
+  status: string
+  membership_type: string | null
+  profile: {
+    email: string
+    full_name: string | null
+  } | null
+  roles: string[]
 }
 
 export function useAuth() {
@@ -63,24 +68,73 @@ export function useAuth() {
 
   const fetchMemberData = async (userId: string) => {
     try {
-      const { data, error } = await supabase
+      // Fetch member data with profile info
+      const { data: memberData, error: memberError } = await supabase
         .from('members')
         .select(
           `
           id,
-          email,
-          full_name,
-          role,
-          permissions,
-          chapter_id
+          user_id,
+          member_id,
+          chapter,
+          status,
+          membership_type,
+          profile:profiles!members_profile_id_fkey(
+            email,
+            full_name
+          )
         `
         )
-        .eq('id', userId)
+        .eq('user_id', userId)
         .single()
 
-      if (error) throw error
+      if (memberError) {
+        console.error('Error fetching member:', memberError)
+        return
+      }
 
-      setMember(data as Member)
+      // Fetch user roles
+      const { data: rolesData, error: rolesError } = await supabase
+        .from('user_roles')
+        .select('roles(name)')
+        .eq('user_id', userId)
+
+      if (rolesError) {
+        console.error('Error fetching roles:', rolesError)
+      }
+
+      // Extract role names from the nested structure
+      // Supabase returns roles as either an object or array depending on the join
+      const roles: string[] = []
+      if (rolesData) {
+        for (const item of rolesData) {
+          const rolesField = item.roles as unknown
+          if (Array.isArray(rolesField)) {
+            // If it's an array, extract names from each item
+            for (const r of rolesField) {
+              if (r && typeof r === 'object' && 'name' in r && typeof r.name === 'string') {
+                roles.push(r.name)
+              }
+            }
+          } else if (rolesField && typeof rolesField === 'object' && 'name' in rolesField) {
+            // If it's a single object with name
+            const name = (rolesField as { name: string }).name
+            if (name) roles.push(name)
+          }
+        }
+      }
+
+      // Handle profile - Supabase returns array for foreign key selects with single()
+      const profileData = memberData.profile
+      const profile = Array.isArray(profileData)
+        ? (profileData[0] as { email: string; full_name: string | null } | undefined) || null
+        : profileData as { email: string; full_name: string | null } | null
+
+      setMember({
+        ...memberData,
+        profile,
+        roles,
+      })
     } catch (error) {
       console.error('Error fetching member data:', error)
     }

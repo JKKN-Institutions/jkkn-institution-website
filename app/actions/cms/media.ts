@@ -641,6 +641,203 @@ export async function moveMediaToFolder(
 }
 
 /**
+ * Create a new folder (virtual - folders are derived from media items)
+ * This updates all items with an empty folder to move them to the new folder
+ */
+export async function createFolder(folderName: string): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'cms:media:manage')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to manage folders' }
+  }
+
+  // Validate folder name
+  if (!folderName || folderName.trim().length === 0) {
+    return { success: false, message: 'Folder name is required' }
+  }
+
+  const sanitizedName = folderName.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '-')
+
+  // Check if folder already exists
+  const existingFolders = await getMediaFolders()
+  if (existingFolders.includes(sanitizedName)) {
+    return { success: false, message: 'A folder with this name already exists' }
+  }
+
+  // Log activity (folder creation is virtual - no DB changes needed)
+  await logActivity({
+    userId: user.id,
+    action: 'create',
+    module: 'cms',
+    resourceType: 'folder',
+    metadata: { folder: sanitizedName },
+  })
+
+  revalidatePath('/admin/content/media')
+
+  return { success: true, message: 'Folder created successfully', data: { folder: sanitizedName } }
+}
+
+/**
+ * Rename a folder (updates all media items in that folder)
+ */
+export async function renameFolder(
+  oldName: string,
+  newName: string
+): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'cms:media:manage')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to manage folders' }
+  }
+
+  // Validate names
+  if (!oldName || !newName) {
+    return { success: false, message: 'Folder names are required' }
+  }
+
+  if (oldName === 'general') {
+    return { success: false, message: 'Cannot rename the general folder' }
+  }
+
+  const sanitizedNewName = newName.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '-')
+
+  // Check if new folder name already exists
+  const existingFolders = await getMediaFolders()
+  if (existingFolders.includes(sanitizedNewName) && sanitizedNewName !== oldName) {
+    return { success: false, message: 'A folder with this name already exists' }
+  }
+
+  // Update all media items in the old folder
+  const { error, count } = await supabase
+    .from('cms_media_library')
+    .update({
+      folder: sanitizedNewName,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('folder', oldName)
+
+  if (error) {
+    console.error('Error renaming folder:', error)
+    return { success: false, message: 'Failed to rename folder. Please try again.' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'rename',
+    module: 'cms',
+    resourceType: 'folder',
+    metadata: { oldName, newName: sanitizedNewName, itemsUpdated: count },
+  })
+
+  revalidatePath('/admin/content/media')
+
+  return { success: true, message: 'Folder renamed successfully' }
+}
+
+/**
+ * Delete a folder (moves all items to general folder)
+ */
+export async function deleteFolder(
+  folderName: string,
+  moveToGeneral: boolean = true
+): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'cms:media:manage')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to manage folders' }
+  }
+
+  if (folderName === 'general') {
+    return { success: false, message: 'Cannot delete the general folder' }
+  }
+
+  if (moveToGeneral) {
+    // Move all files to general folder
+    const { error, count } = await supabase
+      .from('cms_media_library')
+      .update({
+        folder: 'general',
+        updated_at: new Date().toISOString(),
+      })
+      .eq('folder', folderName)
+
+    if (error) {
+      console.error('Error deleting folder:', error)
+      return { success: false, message: 'Failed to delete folder. Please try again.' }
+    }
+
+    // Log activity
+    await logActivity({
+      userId: user.id,
+      action: 'delete',
+      module: 'cms',
+      resourceType: 'folder',
+      metadata: { folder: folderName, itemsMovedToGeneral: count },
+    })
+  }
+
+  revalidatePath('/admin/content/media')
+
+  return { success: true, message: 'Folder deleted successfully' }
+}
+
+/**
+ * Get folder statistics (file count per folder)
+ */
+export async function getFolderStats(): Promise<Record<string, number>> {
+  const supabase = await createServerSupabaseClient()
+
+  const { data, error } = await supabase
+    .from('cms_media_library')
+    .select('folder')
+
+  if (error) {
+    console.error('Error fetching folder stats:', error)
+    return { general: 0 }
+  }
+
+  const stats: Record<string, number> = { general: 0 }
+  data?.forEach((item) => {
+    const folder = item.folder || 'general'
+    stats[folder] = (stats[folder] || 0) + 1
+  })
+
+  return stats
+}
+
+/**
  * Get storage usage statistics
  */
 export async function getStorageStats(): Promise<{

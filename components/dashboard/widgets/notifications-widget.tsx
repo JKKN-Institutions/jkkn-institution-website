@@ -24,11 +24,12 @@ interface NotificationsConfig {
   userId?: string
 }
 
+// Brand colors - primary (green) and secondary (gold)
 const TYPE_STYLES: Record<string, { icon: typeof Info; color: string }> = {
-  info: { icon: Info, color: 'text-blue-500 bg-blue-100 dark:bg-blue-900/30' },
-  success: { icon: CheckCircle, color: 'text-green-500 bg-green-100 dark:bg-green-900/30' },
-  warning: { icon: AlertTriangle, color: 'text-yellow-500 bg-yellow-100 dark:bg-yellow-900/30' },
-  error: { icon: XCircle, color: 'text-red-500 bg-red-100 dark:bg-red-900/30' },
+  info: { icon: Info, color: 'text-primary bg-primary/10 dark:bg-primary/20' },
+  success: { icon: CheckCircle, color: 'text-primary bg-primary/10 dark:bg-primary/20' },
+  warning: { icon: AlertTriangle, color: 'text-secondary bg-secondary/10 dark:bg-secondary/20' },
+  error: { icon: XCircle, color: 'text-destructive bg-destructive/10 dark:bg-destructive/20' },
 }
 
 export function NotificationsCenterWidget({ config }: WidgetProps) {
@@ -122,7 +123,7 @@ export function NotificationsCenterWidget({ config }: WidgetProps) {
           <div className="relative">
             <Bell className="h-5 w-5 text-primary" />
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center font-bold">
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-secondary text-secondary-foreground text-[10px] rounded-full flex items-center justify-center font-bold">
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
@@ -167,7 +168,7 @@ export function NotificationsCenterWidget({ config }: WidgetProps) {
                       {notification.description}
                     </p>
                   )}
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-muted-foreground mt-1" suppressHydrationWarning>
                     {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                   </p>
                 </div>

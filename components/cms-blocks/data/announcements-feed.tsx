@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import type { AnnouncementsFeedProps, AnnouncementItem } from '@/lib/cms/registry-types'
@@ -34,8 +35,15 @@ function AnnouncementCard({
   showDate: boolean
   showCategory: boolean
 }) {
-  const announcementDate = announcement.date ? parseISO(announcement.date) : new Date()
-  const isNew = (new Date().getTime() - announcementDate.getTime()) < 7 * 24 * 60 * 60 * 1000 // Within 7 days
+  const announcementDate = announcement.date ? parseISO(announcement.date) : null
+  const [isNew, setIsNew] = useState(false)
+
+  // Calculate isNew on client-side to avoid hydration mismatch
+  useEffect(() => {
+    if (announcementDate) {
+      setIsNew((new Date().getTime() - announcementDate.getTime()) < 7 * 24 * 60 * 60 * 1000)
+    }
+  }, [announcementDate])
 
   const Icon = announcement.priority === 'urgent'
     ? AlertCircle
@@ -65,8 +73,8 @@ function AnnouncementCard({
               </span>
             )}
           </div>
-          {showDate && (
-            <p className="text-xs text-muted-foreground mt-0.5">
+          {showDate && announcementDate && (
+            <p className="text-xs text-muted-foreground mt-0.5" suppressHydrationWarning>
               {formatDistanceToNow(announcementDate, { addSuffix: true })}
             </p>
           )}
@@ -112,7 +120,7 @@ function AnnouncementCard({
                 )}
                 <PriorityBadge priority={announcement.priority} />
               </div>
-              {showDate && (
+              {showDate && announcementDate && (
                 <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1.5">
                   <Calendar className="h-3.5 w-3.5" />
                   {format(announcementDate, 'MMM d, yyyy')}
@@ -185,7 +193,7 @@ function AnnouncementCard({
       <div className="mt-4">
         <h3 className="font-semibold text-foreground text-lg">{announcement.title}</h3>
 
-        {showDate && (
+        {showDate && announcementDate && (
           <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1.5">
             <Calendar className="h-3.5 w-3.5" />
             {format(announcementDate, 'MMMM d, yyyy')}

@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { redirect } from 'next/navigation'
 import { checkPermission } from '@/app/actions/permissions'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
-import { getMediaLibrary, getMediaFolders, getStorageStats } from '@/app/actions/cms/media'
+import { getMediaLibrary, getMediaFolders, getStorageStats, getFolderStats } from '@/app/actions/cms/media'
 import { MediaLibrary } from './media-library'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -44,10 +44,11 @@ async function MediaLibraryContent({ searchParams }: PageProps) {
   const folder = params.folder || undefined
   const search = params.search || undefined
 
-  const [mediaResult, folders, stats] = await Promise.all([
+  const [mediaResult, folders, stats, folderStats] = await Promise.all([
     getMediaLibrary({ page, limit: 24, file_type, folder, search }),
     getMediaFolders(),
     getStorageStats(),
+    getFolderStats(),
   ])
 
   return (
@@ -55,6 +56,8 @@ async function MediaLibraryContent({ searchParams }: PageProps) {
       initialMedia={mediaResult}
       folders={folders}
       stats={stats}
+      folderStats={folderStats}
+      selectedFolder={folder || 'all'}
     />
   )
 }
@@ -88,11 +91,24 @@ function MediaLibrarySkeleton() {
   )
 }
 
+function SidebarSkeleton() {
+  return (
+    <div className="w-64 border-r border-border bg-card/50 p-4 space-y-4">
+      <Skeleton className="h-6 w-24" />
+      <div className="space-y-2">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Skeleton key={i} className="h-10 w-full rounded-lg" />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default async function MediaLibraryPage({ searchParams }: PageProps) {
   await checkAccess()
 
   return (
-    <div className="p-6">
+    <div className="h-full">
       <Suspense fallback={<MediaLibrarySkeleton />}>
         <MediaLibraryContent searchParams={searchParams} />
       </Suspense>

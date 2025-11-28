@@ -85,6 +85,9 @@ function SortableBlock({
     )
   }
 
+  // Check for AI enhancement background gradient
+  const backgroundGradient = block.props._backgroundGradient as string | undefined
+
   return (
     <div ref={setNodeRef} style={style}>
       <BlockWrapper
@@ -105,16 +108,23 @@ function SortableBlock({
         isContainer={isContainer}
         depth={depth}
       >
-        <Suspense fallback={<BlockSkeleton />}>
-          <Component
-            {...block.props}
-            id={block.id}
-            isEditing={!isPreviewMode}
-            isSelected={isSelected}
-          >
-            {children}
-          </Component>
-        </Suspense>
+        {/* Apply custom_classes wrapper for AI enhancements */}
+        <div className={cn('relative', block.custom_classes)}>
+          {/* Background gradient overlay for AI enhancements */}
+          {backgroundGradient && (
+            <div className={cn('absolute inset-0 pointer-events-none rounded-inherit', backgroundGradient)} />
+          )}
+          <Suspense fallback={<BlockSkeleton />}>
+            <Component
+              {...block.props}
+              id={block.id}
+              isEditing={!isPreviewMode}
+              isSelected={isSelected}
+            >
+              {children}
+            </Component>
+          </Suspense>
+        </div>
       </BlockWrapper>
     </div>
   )

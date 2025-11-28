@@ -65,6 +65,76 @@ export async function getUsers(params?: {
   const supabase = await createServerSupabaseClient()
   const { search, roleId, status, page = 1, limit = 50 } = params || {}
 
+  // If filtering by role, we need to get the user IDs first
+  let filteredUserIds: string[] | null = null
+
+  if (roleId) {
+    const { data: userRolesData } = await supabase
+      .from('user_roles')
+      .select('user_id')
+      .eq('role_id', roleId)
+
+    if (userRolesData && userRolesData.length > 0) {
+      filteredUserIds = userRolesData.map((ur) => ur.user_id)
+    } else {
+      // No users have this role - return empty result
+      return {
+        data: [],
+        total: 0,
+        page,
+        limit,
+        totalPages: 0,
+      }
+    }
+  }
+
+  // If filtering by status, we need to get profiles with matching member status
+  let statusFilteredIds: string[] | null = null
+
+  if (status) {
+    const { data: membersData } = await supabase
+      .from('members')
+      .select('profile_id')
+      .eq('status', status)
+
+    if (membersData && membersData.length > 0) {
+      statusFilteredIds = membersData
+        .map((m) => m.profile_id)
+        .filter(Boolean) as string[]
+    } else {
+      // No members with this status - return empty result
+      return {
+        data: [],
+        total: 0,
+        page,
+        limit,
+        totalPages: 0,
+      }
+    }
+  }
+
+  // Combine filters: if both role and status filters exist, intersect the IDs
+  let combinedFilterIds: string[] | null = null
+
+  if (filteredUserIds && statusFilteredIds) {
+    // Intersection of both filters
+    const statusSet = new Set(statusFilteredIds)
+    combinedFilterIds = filteredUserIds.filter((id) => statusSet.has(id))
+    if (combinedFilterIds.length === 0) {
+      return {
+        data: [],
+        total: 0,
+        page,
+        limit,
+        totalPages: 0,
+      }
+    }
+  } else if (filteredUserIds) {
+    combinedFilterIds = filteredUserIds
+  } else if (statusFilteredIds) {
+    combinedFilterIds = statusFilteredIds
+  }
+
   let query = supabase.from('profiles').select(
     `
       *,
@@ -86,6 +156,11 @@ export async function getUsers(params?: {
     `,
     { count: 'exact' }
   )
+
+  // Apply combined ID filter
+  if (combinedFilterIds) {
+    query = query.in('id', combinedFilterIds)
+  }
 
   // Apply search filter
   if (search) {
@@ -1144,6 +1219,214 @@ export async function exportUsersToCSV(params?: {
   })
 
   return csvRows.join('\n')
+}
+
+/**
+ * Get all approved emails with pagination
+ */
+export async function getApprovedEmails(params?: {
+  search?: string
+  status?: string
+  page?: number
+  limit?: number
+}) {
+  const supabase = await createServerSupabaseClient()
+  const { search, status, page = 1, limit = 50 } = params || {}
+
+  let query = supabase
+    .from('approved_emails')
+    .select('*, added_by_profile:profiles!approved_emails_added_by_fkey(full_name, email)', {
+      count: 'exact',
+    })
+
+  // Apply search filter
+  if (search) {
+    query = query.ilike('email', `%${search}%`)
+  }
+
+  // Apply status filter
+  if (status) {
+    query = query.eq('status', status)
+  }
+
+  // Apply pagination
+  const from = (page - 1) * limit
+  const to = from + limit - 1
+  query = query.range(from, to).order('added_at', { ascending: false })
+
+  const { data, error, count } = await query
+
+  if (error) {
+    console.error('Error fetching approved emails:', error)
+    throw new Error('Failed to fetch approved emails')
+  }
+
+  return {
+    data: data || [],
+    total: count || 0,
+    page,
+    limit,
+    totalPages: Math.ceil((count || 0) / limit),
+  }
+}
+
+/**
+ * Revoke an approved email
+ */
+export async function revokeApprovedEmail(emailId: string): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'users:emails:delete')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to revoke approved emails' }
+  }
+
+  // Get the email info first for logging
+  const { data: emailData } = await supabase
+    .from('approved_emails')
+    .select('email')
+    .eq('id', emailId)
+    .single()
+
+  // Update status to revoked
+  const { error } = await supabase
+    .from('approved_emails')
+    .update({ status: 'revoked' })
+    .eq('id', emailId)
+
+  if (error) {
+    console.error('Error revoking approved email:', error)
+    return { success: false, message: 'Failed to revoke email. Please try again.' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'revoke',
+    module: 'users',
+    resourceType: 'approved_email',
+    resourceId: emailId,
+    metadata: { email: emailData?.email },
+  })
+
+  revalidatePath('/admin/users/approved-emails')
+
+  return { success: true, message: 'Email revoked successfully' }
+}
+
+/**
+ * Reactivate a revoked approved email
+ */
+export async function reactivateApprovedEmail(emailId: string): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'users:emails:create')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to reactivate approved emails' }
+  }
+
+  // Get the email info first for logging
+  const { data: emailData } = await supabase
+    .from('approved_emails')
+    .select('email')
+    .eq('id', emailId)
+    .single()
+
+  // Update status to active
+  const { error } = await supabase
+    .from('approved_emails')
+    .update({ status: 'active' })
+    .eq('id', emailId)
+
+  if (error) {
+    console.error('Error reactivating approved email:', error)
+    return { success: false, message: 'Failed to reactivate email. Please try again.' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'reactivate',
+    module: 'users',
+    resourceType: 'approved_email',
+    resourceId: emailId,
+    metadata: { email: emailData?.email },
+  })
+
+  revalidatePath('/admin/users/approved-emails')
+
+  return { success: true, message: 'Email reactivated successfully' }
+}
+
+/**
+ * Delete an approved email permanently
+ */
+export async function deleteApprovedEmail(emailId: string): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'users:emails:delete')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to delete approved emails' }
+  }
+
+  // Get the email info first for logging
+  const { data: emailData } = await supabase
+    .from('approved_emails')
+    .select('email')
+    .eq('id', emailId)
+    .single()
+
+  // Delete the email
+  const { error } = await supabase
+    .from('approved_emails')
+    .delete()
+    .eq('id', emailId)
+
+  if (error) {
+    console.error('Error deleting approved email:', error)
+    return { success: false, message: 'Failed to delete email. Please try again.' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'delete',
+    module: 'users',
+    resourceType: 'approved_email',
+    resourceId: emailId,
+    metadata: { email: emailData?.email },
+  })
+
+  revalidatePath('/admin/users/approved-emails')
+
+  return { success: true, message: 'Email deleted successfully' }
 }
 
 /**

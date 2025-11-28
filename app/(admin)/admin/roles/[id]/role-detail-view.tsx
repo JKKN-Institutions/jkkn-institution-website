@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -27,6 +28,7 @@ interface RoleDetailViewProps {
 }
 
 export function RoleDetailView({ role, availablePermissions }: RoleDetailViewProps) {
+  const router = useRouter()
   const [search, setSearch] = useState('')
   const [isUpdating, setIsUpdating] = useState<string | null>(null)
 
@@ -65,7 +67,7 @@ export function RoleDetailView({ role, availablePermissions }: RoleDetailViewPro
 
     if (result.success) {
       toast.success(result.message)
-      window.location.reload()
+      router.refresh()
     } else {
       toast.error(result.message)
     }
@@ -83,7 +85,7 @@ export function RoleDetailView({ role, availablePermissions }: RoleDetailViewPro
 
     if (result.success) {
       toast.success(result.message)
-      window.location.reload()
+      router.refresh()
     } else {
       toast.error(result.message)
     }

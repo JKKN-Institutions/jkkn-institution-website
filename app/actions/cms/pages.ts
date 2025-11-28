@@ -865,6 +865,132 @@ export async function publishPage(pageId: string): Promise<FormState> {
 }
 
 /**
+ * Schedule a page for future publishing
+ */
+export async function schedulePagePublish(
+  pageId: string,
+  publishAt: Date
+): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'cms:pages:publish')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to schedule pages' }
+  }
+
+  // Validate the publish date is in the future
+  if (publishAt <= new Date()) {
+    return { success: false, message: 'Scheduled publish date must be in the future' }
+  }
+
+  // Update page status to scheduled
+  const { data: page, error } = await supabase
+    .from('cms_pages')
+    .update({
+      status: 'scheduled',
+      scheduled_publish_at: publishAt.toISOString(),
+      updated_by: user.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', pageId)
+    .select('title, slug')
+    .single()
+
+  if (error) {
+    console.error('Error scheduling page:', error)
+    return { success: false, message: 'Failed to schedule page. Please try again.' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'schedule',
+    module: 'cms',
+    resourceType: 'page',
+    resourceId: pageId,
+    metadata: {
+      title: page.title,
+      slug: page.slug,
+      scheduled_publish_at: publishAt.toISOString(),
+    },
+  })
+
+  revalidatePath('/admin/content/pages')
+  revalidatePath(`/admin/content/pages/${pageId}`)
+  revalidatePath(`/admin/content/pages/${pageId}/edit`)
+
+  return {
+    success: true,
+    message: `Page scheduled to publish on ${publishAt.toLocaleDateString()} at ${publishAt.toLocaleTimeString()}`,
+  }
+}
+
+/**
+ * Cancel scheduled publishing
+ */
+export async function cancelScheduledPublish(pageId: string): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'cms:pages:publish')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to manage scheduled pages' }
+  }
+
+  // Update page status back to draft
+  const { data: page, error } = await supabase
+    .from('cms_pages')
+    .update({
+      status: 'draft',
+      scheduled_publish_at: null,
+      updated_by: user.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', pageId)
+    .eq('status', 'scheduled')
+    .select('title, slug')
+    .single()
+
+  if (error) {
+    console.error('Error canceling scheduled publish:', error)
+    return { success: false, message: 'Failed to cancel scheduled publish. Please try again.' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'cancel_schedule',
+    module: 'cms',
+    resourceType: 'page',
+    resourceId: pageId,
+    metadata: { title: page.title, slug: page.slug },
+  })
+
+  revalidatePath('/admin/content/pages')
+  revalidatePath(`/admin/content/pages/${pageId}`)
+  revalidatePath(`/admin/content/pages/${pageId}/edit`)
+
+  return { success: true, message: 'Scheduled publish canceled. Page is now a draft.' }
+}
+
+/**
  * Unpublish a page (set to draft)
  */
 export async function unpublishPage(pageId: string): Promise<FormState> {

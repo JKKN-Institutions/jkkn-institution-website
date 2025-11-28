@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useActionState } from 'react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -110,6 +111,7 @@ const getStatusColor = (status: string | null | undefined) => {
 }
 
 export function UserDetailView({ user, roles }: UserDetailViewProps) {
+  const router = useRouter()
   const [selectedRole, setSelectedRole] = useState('')
   const [isAssigning, setIsAssigning] = useState(false)
   const [isRemoving, setIsRemoving] = useState<string | null>(null)
@@ -138,8 +140,8 @@ export function UserDetailView({ user, roles }: UserDetailViewProps) {
     if (result.success) {
       toast.success(result.message)
       setSelectedRole('')
-      // Refresh the page to get updated data
-      window.location.reload()
+      // Refresh server data without full page reload
+      router.refresh()
     } else {
       toast.error(result.message)
     }
@@ -157,7 +159,7 @@ export function UserDetailView({ user, roles }: UserDetailViewProps) {
 
     if (result.success) {
       toast.success(result.message)
-      window.location.reload()
+      router.refresh()
     } else {
       toast.error(result.message)
     }
@@ -169,7 +171,7 @@ export function UserDetailView({ user, roles }: UserDetailViewProps) {
     const result = await deactivateUser(user.id)
     if (result.success) {
       toast.success(result.message)
-      window.location.reload()
+      router.refresh()
     } else {
       toast.error(result.message)
     }
@@ -179,7 +181,7 @@ export function UserDetailView({ user, roles }: UserDetailViewProps) {
     const result = await reactivateUser(user.id)
     if (result.success) {
       toast.success(result.message)
-      window.location.reload()
+      router.refresh()
     } else {
       toast.error(result.message)
     }

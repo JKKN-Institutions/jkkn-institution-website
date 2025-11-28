@@ -3,9 +3,41 @@
 import { cn } from '@/lib/utils'
 import type { HeroSectionProps } from '@/lib/cms/registry-types'
 
+// Font size mapping for Tailwind classes
+const fontSizeClasses: Record<string, string> = {
+  sm: 'text-sm',
+  md: 'text-base',
+  lg: 'text-lg',
+  xl: 'text-xl',
+  '2xl': 'text-2xl',
+  '3xl': 'text-3xl',
+  '4xl': 'text-4xl',
+  '5xl': 'text-5xl',
+  '6xl': 'text-6xl',
+}
+
+const fontWeightClasses: Record<string, string> = {
+  normal: 'font-normal',
+  medium: 'font-medium',
+  semibold: 'font-semibold',
+  bold: 'font-bold',
+  extrabold: 'font-extrabold',
+}
+
 export default function HeroSection({
   title = 'Welcome',
   subtitle,
+  // Title styling props
+  titleColor = '#ffffff',
+  titleFontSize = '5xl',
+  titleFontWeight = 'bold',
+  titleFontStyle = 'normal',
+  // Subtitle styling props
+  subtitleColor = '#e5e5e5',
+  subtitleFontSize = 'xl',
+  subtitleFontWeight = 'normal',
+  subtitleFontStyle = 'normal',
+  // Background props
   backgroundType = 'image',
   backgroundImage,
   backgroundGradient,
@@ -50,11 +82,27 @@ export default function HeroSection({
         />
       )}
       <div className="container relative z-10 mx-auto px-4 py-16">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+        <h1
+          className={cn(
+            'tracking-tight',
+            fontSizeClasses[titleFontSize] || 'text-5xl',
+            fontWeightClasses[titleFontWeight] || 'font-bold',
+            titleFontStyle === 'italic' && 'italic'
+          )}
+          style={{ color: titleColor }}
+        >
           {title}
         </h1>
         {subtitle && (
-          <p className="mt-4 text-lg text-muted-foreground sm:text-xl">
+          <p
+            className={cn(
+              'mt-4',
+              fontSizeClasses[subtitleFontSize] || 'text-xl',
+              fontWeightClasses[subtitleFontWeight] || 'font-normal',
+              subtitleFontStyle === 'italic' && 'italic'
+            )}
+            style={{ color: subtitleColor }}
+          >
             {subtitle}
           </p>
         )}

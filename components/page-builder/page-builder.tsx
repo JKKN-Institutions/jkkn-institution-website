@@ -23,11 +23,20 @@ import { TopToolbar } from './toolbar/top-toolbar'
 import { updatePageContent, updatePageSeo, updatePageFab } from '@/app/actions/cms/pages'
 import { toast } from 'sonner'
 import type { BlockData } from '@/lib/cms/registry-types'
+import { blocksToPageBlocks, type PageBlock } from '@/lib/cms/registry-types'
+import type { EnhancedBlock } from '@/lib/cms/design-enhancer'
 import { cn } from '@/lib/utils'
 import { getComponentEntry } from '@/lib/cms/component-registry'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Settings, Search, MessageCircle } from 'lucide-react'
 import type { SeoData } from '@/lib/utils/seo-analyzer'
+import dynamic from 'next/dynamic'
+
+// Lazy load the enhanced preview component
+const EnhancedPreview = dynamic(
+  () => import('./preview/enhanced-preview').then((mod) => mod.EnhancedPreview),
+  { ssr: false }
+)
 
 // Auto-save debounce delay in milliseconds
 const AUTO_SAVE_DELAY = 3000
@@ -90,6 +99,7 @@ function PageBuilderContent({
     markSaved,
     setSaving,
     getRootBlocks,
+    updateBlockFull,
   } = usePageBuilder()
 
   const { blocks, isDirty, isSaving, isPreviewMode, device } = state
@@ -98,6 +108,7 @@ function PageBuilderContent({
   const [rightPanelTab, setRightPanelTab] = useState<'properties' | 'seo' | 'fab'>('properties')
   const [isSavingSeo, setIsSavingSeo] = useState(false)
   const [isSavingFab, setIsSavingFab] = useState(false)
+  const [showAIEnhancePreview, setShowAIEnhancePreview] = useState(false)
 
   // Drag state
   const [activeId, setActiveId] = useState<string | null>(null)
@@ -366,7 +377,10 @@ function PageBuilderContent({
     >
       <div className="flex flex-col h-screen bg-background">
         {/* Top Toolbar */}
-        <TopToolbar onSave={handleManualSave} />
+        <TopToolbar
+          onSave={handleManualSave}
+          onAIEnhance={() => setShowAIEnhancePreview(true)}
+        />
 
         {/* Main Content Area */}
         <div className="flex flex-1 overflow-hidden">
@@ -458,6 +472,45 @@ function PageBuilderContent({
         )}
         {activePaletteItem && <DragOverlayContent componentName={activePaletteItem} />}
       </DragOverlay>
+
+      {/* AI Enhancement Preview Modal */}
+      {showAIEnhancePreview && (
+        <EnhancedPreview
+          blocks={blocksToPageBlocks(blocks)}
+          onApplyEnhancements={(enhancedBlocks: EnhancedBlock[]) => {
+            // Apply enhanced custom classes to blocks
+            enhancedBlocks.forEach((enhanced) => {
+              const existingBlock = blocks.find((b) => b.id === enhanced.id)
+              if (existingBlock) {
+                // Merge enhanced classes with existing
+                const enhancedClasses = [
+                  enhanced.wrapperClassName,
+                  enhanced.innerClassName,
+                  enhanced.animations,
+                ].filter(Boolean).join(' ')
+
+                // Prepare updated props with enhancement metadata
+                const updatedProps = {
+                  ...(enhanced.enhancedProps || {}),
+                  // Store glassmorphism metadata for reference
+                  _enhancementApplied: true,
+                  _backgroundGradient: enhanced.backgroundGradient,
+                }
+
+                // Update the block with enhanced props AND custom_classes
+                updateBlockFull(existingBlock.id, {
+                  props: updatedProps,
+                  custom_classes: enhancedClasses,
+                })
+              }
+            })
+
+            toast.success('AI enhancements applied! Don\'t forget to save.')
+            setShowAIEnhancePreview(false)
+          }}
+          onClose={() => setShowAIEnhancePreview(false)}
+        />
+      )}
     </DndContext>
   )
 }

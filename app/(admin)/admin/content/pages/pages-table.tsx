@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useTransition, useCallback, useEffect, useMemo } from 'react'
 import { DataTable } from '@/components/data-table/data-table'
-import { columns, type PageRow } from './columns'
+import { createColumns, type PageRow, type PageActionHandlers } from './columns'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -321,6 +321,96 @@ export function PagesTable({
     }
   }
 
+  // Single row action handlers
+  const handleDuplicate = async (pageId: string) => {
+    try {
+      const result = await duplicatePage(pageId)
+      if (result.success) {
+        toast.success(result.message || 'Page duplicated successfully')
+        fetchData()
+        // Navigate to edit the new page
+        const newPageId = (result.data as { id: string } | undefined)?.id
+        if (newPageId) {
+          router.push(`/admin/content/pages/${newPageId}/edit`)
+        }
+      } else {
+        toast.error(result.message || 'Failed to duplicate page')
+      }
+    } catch (error) {
+      toast.error('Failed to duplicate page')
+    }
+  }
+
+  const handleSinglePublish = async (pageId: string) => {
+    try {
+      const result = await publishPage(pageId)
+      if (result.success) {
+        toast.success(result.message || 'Page published successfully')
+        fetchData()
+      } else {
+        toast.error(result.message || 'Failed to publish page')
+      }
+    } catch (error) {
+      toast.error('Failed to publish page')
+    }
+  }
+
+  const handleSingleUnpublish = async (pageId: string) => {
+    try {
+      const result = await unpublishPage(pageId)
+      if (result.success) {
+        toast.success(result.message || 'Page unpublished')
+        fetchData()
+      } else {
+        toast.error(result.message || 'Failed to unpublish page')
+      }
+    } catch (error) {
+      toast.error('Failed to unpublish page')
+    }
+  }
+
+  const handleSingleArchive = async (pageId: string) => {
+    try {
+      const result = await archivePage(pageId)
+      if (result.success) {
+        toast.success(result.message || 'Page archived')
+        fetchData()
+      } else {
+        toast.error(result.message || 'Failed to archive page')
+      }
+    } catch (error) {
+      toast.error('Failed to archive page')
+    }
+  }
+
+  const handleSingleDelete = async (pageId: string) => {
+    if (!confirm('Are you sure you want to delete this page? This action cannot be undone.')) {
+      return
+    }
+    try {
+      const result = await deletePage(pageId)
+      if (result.success) {
+        toast.success(result.message || 'Page deleted')
+        fetchData()
+      } else {
+        toast.error(result.message || 'Failed to delete page')
+      }
+    } catch (error) {
+      toast.error('Failed to delete page')
+    }
+  }
+
+  // Create columns with action handlers
+  const actionHandlers: PageActionHandlers = useMemo(() => ({
+    onDuplicate: handleDuplicate,
+    onPublish: handleSinglePublish,
+    onUnpublish: handleSingleUnpublish,
+    onArchive: handleSingleArchive,
+    onDelete: handleSingleDelete,
+  }), [])
+
+  const tableColumns = useMemo(() => createColumns(actionHandlers), [actionHandlers])
+
   return (
     <div className="space-y-4">
       {/* Bulk Actions Toolbar */}
@@ -405,7 +495,7 @@ export function PagesTable({
 
       {/* Table */}
       <DataTable
-        columns={columns}
+        columns={tableColumns}
         data={data}
         pageCount={pageCount}
         page={page}

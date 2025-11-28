@@ -91,11 +91,20 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'content',
     description: 'Full-width hero section with background image/video, title, subtitle, and CTA buttons',
     icon: 'Image',
+    previewImage: '/cms-previews/HeroSection.png',
     component: HeroSection,
     propsSchema: HeroSectionPropsSchema,
     defaultProps: {
       title: 'Welcome to JKKN',
       subtitle: 'Excellence in Education',
+      titleColor: '#ffffff',
+      titleFontSize: '5xl',
+      titleFontWeight: 'bold',
+      titleFontStyle: 'normal',
+      subtitleColor: '#e5e5e5',
+      subtitleFontSize: 'xl',
+      subtitleFontWeight: 'normal',
+      subtitleFontStyle: 'normal',
       backgroundType: 'image',
       alignment: 'center',
       overlay: true,
@@ -106,8 +115,19 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     supportsChildren: false,
     keywords: ['hero', 'banner', 'header', 'landing'],
     editableProps: [
+      // Title settings
       { name: 'title', type: 'string', label: 'Title', required: true },
+      { name: 'titleColor', type: 'color', label: 'Title Color' },
+      { name: 'titleFontSize', type: 'enum', label: 'Title Font Size', options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl'] },
+      { name: 'titleFontWeight', type: 'enum', label: 'Title Font Weight', options: ['normal', 'medium', 'semibold', 'bold', 'extrabold'] },
+      { name: 'titleFontStyle', type: 'enum', label: 'Title Font Style', options: ['normal', 'italic'] },
+      // Subtitle settings
       { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
+      { name: 'subtitleColor', type: 'color', label: 'Subtitle Color' },
+      { name: 'subtitleFontSize', type: 'enum', label: 'Subtitle Font Size', options: ['sm', 'md', 'lg', 'xl', '2xl'] },
+      { name: 'subtitleFontWeight', type: 'enum', label: 'Subtitle Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
+      { name: 'subtitleFontStyle', type: 'enum', label: 'Subtitle Font Style', options: ['normal', 'italic'] },
+      // Background settings
       { name: 'backgroundType', type: 'enum', label: 'Background Type', options: ['image', 'video', 'gradient'] },
       { name: 'backgroundImage', type: 'url', label: 'Background Image URL' },
       { name: 'backgroundVideo', type: 'url', label: 'Background Video URL' },
@@ -124,6 +144,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'content',
     description: 'Rich text editor with formatting options',
     icon: 'Type',
+    previewImage: '/cms-previews/TextEditor.png',
     component: TextEditor,
     propsSchema: TextEditorPropsSchema,
     defaultProps: {
@@ -146,6 +167,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'content',
     description: 'Configurable heading with various levels and styles',
     icon: 'Heading',
+    previewImage: '/cms-previews/Heading.png',
     component: Heading,
     propsSchema: HeadingPropsSchema,
     defaultProps: {
@@ -169,6 +191,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'content',
     description: 'CTA section with title, description and buttons',
     icon: 'MousePointerClick',
+    previewImage: '/cms-previews/CallToAction.png',
     component: CallToAction,
     propsSchema: CallToActionPropsSchema,
     defaultProps: {
@@ -187,6 +210,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'content',
     description: 'Display testimonials in carousel or grid layout',
     icon: 'Quote',
+    previewImage: '/cms-previews/Testimonials.png',
     component: Testimonials,
     propsSchema: TestimonialsPropsSchema,
     defaultProps: {
@@ -205,6 +229,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'content',
     description: 'Expandable FAQ section with search',
     icon: 'HelpCircle',
+    previewImage: '/cms-previews/FAQAccordion.png',
     component: FAQAccordion,
     propsSchema: FAQAccordionPropsSchema,
     defaultProps: {
@@ -222,6 +247,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'content',
     description: 'Tabbed content sections',
     icon: 'LayoutList',
+    previewImage: '/cms-previews/TabsBlock.png',
     component: TabsBlock,
     propsSchema: TabsBlockPropsSchema,
     defaultProps: {
@@ -238,6 +264,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'content',
     description: 'Vertical timeline for events or milestones',
     icon: 'Calendar',
+    previewImage: '/cms-previews/Timeline.png',
     component: Timeline,
     propsSchema: TimelinePropsSchema,
     defaultProps: {
@@ -254,6 +281,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'content',
     description: 'Compare pricing plans with features',
     icon: 'CreditCard',
+    previewImage: '/cms-previews/PricingTables.png',
     component: PricingTables,
     propsSchema: PricingTablesPropsSchema,
     defaultProps: {
@@ -273,6 +301,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'media',
     description: 'Single image with caption and link',
     icon: 'Image',
+    previewImage: '/cms-previews/ImageBlock.png',
     component: ImageBlock,
     propsSchema: ImageBlockPropsSchema,
     defaultProps: {
@@ -301,6 +330,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'media',
     description: 'Grid or masonry gallery with lightbox',
     icon: 'Images',
+    previewImage: '/cms-previews/ImageGallery.png',
     component: ImageGallery,
     propsSchema: ImageGalleryPropsSchema,
     defaultProps: {
@@ -320,6 +350,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'media',
     description: 'Embed YouTube, Vimeo or self-hosted videos',
     icon: 'Video',
+    previewImage: '/cms-previews/VideoPlayer.png',
     component: VideoPlayer,
     propsSchema: VideoPlayerPropsSchema,
     defaultProps: {
@@ -341,6 +372,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'media',
     description: 'Sliding image carousel with navigation',
     icon: 'GalleryHorizontal',
+    previewImage: '/cms-previews/ImageCarousel.png',
     component: ImageCarousel,
     propsSchema: ImageCarouselPropsSchema,
     defaultProps: {
@@ -360,6 +392,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'media',
     description: 'Compare two images with a slider',
     icon: 'SplitSquareHorizontal',
+    previewImage: '/cms-previews/BeforeAfterSlider.png',
     component: BeforeAfterSlider,
     propsSchema: BeforeAfterSliderPropsSchema,
     defaultProps: {
@@ -379,6 +412,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'media',
     description: 'Display partner/sponsor logos',
     icon: 'Shapes',
+    previewImage: '/cms-previews/LogoCloud.png',
     component: LogoCloud,
     propsSchema: LogoCloudPropsSchema,
     defaultProps: {
@@ -400,6 +434,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'layout',
     description: 'Content wrapper with max-width and padding',
     icon: 'Box',
+    previewImage: '/cms-previews/Container.png',
     component: Container,
     propsSchema: ContainerPropsSchema,
     defaultProps: {
@@ -423,6 +458,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'layout',
     description: 'Responsive grid container',
     icon: 'LayoutGrid',
+    previewImage: '/cms-previews/GridLayout.png',
     component: GridLayout,
     propsSchema: GridLayoutPropsSchema,
     defaultProps: {
@@ -440,6 +476,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'layout',
     description: 'Flexible box container',
     icon: 'LayoutPanelLeft',
+    previewImage: '/cms-previews/FlexboxLayout.png',
     component: FlexboxLayout,
     propsSchema: FlexboxLayoutPropsSchema,
     defaultProps: {
@@ -459,6 +496,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'layout',
     description: 'Vertical spacing element',
     icon: 'ArrowUpDown',
+    previewImage: '/cms-previews/Spacer.png',
     component: Spacer,
     propsSchema: SpacerPropsSchema,
     defaultProps: {
@@ -478,6 +516,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'layout',
     description: 'Horizontal line separator',
     icon: 'Minus',
+    previewImage: '/cms-previews/Divider.png',
     component: Divider,
     propsSchema: DividerPropsSchema,
     defaultProps: {
@@ -501,6 +540,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'layout',
     description: 'Full-width section with background options',
     icon: 'Square',
+    previewImage: '/cms-previews/SectionWrapper.png',
     component: SectionWrapper,
     propsSchema: SectionWrapperPropsSchema,
     defaultProps: {
@@ -520,6 +560,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'data',
     description: 'Animated statistics counter with icons',
     icon: 'BarChart3',
+    previewImage: '/cms-previews/StatsCounter.png',
     component: StatsCounter,
     propsSchema: StatsCounterPropsSchema,
     defaultProps: {
@@ -548,6 +589,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'data',
     description: 'Display upcoming events in list or grid format',
     icon: 'Calendar',
+    previewImage: '/cms-previews/EventsList.png',
     component: EventsList,
     propsSchema: EventsListPropsSchema,
     defaultProps: {
@@ -578,6 +620,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'data',
     description: 'Display faculty members with contact information',
     icon: 'Users',
+    previewImage: '/cms-previews/FacultyDirectory.png',
     component: FacultyDirectory,
     propsSchema: FacultyDirectoryPropsSchema,
     defaultProps: {
@@ -609,6 +652,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'data',
     description: 'Display announcements with priority and categories',
     icon: 'Bell',
+    previewImage: '/cms-previews/AnnouncementsFeed.png',
     component: AnnouncementsFeed,
     propsSchema: AnnouncementsFeedPropsSchema,
     defaultProps: {
@@ -643,6 +687,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     category: 'data',
     description: 'Display blog posts in grid, list, or featured layout',
     icon: 'FileText',
+    previewImage: '/cms-previews/BlogPostsGrid.png',
     component: BlogPostsGrid,
     propsSchema: BlogPostsGridPropsSchema,
     defaultProps: {

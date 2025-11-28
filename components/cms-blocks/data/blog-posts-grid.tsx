@@ -22,7 +22,8 @@ function BlogPostCard({
   showDate: boolean
   showCategory: boolean
 }) {
-  const publishDate = post.date ? parseISO(post.date) : new Date()
+  // Don't fallback to new Date() - handle null case to avoid hydration mismatch
+  const publishDate = post.date ? parseISO(post.date) : null
 
   if (layout === 'list') {
     return (
@@ -47,7 +48,7 @@ function BlogPostCard({
                 {post.category}
               </span>
             )}
-            {showDate && (
+            {showDate && publishDate && (
               <span className="flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
                 {format(publishDate, 'MMM d, yyyy')}
@@ -137,7 +138,7 @@ function BlogPostCard({
                 {post.category}
               </span>
             )}
-            {showDate && (
+            {showDate && publishDate && (
               <span className="flex items-center gap-1">
                 <Calendar className="h-3.5 w-3.5" />
                 {format(publishDate, 'MMMM d, yyyy')}
@@ -226,7 +227,7 @@ function BlogPostCard({
               {post.category}
             </span>
           )}
-          {showDate && (
+          {showDate && publishDate && (
             <span className="flex items-center gap-1">
               <Calendar className="h-3 w-3" />
               {format(publishDate, 'MMM d, yyyy')}

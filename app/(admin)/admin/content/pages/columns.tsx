@@ -23,12 +23,22 @@ import {
   Home,
   Send,
   EyeOff,
+  Clock,
 } from 'lucide-react'
 import Link from 'next/link'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import { Checkbox } from '@/components/ui/checkbox'
 import { format } from 'date-fns'
 import type { PageStatus, PageVisibility } from '@/app/actions/cms/pages'
+
+// Action handlers interface
+export interface PageActionHandlers {
+  onDuplicate?: (pageId: string) => void
+  onPublish?: (pageId: string) => void
+  onUnpublish?: (pageId: string) => void
+  onArchive?: (pageId: string) => void
+  onDelete?: (pageId: string) => void
+}
 
 export type PageRow = {
   id: string
@@ -79,7 +89,8 @@ const getVisibilityIcon = (visibility: PageVisibility) => {
   }
 }
 
-export const columns: ColumnDef<PageRow>[] = [
+// Factory function to create columns with action handlers
+export const createColumns = (handlers: PageActionHandlers = {}): ColumnDef<PageRow>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -227,6 +238,7 @@ export const columns: ColumnDef<PageRow>[] = [
       const isPublished = page.status === 'published'
       const isDraft = page.status === 'draft'
       const isArchived = page.status === 'archived'
+      const isScheduled = page.status === 'scheduled'
 
       return (
         <DropdownMenu>
@@ -261,30 +273,48 @@ export const columns: ColumnDef<PageRow>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             {isDraft && (
-              <DropdownMenuItem className="text-green-600">
+              <DropdownMenuItem
+                className="text-green-600"
+                onClick={() => handlers.onPublish?.(page.id)}
+              >
                 <Send className="mr-2 h-4 w-4" />
                 Publish
               </DropdownMenuItem>
             )}
             {isPublished && (
-              <DropdownMenuItem className="text-amber-600">
+              <DropdownMenuItem
+                className="text-amber-600"
+                onClick={() => handlers.onUnpublish?.(page.id)}
+              >
                 <EyeOff className="mr-2 h-4 w-4" />
                 Unpublish
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem>
+            {isScheduled && (
+              <DropdownMenuItem className="text-blue-600" disabled>
+                <Clock className="mr-2 h-4 w-4" />
+                Scheduled
+              </DropdownMenuItem>
+            )}
+            <DropdownMenuItem onClick={() => handlers.onDuplicate?.(page.id)}>
               <Copy className="mr-2 h-4 w-4" />
               Duplicate
             </DropdownMenuItem>
             {!isArchived && (
-              <DropdownMenuItem className="text-amber-600">
+              <DropdownMenuItem
+                className="text-amber-600"
+                onClick={() => handlers.onArchive?.(page.id)}
+              >
                 <Archive className="mr-2 h-4 w-4" />
                 Archive
               </DropdownMenuItem>
             )}
             <DropdownMenuSeparator />
             {!page.is_homepage && (
-              <DropdownMenuItem className="text-red-600">
+              <DropdownMenuItem
+                className="text-red-600"
+                onClick={() => handlers.onDelete?.(page.id)}
+              >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete
               </DropdownMenuItem>
@@ -295,3 +325,6 @@ export const columns: ColumnDef<PageRow>[] = [
     },
   },
 ]
+
+// Backward compatibility - default columns without handlers
+export const columns = createColumns()

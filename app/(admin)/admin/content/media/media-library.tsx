@@ -72,6 +72,8 @@ import {
 } from '@/app/actions/cms/media'
 import { toast } from 'sonner'
 import { MediaUploader } from './media-uploader'
+import { FolderSidebar } from '@/components/admin/media/folder-sidebar'
+import { MoveToFolderDialog } from '@/components/admin/media/move-to-folder-dialog'
 
 interface MediaLibraryProps {
   initialMedia: MediaLibraryResult
@@ -81,6 +83,8 @@ interface MediaLibraryProps {
     totalSize: number
     byType: Record<string, { count: number; size: number }>
   }
+  folderStats: Record<string, number>
+  selectedFolder: string
 }
 
 const fileTypeIcons: Record<string, typeof ImageIcon> = {
@@ -98,7 +102,7 @@ const fileTypeFilters = [
   { value: 'document', label: 'Documents' },
 ]
 
-export function MediaLibrary({ initialMedia, folders, stats }: MediaLibraryProps) {
+export function MediaLibrary({ initialMedia, folders, stats, folderStats, selectedFolder: initialSelectedFolder }: MediaLibraryProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -108,6 +112,7 @@ export function MediaLibrary({ initialMedia, folders, stats }: MediaLibraryProps
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '')
   const [typeFilter, setTypeFilter] = useState(searchParams.get('type') || 'all')
   const [folderFilter, setFolderFilter] = useState(searchParams.get('folder') || 'all')
+  const [currentSelectedFolder, setCurrentSelectedFolder] = useState(initialSelectedFolder)
 
   // Dialogs
   const [showUploader, setShowUploader] = useState(false)
@@ -117,6 +122,7 @@ export function MediaLibrary({ initialMedia, folders, stats }: MediaLibraryProps
   const [itemToDelete, setItemToDelete] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [showMoveDialog, setShowMoveDialog] = useState(false)
 
   // Build URL with filters
   const buildUrl = useCallback(
@@ -283,21 +289,43 @@ export function MediaLibrary({ initialMedia, folders, stats }: MediaLibraryProps
     return mimeType.startsWith('image/')
   }
 
+  // Handle folder selection from sidebar
+  const handleFolderSelect = useCallback(
+    (folder: string) => {
+      setCurrentSelectedFolder(folder)
+      setFolderFilter(folder === 'all' ? 'all' : folder)
+    },
+    []
+  )
+
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">Media Library</h1>
-          <p className="text-muted-foreground">
-            {stats.totalFiles} files &bull; {formatBytes(stats.totalSize)} used
-          </p>
-        </div>
-        <Button onClick={() => setShowUploader(true)}>
-          <Upload className="h-4 w-4 mr-2" />
-          Upload Files
-        </Button>
+    <div className="flex h-full">
+      {/* Folder Sidebar - Hidden on mobile */}
+      <div className="hidden lg:block">
+        <FolderSidebar
+          folders={folders}
+          folderStats={folderStats}
+          selectedFolder={currentSelectedFolder}
+          onFolderSelect={handleFolderSelect}
+        />
       </div>
+
+      {/* Main Content */}
+      <div className="flex-1 overflow-auto p-6">
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">Media Library</h1>
+              <p className="text-muted-foreground">
+                {stats.totalFiles} files &bull; {formatBytes(stats.totalSize)} used
+              </p>
+            </div>
+            <Button onClick={() => setShowUploader(true)}>
+              <Upload className="h-4 w-4 mr-2" />
+              Upload Files
+            </Button>
+          </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -424,6 +452,14 @@ export function MediaLibrary({ initialMedia, folders, stats }: MediaLibraryProps
             {selectedItems.size} selected
           </span>
           <div className="flex-1" />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowMoveDialog(true)}
+          >
+            <FolderInput className="h-4 w-4 mr-2" />
+            Move to Folder
+          </Button>
           <Button
             variant="destructive"
             size="sm"
@@ -773,6 +809,21 @@ export function MediaLibrary({ initialMedia, folders, stats }: MediaLibraryProps
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Move to Folder Dialog */}
+      <MoveToFolderDialog
+        open={showMoveDialog}
+        onOpenChange={setShowMoveDialog}
+        folders={folders}
+        selectedMediaIds={Array.from(selectedItems)}
+        currentFolder={currentSelectedFolder === 'all' ? undefined : currentSelectedFolder}
+        onSuccess={() => {
+          setSelectedItems(new Set())
+          router.refresh()
+        }}
+      />
+        </div>
+      </div>
     </div>
   )
 }

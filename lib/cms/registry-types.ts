@@ -107,6 +107,22 @@ export interface BlockData {
 }
 
 /**
+ * Alias for BlockData used in design enhancement
+ * Uses componentName (camelCase) for compatibility with enhancement engine
+ */
+export interface PageBlock {
+  id: string
+  componentName: string
+  props: Record<string, unknown>
+  sortOrder: number
+  parentBlockId: string | null
+  isVisible: boolean
+  responsiveSettings?: Record<string, unknown>
+  customCss?: string
+  customClasses?: string
+}
+
+/**
  * Props for the PageRenderer component
  */
 export interface PageRendererProps {
@@ -177,6 +193,17 @@ export const ResponsiveValueSchema = <T extends z.ZodTypeAny>(valueSchema: T) =>
 export const HeroSectionPropsSchema = z.object({
   title: z.string().default('Welcome'),
   subtitle: z.string().optional(),
+  // Title styling
+  titleColor: z.string().default('#ffffff'),
+  titleFontSize: z.enum(['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl']).default('5xl'),
+  titleFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold', 'extrabold']).default('bold'),
+  titleFontStyle: z.enum(['normal', 'italic']).default('normal'),
+  // Subtitle styling
+  subtitleColor: z.string().default('#e5e5e5'),
+  subtitleFontSize: z.enum(['sm', 'md', 'lg', 'xl', '2xl']).default('xl'),
+  subtitleFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('normal'),
+  subtitleFontStyle: z.enum(['normal', 'italic']).default('normal'),
+  // Background settings
   backgroundType: z.enum(['image', 'video', 'gradient']).default('image'),
   backgroundImage: z.string().optional(),
   backgroundVideo: z.string().optional(),
@@ -546,3 +573,57 @@ export const BlogPostsGridPropsSchema = z.object({
   dataSource: z.enum(['manual', 'database']).default('manual'),
 })
 export type BlogPostsGridProps = z.infer<typeof BlogPostsGridPropsSchema> & BaseBlockProps
+
+// ==========================================
+// Utility Functions for Type Conversion
+// ==========================================
+
+/**
+ * Convert BlockData (snake_case) to PageBlock (camelCase)
+ * Used when passing blocks to the design enhancement engine
+ */
+export function blockDataToPageBlock(block: BlockData): PageBlock {
+  return {
+    id: block.id,
+    componentName: block.component_name,
+    props: block.props,
+    sortOrder: block.sort_order,
+    parentBlockId: block.parent_block_id,
+    isVisible: block.is_visible,
+    responsiveSettings: block.responsive_settings,
+    customCss: block.custom_css,
+    customClasses: block.custom_classes,
+  }
+}
+
+/**
+ * Convert PageBlock (camelCase) back to BlockData (snake_case)
+ * Used when applying enhanced blocks back to the page builder
+ */
+export function pageBlockToBlockData(block: PageBlock): BlockData {
+  return {
+    id: block.id,
+    component_name: block.componentName,
+    props: block.props,
+    sort_order: block.sortOrder,
+    parent_block_id: block.parentBlockId,
+    is_visible: block.isVisible,
+    responsive_settings: block.responsiveSettings,
+    custom_css: block.customCss,
+    custom_classes: block.customClasses,
+  }
+}
+
+/**
+ * Convert array of BlockData to PageBlock
+ */
+export function blocksToPageBlocks(blocks: BlockData[]): PageBlock[] {
+  return blocks.map(blockDataToPageBlock)
+}
+
+/**
+ * Convert array of PageBlock to BlockData
+ */
+export function pageBlocksToBlockData(blocks: PageBlock[]): BlockData[] {
+  return blocks.map(pageBlockToBlockData)
+}

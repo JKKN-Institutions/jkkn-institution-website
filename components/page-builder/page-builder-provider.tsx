@@ -18,6 +18,7 @@ interface CmsPage {
   title: string
   slug: string
   status: 'draft' | 'published' | 'archived' | 'scheduled'
+  scheduled_publish_at?: string | null
 }
 
 // State interface
@@ -39,6 +40,7 @@ type PageBuilderAction =
   | { type: 'SET_BLOCKS'; payload: BlockData[] }
   | { type: 'ADD_BLOCK'; payload: { componentName: string; insertAt?: number; props?: Record<string, unknown>; parentId?: string | null } }
   | { type: 'UPDATE_BLOCK'; payload: { id: string; props: Record<string, unknown> } }
+  | { type: 'UPDATE_BLOCK_FULL'; payload: { id: string; updates: Partial<BlockData> } }
   | { type: 'UPDATE_BLOCK_VISIBILITY'; payload: { id: string; isVisible: boolean } }
   | { type: 'DELETE_BLOCK'; payload: string }
   | { type: 'DUPLICATE_BLOCK'; payload: string }
@@ -173,6 +175,19 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
       const { id, props } = action.payload
       const newBlocks = state.blocks.map((block) =>
         block.id === id ? { ...block, props: { ...block.props, ...props } } : block
+      )
+      const stateWithHistory = pushToHistory(state, newBlocks)
+      return {
+        ...stateWithHistory,
+        blocks: newBlocks,
+        isDirty: true,
+      }
+    }
+
+    case 'UPDATE_BLOCK_FULL': {
+      const { id, updates } = action.payload
+      const newBlocks = state.blocks.map((block) =>
+        block.id === id ? { ...block, ...updates, props: { ...block.props, ...(updates.props || {}) } } : block
       )
       const stateWithHistory = pushToHistory(state, newBlocks)
       return {
@@ -462,6 +477,7 @@ interface PageBuilderContextValue {
   addBlock: (componentName: string, insertAt?: number, props?: Record<string, unknown>, parentId?: string | null) => void
   addBlockToContainer: (componentName: string, containerId: string, insertAt?: number, props?: Record<string, unknown>) => void
   updateBlock: (id: string, props: Record<string, unknown>) => void
+  updateBlockFull: (id: string, updates: Partial<BlockData>) => void
   updateBlockVisibility: (id: string, isVisible: boolean) => void
   deleteBlock: (id: string) => void
   duplicateBlock: (id: string) => void
@@ -525,6 +541,10 @@ export function PageBuilderProvider({
 
   const updateBlock = useCallback((id: string, props: Record<string, unknown>) => {
     dispatch({ type: 'UPDATE_BLOCK', payload: { id, props } })
+  }, [])
+
+  const updateBlockFull = useCallback((id: string, updates: Partial<BlockData>) => {
+    dispatch({ type: 'UPDATE_BLOCK_FULL', payload: { id, updates } })
   }, [])
 
   const updateBlockVisibility = useCallback((id: string, isVisible: boolean) => {
@@ -605,6 +625,7 @@ export function PageBuilderProvider({
     addBlock,
     addBlockToContainer,
     updateBlock,
+    updateBlockFull,
     updateBlockVisibility,
     deleteBlock,
     duplicateBlock,

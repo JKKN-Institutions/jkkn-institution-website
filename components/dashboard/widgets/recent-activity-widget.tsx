@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Activity, ArrowUpRight, RefreshCw } from 'lucide-react'
-import { format, formatDistanceToNow } from 'date-fns'
+import { Activity, ArrowUpRight, RefreshCw, Clock } from 'lucide-react'
+import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
@@ -14,7 +14,8 @@ interface ActivityLog {
   module: string
   resource_type: string | null
   created_at: string
-  profiles: { full_name: string | null; email: string } | null
+  user_id: string
+  metadata: Record<string, unknown> | null
 }
 
 interface RecentActivityConfig {
@@ -22,13 +23,38 @@ interface RecentActivityConfig {
   showFilters?: boolean
 }
 
-const ACTION_COLORS: Record<string, string> = {
-  create: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-  update: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-  delete: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
-  view: 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400',
-  login: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
-  logout: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400',
+// Brand colors only - primary (green) for positive actions
+const ACTION_COLORS: Record<string, { bg: string; text: string; border: string }> = {
+  create: {
+    bg: 'bg-primary/10',
+    text: 'text-primary',
+    border: 'border-primary/20',
+  },
+  update: {
+    bg: 'bg-primary/10',
+    text: 'text-primary',
+    border: 'border-primary/20',
+  },
+  delete: {
+    bg: 'bg-destructive/10',
+    text: 'text-destructive',
+    border: 'border-destructive/20',
+  },
+  view: {
+    bg: 'bg-muted/50',
+    text: 'text-muted-foreground',
+    border: 'border-muted',
+  },
+  login: {
+    bg: 'bg-primary/10',
+    text: 'text-primary',
+    border: 'border-primary/20',
+  },
+  logout: {
+    bg: 'bg-muted/50',
+    text: 'text-muted-foreground',
+    border: 'border-muted',
+  },
 }
 
 export function RecentActivityWidget({ config }: WidgetProps) {
@@ -39,11 +65,18 @@ export function RecentActivityWidget({ config }: WidgetProps) {
   const supabase = createClient()
 
   const fetchActivities = async () => {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('user_activity_logs')
-      .select('*, profiles:user_id(full_name, email)')
+      .select('id, action, module, resource_type, created_at, user_id, metadata')
       .order('created_at', { ascending: false })
       .limit(maxItems)
+
+    if (error) {
+      console.error('Error fetching activities:', error)
+      setLoading(false)
+      setRefreshing(false)
+      return
+    }
 
     setActivities((data as ActivityLog[]) || [])
     setLoading(false)
@@ -78,68 +111,116 @@ export function RecentActivityWidget({ config }: WidgetProps) {
   if (loading) {
     return (
       <div className="h-full flex items-center justify-center">
-        <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
+        <div className="relative">
+          <div className="absolute inset-0 bg-primary/20 rounded-full blur-lg animate-pulse" />
+          <RefreshCw className="relative h-6 w-6 animate-spin text-primary" />
+        </div>
       </div>
     )
   }
 
   return (
     <div className="h-full flex flex-col min-h-0">
-      {/* Header */}
+      {/* Header with Glass Effect */}
       <div className="flex items-center justify-between mb-3 flex-shrink-0">
-        <div className="flex items-center gap-2">
-          <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-          <h3 className="font-semibold text-sm sm:text-base text-foreground">Recent Activity</h3>
+        <div className="flex items-center gap-2.5">
+          <div className="p-2 rounded-xl bg-primary/10 backdrop-blur-sm">
+            <Activity className="h-4 w-4 text-primary" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-sm text-foreground">Recent Activity</h3>
+            <p className="text-[10px] text-muted-foreground">Live updates</p>
+          </div>
         </div>
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex items-center gap-2">
           <button
             onClick={handleRefresh}
-            className="p-1.5 rounded-lg hover:bg-muted transition-colors touch-target-sm"
+            className={cn(
+              'p-2 rounded-lg transition-all duration-200',
+              'bg-primary/5 hover:bg-primary/10 backdrop-blur-sm',
+              'border border-transparent hover:border-primary/20'
+            )}
             disabled={refreshing}
           >
-            <RefreshCw className={cn('h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground', refreshing && 'animate-spin')} />
+            <RefreshCw className={cn('h-3.5 w-3.5 text-primary', refreshing && 'animate-spin')} />
           </button>
           <Link
             href="/admin/activity"
-            className="text-[10px] sm:text-xs text-primary hover:underline flex items-center gap-1"
+            className={cn(
+              'flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium',
+              'bg-primary/5 hover:bg-primary/10 text-primary transition-all duration-200',
+              'border border-transparent hover:border-primary/20'
+            )}
           >
             View all
-            <ArrowUpRight className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+            <ArrowUpRight className="h-3 w-3" />
           </Link>
         </div>
       </div>
 
-      {/* Activity List - scrollable */}
-      <div className="flex-1 min-h-0 overflow-y-auto space-y-2 sm:space-y-3">
+      {/* Activity List - Glass Cards */}
+      <div className="flex-1 min-h-0 overflow-y-auto space-y-2">
         {activities.length > 0 ? (
-          activities.map((activity) => (
-            <div
-              key={activity.id}
-              className="flex items-start gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-lg hover:bg-muted/50 transition-colors"
-            >
-              <div className={cn('px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium flex-shrink-0', ACTION_COLORS[activity.action] || ACTION_COLORS.view)}>
-                {activity.action}
+          activities.map((activity, index) => {
+            const userName = (activity.metadata?.user_name as string) || 'User'
+            const actionStyle = ACTION_COLORS[activity.action] || ACTION_COLORS.view
+
+            return (
+              <div
+                key={activity.id}
+                className={cn(
+                  'group relative flex items-start gap-3 p-3 rounded-xl transition-all duration-200',
+                  'bg-gradient-to-br from-white/40 to-white/20 dark:from-white/5 dark:to-white/[0.02]',
+                  'backdrop-blur-sm border border-primary/5 dark:border-primary/10',
+                  'hover:border-primary/15 hover:shadow-sm hover:from-white/60 dark:hover:from-white/10'
+                )}
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                {/* Action Badge */}
+                <div className={cn(
+                  'px-2 py-1 rounded-lg text-[10px] font-semibold uppercase tracking-wide flex-shrink-0',
+                  'backdrop-blur-sm border',
+                  actionStyle.bg,
+                  actionStyle.text,
+                  actionStyle.border
+                )}>
+                  {activity.action}
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-foreground leading-relaxed">
+                    <span className="font-semibold">{userName}</span>{' '}
+                    <span className="text-muted-foreground">
+                      {activity.resource_type && `${activity.resource_type} in `}
+                      <span className="text-primary font-medium">{activity.module}</span>
+                    </span>
+                  </p>
+                  <div className="flex items-center gap-1 mt-1.5 text-[10px] text-muted-foreground">
+                    <Clock className="h-3 w-3" />
+                    <span suppressHydrationWarning>
+                      {formatDistanceToNow(new Date(activity.created_at), { addSuffix: true })}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Hover indicator */}
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ArrowUpRight className="h-3.5 w-3.5 text-primary/50" />
+                </div>
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs sm:text-sm text-foreground line-clamp-2">
-                  <span className="font-medium">
-                    {activity.profiles?.full_name || 'Unknown user'}
-                  </span>{' '}
-                  <span className="text-muted-foreground">
-                    {activity.resource_type && `${activity.resource_type} in `}
-                    <span className="text-primary">{activity.module}</span>
-                  </span>
-                </p>
-                <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">
-                  {formatDistanceToNow(new Date(activity.created_at), { addSuffix: true })}
-                </p>
+            )
+          })
+        ) : (
+          <div className="flex flex-col items-center justify-center h-full text-center py-8">
+            <div className="relative mb-3">
+              <div className="absolute inset-0 bg-primary/10 rounded-full blur-xl" />
+              <div className="relative p-4 rounded-2xl bg-primary/5 backdrop-blur-sm">
+                <Activity className="h-8 w-8 text-primary/30" />
               </div>
             </div>
-          ))
-        ) : (
-          <div className="flex flex-col items-center justify-center h-full text-center py-4 sm:py-8">
-            <Activity className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground/30 mb-2" />
-            <p className="text-xs sm:text-sm text-muted-foreground">No recent activity</p>
+            <p className="text-sm font-medium text-muted-foreground">No recent activity</p>
+            <p className="text-xs text-muted-foreground/70 mt-1">Activities will appear here</p>
           </div>
         )}
       </div>

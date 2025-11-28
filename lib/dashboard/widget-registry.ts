@@ -91,29 +91,23 @@ export function hasWidgetPermission(
 // Default dashboard layouts per role
 export const DEFAULT_LAYOUTS: Record<string, DashboardLayoutItem[]> = {
   super_admin: [
-    { i: 'welcome_banner', x: 0, y: 0, w: 4, h: 1 },
-    { i: 'user_stats', x: 0, y: 1, w: 2, h: 2 },
-    { i: 'content_metrics', x: 2, y: 1, w: 2, h: 2 },
-    { i: 'recent_activity', x: 0, y: 3, w: 2, h: 3 },
-    { i: 'quick_actions_general', x: 2, y: 3, w: 2, h: 2 },
-    { i: 'system_health', x: 2, y: 5, w: 2, h: 1 },
+    { i: 'user_stats', x: 0, y: 0, w: 2, h: 1 },
+    { i: 'content_metrics', x: 2, y: 0, w: 2, h: 1 },
+    { i: 'recent_activity', x: 0, y: 1, w: 2, h: 2 },
+    { i: 'quick_actions_general', x: 2, y: 1, w: 2, h: 2 },
   ],
   director: [
-    { i: 'welcome_banner', x: 0, y: 0, w: 4, h: 1 },
-    { i: 'pending_approvals', x: 0, y: 1, w: 2, h: 2 },
-    { i: 'event_calendar', x: 2, y: 1, w: 2, h: 2 },
-    { i: 'recent_activity', x: 0, y: 3, w: 2, h: 3 },
-    { i: 'quick_actions_general', x: 2, y: 3, w: 2, h: 2 },
+    { i: 'user_stats', x: 0, y: 0, w: 2, h: 1 },
+    { i: 'content_metrics', x: 2, y: 0, w: 2, h: 1 },
+    { i: 'recent_activity', x: 0, y: 1, w: 2, h: 2 },
+    { i: 'quick_actions_general', x: 2, y: 1, w: 2, h: 2 },
   ],
   member: [
-    { i: 'welcome_banner', x: 0, y: 0, w: 4, h: 1 },
-    { i: 'my_tasks', x: 0, y: 1, w: 2, h: 2 },
-    { i: 'notifications_center', x: 2, y: 1, w: 2, h: 2 },
-    { i: 'event_calendar', x: 0, y: 3, w: 4, h: 2 },
+    { i: 'notifications_center', x: 0, y: 0, w: 2, h: 2 },
+    { i: 'recent_activity', x: 2, y: 0, w: 2, h: 2 },
   ],
   guest: [
-    { i: 'welcome_banner', x: 0, y: 0, w: 4, h: 1 },
-    { i: 'notifications_center', x: 0, y: 1, w: 2, h: 2 },
+    { i: 'notifications_center', x: 0, y: 0, w: 2, h: 2 },
   ],
 }
 

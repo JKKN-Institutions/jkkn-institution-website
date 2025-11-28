@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import type { EventsListProps, EventItem } from '@/lib/cms/registry-types'
@@ -14,8 +15,15 @@ function EventCard({
   event: EventItem
   layout: 'list' | 'grid' | 'calendar'
 }) {
-  const eventDate = event.date ? parseISO(event.date) : new Date()
-  const isPast = isBefore(eventDate, new Date()) && !isToday(eventDate)
+  const eventDate = event.date ? parseISO(event.date) : null
+  const [isPast, setIsPast] = useState(false)
+
+  // Calculate isPast on client-side to avoid hydration mismatch
+  useEffect(() => {
+    if (eventDate) {
+      setIsPast(isBefore(eventDate, new Date()) && !isToday(eventDate))
+    }
+  }, [eventDate])
 
   if (layout === 'grid') {
     return (
@@ -42,7 +50,7 @@ function EventCard({
         <div className="p-5">
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
             <Calendar className="h-4 w-4" />
-            <span>{format(eventDate, 'MMM d, yyyy')}</span>
+            <span>{eventDate ? format(eventDate, 'MMM d, yyyy') : 'TBD'}</span>
             {event.time && (
               <>
                 <Clock className="h-4 w-4 ml-2" />
@@ -88,10 +96,10 @@ function EventCard({
       {/* Date Badge */}
       <div className="flex-shrink-0 w-16 h-16 bg-primary/10 rounded-lg flex flex-col items-center justify-center">
         <span className="text-2xl font-bold text-primary">
-          {format(eventDate, 'd')}
+          {eventDate ? format(eventDate, 'd') : '--'}
         </span>
         <span className="text-xs text-primary uppercase">
-          {format(eventDate, 'MMM')}
+          {eventDate ? format(eventDate, 'MMM') : 'TBD'}
         </span>
       </div>
 

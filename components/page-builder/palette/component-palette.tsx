@@ -3,9 +3,16 @@
 import { useState, useMemo } from 'react'
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
+import Image from 'next/image'
 import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import {
   COMPONENT_REGISTRY,
   getComponentsByCategory,
@@ -19,6 +26,7 @@ import {
   Type,
   Database,
   GripVertical,
+  Eye,
 } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -29,9 +37,11 @@ interface PaletteItemProps {
   displayName: string
   description?: string
   icon: string
+  previewImage?: string
 }
 
-function PaletteItem({ name, displayName, description, icon }: PaletteItemProps) {
+function PaletteItem({ name, displayName, description, icon, previewImage }: PaletteItemProps) {
+  const [imageError, setImageError] = useState(false)
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: `palette-${name}`,
     data: {
@@ -51,14 +61,16 @@ function PaletteItem({ name, displayName, description, icon }: PaletteItemProps)
   const iconName = icon as keyof typeof LucideIcons
   const IconComponent = (LucideIcons[iconName] as LucideIcon) || Type
 
-  return (
+  const hasPreview = previewImage && !imageError
+
+  const itemContent = (
     <div
       ref={setNodeRef}
       style={style}
       {...listeners}
       {...attributes}
       className={cn(
-        'flex items-center gap-3 p-3 rounded-lg border border-border/50 bg-background/50',
+        'group flex items-center gap-3 p-3 rounded-lg border border-border/50 bg-background/50',
         'hover:border-primary/30 hover:bg-primary/5 cursor-grab transition-all',
         isDragging && 'opacity-50 shadow-lg ring-2 ring-primary'
       )}
@@ -72,9 +84,49 @@ function PaletteItem({ name, displayName, description, icon }: PaletteItemProps)
           <p className="text-xs text-muted-foreground truncate">{description}</p>
         )}
       </div>
-      <GripVertical className="h-4 w-4 text-muted-foreground/50" />
+      <div className="flex items-center gap-1">
+        {hasPreview && (
+          <Eye className="h-3.5 w-3.5 text-muted-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+        )}
+        <GripVertical className="h-4 w-4 text-muted-foreground/50" />
+      </div>
     </div>
   )
+
+  // If preview image exists, wrap with tooltip
+  if (hasPreview) {
+    return (
+      <Tooltip delayDuration={300}>
+        <TooltipTrigger asChild>
+          {itemContent}
+        </TooltipTrigger>
+        <TooltipContent
+          side="right"
+          sideOffset={12}
+          className="p-0 overflow-hidden bg-background border-2 border-primary/20 shadow-xl rounded-lg"
+        >
+          <div className="relative w-[320px] h-[240px] bg-muted">
+            <Image
+              src={previewImage}
+              alt={`${displayName} preview`}
+              fill
+              className="object-cover"
+              onError={() => setImageError(true)}
+              sizes="320px"
+            />
+          </div>
+          <div className="px-3 py-2 bg-background border-t border-border">
+            <p className="font-medium text-sm">{displayName}</p>
+            {description && (
+              <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
+            )}
+          </div>
+        </TooltipContent>
+      </Tooltip>
+    )
+  }
+
+  return itemContent
 }
 
 const categoryIcons: Record<ComponentCategory, React.ComponentType<{ className?: string }>> = {
@@ -131,6 +183,7 @@ export function ComponentPalette() {
   }, [filteredComponents, searchQuery, activeCategory])
 
   return (
+    <TooltipProvider>
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="p-4 border-b border-border">
@@ -193,6 +246,7 @@ export function ComponentPalette() {
                       displayName={comp.displayName}
                       description={comp.description}
                       icon={comp.icon}
+                      previewImage={comp.previewImage}
                     />
                   ))
                 )}
@@ -222,6 +276,7 @@ export function ComponentPalette() {
                             displayName={comp.displayName}
                             description={comp.description}
                             icon={comp.icon}
+                            previewImage={comp.previewImage}
                           />
                         ))}
                       </div>
@@ -239,6 +294,7 @@ export function ComponentPalette() {
                     displayName={comp.displayName}
                     description={comp.description}
                     icon={comp.icon}
+                    previewImage={comp.previewImage}
                   />
                 ))}
               </TabsContent>
@@ -254,5 +310,6 @@ export function ComponentPalette() {
         </p>
       </div>
     </div>
+    </TooltipProvider>
   )
 }

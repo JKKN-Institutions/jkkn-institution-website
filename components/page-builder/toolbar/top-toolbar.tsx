@@ -31,18 +31,33 @@ import {
   Settings,
   Loader2,
   ExternalLink,
+  Sparkles,
+  Clock,
+  ChevronDown,
+  XCircle,
+  Layout,
+  BookTemplate,
+  History,
 } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
-import { publishPage } from '@/app/actions/cms/pages'
+import { publishPage, cancelScheduledPublish } from '@/app/actions/cms/pages'
 import { toast } from 'sonner'
 import { useState } from 'react'
+import { SchedulePublishDialog } from '../modals/schedule-publish-dialog'
+import { TemplateBrowserModal } from '../modals/template-browser-modal'
+import { SaveTemplateDialog } from '../modals/save-template-dialog'
+import { VersionHistoryPanel } from '../panels/version-history-panel'
+import { SharePreviewDialog } from '../modals/share-preview-dialog'
+import { format } from 'date-fns'
+import { Share2 } from 'lucide-react'
 
 interface TopToolbarProps {
   onSave: () => Promise<void>
+  onAIEnhance?: () => void
 }
 
-export function TopToolbar({ onSave }: TopToolbarProps) {
+export function TopToolbar({ onSave, onAIEnhance }: TopToolbarProps) {
   const {
     state,
     undo,
@@ -55,6 +70,12 @@ export function TopToolbar({ onSave }: TopToolbarProps) {
 
   const { page, isDirty, isSaving, isPreviewMode, device } = state
   const [isPublishing, setIsPublishing] = useState(false)
+  const [isScheduleDialogOpen, setIsScheduleDialogOpen] = useState(false)
+  const [isCancellingSchedule, setIsCancellingSchedule] = useState(false)
+  const [isTemplateBrowserOpen, setIsTemplateBrowserOpen] = useState(false)
+  const [isSaveTemplateOpen, setIsSaveTemplateOpen] = useState(false)
+  const [isVersionHistoryOpen, setIsVersionHistoryOpen] = useState(false)
+  const [isSharePreviewOpen, setIsSharePreviewOpen] = useState(false)
 
   const handlePublish = async () => {
     if (!page) return
@@ -79,6 +100,24 @@ export function TopToolbar({ onSave }: TopToolbarProps) {
     }
   }
 
+  const handleCancelSchedule = async () => {
+    if (!page) return
+
+    setIsCancellingSchedule(true)
+    try {
+      const result = await cancelScheduledPublish(page.id)
+      if (result.success) {
+        toast.success('Scheduled publication cancelled')
+      } else {
+        toast.error(result.message || 'Failed to cancel schedule')
+      }
+    } catch (error) {
+      toast.error('An error occurred')
+    } finally {
+      setIsCancellingSchedule(false)
+    }
+  }
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'published':
@@ -87,6 +126,8 @@ export function TopToolbar({ onSave }: TopToolbarProps) {
         return 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400'
       case 'archived':
         return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'
+      case 'scheduled':
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
       default:
         return 'bg-gray-100 text-gray-800'
     }
@@ -217,6 +258,26 @@ export function TopToolbar({ onSave }: TopToolbarProps) {
 
         {/* Right section: Actions */}
         <div className="flex items-center gap-2">
+          {/* AI Enhance button */}
+          {onAIEnhance && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={onAIEnhance}
+                  className="bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20 hover:border-primary/40 hover:from-primary/20 hover:to-secondary/20"
+                >
+                  <Sparkles className="h-4 w-4 mr-2 text-primary" />
+                  AI Enhance
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                Apply AI-powered glassmorphism design
+              </TooltipContent>
+            </Tooltip>
+          )}
+
           {/* Preview toggle */}
           <Tooltip>
             <TooltipTrigger asChild>
@@ -254,24 +315,86 @@ export function TopToolbar({ onSave }: TopToolbarProps) {
             <TooltipContent>Save changes (Ctrl+S)</TooltipContent>
           </Tooltip>
 
-          {/* Publish button */}
-          <Button
-            size="sm"
-            onClick={handlePublish}
-            disabled={isPublishing || page?.status === 'published'}
-            className={cn(
-              page?.status === 'published'
-                ? 'bg-green-600 hover:bg-green-700'
-                : 'bg-primary hover:bg-primary/90'
-            )}
-          >
-            {isPublishing ? (
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-            ) : (
+          {/* Publish button with dropdown */}
+          {page?.status === 'scheduled' ? (
+            // Show scheduled status with cancel option
+            <div className="flex items-center gap-1">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400"
+                  >
+                    <Clock className="h-4 w-4 mr-2" />
+                    Scheduled
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {page.scheduled_publish_at
+                    ? `Scheduled for ${format(new Date(page.scheduled_publish_at), 'PPP \'at\' p')}`
+                    : 'Scheduled for publication'}
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={handleCancelSchedule}
+                    disabled={isCancellingSchedule}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                  >
+                    {isCancellingSchedule ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <XCircle className="h-4 w-4" />
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Cancel scheduled publication</TooltipContent>
+              </Tooltip>
+            </div>
+          ) : page?.status === 'published' ? (
+            // Show published status
+            <Button
+              size="sm"
+              disabled
+              className="bg-green-600 hover:bg-green-700"
+            >
               <Send className="h-4 w-4 mr-2" />
-            )}
-            {page?.status === 'published' ? 'Published' : 'Publish'}
-          </Button>
+              Published
+            </Button>
+          ) : (
+            // Show publish dropdown for draft/archived pages
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  size="sm"
+                  disabled={isPublishing}
+                  className="bg-primary hover:bg-primary/90"
+                >
+                  {isPublishing ? (
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4 mr-2" />
+                  )}
+                  Publish
+                  <ChevronDown className="h-4 w-4 ml-2" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={handlePublish}>
+                  <Send className="mr-2 h-4 w-4" />
+                  Publish Now
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setIsScheduleDialogOpen(true)}>
+                  <Clock className="mr-2 h-4 w-4" />
+                  Schedule Publication
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
 
           {/* More actions dropdown */}
           <DropdownMenu>
@@ -292,6 +415,24 @@ export function TopToolbar({ onSave }: TopToolbarProps) {
                   <DropdownMenuSeparator />
                 </>
               )}
+              <DropdownMenuItem onClick={() => setIsTemplateBrowserOpen(true)}>
+                <Layout className="mr-2 h-4 w-4" />
+                Apply template
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setIsSaveTemplateOpen(true)}>
+                <BookTemplate className="mr-2 h-4 w-4" />
+                Save as template
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setIsVersionHistoryOpen(true)}>
+                <History className="mr-2 h-4 w-4" />
+                Version history
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setIsSharePreviewOpen(true)}>
+                <Share2 className="mr-2 h-4 w-4" />
+                Share preview
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href={`/admin/content/pages/${page?.id}`}>
                   <Settings className="mr-2 h-4 w-4" />
@@ -302,6 +443,59 @@ export function TopToolbar({ onSave }: TopToolbarProps) {
           </DropdownMenu>
         </div>
       </div>
+
+      {/* Schedule Publish Dialog */}
+      {page && (
+        <SchedulePublishDialog
+          open={isScheduleDialogOpen}
+          onOpenChange={setIsScheduleDialogOpen}
+          pageId={page.id}
+          pageName={page.title || 'Untitled Page'}
+          existingSchedule={page.scheduled_publish_at ? new Date(page.scheduled_publish_at) : null}
+        />
+      )}
+
+      {/* Template Browser Modal */}
+      {page && (
+        <TemplateBrowserModal
+          open={isTemplateBrowserOpen}
+          onOpenChange={setIsTemplateBrowserOpen}
+          pageId={page.id}
+        />
+      )}
+
+      {/* Save as Template Dialog */}
+      {page && (
+        <SaveTemplateDialog
+          open={isSaveTemplateOpen}
+          onOpenChange={setIsSaveTemplateOpen}
+          pageId={page.id}
+          pageTitle={page.title || 'Untitled Page'}
+        />
+      )}
+
+      {/* Version History Panel */}
+      {page && (
+        <VersionHistoryPanel
+          pageId={page.id}
+          open={isVersionHistoryOpen}
+          onOpenChange={setIsVersionHistoryOpen}
+          onVersionRestored={() => {
+            // Refresh the page to show restored content
+            window.location.reload()
+          }}
+        />
+      )}
+
+      {/* Share Preview Dialog */}
+      {page && (
+        <SharePreviewDialog
+          open={isSharePreviewOpen}
+          onOpenChange={setIsSharePreviewOpen}
+          pageId={page.id}
+          pageTitle={page.title || 'Untitled Page'}
+        />
+      )}
     </TooltipProvider>
   )
 }

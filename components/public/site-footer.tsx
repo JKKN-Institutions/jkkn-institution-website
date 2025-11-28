@@ -218,7 +218,7 @@ export function SiteFooter() {
       <div className="relative border-t border-white/10">
         <div className="container mx-auto px-4 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <p className="text-sm text-white/70 text-center md:text-left">
+            <p className="text-sm text-white/70 text-center md:text-left" suppressHydrationWarning>
               © {new Date().getFullYear()} JKKN Group of Institutions. All rights reserved.
             </p>
 

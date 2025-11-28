@@ -3,6 +3,7 @@
 import { Suspense } from 'react'
 import { getComponent, getComponentEntry } from '@/lib/cms/component-registry'
 import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
 
 interface BlockData {
   id: string
@@ -11,6 +12,8 @@ interface BlockData {
   sort_order: number
   parent_block_id: string | null
   is_visible: boolean
+  custom_classes?: string
+  custom_css?: string
   children?: BlockData[]
 }
 
@@ -93,26 +96,49 @@ function RenderBlock({ block }: { block: BlockData }) {
     return <BlockError componentName={block.component_name} />
   }
 
+  // Check for AI enhancement background gradient
+  const backgroundGradient = block.props._backgroundGradient as string | undefined
+
+  // Wrapper for custom classes and CSS
+  const BlockWrapper = ({ children }: { children: React.ReactNode }) => (
+    <div className={cn('relative', block.custom_classes)}>
+      {/* Background gradient overlay for AI enhancements */}
+      {backgroundGradient && (
+        <div className={cn('absolute inset-0 pointer-events-none rounded-inherit', backgroundGradient)} />
+      )}
+      {block.custom_css && (
+        <style dangerouslySetInnerHTML={{ __html: `[data-block-id="${block.id}"] { ${block.custom_css} }` }} />
+      )}
+      <div data-block-id={block.id} className="relative">
+        {children}
+      </div>
+    </div>
+  )
+
   // If component supports children and has children, render them nested
   if (entry.supportsChildren && block.children && block.children.length > 0) {
     return (
-      <Suspense fallback={<BlockSkeleton />}>
-        <Component {...block.props} id={block.id}>
-          {block.children
-            .filter((child) => child.is_visible)
-            .map((child) => (
-              <RenderBlock key={child.id} block={child} />
-            ))}
-        </Component>
-      </Suspense>
+      <BlockWrapper>
+        <Suspense fallback={<BlockSkeleton />}>
+          <Component {...block.props} id={block.id}>
+            {block.children
+              .filter((child) => child.is_visible)
+              .map((child) => (
+                <RenderBlock key={child.id} block={child} />
+              ))}
+          </Component>
+        </Suspense>
+      </BlockWrapper>
     )
   }
 
   // Regular block without children
   return (
-    <Suspense fallback={<BlockSkeleton />}>
-      <Component {...block.props} id={block.id} />
-    </Suspense>
+    <BlockWrapper>
+      <Suspense fallback={<BlockSkeleton />}>
+        <Component {...block.props} id={block.id} />
+      </Suspense>
+    </BlockWrapper>
   )
 }
 
