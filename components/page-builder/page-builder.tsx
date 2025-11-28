@@ -30,6 +30,7 @@ import { getComponentEntry } from '@/lib/cms/component-registry'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Settings, Search, MessageCircle } from 'lucide-react'
 import type { SeoData } from '@/lib/utils/seo-analyzer'
+import type { LayoutPreset } from '@/lib/cms/layout-presets'
 import dynamic from 'next/dynamic'
 
 // Lazy load the enhanced preview component
@@ -343,6 +344,14 @@ function PageBuilderContent({
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isDirty, isSaving, handleManualSave])
 
+  // Handle preset selection - adds preset blocks to the page
+  const handlePresetSelect = useCallback((preset: LayoutPreset) => {
+    // Add each block from the preset to the page
+    preset.blocks.forEach((presetBlock) => {
+      addBlock(presetBlock.component_name, undefined, presetBlock.props)
+    })
+  }, [addBlock])
+
   // Warn before leaving with unsaved changes
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -380,6 +389,7 @@ function PageBuilderContent({
         <TopToolbar
           onSave={handleManualSave}
           onAIEnhance={() => setShowAIEnhancePreview(true)}
+          onPresetSelect={handlePresetSelect}
         />
 
         {/* Main Content Area */}

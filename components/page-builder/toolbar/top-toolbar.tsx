@@ -49,15 +49,18 @@ import { TemplateBrowserModal } from '../modals/template-browser-modal'
 import { SaveTemplateDialog } from '../modals/save-template-dialog'
 import { VersionHistoryPanel } from '../panels/version-history-panel'
 import { SharePreviewDialog } from '../modals/share-preview-dialog'
+import { LayoutPresetsModal } from '../modals/layout-presets-modal'
 import { format } from 'date-fns'
-import { Share2 } from 'lucide-react'
+import { Share2, Layers } from 'lucide-react'
+import type { LayoutPreset } from '@/lib/cms/layout-presets'
 
 interface TopToolbarProps {
   onSave: () => Promise<void>
   onAIEnhance?: () => void
+  onPresetSelect?: (preset: LayoutPreset) => void
 }
 
-export function TopToolbar({ onSave, onAIEnhance }: TopToolbarProps) {
+export function TopToolbar({ onSave, onAIEnhance, onPresetSelect }: TopToolbarProps) {
   const {
     state,
     undo,
@@ -76,6 +79,7 @@ export function TopToolbar({ onSave, onAIEnhance }: TopToolbarProps) {
   const [isSaveTemplateOpen, setIsSaveTemplateOpen] = useState(false)
   const [isVersionHistoryOpen, setIsVersionHistoryOpen] = useState(false)
   const [isSharePreviewOpen, setIsSharePreviewOpen] = useState(false)
+  const [isLayoutPresetsOpen, setIsLayoutPresetsOpen] = useState(false)
 
   const handlePublish = async () => {
     if (!page) return
@@ -258,6 +262,26 @@ export function TopToolbar({ onSave, onAIEnhance }: TopToolbarProps) {
 
         {/* Right section: Actions */}
         <div className="flex items-center gap-2">
+          {/* Layout Presets button */}
+          {onPresetSelect && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsLayoutPresetsOpen(true)}
+                  disabled={isPreviewMode}
+                >
+                  <Layers className="h-4 w-4 mr-2" />
+                  Presets
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                Add pre-built layout sections
+              </TooltipContent>
+            </Tooltip>
+          )}
+
           {/* AI Enhance button */}
           {onAIEnhance && (
             <Tooltip>
@@ -415,6 +439,10 @@ export function TopToolbar({ onSave, onAIEnhance }: TopToolbarProps) {
                   <DropdownMenuSeparator />
                 </>
               )}
+              <DropdownMenuItem onClick={() => setIsLayoutPresetsOpen(true)}>
+                <Layers className="mr-2 h-4 w-4" />
+                Layout presets
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setIsTemplateBrowserOpen(true)}>
                 <Layout className="mr-2 h-4 w-4" />
                 Apply template
@@ -494,6 +522,15 @@ export function TopToolbar({ onSave, onAIEnhance }: TopToolbarProps) {
           onOpenChange={setIsSharePreviewOpen}
           pageId={page.id}
           pageTitle={page.title || 'Untitled Page'}
+        />
+      )}
+
+      {/* Layout Presets Modal */}
+      {onPresetSelect && (
+        <LayoutPresetsModal
+          open={isLayoutPresetsOpen}
+          onOpenChange={setIsLayoutPresetsOpen}
+          onPresetSelect={onPresetSelect}
         />
       )}
     </TooltipProvider>
