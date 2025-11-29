@@ -27,7 +27,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 import {
@@ -184,7 +184,7 @@ export function LayoutPresetsModal({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[900px] max-h-[85vh] flex flex-col overflow-hidden">
+      <DialogContent className="sm:max-w-[900px] h-[90vh] max-h-[700px] flex flex-col overflow-hidden">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Layers className="h-5 w-5 text-primary" />
@@ -196,9 +196,9 @@ export function LayoutPresetsModal({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex flex-col gap-4 flex-1 min-h-0">
-          {/* Search */}
-          <div className="relative">
+        <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+          {/* Search - Fixed at top */}
+          <div className="relative shrink-0 mb-4">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search presets..."
@@ -208,39 +208,41 @@ export function LayoutPresetsModal({
             />
           </div>
 
-          {/* Category Tabs */}
-          <Tabs value={category} onValueChange={(v) => setCategory(v as PresetCategory | 'all')}>
-            <TabsList className="w-full flex flex-wrap h-auto gap-1 bg-transparent p-0">
-              <TabsTrigger
-                value="all"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-              >
-                All
-              </TabsTrigger>
-              {categories.map((cat) => (
+          {/* Category Tabs - Fixed below search */}
+          <div className="shrink-0 mb-4">
+            <Tabs value={category} onValueChange={(v) => setCategory(v as PresetCategory | 'all')}>
+              <TabsList className="w-full flex flex-wrap h-auto gap-1 bg-transparent p-0">
                 <TabsTrigger
-                  key={cat.id}
-                  value={cat.id}
+                  value="all"
                   className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                 >
-                  <span className="mr-1.5">{categoryConfig[cat.id].icon}</span>
-                  {categoryConfig[cat.id].label}
+                  All
                 </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
+                {categories.map((cat) => (
+                  <TabsTrigger
+                    key={cat.id}
+                    value={cat.id}
+                    className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  >
+                    <span className="mr-1.5">{categoryConfig[cat.id].icon}</span>
+                    {categoryConfig[cat.id].label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </div>
 
-          {/* Presets Grid */}
-          <ScrollArea className="flex-1 min-h-0 h-[400px] max-h-[50vh]">
+          {/* Presets Grid - Scrollable area */}
+          <ScrollArea className="flex-1 min-h-0 pr-4">
             {filteredPresets.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-[300px] text-muted-foreground">
+              <div className="flex flex-col items-center justify-center h-[200px] text-muted-foreground">
                 <Layers className="h-12 w-12 mb-4" />
                 <p className="text-lg font-medium">No presets found</p>
                 <p className="text-sm">Try adjusting your search or category filter</p>
               </div>
             ) : category === 'all' && groupedPresets ? (
               // Grouped view for "all" category
-              <div className="space-y-6 p-1">
+              <div className="space-y-6 pb-4">
                 {Object.entries(groupedPresets).map(([cat, presets]) => (
                   <div key={cat}>
                     <div className="flex items-center gap-2 mb-3">
@@ -266,7 +268,7 @@ export function LayoutPresetsModal({
               </div>
             ) : (
               // Flat grid for specific category
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-1">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pb-4">
                 {filteredPresets.map((preset) => (
                   <PresetCard
                     key={preset.id}
@@ -278,46 +280,50 @@ export function LayoutPresetsModal({
                 ))}
               </div>
             )}
+            <ScrollBar className="bg-muted/50" />
           </ScrollArea>
 
-          {/* Selected preset preview */}
+          {/* Selected preset preview - Compact */}
           {selectedPreset && (
-            <div className="rounded-lg border bg-muted/50 p-4">
-              <div className="flex items-start gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-primary">{getPresetIcon(selectedPreset.icon)}</span>
-                    <h4 className="font-medium">{selectedPreset.name}</h4>
-                    <Badge variant="outline" className="text-xs">
+            <div className="shrink-0 rounded-lg border bg-muted/50 p-3 mt-4">
+              <div className="flex items-center gap-3">
+                <span className="text-primary shrink-0">{getPresetIcon(selectedPreset.icon)}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-medium text-sm truncate">{selectedPreset.name}</h4>
+                    <Badge variant="outline" className="text-xs shrink-0">
                       {selectedPreset.blocks.length} blocks
                     </Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-3">
+                  <p className="text-xs text-muted-foreground truncate">
                     {selectedPreset.description}
                   </p>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setPreviewMode(!previewMode)}
-                      className="text-xs"
-                    >
-                      <Eye className="h-3 w-3 mr-1" />
-                      {previewMode ? 'Hide' : 'Show'} Blocks
-                    </Button>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setPreviewMode(!previewMode)}
+                  className="text-xs shrink-0"
+                >
+                  <Eye className="h-3 w-3 mr-1" />
+                  {previewMode ? 'Hide' : 'Show'}
+                </Button>
+              </div>
+              {/* Block preview - expandable */}
+              {previewMode && (
+                <div className="mt-3 pt-3 border-t">
+                  <p className="text-xs font-medium text-muted-foreground mb-2">
+                    Included Blocks:
+                  </p>
+                  <div className="flex flex-wrap gap-1">
+                    {selectedPreset.blocks.map((block, idx) => (
+                      <Badge key={idx} variant="secondary" className="text-xs">
+                        {idx + 1}. {block.component_name}
+                      </Badge>
+                    ))}
                   </div>
                 </div>
-
-                {/* Block preview */}
-                {previewMode && (
-                  <div className="w-48 border-l pl-4">
-                    <p className="text-xs font-medium text-muted-foreground mb-2">
-                      Included Blocks:
-                    </p>
-                    {renderBlockPreview(selectedPreset)}
-                  </div>
-                )}
-              </div>
+              )}
             </div>
           )}
         </div>
