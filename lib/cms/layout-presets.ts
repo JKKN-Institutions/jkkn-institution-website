@@ -79,8 +79,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
           justify: 'between',
           align: 'center',
           gap: 0,
-          wrap: false,
-          padding: { top: 80, bottom: 80, left: 40, right: 40 }
+          wrap: false
         },
         sort_order: 0,
         is_visible: true,
@@ -103,7 +102,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'SectionWrapper',
         props: {
           background: '#f8f9fa',
-          padding: { top: 80, bottom: 80 },
+          padding: '80',
           fullWidth: true
         },
         sort_order: 0,
@@ -135,16 +134,15 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'GridLayout',
         props: {
           columns: 3,
-          gap: 32,
-          padding: { top: 0, bottom: 0, left: 40, right: 40 }
+          gap: 32
         },
         sort_order: 3,
-                is_visible: true,
+        is_visible: true,
         responsive_settings: {
           tablet: { columns: 2 },
           mobile: { columns: 1 }
         },
-                custom_classes: 'max-w-6xl mx-auto'
+        custom_classes: 'max-w-6xl mx-auto px-10'
       }
     ]
   },
@@ -163,7 +161,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'SectionWrapper',
         props: {
           background: 'linear-gradient(135deg, #0b6d41 0%, #085032 100%)',
-          padding: { top: 60, bottom: 60 },
+          padding: '60',
           fullWidth: true
         },
         sort_order: 0,
@@ -202,7 +200,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'SectionWrapper',
         props: {
           background: '#ffffff',
-          padding: { top: 80, bottom: 80 },
+          padding: '80',
           fullWidth: true
         },
         sort_order: 0,
@@ -272,7 +270,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'SectionWrapper',
         props: {
           background: '#f8f9fa',
-          padding: { top: 80, bottom: 80 },
+          padding: '80',
           fullWidth: true
         },
         sort_order: 0,
@@ -339,7 +337,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'SectionWrapper',
         props: {
           background: 'linear-gradient(135deg, #0b6d41 0%, #085032 50%, #0b6d41 100%)',
-          padding: { top: 80, bottom: 80 },
+          padding: '80',
           fullWidth: true
         },
         sort_order: 0,
@@ -377,7 +375,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'SectionWrapper',
         props: {
           background: '#ffffff',
-          padding: { top: 80, bottom: 80 },
+          padding: '80',
           fullWidth: true
         },
         sort_order: 0,
@@ -434,7 +432,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'SectionWrapper',
         props: {
           background: '#ffffff',
-          padding: { top: 80, bottom: 80 },
+          padding: '80',
           fullWidth: true
         },
         sort_order: 0,
@@ -477,7 +475,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'SectionWrapper',
         props: {
           background: '#f8f9fa',
-          padding: { top: 80, bottom: 80 },
+          padding: '80',
           fullWidth: true
         },
         sort_order: 0,
@@ -529,7 +527,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'SectionWrapper',
         props: {
           background: '#ffffff',
-          padding: { top: 80, bottom: 80 },
+          padding: '80',
           fullWidth: true
         },
         sort_order: 0,
@@ -542,15 +540,14 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
           justify: 'between',
           align: 'center',
           gap: 64,
-          wrap: true,
-          padding: { top: 0, bottom: 0, left: 40, right: 40 }
+          wrap: true
         },
         sort_order: 1,
-                is_visible: true,
+        is_visible: true,
         responsive_settings: {
           mobile: { direction: 'column', gap: 32 }
         },
-                custom_classes: 'max-w-6xl mx-auto'
+        custom_classes: 'max-w-6xl mx-auto px-10'
       }
     ]
   },
@@ -565,7 +562,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'SectionWrapper',
         props: {
           background: '#ffffff',
-          padding: { top: 80, bottom: 80 },
+          padding: '80',
           fullWidth: true
         },
         sort_order: 0,
@@ -613,7 +610,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'SectionWrapper',
         props: {
           background: '#ffffff',
-          padding: { top: 80, bottom: 80 },
+          padding: '80',
           fullWidth: true
         },
         sort_order: 0,
@@ -664,7 +661,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'SectionWrapper',
         props: {
           background: '#f8f9fa',
-          padding: { top: 80, bottom: 80 },
+          padding: '80',
           fullWidth: true
         },
         sort_order: 0,
@@ -697,11 +694,10 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'GridLayout',
         props: {
           columns: 3,
-          gap: 32,
-          padding: { top: 0, bottom: 0, left: 40, right: 40 }
+          gap: 32
         },
         sort_order: 3,
-                is_visible: true,
+        is_visible: true,
         responsive_settings: {
           mobile: { columns: 1 }
         },
@@ -724,7 +720,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'SectionWrapper',
         props: {
           background: '#ffffff',
-          padding: { top: 60, bottom: 60 },
+          padding: '60',
           fullWidth: true
         },
         sort_order: 0,

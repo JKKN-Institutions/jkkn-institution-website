@@ -184,7 +184,7 @@ export function LayoutPresetsModal({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[900px] max-h-[90vh] flex flex-col">
+      <DialogContent className="sm:max-w-[900px] max-h-[85vh] flex flex-col overflow-hidden">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Layers className="h-5 w-5 text-primary" />
@@ -231,7 +231,7 @@ export function LayoutPresetsModal({
           </Tabs>
 
           {/* Presets Grid */}
-          <ScrollArea className="flex-1 min-h-[350px]">
+          <ScrollArea className="flex-1 min-h-0">
             {filteredPresets.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-[300px] text-muted-foreground">
                 <Layers className="h-12 w-12 mb-4" />
