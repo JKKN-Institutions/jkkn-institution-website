@@ -231,7 +231,7 @@ export function LayoutPresetsModal({
           </Tabs>
 
           {/* Presets Grid */}
-          <ScrollArea className="flex-1 min-h-0">
+          <ScrollArea className="flex-1 min-h-0 h-[400px] max-h-[50vh]">
             {filteredPresets.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-[300px] text-muted-foreground">
                 <Layers className="h-12 w-12 mb-4" />
