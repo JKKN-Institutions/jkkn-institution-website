@@ -70,25 +70,22 @@ function PaletteItem({ name, displayName, description, icon, previewImage }: Pal
       {...listeners}
       {...attributes}
       className={cn(
-        'group flex items-center gap-3 p-3 rounded-lg border border-border/50 bg-background/50',
-        'hover:border-primary/30 hover:bg-primary/5 cursor-grab transition-all',
+        'group flex items-center gap-2 p-2 rounded-lg border border-border bg-card w-full min-w-0',
+        'hover:border-primary/50 hover:bg-accent cursor-grab transition-all',
         isDragging && 'opacity-50 shadow-lg ring-2 ring-primary'
       )}
     >
-      <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-muted">
+      <div className="flex-shrink-0 flex items-center justify-center h-8 w-8 rounded-md bg-muted">
         <IconComponent className="h-4 w-4 text-muted-foreground" />
       </div>
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 overflow-hidden">
         <p className="font-medium text-sm text-foreground truncate">{displayName}</p>
         {description && (
           <p className="text-xs text-muted-foreground truncate">{description}</p>
         )}
       </div>
-      <div className="flex items-center gap-1">
-        {hasPreview && (
-          <Eye className="h-3.5 w-3.5 text-muted-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-        )}
-        <GripVertical className="h-4 w-4 text-muted-foreground/50" />
+      <div className="flex-shrink-0 opacity-50 group-hover:opacity-100">
+        <GripVertical className="h-4 w-4 text-muted-foreground" />
       </div>
     </div>
   )
@@ -184,9 +181,9 @@ export function ComponentPalette() {
 
   return (
     <TooltipProvider>
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full w-full overflow-hidden">
       {/* Header */}
-      <div className="p-4 border-b border-border">
+      <div className="p-4 border-b border-border flex-shrink-0">
         <h2 className="font-semibold text-foreground mb-3">Components</h2>
 
         {/* Search */}
@@ -205,35 +202,40 @@ export function ComponentPalette() {
       <Tabs
         value={activeCategory}
         onValueChange={(v) => setActiveCategory(v as ComponentCategory | 'all')}
-        className="flex-1 flex flex-col"
+        className="flex-1 flex flex-col min-h-0"
       >
-        <TabsList className="w-full justify-start px-4 py-2 h-auto bg-transparent gap-1">
+        <TabsList className="w-full justify-start px-3 py-2 h-auto bg-transparent gap-1 flex-shrink-0">
           <TabsTrigger
             value="all"
-            className="text-xs px-2 py-1 data-[state=active]:bg-primary/10"
+            className="text-xs px-2.5 py-1.5 data-[state=active]:bg-primary/10"
           >
             All
           </TabsTrigger>
           {(['content', 'media', 'layout'] as ComponentCategory[]).map((category) => {
             const Icon = categoryIcons[category]
             return (
-              <TabsTrigger
-                key={category}
-                value={category}
-                className="text-xs px-2 py-1 data-[state=active]:bg-primary/10 gap-1"
-              >
-                <Icon className="h-3 w-3" />
-                {categoryLabels[category]}
-              </TabsTrigger>
+              <Tooltip key={category}>
+                <TooltipTrigger asChild>
+                  <TabsTrigger
+                    value={category}
+                    className="text-xs px-2.5 py-1.5 data-[state=active]:bg-primary/10"
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                  </TabsTrigger>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" sideOffset={4}>
+                  {categoryLabels[category]}
+                </TooltipContent>
+              </Tooltip>
             )
           })}
         </TabsList>
 
-        <ScrollArea className="flex-1">
-          <div className="p-4">
+        <ScrollArea className="flex-1 min-h-0">
+          <div className="p-3 w-full overflow-hidden">
             {searchQuery ? (
               // Search results
-              <div className="space-y-2">
+              <div className="space-y-2 w-full">
                 {filteredComponents.length === 0 ? (
                   <p className="text-sm text-muted-foreground text-center py-8">
                     No components found for "{searchQuery}"
@@ -253,7 +255,7 @@ export function ComponentPalette() {
               </div>
             ) : activeCategory === 'all' ? (
               // All categories grouped
-              <div className="space-y-6">
+              <div className="space-y-6 w-full">
                 {(['content', 'media', 'layout'] as ComponentCategory[]).map((category) => {
                   const components = groupedComponents[category] || []
                   if (components.length === 0) return null
@@ -261,14 +263,14 @@ export function ComponentPalette() {
                   const Icon = categoryIcons[category]
 
                   return (
-                    <div key={category}>
+                    <div key={category} className="w-full">
                       <div className="flex items-center gap-2 mb-3">
                         <Icon className="h-4 w-4 text-muted-foreground" />
                         <h3 className="text-sm font-medium text-muted-foreground">
                           {categoryLabels[category]}
                         </h3>
                       </div>
-                      <div className="space-y-2">
+                      <div className="space-y-2 w-full">
                         {components.map((comp) => (
                           <PaletteItem
                             key={comp.name}
@@ -286,7 +288,7 @@ export function ComponentPalette() {
               </div>
             ) : (
               // Single category
-              <TabsContent value={activeCategory} className="mt-0 space-y-2">
+              <TabsContent value={activeCategory} className="mt-0 space-y-2 w-full">
                 {filteredComponents.map((comp) => (
                   <PaletteItem
                     key={comp.name}
@@ -304,9 +306,9 @@ export function ComponentPalette() {
       </Tabs>
 
       {/* Help text */}
-      <div className="p-4 border-t border-border bg-muted/30">
+      <div className="p-3 border-t border-border bg-muted/30 flex-shrink-0">
         <p className="text-xs text-muted-foreground">
-          Drag components to the canvas or click to add at the bottom
+          Drag to add
         </p>
       </div>
     </div>

@@ -12,7 +12,7 @@ export default async function PublicLayout({
   const navigation = await getPublicNavigation()
 
   return (
-    <div className='min-h-screen bg-cream flex flex-col'>
+    <div className='min-h-screen bg-cream flex flex-col relative'>
       {/* Site Header with CMS Navigation - Fixed glassmorphic */}
       <SiteHeader navigation={navigation} />
 

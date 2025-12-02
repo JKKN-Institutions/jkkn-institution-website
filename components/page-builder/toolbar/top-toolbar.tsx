@@ -31,7 +31,6 @@ import {
   Settings,
   Loader2,
   ExternalLink,
-  Sparkles,
   Clock,
   ChevronDown,
   XCircle,
@@ -56,13 +55,12 @@ import type { LayoutPreset } from '@/lib/cms/layout-presets'
 
 interface TopToolbarProps {
   onSave: () => Promise<void>
-  onAIEnhance?: () => void
   onPresetSelect?: (preset: LayoutPreset) => void
   isNavigatorOpen?: boolean
   onNavigatorToggle?: () => void
 }
 
-export function TopToolbar({ onSave, onAIEnhance, onPresetSelect, isNavigatorOpen, onNavigatorToggle }: TopToolbarProps) {
+export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigatorToggle }: TopToolbarProps) {
   const {
     state,
     undo,
@@ -299,26 +297,6 @@ export function TopToolbar({ onSave, onAIEnhance, onPresetSelect, isNavigatorOpe
               </TooltipTrigger>
               <TooltipContent>
                 Add pre-built layout sections
-              </TooltipContent>
-            </Tooltip>
-          )}
-
-          {/* AI Enhance button */}
-          {onAIEnhance && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={onAIEnhance}
-                  className="bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20 hover:border-primary/40 hover:from-primary/20 hover:to-secondary/20"
-                >
-                  <Sparkles className="h-4 w-4 mr-2 text-primary" />
-                  AI Enhance
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                Apply AI-powered glassmorphism design
               </TooltipContent>
             </Tooltip>
           )}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import {
@@ -13,8 +14,6 @@ import {
   Instagram,
   Linkedin,
   Youtube,
-  GraduationCap,
-  Sparkles,
 } from 'lucide-react'
 
 export interface NavItem {
@@ -100,16 +99,14 @@ export function SiteHeader({ navigation }: SiteHeaderProps) {
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group relative z-10">
-              <div className={cn(
-                'relative w-11 h-11 lg:w-12 lg:h-12 rounded-xl overflow-hidden transition-transform duration-300 group-hover:scale-105',
-                'bg-gradient-to-br from-primary via-primary to-emerald-600',
-                'shadow-lg shadow-primary/30'
-              )}>
-                {/* Animated shine effect */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <GraduationCap className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
-                </div>
+              <div className="relative w-11 h-11 lg:w-12 lg:h-12 transition-transform duration-300 group-hover:scale-105">
+                <Image
+                  src="https://jkkn.ac.in/wp-content/uploads/2023/04/Untitled-design-2023-03-13T105521.479.png"
+                  alt="JKKN Institution Logo"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
               <div className="hidden sm:block">
                 <p className="text-lg lg:text-xl font-bold text-gray-900 tracking-tight">
@@ -179,21 +176,7 @@ export function SiteHeader({ navigation }: SiteHeaderProps) {
                 href="/admin"
                 className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary transition-colors"
               >
-                Staff Login
-              </Link>
-              <Link
-                href="/admissions/apply"
-                className={cn(
-                  'group relative px-6 py-2.5 rounded-xl font-semibold text-sm overflow-hidden transition-all duration-300',
-                  'bg-gradient-to-r from-secondary via-yellow-400 to-secondary bg-[length:200%_100%]',
-                  'text-gray-900 shadow-lg shadow-secondary/30',
-                  'hover:bg-[100%_0] hover:shadow-xl hover:shadow-secondary/40 hover:scale-105'
-                )}
-              >
-                <span className="relative z-10 flex items-center gap-2">
-                  Apply Now
-                  <Sparkles className="w-4 h-4" />
-                </span>
+                Admin Login
               </Link>
             </div>
 
@@ -313,19 +296,12 @@ export function SiteHeader({ navigation }: SiteHeaderProps) {
               </nav>
 
               {/* Mobile CTA */}
-              <div className="mt-8 space-y-3">
-                <Link
-                  href="/admissions/apply"
-                  className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-gradient-to-r from-secondary via-yellow-400 to-secondary bg-[length:200%_100%] text-gray-900 font-semibold rounded-xl shadow-lg shadow-secondary/30 hover:bg-[100%_0] transition-all duration-300"
-                >
-                  Apply Now
-                  <Sparkles className="w-4 h-4" />
-                </Link>
+              <div className="mt-8">
                 <Link
                   href="/admin"
                   className="block w-full px-6 py-3.5 border-2 border-gray-200 text-gray-700 font-medium rounded-xl text-center hover:border-primary hover:text-primary transition-all duration-300"
                 >
-                  Staff Login
+                  Admin Login
                 </Link>
               </div>
             </div>

@@ -60,7 +60,8 @@
       "Bash(npm ls:*)",
       "Skill(advanced-debugging)",
       "mcp__supabase__get_logs",
-      "Skill(supabase-expert)"
+      "Skill(supabase-expert)",
+      "Bash(tasklist:*)"
     ],
     "deny": [],
     "ask": [],

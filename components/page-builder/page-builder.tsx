@@ -25,7 +25,6 @@ import { updatePageContent, updatePageSeo, updatePageFab } from '@/app/actions/c
 import { toast } from 'sonner'
 import type { BlockData } from '@/lib/cms/registry-types'
 import { blocksToPageBlocks, type PageBlock } from '@/lib/cms/registry-types'
-import type { EnhancedBlock } from '@/lib/cms/design-enhancer'
 import { cn } from '@/lib/utils'
 import { getComponentEntry, supportsChildren } from '@/lib/cms/component-registry'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -33,13 +32,6 @@ import { Settings, Search, MessageCircle } from 'lucide-react'
 import type { SeoData } from '@/lib/utils/seo-analyzer'
 import type { LayoutPreset } from '@/lib/cms/layout-presets'
 import { OfflineBanner } from '@/lib/hooks/use-network-status'
-import dynamic from 'next/dynamic'
-
-// Lazy load the enhanced preview component
-const EnhancedPreview = dynamic(
-  () => import('./preview/enhanced-preview').then((mod) => mod.EnhancedPreview),
-  { ssr: false }
-)
 
 // Auto-save debounce delay in milliseconds
 const AUTO_SAVE_DELAY = 3000
@@ -125,7 +117,6 @@ function PageBuilderContent({
   const [rightPanelTab, setRightPanelTab] = useState<'properties' | 'seo' | 'fab'>('properties')
   const [isSavingSeo, setIsSavingSeo] = useState(false)
   const [isSavingFab, setIsSavingFab] = useState(false)
-  const [showAIEnhancePreview, setShowAIEnhancePreview] = useState(false)
   const [isNavigatorOpen, setIsNavigatorOpen] = useState(false)
   const [autoSaveFailCount, setAutoSaveFailCount] = useState(0)
 
@@ -570,7 +561,6 @@ function PageBuilderContent({
         {/* Top Toolbar */}
         <TopToolbar
           onSave={handleManualSave}
-          onAIEnhance={() => setShowAIEnhancePreview(true)}
           onPresetSelect={handlePresetSelect}
           isNavigatorOpen={isNavigatorOpen}
           onNavigatorToggle={() => setIsNavigatorOpen(!isNavigatorOpen)}
@@ -580,7 +570,7 @@ function PageBuilderContent({
         <div className="flex flex-1 overflow-hidden">
           {/* Left Sidebar - Component Palette */}
           {!isPreviewMode && (
-            <div className="w-[280px] border-r border-border bg-card overflow-y-auto">
+            <div className="w-[280px] min-w-[280px] max-w-[280px] border-r border-border bg-card flex flex-col overflow-hidden">
               <ComponentPalette />
             </div>
           )}
@@ -677,45 +667,6 @@ function PageBuilderContent({
 
       {/* Offline Banner */}
       <OfflineBanner message="You are offline. Changes will be saved when you reconnect." />
-
-      {/* AI Enhancement Preview Modal */}
-      {showAIEnhancePreview && (
-        <EnhancedPreview
-          blocks={blocksToPageBlocks(blocks)}
-          onApplyEnhancements={(enhancedBlocks: EnhancedBlock[]) => {
-            // Apply enhanced custom classes to blocks
-            enhancedBlocks.forEach((enhanced) => {
-              const existingBlock = blocks.find((b) => b.id === enhanced.id)
-              if (existingBlock) {
-                // Merge enhanced classes with existing
-                const enhancedClasses = [
-                  enhanced.wrapperClassName,
-                  enhanced.innerClassName,
-                  enhanced.animations,
-                ].filter(Boolean).join(' ')
-
-                // Prepare updated props with enhancement metadata
-                const updatedProps = {
-                  ...(enhanced.enhancedProps || {}),
-                  // Store glassmorphism metadata for reference
-                  _enhancementApplied: true,
-                  _backgroundGradient: enhanced.backgroundGradient,
-                }
-
-                // Update the block with enhanced props AND custom_classes
-                updateBlockFull(existingBlock.id, {
-                  props: updatedProps,
-                  custom_classes: enhancedClasses,
-                })
-              }
-            })
-
-            toast.success('AI enhancements applied! Don\'t forget to save.')
-            setShowAIEnhancePreview(false)
-          }}
-          onClose={() => setShowAIEnhancePreview(false)}
-        />
-      )}
     </DndContext>
   )
 }
