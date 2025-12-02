@@ -183,8 +183,9 @@ export function PermissionMatrixGrid({ roles, onPermissionToggle }: PermissionMa
 
   return (
     <TooltipProvider>
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
+      <div className="w-full max-w-full overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-border">
               <th className="sticky left-0 bg-card z-10 text-left p-3 min-w-[200px]">
@@ -311,7 +312,8 @@ export function PermissionMatrixGrid({ roles, onPermissionToggle }: PermissionMa
               </Fragment>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
 
       {/* Legend */}

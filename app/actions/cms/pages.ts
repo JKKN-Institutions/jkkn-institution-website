@@ -342,6 +342,255 @@ export async function getPageBySlug(slug: string): Promise<PageWithBlocks | null
 }
 
 /**
+ * Page visibility result for public rendering
+ */
+export type PageVisibilityResult = {
+  page: PageWithBlocks | null
+  visibility: PageVisibility | null
+  requiresAuth: boolean
+  requiresPassword: boolean
+  status: 'found' | 'not_found' | 'not_published' | 'requires_auth' | 'requires_password'
+}
+
+/**
+ * Get a page by slug with visibility information (for public rendering)
+ * This returns the page along with visibility requirements
+ */
+export async function getPageWithVisibility(slug: string): Promise<PageVisibilityResult> {
+  const supabase = await createServerSupabaseClient()
+
+  let query = supabase
+    .from('cms_pages')
+    .select(
+      `
+      *,
+      cms_page_blocks (
+        id,
+        component_name,
+        props,
+        sort_order,
+        parent_block_id,
+        is_visible,
+        responsive_settings,
+        custom_css,
+        custom_classes
+      ),
+      cms_seo_metadata (*),
+      cms_page_fab_config (*)
+    `
+    )
+
+  // For homepage (empty slug), query by is_homepage flag
+  if (slug === '') {
+    query = query.eq('is_homepage', true)
+  } else {
+    query = query.eq('slug', slug)
+  }
+
+  const { data, error } = await query.single()
+
+  if (error) {
+    // PGRST116 = "Results contain 0 rows"
+    if (error.code === 'PGRST116') {
+      return { page: null, visibility: null, requiresAuth: false, requiresPassword: false, status: 'not_found' }
+    }
+    console.error('Error fetching page with visibility:', error)
+    return { page: null, visibility: null, requiresAuth: false, requiresPassword: false, status: 'not_found' }
+  }
+
+  // Check if page is published
+  if (data.status !== 'published') {
+    return { page: null, visibility: null, requiresAuth: false, requiresPassword: false, status: 'not_published' }
+  }
+
+  // Sort and filter blocks
+  if (data?.cms_page_blocks) {
+    data.cms_page_blocks = data.cms_page_blocks
+      .filter((b: { is_visible: boolean | null }) => b.is_visible !== false)
+      .sort((a: { sort_order: number }, b: { sort_order: number }) => a.sort_order - b.sort_order)
+  }
+
+  const page = data as unknown as PageWithBlocks
+  const visibility = page.visibility
+
+  // Handle different visibility types
+  if (visibility === 'public') {
+    return { page, visibility, requiresAuth: false, requiresPassword: false, status: 'found' }
+  }
+
+  if (visibility === 'private') {
+    // Check if user is authenticated
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      return { page, visibility, requiresAuth: false, requiresPassword: false, status: 'found' }
+    }
+    return { page: null, visibility, requiresAuth: true, requiresPassword: false, status: 'requires_auth' }
+  }
+
+  if (visibility === 'password_protected') {
+    // Return metadata but indicate password is required
+    // The actual page content should not be returned until password is verified
+    return { page: null, visibility, requiresAuth: false, requiresPassword: true, status: 'requires_password' }
+  }
+
+  return { page, visibility, requiresAuth: false, requiresPassword: false, status: 'found' }
+}
+
+/**
+ * Verify password for a password-protected page
+ */
+export async function verifyPagePassword(slug: string, password: string): Promise<{ success: boolean; page?: PageWithBlocks }> {
+  const supabase = await createServerSupabaseClient()
+
+  let query = supabase
+    .from('cms_pages')
+    .select(
+      `
+      id,
+      password_hash,
+      status,
+      visibility
+    `
+    )
+
+  // For homepage (empty slug), query by is_homepage flag
+  if (slug === '') {
+    query = query.eq('is_homepage', true)
+  } else {
+    query = query.eq('slug', slug)
+  }
+
+  const { data, error } = await query.single()
+
+  if (error || !data) {
+    return { success: false }
+  }
+
+  // Page must be published and password protected
+  if (data.status !== 'published' || data.visibility !== 'password_protected') {
+    return { success: false }
+  }
+
+  // Simple password comparison (in production, use bcrypt or similar)
+  // For now, we'll do a simple hash comparison
+  const crypto = await import('crypto')
+  const inputHash = crypto.createHash('sha256').update(password).digest('hex')
+
+  if (data.password_hash !== inputHash) {
+    return { success: false }
+  }
+
+  // Password verified - fetch full page content
+  const result = await getPageBySlugInternal(slug)
+  if (result) {
+    return { success: true, page: result }
+  }
+
+  return { success: false }
+}
+
+/**
+ * Internal function to get page by slug without visibility filter
+ */
+async function getPageBySlugInternal(slug: string): Promise<PageWithBlocks | null> {
+  const supabase = await createServerSupabaseClient()
+
+  let query = supabase
+    .from('cms_pages')
+    .select(
+      `
+      *,
+      cms_page_blocks (
+        id,
+        component_name,
+        props,
+        sort_order,
+        parent_block_id,
+        is_visible,
+        responsive_settings,
+        custom_css,
+        custom_classes
+      ),
+      cms_seo_metadata (*),
+      cms_page_fab_config (*)
+    `
+    )
+    .eq('status', 'published')
+
+  // For homepage (empty slug), query by is_homepage flag
+  if (slug === '') {
+    query = query.eq('is_homepage', true)
+  } else {
+    query = query.eq('slug', slug)
+  }
+
+  const { data, error } = await query.single()
+
+  if (error) {
+    return null
+  }
+
+  // Sort and filter blocks
+  if (data?.cms_page_blocks) {
+    data.cms_page_blocks = data.cms_page_blocks
+      .filter((b: { is_visible: boolean | null }) => b.is_visible !== false)
+      .sort((a: { sort_order: number }, b: { sort_order: number }) => a.sort_order - b.sort_order)
+  }
+
+  return data as unknown as PageWithBlocks
+}
+
+/**
+ * Set password for a page (for use in page settings)
+ */
+export async function setPagePassword(pageId: string, password: string): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user and check permission
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  const hasPermission = await checkPermission(user.id, 'cms:pages:edit')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to edit pages' }
+  }
+
+  // Hash the password
+  const crypto = await import('crypto')
+  const passwordHash = crypto.createHash('sha256').update(password).digest('hex')
+
+  const { error } = await supabase
+    .from('cms_pages')
+    .update({
+      password_hash: passwordHash,
+      visibility: 'password_protected',
+      updated_by: user.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', pageId)
+
+  if (error) {
+    console.error('Error setting page password:', error)
+    return { success: false, message: 'Failed to set page password' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'update',
+    module: 'cms',
+    resourceType: 'page',
+    resourceId: pageId,
+    metadata: { action: 'set_password' },
+  })
+
+  revalidatePath('/admin/content/pages')
+  return { success: true, message: 'Page password set successfully' }
+}
+
+/**
  * Create a new page
  */
 export async function createPage(

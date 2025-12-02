@@ -1,0 +1,594 @@
+/* ============================================
+   Page Builder Animation Keyframes
+   ============================================
+   These animations are used by the MotionControls
+   component in the page builder for entrance,
+   hover, and scroll effects.
+   ============================================ */
+
+/* ============================================
+   Entrance Animations
+   ============================================ */
+
+/* Fade Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Zoom Animations */
+@keyframes zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes zoom-out {
+  from {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Slide Animations */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-right {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Flip Animations */
+@keyframes flip-x {
+  from {
+    opacity: 0;
+    transform: perspective(400px) rotateX(90deg);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(400px) rotateX(0);
+  }
+}
+
+@keyframes flip-y {
+  from {
+    opacity: 0;
+    transform: perspective(400px) rotateY(90deg);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(400px) rotateY(0);
+  }
+}
+
+/* Rotate Animation */
+@keyframes rotate-in {
+  from {
+    opacity: 0;
+    transform: rotate(-180deg) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+/* Bounce Entrance Animation */
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ============================================
+   Hover Animations
+   ============================================ */
+
+/* Grow Effect */
+@keyframes grow {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+/* Shrink Effect */
+@keyframes shrink {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.95);
+  }
+}
+
+/* Pulse Effect */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Float Effect */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Shake Effect */
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+/* Rotate Continuous */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Bounce Continuous */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(-15px);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+/* Glow Effect */
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(var(--primary), 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(var(--primary), 0.6), 0 0 30px rgba(var(--primary), 0.4);
+  }
+}
+
+/* ============================================
+   Scroll Animations
+   ============================================ */
+
+/* Parallax (handled via JS, but base styles) */
+@keyframes parallax {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50px);
+  }
+}
+
+/* Fade on Scroll */
+@keyframes fade-on-scroll {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Slide on Scroll */
+@keyframes slide-on-scroll {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scale on Scroll */
+@keyframes scale-on-scroll {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Rotate on Scroll */
+@keyframes rotate-on-scroll {
+  from {
+    opacity: 0;
+    transform: rotate(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0);
+  }
+}
+
+/* ============================================
+   Utility Animation Classes
+   ============================================ */
+
+/* Entrance Animation Classes */
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out both;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out both;
+}
+
+.animate-fade-in-down {
+  animation: fade-in-down 0.5s ease-out both;
+}
+
+.animate-fade-in-left {
+  animation: fade-in-left 0.5s ease-out both;
+}
+
+.animate-fade-in-right {
+  animation: fade-in-right 0.5s ease-out both;
+}
+
+.animate-zoom-in {
+  animation: zoom-in 0.5s ease-out both;
+}
+
+.animate-zoom-out {
+  animation: zoom-out 0.5s ease-out both;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out both;
+}
+
+.animate-slide-down {
+  animation: slide-down 0.5s ease-out both;
+}
+
+.animate-slide-left {
+  animation: slide-left 0.5s ease-out both;
+}
+
+.animate-slide-right {
+  animation: slide-right 0.5s ease-out both;
+}
+
+.animate-flip-x {
+  animation: flip-x 0.6s ease-out both;
+}
+
+.animate-flip-y {
+  animation: flip-y 0.6s ease-out both;
+}
+
+.animate-rotate-in {
+  animation: rotate-in 0.6s ease-out both;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.6s ease-out both;
+}
+
+/* Hover Animation Classes */
+.animate-grow {
+  animation: grow 0.3s ease-out forwards;
+}
+
+.animate-shrink {
+  animation: shrink 0.3s ease-out forwards;
+}
+
+.animate-pulse {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+.animate-rotate {
+  animation: rotate 2s linear infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Scroll Animation Classes */
+.animate-parallax {
+  animation: parallax 1s linear both;
+}
+
+.animate-fade-on-scroll {
+  animation: fade-on-scroll 0.5s ease-out both;
+}
+
+.animate-slide-on-scroll {
+  animation: slide-on-scroll 0.5s ease-out both;
+}
+
+.animate-scale-on-scroll {
+  animation: scale-on-scroll 0.5s ease-out both;
+}
+
+.animate-rotate-on-scroll {
+  animation: rotate-on-scroll 0.5s ease-out both;
+}
+
+/* ============================================
+   Animation Delay Utilities
+   ============================================ */
+
+.animation-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animation-delay-300 {
+  animation-delay: 0.3s;
+}
+
+.animation-delay-400 {
+  animation-delay: 0.4s;
+}
+
+.animation-delay-500 {
+  animation-delay: 0.5s;
+}
+
+.animation-delay-700 {
+  animation-delay: 0.7s;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+/* ============================================
+   Animation Duration Utilities
+   ============================================ */
+
+.animation-duration-150 {
+  animation-duration: 0.15s;
+}
+
+.animation-duration-200 {
+  animation-duration: 0.2s;
+}
+
+.animation-duration-300 {
+  animation-duration: 0.3s;
+}
+
+.animation-duration-500 {
+  animation-duration: 0.5s;
+}
+
+.animation-duration-700 {
+  animation-duration: 0.7s;
+}
+
+.animation-duration-1000 {
+  animation-duration: 1s;
+}
+
+.animation-duration-1500 {
+  animation-duration: 1.5s;
+}
+
+.animation-duration-2000 {
+  animation-duration: 2s;
+}
+
+/* ============================================
+   Animation Easing Utilities
+   ============================================ */
+
+.animation-ease-linear {
+  animation-timing-function: linear;
+}
+
+.animation-ease-in {
+  animation-timing-function: ease-in;
+}
+
+.animation-ease-out {
+  animation-timing-function: ease-out;
+}
+
+.animation-ease-in-out {
+  animation-timing-function: ease-in-out;
+}
+
+.animation-ease-spring {
+  animation-timing-function: cubic-bezier(0.5, 1.5, 0.5, 1);
+}
+
+.animation-ease-bounce {
+  animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ============================================
+   Intersection Observer Animation Triggers
+   ============================================ */
+
+/* Elements with this class are hidden until they enter viewport */
+.animate-on-scroll {
+  opacity: 0;
+}
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+}
+
+/* Specific animation triggers */
+.animate-on-scroll.fade-in-up.is-visible {
+  animation: fade-in-up 0.6s ease-out both;
+}
+
+.animate-on-scroll.fade-in-down.is-visible {
+  animation: fade-in-down 0.6s ease-out both;
+}
+
+.animate-on-scroll.fade-in-left.is-visible {
+  animation: fade-in-left 0.6s ease-out both;
+}
+
+.animate-on-scroll.fade-in-right.is-visible {
+  animation: fade-in-right 0.6s ease-out both;
+}
+
+.animate-on-scroll.zoom-in.is-visible {
+  animation: zoom-in 0.6s ease-out both;
+}
+
+.animate-on-scroll.slide-up.is-visible {
+  animation: slide-up 0.6s ease-out both;
+}
+
+/* ============================================
+   Reduced Motion Support
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -87,8 +87,9 @@ export function PageCreateForm({ parentPages, templates }: PageCreateFormProps) 
     if (state.success && state.data) {
       toast.success(state.message || 'Page created successfully!')
       const pageId = (state.data as { id: string }).id
+      // Redirect to standalone editor (without admin panel)
       setTimeout(() => {
-        router.push(`/admin/content/pages/${pageId}/edit`)
+        router.push(`/editor/${pageId}`)
       }, 1500)
     }
   }, [state.success, state.message, state.data, router])
@@ -339,7 +340,7 @@ export function PageCreateForm({ parentPages, templates }: PageCreateFormProps) 
         <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
         <AlertDescription className="text-blue-900 dark:text-blue-200">
           <strong className="font-semibold">Next step:</strong> After creating the page, you&apos;ll be
-          redirected to the visual page builder where you can add content blocks.
+          redirected to the full-screen visual page builder where you can add content blocks.
         </AlertDescription>
       </Alert>
     </form>

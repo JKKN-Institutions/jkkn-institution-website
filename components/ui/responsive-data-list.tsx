@@ -59,7 +59,7 @@ export function ResponsiveDataList<T>({
   }
 
   return (
-    <div className={cn('w-full', className)}>
+    <div className={cn('w-full max-w-full overflow-hidden', className)}>
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full">

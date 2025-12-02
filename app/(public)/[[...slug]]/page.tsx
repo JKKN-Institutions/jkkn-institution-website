@@ -1,11 +1,12 @@
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { Metadata } from 'next'
-import { getPageBySlug } from '@/app/actions/cms/pages'
+import { getPageBySlug, getPageWithVisibility } from '@/app/actions/cms/pages'
 import { PageRenderer } from '@/components/cms-blocks/page-renderer'
 import { PageFab } from '@/components/public/page-fab'
 import { Skeleton } from '@/components/ui/skeleton'
 import { LandingPage } from '@/components/public/landing-page'
+import { PasswordProtectedPage, PrivatePageGate } from '@/components/public/password-protected-page'
 
 // Force dynamic rendering since we fetch from database
 export const dynamic = 'force-dynamic'
@@ -32,6 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
   }
 
+  // Use the standard getPageBySlug for metadata (only returns public pages)
   const page = await getPageBySlug(slugPath)
 
   if (!page) {
@@ -89,10 +91,10 @@ export default async function DynamicPage({ params }: PageProps) {
 
   // For homepage (empty slug), first try to get CMS content, otherwise show landing page
   if (!slugPath) {
-    const page = await getPageBySlug('')
+    const result = await getPageWithVisibility('')
 
     // If no CMS homepage exists, show the beautiful landing page
-    if (!page) {
+    if (result.status === 'not_found') {
       return (
         <Suspense fallback={<LandingPageSkeleton />}>
           <LandingPage />
@@ -100,7 +102,25 @@ export default async function DynamicPage({ params }: PageProps) {
       )
     }
 
-    // If CMS homepage exists, render it
+    // Handle visibility for homepage
+    if (result.status === 'requires_auth') {
+      return <PrivatePageGate />
+    }
+
+    if (result.status === 'requires_password') {
+      return <PasswordProtectedPage slug="" pageTitle="Homepage" />
+    }
+
+    if (!result.page) {
+      return (
+        <Suspense fallback={<LandingPageSkeleton />}>
+          <LandingPage />
+        </Suspense>
+      )
+    }
+
+    // If CMS homepage exists and is accessible, render it
+    const page = result.page
     const blocks = page.cms_page_blocks.map((block) => ({
       id: block.id,
       component_name: block.component_name,
@@ -124,8 +144,24 @@ export default async function DynamicPage({ params }: PageProps) {
     )
   }
 
-  // Fetch the page for other routes
-  const page = await getPageBySlug(slugPath)
+  // Fetch the page with visibility check for other routes
+  const result = await getPageWithVisibility(slugPath)
+
+  // Handle different visibility statuses
+  if (result.status === 'not_found' || result.status === 'not_published') {
+    notFound()
+  }
+
+  if (result.status === 'requires_auth') {
+    return <PrivatePageGate />
+  }
+
+  if (result.status === 'requires_password') {
+    return <PasswordProtectedPage slug={slugPath} />
+  }
+
+  // Page is accessible
+  const page = result.page
 
   if (!page) {
     notFound()

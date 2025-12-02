@@ -129,8 +129,8 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'subtitleFontStyle', type: 'enum', label: 'Subtitle Font Style', options: ['normal', 'italic'] },
       // Background settings
       { name: 'backgroundType', type: 'enum', label: 'Background Type', options: ['image', 'video', 'gradient'] },
-      { name: 'backgroundImage', type: 'url', label: 'Background Image URL' },
-      { name: 'backgroundVideo', type: 'url', label: 'Background Video URL' },
+      { name: 'backgroundImage', type: 'image', label: 'Background Image' },
+      { name: 'backgroundVideo', type: 'video', label: 'Background Video' },
       { name: 'alignment', type: 'enum', label: 'Alignment', options: ['left', 'center', 'right'] },
       { name: 'overlay', type: 'boolean', label: 'Show Overlay' },
       { name: 'overlayOpacity', type: 'number', label: 'Overlay Opacity', min: 0, max: 1, step: 0.1 },
@@ -202,6 +202,14 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: false,
     keywords: ['cta', 'action', 'button', 'conversion'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title', required: true },
+      { name: 'description', type: 'string', label: 'Description', multiline: true },
+      { name: 'buttons', type: 'array', label: 'Buttons', description: 'Add CTA buttons' },
+      { name: 'alignment', type: 'enum', label: 'Alignment', options: ['left', 'center', 'right'] },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'variant', type: 'enum', label: 'Style Variant', options: ['default', 'gradient', 'outlined', 'minimal'] },
+    ],
   },
 
   Testimonials: {
@@ -221,6 +229,15 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: false,
     keywords: ['testimonial', 'review', 'quote', 'feedback'],
+    editableProps: [
+      { name: 'testimonials', type: 'array', label: 'Testimonials', description: 'Add testimonials with name, role, company, image, and content' },
+      { name: 'layout', type: 'enum', label: 'Layout', options: ['carousel', 'grid', 'single'] },
+      { name: 'columns', type: 'number', label: 'Columns (Grid)', min: 1, max: 4 },
+      { name: 'autoplay', type: 'boolean', label: 'Auto-play (Carousel)' },
+      { name: 'autoplayInterval', type: 'number', label: 'Interval (ms)', min: 1000, max: 10000 },
+      { name: 'showRating', type: 'boolean', label: 'Show Star Rating' },
+      { name: 'showAvatar', type: 'boolean', label: 'Show Avatar' },
+    ],
   },
 
   FAQAccordion: {
@@ -239,6 +256,14 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: false,
     keywords: ['faq', 'accordion', 'questions', 'help'],
+    editableProps: [
+      { name: 'faqs', type: 'array', label: 'FAQ Items', description: 'Add questions and answers' },
+      { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'searchEnabled', type: 'boolean', label: 'Enable Search' },
+      { name: 'searchPlaceholder', type: 'string', label: 'Search Placeholder' },
+      { name: 'allowMultiple', type: 'boolean', label: 'Allow Multiple Open' },
+      { name: 'defaultOpen', type: 'number', label: 'Default Open Index', min: -1, description: '-1 for none' },
+    ],
   },
 
   TabsBlock: {
@@ -256,6 +281,13 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: false,
     keywords: ['tabs', 'tabbed', 'sections'],
+    editableProps: [
+      { name: 'tabs', type: 'array', label: 'Tabs', description: 'Add tabs with title and content' },
+      { name: 'defaultTab', type: 'number', label: 'Default Active Tab', min: 0 },
+      { name: 'variant', type: 'enum', label: 'Style', options: ['default', 'underline', 'pills', 'boxed'] },
+      { name: 'orientation', type: 'enum', label: 'Orientation', options: ['horizontal', 'vertical'] },
+      { name: 'fullWidth', type: 'boolean', label: 'Full Width Tabs' },
+    ],
   },
 
   Timeline: {
@@ -273,6 +305,14 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: false,
     keywords: ['timeline', 'history', 'events', 'milestones'],
+    editableProps: [
+      { name: 'events', type: 'array', label: 'Timeline Events', description: 'Add events with date, title, description' },
+      { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'alternating', type: 'boolean', label: 'Alternating Layout' },
+      { name: 'lineColor', type: 'color', label: 'Line Color' },
+      { name: 'showConnectors', type: 'boolean', label: 'Show Connectors' },
+      { name: 'animated', type: 'boolean', label: 'Animate on Scroll' },
+    ],
   },
 
   PricingTables: {
@@ -290,6 +330,15 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: false,
     keywords: ['pricing', 'plans', 'subscription', 'compare'],
+    editableProps: [
+      { name: 'plans', type: 'array', label: 'Pricing Plans', description: 'Add plans with name, price, features' },
+      { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'description', type: 'string', label: 'Description', multiline: true },
+      { name: 'columns', type: 'number', label: 'Columns', min: 1, max: 4 },
+      { name: 'currency', type: 'string', label: 'Currency Symbol', placeholder: '₹' },
+      { name: 'billingPeriod', type: 'string', label: 'Billing Period', placeholder: '/month' },
+      { name: 'highlightPopular', type: 'boolean', label: 'Highlight Popular Plan' },
+    ],
   },
 
   // ==========================================
@@ -308,17 +357,19 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       src: '',
       alt: '',
       objectFit: 'cover',
+      alignment: 'center',
       lightbox: false,
     },
     supportsChildren: false,
     keywords: ['image', 'photo', 'picture'],
     editableProps: [
-      { name: 'src', type: 'url', label: 'Image URL', required: true },
+      { name: 'src', type: 'image', label: 'Image', required: true },
       { name: 'alt', type: 'string', label: 'Alt Text', required: true },
       { name: 'caption', type: 'string', label: 'Caption' },
       { name: 'width', type: 'number', label: 'Width (px)' },
       { name: 'height', type: 'number', label: 'Height (px)' },
       { name: 'objectFit', type: 'enum', label: 'Object Fit', options: ['cover', 'contain', 'fill', 'none'] },
+      { name: 'alignment', type: 'enum', label: 'Alignment', options: ['left', 'center', 'right'] },
       { name: 'link', type: 'url', label: 'Link URL' },
       { name: 'lightbox', type: 'boolean', label: 'Enable Lightbox' },
     ],
@@ -342,6 +393,15 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: false,
     keywords: ['gallery', 'images', 'photos', 'grid'],
+    editableProps: [
+      { name: 'images', type: 'array', label: 'Images', description: 'Add images with src, alt, and caption' },
+      { name: 'layout', type: 'enum', label: 'Layout', options: ['grid', 'masonry', 'justified'] },
+      { name: 'columns', type: 'number', label: 'Columns', min: 1, max: 6 },
+      { name: 'gap', type: 'number', label: 'Gap (px)', min: 0, max: 32 },
+      { name: 'lightbox', type: 'boolean', label: 'Enable Lightbox' },
+      { name: 'showCaptions', type: 'boolean', label: 'Show Captions' },
+      { name: 'aspectRatio', type: 'enum', label: 'Aspect Ratio', options: ['auto', '1/1', '4/3', '16/9', '3/2'] },
+    ],
   },
 
   VideoPlayer: {
@@ -364,6 +424,17 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: false,
     keywords: ['video', 'youtube', 'vimeo', 'embed'],
+    editableProps: [
+      { name: 'src', type: 'url', label: 'Video URL', required: true, description: 'YouTube/Vimeo URL or video file' },
+      { name: 'provider', type: 'enum', label: 'Provider', options: ['youtube', 'vimeo', 'self-hosted'] },
+      { name: 'title', type: 'string', label: 'Title' },
+      { name: 'autoplay', type: 'boolean', label: 'Auto-play' },
+      { name: 'controls', type: 'boolean', label: 'Show Controls' },
+      { name: 'loop', type: 'boolean', label: 'Loop' },
+      { name: 'muted', type: 'boolean', label: 'Start Muted' },
+      { name: 'aspectRatio', type: 'enum', label: 'Aspect Ratio', options: ['16/9', '4/3', '1/1', '9/16'] },
+      { name: 'poster', type: 'image', label: 'Poster Image' },
+    ],
   },
 
   ImageCarousel: {
@@ -384,6 +455,16 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: false,
     keywords: ['carousel', 'slider', 'slideshow'],
+    editableProps: [
+      { name: 'images', type: 'array', label: 'Carousel Images', description: 'Add images with src, alt, caption, and optional link' },
+      { name: 'autoplay', type: 'boolean', label: 'Auto-play' },
+      { name: 'interval', type: 'number', label: 'Interval (ms)', min: 1000, max: 10000 },
+      { name: 'showDots', type: 'boolean', label: 'Show Navigation Dots' },
+      { name: 'showArrows', type: 'boolean', label: 'Show Navigation Arrows' },
+      { name: 'pauseOnHover', type: 'boolean', label: 'Pause on Hover' },
+      { name: 'effect', type: 'enum', label: 'Transition Effect', options: ['slide', 'fade', 'zoom'] },
+      { name: 'aspectRatio', type: 'enum', label: 'Aspect Ratio', options: ['auto', '16/9', '4/3', '21/9'] },
+    ],
   },
 
   BeforeAfterSlider: {
@@ -404,6 +485,15 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: false,
     keywords: ['before', 'after', 'compare', 'slider'],
+    editableProps: [
+      { name: 'beforeImage', type: 'image', label: 'Before Image', required: true },
+      { name: 'afterImage', type: 'image', label: 'After Image', required: true },
+      { name: 'beforeLabel', type: 'string', label: 'Before Label' },
+      { name: 'afterLabel', type: 'string', label: 'After Label' },
+      { name: 'startPosition', type: 'number', label: 'Start Position (%)', min: 0, max: 100 },
+      { name: 'orientation', type: 'enum', label: 'Orientation', options: ['horizontal', 'vertical'] },
+      { name: 'showLabels', type: 'boolean', label: 'Show Labels' },
+    ],
   },
 
   LogoCloud: {
@@ -423,6 +513,15 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: false,
     keywords: ['logos', 'partners', 'sponsors', 'clients'],
+    editableProps: [
+      { name: 'logos', type: 'array', label: 'Logos', description: 'Add logos with image, name, and optional link' },
+      { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'layout', type: 'enum', label: 'Layout', options: ['grid', 'row', 'carousel'] },
+      { name: 'columns', type: 'number', label: 'Columns (Grid)', min: 2, max: 8 },
+      { name: 'grayscale', type: 'boolean', label: 'Grayscale Effect' },
+      { name: 'hoverColor', type: 'boolean', label: 'Color on Hover' },
+      { name: 'maxLogoHeight', type: 'number', label: 'Max Logo Height (px)', min: 20, max: 200 },
+    ],
   },
 
   // ==========================================
@@ -468,6 +567,14 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: true,
     keywords: ['grid', 'columns', 'layout'],
+    editableProps: [
+      { name: 'columns', type: 'number', label: 'Columns', min: 1, max: 12, description: 'Number of columns on desktop' },
+      { name: 'gap', type: 'number', label: 'Gap', min: 0, max: 16, description: 'Spacing between items' },
+      { name: 'columnsSm', type: 'number', label: 'Columns (Mobile)', min: 1, max: 4 },
+      { name: 'columnsMd', type: 'number', label: 'Columns (Tablet)', min: 1, max: 6 },
+      { name: 'columnsLg', type: 'number', label: 'Columns (Desktop)', min: 1, max: 12 },
+      { name: 'alignItems', type: 'enum', label: 'Align Items', options: ['start', 'center', 'end', 'stretch'] },
+    ],
   },
 
   FlexboxLayout: {
@@ -488,6 +595,14 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: true,
     keywords: ['flex', 'flexbox', 'layout', 'row', 'column'],
+    editableProps: [
+      { name: 'direction', type: 'enum', label: 'Direction', options: ['row', 'row-reverse', 'column', 'column-reverse'] },
+      { name: 'justify', type: 'enum', label: 'Justify Content', options: ['start', 'center', 'end', 'between', 'around', 'evenly'] },
+      { name: 'align', type: 'enum', label: 'Align Items', options: ['start', 'center', 'end', 'stretch', 'baseline'] },
+      { name: 'wrap', type: 'boolean', label: 'Wrap Items' },
+      { name: 'gap', type: 'number', label: 'Gap', min: 0, max: 16, description: 'Spacing between items' },
+      { name: 'reverseOnMobile', type: 'boolean', label: 'Reverse on Mobile' },
+    ],
   },
 
   Spacer: {
@@ -549,6 +664,17 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     },
     supportsChildren: true,
     keywords: ['section', 'wrapper', 'background', 'full-width'],
+    editableProps: [
+      { name: 'padding', type: 'string', label: 'Padding', placeholder: '16', description: 'Tailwind spacing value' },
+      { name: 'paddingTop', type: 'string', label: 'Padding Top' },
+      { name: 'paddingBottom', type: 'string', label: 'Padding Bottom' },
+      { name: 'fullWidth', type: 'boolean', label: 'Full Width' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'backgroundImage', type: 'image', label: 'Background Image' },
+      { name: 'backgroundOverlay', type: 'boolean', label: 'Dark Overlay' },
+      { name: 'overlayOpacity', type: 'number', label: 'Overlay Opacity', min: 0, max: 1, step: 0.1 },
+      { name: 'minHeight', type: 'string', label: 'Min Height', placeholder: '400px' },
+    ],
   },
 
   // ==========================================

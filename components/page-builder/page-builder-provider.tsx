@@ -9,8 +9,40 @@ import {
   type Dispatch,
 } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { getDefaultProps } from '@/lib/cms/component-registry'
+import { getDefaultProps, getComponentEntry } from '@/lib/cms/component-registry'
 import type { BlockData } from '@/lib/cms/registry-types'
+
+/**
+ * Validate blocks against the component registry.
+ * Filters out invalid blocks and logs warnings in development.
+ */
+function validateBlocks(blocks: BlockData[]): BlockData[] {
+  const validBlocks: BlockData[] = []
+  const invalidBlocks: string[] = []
+
+  for (const block of blocks) {
+    const entry = getComponentEntry(block.component_name)
+    if (entry) {
+      validBlocks.push(block)
+    } else {
+      invalidBlocks.push(block.component_name)
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(
+          `[PageBuilder] Unknown component "${block.component_name}" (block ID: ${block.id}). This block will be skipped.`
+        )
+      }
+    }
+  }
+
+  if (invalidBlocks.length > 0 && process.env.NODE_ENV === 'development') {
+    console.warn(
+      `[PageBuilder] Filtered out ${invalidBlocks.length} invalid block(s):`,
+      [...new Set(invalidBlocks)]
+    )
+  }
+
+  return validBlocks
+}
 
 // Page type (simplified for builder state)
 interface CmsPage {
@@ -32,6 +64,7 @@ interface PageBuilderState {
   isDirty: boolean
   isSaving: boolean
   isPreviewMode: boolean
+  clipboard: BlockData | null
 }
 
 // Action types
@@ -48,6 +81,9 @@ type PageBuilderAction =
   | { type: 'MOVE_BLOCK'; payload: { id: string; direction: 'up' | 'down' } }
   | { type: 'MOVE_BLOCK_TO_CONTAINER'; payload: { blockId: string; targetContainerId: string | null; insertAt?: number } }
   | { type: 'SELECT_BLOCK'; payload: string | null }
+  | { type: 'COPY_BLOCK'; payload: string }
+  | { type: 'CUT_BLOCK'; payload: string }
+  | { type: 'PASTE_BLOCK'; payload?: { parentId?: string | null; insertAt?: number } }
   | { type: 'UNDO' }
   | { type: 'REDO' }
   | { type: 'SET_DEVICE'; payload: 'desktop' | 'tablet' | 'mobile' }
@@ -67,6 +103,7 @@ const initialState: PageBuilderState = {
   isDirty: false,
   isSaving: false,
   isPreviewMode: false,
+  clipboard: null,
 }
 
 // Max history entries
@@ -109,6 +146,16 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
 
     case 'ADD_BLOCK': {
       const { componentName, insertAt, props, parentId } = action.payload
+
+      // Validate that component exists in registry
+      const componentEntry = getComponentEntry(componentName)
+      if (!componentEntry) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error(`[PageBuilder] Cannot add unknown component "${componentName}". Block not added.`)
+        }
+        return state
+      }
+
       const defaultProps = getDefaultProps(componentName)
 
       // Get siblings (blocks with same parent)
@@ -409,6 +456,99 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
         selectedBlockId: action.payload,
       }
 
+    case 'COPY_BLOCK': {
+      const blockToCopy = state.blocks.find(b => b.id === action.payload)
+      if (!blockToCopy) return state
+
+      // Create a copy with a new ID for pasting
+      const copiedBlock: BlockData = {
+        ...blockToCopy,
+        id: uuidv4(),
+        // Clear parent since it will be determined on paste
+        parent_block_id: null,
+      }
+
+      return {
+        ...state,
+        clipboard: copiedBlock,
+      }
+    }
+
+    case 'CUT_BLOCK': {
+      const blockToCut = state.blocks.find(b => b.id === action.payload)
+      if (!blockToCut) return state
+
+      // Create a copy with a new ID for pasting
+      const cutBlock: BlockData = {
+        ...blockToCut,
+        id: uuidv4(),
+        parent_block_id: null,
+      }
+
+      // Delete the block (including children)
+      const idsToDelete = new Set<string>([action.payload])
+      let foundMore = true
+      while (foundMore) {
+        foundMore = false
+        for (const block of state.blocks) {
+          if (block.parent_block_id && idsToDelete.has(block.parent_block_id) && !idsToDelete.has(block.id)) {
+            idsToDelete.add(block.id)
+            foundMore = true
+          }
+        }
+      }
+
+      const remainingBlocks = state.blocks.filter(block => !idsToDelete.has(block.id))
+      const stateWithHistory = pushToHistory(state, remainingBlocks)
+
+      return {
+        ...stateWithHistory,
+        blocks: remainingBlocks,
+        clipboard: cutBlock,
+        selectedBlockId: idsToDelete.has(state.selectedBlockId || '') ? null : state.selectedBlockId,
+        isDirty: true,
+      }
+    }
+
+    case 'PASTE_BLOCK': {
+      if (!state.clipboard) return state
+
+      // Validate that the clipboard component still exists in registry
+      const clipboardEntry = getComponentEntry(state.clipboard.component_name)
+      if (!clipboardEntry) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error(`[PageBuilder] Cannot paste unknown component "${state.clipboard.component_name}".`)
+        }
+        return state
+      }
+
+      const { parentId, insertAt } = action.payload || {}
+
+      // Get siblings (blocks with same parent)
+      const targetParentId = parentId || null
+      const siblings = state.blocks.filter(b => b.parent_block_id === targetParentId)
+      const maxSortOrder = siblings.length > 0
+        ? Math.max(...siblings.map(b => b.sort_order)) + 1
+        : 0
+
+      const newBlock: BlockData = {
+        ...state.clipboard,
+        id: uuidv4(), // Generate new ID for the pasted block
+        parent_block_id: targetParentId,
+        sort_order: insertAt ?? maxSortOrder,
+      }
+
+      const newBlocks = [...state.blocks, newBlock]
+      const stateWithHistory = pushToHistory(state, newBlocks)
+
+      return {
+        ...stateWithHistory,
+        blocks: newBlocks,
+        selectedBlockId: newBlock.id,
+        isDirty: true,
+      }
+    }
+
     case 'UNDO': {
       if (state.historyIndex <= 0) return state
       const newIndex = state.historyIndex - 1
@@ -485,6 +625,9 @@ interface PageBuilderContextValue {
   moveBlock: (id: string, direction: 'up' | 'down') => void
   moveBlockToContainer: (blockId: string, targetContainerId: string | null, insertAt?: number) => void
   selectBlock: (id: string | null) => void
+  copyBlock: (id: string) => void
+  cutBlock: (id: string) => void
+  pasteBlock: (parentId?: string | null, insertAt?: number) => void
   undo: () => void
   redo: () => void
   setDevice: (device: 'desktop' | 'tablet' | 'mobile') => void
@@ -494,6 +637,7 @@ interface PageBuilderContextValue {
   // Computed values
   canUndo: boolean
   canRedo: boolean
+  hasClipboard: boolean
   selectedBlock: BlockData | null
   // Helper functions for nested blocks
   getChildBlocks: (parentId: string | null) => BlockData[]
@@ -514,11 +658,14 @@ export function PageBuilderProvider({
   initialPage,
   initialBlocks = [],
 }: PageBuilderProviderProps) {
+  // Validate blocks against registry on load
+  const validatedBlocks = validateBlocks(initialBlocks)
+
   const [state, dispatch] = useReducer(pageBuilderReducer, {
     ...initialState,
     page: initialPage || null,
-    blocks: initialBlocks,
-    history: [initialBlocks],
+    blocks: validatedBlocks,
+    history: [validatedBlocks],
     historyIndex: 0,
   })
 
@@ -575,6 +722,18 @@ export function PageBuilderProvider({
     dispatch({ type: 'SELECT_BLOCK', payload: id })
   }, [])
 
+  const copyBlock = useCallback((id: string) => {
+    dispatch({ type: 'COPY_BLOCK', payload: id })
+  }, [])
+
+  const cutBlock = useCallback((id: string) => {
+    dispatch({ type: 'CUT_BLOCK', payload: id })
+  }, [])
+
+  const pasteBlock = useCallback((parentId?: string | null, insertAt?: number) => {
+    dispatch({ type: 'PASTE_BLOCK', payload: { parentId, insertAt } })
+  }, [])
+
   const undo = useCallback(() => {
     dispatch({ type: 'UNDO' })
   }, [])
@@ -602,6 +761,7 @@ export function PageBuilderProvider({
   // Computed values
   const canUndo = state.historyIndex > 0
   const canRedo = state.historyIndex < state.history.length - 1
+  const hasClipboard = state.clipboard !== null
   const selectedBlock = state.blocks.find((b) => b.id === state.selectedBlockId) || null
 
   // Helper functions for nested blocks
@@ -633,6 +793,9 @@ export function PageBuilderProvider({
     moveBlock,
     moveBlockToContainer,
     selectBlock,
+    copyBlock,
+    cutBlock,
+    pasteBlock,
     undo,
     redo,
     setDevice,
@@ -641,6 +804,7 @@ export function PageBuilderProvider({
     setSaving,
     canUndo,
     canRedo,
+    hasClipboard,
     selectedBlock,
     getChildBlocks,
     getRootBlocks,

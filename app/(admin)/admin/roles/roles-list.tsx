@@ -37,19 +37,20 @@ interface RolesListProps {
 }
 
 const getRoleColor = (roleName: string) => {
+  // Use brand primary color for all roles with different opacities
   switch (roleName) {
     case 'super_admin':
-      return 'from-purple-500 to-purple-600'
+      return 'from-primary to-primary/90'
     case 'director':
-      return 'from-blue-500 to-blue-600'
+      return 'from-primary/90 to-primary/80'
     case 'chair':
-      return 'from-indigo-500 to-indigo-600'
+      return 'from-primary/85 to-primary/75'
     case 'member':
-      return 'from-primary to-primary/80'
+      return 'from-primary/80 to-primary/70'
     case 'guest':
-      return 'from-secondary to-secondary/80'
+      return 'from-primary/70 to-primary/60'
     default:
-      return 'from-gray-500 to-gray-600'
+      return 'from-primary/75 to-primary/65'
   }
 }
 

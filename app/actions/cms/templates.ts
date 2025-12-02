@@ -243,8 +243,12 @@ export async function createTemplateFromPage(
         id,
         component_name,
         props,
-        order_index,
-        parent_block_id
+        sort_order,
+        parent_block_id,
+        is_visible,
+        custom_css,
+        custom_classes,
+        responsive_settings
       )
     `)
     .eq('id', pageId)
@@ -275,13 +279,21 @@ export async function createTemplateFromPage(
   const templateBlocks = (page.cms_page_blocks || []).map((block: {
     component_name: string
     props: unknown
-    order_index: number
+    sort_order: number
     parent_block_id: string | null
+    is_visible?: boolean
+    custom_css?: string
+    custom_classes?: string
+    responsive_settings?: unknown
   }) => ({
     component_name: block.component_name,
     props: block.props,
-    order_index: block.order_index,
+    sort_order: block.sort_order,
     parent_block_id: block.parent_block_id,
+    is_visible: block.is_visible ?? true,
+    custom_css: block.custom_css || '',
+    custom_classes: block.custom_classes || '',
+    responsive_settings: block.responsive_settings || {},
   }))
 
   // Create template
@@ -517,19 +529,19 @@ export async function applyTemplateToPage(
     }
   }
 
-  // Get highest order_index if not replacing
+  // Get highest sort_order if not replacing
   let startIndex = 0
   if (!replaceExisting) {
     const { data: maxBlock } = await supabase
       .from('cms_page_blocks')
-      .select('order_index')
+      .select('sort_order')
       .eq('page_id', pageId)
-      .order('order_index', { ascending: false })
+      .order('sort_order', { ascending: false })
       .limit(1)
       .single()
 
     if (maxBlock) {
-      startIndex = maxBlock.order_index + 1
+      startIndex = maxBlock.sort_order + 1
     }
   }
 
@@ -537,8 +549,12 @@ export async function applyTemplateToPage(
   const templateBlocks = template.default_blocks as Array<{
     component_name: string
     props: unknown
-    order_index: number
+    sort_order: number
     parent_block_id?: string | null
+    is_visible?: boolean
+    custom_css?: string
+    custom_classes?: string
+    responsive_settings?: unknown
   }>
 
   if (templateBlocks && templateBlocks.length > 0) {
@@ -546,8 +562,12 @@ export async function applyTemplateToPage(
       page_id: pageId,
       component_name: block.component_name,
       props: block.props,
-      order_index: startIndex + index,
+      sort_order: startIndex + index,
       parent_block_id: null, // Reset parent relationships for now
+      is_visible: block.is_visible ?? true,
+      custom_css: block.custom_css || '',
+      custom_classes: block.custom_classes || '',
+      responsive_settings: block.responsive_settings || {},
     }))
 
     const { error: insertError } = await supabase
@@ -590,6 +610,94 @@ export async function applyTemplateToPage(
     success: true,
     message: `Template "${template.name}" applied successfully`,
     data: { blocksAdded: templateBlocks?.length || 0 },
+  }
+}
+
+// Update template blocks (for the visual editor)
+export async function updateTemplateBlocks(
+  templateId: string,
+  blocks: Array<{
+    component_name: string
+    props: Record<string, unknown>
+    sort_order: number
+    parent_block_id: string | null
+    is_visible?: boolean
+    custom_classes?: string
+  }>
+): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Check authentication
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'cms:templates:edit')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to edit templates' }
+  }
+
+  // Check if template exists and is not system
+  const { data: existingTemplate } = await supabase
+    .from('cms_page_templates')
+    .select('id, name, is_system')
+    .eq('id', templateId)
+    .single()
+
+  if (!existingTemplate) {
+    return { success: false, message: 'Template not found' }
+  }
+
+  if (existingTemplate.is_system) {
+    return { success: false, message: 'System templates cannot be modified' }
+  }
+
+  // Prepare blocks for storage (strip runtime-only properties)
+  const templateBlocks = blocks.map((block) => ({
+    component_name: block.component_name,
+    props: block.props,
+    sort_order: block.sort_order,
+    parent_block_id: block.parent_block_id,
+    is_visible: block.is_visible ?? true,
+    custom_classes: block.custom_classes,
+  }))
+
+  // Update template
+  const { data: template, error } = await supabase
+    .from('cms_page_templates')
+    .update({
+      default_blocks: templateBlocks,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', templateId)
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error updating template blocks:', error)
+    return { success: false, message: 'Failed to save template blocks' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'update',
+    module: 'cms',
+    resourceType: 'template',
+    resourceId: templateId,
+    metadata: { name: template.name, blockCount: blocks.length },
+  })
+
+  revalidatePath('/admin/content/templates')
+  revalidatePath(`/admin/content/templates/${templateId}`)
+  revalidatePath(`/admin/content/templates/${templateId}/edit`)
+
+  return {
+    success: true,
+    message: 'Template blocks saved successfully',
+    data: template,
   }
 }
 

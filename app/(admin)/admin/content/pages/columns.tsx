@@ -260,7 +260,7 @@ export const createColumns = (handlers: PageActionHandlers = {}): ColumnDef<Page
               </DropdownMenuItem>
             )}
             <DropdownMenuItem asChild>
-              <Link href={`/admin/content/pages/${page.id}/edit`}>
+              <Link href={`/editor/${page.id}`}>
                 <Edit className="mr-2 h-4 w-4" />
                 Edit page
               </Link>

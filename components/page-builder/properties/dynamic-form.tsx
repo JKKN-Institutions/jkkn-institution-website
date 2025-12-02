@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -14,8 +14,10 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { Plus, Trash2 } from 'lucide-react'
+import { Plus, Trash2, Image as ImageIcon, X } from 'lucide-react'
 import type { ComponentRegistryEntry } from '@/lib/cms/registry-types'
+import { MediaPickerModal } from '@/components/cms/media-picker-modal'
+import type { MediaItem } from '@/app/actions/cms/media'
 
 interface DynamicFormProps {
   componentEntry: ComponentRegistryEntry
@@ -25,7 +27,7 @@ interface DynamicFormProps {
 
 interface FieldConfig {
   key: string
-  type: 'string' | 'number' | 'boolean' | 'enum' | 'array' | 'color' | 'url'
+  type: 'string' | 'number' | 'boolean' | 'enum' | 'array' | 'color' | 'url' | 'image' | 'video' | 'media'
   label: string
   description?: string
   required?: boolean
@@ -227,6 +229,87 @@ function ArrayField({ config, value, onChange }: FieldProps) {
   )
 }
 
+interface MediaFieldProps extends FieldProps {
+  mediaType: 'image' | 'video' | 'all'
+}
+
+function MediaField({ config, value, onChange, mediaType }: MediaFieldProps) {
+  const [pickerOpen, setPickerOpen] = useState(false)
+  const urlValue = (value as string) || ''
+
+  const handleMediaSelect = (media: MediaItem | MediaItem[]) => {
+    const selected = Array.isArray(media) ? media[0] : media
+    onChange(selected.file_url)
+  }
+
+  const handleClear = () => {
+    onChange('')
+  }
+
+  return (
+    <div className="space-y-3">
+      {urlValue ? (
+        <div className="relative rounded-lg border border-border/50 overflow-hidden">
+          {mediaType === 'image' || urlValue.match(/\.(jpg|jpeg|png|gif|webp|svg)$/i) ? (
+            <img
+              src={urlValue}
+              alt={config.label}
+              className="w-full h-32 object-cover"
+            />
+          ) : mediaType === 'video' || urlValue.match(/\.(mp4|webm|ogg)$/i) ? (
+            <video
+              src={urlValue}
+              className="w-full h-32 object-cover"
+              muted
+            />
+          ) : (
+            <div className="w-full h-32 bg-muted flex items-center justify-center">
+              <ImageIcon className="h-8 w-8 text-muted-foreground" />
+            </div>
+          )}
+          <Button
+            variant="destructive"
+            size="icon"
+            className="absolute top-2 right-2 h-7 w-7"
+            onClick={handleClear}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+      ) : null}
+
+      <div className="flex gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          className="flex-1"
+          onClick={() => setPickerOpen(true)}
+        >
+          <ImageIcon className="h-4 w-4 mr-2" />
+          {urlValue ? 'Change Media' : 'Browse Media'}
+        </Button>
+      </div>
+
+      {/* Manual URL input as fallback */}
+      <Input
+        type="url"
+        value={urlValue}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="Or enter URL directly..."
+        className="bg-background/50 border-border/50 text-xs"
+      />
+
+      <MediaPickerModal
+        open={pickerOpen}
+        onOpenChange={setPickerOpen}
+        onSelect={handleMediaSelect}
+        fileType={mediaType}
+        currentValue={urlValue}
+      />
+    </div>
+  )
+}
+
 // Generate field configs from component entry metadata
 function getFieldConfigs(componentEntry: ComponentRegistryEntry): FieldConfig[] {
   const fields: FieldConfig[] = []
@@ -344,6 +427,33 @@ export function DynamicForm({ componentEntry, values, onChange }: DynamicFormPro
                 config={field}
                 value={fieldValue}
                 onChange={(v) => handleFieldChange(field.key, v)}
+              />
+            )}
+
+            {field.type === 'image' && (
+              <MediaField
+                config={field}
+                value={fieldValue}
+                onChange={(v) => handleFieldChange(field.key, v)}
+                mediaType="image"
+              />
+            )}
+
+            {field.type === 'video' && (
+              <MediaField
+                config={field}
+                value={fieldValue}
+                onChange={(v) => handleFieldChange(field.key, v)}
+                mediaType="video"
+              />
+            )}
+
+            {field.type === 'media' && (
+              <MediaField
+                config={field}
+                value={fieldValue}
+                onChange={(v) => handleFieldChange(field.key, v)}
+                mediaType="all"
               />
             )}
 

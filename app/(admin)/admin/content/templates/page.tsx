@@ -1,10 +1,9 @@
 import { Suspense } from 'react'
 import { TemplatesTable } from './templates-table'
-import { Plus, Layout } from 'lucide-react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { Layout } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ResponsivePageHeader } from '@/components/ui/responsive-page-header'
+import { TemplatesActions } from './templates-actions'
 
 interface TemplatesPageProps {
   searchParams: Promise<{
@@ -30,17 +29,7 @@ export default async function TemplatesPage({ searchParams }: TemplatesPageProps
         title="Templates"
         description="Manage page templates for quick content creation"
         badge="CMS"
-        actions={
-          <Button
-            asChild
-            className="bg-primary hover:bg-primary/90 shadow-brand w-full sm:w-auto min-h-[44px]"
-          >
-            <Link href="/admin/content/templates/new">
-              <Plus className="mr-2 h-4 w-4" />
-              Create Template
-            </Link>
-          </Button>
-        }
+        actions={<TemplatesActions />}
       />
 
       {/* Templates Table with Glass Effect - Responsive padding */}

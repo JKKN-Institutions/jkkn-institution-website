@@ -10,6 +10,7 @@ export default function ImageBlock({
   width,
   height,
   objectFit = 'cover',
+  alignment = 'center',
   link,
   lightbox = false,
   className,
@@ -20,6 +21,12 @@ export default function ImageBlock({
     contain: 'object-contain',
     fill: 'object-fill',
     none: 'object-none',
+  }
+
+  const alignmentClasses = {
+    left: 'mr-auto',
+    center: 'mx-auto',
+    right: 'ml-auto',
   }
 
   if (!src && isEditing) {
@@ -58,7 +65,12 @@ export default function ImageBlock({
       alt={alt}
       width={width}
       height={height}
-      className={cn('w-full rounded-lg', objectFitClasses[objectFit])}
+      className={cn(
+        'rounded-lg block',
+        width ? '' : 'w-full',
+        objectFitClasses[objectFit],
+        alignmentClasses[alignment]
+      )}
       style={{ maxWidth: width, maxHeight: height }}
     />
   )

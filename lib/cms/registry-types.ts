@@ -33,7 +33,7 @@ export interface EditableProp {
   /** Display label (defaults to formatted name) */
   label?: string
   /** Property type for form field rendering */
-  type: 'string' | 'number' | 'boolean' | 'enum' | 'array' | 'color' | 'url'
+  type: 'string' | 'number' | 'boolean' | 'enum' | 'array' | 'color' | 'url' | 'image' | 'video' | 'media'
   /** Description shown below the field */
   description?: string
   /** Whether this field is required */
@@ -128,27 +128,6 @@ export interface PageBlock {
 export interface PageRendererProps {
   blocks: BlockData[]
   isEditing?: boolean
-}
-
-/**
- * Context for the page builder
- */
-export interface PageBuilderContextValue {
-  blocks: BlockData[]
-  selectedBlockId: string | null
-  selectBlock: (id: string | null) => void
-  addBlock: (componentName: string, props?: Record<string, unknown>, insertAt?: number) => void
-  updateBlock: (id: string, updates: Partial<BlockData>) => void
-  deleteBlock: (id: string) => void
-  duplicateBlock: (id: string) => void
-  moveBlock: (id: string, direction: 'up' | 'down') => void
-  reorderBlocks: (startIndex: number, endIndex: number) => void
-  undo: () => void
-  redo: () => void
-  canUndo: boolean
-  canRedo: boolean
-  isDirty: boolean
-  isSaving: boolean
 }
 
 // ==========================================
@@ -321,6 +300,7 @@ export const ImageBlockPropsSchema = z.object({
   width: z.number().optional(),
   height: z.number().optional(),
   objectFit: z.enum(['cover', 'contain', 'fill', 'none']).default('cover'),
+  alignment: z.enum(['left', 'center', 'right']).default('center'),
   link: z.string().optional(),
   lightbox: z.boolean().default(false),
 })

@@ -86,7 +86,7 @@ export default async function AdminLayout({
   const userData = await getUserData(session.user.id)
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-screen w-full max-w-full overflow-hidden bg-background">
       {/* Decorative gradient background */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
@@ -98,7 +98,7 @@ export default async function AdminLayout({
       <ResponsiveNavigation userPermissions={userData.permissions} />
 
       {/* Main Content Area with Fixed Header */}
-      <div className="flex-1 flex flex-col h-screen overflow-hidden">
+      <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden">
         {/* Fixed Header */}
         <AdminHeader
           userName={userData.name}
@@ -106,8 +106,8 @@ export default async function AdminLayout({
           userRole={userData.role}
         />
 
-        {/* Scrollable Page Content - Add padding bottom for mobile nav */}
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6 pb-24 lg:pb-6">{children}</main>
+        {/* Scrollable Page Content */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 lg:p-6">{children}</main>
       </div>
     </div>
   )

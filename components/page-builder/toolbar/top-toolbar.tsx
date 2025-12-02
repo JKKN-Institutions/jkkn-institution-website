@@ -51,16 +51,18 @@ import { VersionHistoryPanel } from '../panels/version-history-panel'
 import { SharePreviewDialog } from '../modals/share-preview-dialog'
 import { LayoutPresetsModal } from '../modals/layout-presets-modal'
 import { format } from 'date-fns'
-import { Share2, Layers } from 'lucide-react'
+import { Share2, Layers, List } from 'lucide-react'
 import type { LayoutPreset } from '@/lib/cms/layout-presets'
 
 interface TopToolbarProps {
   onSave: () => Promise<void>
   onAIEnhance?: () => void
   onPresetSelect?: (preset: LayoutPreset) => void
+  isNavigatorOpen?: boolean
+  onNavigatorToggle?: () => void
 }
 
-export function TopToolbar({ onSave, onAIEnhance, onPresetSelect }: TopToolbarProps) {
+export function TopToolbar({ onSave, onAIEnhance, onPresetSelect, isNavigatorOpen, onNavigatorToggle }: TopToolbarProps) {
   const {
     state,
     undo,
@@ -211,6 +213,25 @@ export function TopToolbar({ onSave, onAIEnhance, onPresetSelect }: TopToolbarPr
               <TooltipContent>Redo (Ctrl+Y)</TooltipContent>
             </Tooltip>
           </div>
+
+          <div className="h-6 w-px bg-border" />
+
+          {/* Navigator toggle */}
+          {onNavigatorToggle && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={isNavigatorOpen ? 'secondary' : 'ghost'}
+                  size="icon"
+                  onClick={onNavigatorToggle}
+                  disabled={isPreviewMode}
+                >
+                  <List className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Navigator (Ctrl+L)</TooltipContent>
+            </Tooltip>
+          )}
 
           <div className="h-6 w-px bg-border" />
 

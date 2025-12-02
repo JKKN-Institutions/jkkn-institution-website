@@ -42,24 +42,10 @@ const navigationItems: NavItem[] = [
     icon: LayoutDashboard,
   },
   {
-    title: 'Users',
+    title: 'User Management',
     href: '/admin/users',
     icon: Users,
     permission: 'users:profiles:view',
-    children: [
-      {
-        title: 'All Users',
-        href: '/admin/users',
-        icon: Users,
-        permission: 'users:profiles:view',
-      },
-      {
-        title: 'Approved Emails',
-        href: '/admin/users/approved-emails',
-        icon: FileText,
-        permission: 'users:emails:view',
-      },
-    ],
   },
   {
     title: 'Roles & Permissions',
@@ -86,6 +72,12 @@ const navigationItems: NavItem[] = [
         permission: 'content:pages:view',
       },
       {
+        title: 'Templates',
+        href: '/admin/content/templates',
+        icon: Layers,
+        permission: 'cms:templates:view',
+      },
+      {
         title: 'Media Library',
         href: '/admin/content/media',
         icon: Image,
@@ -98,32 +90,6 @@ const navigationItems: NavItem[] = [
     href: '/admin/settings',
     icon: Settings,
     permission: 'system:settings:view',
-    children: [
-      {
-        title: 'General',
-        href: '/admin/settings/general',
-        icon: Settings,
-        permission: 'system:settings:view',
-      },
-      {
-        title: 'Appearance',
-        href: '/admin/settings/appearance',
-        icon: Image,
-        permission: 'system:settings:view',
-      },
-      {
-        title: 'Notifications',
-        href: '/admin/settings/notifications',
-        icon: Activity,
-        permission: 'system:settings:view',
-      },
-      {
-        title: 'System',
-        href: '/admin/settings/system',
-        icon: Shield,
-        permission: 'system:settings:view',
-      },
-    ],
   },
 ]
 
@@ -131,8 +97,16 @@ export function AdminSidebar({
   userPermissions,
 }: AdminSidebarProps) {
   const pathname = usePathname()
-  const [expandedItems, setExpandedItems] = useState<string[]>([])
   const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const [expandedItems, setExpandedItems] = useState<string[]>(['/admin/content'])
+
+  // Auto-expand parent sections based on current path
+  useEffect(() => {
+    const expanded: string[] = []
+    // Always expand Content section
+    expanded.push('/admin/content')
+    setExpandedItems(expanded)
+  }, [])
 
   const hasPermission = (permission?: string): boolean => {
     if (!permission) return true

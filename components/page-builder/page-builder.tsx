@@ -20,17 +20,19 @@ import { PropsPanel } from './properties/props-panel'
 import { SeoPanel } from './panels/seo-panel'
 import { FabPanel, type FabConfig } from './panels/fab-panel'
 import { TopToolbar } from './toolbar/top-toolbar'
+import { NavigatorPanel } from './elementor/navigator-panel'
 import { updatePageContent, updatePageSeo, updatePageFab } from '@/app/actions/cms/pages'
 import { toast } from 'sonner'
 import type { BlockData } from '@/lib/cms/registry-types'
 import { blocksToPageBlocks, type PageBlock } from '@/lib/cms/registry-types'
 import type { EnhancedBlock } from '@/lib/cms/design-enhancer'
 import { cn } from '@/lib/utils'
-import { getComponentEntry } from '@/lib/cms/component-registry'
+import { getComponentEntry, supportsChildren } from '@/lib/cms/component-registry'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Settings, Search, MessageCircle } from 'lucide-react'
 import type { SeoData } from '@/lib/utils/seo-analyzer'
 import type { LayoutPreset } from '@/lib/cms/layout-presets'
+import { OfflineBanner } from '@/lib/hooks/use-network-status'
 import dynamic from 'next/dynamic'
 
 // Lazy load the enhanced preview component
@@ -101,6 +103,20 @@ function PageBuilderContent({
     setSaving,
     getRootBlocks,
     updateBlockFull,
+    // Clipboard and editing actions
+    copyBlock,
+    cutBlock,
+    pasteBlock,
+    deleteBlock,
+    duplicateBlock,
+    selectBlock,
+    undo,
+    redo,
+    // Computed values
+    selectedBlock,
+    canUndo,
+    canRedo,
+    hasClipboard,
   } = usePageBuilder()
 
   const { blocks, isDirty, isSaving, isPreviewMode, device } = state
@@ -110,6 +126,8 @@ function PageBuilderContent({
   const [isSavingSeo, setIsSavingSeo] = useState(false)
   const [isSavingFab, setIsSavingFab] = useState(false)
   const [showAIEnhancePreview, setShowAIEnhancePreview] = useState(false)
+  const [isNavigatorOpen, setIsNavigatorOpen] = useState(false)
+  const [autoSaveFailCount, setAutoSaveFailCount] = useState(0)
 
   // Drag state
   const [activeId, setActiveId] = useState<string | null>(null)
@@ -169,6 +187,12 @@ function PageBuilderContent({
           if (overId.startsWith('container-drop-')) {
             const containerId = over.data.current?.containerId
             if (containerId) {
+              // Validate that the container supports children
+              const containerBlock = blocks.find((b) => b.id === containerId)
+              if (containerBlock && !supportsChildren(containerBlock.component_name)) {
+                toast.error('This component does not support nested blocks')
+                return
+              }
               addBlockToContainer(componentName, containerId)
               return
             }
@@ -196,6 +220,25 @@ function PageBuilderContent({
         if (overId.startsWith('container-drop-')) {
           const containerId = over.data.current?.containerId
           if (containerId) {
+            // Validate that the container supports children
+            const containerBlock = blocks.find((b) => b.id === containerId)
+            if (containerBlock && !supportsChildren(containerBlock.component_name)) {
+              toast.error('This component does not support nested blocks')
+              return
+            }
+            // Prevent moving a block into itself or its descendants
+            const sourceBlock = blocks.find((b) => b.id === String(active.id))
+            if (sourceBlock) {
+              let checkId: string | null = containerId
+              while (checkId) {
+                if (checkId === sourceBlock.id) {
+                  toast.error('Cannot move a block into itself')
+                  return
+                }
+                const parent = blocks.find((b) => b.id === checkId)
+                checkId = parent?.parent_block_id || null
+              }
+            }
             moveBlockToContainer(String(active.id), containerId)
             return
           }
@@ -232,7 +275,7 @@ function PageBuilderContent({
     [blocks, addBlock, addBlockToContainer, reorderBlocks, moveBlockToContainer, getRootBlocks]
   )
 
-  // Save handler
+  // Save handler with failure tracking
   const handleSave = useCallback(async (showToast = true) => {
     setSaving(true)
     try {
@@ -240,16 +283,48 @@ function PageBuilderContent({
       if (result.success) {
         markSaved()
         lastSavedBlocksRef.current = JSON.stringify(blocks)
+        setAutoSaveFailCount(0) // Reset failure count on success
         if (showToast) {
           toast.success('Page saved successfully')
         }
       } else {
-        if (showToast) {
+        // Track auto-save failures
+        if (!showToast) {
+          setAutoSaveFailCount(prev => {
+            const newCount = prev + 1
+            // Show warning after 2 consecutive failures
+            if (newCount === 2) {
+              toast.warning('Auto-save is failing. Your changes may not be saved.', {
+                duration: 5000,
+                action: {
+                  label: 'Save Now',
+                  onClick: () => handleSave(true),
+                },
+              })
+            }
+            return newCount
+          })
+        } else {
           toast.error(result.message || 'Failed to save page')
         }
       }
     } catch {
-      if (showToast) {
+      // Track auto-save failures
+      if (!showToast) {
+        setAutoSaveFailCount(prev => {
+          const newCount = prev + 1
+          if (newCount === 2) {
+            toast.warning('Auto-save is failing. Check your connection.', {
+              duration: 5000,
+              action: {
+                label: 'Retry',
+                onClick: () => handleSave(true),
+              },
+            })
+          }
+          return newCount
+        })
+      } else {
         toast.error('An error occurred while saving')
       }
     } finally {
@@ -331,18 +406,125 @@ function PageBuilderContent({
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if typing in input/textarea/contenteditable
+      const target = e.target as HTMLElement
+      if (
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.isContentEditable
+      ) {
+        return
+      }
+
+      // Skip shortcuts in preview mode except for toggling preview
+      if (isPreviewMode) return
+
+      const isMac = navigator.platform.includes('Mac')
+      const ctrlKey = isMac ? e.metaKey : e.ctrlKey
+
       // Save: Ctrl/Cmd + S
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      if (ctrlKey && e.key === 's') {
         e.preventDefault()
         if (isDirty && !isSaving) {
           handleManualSave()
         }
+        return
+      }
+
+      // Navigator: Ctrl/Cmd + L
+      if (ctrlKey && e.key === 'l') {
+        e.preventDefault()
+        setIsNavigatorOpen((prev) => !prev)
+        return
+      }
+
+      // Undo: Ctrl/Cmd + Z
+      if (ctrlKey && e.key === 'z' && !e.shiftKey) {
+        e.preventDefault()
+        if (canUndo) {
+          undo()
+        }
+        return
+      }
+
+      // Redo: Ctrl/Cmd + Y or Ctrl/Cmd + Shift + Z
+      if ((ctrlKey && e.key === 'y') || (ctrlKey && e.shiftKey && e.key === 'z') || (ctrlKey && e.shiftKey && e.key === 'Z')) {
+        e.preventDefault()
+        if (canRedo) {
+          redo()
+        }
+        return
+      }
+
+      // Copy: Ctrl/Cmd + C
+      if (ctrlKey && e.key === 'c' && selectedBlock) {
+        e.preventDefault()
+        copyBlock(selectedBlock.id)
+        toast.success('Block copied to clipboard')
+        return
+      }
+
+      // Cut: Ctrl/Cmd + X
+      if (ctrlKey && e.key === 'x' && selectedBlock) {
+        e.preventDefault()
+        cutBlock(selectedBlock.id)
+        toast.success('Block cut to clipboard')
+        return
+      }
+
+      // Paste: Ctrl/Cmd + V
+      if (ctrlKey && e.key === 'v' && hasClipboard) {
+        e.preventDefault()
+        // Paste as sibling of selected block or at root level
+        const parentId = selectedBlock?.parent_block_id ?? null
+        pasteBlock(parentId)
+        toast.success('Block pasted')
+        return
+      }
+
+      // Duplicate: Ctrl/Cmd + D
+      if (ctrlKey && e.key === 'd' && selectedBlock) {
+        e.preventDefault()
+        duplicateBlock(selectedBlock.id)
+        toast.success('Block duplicated')
+        return
+      }
+
+      // Delete: Delete or Backspace key
+      if ((e.key === 'Delete' || e.key === 'Backspace') && selectedBlock) {
+        e.preventDefault()
+        deleteBlock(selectedBlock.id)
+        return
+      }
+
+      // Escape: Deselect block
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        selectBlock(null)
+        return
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isDirty, isSaving, handleManualSave])
+  }, [
+    isDirty,
+    isSaving,
+    isPreviewMode,
+    handleManualSave,
+    canUndo,
+    canRedo,
+    hasClipboard,
+    selectedBlock,
+    undo,
+    redo,
+    copyBlock,
+    cutBlock,
+    pasteBlock,
+    duplicateBlock,
+    deleteBlock,
+    selectBlock,
+  ])
 
   // Handle preset selection - adds preset blocks to the page
   const handlePresetSelect = useCallback((preset: LayoutPreset) => {
@@ -390,6 +572,8 @@ function PageBuilderContent({
           onSave={handleManualSave}
           onAIEnhance={() => setShowAIEnhancePreview(true)}
           onPresetSelect={handlePresetSelect}
+          isNavigatorOpen={isNavigatorOpen}
+          onNavigatorToggle={() => setIsNavigatorOpen(!isNavigatorOpen)}
         />
 
         {/* Main Content Area */}
@@ -399,6 +583,14 @@ function PageBuilderContent({
             <div className="w-[280px] border-r border-border bg-card overflow-y-auto">
               <ComponentPalette />
             </div>
+          )}
+
+          {/* Navigator Panel (Elementor-style layer tree) */}
+          {!isPreviewMode && (
+            <NavigatorPanel
+              isOpen={isNavigatorOpen}
+              onClose={() => setIsNavigatorOpen(false)}
+            />
           )}
 
           {/* Center - Canvas */}
@@ -416,13 +608,13 @@ function PageBuilderContent({
 
           {/* Right Sidebar - Properties/SEO/FAB Panel */}
           {!isPreviewMode && (
-            <div className="w-[350px] border-l border-border bg-card flex flex-col overflow-hidden">
+            <div className="w-[350px] border-l border-border bg-card flex flex-col min-h-0">
               <Tabs
                 value={rightPanelTab}
                 onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab')}
-                className="flex flex-col h-full"
+                className="flex flex-col h-full min-h-0"
               >
-                <div className="border-b border-border px-2 pt-2">
+                <div className="border-b border-border px-2 pt-2 flex-shrink-0">
                   <TabsList className="grid grid-cols-3 w-full">
                     <TabsTrigger value="properties" className="flex items-center gap-1.5 text-xs">
                       <Settings className="h-3.5 w-3.5" />
@@ -438,10 +630,10 @@ function PageBuilderContent({
                     </TabsTrigger>
                   </TabsList>
                 </div>
-                <TabsContent value="properties" className="flex-1 m-0 overflow-y-auto">
+                <TabsContent value="properties" className="flex-1 m-0 overflow-y-auto min-h-0">
                   <PropsPanel />
                 </TabsContent>
-                <TabsContent value="seo" className="flex-1 m-0 overflow-hidden">
+                <TabsContent value="seo" className="flex-1 m-0 overflow-y-auto min-h-0">
                   <SeoPanel
                     pageId={pageId}
                     pageSlug={pageSlug}
@@ -450,7 +642,7 @@ function PageBuilderContent({
                     isSaving={isSavingSeo}
                   />
                 </TabsContent>
-                <TabsContent value="fab" className="flex-1 m-0 overflow-hidden">
+                <TabsContent value="fab" className="flex-1 m-0 overflow-y-auto min-h-0">
                   <FabPanel
                     pageId={pageId}
                     initialConfig={initialFabConfig || undefined}
@@ -482,6 +674,9 @@ function PageBuilderContent({
         )}
         {activePaletteItem && <DragOverlayContent componentName={activePaletteItem} />}
       </DragOverlay>
+
+      {/* Offline Banner */}
+      <OfflineBanner message="You are offline. Changes will be saved when you reconnect." />
 
       {/* AI Enhancement Preview Modal */}
       {showAIEnhancePreview && (

@@ -61,27 +61,10 @@ const navigationModules: NavModule[] = [
   },
   {
     id: 'users',
-    label: 'Users',
+    label: 'User Management',
     href: '/admin/users',
     icon: Users,
-    color: 'bg-green-500',
     permission: 'users:profiles:view',
-    subModules: [
-      {
-        id: 'all-users',
-        label: 'All Users',
-        href: '/admin/users',
-        icon: Users,
-        permission: 'users:profiles:view',
-      },
-      {
-        id: 'new-user',
-        label: 'Add User',
-        href: '/admin/users/new',
-        icon: UserPlus,
-        permission: 'users:profiles:create',
-      },
-    ],
   },
   {
     id: 'roles',
@@ -305,131 +288,189 @@ function DesktopSidebar({
   )
 }
 
-// Mobile Bottom Navigation Component
-function MobileBottomNav({
+// Mobile Sidebar Navigation Component
+function MobileSidebar({
   modules,
   activeModule,
   activeSubModule,
-  onModuleClick,
+  isOpen,
+  onClose,
 }: {
   modules: NavModule[]
   activeModule: string
   activeSubModule: string
-  onModuleClick: (moduleId: string) => void
+  isOpen: boolean
+  onClose: () => void
 }) {
-  const [expandedModule, setExpandedModule] = useState<string | null>(null)
   const pathname = usePathname()
+  const [expandedItems, setExpandedItems] = useState<string[]>([activeModule])
 
-  const handleModuleClick = (module: NavModule) => {
-    if (module.subModules && module.subModules.length > 0) {
-      setExpandedModule(expandedModule === module.id ? null : module.id)
-    } else {
-      setExpandedModule(null)
-      onModuleClick(module.id)
-    }
+  const toggleExpand = (moduleId: string) => {
+    setExpandedItems((prev) =>
+      prev.includes(moduleId)
+        ? prev.filter((item) => item !== moduleId)
+        : [...prev, moduleId]
+    )
   }
 
-  // Close expanded menu when clicking outside
+  // Close sidebar when route changes
   useEffect(() => {
-    const handleClickOutside = () => setExpandedModule(null)
-    if (expandedModule) {
-      document.addEventListener('click', handleClickOutside)
-      return () => document.removeEventListener('click', handleClickOutside)
-    }
-  }, [expandedModule])
+    onClose()
+  }, [pathname])
 
   return (
-    <nav className="lg:hidden fixed bottom-4 left-4 right-4 z-50">
-      {/* Submodule Popup */}
-      {expandedModule && (
+    <>
+      {/* Overlay */}
+      {isOpen && (
         <div
-          className="absolute bottom-full mb-3 left-0 right-0 mx-auto max-w-fit"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="flex flex-col gap-2 p-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 rounded-2xl shadow-2xl">
-            {modules
-              .find((m) => m.id === expandedModule)
-              ?.subModules?.map((sub) => {
-                const isActive = pathname === sub.href || pathname.startsWith(sub.href + '/')
-                return (
-                  <Link
-                    key={sub.id}
-                    href={sub.href}
-                    onClick={() => setExpandedModule(null)}
-                    className={cn(
-                      'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200',
-                      isActive
-                        ? 'bg-primary text-white shadow-lg'
-                        : 'text-foreground/80 hover:bg-primary/10'
-                    )}
-                  >
-                    <sub.icon className="h-5 w-5" />
-                    <span className="font-medium">{sub.label}</span>
-                    {sub.badge && (
-                      <span className="ml-auto px-2 py-0.5 text-xs bg-red-500 text-white rounded-full">
-                        {sub.badge}
-                      </span>
-                    )}
-                  </Link>
-                )
-              })}
-          </div>
-        </div>
+          className="lg:hidden fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
+          onClick={onClose}
+        />
       )}
 
-      {/* Main Navigation Bar */}
-      <div
-        className="flex items-center justify-around px-2 py-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 rounded-2xl shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          'lg:hidden fixed inset-y-0 left-0 z-50 w-72 flex flex-col glass-sidebar transform transition-transform duration-300 ease-out',
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        )}
       >
-        {modules.slice(0, 5).map((module) => {
-          const isActive = activeModule === module.id
-          const isExpanded = expandedModule === module.id
-          const hasSubModules = module.subModules && module.subModules.length > 0
+        {/* Logo */}
+        <div className="p-5 border-b border-sidebar-border flex items-center justify-between">
+          <Link href="/admin" className="flex items-center gap-3 group" onClick={onClose}>
+            <div className="w-10 h-10 brand-gradient rounded-xl flex items-center justify-center shadow-brand group-hover:shadow-lg transition-shadow duration-300 flex-shrink-0">
+              <span className="text-white font-bold text-lg">JK</span>
+            </div>
+            <div className="overflow-hidden">
+              <span className="text-lg font-semibold text-foreground">JKKN Admin</span>
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <Sparkles className="h-3 w-3 text-secondary" />
+                <span>Institution Portal</span>
+              </div>
+            </div>
+          </Link>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg hover:bg-primary/10 transition-colors"
+          >
+            <X className="h-5 w-5 text-muted-foreground" />
+          </button>
+        </div>
 
-          return (
-            <button
-              key={module.id}
-              onClick={() => handleModuleClick(module)}
-              className={cn(
-                'relative flex flex-col items-center justify-center min-w-[56px] px-2 py-2 rounded-xl transition-all duration-300',
-                isActive || isExpanded
-                  ? 'bg-primary/15 text-primary scale-105'
-                  : 'text-foreground/60 hover:text-foreground hover:bg-primary/5'
-              )}
-            >
-              <div className="relative">
-                <module.icon
-                  className={cn(
-                    'h-5 w-5 transition-transform duration-200',
-                    (isActive || isExpanded) && 'scale-110'
+        {/* Navigation */}
+        <nav className="flex-1 p-4 space-y-1.5 overflow-y-auto overflow-x-hidden">
+          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 mb-3">
+            Main Menu
+          </div>
+          {modules.map((module) => {
+            const isActive = activeModule === module.id
+            const isExpanded = expandedItems.includes(module.id)
+            const hasSubModules = module.subModules && module.subModules.length > 0
+
+            if (hasSubModules) {
+              return (
+                <div key={module.id}>
+                  <button
+                    onClick={() => toggleExpand(module.id)}
+                    className={cn(
+                      'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200',
+                      isActive
+                        ? 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary'
+                        : 'text-foreground/70 hover:bg-primary/5 hover:text-foreground dark:hover:bg-primary/10'
+                    )}
+                  >
+                    <span className="flex items-center gap-3">
+                      <module.icon className="h-5 w-5 flex-shrink-0" />
+                      {module.label}
+                    </span>
+                    {isExpanded ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
+                    )}
+                  </button>
+
+                  {isExpanded && (
+                    <div className="ml-4 mt-1 space-y-1 border-l-2 border-primary/20 pl-2">
+                      {module.subModules?.map((sub) => (
+                        <Link
+                          key={sub.id}
+                          href={sub.href}
+                          onClick={onClose}
+                          className={cn(
+                            'flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200',
+                            activeSubModule === sub.id
+                              ? 'bg-primary text-white shadow-brand'
+                              : 'text-foreground/70 hover:bg-primary/5 hover:text-foreground'
+                          )}
+                        >
+                          <sub.icon className="h-4 w-4" />
+                          {sub.label}
+                          {sub.badge && (
+                            <span className="ml-auto px-1.5 py-0.5 text-xs bg-red-500 text-white rounded-full">
+                              {sub.badge}
+                            </span>
+                          )}
+                        </Link>
+                      ))}
+                    </div>
                   )}
-                />
+                </div>
+              )
+            }
+
+            return (
+              <Link
+                key={module.id}
+                href={module.href}
+                onClick={onClose}
+                className={cn(
+                  'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200',
+                  isActive
+                    ? 'bg-primary text-white shadow-brand'
+                    : 'text-foreground/70 hover:bg-primary/5 hover:text-foreground'
+                )}
+              >
+                <module.icon className={cn('h-5 w-5 flex-shrink-0', isActive && 'text-white')} />
+                {module.label}
                 {module.badge && (
-                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center font-bold">
-                    {module.badge > 9 ? '9+' : module.badge}
+                  <span className="ml-auto px-1.5 py-0.5 text-xs bg-red-500 text-white rounded-full">
+                    {module.badge}
                   </span>
                 )}
-                {hasSubModules && (
-                  <ChevronDown
-                    className={cn(
-                      'absolute -bottom-1 -right-1 h-3 w-3 transition-transform duration-200',
-                      isExpanded && 'rotate-180'
-                    )}
-                  />
-                )}
-              </div>
-              <span className="text-[10px] mt-1 font-medium truncate max-w-[56px]">
-                {module.label}
-              </span>
-              {isActive && !isExpanded && (
-                <div className="absolute -bottom-1 w-1 h-1 bg-primary rounded-full" />
-              )}
-            </button>
-          )
-        })}
-      </div>
-    </nav>
+              </Link>
+            )
+          })}
+        </nav>
+
+        {/* View Website Link */}
+        <div className="p-4 border-t border-sidebar-border">
+          <Link
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={onClose}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-primary hover:bg-primary/10 rounded-xl transition-all duration-200 group"
+          >
+            <Globe className="h-4 w-4 group-hover:scale-110 transition-transform flex-shrink-0" />
+            View Website
+            <ExternalLink className="h-3 w-3 opacity-60" />
+          </Link>
+        </div>
+      </aside>
+    </>
+  )
+}
+
+// Mobile Menu Button Component
+function MobileMenuButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="lg:hidden fixed top-4 left-4 z-50 p-2.5 glass rounded-xl shadow-brand hover:shadow-lg transition-all duration-300"
+    >
+      <Menu className="h-5 w-5 text-foreground" />
+    </button>
   )
 }
 
@@ -437,6 +478,7 @@ function MobileBottomNav({
 export function ResponsiveNavigation({ userPermissions }: ResponsiveNavigationProps) {
   const pathname = usePathname()
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // Permission check helper
   const hasPermission = (permission?: string): boolean => {
@@ -465,6 +507,7 @@ export function ResponsiveNavigation({ userPermissions }: ResponsiveNavigationPr
   // Determine active module and submodule based on pathname
   const getActiveIds = () => {
     for (const module of filteredModules) {
+      // Check submodules first
       if (module.subModules) {
         for (const sub of module.subModules) {
           if (pathname === sub.href || pathname.startsWith(sub.href + '/')) {
@@ -472,9 +515,17 @@ export function ResponsiveNavigation({ userPermissions }: ResponsiveNavigationPr
           }
         }
       }
-      if (module.href === '/admin' && (pathname === '/admin' || pathname === '/admin/dashboard')) {
-        return { moduleId: module.id, subModuleId: '' }
+
+      // Dashboard should only be active for exact /admin or /admin/dashboard
+      if (module.href === '/admin') {
+        if (pathname === '/admin' || pathname === '/admin/dashboard') {
+          return { moduleId: module.id, subModuleId: '' }
+        }
+        // Skip the general startsWith check for dashboard
+        continue
       }
+
+      // For other modules, check exact match or startsWith
       if (pathname === module.href || pathname.startsWith(module.href + '/')) {
         return { moduleId: module.id, subModuleId: '' }
       }
@@ -483,10 +534,6 @@ export function ResponsiveNavigation({ userPermissions }: ResponsiveNavigationPr
   }
 
   const { moduleId: activeModule, subModuleId: activeSubModule } = getActiveIds()
-
-  const handleModuleClick = (moduleId: string) => {
-    // Navigation is handled by Link components
-  }
 
   return (
     <>
@@ -499,12 +546,16 @@ export function ResponsiveNavigation({ userPermissions }: ResponsiveNavigationPr
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
       />
 
-      {/* Mobile Bottom Navigation */}
-      <MobileBottomNav
+      {/* Mobile Menu Button */}
+      <MobileMenuButton onClick={() => setMobileMenuOpen(true)} />
+
+      {/* Mobile Sidebar Navigation */}
+      <MobileSidebar
         modules={filteredModules}
         activeModule={activeModule}
         activeSubModule={activeSubModule}
-        onModuleClick={handleModuleClick}
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
       />
 
       {/* Spacer for desktop sidebar */}
@@ -518,4 +569,4 @@ export function ResponsiveNavigation({ userPermissions }: ResponsiveNavigationPr
   )
 }
 
-export { DesktopSidebar, MobileBottomNav }
+export { DesktopSidebar, MobileSidebar, MobileMenuButton }

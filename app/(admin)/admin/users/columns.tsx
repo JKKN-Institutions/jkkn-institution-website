@@ -57,19 +57,20 @@ const getStatusColor = (status: string | null | undefined) => {
 }
 
 const getRoleColor = (roleName: string | null | undefined) => {
+  // Use brand primary color with different opacities for all roles
   switch (roleName) {
     case 'super_admin':
-      return 'bg-purple-100 text-purple-800'
+      return 'bg-primary/20 text-primary'
     case 'director':
-      return 'bg-blue-100 text-blue-800'
+      return 'bg-primary/15 text-primary'
     case 'chair':
-      return 'bg-indigo-100 text-indigo-800'
+      return 'bg-primary/12 text-primary/90'
     case 'member':
-      return 'bg-green-100 text-green-800'
+      return 'bg-primary/10 text-primary/85'
     case 'guest':
-      return 'bg-amber-100 text-amber-800'
+      return 'bg-primary/8 text-primary/80'
     default:
-      return 'bg-gray-100 text-gray-800'
+      return 'bg-muted text-muted-foreground'
   }
 }
 

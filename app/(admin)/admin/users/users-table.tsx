@@ -254,9 +254,9 @@ export function UsersTable({
         </div>
 
         {/* Filters */}
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Select value={roleValue || 'all'} onValueChange={handleRoleChange}>
-            <SelectTrigger className="w-[150px] bg-background/50 border-border/50 rounded-xl">
+            <SelectTrigger className="w-[120px] sm:w-[150px] bg-background/50 border-border/50 rounded-xl">
               <SelectValue placeholder="All Roles" />
             </SelectTrigger>
             <SelectContent>
@@ -270,7 +270,7 @@ export function UsersTable({
           </Select>
 
           <Select value={statusValue || 'all'} onValueChange={handleStatusChange}>
-            <SelectTrigger className="w-[140px] bg-background/50 border-border/50 rounded-xl">
+            <SelectTrigger className="w-[110px] sm:w-[140px] bg-background/50 border-border/50 rounded-xl">
               <SelectValue placeholder="All Status" />
             </SelectTrigger>
             <SelectContent>
@@ -295,13 +295,14 @@ export function UsersTable({
             className="gap-2"
             onClick={handleExportAll}
             disabled={isExporting || isLoading}
+            title="Export All"
           >
             {isExporting ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <Download className="h-4 w-4" />
             )}
-            Export All
+            <span className="hidden sm:inline">Export All</span>
           </Button>
         </div>
       </div>

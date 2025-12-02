@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useCallback, type ReactNode } from 'react'
+import { Suspense, useCallback, useState, type ReactNode, type CSSProperties } from 'react'
 import { useDroppable } from '@dnd-kit/core'
 import {
   SortableContext,
@@ -11,11 +11,21 @@ import { CSS } from '@dnd-kit/utilities'
 import { usePageBuilder } from '../page-builder-provider'
 import { BlockWrapper } from './block-wrapper'
 import { EmptyCanvas } from './empty-canvas'
+import { BlockErrorBoundary } from '../error-boundary'
 import { getComponent, getComponentEntry, supportsChildren } from '@/lib/cms/component-registry'
 import type { BlockData } from '@/lib/cms/registry-types'
 import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Plus } from 'lucide-react'
+import {
+  applyBlockStyles,
+  applyMotionStyles,
+  getMotionDataAttributes,
+  getHoverTransform,
+  parseCustomCss,
+  type BlockStyles,
+  type BlockMotion,
+} from '../utils/style-applicator'
 
 interface SortableBlockProps {
   block: BlockData
@@ -88,6 +98,33 @@ function SortableBlock({
   // Check for AI enhancement background gradient
   const backgroundGradient = block.props._backgroundGradient as string | undefined
 
+  // Extract styles and motion from block props
+  const blockStyles = block.props._styles as BlockStyles | undefined
+  const blockMotion = block.props._motion as BlockMotion | undefined
+  const customCss = block.custom_css
+
+  // Combine all styles
+  const appliedStyles: CSSProperties = {
+    ...applyBlockStyles(blockStyles),
+    ...applyMotionStyles(blockMotion),
+    ...(customCss ? parseCustomCss(customCss) : {}),
+  }
+
+  // Get motion data attributes for JS-based animations
+  const motionDataAttrs = getMotionDataAttributes(blockMotion)
+
+  // Get hover transform for motion effects
+  const hoverTransform = getHoverTransform(blockMotion)
+
+  // State for hover effect
+  const [isHovered, setIsHovered] = useState(false)
+
+  // Apply hover transform when hovered
+  const finalStyles: CSSProperties = {
+    ...appliedStyles,
+    ...(isHovered && hoverTransform ? { transform: hoverTransform } : {}),
+  }
+
   return (
     <div ref={setNodeRef} style={style}>
       <BlockWrapper
@@ -108,22 +145,30 @@ function SortableBlock({
         isContainer={isContainer}
         depth={depth}
       >
-        {/* Apply custom_classes wrapper for AI enhancements */}
-        <div className={cn('relative', block.custom_classes)}>
+        {/* Apply custom_classes wrapper with styles and motion */}
+        <div
+          className={cn('relative', block.custom_classes)}
+          style={finalStyles}
+          onMouseEnter={() => hoverTransform && setIsHovered(true)}
+          onMouseLeave={() => hoverTransform && setIsHovered(false)}
+          {...motionDataAttrs}
+        >
           {/* Background gradient overlay for AI enhancements */}
           {backgroundGradient && (
             <div className={cn('absolute inset-0 pointer-events-none rounded-inherit', backgroundGradient)} />
           )}
-          <Suspense fallback={<BlockSkeleton />}>
-            <Component
-              {...block.props}
-              id={block.id}
-              isEditing={!isPreviewMode}
-              isSelected={isSelected}
-            >
-              {children}
-            </Component>
-          </Suspense>
+          <BlockErrorBoundary blockId={block.id} blockName={entry.displayName}>
+            <Suspense fallback={<BlockSkeleton />}>
+              <Component
+                {...block.props}
+                id={block.id}
+                isEditing={!isPreviewMode}
+                isSelected={isSelected}
+              >
+                {children}
+              </Component>
+            </Suspense>
+          </BlockErrorBoundary>
         </div>
       </BlockWrapper>
     </div>

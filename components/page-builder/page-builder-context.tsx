@@ -2,8 +2,30 @@
 
 import { createContext, useContext, useState, useCallback, ReactNode, useMemo } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import type { BlockData, PageBuilderContextValue } from '@/lib/cms/registry-types'
+import type { BlockData } from '@/lib/cms/registry-types'
 import { getDefaultProps } from '@/lib/cms/component-registry'
+
+/**
+ * @deprecated Use page-builder-provider.tsx instead.
+ * This context is kept for backwards compatibility with older components.
+ */
+interface PageBuilderContextValue {
+  blocks: BlockData[]
+  selectedBlockId: string | null
+  selectBlock: (id: string | null) => void
+  addBlock: (componentName: string, props?: Record<string, unknown>, insertAt?: number) => void
+  updateBlock: (id: string, updates: Partial<BlockData>) => void
+  deleteBlock: (id: string) => void
+  duplicateBlock: (id: string) => void
+  moveBlock: (id: string, direction: 'up' | 'down') => void
+  reorderBlocks: (startIndex: number, endIndex: number) => void
+  undo: () => void
+  redo: () => void
+  canUndo: boolean
+  canRedo: boolean
+  isDirty: boolean
+  isSaving: boolean
+}
 
 interface PageBuilderProviderProps {
   children: ReactNode
