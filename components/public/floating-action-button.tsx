@@ -108,7 +108,7 @@ export function FloatingActionButton({ config: propConfig }: FloatingActionButto
   return (
     <div
       className={cn(
-        'absolute z-50 flex flex-col-reverse items-end gap-3 transition-all duration-500',
+        'fixed z-50 flex flex-col-reverse items-end gap-3 transition-all duration-500',
         positionClasses[config.position],
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       )}

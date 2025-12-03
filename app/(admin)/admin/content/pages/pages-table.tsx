@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Search, X, Download, Loader2 } from 'lucide-react'
+import { Search, X, Download, Loader2, ArrowUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getPages, publishPage, unpublishPage, archivePage, deletePage, duplicatePage } from '@/app/actions/cms/pages'
 import type { RowSelectionState } from '@tanstack/react-table'
@@ -27,6 +27,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { ReorderPagesModal } from './reorder-pages-modal'
 
 interface PagesTableProps {
   page: number
@@ -66,6 +67,9 @@ export function PagesTable({
     isOpen: boolean
   }>({ type: null, isOpen: false })
   const [isProcessing, setIsProcessing] = useState(false)
+
+  // Reorder modal state
+  const [isReorderModalOpen, setIsReorderModalOpen] = useState(false)
 
   // Get selected page IDs from row selection
   const selectedPageIds = useMemo(() => {
@@ -490,6 +494,17 @@ export function PagesTable({
               <X className="h-4 w-4" />
             </Button>
           )}
+
+          {/* Reorder Button */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsReorderModalOpen(true)}
+            className="gap-2"
+          >
+            <ArrowUpDown className="h-4 w-4" />
+            Reorder
+          </Button>
         </div>
       </div>
 
@@ -549,6 +564,20 @@ export function PagesTable({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Reorder Pages Modal */}
+      <ReorderPagesModal
+        open={isReorderModalOpen}
+        onOpenChange={setIsReorderModalOpen}
+        pages={data.map((page) => ({
+          id: page.id,
+          title: page.title,
+          slug: page.slug,
+          status: page.status,
+          sort_order: page.sort_order,
+        }))}
+        onReorderComplete={fetchData}
+      />
     </div>
   )
 }

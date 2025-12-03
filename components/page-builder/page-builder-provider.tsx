@@ -84,6 +84,7 @@ type PageBuilderAction =
   | { type: 'COPY_BLOCK'; payload: string }
   | { type: 'CUT_BLOCK'; payload: string }
   | { type: 'PASTE_BLOCK'; payload?: { parentId?: string | null; insertAt?: number } }
+  | { type: 'RESET_BLOCKS' }
   | { type: 'UNDO' }
   | { type: 'REDO' }
   | { type: 'SET_DEVICE'; payload: 'desktop' | 'tablet' | 'mobile' }
@@ -549,6 +550,17 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
       }
     }
 
+    case 'RESET_BLOCKS': {
+      const emptyBlocks: BlockData[] = []
+      const stateWithHistory = pushToHistory(state, emptyBlocks)
+      return {
+        ...stateWithHistory,
+        blocks: emptyBlocks,
+        selectedBlockId: null,
+        isDirty: true,
+      }
+    }
+
     case 'UNDO': {
       if (state.historyIndex <= 0) return state
       const newIndex = state.historyIndex - 1
@@ -628,6 +640,7 @@ interface PageBuilderContextValue {
   copyBlock: (id: string) => void
   cutBlock: (id: string) => void
   pasteBlock: (parentId?: string | null, insertAt?: number) => void
+  resetBlocks: () => void
   undo: () => void
   redo: () => void
   setDevice: (device: 'desktop' | 'tablet' | 'mobile') => void
@@ -734,6 +747,10 @@ export function PageBuilderProvider({
     dispatch({ type: 'PASTE_BLOCK', payload: { parentId, insertAt } })
   }, [])
 
+  const resetBlocks = useCallback(() => {
+    dispatch({ type: 'RESET_BLOCKS' })
+  }, [])
+
   const undo = useCallback(() => {
     dispatch({ type: 'UNDO' })
   }, [])
@@ -796,6 +813,7 @@ export function PageBuilderProvider({
     copyBlock,
     cutBlock,
     pasteBlock,
+    resetBlocks,
     undo,
     redo,
     setDevice,

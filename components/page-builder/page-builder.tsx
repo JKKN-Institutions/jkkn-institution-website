@@ -32,6 +32,8 @@ import { Settings, Search, MessageCircle } from 'lucide-react'
 import type { SeoData } from '@/lib/utils/seo-analyzer'
 import type { LayoutPreset } from '@/lib/cms/layout-presets'
 import { OfflineBanner } from '@/lib/hooks/use-network-status'
+import { SiteHeader } from '@/components/public/site-header'
+import { SiteFooter } from '@/components/public/site-footer'
 
 // Auto-save debounce delay in milliseconds
 const AUTO_SAVE_DELAY = 3000
@@ -589,10 +591,14 @@ function PageBuilderContent({
               className={cn(
                 'mx-auto transition-all duration-300',
                 getDeviceWidthClass(),
-                device !== 'desktop' && 'shadow-lg my-4 bg-background rounded-lg overflow-hidden'
+                device !== 'desktop' && 'shadow-lg my-4 bg-background rounded-lg overflow-hidden',
+                isPreviewMode && 'bg-background'
               )}
             >
+              {/* Show header/footer in preview mode for full page experience */}
+              {isPreviewMode && <SiteHeader isPreview />}
               <BuilderCanvas />
+              {isPreviewMode && <SiteFooter />}
             </div>
           </div>
 

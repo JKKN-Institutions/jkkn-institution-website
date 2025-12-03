@@ -113,6 +113,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       minHeight: '100vh',
     },
     supportsChildren: false,
+    isFullWidth: true,
     keywords: ['hero', 'banner', 'header', 'landing'],
     editableProps: [
       // Title settings
@@ -454,6 +455,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       showArrows: true,
     },
     supportsChildren: false,
+    isFullWidth: true,
     keywords: ['carousel', 'slider', 'slideshow'],
     editableProps: [
       { name: 'images', type: 'array', label: 'Carousel Images', description: 'Add images with src, alt, caption, and optional link' },
@@ -640,6 +642,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       width: 'full',
     },
     supportsChildren: false,
+    isFullWidth: true,
     keywords: ['divider', 'separator', 'line', 'hr'],
     editableProps: [
       { name: 'style', type: 'enum', label: 'Style', options: ['solid', 'dashed', 'dotted'] },
@@ -663,6 +666,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       fullWidth: true,
     },
     supportsChildren: true,
+    isFullWidth: true,
     keywords: ['section', 'wrapper', 'background', 'full-width'],
     editableProps: [
       { name: 'padding', type: 'string', label: 'Padding', placeholder: '16', description: 'Tailwind spacing value' },
@@ -972,4 +976,12 @@ export function getCategoryDisplayName(category: ComponentCategory): string {
 export function supportsChildren(componentName: string): boolean {
   const entry = COMPONENT_REGISTRY[componentName]
   return entry?.supportsChildren ?? false
+}
+
+/**
+ * Check if a component is full-width (should not be wrapped in a container)
+ */
+export function isFullWidthComponent(componentName: string): boolean {
+  const entry = COMPONENT_REGISTRY[componentName]
+  return entry?.isFullWidth ?? false
 }

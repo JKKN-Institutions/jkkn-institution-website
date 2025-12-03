@@ -1,7 +1,7 @@
 'use client'
 
 import { Suspense } from 'react'
-import { getComponent, getComponentEntry } from '@/lib/cms/component-registry'
+import { getComponent, getComponentEntry, isFullWidthComponent } from '@/lib/cms/component-registry'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 
@@ -88,7 +88,7 @@ function buildBlockTree(blocks: BlockData[]): BlockData[] {
 /**
  * Recursively render a block and its children
  */
-function RenderBlock({ block }: { block: BlockData }) {
+function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?: boolean }) {
   const Component = getComponent(block.component_name)
   const entry = getComponentEntry(block.component_name)
 
@@ -98,6 +98,9 @@ function RenderBlock({ block }: { block: BlockData }) {
 
   // Check for AI enhancement background gradient
   const backgroundGradient = block.props._backgroundGradient as string | undefined
+
+  // Check if this component is full-width (should not be wrapped in container)
+  const isFullWidth = isFullWidthComponent(block.component_name)
 
   // Wrapper for custom classes and CSS
   const BlockWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -115,30 +118,47 @@ function RenderBlock({ block }: { block: BlockData }) {
     </div>
   )
 
+  // Responsive container for non-full-width blocks at root level
+  const ResponsiveContainer = ({ children }: { children: React.ReactNode }) => {
+    // Only apply container to root-level, non-full-width blocks
+    if (isNested || isFullWidth) {
+      return <>{children}</>
+    }
+    return (
+      <div className="page-content-container">
+        {children}
+      </div>
+    )
+  }
+
   // If component supports children and has children, render them nested
   if (entry.supportsChildren && block.children && block.children.length > 0) {
     return (
-      <BlockWrapper>
-        <Suspense fallback={<BlockSkeleton />}>
-          <Component {...block.props} id={block.id}>
-            {block.children
-              .filter((child) => child.is_visible)
-              .map((child) => (
-                <RenderBlock key={child.id} block={child} />
-              ))}
-          </Component>
-        </Suspense>
-      </BlockWrapper>
+      <ResponsiveContainer>
+        <BlockWrapper>
+          <Suspense fallback={<BlockSkeleton />}>
+            <Component {...block.props} id={block.id}>
+              {block.children
+                .filter((child) => child.is_visible)
+                .map((child) => (
+                  <RenderBlock key={child.id} block={child} isNested={true} />
+                ))}
+            </Component>
+          </Suspense>
+        </BlockWrapper>
+      </ResponsiveContainer>
     )
   }
 
   // Regular block without children
   return (
-    <BlockWrapper>
-      <Suspense fallback={<BlockSkeleton />}>
-        <Component {...block.props} id={block.id} />
-      </Suspense>
-    </BlockWrapper>
+    <ResponsiveContainer>
+      <BlockWrapper>
+        <Suspense fallback={<BlockSkeleton />}>
+          <Component {...block.props} id={block.id} />
+        </Suspense>
+      </BlockWrapper>
+    </ResponsiveContainer>
   )
 }
 

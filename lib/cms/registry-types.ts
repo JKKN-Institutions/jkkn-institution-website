@@ -78,6 +78,8 @@ export interface ComponentRegistryEntry {
   defaultProps: Record<string, unknown>
   /** Whether this component can contain other blocks */
   supportsChildren: boolean
+  /** Whether this component should span full width (no container wrapper) */
+  isFullWidth?: boolean
   /** Preview image URL for the component palette */
   previewImage?: string
   /** Keywords for search */

@@ -26,6 +26,8 @@ export interface NavItem {
 
 interface SiteHeaderProps {
   navigation?: NavItem[]
+  /** When true, header uses static positioning (for page builder preview) */
+  isPreview?: boolean
 }
 
 // Fallback navigation when CMS is empty
@@ -45,7 +47,7 @@ const socialLinks = [
   { icon: Youtube, href: 'https://youtube.com/jkkn', label: 'YouTube' },
 ]
 
-export function SiteHeader({ navigation }: SiteHeaderProps) {
+export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
   const pathname = usePathname()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -86,20 +88,23 @@ export function SiteHeader({ navigation }: SiteHeaderProps) {
 
   return (
     <>
-      {/* Fixed Full Width Navigation */}
+      {/* Full Width Navigation - Fixed on live site, static in preview */}
       <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
-          isScrolled
+          'z-50 transition-all duration-500',
+          isPreview
+            ? 'relative bg-white border-b border-gray-100'
+            : 'fixed top-0 left-0 right-0',
+          !isPreview && (isScrolled
             ? 'bg-white/95 backdrop-blur-xl shadow-lg shadow-black/5 border-b border-gray-100'
-            : 'bg-white/80 backdrop-blur-md'
+            : 'bg-white/80 backdrop-blur-md')
         )}
       >
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group relative z-10">
-              <div className="relative w-11 h-11 lg:w-12 lg:h-12 transition-transform duration-300 group-hover:scale-105">
+            {/* Logo - Only image, no text */}
+            <Link href="/" className="flex items-center group relative z-10">
+              <div className="relative w-12 h-12 lg:w-14 lg:h-14 transition-transform duration-300 group-hover:scale-105">
                 <Image
                   src="https://jkkn.ac.in/wp-content/uploads/2023/04/Untitled-design-2023-03-13T105521.479.png"
                   alt="JKKN Institution Logo"
@@ -108,18 +113,10 @@ export function SiteHeader({ navigation }: SiteHeaderProps) {
                   priority
                 />
               </div>
-              <div className="hidden sm:block">
-                <p className="text-lg lg:text-xl font-bold text-gray-900 tracking-tight">
-                  JKKN Institution
-                </p>
-                <p className="text-[10px] lg:text-xs text-gray-500 font-medium tracking-widest uppercase">
-                  Excellence in Education
-                </p>
-              </div>
             </Link>
 
-            {/* Desktop Navigation - Centered */}
-            <nav className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+            {/* Desktop Navigation - Right aligned */}
+            <nav className="hidden lg:flex items-center gap-1">
               {mainNavigation.map((item) => (
                 <div
                   key={item.id}
@@ -130,7 +127,7 @@ export function SiteHeader({ navigation }: SiteHeaderProps) {
                   <Link
                     href={item.href}
                     className={cn(
-                      'flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300',
+                      'flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-300',
                       isActive(item.href)
                         ? 'text-primary bg-primary/10'
                         : 'text-gray-700 hover:text-primary hover:bg-gray-50'
@@ -170,11 +167,11 @@ export function SiteHeader({ navigation }: SiteHeaderProps) {
               ))}
             </nav>
 
-            {/* CTA Buttons */}
-            <div className="hidden lg:flex items-center gap-3">
+            {/* Admin Login Button */}
+            <div className="hidden lg:flex items-center">
               <Link
                 href="/admin"
-                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary transition-colors"
+                className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors"
               >
                 Admin Login
               </Link>
@@ -343,8 +340,8 @@ export function SiteHeader({ navigation }: SiteHeaderProps) {
         </div>
       </div>
 
-      {/* Spacer for fixed header */}
-      <div className="h-16 lg:h-20" />
+      {/* Spacer for fixed header - only needed on live site, not in preview */}
+      {!isPreview && <div className="h-16 lg:h-20" />}
     </>
   )
 }

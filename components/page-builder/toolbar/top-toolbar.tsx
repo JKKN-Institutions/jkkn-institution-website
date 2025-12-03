@@ -17,6 +17,16 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+import {
   ArrowLeft,
   Save,
   Eye,
@@ -37,6 +47,7 @@ import {
   Layout,
   BookTemplate,
   History,
+  Trash2,
 } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
@@ -69,6 +80,7 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
     canRedo,
     setDevice,
     setPreviewMode,
+    resetBlocks,
   } = usePageBuilder()
 
   const { page, isDirty, isSaving, isPreviewMode, device } = state
@@ -80,6 +92,7 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
   const [isVersionHistoryOpen, setIsVersionHistoryOpen] = useState(false)
   const [isSharePreviewOpen, setIsSharePreviewOpen] = useState(false)
   const [isLayoutPresetsOpen, setIsLayoutPresetsOpen] = useState(false)
+  const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false)
 
   const handlePublish = async () => {
     if (!page) return
@@ -120,6 +133,12 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
     } finally {
       setIsCancellingSchedule(false)
     }
+  }
+
+  const handleReset = () => {
+    resetBlocks()
+    setIsResetConfirmOpen(false)
+    toast.success('All blocks have been removed')
   }
 
   const getStatusColor = (status: string) => {
@@ -466,6 +485,14 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
                   Page settings
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => setIsResetConfirmOpen(true)}
+                className="text-destructive focus:text-destructive"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Reset all blocks
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -532,6 +559,27 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
           onPresetSelect={onPresetSelect}
         />
       )}
+
+      {/* Reset Confirmation Dialog */}
+      <AlertDialog open={isResetConfirmOpen} onOpenChange={setIsResetConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Reset all blocks?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will remove all blocks from the page. This action can be undone using the undo button.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleReset}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Reset all blocks
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </TooltipProvider>
   )
 }

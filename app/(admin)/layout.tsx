@@ -86,7 +86,7 @@ export default async function AdminLayout({
   const userData = await getUserData(session.user.id)
 
   return (
-    <div className="flex h-screen w-full max-w-full overflow-hidden bg-background">
+    <div className="admin-layout flex h-screen w-full max-w-full overflow-hidden bg-background">
       {/* Decorative gradient background */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
