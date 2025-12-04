@@ -15,6 +15,19 @@ export default function SectionWrapper({
 }: SectionWrapperProps) {
   const hasChildren = children && (Array.isArray(children) ? children.length > 0 : true)
 
+  // Build background style without mixing shorthand and non-shorthand properties
+  const backgroundStyle: React.CSSProperties = backgroundImage
+    ? {
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: background || undefined,
+      }
+    : {
+        backgroundColor: background || undefined,
+      }
+
   return (
     <section
       id={id}
@@ -24,12 +37,7 @@ export default function SectionWrapper({
       )}
       style={{
         padding: `${Number(padding) * 0.25}rem 0`,
-        background: background || undefined,
-        ...(backgroundImage && {
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }),
+        ...backgroundStyle,
       }}
     >
       {/* Content */}

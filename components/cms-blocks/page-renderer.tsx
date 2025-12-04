@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import { getComponent, getComponentEntry, isFullWidthComponent } from '@/lib/cms/component-registry'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
+import { applyBlockStyles, type BlockStyles } from '@/components/page-builder/utils/style-applicator'
 
 interface BlockData {
   id: string
@@ -99,12 +100,19 @@ function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?:
   // Check for AI enhancement background gradient
   const backgroundGradient = block.props._backgroundGradient as string | undefined
 
+  // Get block styles (margin, padding, etc.) from props
+  const blockStyles = block.props._styles as BlockStyles | undefined
+  const appliedStyles = applyBlockStyles(blockStyles)
+
   // Check if this component is full-width (should not be wrapped in container)
   const isFullWidth = isFullWidthComponent(block.component_name)
 
   // Wrapper for custom classes and CSS
   const BlockWrapper = ({ children }: { children: React.ReactNode }) => (
-    <div className={cn('relative', block.custom_classes)}>
+    <div
+      className={cn('relative', block.custom_classes)}
+      style={appliedStyles}
+    >
       {/* Background gradient overlay for AI enhancements */}
       {backgroundGradient && (
         <div className={cn('absolute inset-0 pointer-events-none rounded-inherit', backgroundGradient)} />

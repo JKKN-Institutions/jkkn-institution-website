@@ -41,6 +41,7 @@ const resourceLinks = [
   { label: 'Calendar', href: '/calendar' },
   { label: 'Privacy Policy', href: '/privacy' },
   { label: 'Terms of Use', href: '/terms' },
+  { label: 'Admin Login', href: '/admin' },
 ]
 
 const socialLinks = [

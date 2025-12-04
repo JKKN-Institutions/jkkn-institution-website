@@ -3,6 +3,7 @@
 import { usePageBuilder } from '../page-builder-provider'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
 import {
   Tooltip,
   TooltipContent,
@@ -48,12 +49,15 @@ import {
   BookTemplate,
   History,
   Trash2,
+  Pencil,
+  Check,
+  X,
 } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
-import { publishPage, cancelScheduledPublish } from '@/app/actions/cms/pages'
+import { publishPage, cancelScheduledPublish, updatePage } from '@/app/actions/cms/pages'
 import { toast } from 'sonner'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { SchedulePublishDialog } from '../modals/schedule-publish-dialog'
 import { TemplateBrowserModal } from '../modals/template-browser-modal'
 import { SaveTemplateDialog } from '../modals/save-template-dialog'
@@ -81,6 +85,7 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
     setDevice,
     setPreviewMode,
     resetBlocks,
+    setPage,
   } = usePageBuilder()
 
   const { page, isDirty, isSaving, isPreviewMode, device } = state
@@ -93,6 +98,79 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
   const [isSharePreviewOpen, setIsSharePreviewOpen] = useState(false)
   const [isLayoutPresetsOpen, setIsLayoutPresetsOpen] = useState(false)
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false)
+
+  // Inline title editing state
+  const [isEditingTitle, setIsEditingTitle] = useState(false)
+  const [editedTitle, setEditedTitle] = useState(page?.title || '')
+  const [isSavingTitle, setIsSavingTitle] = useState(false)
+  const titleInputRef = useRef<HTMLInputElement>(null)
+
+  // Update editedTitle when page changes
+  useEffect(() => {
+    if (page?.title) {
+      setEditedTitle(page.title)
+    }
+  }, [page?.title])
+
+  // Focus input when entering edit mode
+  useEffect(() => {
+    if (isEditingTitle && titleInputRef.current) {
+      titleInputRef.current.focus()
+      titleInputRef.current.select()
+    }
+  }, [isEditingTitle])
+
+  const handleTitleSave = async () => {
+    if (!page || !editedTitle.trim()) {
+      setEditedTitle(page?.title || '')
+      setIsEditingTitle(false)
+      return
+    }
+
+    if (editedTitle === page.title) {
+      setIsEditingTitle(false)
+      return
+    }
+
+    setIsSavingTitle(true)
+    try {
+      const formData = new FormData()
+      formData.append('id', page.id)
+      formData.append('title', editedTitle.trim())
+
+      const result = await updatePage({ success: false }, formData)
+
+      if (result.success) {
+        // Update local state
+        setPage({ ...page, title: editedTitle.trim() })
+        toast.success('Page title updated')
+        setIsEditingTitle(false)
+      } else {
+        toast.error(result.message || 'Failed to update title')
+        setEditedTitle(page.title)
+      }
+    } catch (error) {
+      toast.error('An error occurred while updating title')
+      setEditedTitle(page.title)
+    } finally {
+      setIsSavingTitle(false)
+    }
+  }
+
+  const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleTitleSave()
+    } else if (e.key === 'Escape') {
+      setEditedTitle(page?.title || '')
+      setIsEditingTitle(false)
+    }
+  }
+
+  const handleTitleCancel = () => {
+    setEditedTitle(page?.title || '')
+    setIsEditingTitle(false)
+  }
 
   const handlePublish = async () => {
     if (!page) return
@@ -178,10 +256,55 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
             <FileText className="h-4 w-4 text-muted-foreground" />
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-medium text-foreground">
-                  {page?.title || 'Untitled Page'}
-                </span>
-                {isDirty && (
+                {isEditingTitle ? (
+                  <div className="flex items-center gap-1">
+                    <Input
+                      ref={titleInputRef}
+                      value={editedTitle}
+                      onChange={(e) => setEditedTitle(e.target.value)}
+                      onKeyDown={handleTitleKeyDown}
+                      onBlur={handleTitleSave}
+                      className="h-7 w-48 text-sm font-medium"
+                      disabled={isSavingTitle}
+                    />
+                    {isSavingTitle ? (
+                      <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                    ) : (
+                      <>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6"
+                          onClick={handleTitleSave}
+                        >
+                          <Check className="h-3.5 w-3.5 text-green-600" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6"
+                          onClick={handleTitleCancel}
+                        >
+                          <X className="h-3.5 w-3.5 text-red-600" />
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                ) : (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={() => setIsEditingTitle(true)}
+                        className="flex items-center gap-1.5 font-medium text-foreground hover:text-primary transition-colors group"
+                      >
+                        {page?.title || 'Untitled Page'}
+                        <Pencil className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>Click to edit title</TooltipContent>
+                  </Tooltip>
+                )}
+                {isDirty && !isEditingTitle && (
                   <span className="text-xs text-amber-600">• Unsaved changes</span>
                 )}
               </div>

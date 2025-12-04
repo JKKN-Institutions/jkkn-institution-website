@@ -8,6 +8,7 @@ export default function Heading({
   text = 'Heading',
   level = 'h2',
   alignment = 'left',
+  color,
   className,
   isEditing,
 }: HeadingProps) {
@@ -26,6 +27,7 @@ export default function Heading({
         `text-${alignment}`,
         className
       )}
+      style={{ color: color || undefined }}
     >
       {text || (isEditing ? 'Click to add heading' : null)}
     </Tag>
