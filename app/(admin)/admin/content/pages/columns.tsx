@@ -50,6 +50,7 @@ export type PageRow = {
   is_homepage: boolean | null
   show_in_navigation: boolean | null
   sort_order: number | null
+  parent_id: string | null
   created_at: string | null
   updated_at: string | null
   published_at: string | null

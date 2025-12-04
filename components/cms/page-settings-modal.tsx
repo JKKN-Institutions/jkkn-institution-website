@@ -46,6 +46,7 @@ const pageSettingsSchema = z.object({
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug must be lowercase with hyphens only'),
   description: z.string().optional(),
   visibility: z.enum(['public', 'private', 'password_protected']),
+  sort_order: z.number().min(1, 'Order must be at least 1').optional(),
   show_in_navigation: z.boolean(),
   is_homepage: z.boolean(),
 })
@@ -61,14 +62,20 @@ interface PageSettingsModalProps {
     slug: string
     description?: string | null
     visibility: string
+    sort_order?: number | null
+    parent_id?: string | null
     show_in_navigation: boolean | null
     is_homepage: boolean | null
   }
+  parentOrder?: number | null
 }
 
-export function PageSettingsModal({ open, onOpenChange, page }: PageSettingsModalProps) {
+export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: PageSettingsModalProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Check if this is a child page
+  const isChildPage = !!page.parent_id
 
   const form = useForm<PageSettingsFormData>({
     resolver: zodResolver(pageSettingsSchema),
@@ -77,6 +84,7 @@ export function PageSettingsModal({ open, onOpenChange, page }: PageSettingsModa
       slug: page.slug,
       description: page.description || '',
       visibility: page.visibility as 'public' | 'private' | 'password_protected',
+      sort_order: page.sort_order ?? 1,
       show_in_navigation: page.show_in_navigation ?? true,
       is_homepage: page.is_homepage ?? false,
     },
@@ -89,6 +97,7 @@ export function PageSettingsModal({ open, onOpenChange, page }: PageSettingsModa
       slug: page.slug,
       description: page.description || '',
       visibility: page.visibility as 'public' | 'private' | 'password_protected',
+      sort_order: page.sort_order ?? 1,
       show_in_navigation: page.show_in_navigation ?? true,
       is_homepage: page.is_homepage ?? false,
     })
@@ -122,6 +131,7 @@ export function PageSettingsModal({ open, onOpenChange, page }: PageSettingsModa
       formData.append('slug', data.slug)
       formData.append('description', data.description || '')
       formData.append('visibility', data.visibility)
+      formData.append('sort_order', String(data.sort_order ?? 1))
       formData.append('show_in_navigation', String(data.show_in_navigation))
       formData.append('is_homepage', String(data.is_homepage))
 
@@ -236,6 +246,43 @@ export function PageSettingsModal({ open, onOpenChange, page }: PageSettingsModa
                         <SelectItem value="password_protected">Password Protected</SelectItem>
                       </SelectContent>
                     </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="sort_order"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Page Order</FormLabel>
+                    <FormControl>
+                      <div className="flex items-center gap-2">
+                        {isChildPage && parentOrder && (
+                          <span className="text-sm font-semibold text-primary">{parentOrder}.</span>
+                        )}
+                        <Input
+                          type="number"
+                          min="1"
+                          placeholder="1"
+                          className="w-20"
+                          {...field}
+                          value={field.value ?? ''}
+                          onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : undefined)}
+                        />
+                        {isChildPage && parentOrder && (
+                          <span className="text-xs text-muted-foreground">
+                            (Displayed as {parentOrder}.{field.value || 1})
+                          </span>
+                        )}
+                      </div>
+                    </FormControl>
+                    <FormDescription className="text-xs">
+                      {isChildPage
+                        ? 'Order within parent page. Lower numbers appear first.'
+                        : 'Navigation order. Lower numbers appear first in menus.'}
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

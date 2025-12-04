@@ -153,7 +153,7 @@ function BlogPostCard({
           </div>
 
           {/* Title */}
-          <h3 className="text-2xl md:text-3xl font-bold mb-3 group-hover:text-primary-foreground/90 transition-colors">
+          <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-3 group-hover:text-primary-foreground/90 transition-colors">
             {post.link ? (
               <Link href={post.link}>{post.title}</Link>
             ) : (
@@ -338,7 +338,7 @@ export default function BlogPostsGrid({
     return (
       <div className={cn('py-12', className)}>
         {title && (
-          <h2 className="text-2xl font-bold text-foreground mb-6">{title}</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-6">{title}</h2>
         )}
         <div className="text-center py-8 text-muted-foreground">
           <BookOpen className="h-12 w-12 mx-auto mb-3 opacity-50" />
@@ -362,7 +362,7 @@ export default function BlogPostsGrid({
     <div className={cn('py-12', className)}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-foreground">{title}</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-foreground">{title}</h2>
         {showViewAll && (
           <Link
             href={viewAllLink}

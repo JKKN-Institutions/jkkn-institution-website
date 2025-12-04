@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getPageById } from '@/app/actions/cms/pages'
+import { getPageById, getParentPageOrder } from '@/app/actions/cms/pages'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -61,13 +61,16 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
     notFound()
   }
 
+  // Fetch parent's sort_order if this is a child page
+  const parentOrder = await getParentPageOrder(page.parent_id)
+
   const blockCount = page.cms_page_blocks?.length || 0
   const seoScore = page.cms_seo_metadata?.seo_score
 
   return (
     <div className="space-y-6">
       {/* Header with Glassmorphism */}
-      <PageDetailHeader page={page} />
+      <PageDetailHeader page={page} parentOrder={parentOrder} />
 
       {/* Page Details Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

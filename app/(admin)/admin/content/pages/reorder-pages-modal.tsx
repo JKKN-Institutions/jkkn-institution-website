@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, FileText } from 'lucide-react'
+import { Loader2, FileText, ChevronRight, FolderTree } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { reorderPages } from '@/app/actions/cms/pages'
 import { toast } from 'sonner'
@@ -23,6 +23,7 @@ interface PageItem {
   slug: string
   status: string
   sort_order: number | null
+  parent_id?: string | null
 }
 
 interface ReorderPagesModalProps {
@@ -42,17 +43,46 @@ export function ReorderPagesModal({
   const [isSaving, setIsSaving] = useState(false)
   const [hasChanges, setHasChanges] = useState(false)
 
+  // Build hierarchical structure
+  const { parentPages, childrenMap, parentOrderMap } = useMemo(() => {
+    const parents: PageItem[] = []
+    const children: Map<string, PageItem[]> = new Map()
+    const orderMap: Map<string, number> = new Map()
+
+    // Separate parents and children
+    initialPages.forEach(page => {
+      if (!page.parent_id) {
+        parents.push(page)
+      } else {
+        const existing = children.get(page.parent_id) || []
+        existing.push(page)
+        children.set(page.parent_id, existing)
+      }
+    })
+
+    // Sort parents by sort_order
+    parents.sort((a, b) => (a.sort_order ?? 999) - (b.sort_order ?? 999))
+
+    // Build order map for parents (1, 2, 3...)
+    parents.forEach((p, idx) => {
+      orderMap.set(p.id, p.sort_order ?? (idx + 1))
+    })
+
+    // Sort children within each parent
+    children.forEach((childList, parentId) => {
+      childList.sort((a, b) => (a.sort_order ?? 999) - (b.sort_order ?? 999))
+    })
+
+    return { parentPages: parents, childrenMap: children, parentOrderMap: orderMap }
+  }, [initialPages])
+
+  // Check if we have any hierarchy
+  const hasHierarchy = childrenMap.size > 0
+
   // Reset pages when modal opens with new data
   useEffect(() => {
     if (open) {
-      // Sort by current sort_order, then by title
-      const sorted = [...initialPages].sort((a, b) => {
-        const orderA = a.sort_order ?? 999
-        const orderB = b.sort_order ?? 999
-        if (orderA !== orderB) return orderA - orderB
-        return a.title.localeCompare(b.title)
-      })
-      setPages(sorted)
+      setPages([...initialPages])
       setHasChanges(false)
     }
   }, [open, initialPages])
@@ -91,8 +121,8 @@ export function ReorderPagesModal({
     try {
       const pageOrders = pages.map((page) => ({
         id: page.id,
-        sort_order: page.sort_order ?? 0,
-        parent_id: null,
+        sort_order: page.sort_order ?? 1,
+        parent_id: page.parent_id || null,
       }))
 
       const result = await reorderPages(pageOrders)
@@ -117,12 +147,57 @@ export function ReorderPagesModal({
     onOpenChange(false)
   }
 
-  // Sort pages by their current order for display
-  const sortedPages = [...pages].sort((a, b) => {
-    const orderA = a.sort_order ?? 999
-    const orderB = b.sort_order ?? 999
-    return orderA - orderB
-  })
+  // Get current page data from state
+  const getPage = (id: string) => pages.find(p => p.id === id)
+
+  // Render a single page row
+  const renderPageRow = (page: PageItem, parentOrder?: number, isChild: boolean = false) => {
+    const currentPage = getPage(page.id) || page
+    const displayOrder = currentPage.sort_order ?? ''
+
+    return (
+      <div
+        key={page.id}
+        className={cn(
+          "flex items-center gap-3 p-3 bg-background border rounded-lg hover:border-primary/50 transition-colors",
+          isChild && "ml-6 border-l-2 border-l-primary/30"
+        )}
+      >
+        {/* Hierarchical order display */}
+        <div className="flex items-center gap-0.5 min-w-[80px]">
+          {isChild && parentOrder !== undefined && (
+            <span className="text-sm text-primary font-semibold">
+              {parentOrder}.
+            </span>
+          )}
+          <Input
+            type="number"
+            min="1"
+            value={displayOrder}
+            onChange={(e) => handleOrderChange(page.id, e.target.value)}
+            className={cn("text-center font-medium", isChild ? "w-12" : "w-14")}
+            placeholder="1"
+          />
+        </div>
+        <FileText className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <p className="font-medium truncate">{page.title}</p>
+            {!isChild && childrenMap.has(page.id) && (
+              <Badge variant="outline" className="text-xs">
+                <FolderTree className="h-3 w-3 mr-1" />
+                {childrenMap.get(page.id)?.length} subpages
+              </Badge>
+            )}
+          </div>
+          <p className="text-xs text-muted-foreground truncate">/{page.slug}</p>
+        </div>
+        <Badge variant="secondary" className={cn('text-xs flex-shrink-0', getStatusColor(page.status))}>
+          {page.status}
+        </Badge>
+      </div>
+    )
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -130,35 +205,41 @@ export function ReorderPagesModal({
         <DialogHeader>
           <DialogTitle>Set Page Order</DialogTitle>
           <DialogDescription>
-            Enter the order number (0, 1, 2, 3...) for each page. Lower numbers appear first in navigation.
+            {hasHierarchy ? (
+              <span className="flex items-center gap-1 flex-wrap">
+                Enter order numbers (1, 2, 3...). Subpages shown as
+                <Badge variant="outline" className="mx-1">Parent.Child</Badge>
+                format (e.g., 1.1, 1.2)
+              </span>
+            ) : (
+              <>Enter order numbers (1, 2, 3...) for each page. Lower numbers appear first.</>
+            )}
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto py-4">
           <div className="space-y-2">
-            {sortedPages.map((page) => (
-              <div
-                key={page.id}
-                className="flex items-center gap-3 p-3 bg-background border rounded-lg"
-              >
-                <Input
-                  type="number"
-                  min="0"
-                  value={page.sort_order ?? ''}
-                  onChange={(e) => handleOrderChange(page.id, e.target.value)}
-                  className="w-16 text-center"
-                  placeholder="0"
-                />
-                <FileText className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium truncate">{page.title}</p>
-                  <p className="text-xs text-muted-foreground truncate">/{page.slug}</p>
+            {/* Render parent pages with their children nested below */}
+            {parentPages.map((parent) => {
+              const currentParent = getPage(parent.id) || parent
+              const parentOrder = currentParent.sort_order ?? 1
+              const children = childrenMap.get(parent.id) || []
+
+              return (
+                <div key={parent.id} className="space-y-2">
+                  {/* Parent page */}
+                  {renderPageRow(parent, undefined, false)}
+
+                  {/* Child pages */}
+                  {children.map((child) => renderPageRow(child, parentOrder, true))}
                 </div>
-                <Badge variant="secondary" className={cn('text-xs flex-shrink-0', getStatusColor(page.status))}>
-                  {page.status}
-                </Badge>
-              </div>
-            ))}
+              )
+            })}
+
+            {/* If there are pages without parents that aren't in parentPages (orphans) */}
+            {initialPages
+              .filter(p => p.parent_id && !parentPages.some(pp => pp.id === p.parent_id))
+              .map(orphan => renderPageRow(orphan, undefined, false))}
           </div>
 
           {pages.length === 0 && (

@@ -57,7 +57,7 @@ export default function Timeline({
                   </p>
                 )}
                 {event.icon && (
-                  <span className="text-2xl mt-2 block">{event.icon}</span>
+                  <span className="text-lg sm:text-xl md:text-2xl mt-2 block">{event.icon}</span>
                 )}
               </div>
             </div>

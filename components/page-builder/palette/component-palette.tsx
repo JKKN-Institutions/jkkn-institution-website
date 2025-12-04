@@ -1,12 +1,15 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Badge } from '@/components/ui/badge'
 import {
   Tooltip,
   TooltipContent,
@@ -26,11 +29,14 @@ import {
   Type,
   Database,
   GripVertical,
-  Eye,
+  Puzzle,
+  Library,
+  ExternalLink,
 } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { createClient } from '@/lib/supabase/client'
 
 interface PaletteItemProps {
   name: string
@@ -126,36 +132,105 @@ function PaletteItem({ name, displayName, description, icon, previewImage }: Pal
   return itemContent
 }
 
-const categoryIcons: Record<ComponentCategory, React.ComponentType<{ className?: string }>> = {
+const categoryIcons: Record<ComponentCategory | 'custom', React.ComponentType<{ className?: string }>> = {
   content: Type,
   media: ImageIcon,
   layout: LayoutGrid,
   data: Database,
+  custom: Puzzle,
 }
 
-const categoryLabels: Record<ComponentCategory, string> = {
+const categoryLabels: Record<ComponentCategory | 'custom', string> = {
   content: 'Content',
   media: 'Media',
   layout: 'Layout',
   data: 'Data',
+  custom: 'Custom',
 }
 
-export function ComponentPalette() {
+interface CustomComponentData {
+  id: string
+  name: string
+  display_name: string
+  description: string | null
+  category: string
+  icon: string
+  preview_image: string | null
+  is_active: boolean
+}
+
+interface ComponentPaletteProps {
+  pageId?: string
+}
+
+export function ComponentPalette({ pageId }: ComponentPaletteProps) {
   const [searchQuery, setSearchQuery] = useState('')
-  const [activeCategory, setActiveCategory] = useState<ComponentCategory | 'all'>('all')
+  const [activeCategory, setActiveCategory] = useState<ComponentCategory | 'custom' | 'all'>('all')
+  const [customComponents, setCustomComponents] = useState<CustomComponentData[]>([])
+  const [isLoadingCustom, setIsLoadingCustom] = useState(true)
+
+  // Fetch custom components from database
+  useEffect(() => {
+    const fetchCustomComponents = async () => {
+      try {
+        const supabase = createClient()
+        const { data, error } = await supabase
+          .from('cms_custom_components')
+          .select('id, name, display_name, description, category, icon, preview_image, is_active')
+          .eq('is_active', true)
+          .order('display_name', { ascending: true })
+
+        if (error) {
+          console.error('Failed to fetch custom components:', error)
+        } else {
+          setCustomComponents(data || [])
+        }
+      } catch (err) {
+        console.error('Error fetching custom components:', err)
+      } finally {
+        setIsLoadingCustom(false)
+      }
+    }
+
+    fetchCustomComponents()
+  }, [])
+
+  // Convert custom components to palette format
+  const customComponentsForPalette = useMemo(() => {
+    return customComponents.map((comp) => ({
+      name: comp.name,
+      displayName: comp.display_name,
+      description: comp.description || undefined,
+      icon: comp.icon || 'Puzzle',
+      previewImage: comp.preview_image || undefined,
+      category: 'custom' as const,
+      isCustom: true,
+    }))
+  }, [customComponents])
 
   // Filter components based on search and category
   const filteredComponents = useMemo(() => {
-    if (searchQuery) {
-      return searchComponents(searchQuery)
-    }
+    const builtinComponents = searchQuery
+      ? searchComponents(searchQuery)
+      : activeCategory === 'all'
+      ? Object.values(COMPONENT_REGISTRY)
+      : activeCategory === 'custom'
+      ? []
+      : getComponentsByCategory(activeCategory as ComponentCategory)
 
-    if (activeCategory === 'all') {
-      return Object.values(COMPONENT_REGISTRY)
-    }
+    // Filter custom components
+    const filteredCustom = activeCategory === 'custom' || activeCategory === 'all'
+      ? customComponentsForPalette.filter((comp) =>
+          !searchQuery ||
+          comp.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          comp.displayName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          comp.description?.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : []
 
-    return getComponentsByCategory(activeCategory)
-  }, [searchQuery, activeCategory])
+    // Combine built-in and custom
+    return [...builtinComponents, ...filteredCustom]
+  }, [searchQuery, activeCategory, customComponentsForPalette])
 
   // Group components by category for display
   const groupedComponents = useMemo(() => {
@@ -168,6 +243,7 @@ export function ComponentPalette() {
       media: [],
       layout: [],
       data: [],
+      custom: [],
     }
 
     filteredComponents.forEach((comp) => {
@@ -178,6 +254,11 @@ export function ComponentPalette() {
 
     return groups
   }, [filteredComponents, searchQuery, activeCategory])
+
+  // Get browse library URL with return path
+  const browseLibraryUrl = pageId
+    ? `/admin/content/components?mode=select&returnTo=${pageId}`
+    : '/admin/content/components'
 
   return (
     <TooltipProvider>
@@ -204,23 +285,29 @@ export function ComponentPalette() {
         onValueChange={(v) => setActiveCategory(v as ComponentCategory | 'all')}
         className="flex-1 flex flex-col min-h-0"
       >
-        <TabsList className="w-full justify-start px-3 py-2 h-auto bg-transparent gap-1 flex-shrink-0">
+        <TabsList className="w-full justify-start px-3 py-2 h-auto bg-transparent gap-1 flex-shrink-0 flex-wrap">
           <TabsTrigger
             value="all"
             className="text-xs px-2.5 py-1.5 data-[state=active]:bg-primary/10"
           >
             All
           </TabsTrigger>
-          {(['content', 'media', 'layout'] as ComponentCategory[]).map((category) => {
+          {(['content', 'media', 'layout', 'custom'] as Array<ComponentCategory | 'custom'>).map((category) => {
             const Icon = categoryIcons[category]
+            const count = category === 'custom' ? customComponents.length : 0
             return (
               <Tooltip key={category}>
                 <TooltipTrigger asChild>
                   <TabsTrigger
                     value={category}
-                    className="text-xs px-2.5 py-1.5 data-[state=active]:bg-primary/10"
+                    className="text-xs px-2.5 py-1.5 data-[state=active]:bg-primary/10 gap-1"
                   >
                     <Icon className="h-3.5 w-3.5" />
+                    {category === 'custom' && count > 0 && (
+                      <span className="text-[10px] bg-primary/20 text-primary rounded px-1">
+                        {count}
+                      </span>
+                    )}
                   </TabsTrigger>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" sideOffset={4}>
@@ -256,9 +343,9 @@ export function ComponentPalette() {
             ) : activeCategory === 'all' ? (
               // All categories grouped
               <div className="space-y-6 w-full">
-                {(['content', 'media', 'layout'] as ComponentCategory[]).map((category) => {
+                {(['content', 'media', 'layout', 'custom'] as Array<ComponentCategory | 'custom'>).map((category) => {
                   const components = groupedComponents[category] || []
-                  if (components.length === 0) return null
+                  if (components.length === 0 && category !== 'custom') return null
 
                   const Icon = categoryIcons[category]
 
@@ -269,19 +356,41 @@ export function ComponentPalette() {
                         <h3 className="text-sm font-medium text-muted-foreground">
                           {categoryLabels[category]}
                         </h3>
+                        {category === 'custom' && (
+                          <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                            {components.length}
+                          </Badge>
+                        )}
                       </div>
-                      <div className="space-y-2 w-full">
-                        {components.map((comp) => (
-                          <PaletteItem
-                            key={comp.name}
-                            name={comp.name}
-                            displayName={comp.displayName}
-                            description={comp.description}
-                            icon={comp.icon}
-                            previewImage={comp.previewImage}
-                          />
-                        ))}
-                      </div>
+                      {components.length > 0 ? (
+                        <div className="space-y-2 w-full">
+                          {components.map((comp) => (
+                            <PaletteItem
+                              key={comp.name}
+                              name={comp.name}
+                              displayName={comp.displayName}
+                              description={comp.description}
+                              icon={comp.icon}
+                              previewImage={comp.previewImage}
+                            />
+                          ))}
+                        </div>
+                      ) : category === 'custom' ? (
+                        <div className="text-center py-4 border border-dashed rounded-lg">
+                          <Puzzle className="h-6 w-6 mx-auto text-muted-foreground/50 mb-2" />
+                          <p className="text-xs text-muted-foreground">No custom components</p>
+                          <Button
+                            variant="link"
+                            size="sm"
+                            className="text-xs h-auto p-0 mt-1"
+                            asChild
+                          >
+                            <Link href={browseLibraryUrl}>
+                              Add components
+                            </Link>
+                          </Button>
+                        </div>
+                      ) : null}
                     </div>
                   )
                 })}
@@ -305,10 +414,22 @@ export function ComponentPalette() {
         </ScrollArea>
       </Tabs>
 
-      {/* Help text */}
-      <div className="p-3 border-t border-border bg-muted/30 flex-shrink-0">
-        <p className="text-xs text-muted-foreground">
-          Drag to add
+      {/* Footer with Browse Library button */}
+      <div className="p-3 border-t border-border bg-muted/30 flex-shrink-0 space-y-2">
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full gap-2 text-xs"
+          asChild
+        >
+          <Link href={browseLibraryUrl}>
+            <Library className="h-3.5 w-3.5" />
+            Browse Component Library
+            <ExternalLink className="h-3 w-3 opacity-50" />
+          </Link>
+        </Button>
+        <p className="text-xs text-muted-foreground text-center">
+          Drag components to add them to your page
         </p>
       </div>
     </div>

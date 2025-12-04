@@ -45,7 +45,7 @@ export default function PricingTables({
               <div className="text-center">
                 <h3 className="text-xl font-semibold">{plan.name}</h3>
                 <div className="mt-4">
-                  <span className="text-4xl font-bold">{plan.price}</span>
+                  <span className="text-2xl sm:text-3xl md:text-4xl font-bold">{plan.price}</span>
                   {plan.period && (
                     <span className="text-muted-foreground">/{plan.period}</span>
                   )}

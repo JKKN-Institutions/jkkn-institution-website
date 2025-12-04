@@ -3,17 +3,17 @@
 import { cn } from '@/lib/utils'
 import type { HeroSectionProps } from '@/lib/cms/registry-types'
 
-// Font size mapping for Tailwind classes
+// Font size mapping for Tailwind classes - RESPONSIVE
 const fontSizeClasses: Record<string, string> = {
-  sm: 'text-sm',
-  md: 'text-base',
-  lg: 'text-lg',
-  xl: 'text-xl',
-  '2xl': 'text-2xl',
-  '3xl': 'text-3xl',
-  '4xl': 'text-4xl',
-  '5xl': 'text-5xl',
-  '6xl': 'text-6xl',
+  sm: 'text-xs sm:text-sm',
+  md: 'text-sm sm:text-base',
+  lg: 'text-base sm:text-lg',
+  xl: 'text-lg sm:text-xl',
+  '2xl': 'text-xl sm:text-2xl lg:text-3xl',
+  '3xl': 'text-2xl sm:text-3xl lg:text-4xl',
+  '4xl': 'text-2xl sm:text-4xl lg:text-5xl',
+  '5xl': 'text-3xl sm:text-4xl lg:text-5xl xl:text-6xl',
+  '6xl': 'text-3xl sm:text-5xl lg:text-6xl xl:text-7xl',
 }
 
 const fontWeightClasses: Record<string, string> = {

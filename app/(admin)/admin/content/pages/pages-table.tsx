@@ -575,6 +575,7 @@ export function PagesTable({
           slug: page.slug,
           status: page.status,
           sort_order: page.sort_order,
+          parent_id: page.parent_id,
         }))}
         onReorderComplete={fetchData}
       />

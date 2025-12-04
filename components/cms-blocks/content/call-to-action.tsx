@@ -24,11 +24,11 @@ export default function CallToAction({
       }}
     >
       <div className="container mx-auto max-w-4xl">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
           {title}
         </h2>
         {description && (
-          <p className="mt-4 text-lg text-muted-foreground">{description}</p>
+          <p className="mt-4 text-base sm:text-lg text-muted-foreground">{description}</p>
         )}
         {buttons.length > 0 && (
           <div className={cn(

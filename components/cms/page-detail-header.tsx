@@ -14,12 +14,15 @@ interface PageDetailHeaderProps {
     description?: string | null
     status: string
     visibility: string
+    sort_order?: number | null
+    parent_id?: string | null
     show_in_navigation: boolean | null
     is_homepage: boolean | null
   }
+  parentOrder?: number | null
 }
 
-export function PageDetailHeader({ page }: PageDetailHeaderProps) {
+export function PageDetailHeader({ page, parentOrder }: PageDetailHeaderProps) {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const isPublished = page.status === 'published'
 
@@ -76,6 +79,7 @@ export function PageDetailHeader({ page }: PageDetailHeaderProps) {
         open={isSettingsOpen}
         onOpenChange={setIsSettingsOpen}
         page={page}
+        parentOrder={parentOrder}
       />
     </>
   )

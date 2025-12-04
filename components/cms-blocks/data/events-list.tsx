@@ -95,7 +95,7 @@ function EventCard({
     >
       {/* Date Badge */}
       <div className="flex-shrink-0 w-16 h-16 bg-primary/10 rounded-lg flex flex-col items-center justify-center">
-        <span className="text-2xl font-bold text-primary">
+        <span className="text-lg sm:text-xl md:text-2xl font-bold text-primary">
           {eventDate ? format(eventDate, 'd') : '--'}
         </span>
         <span className="text-xs text-primary uppercase">
@@ -170,7 +170,7 @@ export default function EventsList({
   if (filteredEvents.length === 0) {
     return (
       <div className={cn('py-12', className)}>
-        <h2 className="text-2xl font-bold text-foreground mb-6">{title}</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-6">{title}</h2>
         <div className="text-center py-8 text-muted-foreground">
           <Calendar className="h-12 w-12 mx-auto mb-3 opacity-50" />
           <p>No upcoming events scheduled.</p>
@@ -182,7 +182,7 @@ export default function EventsList({
   return (
     <div className={cn('py-12', className)}>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-foreground">{title}</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-foreground">{title}</h2>
         {showViewAll && (
           <Link
             href={viewAllLink}

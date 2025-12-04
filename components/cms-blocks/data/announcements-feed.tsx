@@ -259,7 +259,7 @@ export default function AnnouncementsFeed({
     return (
       <div className={cn('py-12', className)}>
         {title && (
-          <h2 className="text-2xl font-bold text-foreground mb-6">{title}</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-6">{title}</h2>
         )}
         <div className="text-center py-8 text-muted-foreground">
           <Bell className="h-12 w-12 mx-auto mb-3 opacity-50" />
@@ -273,7 +273,7 @@ export default function AnnouncementsFeed({
     <div className={cn('py-12', className)}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-foreground">{title}</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-foreground">{title}</h2>
         {showViewAll && (
           <Link
             href={viewAllLink}

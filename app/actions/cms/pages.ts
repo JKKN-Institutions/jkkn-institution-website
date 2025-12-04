@@ -20,6 +20,7 @@ const CreatePageSchema = z.object({
   status: z.enum(['draft', 'published', 'archived', 'scheduled']).default('draft'),
   visibility: z.enum(['public', 'private', 'password_protected']).default('public'),
   featured_image: z.string().url().nullable().optional(),
+  sort_order: z.coerce.number().min(1).optional(),
   show_in_navigation: z.boolean().default(true),
   navigation_label: z.string().optional(),
   is_homepage: z.boolean().default(false),
@@ -224,6 +225,27 @@ export async function getPageTree(): Promise<PageTreeNode[]> {
   })
 
   return rootPages
+}
+
+/**
+ * Get parent page's sort_order by parent_id
+ */
+export async function getParentPageOrder(parentId: string | null | undefined): Promise<number | null> {
+  if (!parentId) return null
+
+  const supabase = await createServerSupabaseClient()
+
+  const { data, error } = await supabase
+    .from('cms_pages')
+    .select('sort_order')
+    .eq('id', parentId)
+    .single()
+
+  if (error || !data) {
+    return null
+  }
+
+  return data.sort_order
 }
 
 /**
@@ -757,6 +779,7 @@ export async function updatePage(
   }
 
   // Validate input
+  const sortOrderValue = formData.get('sort_order')
   const validation = UpdatePageSchema.safeParse({
     id: formData.get('id'),
     title: formData.get('title') || undefined,
@@ -766,6 +789,7 @@ export async function updatePage(
     status: formData.get('status') || undefined,
     visibility: formData.get('visibility') || undefined,
     featured_image: formData.get('featured_image') || null,
+    sort_order: sortOrderValue ? parseInt(String(sortOrderValue), 10) : undefined,
     show_in_navigation:
       formData.get('show_in_navigation') !== null
         ? formData.get('show_in_navigation') === 'true'
@@ -833,6 +857,7 @@ export async function updatePage(
 
   revalidatePath('/admin/content/pages')
   revalidatePath(`/admin/content/pages/${id}`)
+  revalidatePath('/', 'layout') // Revalidate public layout to refresh navigation
 
   return { success: true, message: 'Page updated successfully' }
 }
@@ -1109,6 +1134,7 @@ export async function publishPage(pageId: string): Promise<FormState> {
   revalidatePath('/admin/content/pages')
   revalidatePath(`/admin/content/pages/${pageId}`)
   revalidatePath(`/${page.slug}`)
+  revalidatePath('/', 'layout') // Revalidate public layout to refresh navigation
 
   return { success: true, message: 'Page published successfully' }
 }
@@ -1554,7 +1580,9 @@ export async function reorderPages(
     metadata: { pages_reordered: pageOrders.length },
   })
 
+  // Revalidate admin and public pages
   revalidatePath('/admin/content/pages')
+  revalidatePath('/', 'layout') // Revalidate public layout to refresh navigation
 
   return { success: true, message: 'Pages reordered' }
 }

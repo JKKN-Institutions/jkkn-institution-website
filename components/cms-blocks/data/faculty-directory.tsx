@@ -59,7 +59,7 @@ function FacultyCard({
             />
           ) : (
             <div className="w-20 h-20 rounded-lg bg-primary/10 flex items-center justify-center">
-              <span className="text-2xl font-bold text-primary">
+              <span className="text-lg sm:text-xl md:text-2xl font-bold text-primary">
                 {member.name.charAt(0)}
               </span>
             </div>
@@ -141,7 +141,7 @@ function FacultyCard({
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-primary/10">
-            <span className="text-5xl font-bold text-primary/50">
+            <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary/50">
               {member.name.charAt(0)}
             </span>
           </div>
@@ -231,7 +231,7 @@ export default function FacultyDirectory({
     return (
       <div className={cn('py-12', className)}>
         {title && (
-          <h2 className="text-2xl font-bold text-foreground mb-2">{title}</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">{title}</h2>
         )}
         <div className="text-center py-8 text-muted-foreground">
           <Award className="h-12 w-12 mx-auto mb-3 opacity-50" />
@@ -260,7 +260,7 @@ export default function FacultyDirectory({
       {/* Header */}
       {title && (
         <div className="mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">
             {title}
           </h2>
           {(showDepartmentFilter || showSearchBox) && departments.length > 1 && (

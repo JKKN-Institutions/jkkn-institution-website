@@ -89,7 +89,7 @@ function StatItemDisplay({
   if (variant === 'minimal') {
     return (
       <div className="text-center">
-        <div className="text-3xl md:text-4xl font-bold text-primary">
+        <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">
           {displayValue}
         </div>
         <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
@@ -105,7 +105,7 @@ function StatItemDisplay({
             <IconComponent className="h-6 w-6 text-primary" />
           </div>
         )}
-        <div className="text-3xl md:text-4xl font-bold text-foreground">
+        <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
           {displayValue}
         </div>
         <div className="text-sm text-muted-foreground mt-2">{stat.label}</div>
@@ -119,7 +119,7 @@ function StatItemDisplay({
       {showIcon && IconComponent && (
         <IconComponent className="h-8 w-8 text-primary mb-2" />
       )}
-      <div className="text-4xl md:text-5xl font-bold text-primary">
+      <div className="text-2xl sm:text-4xl md:text-5xl font-bold text-primary">
         {displayValue}
       </div>
       <div className="text-sm md:text-base text-muted-foreground mt-2">
