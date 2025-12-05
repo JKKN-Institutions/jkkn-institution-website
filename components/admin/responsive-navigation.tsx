@@ -23,6 +23,8 @@ import {
   UserPlus,
   Mail,
   Plus,
+  Puzzle,
+  Layers,
 } from 'lucide-react'
 
 // Types
@@ -96,6 +98,20 @@ const navigationModules: NavModule[] = [
         href: '/admin/content/pages',
         icon: FileText,
         permission: 'cms:pages:view',
+      },
+      {
+        id: 'components',
+        label: 'Components',
+        href: '/admin/content/components',
+        icon: Puzzle,
+        permission: 'cms:components:view',
+      },
+      {
+        id: 'templates',
+        label: 'Templates',
+        href: '/admin/content/templates',
+        icon: Layers,
+        permission: 'cms:templates:view',
       },
       {
         id: 'media',

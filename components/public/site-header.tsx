@@ -120,8 +120,8 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
             )}>
               <div className={cn(
                 'relative transition-transform duration-300 group-hover:scale-105',
-                'w-14 h-14 sm:w-16 sm:h-16',
-                hasSecondRow ? 'lg:w-20 lg:h-20' : 'lg:w-16 lg:h-16'
+                'w-16 h-16 sm:w-20 sm:h-20',
+                hasSecondRow ? 'lg:w-24 lg:h-24' : 'lg:w-20 lg:h-20'
               )}>
                 <Image
                   src="https://jkkn.ac.in/wp-content/uploads/2023/04/Untitled-design-2023-03-13T105521.479.png"
@@ -140,7 +140,7 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
             )}>
               {/* Row 1 - First 7 menu items + Search */}
               <div className="flex items-center">
-                <nav className="flex-1 flex items-center justify-start gap-2 xl:gap-4">
+                <nav className="flex-1 flex items-center justify-start gap-1 lg:gap-2 xl:gap-4">
                   {row1Items.map((item) => (
                     <div
                       key={item.id}
@@ -151,7 +151,7 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                       <Link
                         href={item.href}
                         className={cn(
-                          'flex items-center gap-1 py-2 text-xs xl:text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
+                          'flex items-center gap-1 px-1 xl:px-2 py-2 text-xs xl:text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
                           isActive(item.href)
                             ? 'text-primary border-primary'
                             : 'text-gray-800 hover:text-primary border-transparent hover:border-primary'
@@ -175,7 +175,7 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                                 key={child.id}
                                 href={child.href}
                                 className={cn(
-                                  'block px-4 py-2 text-sm transition-colors duration-150',
+                                  'block px-4 py-2.5 text-sm transition-colors duration-150',
                                   isActive(child.href)
                                     ? 'text-primary bg-primary/5 font-medium'
                                     : 'text-gray-700 hover:text-primary hover:bg-gray-50'
@@ -195,13 +195,13 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                   className="flex-shrink-0 p-2 ml-2 text-gray-700 hover:text-primary transition-colors"
                   aria-label="Search"
                 >
-                  <Search className="h-4 w-4" />
+                  <Search className="h-5 w-5" />
                 </button>
               </div>
 
               {/* Row 2 - Remaining menu items (max 7 more, strictly 2 rows only) */}
               {hasSecondRow && row2Items.length > 0 && (
-              <nav className="flex items-center justify-start gap-2 xl:gap-4 mt-0.5">
+              <nav className="flex items-center justify-start gap-1 lg:gap-2 xl:gap-4 mt-1">
                 {row2Items.map((item) => (
                   <div
                     key={item.id}
@@ -212,7 +212,7 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                     <Link
                       href={item.href}
                       className={cn(
-                        'flex items-center gap-1 py-2 text-xs xl:text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
+                        'flex items-center gap-1 px-1 xl:px-2 py-2 text-xs xl:text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
                         isActive(item.href)
                           ? 'text-primary border-primary'
                           : 'text-gray-800 hover:text-primary border-transparent hover:border-primary'
@@ -236,7 +236,7 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                               key={child.id}
                               href={child.href}
                               className={cn(
-                                'block px-4 py-2 text-sm transition-colors duration-150',
+                                'block px-4 py-2.5 text-sm transition-colors duration-150',
                                 isActive(child.href)
                                   ? 'text-primary bg-primary/5 font-medium'
                                   : 'text-gray-700 hover:text-primary hover:bg-gray-50'

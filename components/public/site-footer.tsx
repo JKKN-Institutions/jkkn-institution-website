@@ -11,7 +11,6 @@ import {
   Linkedin,
   Youtube,
   ChevronRight,
-  ArrowUp,
   GraduationCap,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -53,10 +52,6 @@ const socialLinks = [
 ]
 
 export function SiteFooter() {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
   return (
     <footer className="relative bg-gradient-to-br from-primary via-primary to-emerald-700 text-white overflow-hidden">
       {/* Background Elements */}
@@ -73,21 +68,6 @@ export function SiteFooter() {
           backgroundSize: '40px 40px'
         }}
       />
-
-      {/* Back to Top Button */}
-      <div className="absolute -top-7 left-1/2 -translate-x-1/2 z-10">
-        <button
-          onClick={scrollToTop}
-          className={cn(
-            'group p-4 rounded-2xl shadow-xl transition-all duration-300',
-            'bg-gradient-to-r from-secondary to-yellow-400',
-            'hover:shadow-2xl hover:shadow-secondary/40 hover:scale-110'
-          )}
-          aria-label="Back to top"
-        >
-          <ArrowUp className="h-5 w-5 text-gray-900 group-hover:-translate-y-1 transition-transform" />
-        </button>
-      </div>
 
       {/* Main Footer Content */}
       <div className="relative container mx-auto px-4 lg:px-8 py-16 lg:py-20">

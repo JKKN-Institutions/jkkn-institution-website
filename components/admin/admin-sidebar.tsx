@@ -21,6 +21,7 @@ import {
   ExternalLink,
   Globe,
   Layers,
+  Puzzle,
 } from 'lucide-react'
 
 interface NavItem {
@@ -70,6 +71,12 @@ const navigationItems: NavItem[] = [
         href: '/admin/content/pages',
         icon: FileText,
         permission: 'content:pages:view',
+      },
+      {
+        title: 'Components',
+        href: '/admin/content/components',
+        icon: Puzzle,
+        permission: 'cms:components:view',
       },
       {
         title: 'Templates',
