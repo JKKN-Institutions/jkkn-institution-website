@@ -371,7 +371,7 @@ export async function createCustomComponent(
     collection_id: validation.data.collection_id,
     keywords: validation.data.keywords,
     dependencies: validation.data.dependencies as unknown[],
-    preview_status: 'pending' as const,
+    preview_status: 'completed' as const, // Skip async preview - use icon as fallback
     is_active: true,
     version: '1.0.0',
     created_by: user.id,
@@ -389,11 +389,8 @@ export async function createCustomComponent(
     return { success: false, message: 'Failed to create component. Please try again.' }
   }
 
-  // Queue preview generation
-  await supabase.from('cms_preview_jobs').insert({
-    component_id: component.id,
-    status: 'pending',
-  })
+  // Note: Preview generation is skipped - components use their icon as placeholder
+  // To enable real previews, implement Playwright screenshot capture in /api/preview/generate
 
   // Log activity
   await logActivity({
@@ -729,7 +726,7 @@ export async function duplicateComponent(id: string): Promise<FormState> {
       collection_id: original.collection_id,
       keywords: original.keywords,
       dependencies: original.dependencies,
-      preview_status: 'pending',
+      preview_status: 'completed', // Skip async preview - use icon as fallback
       is_active: true,
       version: '1.0.0',
       created_by: user.id,
@@ -743,11 +740,7 @@ export async function duplicateComponent(id: string): Promise<FormState> {
     return { success: false, message: 'Failed to duplicate component. Please try again.' }
   }
 
-  // Queue preview generation
-  await supabase.from('cms_preview_jobs').insert({
-    component_id: newComponent.id,
-    status: 'pending',
-  })
+  // Note: Preview generation is skipped - components use their icon as placeholder
 
   // Log activity
   await logActivity({
@@ -1052,32 +1045,22 @@ export async function triggerPreviewGeneration(componentId: string): Promise<For
     return { success: false, message: 'You do not have permission to generate previews' }
   }
 
-  // Update component preview status
+  // Note: Real preview generation via Playwright is not yet implemented.
+  // For now, we just ensure the status is 'completed' and use the icon as placeholder.
+  // To implement real previews, set up Playwright screenshot capture in /api/preview/generate
+
   await supabase
     .from('cms_custom_components')
-    .update({ preview_status: 'pending' })
+    .update({ preview_status: 'completed' })
     .eq('id', componentId)
-
-  // Check for existing pending job
-  const { data: existingJob } = await supabase
-    .from('cms_preview_jobs')
-    .select('id')
-    .eq('component_id', componentId)
-    .eq('status', 'pending')
-    .single()
-
-  if (!existingJob) {
-    // Create new preview job
-    await supabase.from('cms_preview_jobs').insert({
-      component_id: componentId,
-      status: 'pending',
-    })
-  }
 
   revalidatePath('/admin/content/components')
   revalidatePath(`/admin/content/components/${componentId}`)
 
-  return { success: true, message: 'Preview generation queued' }
+  return {
+    success: true,
+    message: 'Preview generation is not yet implemented. Components use their icon as preview.'
+  }
 }
 
 /**

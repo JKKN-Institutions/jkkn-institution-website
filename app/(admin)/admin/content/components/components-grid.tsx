@@ -57,9 +57,9 @@ import {
   duplicateComponent,
   toggleComponentActive,
   moveComponentToCollection,
-  triggerPreviewGeneration,
 } from '@/app/actions/cms/components'
 import * as LucideIcons from 'lucide-react'
+import { PreviewGeneratorModal } from '@/components/admin/preview-generator-modal'
 
 interface ComponentsGridProps {
   components: ComponentWithCollection[]
@@ -122,6 +122,10 @@ export function ComponentsGrid({
     component: null,
   })
   const [moveDialog, setMoveDialog] = useState<{ isOpen: boolean; component: ComponentWithCollection | null }>({
+    isOpen: false,
+    component: null,
+  })
+  const [previewDialog, setPreviewDialog] = useState<{ isOpen: boolean; component: ComponentWithCollection | null }>({
     isOpen: false,
     component: null,
   })
@@ -237,14 +241,8 @@ export function ComponentsGrid({
     setSelectedMoveCollection('')
   }
 
-  const handleRegeneratePreview = async (component: ComponentWithCollection) => {
-    const result = await triggerPreviewGeneration(component.id)
-    if (result.success) {
-      toast.success(result.message)
-      router.refresh()
-    } else {
-      toast.error(result.message)
-    }
+  const handleRegeneratePreview = (component: ComponentWithCollection) => {
+    setPreviewDialog({ isOpen: true, component })
   }
 
   const handleSelectComponent = (component: ComponentWithCollection) => {
@@ -466,6 +464,19 @@ export function ComponentsGrid({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Preview Generator Modal */}
+      <PreviewGeneratorModal
+        isOpen={previewDialog.isOpen}
+        onClose={() => setPreviewDialog({ isOpen: false, component: null })}
+        component={previewDialog.component ? {
+          id: previewDialog.component.id,
+          name: previewDialog.component.name,
+          display_name: previewDialog.component.display_name,
+          code: previewDialog.component.code || '',
+          default_props: (previewDialog.component.default_props as Record<string, unknown>) || {},
+        } : null}
+      />
     </div>
   )
 }
