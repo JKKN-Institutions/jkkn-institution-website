@@ -305,8 +305,8 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
         )}>
           {/* Header with Logo and Close */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <Link href="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-              <div className="relative w-12 h-12">
+            <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
+              <div className="relative w-14 h-14">
                 <Image
                   src="https://jkkn.ac.in/wp-content/uploads/2023/04/Untitled-design-2023-03-13T105521.479.png"
                   alt="JKKN"
@@ -314,7 +314,6 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                   className="object-contain"
                 />
               </div>
-              <span className="font-bold text-primary text-lg">JKKN</span>
             </Link>
             <button
               onClick={() => setIsMobileMenuOpen(false)}

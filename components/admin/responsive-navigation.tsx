@@ -483,9 +483,10 @@ function MobileMenuButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="lg:hidden fixed top-4 left-4 z-50 p-2.5 glass rounded-xl shadow-brand hover:shadow-lg transition-all duration-300"
+      className="lg:hidden fixed top-6 left-4 z-50 p-2 hover:bg-black/5 rounded-lg transition-colors"
+      aria-label="Open menu"
     >
-      <Menu className="h-5 w-5 text-foreground" />
+      <Menu className="h-6 w-6 text-foreground" />
     </button>
   )
 }

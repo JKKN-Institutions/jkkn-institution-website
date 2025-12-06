@@ -30,7 +30,7 @@ export function ResponsivePageHeader({
         <div className="flex flex-col gap-4">
           {/* Header content */}
           <div className="flex items-start gap-3 sm:gap-4">
-            <div className="p-2.5 sm:p-3 rounded-xl bg-primary/10 flex-shrink-0">
+            <div className="flex-shrink-0 mt-1">
               {icon}
             </div>
             <div className="min-w-0 flex-1">

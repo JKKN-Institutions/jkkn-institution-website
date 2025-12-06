@@ -89,7 +89,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4 w-full max-w-full overflow-hidden">
-      <div className="rounded-md border bg-white overflow-x-auto">
+      <div className="rounded-md border border-border bg-card overflow-x-auto">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -111,7 +111,7 @@ export function DataTable<TData, TValue>({
                 <TableRow key={`skeleton-${index}`}>
                   {columns.map((_, cellIndex) => (
                     <TableCell key={`skeleton-cell-${cellIndex}`}>
-                      <div className="h-4 bg-gray-200 rounded animate-pulse" />
+                      <div className="h-4 bg-muted rounded animate-pulse" />
                     </TableCell>
                   ))}
                 </TableRow>
@@ -121,7 +121,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  className={cn(row.getIsSelected() && 'bg-gray-50')}
+                  className={cn(row.getIsSelected() && 'bg-muted/50')}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

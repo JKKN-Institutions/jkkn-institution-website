@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Search, X, Download, Loader2, ArrowUpDown } from 'lucide-react'
+import { Search, X, Download, Loader2, ArrowUpDown, FileText, Globe, MoreVertical, Edit, Trash2, Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getPages, publishPage, unpublishPage, archivePage, deletePage, duplicatePage } from '@/app/actions/cms/pages'
 import type { RowSelectionState } from '@tanstack/react-table'
@@ -28,6 +28,14 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { ReorderPagesModal } from './reorder-pages-modal'
+import Link from 'next/link'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 interface PagesTableProps {
   page: number
@@ -461,10 +469,10 @@ export function PagesTable({
         </div>
       )}
 
-      {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        {/* Search */}
-        <div className="relative flex-1 max-w-sm">
+      {/* Toolbar - Mobile Optimized */}
+      <div className="flex flex-col gap-3">
+        {/* Search - Full width on mobile */}
+        <div className="relative w-full">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search by title or slug..."
@@ -474,10 +482,10 @@ export function PagesTable({
           />
         </div>
 
-        {/* Filters */}
-        <div className="flex gap-2">
+        {/* Filters - Stack on mobile */}
+        <div className="flex flex-col sm:flex-row gap-2">
           <Select value={statusValue || 'all'} onValueChange={handleStatusChange}>
-            <SelectTrigger className="w-[140px] bg-background/50 border-border/50 rounded-xl">
+            <SelectTrigger className="w-full sm:w-[140px] bg-background/50 border-border/50 rounded-xl">
               <SelectValue placeholder="All Status" />
             </SelectTrigger>
             <SelectContent>
@@ -489,39 +497,105 @@ export function PagesTable({
             </SelectContent>
           </Select>
 
-          {hasFilters && (
-            <Button variant="ghost" size="icon" onClick={clearFilters}>
-              <X className="h-4 w-4" />
-            </Button>
-          )}
+          <div className="flex gap-2">
+            {hasFilters && (
+              <Button variant="ghost" size="icon" onClick={clearFilters}>
+                <X className="h-4 w-4" />
+              </Button>
+            )}
 
-          {/* Reorder Button */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsReorderModalOpen(true)}
-            className="gap-2"
-          >
-            <ArrowUpDown className="h-4 w-4" />
-            Reorder
-          </Button>
+            {/* Reorder Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsReorderModalOpen(true)}
+              className="gap-2 flex-1 sm:flex-none"
+            >
+              <ArrowUpDown className="h-4 w-4" />
+              Reorder
+            </Button>
+          </div>
         </div>
       </div>
 
-      {/* Table */}
-      <DataTable
-        columns={tableColumns}
-        data={data}
-        pageCount={pageCount}
-        page={page}
-        pageSize={limit}
-        total={total}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
-        isLoading={isLoading || isPending}
-        enableRowSelection={true}
-        onRowSelectionChange={handleRowSelectionChange}
-      />
+      {/* Desktop Table - Hidden on mobile */}
+      <div className="hidden sm:block">
+        <DataTable
+          columns={tableColumns}
+          data={data}
+          pageCount={pageCount}
+          page={page}
+          pageSize={limit}
+          total={total}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+          isLoading={isLoading || isPending}
+          enableRowSelection={true}
+          onRowSelectionChange={handleRowSelectionChange}
+        />
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="sm:hidden space-y-3">
+        {isLoading || isPending ? (
+          // Loading skeleton for mobile
+          Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="p-4 rounded-xl border border-border bg-card animate-pulse">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="h-10 w-10 rounded-lg bg-muted" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-4 w-32 bg-muted rounded" />
+                  <div className="h-3 w-24 bg-muted rounded" />
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <div className="h-5 w-16 bg-muted rounded-full" />
+              </div>
+            </div>
+          ))
+        ) : data.length > 0 ? (
+          data.map((pageItem) => (
+            <MobilePageCard
+              key={pageItem.id}
+              page={pageItem}
+              onPublish={handleSinglePublish}
+              onUnpublish={handleSingleUnpublish}
+              onDelete={handleSingleDelete}
+            />
+          ))
+        ) : (
+          <div className="text-center py-8 text-muted-foreground">
+            No pages found.
+          </div>
+        )}
+
+        {/* Mobile Pagination */}
+        {!isLoading && data.length > 0 && (
+          <div className="flex items-center justify-between pt-4 border-t border-border">
+            <span className="text-sm text-muted-foreground">
+              Page {page} of {pageCount}
+            </span>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page <= 1}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page >= pageCount}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Bulk Action Confirmation Dialog */}
       <AlertDialog
@@ -579,6 +653,102 @@ export function PagesTable({
         }))}
         onReorderComplete={fetchData}
       />
+    </div>
+  )
+}
+
+// Mobile Card Component for Pages
+function MobilePageCard({
+  page,
+  onPublish,
+  onUnpublish,
+  onDelete,
+}: {
+  page: PageRow
+  onPublish: (id: string) => void
+  onUnpublish: (id: string) => void
+  onDelete: (id: string) => void
+}) {
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'published':
+        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
+      case 'draft':
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
+      case 'archived':
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300'
+      case 'scheduled':
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
+      default:
+        return 'bg-muted text-muted-foreground'
+    }
+  }
+
+  return (
+    <div className="p-4 rounded-xl border border-border bg-card">
+      <div className="flex items-start gap-3">
+        {/* Page Icon */}
+        <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+          {page.is_homepage ? <Globe className="h-5 w-5" /> : <FileText className="h-5 w-5" />}
+        </div>
+
+        {/* Page Info */}
+        <div className="flex-1 min-w-0">
+          <Link
+            href={`/admin/content/pages/${page.id}/edit`}
+            className="font-medium text-sm text-foreground hover:text-primary truncate block"
+          >
+            {page.title}
+          </Link>
+          <p className="text-xs text-muted-foreground truncate">/{page.slug}</p>
+        </div>
+
+        {/* Actions Menu */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem asChild>
+              <Link href={`/admin/content/pages/${page.id}/edit`}>
+                <Edit className="h-4 w-4 mr-2" />
+                Edit
+              </Link>
+            </DropdownMenuItem>
+            {page.status === 'published' ? (
+              <DropdownMenuItem onClick={() => onUnpublish(page.id)}>
+                <EyeOff className="h-4 w-4 mr-2" />
+                Unpublish
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem onClick={() => onPublish(page.id)}>
+                <Eye className="h-4 w-4 mr-2" />
+                Publish
+              </DropdownMenuItem>
+            )}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => onDelete(page.id)}
+              className="text-red-600 dark:text-red-400"
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* Status & Meta */}
+      <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
+        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(page.status)}`}>
+          {page.status.charAt(0).toUpperCase() + page.status.slice(1)}
+        </span>
+        <span className="text-xs text-muted-foreground" suppressHydrationWarning>
+          {page.updated_at ? new Date(page.updated_at).toLocaleDateString() : 'N/A'}
+        </span>
+      </div>
     </div>
   )
 }

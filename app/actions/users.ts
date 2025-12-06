@@ -1233,9 +1233,11 @@ export async function getApprovedEmails(params?: {
   const supabase = await createServerSupabaseClient()
   const { search, status, page = 1, limit = 50 } = params || {}
 
+  // Note: added_by references auth.users, but profiles.id matches auth.users.id
+  // We use a manual join hint to link added_by to profiles
   let query = supabase
     .from('approved_emails')
-    .select('*, added_by_profile:profiles!approved_emails_added_by_fkey(full_name, email)', {
+    .select('*, added_by_profile:profiles(full_name, email)', {
       count: 'exact',
     })
 

@@ -35,20 +35,43 @@ export default function ImageGallery({
     }
   }
 
+  // Get responsive grid classes based on column count
+  const getGridColumns = (cols: number) => {
+    // Mobile: always 1 column, tablet: 2 columns, desktop: configured columns
+    const desktopCols = Math.min(cols, 4) // Cap at 4 for reasonable display
+    return cn(
+      'grid-cols-1', // Mobile: 1 column
+      'sm:grid-cols-2', // Tablet: 2 columns
+      desktopCols === 2 && 'lg:grid-cols-2',
+      desktopCols === 3 && 'lg:grid-cols-3',
+      desktopCols >= 4 && 'lg:grid-cols-4'
+    )
+  }
+
+  // Get gap classes
+  const getGapClass = (gapSize: number) => {
+    const gapMap: Record<number, string> = {
+      1: 'gap-1',
+      2: 'gap-2',
+      3: 'gap-3',
+      4: 'gap-4',
+      5: 'gap-5',
+      6: 'gap-6',
+      8: 'gap-8',
+    }
+    return gapMap[gapSize] || 'gap-4'
+  }
+
   return (
     <>
       <div
         className={cn(
-          layout === 'grid' && 'grid',
+          layout === 'grid' && cn('grid', getGridColumns(columns), getGapClass(gap)),
           layout === 'masonry' && 'columns-1 md:columns-2 lg:columns-3',
           layout === 'carousel' && 'flex overflow-x-auto snap-x snap-mandatory pb-4',
           className
         )}
         style={{
-          ...(layout === 'grid' && {
-            gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
-            gap: `${gap * 0.25}rem`,
-          }),
           ...(layout === 'masonry' && { gap: `${gap * 0.25}rem` }),
           ...(layout === 'carousel' && { gap: `${gap * 0.25}rem` }),
         }}

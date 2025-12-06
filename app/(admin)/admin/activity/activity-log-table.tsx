@@ -185,12 +185,12 @@ export function ActivityLogTable({
 
   return (
     <div className="space-y-4">
-      {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        {/* Filters */}
-        <div className="flex gap-2 flex-1">
+      {/* Toolbar - Mobile Optimized */}
+      <div className="flex flex-col gap-3">
+        {/* Filters - Stack on mobile */}
+        <div className="flex flex-col sm:flex-row gap-2">
           <Select value={moduleValue || 'all'} onValueChange={handleModuleChange}>
-            <SelectTrigger className="w-[150px] bg-background/50 border-border/50 rounded-xl">
+            <SelectTrigger className="w-full sm:w-[150px] bg-background/50 border-border/50 rounded-xl">
               <SelectValue placeholder="All Modules" />
             </SelectTrigger>
             <SelectContent>
@@ -204,7 +204,7 @@ export function ActivityLogTable({
           </Select>
 
           <Select value={actionValue || 'all'} onValueChange={handleActionChange}>
-            <SelectTrigger className="w-[150px] bg-background/50 border-border/50 rounded-xl">
+            <SelectTrigger className="w-full sm:w-[150px] bg-background/50 border-border/50 rounded-xl">
               <SelectValue placeholder="All Actions" />
             </SelectTrigger>
             <SelectContent>
@@ -218,31 +218,148 @@ export function ActivityLogTable({
           </Select>
 
           {hasFilters && (
-            <Button variant="ghost" size="icon" onClick={clearFilters}>
+            <Button variant="ghost" size="icon" onClick={clearFilters} className="self-start">
               <X className="h-4 w-4" />
             </Button>
           )}
         </div>
 
-        {/* Export Button */}
-        <Button onClick={handleExport} variant="outline" className="gap-2">
+        {/* Export Button - Full width on mobile */}
+        <Button onClick={handleExport} variant="outline" className="gap-2 w-full sm:w-auto">
           <Download className="h-4 w-4" />
           Export CSV
         </Button>
       </div>
 
-      {/* Table */}
-      <DataTable
-        columns={columns}
-        data={data}
-        pageCount={pageCount}
-        page={page}
-        pageSize={limit}
-        total={total}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
-        isLoading={isLoading || isPending}
-      />
+      {/* Desktop Table - Hidden on mobile */}
+      <div className="hidden sm:block">
+        <DataTable
+          columns={columns}
+          data={data}
+          pageCount={pageCount}
+          page={page}
+          pageSize={limit}
+          total={total}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+          isLoading={isLoading || isPending}
+        />
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="sm:hidden space-y-3">
+        {isLoading ? (
+          // Loading skeleton for mobile
+          Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="p-4 rounded-xl border border-border bg-card animate-pulse">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="h-10 w-10 rounded-full bg-muted" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-4 w-32 bg-muted rounded" />
+                  <div className="h-3 w-24 bg-muted rounded" />
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <div className="h-5 w-16 bg-muted rounded-full" />
+                <div className="h-5 w-16 bg-muted rounded-full" />
+              </div>
+            </div>
+          ))
+        ) : data.length > 0 ? (
+          data.map((row) => (
+            <MobileActivityCard key={row.id} activity={row} />
+          ))
+        ) : (
+          <div className="text-center py-8 text-muted-foreground">
+            No activity logs found.
+          </div>
+        )}
+
+        {/* Mobile Pagination */}
+        {!isLoading && data.length > 0 && (
+          <div className="flex items-center justify-between pt-4 border-t border-border">
+            <span className="text-sm text-muted-foreground">
+              Page {page} of {pageCount}
+            </span>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page <= 1}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page >= pageCount}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// Mobile Card Component for Activity Log
+function MobileActivityCard({ activity }: { activity: ActivityLogRow }) {
+  const user = activity.profiles
+  const initials = user?.full_name
+    ?.split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2) || user?.email[0].toUpperCase() || '?'
+
+  const getActionColor = (action: string) => {
+    switch (action.toLowerCase()) {
+      case 'create':
+        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
+      case 'edit':
+      case 'update':
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
+      case 'delete':
+        return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
+      default:
+        return 'bg-muted text-muted-foreground'
+    }
+  }
+
+  return (
+    <div className="p-4 rounded-xl border border-border bg-card">
+      {/* User Info */}
+      <div className="flex items-center gap-3 mb-3">
+        <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-medium text-sm">
+          {initials}
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="font-medium text-sm text-foreground truncate">
+            {user?.full_name || 'Unknown User'}
+          </p>
+          <p className="text-xs text-muted-foreground truncate">{user?.email || 'N/A'}</p>
+        </div>
+      </div>
+
+      {/* Action & Module */}
+      <div className="flex flex-wrap gap-2 mb-2">
+        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getActionColor(activity.action)}`}>
+          {activity.action.replace('_', ' ').toUpperCase()}
+        </span>
+        <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
+          {activity.module}
+        </span>
+      </div>
+
+      {/* Resource & Time */}
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <span>{activity.resource_type || 'N/A'}</span>
+        <span suppressHydrationWarning>{new Date(activity.created_at).toLocaleDateString()}</span>
+      </div>
     </div>
   )
 }

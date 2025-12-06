@@ -77,7 +77,7 @@ export function AdminHeader({ userName, userEmail, userRole }: AdminHeaderProps)
   }
 
   return (
-    <header className="glass-header border-b border-border/50 flex-shrink-0 w-full max-w-full overflow-hidden">
+    <header className="glass-header border-b border-border/50 flex-shrink-0 w-full max-w-full overflow-hidden sticky top-0 z-30 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="px-4 lg:px-6 py-4 w-full max-w-full overflow-hidden">
         <div className="flex items-center justify-between">
           {/* Page Title - with padding for mobile menu button */}
