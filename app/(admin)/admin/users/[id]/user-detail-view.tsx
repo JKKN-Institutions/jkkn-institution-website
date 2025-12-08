@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { usePermission } from '@/lib/hooks/use-permissions'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -37,9 +38,10 @@ import {
   UserMinus,
   UserPlus,
 } from 'lucide-react'
-import { format } from 'date-fns'
+import { format, formatDistanceToNow } from 'date-fns'
 import { assignRole, removeRole, deactivateUser, reactivateUser } from '@/app/actions/users'
 import { toast } from 'sonner'
+import { RoleHistoryTimeline } from '@/components/admin/role-history-timeline'
 
 interface UserDetailViewProps {
   user: {
@@ -53,6 +55,7 @@ interface UserDetailViewProps {
     employee_id: string | null
     date_of_joining: string | null
     created_at: string | null
+    last_login_at: string | null
     members: Array<{
       id: string
       member_id: string | null
@@ -115,6 +118,11 @@ export function UserDetailView({ user, roles }: UserDetailViewProps) {
   const [selectedRole, setSelectedRole] = useState('')
   const [isAssigning, setIsAssigning] = useState(false)
   const [isRemoving, setIsRemoving] = useState<string | null>(null)
+
+  // Permission checks for UI hiding
+  const { hasPermission: canAssignRoles, isLoading: loadingAssignRoles } = usePermission('users:roles:assign')
+  const { hasPermission: canRemoveRoles, isLoading: loadingRemoveRoles } = usePermission('users:roles:remove')
+  const { hasPermission: canManageStatus, isLoading: loadingManageStatus } = usePermission('users:profiles:delete')
 
   const member = user.members?.[0]
   const userRoles = user.user_roles || []
@@ -200,7 +208,10 @@ export function UserDetailView({ user, roles }: UserDetailViewProps) {
           <CardContent>
             <div className="flex items-start gap-6">
               <Avatar className="h-24 w-24">
-                <AvatarImage src={user.avatar_url || undefined} />
+                <AvatarImage
+                  src={user.avatar_url || undefined}
+                  referrerPolicy="no-referrer"
+                />
                 <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
               </Avatar>
 
@@ -293,12 +304,12 @@ export function UserDetailView({ user, roles }: UserDetailViewProps) {
                         )}
                       </div>
                     </div>
-                    {ur.roles?.name !== 'super_admin' && userRoles.length > 1 && (
+                    {canRemoveRoles && ur.roles?.name !== 'super_admin' && userRoles.length > 1 && (
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => handleRemoveRole(ur.roles?.id || '')}
-                        disabled={isRemoving === ur.roles?.id}
+                        disabled={isRemoving === ur.roles?.id || loadingRemoveRoles}
                       >
                         <X className="h-4 w-4" />
                       </Button>
@@ -310,8 +321,8 @@ export function UserDetailView({ user, roles }: UserDetailViewProps) {
               )}
             </div>
 
-            {/* Add Role */}
-            {availableRoles.length > 0 && (
+            {/* Add Role - only visible if user has permission */}
+            {canAssignRoles && availableRoles.length > 0 && (
               <div className="flex gap-2">
                 <Select value={selectedRole} onValueChange={setSelectedRole}>
                   <SelectTrigger className="flex-1">
@@ -325,7 +336,7 @@ export function UserDetailView({ user, roles }: UserDetailViewProps) {
                     ))}
                   </SelectContent>
                 </Select>
-                <Button onClick={handleAssignRole} disabled={!selectedRole || isAssigning}>
+                <Button onClick={handleAssignRole} disabled={!selectedRole || isAssigning || loadingAssignRoles}>
                   <Plus className="h-4 w-4 mr-2" />
                   Assign
                 </Button>
@@ -371,45 +382,48 @@ export function UserDetailView({ user, roles }: UserDetailViewProps) {
               </div>
             )}
 
-            <div className="pt-4 border-t border-border/50">
-              {member?.status === 'active' ? (
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="outline" className="w-full text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300">
-                      <UserMinus className="h-4 w-4 mr-2" />
-                      Deactivate User
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Deactivate User</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This will deactivate the user&apos;s account. They will not be able to
-                        access the admin panel. Are you sure?
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={handleDeactivate}
-                        className="bg-red-600 hover:bg-red-700"
-                      >
-                        Deactivate
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              ) : (
-                <Button
-                  variant="outline"
-                  className="w-full text-primary hover:text-primary/90"
-                  onClick={handleReactivate}
-                >
-                  <UserPlus className="h-4 w-4 mr-2" />
-                  Reactivate User
-                </Button>
-              )}
-            </div>
+            {/* Status management - only visible if user has permission */}
+            {canManageStatus && !loadingManageStatus && (
+              <div className="pt-4 border-t border-border/50">
+                {member?.status === 'active' ? (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="outline" className="w-full text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300">
+                        <UserMinus className="h-4 w-4 mr-2" />
+                        Deactivate User
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Deactivate User</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This will deactivate the user&apos;s account. They will not be able to
+                          access the admin panel. Are you sure?
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={handleDeactivate}
+                          className="bg-red-600 hover:bg-red-700"
+                        >
+                          Deactivate
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                ) : (
+                  <Button
+                    variant="outline"
+                    className="w-full text-primary hover:text-primary/90"
+                    onClick={handleReactivate}
+                  >
+                    <UserPlus className="h-4 w-4 mr-2" />
+                    Reactivate User
+                  </Button>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -419,6 +433,19 @@ export function UserDetailView({ user, roles }: UserDetailViewProps) {
             <CardTitle className="text-foreground">Timestamps</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
+            <div>
+              <p className="text-sm text-muted-foreground">Last Login</p>
+              <p className="font-medium text-foreground">
+                {user.last_login_at ? (
+                  <span title={format(new Date(user.last_login_at), 'PPpp')}>
+                    {formatDistanceToNow(new Date(user.last_login_at), { addSuffix: true })}
+                  </span>
+                ) : (
+                  'Never'
+                )}
+              </p>
+            </div>
+
             <div>
               <p className="text-sm text-muted-foreground">Account Created</p>
               <p className="font-medium text-foreground">
@@ -438,6 +465,9 @@ export function UserDetailView({ user, roles }: UserDetailViewProps) {
             )}
           </CardContent>
         </Card>
+
+        {/* Role History Timeline */}
+        <RoleHistoryTimeline userId={user.id} />
       </div>
     </div>
   )

@@ -526,8 +526,8 @@ export function ComponentForm({
                   <FormItem>
                     <FormLabel>Collection</FormLabel>
                     <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      onValueChange={(value) => field.onChange(value === 'none' ? '' : value)}
+                      defaultValue={field.value || 'none'}
                     >
                       <FormControl>
                         <SelectTrigger className="rounded-xl">
@@ -535,7 +535,7 @@ export function ComponentForm({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">No collection</SelectItem>
+                        <SelectItem value="none">No collection</SelectItem>
                         {collections.map((collection) => (
                           <SelectItem key={collection.id} value={collection.id}>
                             {collection.name}

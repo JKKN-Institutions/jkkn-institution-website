@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -12,11 +13,26 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { MoreHorizontal, Eye, Edit, UserMinus, UserPlus } from 'lucide-react'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+import { MoreHorizontal, Eye, Edit, UserMinus, UserPlus, Loader2, Check, X, AlertCircle, Clock } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import { Checkbox } from '@/components/ui/checkbox'
-import { format } from 'date-fns'
+import { formatDistanceToNow } from 'date-fns'
+import { deactivateUser, reactivateUser } from '@/app/actions/users'
+import { toast } from 'sonner'
+import { usePermission } from '@/lib/hooks/use-permissions'
+import { EditUserModal } from './edit-user-modal'
 
 export type UserRow = {
   id: string
@@ -25,6 +41,7 @@ export type UserRow = {
   avatar_url: string | null
   department: string | null
   designation: string | null
+  last_login_at: string | null
   created_at: string | null
   members: Array<{
     id: string
@@ -43,36 +60,7 @@ export type UserRow = {
   }> | null
 }
 
-const getStatusColor = (status: string | null | undefined) => {
-  switch (status) {
-    case 'active':
-      return 'bg-green-100 text-green-800'
-    case 'inactive':
-      return 'bg-gray-100 text-gray-800'
-    case 'suspended':
-      return 'bg-red-100 text-red-800'
-    default:
-      return 'bg-gray-100 text-gray-800'
-  }
-}
-
-const getRoleColor = (roleName: string | null | undefined) => {
-  // Use brand primary color with different opacities for all roles
-  switch (roleName) {
-    case 'super_admin':
-      return 'bg-primary/20 text-primary'
-    case 'director':
-      return 'bg-primary/15 text-primary'
-    case 'chair':
-      return 'bg-primary/12 text-primary/90'
-    case 'member':
-      return 'bg-primary/10 text-primary/85'
-    case 'guest':
-      return 'bg-primary/8 text-primary/80'
-    default:
-      return 'bg-muted text-muted-foreground'
-  }
-}
+// Role badge - single green/teal color scheme for all roles (matching target design)
 
 export const columns: ColumnDef<UserRow>[] = [
   {
@@ -108,21 +96,69 @@ export const columns: ColumnDef<UserRow>[] = [
         ?.split(' ')
         .map((n) => n[0])
         .join('')
-        .toUpperCase() || user.email[0].toUpperCase()
+        .toUpperCase()
+        .slice(0, 2) || user.email.slice(0, 2).toUpperCase()
 
       return (
         <div className="flex items-center gap-3">
           <Avatar className="h-9 w-9">
-            <AvatarImage src={user.avatar_url || undefined} alt={user.full_name || ''} />
-            <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+            <AvatarImage
+              src={user.avatar_url || undefined}
+              alt={user.full_name || ''}
+              referrerPolicy="no-referrer"
+            />
+            <AvatarFallback className="text-xs bg-primary/10 text-primary font-medium">
+              {initials}
+            </AvatarFallback>
           </Avatar>
-          <div className="flex flex-col">
-            <span className="font-medium text-gray-900">
+          <div className="flex flex-col min-w-0">
+            <span className="font-medium text-foreground truncate">
               {user.full_name || 'No name'}
             </span>
-            <span className="text-sm text-gray-500">{user.email}</span>
+            <span className="text-sm text-muted-foreground truncate">{user.email}</span>
           </div>
         </div>
+      )
+    },
+  },
+  {
+    id: 'roles',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Role" />,
+    cell: ({ row }) => {
+      const userRoles = row.original.user_roles || []
+      const primaryRole = userRoles[0]?.roles
+
+      if (!primaryRole) {
+        return (
+          <Badge variant="outline" className="bg-gray-50 text-gray-600 border-gray-200">
+            No role
+          </Badge>
+        )
+      }
+
+      return (
+        <Badge
+          variant="outline"
+          className="bg-emerald-50 text-emerald-700 border-emerald-200 font-medium"
+        >
+          {primaryRole.display_name}
+        </Badge>
+      )
+    },
+  },
+  {
+    id: 'institution',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Institution" />,
+    cell: ({ row }) => {
+      const member = row.original.members?.[0]
+      const chapter = member?.chapter
+
+      if (!chapter) {
+        return <span className="text-muted-foreground">—</span>
+      }
+
+      return (
+        <span className="text-foreground text-sm">{chapter}</span>
       )
     },
   },
@@ -131,121 +167,238 @@ export const columns: ColumnDef<UserRow>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="Department" />,
     cell: ({ row }) => {
       const department = row.getValue('department') as string | null
-      const designation = row.original.designation
+
+      if (!department) {
+        return <span className="text-muted-foreground">—</span>
+      }
 
       return (
-        <div className="flex flex-col">
-          <span className="text-gray-900">{department || '-'}</span>
-          {designation && <span className="text-sm text-gray-500">{designation}</span>}
-        </div>
-      )
-    },
-  },
-  {
-    id: 'roles',
-    header: 'Roles',
-    cell: ({ row }) => {
-      const userRoles = row.original.user_roles || []
-
-      return (
-        <div className="flex flex-wrap gap-1">
-          {userRoles.length > 0 ? (
-            userRoles.slice(0, 2).map((ur) => (
-              <Badge
-                key={ur.id}
-                variant="secondary"
-                className={getRoleColor(ur.roles?.name)}
-              >
-                {ur.roles?.display_name || 'Unknown'}
-              </Badge>
-            ))
-          ) : (
-            <Badge variant="secondary" className="bg-gray-100 text-gray-600">
-              No role
-            </Badge>
-          )}
-          {userRoles.length > 2 && (
-            <Badge variant="secondary" className="bg-gray-100 text-gray-600">
-              +{userRoles.length - 2}
-            </Badge>
-          )}
-        </div>
+        <span className="text-foreground text-sm">{department}</span>
       )
     },
   },
   {
     id: 'status',
-    header: 'Status',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
     cell: ({ row }) => {
       const member = row.original.members?.[0]
       const status = member?.status || 'pending'
 
+      if (status === 'active') {
+        return (
+          <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200 gap-1 font-normal">
+            <Check className="h-3 w-3" />
+            Active
+          </Badge>
+        )
+      }
+
+      if (status === 'inactive') {
+        return (
+          <Badge variant="secondary" className="gap-1 font-normal">
+            <X className="h-3 w-3" />
+            Inactive
+          </Badge>
+        )
+      }
+
+      if (status === 'suspended') {
+        return (
+          <Badge variant="destructive" className="gap-1 font-normal">
+            <AlertCircle className="h-3 w-3" />
+            Suspended
+          </Badge>
+        )
+      }
+
       return (
-        <Badge variant="secondary" className={getStatusColor(status)}>
-          {status.charAt(0).toUpperCase() + status.slice(1)}
+        <Badge variant="outline" className="gap-1 font-normal text-yellow-700 bg-yellow-50 border-yellow-200">
+          <Clock className="h-3 w-3" />
+          Pending
         </Badge>
       )
     },
   },
   {
-    accessorKey: 'created_at',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Joined" />,
+    accessorKey: 'last_login_at',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Last Login" />,
     cell: ({ row }) => {
-      const date = row.getValue('created_at') as string | null
-      if (!date) return <span className="text-gray-500">-</span>
+      const lastLogin = row.getValue('last_login_at') as string | null
+
+      if (!lastLogin) {
+        return <span className="text-muted-foreground">Never</span>
+      }
 
       return (
-        <span className="text-gray-600">
-          {format(new Date(date), 'MMM d, yyyy')}
+        <span className="text-muted-foreground text-sm" suppressHydrationWarning>
+          {formatDistanceToNow(new Date(lastLogin), { addSuffix: false })}
+        </span>
+      )
+    },
+  },
+  {
+    accessorKey: 'created_at',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Created" />,
+    cell: ({ row }) => {
+      const date = row.getValue('created_at') as string | null
+      if (!date) return <span className="text-muted-foreground">—</span>
+
+      return (
+        <span className="text-muted-foreground text-sm" suppressHydrationWarning>
+          {formatDistanceToNow(new Date(date), { addSuffix: true })}
         </span>
       )
     },
   },
   {
     id: 'actions',
-    cell: ({ row }) => {
-      const user = row.original
-      const member = user.members?.[0]
-      const isActive = member?.status === 'active'
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link href={`/admin/users/${user.id}`}>
-                <Eye className="mr-2 h-4 w-4" />
-                View details
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href={`/admin/users/${user.id}/edit`}>
-                <Edit className="mr-2 h-4 w-4" />
-                Edit user
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            {isActive ? (
-              <DropdownMenuItem className="text-red-600">
-                <UserMinus className="mr-2 h-4 w-4" />
-                Deactivate
-              </DropdownMenuItem>
-            ) : (
-              <DropdownMenuItem className="text-green-600">
-                <UserPlus className="mr-2 h-4 w-4" />
-                Activate
-              </DropdownMenuItem>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
+    cell: ({ row }) => <ActionCell user={row.original} />,
   },
 ]
+
+// Separate component to handle state for dialogs
+function ActionCell({ user }: { user: UserRow }) {
+  const router = useRouter()
+  const [showDeactivateDialog, setShowDeactivateDialog] = useState(false)
+  const [showActivateDialog, setShowActivateDialog] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [isPending, setIsPending] = useState(false)
+
+  // Permission checks for UI hiding
+  const { hasPermission: canEdit } = usePermission('users:profiles:edit')
+  const { hasPermission: canManageStatus } = usePermission('users:profiles:delete')
+
+  const member = user.members?.[0]
+  const isActive = member?.status === 'active'
+
+  const handleDeactivate = async () => {
+    setIsPending(true)
+    const result = await deactivateUser(user.id)
+    setIsPending(false)
+    setShowDeactivateDialog(false)
+
+    if (result.success) {
+      toast.success(result.message)
+      router.refresh()
+    } else {
+      toast.error(result.message)
+    }
+  }
+
+  const handleActivate = async () => {
+    setIsPending(true)
+    const result = await reactivateUser(user.id)
+    setIsPending(false)
+    setShowActivateDialog(false)
+
+    if (result.success) {
+      toast.success(result.message)
+      router.refresh()
+    } else {
+      toast.error(result.message)
+    }
+  }
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" className="h-8 w-8">
+            <MoreHorizontal className="h-4 w-4" />
+            <span className="sr-only">Open menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/users/${user.id}`}>
+              <Eye className="mr-2 h-4 w-4" />
+              View details
+            </Link>
+          </DropdownMenuItem>
+          {canEdit && (
+            <DropdownMenuItem onClick={() => setShowEditModal(true)}>
+              <Edit className="mr-2 h-4 w-4" />
+              Edit user
+            </DropdownMenuItem>
+          )}
+          {canManageStatus && <DropdownMenuSeparator />}
+          {canManageStatus && isActive && (
+            <DropdownMenuItem
+              className="text-red-600 cursor-pointer"
+              onClick={() => setShowDeactivateDialog(true)}
+            >
+              <UserMinus className="mr-2 h-4 w-4" />
+              Deactivate
+            </DropdownMenuItem>
+          )}
+          {canManageStatus && !isActive && (
+            <DropdownMenuItem
+              className="text-green-600 cursor-pointer"
+              onClick={() => setShowActivateDialog(true)}
+            >
+              <UserPlus className="mr-2 h-4 w-4" />
+              Activate
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {/* Edit User Modal */}
+      <EditUserModal
+        user={user}
+        open={showEditModal}
+        onOpenChange={setShowEditModal}
+      />
+
+      {/* Deactivate Confirmation Dialog */}
+      <AlertDialog open={showDeactivateDialog} onOpenChange={setShowDeactivateDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Deactivate User</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to deactivate <strong>{user.full_name || user.email}</strong>?
+              They will no longer be able to access the admin panel.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeactivate}
+              disabled={isPending}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Deactivate
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Activate Confirmation Dialog */}
+      <AlertDialog open={showActivateDialog} onOpenChange={setShowActivateDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Activate User</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to activate <strong>{user.full_name || user.email}</strong>?
+              They will regain access to the admin panel based on their permissions.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleActivate}
+              disabled={isPending}
+              className="bg-green-600 hover:bg-green-700"
+            >
+              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Activate
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  )
+}

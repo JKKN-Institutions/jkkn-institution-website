@@ -14,34 +14,38 @@ import type { BlockData } from '@/lib/cms/registry-types'
 
 /**
  * Validate blocks against the component registry.
- * Filters out invalid blocks and logs warnings in development.
+ *
+ * NOTE: Custom components are loaded asynchronously from the database and may not
+ * be registered in the registry yet during initial validation. Instead of filtering
+ * out unknown components (which would exclude custom components), we keep all blocks
+ * and let the canvas renderer handle any truly unknown components gracefully.
+ *
+ * This allows custom component blocks from the database to render once the
+ * ComponentPalette has fetched and registered them in CUSTOM_COMPONENT_REGISTRY.
  */
 function validateBlocks(blocks: BlockData[]): BlockData[] {
-  const validBlocks: BlockData[] = []
-  const invalidBlocks: string[] = []
+  // Log warnings for unknown components in development, but don't filter them out
+  // They may be custom components that haven't been registered yet
+  if (process.env.NODE_ENV === 'development') {
+    const unknownComponents: string[] = []
 
-  for (const block of blocks) {
-    const entry = getComponentEntry(block.component_name)
-    if (entry) {
-      validBlocks.push(block)
-    } else {
-      invalidBlocks.push(block.component_name)
-      if (process.env.NODE_ENV === 'development') {
-        console.warn(
-          `[PageBuilder] Unknown component "${block.component_name}" (block ID: ${block.id}). This block will be skipped.`
-        )
+    for (const block of blocks) {
+      const entry = getComponentEntry(block.component_name)
+      if (!entry) {
+        unknownComponents.push(block.component_name)
       }
+    }
+
+    if (unknownComponents.length > 0) {
+      console.info(
+        `[PageBuilder] ${unknownComponents.length} component(s) not found in registry (may be custom components that will be registered later):`,
+        [...new Set(unknownComponents)]
+      )
     }
   }
 
-  if (invalidBlocks.length > 0 && process.env.NODE_ENV === 'development') {
-    console.warn(
-      `[PageBuilder] Filtered out ${invalidBlocks.length} invalid block(s):`,
-      [...new Set(invalidBlocks)]
-    )
-  }
-
-  return validBlocks
+  // Return all blocks - let the canvas renderer handle unknown components
+  return blocks
 }
 
 // Page type (simplified for builder state)
@@ -148,16 +152,12 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
     case 'ADD_BLOCK': {
       const { componentName, insertAt, props, parentId } = action.payload
 
-      // Validate that component exists in registry
+      // Get component entry - may be null for custom components being added
+      // before the registry is fully loaded, but we still allow adding them
       const componentEntry = getComponentEntry(componentName)
-      if (!componentEntry) {
-        if (process.env.NODE_ENV === 'development') {
-          console.error(`[PageBuilder] Cannot add unknown component "${componentName}". Block not added.`)
-        }
-        return state
-      }
 
-      const defaultProps = getDefaultProps(componentName)
+      // Get default props from registry, or use empty object for custom components
+      const defaultProps = componentEntry ? getDefaultProps(componentName) : {}
 
       // Get siblings (blocks with same parent)
       const siblings = state.blocks.filter(b => b.parent_block_id === (parentId || null))
@@ -514,14 +514,8 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
     case 'PASTE_BLOCK': {
       if (!state.clipboard) return state
 
-      // Validate that the clipboard component still exists in registry
-      const clipboardEntry = getComponentEntry(state.clipboard.component_name)
-      if (!clipboardEntry) {
-        if (process.env.NODE_ENV === 'development') {
-          console.error(`[PageBuilder] Cannot paste unknown component "${state.clipboard.component_name}".`)
-        }
-        return state
-      }
+      // Note: Custom components may not be registered yet, but we still allow pasting
+      // The canvas renderer will handle unknown components gracefully
 
       const { parentId, insertAt } = action.payload || {}
 

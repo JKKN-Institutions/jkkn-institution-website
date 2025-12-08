@@ -129,7 +129,11 @@ export function ComponentsGrid({
     isOpen: false,
     component: null,
   })
-  const [selectedMoveCollection, setSelectedMoveCollection] = useState<string>('')
+  const [imagePreviewDialog, setImagePreviewDialog] = useState<{ isOpen: boolean; component: ComponentWithCollection | null }>({
+    isOpen: false,
+    component: null,
+  })
+  const [selectedMoveCollection, setSelectedMoveCollection] = useState<string>('uncategorized')
 
   // Update URL params
   const updateUrlParams = useCallback(
@@ -229,7 +233,7 @@ export function ComponentsGrid({
 
     const result = await moveComponentToCollection(
       moveDialog.component.id,
-      selectedMoveCollection || null
+      selectedMoveCollection === 'uncategorized' ? null : selectedMoveCollection
     )
     if (result.success) {
       toast.success(result.message)
@@ -238,11 +242,15 @@ export function ComponentsGrid({
       toast.error(result.message)
     }
     setMoveDialog({ isOpen: false, component: null })
-    setSelectedMoveCollection('')
+    setSelectedMoveCollection('uncategorized')
   }
 
   const handleRegeneratePreview = (component: ComponentWithCollection) => {
     setPreviewDialog({ isOpen: true, component })
+  }
+
+  const handleShowImagePreview = (component: ComponentWithCollection) => {
+    setImagePreviewDialog({ isOpen: true, component })
   }
 
   const handleSelectComponent = (component: ComponentWithCollection) => {
@@ -364,6 +372,7 @@ export function ComponentsGrid({
               onToggleActive={() => handleToggleActive(component)}
               onMove={() => setMoveDialog({ isOpen: true, component })}
               onRegeneratePreview={() => handleRegeneratePreview(component)}
+              onImagePreview={() => handleShowImagePreview(component)}
             />
           ))}
         </div>
@@ -380,6 +389,7 @@ export function ComponentsGrid({
               onToggleActive={() => handleToggleActive(component)}
               onMove={() => setMoveDialog({ isOpen: true, component })}
               onRegeneratePreview={() => handleRegeneratePreview(component)}
+              onImagePreview={() => handleShowImagePreview(component)}
             />
           ))}
         </div>
@@ -448,7 +458,7 @@ export function ComponentsGrid({
               <SelectValue placeholder="Select collection" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Uncategorized</SelectItem>
+              <SelectItem value="uncategorized">Uncategorized</SelectItem>
               {flattenCollections(collections).map((c) => (
                 <SelectItem key={c.id} value={c.id}>
                   {c.name}
@@ -477,6 +487,80 @@ export function ComponentsGrid({
           default_props: (previewDialog.component.default_props as Record<string, unknown>) || {},
         } : null}
       />
+
+      {/* Image Preview Dialog */}
+      <Dialog
+        open={imagePreviewDialog.isOpen && imagePreviewDialog.component !== null}
+        onOpenChange={(open) => !open && setImagePreviewDialog({ isOpen: false, component: null })}
+      >
+        <DialogContent className="max-w-4xl p-0 overflow-hidden">
+          {imagePreviewDialog.component && (
+            <>
+              <DialogHeader className="p-4 pb-0">
+                <DialogTitle className="flex items-center gap-2">
+                  {imagePreviewDialog.component.display_name}
+                  <Badge
+                    variant="outline"
+                    className={cn('text-xs', CATEGORY_COLORS[imagePreviewDialog.component.category || 'custom'])}
+                  >
+                    {imagePreviewDialog.component.category}
+                  </Badge>
+                </DialogTitle>
+                {imagePreviewDialog.component.description && (
+                  <DialogDescription>
+                    {imagePreviewDialog.component.description}
+                  </DialogDescription>
+                )}
+              </DialogHeader>
+              <div className="relative w-full aspect-video bg-muted">
+                {imagePreviewDialog.component.preview_image ? (
+                  <Image
+                    src={imagePreviewDialog.component.preview_image}
+                    alt={imagePreviewDialog.component.display_name}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 896px) 100vw, 896px"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground">
+                    <LucideIcons.ImageOff className="h-16 w-16 mb-4" />
+                    <p>No preview image available</p>
+                  </div>
+                )}
+              </div>
+              <DialogFooter className="p-4 pt-0 flex-row gap-2 sm:justify-between">
+                <div className="text-sm text-muted-foreground">
+                  Component: <code className="bg-muted px-1 py-0.5 rounded">{imagePreviewDialog.component.name}</code>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      if (imagePreviewDialog.component) {
+                        setImagePreviewDialog({ isOpen: false, component: null })
+                        setPreviewDialog({ isOpen: true, component: imagePreviewDialog.component })
+                      }
+                    }}
+                  >
+                    <RefreshCw className="mr-2 h-4 w-4" />
+                    Regenerate
+                  </Button>
+                  <Button
+                    size="sm"
+                    asChild
+                  >
+                    <Link href={`/admin/content/components/${imagePreviewDialog.component.id}/edit`}>
+                      <Edit className="mr-2 h-4 w-4" />
+                      Edit Component
+                    </Link>
+                  </Button>
+                </div>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
@@ -490,6 +574,7 @@ interface ComponentCardProps {
   onToggleActive: () => void
   onMove: () => void
   onRegeneratePreview: () => void
+  onImagePreview: () => void
 }
 
 function ComponentCard({
@@ -501,6 +586,7 @@ function ComponentCard({
   onToggleActive,
   onMove,
   onRegeneratePreview,
+  onImagePreview,
 }: ComponentCardProps) {
   const IconComponent = component.icon
     ? (LucideIcons as unknown as Record<string, React.ComponentType<{ className?: string }>>)[component.icon] ||
@@ -513,9 +599,9 @@ function ComponentCard({
         'group relative rounded-xl border border-border/50 bg-card/50 overflow-hidden transition-all',
         'hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5',
         !component.is_active && 'opacity-60',
-        selectMode && 'cursor-pointer'
+        'cursor-pointer'
       )}
-      onClick={() => selectMode && onSelect(component)}
+      onClick={() => selectMode ? onSelect(component) : onImagePreview()}
     >
       {/* Preview Image */}
       <div className="relative aspect-[16/10] bg-muted/30">
@@ -544,7 +630,10 @@ function ComponentCard({
 
         {/* Actions Overlay */}
         {!selectMode && (
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="absolute bottom-2 right-2 flex gap-1">
               <Button variant="secondary" size="icon" className="h-7 w-7" asChild>
                 <Link href={`/admin/content/components/${component.id}/edit`}>
@@ -642,6 +731,7 @@ function ComponentListItem({
   onToggleActive,
   onMove,
   onRegeneratePreview,
+  onImagePreview,
 }: ComponentCardProps) {
   const IconComponent = component.icon
     ? (LucideIcons as unknown as Record<string, React.ComponentType<{ className?: string }>>)[component.icon] ||
@@ -654,9 +744,9 @@ function ComponentListItem({
         'group flex items-center gap-4 p-3 rounded-xl border border-border/50 bg-card/50 transition-all',
         'hover:border-primary/50 hover:bg-card',
         !component.is_active && 'opacity-60',
-        selectMode && 'cursor-pointer'
+        'cursor-pointer'
       )}
-      onClick={() => selectMode && onSelect(component)}
+      onClick={() => selectMode ? onSelect(component) : onImagePreview()}
     >
       {/* Preview/Icon */}
       <div className="relative h-12 w-12 rounded-lg overflow-hidden bg-muted/30 flex-shrink-0">
@@ -702,7 +792,10 @@ function ComponentListItem({
 
       {/* Actions */}
       {!selectMode && (
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div
+          className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+          onClick={(e) => e.stopPropagation()}
+        >
           <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
             <Link href={`/admin/content/components/${component.id}/edit`}>
               <Edit className="h-4 w-4" />

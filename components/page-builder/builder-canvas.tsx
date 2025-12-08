@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useCallback } from 'react'
+import { Suspense, useCallback, useId } from 'react'
 import { cn } from '@/lib/utils'
 import {
   DndContext,
@@ -219,6 +219,9 @@ export function BuilderCanvas({ className, isPreviewMode = false }: BuilderCanva
   const { blocks, selectedBlockId, selectBlock, reorderBlocks, addBlock } = usePageBuilder()
   const [activeId, setActiveId] = useState<string | null>(null)
 
+  // Stable ID for DndContext to prevent hydration mismatches
+  const dndContextId = useId()
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -289,6 +292,7 @@ export function BuilderCanvas({ className, isPreviewMode = false }: BuilderCanva
           </div>
         ) : (
           <DndContext
+            id={dndContextId}
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragStart={handleDragStart}

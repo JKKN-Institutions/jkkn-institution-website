@@ -6,6 +6,130 @@ import type {
   ComponentCategory,
   BaseBlockProps,
 } from './registry-types'
+import { SHADCN_COMPONENTS } from './shadcn-components-registry'
+
+// ==========================================
+// Custom Component Registry (Dynamic)
+// ==========================================
+
+/**
+ * Interface for custom component data from database
+ */
+export interface CustomComponentData {
+  id: string
+  name: string
+  display_name: string
+  description?: string
+  category: string
+  icon?: string
+  preview_image?: string
+  code: string
+  default_props: Record<string, unknown>
+  is_active: boolean
+}
+
+/**
+ * Runtime registry for custom components
+ * This gets populated when custom components are loaded from the database
+ */
+const CUSTOM_COMPONENT_REGISTRY: Map<string, {
+  entry: ComponentRegistryEntry
+  customData: CustomComponentData
+}> = new Map()
+
+/**
+ * Subscribers that get notified when custom components are registered
+ */
+const registrySubscribers: Set<() => void> = new Set()
+
+/**
+ * Subscribe to custom component registry changes
+ * Returns an unsubscribe function
+ */
+export function subscribeToCustomComponentRegistry(callback: () => void): () => void {
+  registrySubscribers.add(callback)
+  return () => registrySubscribers.delete(callback)
+}
+
+/**
+ * Notify all subscribers of registry changes
+ */
+function notifyRegistrySubscribers(): void {
+  registrySubscribers.forEach(callback => callback())
+}
+
+/**
+ * Register a custom component into the runtime registry
+ */
+export function registerCustomComponent(customComponent: CustomComponentData): void {
+  // Create a lazy-loaded wrapper for the custom component
+  const CustomComponentWrapper = lazy(() =>
+    import('@/components/cms-blocks/custom/custom-component-wrapper').then(module => ({
+      default: module.createCustomComponent(customComponent)
+    }))
+  )
+
+  const entry: ComponentRegistryEntry = {
+    name: customComponent.name,
+    displayName: customComponent.display_name,
+    description: customComponent.description || `Custom component: ${customComponent.display_name}`,
+    category: 'custom' as ComponentCategory,
+    icon: customComponent.icon || 'Puzzle',
+    component: CustomComponentWrapper as unknown as ComponentType<BaseBlockProps>,
+    propsSchema: z.record(z.string(), z.unknown()), // Custom components accept any props
+    defaultProps: customComponent.default_props || {},
+    previewImage: customComponent.preview_image,
+    supportsChildren: false,
+    isCustomComponent: true,
+  }
+
+  CUSTOM_COMPONENT_REGISTRY.set(customComponent.name, {
+    entry,
+    customData: customComponent,
+  })
+
+  // Notify subscribers that a component was registered
+  notifyRegistrySubscribers()
+}
+
+/**
+ * Unregister a custom component from the runtime registry
+ */
+export function unregisterCustomComponent(name: string): void {
+  CUSTOM_COMPONENT_REGISTRY.delete(name)
+  notifyRegistrySubscribers()
+}
+
+/**
+ * Register multiple custom components
+ * Note: Each registerCustomComponent call notifies subscribers individually.
+ * For batch registration, this is acceptable since the canvas will just
+ * re-render a few times as components are added.
+ */
+export function registerCustomComponents(components: CustomComponentData[]): void {
+  components.forEach(registerCustomComponent)
+}
+
+/**
+ * Clear all custom components from the registry
+ */
+export function clearCustomComponentRegistry(): void {
+  CUSTOM_COMPONENT_REGISTRY.clear()
+}
+
+/**
+ * Get custom component data by name
+ */
+export function getCustomComponentData(name: string): CustomComponentData | null {
+  return CUSTOM_COMPONENT_REGISTRY.get(name)?.customData || null
+}
+
+/**
+ * Check if a component is a custom component
+ */
+export function isCustomComponent(name: string): boolean {
+  return CUSTOM_COMPONENT_REGISTRY.has(name)
+}
 import {
   HeroSectionPropsSchema,
   TextEditorPropsSchema,
@@ -76,6 +200,49 @@ const EventsList = lazy(() => import('@/components/cms-blocks/data/events-list')
 const FacultyDirectory = lazy(() => import('@/components/cms-blocks/data/faculty-directory'))
 const AnnouncementsFeed = lazy(() => import('@/components/cms-blocks/data/announcements-feed'))
 const BlogPostsGrid = lazy(() => import('@/components/cms-blocks/data/blog-posts-grid'))
+
+// shadcn/ui blocks
+const ShadcnButtonBlock = lazy(() => import('@/components/cms-blocks/shadcn/button-block'))
+const ShadcnInputBlock = lazy(() => import('@/components/cms-blocks/shadcn/input-block'))
+const ShadcnTextareaBlock = lazy(() => import('@/components/cms-blocks/shadcn/textarea-block'))
+const ShadcnCheckboxBlock = lazy(() => import('@/components/cms-blocks/shadcn/checkbox-block'))
+const ShadcnSwitchBlock = lazy(() => import('@/components/cms-blocks/shadcn/switch-block'))
+const ShadcnSliderBlock = lazy(() => import('@/components/cms-blocks/shadcn/slider-block'))
+const ShadcnCardBlock = lazy(() => import('@/components/cms-blocks/shadcn/card-block'))
+const ShadcnBadgeBlock = lazy(() => import('@/components/cms-blocks/shadcn/badge-block'))
+const ShadcnAlertBlock = lazy(() => import('@/components/cms-blocks/shadcn/alert-block'))
+const ShadcnProgressBlock = lazy(() => import('@/components/cms-blocks/shadcn/progress-block'))
+const ShadcnSeparatorBlock = lazy(() => import('@/components/cms-blocks/shadcn/separator-block'))
+const ShadcnAvatarBlock = lazy(() => import('@/components/cms-blocks/shadcn/avatar-block'))
+const ShadcnTabsBlock = lazy(() => import('@/components/cms-blocks/shadcn/tabs-block'))
+const ShadcnBreadcrumbBlock = lazy(() => import('@/components/cms-blocks/shadcn/breadcrumb-block'))
+const ShadcnTooltipBlock = lazy(() => import('@/components/cms-blocks/shadcn/tooltip-block'))
+const ShadcnAccordionBlock = lazy(() => import('@/components/cms-blocks/shadcn/accordion-block'))
+const ShadcnCollapsibleBlock = lazy(() => import('@/components/cms-blocks/shadcn/collapsible-block'))
+
+// ==========================================
+// shadcn Block Components Map
+// Maps shadcn component names to their lazy-loaded block components
+// ==========================================
+const SHADCN_BLOCK_COMPONENTS: Record<string, ComponentType<BaseBlockProps>> = {
+  ShadcnButton: ShadcnButtonBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnInput: ShadcnInputBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnTextarea: ShadcnTextareaBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnCheckbox: ShadcnCheckboxBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnSwitch: ShadcnSwitchBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnSlider: ShadcnSliderBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnCard: ShadcnCardBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnBadge: ShadcnBadgeBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnAlert: ShadcnAlertBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnProgress: ShadcnProgressBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnSeparator: ShadcnSeparatorBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnAvatar: ShadcnAvatarBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnTabs: ShadcnTabsBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnBreadcrumb: ShadcnBreadcrumbBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnTooltip: ShadcnTooltipBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnAccordion: ShadcnAccordionBlock as unknown as ComponentType<BaseBlockProps>,
+  ShadcnCollapsible: ShadcnCollapsibleBlock as unknown as ComponentType<BaseBlockProps>,
+}
 
 // ==========================================
 // Component Registry
@@ -858,21 +1025,49 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
 
 /**
  * Get a component from the registry by name
+ * Checks both built-in and custom component registries
  */
 export function getComponent(name: string): ComponentType<BaseBlockProps> | null {
-  const entry = COMPONENT_REGISTRY[name]
-  if (!entry) {
-    console.warn(`Component "${name}" not found in registry`)
-    return null
+  // First check built-in registry
+  const builtinEntry = COMPONENT_REGISTRY[name]
+  if (builtinEntry) {
+    return builtinEntry.component
   }
-  return entry.component
+
+  // Then check shadcn component registry
+  const shadcnComponent = SHADCN_BLOCK_COMPONENTS[name]
+  if (shadcnComponent) {
+    return shadcnComponent
+  }
+
+  // Finally check custom component registry
+  const customEntry = CUSTOM_COMPONENT_REGISTRY.get(name)
+  if (customEntry) {
+    return customEntry.entry.component
+  }
+
+  console.warn(`Component "${name}" not found in registry`)
+  return null
 }
 
 /**
  * Get component entry from registry
+ * Checks both built-in and custom component registries
  */
 export function getComponentEntry(name: string): ComponentRegistryEntry | null {
-  return COMPONENT_REGISTRY[name] || null
+  // First check built-in registry
+  const builtinEntry = COMPONENT_REGISTRY[name]
+  if (builtinEntry) {
+    return builtinEntry
+  }
+
+  // Then check custom component registry
+  const customEntry = CUSTOM_COMPONENT_REGISTRY.get(name)
+  if (customEntry) {
+    return customEntry.entry
+  }
+
+  return null
 }
 
 /**
@@ -905,14 +1100,29 @@ export function validateProps<T>(
 
 /**
  * Get default props for a component
+ * Checks both built-in and custom component registries
  */
 export function getDefaultProps(componentName: string): Record<string, unknown> {
-  const entry = COMPONENT_REGISTRY[componentName]
-  if (!entry) {
-    console.warn(`Component "${componentName}" not found in registry`)
-    return {}
+  // First check built-in registry
+  const builtinEntry = COMPONENT_REGISTRY[componentName]
+  if (builtinEntry) {
+    return builtinEntry.defaultProps as Record<string, unknown>
   }
-  return entry.defaultProps as Record<string, unknown>
+
+  // Then check shadcn component registry
+  const shadcnEntry = SHADCN_COMPONENTS[componentName]
+  if (shadcnEntry) {
+    return shadcnEntry.defaultProps as Record<string, unknown>
+  }
+
+  // Finally check custom component registry
+  const customEntry = CUSTOM_COMPONENT_REGISTRY.get(componentName)
+  if (customEntry) {
+    return customEntry.customData.default_props || {}
+  }
+
+  console.warn(`Component "${componentName}" not found in registry`)
+  return {}
 }
 
 /**
@@ -972,10 +1182,22 @@ export function getCategoryDisplayName(category: ComponentCategory): string {
 
 /**
  * Check if a component supports children (nested blocks)
+ * Checks both built-in and custom component registries
  */
 export function supportsChildren(componentName: string): boolean {
-  const entry = COMPONENT_REGISTRY[componentName]
-  return entry?.supportsChildren ?? false
+  // First check built-in registry
+  const builtinEntry = COMPONENT_REGISTRY[componentName]
+  if (builtinEntry) {
+    return builtinEntry.supportsChildren ?? false
+  }
+
+  // Custom components don't support children by default
+  const customEntry = CUSTOM_COMPONENT_REGISTRY.get(componentName)
+  if (customEntry) {
+    return customEntry.entry.supportsChildren ?? false
+  }
+
+  return false
 }
 
 /**

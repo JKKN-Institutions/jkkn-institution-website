@@ -15,8 +15,10 @@ interface NetworkStatus {
 export function useNetworkStatus(): NetworkStatus & {
   checkConnection: () => Promise<boolean>
 } {
+  // Always initialize as online during SSR to prevent hydration mismatch
+  // Client will update on mount via useEffect
   const [status, setStatus] = useState<NetworkStatus>({
-    isOnline: typeof navigator !== 'undefined' ? navigator.onLine : true,
+    isOnline: true,
     wasOffline: false,
     lastOnlineAt: null,
   })
@@ -54,13 +56,12 @@ export function useNetworkStatus(): NetworkStatus & {
     window.addEventListener('online', handleOnline)
     window.addEventListener('offline', handleOffline)
 
-    // Initial check
-    if (navigator.onLine) {
-      setStatus(prev => ({
-        ...prev,
-        lastOnlineAt: new Date(),
-      }))
-    }
+    // Sync with actual browser status on mount (client-side only)
+    setStatus(prev => ({
+      ...prev,
+      isOnline: navigator.onLine,
+      lastOnlineAt: navigator.onLine ? new Date() : null,
+    }))
 
     return () => {
       window.removeEventListener('online', handleOnline)

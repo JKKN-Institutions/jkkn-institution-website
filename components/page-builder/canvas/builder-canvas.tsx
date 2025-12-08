@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useCallback, useState, type ReactNode, type CSSProperties } from 'react'
+import { Suspense, useCallback, useState, useEffect, type ReactNode, type CSSProperties } from 'react'
 import { useDroppable } from '@dnd-kit/core'
 import {
   SortableContext,
@@ -12,11 +12,16 @@ import { usePageBuilder } from '../page-builder-provider'
 import { BlockWrapper } from './block-wrapper'
 import { EmptyCanvas } from './empty-canvas'
 import { BlockErrorBoundary } from '../error-boundary'
-import { getComponent, getComponentEntry, supportsChildren } from '@/lib/cms/component-registry'
+import {
+  getComponent,
+  getComponentEntry,
+  supportsChildren,
+  subscribeToCustomComponentRegistry,
+} from '@/lib/cms/component-registry'
 import type { BlockData } from '@/lib/cms/registry-types'
 import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Plus } from 'lucide-react'
+import { Plus, Loader2 } from 'lucide-react'
 import {
   applyBlockStyles,
   applyMotionStyles,
@@ -81,15 +86,36 @@ function SortableBlock({
   const entry = getComponentEntry(block.component_name)
   const isContainer = supportsChildren(block.component_name)
 
+  // ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL RETURNS
+  // Subscribe to registry updates to re-render when custom components are registered
+  const [, forceUpdate] = useState(0)
+
+  // State for hover effect (must be called unconditionally)
+  const [isHovered, setIsHovered] = useState(false)
+
+  useEffect(() => {
+    // Only subscribe if component is not found (might be custom component loading)
+    if (!Component || !entry) {
+      return subscribeToCustomComponentRegistry(() => {
+        forceUpdate(n => n + 1)
+      })
+    }
+  }, [Component, entry])
+
+  // Early return for unknown/loading components (AFTER all hooks)
   if (!Component || !entry) {
     return (
       <div
         ref={setNodeRef}
         style={style}
-        className="p-4 bg-red-50 border border-red-200 rounded-lg"
+        className="p-4 bg-amber-50 border border-amber-200 rounded-lg"
       >
-        <p className="text-red-600 text-sm">
-          Unknown component: {block.component_name}
+        <div className="flex items-center gap-2 text-amber-700 text-sm">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          <span>Loading component: {block.component_name}...</span>
+        </div>
+        <p className="text-amber-600 text-xs mt-1">
+          Custom component is being loaded from the registry
         </p>
       </div>
     )
@@ -116,10 +142,7 @@ function SortableBlock({
   // Get hover transform for motion effects
   const hoverTransform = getHoverTransform(blockMotion)
 
-  // State for hover effect
-  const [isHovered, setIsHovered] = useState(false)
-
-  // Apply hover transform when hovered
+  // Apply hover transform when hovered (isHovered state is declared at top of component)
   const finalStyles: CSSProperties = {
     ...appliedStyles,
     ...(isHovered && hoverTransform ? { transform: hoverTransform } : {}),

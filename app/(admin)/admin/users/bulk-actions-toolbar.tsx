@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
+import { usePermission } from '@/lib/hooks/use-permissions'
 import { Button } from '@/components/ui/button'
 import {
   AlertDialog,
@@ -51,6 +52,10 @@ export function BulkActionsToolbar({
   const [showActivateDialog, setShowActivateDialog] = useState(false)
   const [showDeactivateDialog, setShowDeactivateDialog] = useState(false)
   const [selectedRoleId, setSelectedRoleId] = useState('')
+
+  // Permission checks for UI hiding
+  const { hasPermission: canAssignRoles } = usePermission('users:roles:assign')
+  const { hasPermission: canManageStatus } = usePermission('users:profiles:delete')
 
   const handleAssignRole = async () => {
     if (!selectedRoleId) {
@@ -146,38 +151,44 @@ export function BulkActionsToolbar({
         <div className="h-6 w-px bg-border" />
 
         <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2"
-            onClick={() => setShowAssignRoleDialog(true)}
-            disabled={isPending}
-          >
-            <Shield className="h-4 w-4" />
-            Assign Role
-          </Button>
+          {canAssignRoles && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={() => setShowAssignRoleDialog(true)}
+              disabled={isPending}
+            >
+              <Shield className="h-4 w-4" />
+              Assign Role
+            </Button>
+          )}
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2 text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200"
-            onClick={() => setShowActivateDialog(true)}
-            disabled={isPending}
-          >
-            <UserPlus className="h-4 w-4" />
-            Activate
-          </Button>
+          {canManageStatus && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2 text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200"
+              onClick={() => setShowActivateDialog(true)}
+              disabled={isPending}
+            >
+              <UserPlus className="h-4 w-4" />
+              Activate
+            </Button>
+          )}
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
-            onClick={() => setShowDeactivateDialog(true)}
-            disabled={isPending}
-          >
-            <UserMinus className="h-4 w-4" />
-            Deactivate
-          </Button>
+          {canManageStatus && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+              onClick={() => setShowDeactivateDialog(true)}
+              disabled={isPending}
+            >
+              <UserMinus className="h-4 w-4" />
+              Deactivate
+            </Button>
+          )}
 
           <div className="h-6 w-px bg-border" />
 

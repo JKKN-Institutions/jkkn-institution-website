@@ -1,6 +1,8 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { getUserById } from '@/app/actions/users'
 import { getRoles } from '@/app/actions/roles'
+import { checkPermission } from '@/app/actions/permissions'
+import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { UserDetailView } from './user-detail-view'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -12,6 +14,23 @@ interface UserDetailPageProps {
 
 export default async function UserDetailPage({ params }: UserDetailPageProps) {
   const { id } = await params
+
+  // Security: Check if user can view this profile
+  const supabase = await createServerSupabaseClient()
+  const { data: { user: currentUser } } = await supabase.auth.getUser()
+
+  if (!currentUser) {
+    redirect('/auth/login')
+  }
+
+  // Allow viewing own profile OR require users:profiles:view permission
+  const canView = currentUser.id === id ||
+    await checkPermission(currentUser.id, 'users:profiles:view')
+
+  if (!canView) {
+    redirect('/admin/dashboard')
+  }
+
   const [user, roles] = await Promise.all([getUserById(id), getRoles()])
 
   if (!user) {

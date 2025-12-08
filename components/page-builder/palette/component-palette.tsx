@@ -1,10 +1,9 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -20,7 +19,10 @@ import {
   COMPONENT_REGISTRY,
   getComponentsByCategory,
   searchComponents,
+  registerCustomComponents,
+  clearCustomComponentRegistry,
   type ComponentCategory,
+  type CustomComponentData,
 } from '@/lib/cms/component-registry'
 import {
   Search,
@@ -31,8 +33,8 @@ import {
   GripVertical,
   Puzzle,
   Library,
-  ExternalLink,
 } from 'lucide-react'
+import { BrowseComponentsModal } from '@/components/page-builder/modals/browse-components-modal'
 import * as LucideIcons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -48,6 +50,9 @@ interface PaletteItemProps {
 
 function PaletteItem({ name, displayName, description, icon, previewImage }: PaletteItemProps) {
   const [imageError, setImageError] = useState(false)
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false)
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: `palette-${name}`,
     data: {
@@ -69,12 +74,53 @@ function PaletteItem({ name, displayName, description, icon, previewImage }: Pal
 
   const hasPreview = previewImage && !imageError
 
-  const itemContent = (
+  // Handle mouse enter with delay (to avoid showing tooltip when quickly moving through items)
+  const handleMouseEnter = () => {
+    if (hasPreview && !isDragging) {
+      hoverTimeoutRef.current = setTimeout(() => {
+        setIsTooltipOpen(true)
+      }, 300)
+    }
+  }
+
+  // Handle mouse leave
+  const handleMouseLeave = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current)
+      hoverTimeoutRef.current = null
+    }
+    setIsTooltipOpen(false)
+  }
+
+  // Close tooltip when dragging starts
+  useEffect(() => {
+    if (isDragging) {
+      setIsTooltipOpen(false)
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current)
+        hoverTimeoutRef.current = null
+      }
+    }
+  }, [isDragging])
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current)
+      }
+    }
+  }, [])
+
+  // Create draggable content - optionally with mouse handlers for tooltip
+  const createDraggableContent = (withMouseHandlers: boolean) => (
     <div
       ref={setNodeRef}
       style={style}
       {...listeners}
       {...attributes}
+      onMouseEnter={withMouseHandlers ? handleMouseEnter : undefined}
+      onMouseLeave={withMouseHandlers ? handleMouseLeave : undefined}
       className={cn(
         'group flex items-center gap-2 p-2 rounded-lg border border-border bg-card w-full min-w-0',
         'hover:border-primary/50 hover:bg-accent cursor-grab transition-all',
@@ -96,12 +142,12 @@ function PaletteItem({ name, displayName, description, icon, previewImage }: Pal
     </div>
   )
 
-  // If preview image exists, wrap with tooltip
+  // If preview image exists, wrap with controlled tooltip
   if (hasPreview) {
     return (
-      <Tooltip delayDuration={300}>
+      <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
         <TooltipTrigger asChild>
-          {itemContent}
+          {createDraggableContent(true)}
         </TooltipTrigger>
         <TooltipContent
           side="right"
@@ -129,7 +175,7 @@ function PaletteItem({ name, displayName, description, icon, previewImage }: Pal
     )
   }
 
-  return itemContent
+  return createDraggableContent(false)
 }
 
 const categoryIcons: Record<ComponentCategory | 'custom', React.ComponentType<{ className?: string }>> = {
@@ -148,7 +194,8 @@ const categoryLabels: Record<ComponentCategory | 'custom', string> = {
   custom: 'Custom',
 }
 
-interface CustomComponentData {
+// Local interface for palette display (subset of full CustomComponentData)
+interface CustomComponentPaletteData {
   id: string
   name: string
   display_name: string
@@ -157,6 +204,8 @@ interface CustomComponentData {
   icon: string
   preview_image: string | null
   is_active: boolean
+  code: string
+  default_props: Record<string, unknown>
 }
 
 interface ComponentPaletteProps {
@@ -166,24 +215,49 @@ interface ComponentPaletteProps {
 export function ComponentPalette({ pageId }: ComponentPaletteProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState<ComponentCategory | 'custom' | 'all'>('all')
-  const [customComponents, setCustomComponents] = useState<CustomComponentData[]>([])
+  const [customComponents, setCustomComponents] = useState<CustomComponentPaletteData[]>([])
   const [isLoadingCustom, setIsLoadingCustom] = useState(true)
+  const [browseModalOpen, setBrowseModalOpen] = useState(false)
 
-  // Fetch custom components from database
+  // Fetch custom components from database and register them
   useEffect(() => {
     const fetchCustomComponents = async () => {
       try {
         const supabase = createClient()
         const { data, error } = await supabase
           .from('cms_custom_components')
-          .select('id, name, display_name, description, category, icon, preview_image, is_active')
+          .select('id, name, display_name, description, category, icon, preview_image, is_active, code, default_props')
           .eq('is_active', true)
           .order('display_name', { ascending: true })
 
         if (error) {
           console.error('Failed to fetch custom components:', error)
         } else {
-          setCustomComponents(data || [])
+          const components = data || []
+          setCustomComponents(components)
+
+          // Clear existing custom component registrations and register new ones
+          clearCustomComponentRegistry()
+
+          // Transform to CustomComponentData format and register
+          const registryComponents: CustomComponentData[] = components.map(comp => ({
+            id: comp.id,
+            name: comp.name,
+            display_name: comp.display_name,
+            description: comp.description || undefined,
+            category: comp.category,
+            icon: comp.icon || undefined,
+            preview_image: comp.preview_image || undefined,
+            code: comp.code,
+            default_props: comp.default_props || {},
+            is_active: comp.is_active,
+          }))
+
+          registerCustomComponents(registryComponents)
+
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`[ComponentPalette] Registered ${registryComponents.length} custom components`)
+          }
         }
       } catch (err) {
         console.error('Error fetching custom components:', err)
@@ -193,6 +267,11 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
     }
 
     fetchCustomComponents()
+
+    // Cleanup: unregister custom components when unmounting
+    return () => {
+      clearCustomComponentRegistry()
+    }
   }, [])
 
   // Convert custom components to palette format
@@ -254,11 +333,6 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
 
     return groups
   }, [filteredComponents, searchQuery, activeCategory])
-
-  // Get browse library URL with return path
-  const browseLibraryUrl = pageId
-    ? `/admin/content/components?mode=select&returnTo=${pageId}`
-    : '/admin/content/components'
 
   return (
     <TooltipProvider>
@@ -383,11 +457,9 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
                             variant="link"
                             size="sm"
                             className="text-xs h-auto p-0 mt-1"
-                            asChild
+                            onClick={() => setBrowseModalOpen(true)}
                           >
-                            <Link href={browseLibraryUrl}>
-                              Add components
-                            </Link>
+                            Add components
                           </Button>
                         </div>
                       ) : null}
@@ -420,18 +492,21 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
           variant="outline"
           size="sm"
           className="w-full gap-2 text-xs"
-          asChild
+          onClick={() => setBrowseModalOpen(true)}
         >
-          <Link href={browseLibraryUrl}>
-            <Library className="h-3.5 w-3.5" />
-            Browse Component Library
-            <ExternalLink className="h-3 w-3 opacity-50" />
-          </Link>
+          <Library className="h-3.5 w-3.5" />
+          Browse Component Library
         </Button>
         <p className="text-xs text-muted-foreground text-center">
           Drag components to add them to your page
         </p>
       </div>
+
+      {/* Browse Components Modal */}
+      <BrowseComponentsModal
+        open={browseModalOpen}
+        onOpenChange={setBrowseModalOpen}
+      />
     </div>
     </TooltipProvider>
   )

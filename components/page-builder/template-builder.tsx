@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import {
   DndContext,
   DragOverlay,
@@ -245,6 +245,9 @@ function TemplateBuilderContent({
   templateName: string
   isSystem: boolean
 }) {
+  // Stable ID for DndContext to prevent hydration mismatches
+  const dndContextId = useId()
+
   const {
     state,
     addBlock,
@@ -536,6 +539,7 @@ function TemplateBuilderContent({
 
   return (
     <DndContext
+      id={dndContextId}
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}

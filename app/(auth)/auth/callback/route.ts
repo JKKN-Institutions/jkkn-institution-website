@@ -57,7 +57,12 @@ export async function GET(request: NextRequest) {
 
       // 3. User is authenticated and approved
       // Profile, member, and guest role are auto-created by trigger
-      // Redirect to dashboard
+
+      // 4. Update last login timestamp
+      await supabase
+        .from('profiles')
+        .update({ last_login_at: new Date().toISOString() })
+        .eq('id', session.user.id)
     }
   }
 

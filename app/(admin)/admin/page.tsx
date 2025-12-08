@@ -1,20 +1,10 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server'
-import { DashboardGrid } from '@/components/dashboard/dashboard-grid'
-import { DEFAULT_LAYOUTS, type WidgetConfig, type DashboardLayoutItem } from '@/lib/dashboard/widget-registry'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { AlertCircle, Info, Sparkles } from 'lucide-react'
-
-async function getWidgets(): Promise<WidgetConfig[]> {
-  const supabase = await createServerSupabaseClient()
-
-  const { data } = await supabase
-    .from('dashboard_widgets')
-    .select('*')
-    .eq('is_active', true)
-    .order('sort_order', { ascending: true })
-
-  return (data as WidgetConfig[]) || []
-}
+import { AlertCircle, Info } from 'lucide-react'
+import { DashboardStatsCards } from '@/components/dashboard/dashboard-stats-cards'
+import { RecentUsersSection } from '@/components/dashboard/recent-users-section'
+import { RecentActivitySection } from '@/components/dashboard/recent-activity-section'
+import { WelcomeBanner } from '@/components/dashboard/welcome-banner'
 
 async function getUserDashboardData(userId: string) {
   const supabase = await createServerSupabaseClient()
@@ -40,7 +30,6 @@ async function getUserDashboardData(userId: string) {
 
   const roleNames = roles.map((r) => r?.name).filter(Boolean)
   const isSuperAdmin = roleNames.includes('super_admin')
-  const primaryRoleName = roleNames[0] || 'guest'
   const primaryRoleDisplay = roles[0]?.display_name || 'Guest'
 
   // Get permissions
@@ -57,39 +46,10 @@ async function getUserDashboardData(userId: string) {
     permissions = [...new Set(rolePermissions?.map((rp) => rp.permission) || [])]
   }
 
-  // Get user's custom layout (if exists)
-  const { data: customLayout } = await supabase
-    .from('dashboard_layouts')
-    .select('layout_config')
-    .eq('user_id', userId)
-    .single()
-
-  // Get role-based default layout
-  const { data: roleLayout } = await supabase
-    .from('dashboard_layouts')
-    .select('layout_config, role_id, roles(name)')
-    .in('role_id', roles.map((r) => r?.id).filter(Boolean))
-    .eq('is_default', true)
-    .limit(1)
-    .single()
-
-  // Determine layout to use
-  let layout: DashboardLayoutItem[]
-  if (customLayout?.layout_config) {
-    layout = customLayout.layout_config as unknown as DashboardLayoutItem[]
-  } else if (roleLayout?.layout_config) {
-    layout = roleLayout.layout_config as unknown as DashboardLayoutItem[]
-  } else {
-    // Use default layout based on role
-    layout = DEFAULT_LAYOUTS[primaryRoleName] || DEFAULT_LAYOUTS.guest
-  }
-
   return {
     profile,
-    primaryRoleName,
     primaryRoleDisplay,
     permissions,
-    layout,
     isGuestOnly: roleNames.length === 1 && roleNames[0] === 'guest',
   }
 }
@@ -109,65 +69,60 @@ export default async function AdminDashboard() {
     )
   }
 
-  const [widgets, userData] = await Promise.all([
-    getWidgets(),
-    getUserDashboardData(user.id),
-  ])
+  const userData = await getUserDashboardData(user.id)
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      {/* Guest User Banner - Mobile Optimized */}
+    <div className="space-y-6">
+      {/* Guest User Banner */}
       {userData.isGuestOnly && (
-        <Alert className="border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 dark:border-amber-800 rounded-xl sm:rounded-2xl">
-          <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+        <Alert className="border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 dark:border-amber-800 rounded-xl">
+          <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
           <AlertDescription className="ml-2">
             <div className="flex flex-col gap-2">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="font-semibold text-sm sm:text-base text-amber-900 dark:text-amber-200">
+                <span className="font-semibold text-sm text-amber-900 dark:text-amber-200">
                   Account Pending Approval
                 </span>
                 <span className="px-2 py-0.5 text-xs font-medium bg-amber-200 dark:bg-amber-900/50 text-amber-900 dark:text-amber-200 rounded-full">
                   Guest User
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-amber-800 dark:text-amber-300">
+              <p className="text-xs text-amber-800 dark:text-amber-300">
                 Your account is currently in guest mode with limited access. An administrator will review and approve your account shortly.
               </p>
               <div className="flex items-center gap-2 mt-1 text-xs text-amber-700 dark:text-amber-400">
                 <Info className="h-3.5 w-3.5 flex-shrink-0" />
-                <span className="line-clamp-2 sm:line-clamp-none">You will receive an email notification once your account is approved.</span>
+                <span>You will receive an email notification once your account is approved.</span>
               </div>
             </div>
           </AlertDescription>
         </Alert>
       )}
 
-      {/* Dashboard Header - Mobile Responsive */}
-      <div className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 sm:w-64 h-32 sm:h-64 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-        <div className="relative">
-          <div className="flex items-center gap-2 text-xs sm:text-sm text-primary font-medium mb-2">
-            <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            <span>Dashboard</span>
-          </div>
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">
-            Welcome, {userData.profile?.full_name || 'User'}
-          </h1>
-          <p className="text-sm sm:text-base text-muted-foreground mt-2 max-w-2xl line-clamp-2 sm:line-clamp-none">
-            Here&apos;s your personalized dashboard. Monitor activity, manage content, and access quick actions.
-          </p>
+      {/* Dashboard Header */}
+      <div>
+        <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
+        <p className="text-muted-foreground">Welcome to your admin dashboard</p>
+      </div>
+
+      {/* Stats Cards Row */}
+      <DashboardStatsCards />
+
+      {/* Recent Users and Activity Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        {/* Recent Users - Takes 3 columns */}
+        <div className="lg:col-span-3">
+          <RecentUsersSection />
+        </div>
+
+        {/* Recent Activity - Takes 2 columns */}
+        <div className="lg:col-span-2">
+          <RecentActivitySection />
         </div>
       </div>
 
-      {/* Widget Grid */}
-      <DashboardGrid
-        widgets={widgets}
-        layout={userData.layout}
-        userPermissions={userData.permissions}
-        userId={user.id}
-        userName={userData.profile?.full_name || 'User'}
-        userRole={userData.primaryRoleDisplay}
-      />
+      {/* Welcome Banner */}
+      <WelcomeBanner />
     </div>
   )
 }

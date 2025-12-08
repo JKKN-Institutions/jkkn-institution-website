@@ -1,11 +1,10 @@
 import { Suspense } from 'react'
 import { UsersTable } from './users-table'
-import { UserPlus, Mail, Users as UsersIcon, UserCheck, UserX, RefreshCw } from 'lucide-react'
-import Link from 'next/link'
+import { Users as UsersIcon, UserCheck, UserX, Clock, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { ResponsivePageHeader } from '@/components/ui/responsive-page-header'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
+import { AddUserModal } from './add-user-modal'
 
 interface UsersPageProps {
   searchParams: Promise<{
@@ -20,42 +19,19 @@ interface UsersPageProps {
 async function getUserStats() {
   const supabase = await createServerSupabaseClient()
 
-  // Get total count
-  const { count: totalCount } = await supabase
-    .from('profiles')
-    .select('*', { count: 'exact', head: true })
+  // Use optimized database function for single-query stats
+  const { data, error } = await supabase.rpc('get_user_stats')
 
-  // Get guest role id
-  const { data: guestRole } = await supabase
-    .from('roles')
-    .select('id')
-    .eq('name', 'guest')
-    .single()
-
-  // Get active users (users with roles other than guest)
-  const { data: activeUsers } = await supabase
-    .from('user_roles')
-    .select('user_id')
-
-  // Filter out users who only have guest role
-  const { data: guestOnlyUsers } = await supabase
-    .from('user_roles')
-    .select('user_id')
-    .eq('role_id', guestRole?.id || '')
-
-  const allUserIds = new Set(activeUsers?.map(u => u.user_id) || [])
-  const guestOnlyUserIds = new Set(guestOnlyUsers?.map(u => u.user_id) || [])
-
-  // Active = users with any role that's not guest only
-  const activeCount = allUserIds.size
-
-  // Blocked = total - active (users with no roles or pending approval)
-  const blockedCount = (totalCount || 0) - activeCount
+  if (error) {
+    console.error('Error fetching user stats:', error)
+    return { total: 0, active: 0, pending: 0, blocked: 0 }
+  }
 
   return {
-    total: totalCount || 0,
-    active: activeCount,
-    blocked: blockedCount > 0 ? blockedCount : 0
+    total: data?.total || 0,
+    active: data?.active || 0,
+    pending: data?.pending || 0,
+    blocked: data?.blocked || 0
   }
 }
 
@@ -70,71 +46,66 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
   const stats = await getUserStats()
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      {/* Page Header - Mobile Responsive */}
-      <ResponsivePageHeader
-        icon={<UsersIcon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />}
-        title="User Management"
-        description="Manage user accounts, roles, and permissions"
-        badge="Module 1"
-        actions={
-          <>
-            <Button
-              variant="outline"
-              asChild
-              className="hover:border-primary/30 hover:bg-primary/5 w-full sm:w-auto min-h-[44px]"
-            >
-              <Link href="/admin/users/approved-emails">
-                <Mail className="mr-2 h-4 w-4" />
-                <span className="sm:inline">Approved Emails</span>
-              </Link>
-            </Button>
-            <Button
-              asChild
-              className="bg-primary hover:bg-primary/90 shadow-brand w-full sm:w-auto min-h-[44px]"
-            >
-              <Link href="/admin/users/new">
-                <UserPlus className="mr-2 h-4 w-4" />
-                Invite User
-              </Link>
-            </Button>
-          </>
-        }
-      />
-
-      {/* User Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="glass-card rounded-xl p-4 flex items-center gap-4">
-          <div className="p-3 rounded-xl bg-primary/10">
-            <UsersIcon className="h-5 w-5 text-primary" />
-          </div>
-          <div>
-            <p className="text-2xl font-bold text-foreground">{stats.total}</p>
-            <p className="text-sm text-muted-foreground">Total Users</p>
-          </div>
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">Users</h1>
+          <p className="text-muted-foreground">Manage user accounts, roles, and permissions</p>
         </div>
-        <div className="glass-card rounded-xl p-4 flex items-center gap-4">
-          <div className="p-3 rounded-xl bg-primary/10">
-            <UserCheck className="h-5 w-5 text-primary" />
-          </div>
-          <div>
-            <p className="text-2xl font-bold text-foreground">{stats.active}</p>
-            <p className="text-sm text-muted-foreground">Active Users</p>
-          </div>
-        </div>
-        <div className="glass-card rounded-xl p-4 flex items-center gap-4">
-          <div className="p-3 rounded-xl bg-destructive/10">
-            <UserX className="h-5 w-5 text-destructive" />
-          </div>
-          <div>
-            <p className="text-2xl font-bold text-foreground">{stats.blocked}</p>
-            <p className="text-sm text-muted-foreground">Blocked Users</p>
-          </div>
+        <div className="flex items-center gap-3">
+          <Button
+            variant="outline"
+            className="gap-2"
+          >
+            <RefreshCw className="h-4 w-4" />
+            Refresh
+          </Button>
+          <AddUserModal />
         </div>
       </div>
 
-      {/* Users Table with Glass Effect - Responsive padding */}
-      <div className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6">
+      {/* User Stats Cards - 4 cards in a row */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Total Users */}
+        <div className="bg-card border border-border rounded-xl p-5">
+          <div className="flex items-center gap-2 text-muted-foreground mb-2">
+            <UsersIcon className="h-4 w-4" />
+            <span className="text-sm font-medium">Total Users</span>
+          </div>
+          <p className="text-3xl font-bold text-foreground">{stats.total}</p>
+        </div>
+
+        {/* Active Users */}
+        <div className="bg-card border border-border rounded-xl p-5">
+          <div className="flex items-center gap-2 text-muted-foreground mb-2">
+            <UserCheck className="h-4 w-4" />
+            <span className="text-sm font-medium">Active Users</span>
+          </div>
+          <p className="text-3xl font-bold text-green-600">{stats.active}</p>
+        </div>
+
+        {/* Pending Users */}
+        <div className="bg-card border border-border rounded-xl p-5">
+          <div className="flex items-center gap-2 text-muted-foreground mb-2">
+            <Clock className="h-4 w-4" />
+            <span className="text-sm font-medium">Pending Users</span>
+          </div>
+          <p className="text-3xl font-bold text-foreground">{stats.pending}</p>
+        </div>
+
+        {/* Blocked Users */}
+        <div className="bg-card border border-border rounded-xl p-5">
+          <div className="flex items-center gap-2 text-muted-foreground mb-2">
+            <UserX className="h-4 w-4" />
+            <span className="text-sm font-medium">Blocked Users</span>
+          </div>
+          <p className="text-3xl font-bold text-red-600">{stats.blocked}</p>
+        </div>
+      </div>
+
+      {/* Users Table */}
+      <div className="bg-card border border-border rounded-xl p-4 sm:p-6">
         <Suspense fallback={<UsersTableSkeleton />}>
           <UsersTable
             page={page}
@@ -155,23 +126,29 @@ function UsersTableSkeleton() {
       {/* Toolbar skeleton */}
       <div className="flex items-center gap-4">
         <Skeleton className="h-10 w-64 rounded-xl" />
-        <Skeleton className="h-10 w-32 rounded-xl" />
-        <Skeleton className="h-10 w-32 rounded-xl" />
+        <Skeleton className="h-10 w-24 rounded-xl" />
+        <Skeleton className="h-10 w-24 rounded-xl" />
+        <div className="flex-1" />
+        <Skeleton className="h-10 w-24 rounded-xl" />
+        <Skeleton className="h-10 w-20 rounded-xl" />
       </div>
 
       {/* Table skeleton */}
-      <div className="rounded-xl border border-border/50 bg-card/50 overflow-hidden">
+      <div className="rounded-xl border border-border overflow-hidden">
         <div className="p-4 space-y-4">
           {Array.from({ length: 10 }).map((_, i) => (
             <div key={i} className="flex items-center gap-4">
+              <Skeleton className="h-4 w-4 rounded" />
               <Skeleton className="h-10 w-10 rounded-full" />
               <div className="space-y-2 flex-1">
                 <Skeleton className="h-4 w-48 rounded-lg" />
                 <Skeleton className="h-3 w-32 rounded-lg" />
               </div>
+              <Skeleton className="h-6 w-24 rounded-full" />
+              <Skeleton className="h-4 w-32 rounded-lg" />
               <Skeleton className="h-4 w-24 rounded-lg" />
               <Skeleton className="h-6 w-16 rounded-full" />
-              <Skeleton className="h-6 w-16 rounded-full" />
+              <Skeleton className="h-4 w-16 rounded-lg" />
               <Skeleton className="h-4 w-20 rounded-lg" />
               <Skeleton className="h-8 w-8 rounded-lg" />
             </div>

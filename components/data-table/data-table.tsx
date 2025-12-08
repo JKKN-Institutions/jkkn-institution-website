@@ -37,6 +37,8 @@ interface DataTableProps<TData, TValue> {
   isLoading?: boolean
   enableRowSelection?: boolean
   onRowSelectionChange?: (selection: RowSelectionState) => void
+  columnVisibility?: VisibilityState
+  onColumnVisibilityChange?: (visibility: VisibilityState) => void
 }
 
 export function DataTable<TData, TValue>({
@@ -51,11 +53,16 @@ export function DataTable<TData, TValue>({
   isLoading = false,
   enableRowSelection = false,
   onRowSelectionChange,
+  columnVisibility: externalColumnVisibility,
+  onColumnVisibilityChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [internalColumnVisibility, setInternalColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+
+  // Use external visibility if provided, otherwise use internal state
+  const columnVisibility = externalColumnVisibility ?? internalColumnVisibility
 
   const table = useReactTable({
     data,
@@ -67,7 +74,14 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
+    onColumnVisibilityChange: (updater) => {
+      const newVisibility = typeof updater === 'function' ? updater(columnVisibility) : updater
+      if (onColumnVisibilityChange) {
+        onColumnVisibilityChange(newVisibility)
+      } else {
+        setInternalColumnVisibility(newVisibility)
+      }
+    },
     onRowSelectionChange: (updater) => {
       const newSelection = typeof updater === 'function' ? updater(rowSelection) : updater
       setRowSelection(newSelection)

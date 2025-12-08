@@ -26,6 +26,21 @@ const UpdateProfileSchema = z.object({
   date_of_joining: z.string().optional(),
 })
 
+const CreateUserSchema = z.object({
+  email: z
+    .string()
+    .email('Invalid email address')
+    .refine((email) => email.endsWith('@jkkn.ac.in'), {
+      message: 'Email must be from @jkkn.ac.in domain',
+    }),
+  full_name: z.string().min(1, 'Full name is required'),
+  phone: z.string().optional(),
+  institution: z.string().optional(),
+  department: z.string().optional(),
+  designation: z.string().optional(),
+  role_id: z.string().uuid('Invalid role ID').optional(),
+})
+
 const UpdateAvatarSchema = z.object({
   userId: z.string().uuid('Invalid user ID'),
   avatarUrl: z.string().url('Invalid URL').nullable(),
@@ -314,6 +329,150 @@ export async function addApprovedEmail(
   revalidatePath('/admin/users/approved-emails')
 
   return { success: true, message: 'Email added to approved list successfully' }
+}
+
+/**
+ * Create a new user directly with profile and member records
+ * This is an alternative to the approved emails flow
+ */
+export async function createUser(data: {
+  email: string
+  full_name: string
+  phone?: string
+  institution?: string
+  department?: string
+  designation?: string
+  role_id?: string
+}): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'users:profiles:create')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to create users' }
+  }
+
+  // Validate input
+  const validation = CreateUserSchema.safeParse(data)
+
+  if (!validation.success) {
+    return {
+      success: false,
+      errors: validation.error.flatten().fieldErrors,
+      message: 'Invalid fields. Please check the form.',
+    }
+  }
+
+  const { email, full_name, phone, institution, department, designation, role_id } = validation.data
+
+  // Check if email already exists in profiles
+  const { data: existingProfile } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('email', email)
+    .single()
+
+  if (existingProfile) {
+    return {
+      success: false,
+      message: 'A user with this email already exists',
+    }
+  }
+
+  // Generate a UUID for the new user
+  const newUserId = crypto.randomUUID()
+
+  // Insert profile
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .insert({
+      id: newUserId,
+      email,
+      full_name,
+      phone: phone || null,
+      department: department || null,
+      designation: designation || null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .select()
+    .single()
+
+  if (profileError) {
+    console.error('Error creating profile:', profileError)
+    return { success: false, message: 'Failed to create user profile. Please try again.' }
+  }
+
+  // Insert member record
+  const { error: memberError } = await supabase.from('members').insert({
+    user_id: newUserId,
+    profile_id: newUserId,
+    chapter: institution || null,
+    status: 'active',
+    membership_type: 'regular',
+    joined_at: new Date().toISOString(),
+  })
+
+  if (memberError) {
+    console.error('Error creating member record:', memberError)
+    // Rollback profile creation
+    await supabase.from('profiles').delete().eq('id', newUserId)
+    return { success: false, message: 'Failed to create member record. Please try again.' }
+  }
+
+  // Assign role - use provided role_id or fall back to guest role
+  let assignedRoleId = role_id
+
+  if (!assignedRoleId) {
+    // Get guest role ID as default
+    const { data: guestRole } = await supabase
+      .from('roles')
+      .select('id')
+      .eq('name', 'guest')
+      .single()
+
+    if (guestRole) {
+      assignedRoleId = guestRole.id
+    }
+  }
+
+  if (assignedRoleId) {
+    await supabase.from('user_roles').insert({
+      user_id: newUserId,
+      role_id: assignedRoleId,
+      assigned_by: user.id,
+    })
+  }
+
+  // Also add to approved_emails for future Google OAuth login
+  await supabase.from('approved_emails').insert({
+    email,
+    notes: `Created by admin: ${user.email}`,
+    added_by: user.id,
+    status: 'active',
+  })
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'create',
+    module: 'users',
+    resourceType: 'user',
+    resourceId: newUserId,
+    metadata: { email, full_name, institution, department },
+  })
+
+  revalidatePath('/admin/users')
+
+  return { success: true, message: 'User created successfully' }
 }
 
 /**
@@ -1137,7 +1296,57 @@ export async function exportUsersToCSV(params?: {
   if (userIds && userIds.length > 0) {
     query = query.in('id', userIds)
   } else {
-    // Otherwise apply search/filter criteria
+    // Build filter IDs based on roleId and status filters
+    let filterUserIds: string[] | null = null
+
+    // Filter by role
+    if (roleId) {
+      const { data: userRolesData } = await supabase
+        .from('user_roles')
+        .select('user_id')
+        .eq('role_id', roleId)
+
+      if (userRolesData && userRolesData.length > 0) {
+        filterUserIds = userRolesData.map((ur) => ur.user_id)
+      } else {
+        // No users have this role - return empty
+        throw new Error('No users to export')
+      }
+    }
+
+    // Filter by status
+    if (status) {
+      const { data: membersData } = await supabase
+        .from('members')
+        .select('profile_id')
+        .eq('status', status)
+
+      if (membersData && membersData.length > 0) {
+        const statusUserIds = membersData
+          .map((m) => m.profile_id)
+          .filter(Boolean) as string[]
+
+        if (filterUserIds) {
+          // Intersect with role filter
+          const statusSet = new Set(statusUserIds)
+          filterUserIds = filterUserIds.filter((id) => statusSet.has(id))
+          if (filterUserIds.length === 0) {
+            throw new Error('No users to export')
+          }
+        } else {
+          filterUserIds = statusUserIds
+        }
+      } else {
+        throw new Error('No users to export')
+      }
+    }
+
+    // Apply combined ID filter
+    if (filterUserIds) {
+      query = query.in('id', filterUserIds)
+    }
+
+    // Apply search filter
     if (search) {
       query = query.or(
         `full_name.ilike.%${search}%,email.ilike.%${search}%,department.ilike.%${search}%`
@@ -1494,4 +1703,74 @@ export async function bulkDeactivateUsers(userIds: string[]): Promise<FormState>
     success: true,
     message: `${usersToDeactivate.length} user${usersToDeactivate.length > 1 ? 's' : ''} deactivated successfully`,
   }
+}
+
+/**
+ * Get role change history for a user
+ */
+export type RoleHistoryEntry = {
+  id: string
+  action: 'assigned' | 'removed'
+  changed_at: string
+  reason: string | null
+  role: {
+    id: string
+    name: string
+    display_name: string
+  } | null
+  changed_by_user: {
+    id: string
+    full_name: string | null
+    email: string
+  } | null
+}
+
+export async function getRoleHistory(userId: string): Promise<RoleHistoryEntry[]> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return []
+  }
+
+  // Allow viewing own history OR require permission
+  const canView = user.id === userId || (await checkPermission(user.id, 'users:profiles:view'))
+  if (!canView) {
+    return []
+  }
+
+  // Fetch role change history with related data
+  const { data, error } = await supabase
+    .from('user_role_changes')
+    .select(
+      `
+      id,
+      action,
+      changed_at,
+      reason,
+      role:roles!role_id (
+        id,
+        name,
+        display_name
+      ),
+      changed_by_user:profiles!changed_by (
+        id,
+        full_name,
+        email
+      )
+    `
+    )
+    .eq('user_id', userId)
+    .order('changed_at', { ascending: false })
+    .limit(50)
+
+  if (error) {
+    console.error('Error fetching role history:', error)
+    return []
+  }
+
+  return (data as unknown as RoleHistoryEntry[]) || []
 }

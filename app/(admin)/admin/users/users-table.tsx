@@ -6,19 +6,23 @@ import { DataTable } from '@/components/data-table/data-table'
 import { columns, type UserRow } from './columns'
 import { Input } from '@/components/ui/input'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Search, X, Download, Loader2 } from 'lucide-react'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from '@/components/ui/dropdown-menu'
+import { Search, X, Download, Loader2, PlusCircle, SlidersHorizontal, FileSpreadsheet, FileJson, FileText } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getUsers, exportUsersToCSV } from '@/app/actions/users'
 import { getRoles } from '@/app/actions/roles'
 import { BulkActionsToolbar } from './bulk-actions-toolbar'
 import type { RowSelectionState } from '@tanstack/react-table'
 import { toast } from 'sonner'
+import { createClient } from '@/lib/supabase/client'
+import { Badge } from '@/components/ui/badge'
 
 interface UsersTableProps {
   page: number
@@ -62,6 +66,16 @@ export function UsersTable({
   // Row selection state
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
+  // Column visibility state
+  const [columnVisibility, setColumnVisibility] = useState<Record<string, boolean>>({
+    roles: true,
+    institution: true,
+    department: true,
+    status: true,
+    last_login_at: true,
+    created_at: true,
+  })
+
   // Get selected user IDs from row selection
   const selectedUserIds = useMemo(() => {
     return Object.keys(rowSelection)
@@ -78,35 +92,75 @@ export function UsersTable({
     setRowSelection(selection)
   }, [])
 
-  // Export all users
+  // Export handlers
   const [isExporting, setIsExporting] = useState(false)
-  const handleExportAll = async () => {
+  const [exportFormat, setExportFormat] = useState<'csv' | 'excel' | 'json' | null>(null)
+
+  const handleExport = async (format: 'csv' | 'excel' | 'json') => {
     setIsExporting(true)
+    setExportFormat(format)
     try {
       const csvContent = await exportUsersToCSV({
         search: searchValue,
-        roleId: roleValue,
-        status: statusValue,
+        roleId: roleValue || undefined,
+        status: statusValue || undefined,
       })
 
-      // Download the CSV
-      const bom = '\uFEFF'
-      const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' })
-      const url = URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.setAttribute('href', url)
-      link.setAttribute('download', `users-export-${new Date().toISOString().split('T')[0]}.csv`)
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(url)
+      const dateStr = new Date().toISOString().split('T')[0]
 
-      toast.success('Users exported successfully')
+      if (format === 'csv') {
+        const bom = '\uFEFF'
+        const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' })
+        downloadBlob(blob, `users-export-${dateStr}.csv`)
+        toast.success('Exported as CSV successfully')
+      } else if (format === 'excel') {
+        // For Excel, we'll use CSV with .xlsx extension (basic Excel support)
+        // For full Excel support, you would use a library like xlsx
+        const bom = '\uFEFF'
+        const blob = new Blob([bom + csvContent], { type: 'application/vnd.ms-excel;charset=utf-8;' })
+        downloadBlob(blob, `users-export-${dateStr}.xls`)
+        toast.success('Exported as Excel successfully')
+      } else if (format === 'json') {
+        // Convert CSV to JSON
+        const lines = csvContent.split('\n')
+        const headers = lines[0].split(',').map(h => h.trim())
+        const jsonData = lines.slice(1).filter(line => line.trim()).map(line => {
+          const values = line.split(',')
+          const obj: Record<string, string> = {}
+          headers.forEach((header, i) => {
+            obj[header] = values[i]?.replace(/^"|"$/g, '') || ''
+          })
+          return obj
+        })
+        const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json;charset=utf-8;' })
+        downloadBlob(blob, `users-export-${dateStr}.json`)
+        toast.success('Exported as JSON successfully')
+      }
     } catch (error) {
       toast.error('Failed to export users')
     } finally {
       setIsExporting(false)
+      setExportFormat(null)
     }
+  }
+
+  const downloadBlob = (blob: Blob, filename: string) => {
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.setAttribute('href', url)
+    link.setAttribute('download', filename)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+
+  // Column visibility toggle
+  const toggleColumn = (columnId: string) => {
+    setColumnVisibility(prev => ({
+      ...prev,
+      [columnId]: !prev[columnId]
+    }))
   }
 
   // Update URL params
@@ -173,6 +227,60 @@ export function UsersTable({
     fetchData()
   }, [fetchData])
 
+  // Real-time subscription state
+  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false)
+
+  // Real-time subscription for live updates
+  useEffect(() => {
+    const supabase = createClient()
+
+    const channel = supabase
+      .channel('users-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'profiles',
+        },
+        () => {
+          // Refetch data when profiles change
+          fetchData()
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'members',
+        },
+        () => {
+          // Refetch data when member status changes
+          fetchData()
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'user_roles',
+        },
+        () => {
+          // Refetch data when roles change
+          fetchData()
+        }
+      )
+      .subscribe((status) => {
+        setIsRealtimeConnected(status === 'SUBSCRIBED')
+      })
+
+    return () => {
+      channel.unsubscribe()
+    }
+  }, [fetchData])
+
   // Debounced search
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -188,19 +296,21 @@ export function UsersTable({
   }, [searchValue, initialSearch, updateUrlParams])
 
   // Handle filter changes
-  const handleRoleChange = (value: string) => {
-    setRoleValue(value === 'all' ? '' : value)
+  const handleRoleChange = (roleId: string, checked: boolean) => {
+    const newValue = checked ? roleId : ''
+    setRoleValue(newValue)
     setPage(1)
     startTransition(() => {
-      updateUrlParams({ role: value === 'all' ? '' : value, page: 1 })
+      updateUrlParams({ role: newValue, page: 1 })
     })
   }
 
-  const handleStatusChange = (value: string) => {
-    setStatusValue(value === 'all' ? '' : value)
+  const handleStatusChange = (status: string, checked: boolean) => {
+    const newValue = checked ? status : ''
+    setStatusValue(newValue)
     setPage(1)
     startTransition(() => {
-      updateUrlParams({ status: value === 'all' ? '' : value, page: 1 })
+      updateUrlParams({ status: newValue, page: 1 })
     })
   }
 
@@ -229,6 +339,9 @@ export function UsersTable({
 
   const hasFilters = searchValue || roleValue || statusValue
 
+  // Get selected role name for badge display
+  const selectedRoleName = roles.find((r) => r.id === roleValue)?.display_name
+
   return (
     <div className="space-y-4">
       {/* Bulk Actions Toolbar */}
@@ -241,69 +354,187 @@ export function UsersTable({
       />
 
       {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        {/* Search */}
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search by name, email, or department..."
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            className="pl-9 bg-background/50 border-border/50 rounded-xl focus:border-primary/30 focus:ring-primary/20"
-          />
-        </div>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        {/* Left side - Search and Filters */}
+        <div className="flex flex-wrap items-center gap-2 flex-1">
+          {/* Search */}
+          <div className="relative w-full sm:w-auto sm:min-w-[200px]">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search by email..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              className="pl-9 bg-background border-border rounded-lg h-9"
+            />
+          </div>
 
-        {/* Filters */}
-        <div className="flex flex-wrap gap-2">
-          <Select value={roleValue || 'all'} onValueChange={handleRoleChange}>
-            <SelectTrigger className="w-[120px] sm:w-[150px] bg-background/50 border-border/50 rounded-xl">
-              <SelectValue placeholder="All Roles" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Roles</SelectItem>
+          {/* Role Filter */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-9 gap-1.5 border-dashed">
+                <PlusCircle className="h-3.5 w-3.5" />
+                Role
+                {roleValue && (
+                  <Badge variant="secondary" className="ml-1 rounded-sm px-1 font-normal">
+                    {selectedRoleName}
+                  </Badge>
+                )}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-[200px]">
               {roles.map((role) => (
-                <SelectItem key={role.id} value={role.id}>
+                <DropdownMenuCheckboxItem
+                  key={role.id}
+                  checked={roleValue === role.id}
+                  onCheckedChange={(checked) => handleRoleChange(role.id, checked)}
+                >
                   {role.display_name}
-                </SelectItem>
+                </DropdownMenuCheckboxItem>
               ))}
-            </SelectContent>
-          </Select>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-          <Select value={statusValue || 'all'} onValueChange={handleStatusChange}>
-            <SelectTrigger className="w-[110px] sm:w-[140px] bg-background/50 border-border/50 rounded-xl">
-              <SelectValue placeholder="All Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="inactive">Inactive</SelectItem>
-              <SelectItem value="suspended">Suspended</SelectItem>
-            </SelectContent>
-          </Select>
+          {/* Status Filter */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-9 gap-1.5 border-dashed">
+                <PlusCircle className="h-3.5 w-3.5" />
+                Status
+                {statusValue && (
+                  <Badge variant="secondary" className="ml-1 rounded-sm px-1 font-normal capitalize">
+                    {statusValue}
+                  </Badge>
+                )}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-[150px]">
+              <DropdownMenuCheckboxItem
+                checked={statusValue === 'active'}
+                onCheckedChange={(checked) => handleStatusChange('active', checked)}
+              >
+                Active
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={statusValue === 'inactive'}
+                onCheckedChange={(checked) => handleStatusChange('inactive', checked)}
+              >
+                Inactive
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={statusValue === 'suspended'}
+                onCheckedChange={(checked) => handleStatusChange('suspended', checked)}
+              >
+                Suspended
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {hasFilters && (
-            <Button variant="ghost" size="icon" onClick={clearFilters}>
+            <Button variant="ghost" size="sm" onClick={clearFilters} className="h-9 px-2">
               <X className="h-4 w-4" />
             </Button>
           )}
+        </div>
 
-          <div className="h-8 w-px bg-border hidden sm:block" />
+        {/* Right side - Export and View dropdowns */}
+        <div className="flex items-center gap-2">
+          {/* Export Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 gap-2"
+                disabled={isExporting || isLoading}
+              >
+                {isExporting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Download className="h-4 w-4" />
+                )}
+                Export
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[180px]">
+              <DropdownMenuLabel>Export Format</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => handleExport('csv')}
+                disabled={isExporting}
+              >
+                <FileText className="mr-2 h-4 w-4" />
+                Export as CSV
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleExport('excel')}
+                disabled={isExporting}
+              >
+                <FileSpreadsheet className="mr-2 h-4 w-4" />
+                Export as Excel
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleExport('json')}
+                disabled={isExporting}
+              >
+                <FileJson className="mr-2 h-4 w-4" />
+                Export as JSON
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2"
-            onClick={handleExportAll}
-            disabled={isExporting || isLoading}
-            title="Export All"
-          >
-            {isExporting ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Download className="h-4 w-4" />
-            )}
-            <span className="hidden sm:inline">Export All</span>
-          </Button>
+          {/* View/Column Visibility Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 gap-2"
+              >
+                <SlidersHorizontal className="h-4 w-4" />
+                View
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[180px]">
+              <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.roles}
+                onCheckedChange={() => toggleColumn('roles')}
+              >
+                Role
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.institution}
+                onCheckedChange={() => toggleColumn('institution')}
+              >
+                Institution
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.department}
+                onCheckedChange={() => toggleColumn('department')}
+              >
+                Department
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.status}
+                onCheckedChange={() => toggleColumn('status')}
+              >
+                Status
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.last_login_at}
+                onCheckedChange={() => toggleColumn('last_login_at')}
+              >
+                Last Login
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.created_at}
+                onCheckedChange={() => toggleColumn('created_at')}
+              >
+                Created
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 
@@ -320,6 +551,8 @@ export function UsersTable({
         isLoading={isLoading || isPending}
         enableRowSelection={true}
         onRowSelectionChange={handleRowSelectionChange}
+        columnVisibility={columnVisibility}
+        onColumnVisibilityChange={setColumnVisibility}
       />
     </div>
   )

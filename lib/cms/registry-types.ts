@@ -86,6 +86,8 @@ export interface ComponentRegistryEntry {
   keywords?: string[]
   /** Editable properties for the dynamic form */
   editableProps?: EditableProp[]
+  /** Whether this is a custom component from the database */
+  isCustomComponent?: boolean
 }
 
 /**

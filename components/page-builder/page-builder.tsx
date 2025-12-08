@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import {
   DndContext,
   DragOverlay,
@@ -87,6 +87,9 @@ function PageBuilderContent({
   initialSeoData?: SeoMetadata | null
   initialFabConfig?: Partial<FabConfig> | null
 }) {
+  // Stable ID for DndContext to prevent hydration mismatches
+  const dndContextId = useId()
+
   const {
     state,
     addBlock,
@@ -554,6 +557,7 @@ function PageBuilderContent({
 
   return (
     <DndContext
+      id={dndContextId}
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}
