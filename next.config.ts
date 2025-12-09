@@ -23,6 +23,21 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.googleusercontent.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'drive.google.com',
+        pathname: '/uc/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'jkkn-dental-college.vercel.app',
       },
     ],
   },

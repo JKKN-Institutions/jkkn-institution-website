@@ -580,6 +580,196 @@
 }
 
 /* ============================================
+   Page Builder Hover Effect Classes
+   ============================================
+   These classes are used by the AnimationWrapper
+   for hover effects on CMS blocks
+   ============================================ */
+
+/* Lift Effect - Raises element with shadow */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Glow Effect - JKKN Green glow */
+.hover-glow {
+  transition: box-shadow 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 30px rgba(11, 109, 65, 0.4), 0 0 60px rgba(11, 109, 65, 0.2);
+}
+
+/* Scale Effect - Subtle scale up */
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* Float Effect - Continuous floating animation on hover */
+.hover-float {
+  transition: transform 0.3s ease;
+}
+
+.hover-float:hover {
+  animation: float 2s ease-in-out infinite;
+}
+
+/* Pulse Effect - Continuous pulse on hover */
+.hover-pulse {
+  transition: transform 0.3s ease;
+}
+
+.hover-pulse:hover {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+/* Border Glow Effect - Glowing border */
+.hover-border-glow {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.hover-border-glow:hover {
+  border-color: rgba(11, 109, 65, 0.5);
+  box-shadow: 0 0 20px rgba(11, 109, 65, 0.3), inset 0 0 20px rgba(11, 109, 65, 0.1);
+}
+
+/* Shadow Grow Effect - Expanding shadow */
+.hover-shadow-grow {
+  transition: box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.hover-shadow-grow:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   Animation Duration Utility Classes
+   ============================================ */
+
+.animate-duration-fast {
+  animation-duration: 0.3s !important;
+}
+
+.animate-duration-normal {
+  animation-duration: 0.6s !important;
+}
+
+.animate-duration-slow {
+  animation-duration: 1s !important;
+}
+
+.animate-duration-very-slow {
+  animation-duration: 1.5s !important;
+}
+
+/* ============================================
+   Animation Delay Utility Classes (Updated)
+   ============================================ */
+
+.animate-delay-100 {
+  animation-delay: 100ms !important;
+}
+
+.animate-delay-200 {
+  animation-delay: 200ms !important;
+}
+
+.animate-delay-300 {
+  animation-delay: 300ms !important;
+}
+
+.animate-delay-400 {
+  animation-delay: 400ms !important;
+}
+
+.animate-delay-500 {
+  animation-delay: 500ms !important;
+}
+
+.animate-delay-700 {
+  animation-delay: 700ms !important;
+}
+
+.animate-delay-1000 {
+  animation-delay: 1000ms !important;
+}
+
+/* ============================================
+   Animation Easing Utility Classes (Updated)
+   ============================================ */
+
+.animate-ease {
+  animation-timing-function: ease !important;
+}
+
+.animate-ease-in {
+  animation-timing-function: ease-in !important;
+}
+
+.animate-ease-out {
+  animation-timing-function: ease-out !important;
+}
+
+.animate-ease-in-out {
+  animation-timing-function: ease-in-out !important;
+}
+
+.animate-bounce-easing {
+  animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+}
+
+.animate-spring {
+  animation-timing-function: cubic-bezier(0.5, 1.5, 0.5, 1) !important;
+}
+
+/* ============================================
+   Additional Scroll Animation Triggers
+   ============================================ */
+
+.animate-on-scroll.fade-in.is-visible {
+  animation: fade-in 0.6s ease-out both;
+}
+
+.animate-on-scroll.bounce-in.is-visible {
+  animation: bounce-in 0.6s ease-out both;
+}
+
+.animate-on-scroll.slide-down.is-visible {
+  animation: slide-down 0.6s ease-out both;
+}
+
+.animate-on-scroll.slide-left.is-visible {
+  animation: slide-left 0.6s ease-out both;
+}
+
+.animate-on-scroll.slide-right.is-visible {
+  animation: slide-right 0.6s ease-out both;
+}
+
+.animate-on-scroll.flip-in.is-visible {
+  animation: flip-x 0.6s ease-out both;
+}
+
+.animate-on-scroll.rotate-in.is-visible {
+  animation: rotate-in 0.6s ease-out both;
+}
+
+.animate-on-scroll.zoom-in-up.is-visible {
+  animation: zoom-in 0.6s ease-out both;
+}
+
+/* ============================================
    Reduced Motion Support
    ============================================ */
 
@@ -590,5 +780,11 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .hover-lift:hover,
+  .hover-scale:hover,
+  .hover-float:hover {
+    transform: none !important;
   }
 }

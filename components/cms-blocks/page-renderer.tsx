@@ -5,6 +5,8 @@ import { getComponent, getComponentEntry, isFullWidthComponent } from '@/lib/cms
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { applyBlockStyles, type BlockStyles } from '@/components/page-builder/utils/style-applicator'
+import { AnimationWrapper } from '@/components/cms-blocks/animations/animation-wrapper'
+import type { BlockAnimation } from '@/lib/cms/registry-types'
 
 interface BlockData {
   id: string
@@ -104,27 +106,43 @@ function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?:
   const blockStyles = block.props._styles as BlockStyles | undefined
   const appliedStyles = applyBlockStyles(blockStyles)
 
+  // Get animation settings from props
+  const animationSettings = block.props._animation as BlockAnimation | undefined
+
   // Check if this component is full-width (should not be wrapped in container)
   const isFullWidth = isFullWidthComponent(block.component_name)
 
-  // Wrapper for custom classes and CSS
-  const BlockWrapper = ({ children }: { children: React.ReactNode }) => (
-    <div
-      className={cn('relative', block.custom_classes)}
-      style={appliedStyles}
-    >
-      {/* Background gradient overlay for AI enhancements */}
-      {backgroundGradient && (
-        <div className={cn('absolute inset-0 pointer-events-none rounded-inherit', backgroundGradient)} />
-      )}
-      {block.custom_css && (
-        <style dangerouslySetInnerHTML={{ __html: `[data-block-id="${block.id}"] { ${block.custom_css} }` }} />
-      )}
-      <div data-block-id={block.id} className="relative">
-        {children}
+  // Wrapper for custom classes, CSS, and animations
+  const BlockWrapper = ({ children }: { children: React.ReactNode }) => {
+    const content = (
+      <div
+        className={cn('relative', block.custom_classes)}
+        style={appliedStyles}
+      >
+        {/* Background gradient overlay for AI enhancements */}
+        {backgroundGradient && (
+          <div className={cn('absolute inset-0 pointer-events-none rounded-inherit', backgroundGradient)} />
+        )}
+        {block.custom_css && (
+          <style dangerouslySetInnerHTML={{ __html: `[data-block-id="${block.id}"] { ${block.custom_css} }` }} />
+        )}
+        <div data-block-id={block.id} className="relative">
+          {children}
+        </div>
       </div>
-    </div>
-  )
+    )
+
+    // If animation settings are present, wrap with AnimationWrapper
+    if (animationSettings && (animationSettings.entrance !== 'none' || animationSettings.hoverEffect !== 'none')) {
+      return (
+        <AnimationWrapper animation={animationSettings}>
+          {content}
+        </AnimationWrapper>
+      )
+    }
+
+    return content
+  }
 
   // Responsive container for non-full-width blocks at root level
   const ResponsiveContainer = ({ children }: { children: React.ReactNode }) => {

@@ -654,18 +654,33 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+  }
+
+  /* Add gap only between non-full-width sections */
+  .page-content > .page-content-container {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .page-content > .page-content-container:first-child {
+    margin-top: 0;
+  }
+
+  .page-content > .page-content-container:last-child {
+    margin-bottom: 0;
   }
 
   @media (min-width: 640px) {
-    .page-content {
-      gap: 2.5rem;
+    .page-content > .page-content-container {
+      margin-top: 2.5rem;
+      margin-bottom: 2.5rem;
     }
   }
 
   @media (min-width: 1024px) {
-    .page-content {
-      gap: 3rem;
+    .page-content > .page-content-container {
+      margin-top: 3rem;
+      margin-bottom: 3rem;
     }
   }
 

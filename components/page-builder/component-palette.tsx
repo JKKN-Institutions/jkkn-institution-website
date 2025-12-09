@@ -24,6 +24,8 @@ const CATEGORY_ICONS: Record<ComponentCategory, keyof typeof LucideIcons> = {
   media: 'Image',
   layout: 'LayoutGrid',
   data: 'Database',
+  custom: 'Sparkles',
+  shadcn: 'Component',
 }
 
 const CATEGORY_COLORS: Record<ComponentCategory, string> = {
@@ -31,6 +33,8 @@ const CATEGORY_COLORS: Record<ComponentCategory, string> = {
   media: 'text-purple-500 bg-purple-100 dark:bg-purple-900/30',
   layout: 'text-green-500 bg-green-100 dark:bg-green-900/30',
   data: 'text-orange-500 bg-orange-100 dark:bg-orange-900/30',
+  custom: 'text-pink-500 bg-pink-100 dark:bg-pink-900/30',
+  shadcn: 'text-cyan-500 bg-cyan-100 dark:bg-cyan-900/30',
 }
 
 export function ComponentPalette({ className }: ComponentPaletteProps) {
@@ -42,7 +46,7 @@ export function ComponentPalette({ className }: ComponentPaletteProps) {
     'layout',
   ])
 
-  const categories: ComponentCategory[] = ['content', 'media', 'layout', 'data']
+  const categories: ComponentCategory[] = ['content', 'media', 'layout', 'data', 'custom', 'shadcn']
 
   // Filter components based on search
   const filteredComponents = useMemo(() => {

@@ -79,7 +79,9 @@
       "mcp__chrome-devtools__drag",
       "mcp__chrome-devtools__select_page",
       "WebSearch",
-      "Bash(npx shadcn@latest add:*)"
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(claude mcp add:*)",
+      "mcp__shadcn__getComponents"
     ],
     "deny": [],
     "ask": [],

@@ -4,7 +4,7 @@ import type { ComponentType, ReactNode } from 'react'
 /**
  * Component categories for the page builder
  */
-export type ComponentCategory = 'content' | 'media' | 'layout' | 'data'
+export type ComponentCategory = 'content' | 'media' | 'layout' | 'data' | 'shadcn' | 'custom'
 
 /**
  * Base props that all CMS block components receive
@@ -52,6 +52,18 @@ export interface EditableProp {
   multiline?: boolean
   /** Placeholder text */
   placeholder?: string
+  /** For array type: what kind of items (string, image, object) */
+  itemType?: 'string' | 'image' | 'object'
+  /** For array type with object items: the schema of each item */
+  itemSchema?: {
+    properties: Record<string, {
+      type: string
+      label?: string
+      required?: boolean
+      format?: string
+    }>
+    required?: string[]
+  }
 }
 
 /**
@@ -88,6 +100,8 @@ export interface ComponentRegistryEntry {
   editableProps?: EditableProp[]
   /** Whether this is a custom component from the database */
   isCustomComponent?: boolean
+  /** Whether this is a shadcn/ui component */
+  isShadcnComponent?: boolean
 }
 
 /**
@@ -133,6 +147,121 @@ export interface PageRendererProps {
   blocks: BlockData[]
   isEditing?: boolean
 }
+
+// ==========================================
+// Animation Types and Schemas
+// ==========================================
+
+/**
+ * Entrance animation types - maps to CSS classes in styles/animations.css
+ */
+export const EntranceAnimationSchema = z.enum([
+  'none',
+  'fade-in',
+  'fade-in-up',
+  'fade-in-down',
+  'fade-in-left',
+  'fade-in-right',
+  'zoom-in',
+  'zoom-in-up',
+  'bounce-in',
+  'slide-up',
+  'slide-down',
+  'slide-left',
+  'slide-right',
+  'flip-in',
+  'rotate-in',
+])
+export type EntranceAnimation = z.infer<typeof EntranceAnimationSchema>
+
+/**
+ * Hover effect types
+ */
+export const HoverEffectSchema = z.enum([
+  'none',
+  'lift',
+  'glow',
+  'scale',
+  'float',
+  'pulse',
+  'border-glow',
+  'shadow-grow',
+])
+export type HoverEffect = z.infer<typeof HoverEffectSchema>
+
+/**
+ * Animation timing options
+ */
+export const AnimationDurationSchema = z.enum(['fast', 'normal', 'slow', 'very-slow'])
+export type AnimationDuration = z.infer<typeof AnimationDurationSchema>
+
+export const AnimationDelaySchema = z.enum(['0', '100', '200', '300', '400', '500', '700', '1000'])
+export type AnimationDelay = z.infer<typeof AnimationDelaySchema>
+
+export const AnimationEasingSchema = z.enum(['ease', 'ease-in', 'ease-out', 'ease-in-out', 'bounce', 'spring'])
+export type AnimationEasing = z.infer<typeof AnimationEasingSchema>
+
+/**
+ * Complete block animation configuration
+ */
+export const BlockAnimationSchema = z.object({
+  /** Entrance animation when block appears */
+  entrance: EntranceAnimationSchema.default('none'),
+  /** Delay before animation starts (ms) */
+  entranceDelay: AnimationDelaySchema.default('0'),
+  /** Animation duration */
+  duration: AnimationDurationSchema.default('normal'),
+  /** Animation easing function */
+  easing: AnimationEasingSchema.default('ease-out'),
+  /** Whether to animate when scrolled into view */
+  animateOnScroll: z.boolean().default(false),
+  /** Hover effect for interactive elements */
+  hoverEffect: HoverEffectSchema.default('none'),
+  /** Whether animation should repeat when re-entering viewport */
+  repeatOnScroll: z.boolean().default(false),
+})
+export type BlockAnimation = z.infer<typeof BlockAnimationSchema>
+
+/**
+ * Animation-enabled block props interface
+ * Components can extend this to support animations
+ */
+export interface AnimatableBlockProps extends BaseBlockProps {
+  _animation?: BlockAnimation
+}
+
+/**
+ * Editable props for animation settings (to be added to each component)
+ */
+export const ANIMATION_EDITABLE_PROPS: EditableProp[] = [
+  {
+    name: '_animation.entrance',
+    label: 'Entrance Animation',
+    type: 'enum',
+    options: ['none', 'fade-in', 'fade-in-up', 'fade-in-down', 'zoom-in', 'bounce-in', 'slide-up', 'slide-left'],
+    description: 'Animation when component appears',
+  },
+  {
+    name: '_animation.entranceDelay',
+    label: 'Animation Delay',
+    type: 'enum',
+    options: ['0', '100', '200', '300', '500'],
+    description: 'Delay before animation starts (ms)',
+  },
+  {
+    name: '_animation.animateOnScroll',
+    label: 'Animate on Scroll',
+    type: 'boolean',
+    description: 'Trigger animation when scrolled into view',
+  },
+  {
+    name: '_animation.hoverEffect',
+    label: 'Hover Effect',
+    type: 'enum',
+    options: ['none', 'lift', 'glow', 'scale', 'float'],
+    description: 'Effect when hovering over component',
+  },
+]
 
 // ==========================================
 // Zod Schemas for common prop patterns

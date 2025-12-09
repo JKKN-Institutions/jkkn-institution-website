@@ -33,6 +33,7 @@ import {
   GripVertical,
   Puzzle,
   Library,
+  Component,
 } from 'lucide-react'
 import { BrowseComponentsModal } from '@/components/page-builder/modals/browse-components-modal'
 import * as LucideIcons from 'lucide-react'
@@ -178,20 +179,22 @@ function PaletteItem({ name, displayName, description, icon, previewImage }: Pal
   return createDraggableContent(false)
 }
 
-const categoryIcons: Record<ComponentCategory | 'custom', React.ComponentType<{ className?: string }>> = {
+const categoryIcons: Record<ComponentCategory, React.ComponentType<{ className?: string }>> = {
   content: Type,
   media: ImageIcon,
   layout: LayoutGrid,
   data: Database,
   custom: Puzzle,
+  shadcn: Component,
 }
 
-const categoryLabels: Record<ComponentCategory | 'custom', string> = {
+const categoryLabels: Record<ComponentCategory, string> = {
   content: 'Content',
   media: 'Media',
   layout: 'Layout',
   data: 'Data',
   custom: 'Custom',
+  shadcn: 'shadcn/ui',
 }
 
 // Local interface for palette display (subset of full CustomComponentData)
@@ -206,6 +209,7 @@ interface CustomComponentPaletteData {
   is_active: boolean
   code: string
   default_props: Record<string, unknown>
+  props_schema: Record<string, unknown> | null
 }
 
 interface ComponentPaletteProps {
@@ -226,7 +230,7 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
         const supabase = createClient()
         const { data, error } = await supabase
           .from('cms_custom_components')
-          .select('id, name, display_name, description, category, icon, preview_image, is_active, code, default_props')
+          .select('id, name, display_name, description, category, icon, preview_image, is_active, code, default_props, props_schema')
           .eq('is_active', true)
           .order('display_name', { ascending: true })
 
@@ -250,6 +254,7 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
             preview_image: comp.preview_image || undefined,
             code: comp.code,
             default_props: comp.default_props || {},
+            props_schema: comp.props_schema || undefined,
             is_active: comp.is_active,
           }))
 
