@@ -415,6 +415,9 @@ const VisionMission = lazy(() => import('@/components/cms-blocks/content/vision-
 // Our Trust
 const OurTrust = lazy(() => import('@/components/cms-blocks/content/our-trust'))
 
+// Our Management
+const OurManagement = lazy(() => import('@/components/cms-blocks/content/our-management'))
+
 // shadcn/ui blocks
 const ShadcnButtonBlock = lazy(() => import('@/components/cms-blocks/shadcn/button-block'))
 const ShadcnInputBlock = lazy(() => import('@/components/cms-blocks/shadcn/input-block'))
@@ -1618,6 +1621,95 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
           required: ['year', 'title'],
         },
       },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'textColor', type: 'color', label: 'Text Color' },
+    ],
+  },
+
+  OurManagement: {
+    name: 'OurManagement',
+    displayName: 'Our Management',
+    category: 'content',
+    description: 'Modern management team page with elegant profile cards, decorative frames, and message sections',
+    icon: 'Users',
+    previewImage: '/cms-previews/OurManagement.png',
+    component: OurManagement,
+    propsSchema: z.object({
+      pageTitle: z.string().default('OUR MANAGEMENT'),
+      pageSubtitle: z.string().optional(),
+      members: z.array(z.object({
+        name: z.string(),
+        title: z.string(),
+        image: z.string(),
+        imageAlt: z.string().optional(),
+        message: z.string(),
+        order: z.number().optional(),
+      })).default([]),
+      layout: z.enum(['grid', 'alternating', 'cards']).default('cards'),
+      columnsDesktop: z.enum(['1', '2', '3']).default('2'),
+      backgroundColor: z.string().default('#0b6d41'),
+      accentColor: z.string().default('#ffde59'),
+      textColor: z.string().default('#ffffff'),
+      cardStyle: z.enum(['elegant', 'modern', 'minimal']).default('elegant'),
+      showFrameDecoration: z.boolean().default(true),
+    }),
+    defaultProps: {
+      pageTitle: 'OUR MANAGEMENT',
+      pageSubtitle: '',
+      members: [
+        {
+          name: 'SMT. N. SENDAMARAAI',
+          title: 'CHAIRPERSON - JKKN EDUCATIONAL INSTITUTIONS',
+          image: 'https://jkkn.ac.in/wp-content/uploads/2023/04/Sendamaraai-photo.png',
+          imageAlt: 'Smt. N. Sendamaraai - Chairperson',
+          message: 'As the Chairperson of JKKN Educational Institutions, I am honoured to shoulder this immense responsibility, and I take great pride in our exceptional progress. We have earned the status of one of the most prestigious colleges in the region. "Leadership and Excellence" is not merely our motto but the foundation of our values, a testament to our state-of-the-art infrastructure, distinguished faculty, and unwavering commitment to quality education.',
+          order: 1,
+        },
+        {
+          name: 'SHRI. S. OMMSHARRAVANA',
+          title: 'DIRECTOR - JKKN EDUCATIONAL INSTITUTIONS',
+          image: 'https://jkkn.ac.in/wp-content/uploads/2023/04/Dir-Sharravana-photo.png',
+          imageAlt: 'Shri. S. Ommsharravana - Director',
+          message: 'I extend my heartfelt congratulations to the college for its fervent and focused dedication to shaping future engineers of distinction. At JKKN, we are committed to innovative education methodologies that enable quality learning, foster independent thinking, and facilitate the development of well-rounded personalities. Our mission empowers students to contribute their best to society and the nation.',
+          order: 2,
+        },
+      ],
+      layout: 'cards',
+      columnsDesktop: '2',
+      backgroundColor: '#0b6d41',
+      accentColor: '#ffde59',
+      textColor: '#ffffff',
+      cardStyle: 'elegant',
+      showFrameDecoration: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['management', 'team', 'leadership', 'about', 'chairperson', 'director', 'staff'],
+    editableProps: [
+      { name: 'pageTitle', type: 'string', label: 'Page Title' },
+      { name: 'pageSubtitle', type: 'string', label: 'Page Subtitle' },
+      {
+        name: 'members',
+        type: 'array',
+        label: 'Team Members',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            name: { type: 'string', label: 'Name', required: true },
+            title: { type: 'string', label: 'Position/Title', required: true },
+            image: { type: 'image', label: 'Profile Image', required: true },
+            imageAlt: { type: 'string', label: 'Image Alt Text' },
+            message: { type: 'string', label: 'Message/Quote', required: true },
+            order: { type: 'number', label: 'Display Order' },
+          },
+          required: ['name', 'title', 'image', 'message'],
+        },
+      },
+      { name: 'layout', type: 'enum', label: 'Layout', options: ['grid', 'alternating', 'cards'] },
+      { name: 'columnsDesktop', type: 'enum', label: 'Columns (Desktop)', options: ['1', '2', '3'] },
+      { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['elegant', 'modern', 'minimal'] },
+      { name: 'showFrameDecoration', type: 'boolean', label: 'Show Decorative Frame' },
       { name: 'backgroundColor', type: 'color', label: 'Background Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },
       { name: 'textColor', type: 'color', label: 'Text Color' },
