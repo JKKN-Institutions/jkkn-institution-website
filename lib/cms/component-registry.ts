@@ -418,6 +418,18 @@ const OurTrust = lazy(() => import('@/components/cms-blocks/content/our-trust'))
 // Our Management
 const OurManagement = lazy(() => import('@/components/cms-blocks/content/our-management'))
 
+// Our Institutions
+const OurInstitutions = lazy(() => import('@/components/cms-blocks/content/our-institutions'))
+
+// Course Page
+const CoursePage = lazy(() => import('@/components/cms-blocks/content/course-page'))
+
+// Facility Page
+const FacilityPage = lazy(() => import('@/components/cms-blocks/content/facility-page'))
+
+// Hostel Page
+const HostelPage = lazy(() => import('@/components/cms-blocks/content/hostel-page'))
+
 // shadcn/ui blocks
 const ShadcnButtonBlock = lazy(() => import('@/components/cms-blocks/shadcn/button-block'))
 const ShadcnInputBlock = lazy(() => import('@/components/cms-blocks/shadcn/input-block'))
@@ -1710,6 +1722,359 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'columnsDesktop', type: 'enum', label: 'Columns (Desktop)', options: ['1', '2', '3'] },
       { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['elegant', 'modern', 'minimal'] },
       { name: 'showFrameDecoration', type: 'boolean', label: 'Show Decorative Frame' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'textColor', type: 'color', label: 'Text Color' },
+    ],
+  },
+
+  OurInstitutions: {
+    name: 'OurInstitutions',
+    displayName: 'Our Institutions',
+    category: 'content',
+    description: 'Modern institutions page with title, large image, description paragraphs, and Why JKKN section on a gradient background',
+    icon: 'Building2',
+    previewImage: '/cms-previews/OurInstitutions.png',
+    component: OurInstitutions,
+    propsSchema: z.object({
+      pageTitle: z.string().default('OUR INSTITUTIONS'),
+      mainImage: z.string().default('https://jkkn.ac.in/wp-content/uploads/2023/07/JKKN-EI_11zon-1.png'),
+      mainImageAlt: z.string().default('JKKN Group of Institutions Campus'),
+      paragraphs: z.array(z.string()).default([]),
+      whyJkknTitle: z.string().default('Why JKKN?'),
+      whyJkknContent: z.string().default(''),
+      backgroundColor: z.string().default('#0b6d41'),
+      accentColor: z.string().default('#ffde59'),
+      textColor: z.string().default('#ffffff'),
+    }),
+    defaultProps: {
+      pageTitle: 'OUR INSTITUTIONS',
+      mainImage: 'https://jkkn.ac.in/wp-content/uploads/2023/07/JKKN-EI_11zon-1.png',
+      mainImageAlt: 'JKKN Group of Institutions Campus',
+      paragraphs: [
+        'At JKKN Institutions, our core teaching objective is to empower students with technical knowledge and essential skills to meet the growing challenges of today\'s competitive world. We implement cutting-edge teaching practices, laying a robust foundation for holistic education.',
+        'Our state-of-the-art campus features meticulously designed academic blocks, advanced laboratory facilities, operation centers, knowledge-rich libraries, and comprehensive sports infrastructure. We also provide separate accommodations for boys and girls, as well as general and dental hospitals for healthcare services and practices. Our proactive Placement Cell assures successful placement opportunities for all our students.',
+        'With contemporary facilities designed for the continuous enhancement of both students and faculty, we maintain tie-ups with leading manufacturing and commercial enterprises. These connections facilitate valuable industrial and corporate exposure, aligning our educational experiences with real-world applications.',
+        'Situated at Komarapalayam, just 15 km from Erode City in Tamil Nadu, India, we are easily accessible via Erode railway station and Salem/Coimbatore airports.',
+        'JKKN Institutions are home to some of the region\'s leading institutes of higher learning. We foster a culture that emphasises commitment, transparency, and teamwork. Our continuing success is marked by our reputation as a knowledge center, generating and nurturing exceptional levels of opportunity and initiative.',
+      ],
+      whyJkknTitle: 'Why JKKN?',
+      whyJkknContent: 'At JKKN, we stand at the forefront of educational transformation as an "AI Empowered Institution." We believe in a future where artificial intelligence is not merely a subject to be studied, but a dynamic tool that enhances every facet of our students\' educational journey. We are unique in our approach to integrating AI across disciplines, preparing students to excel in a digitized world. Our commitment to AI extends into every corner of JKKN, where AI empowers events, vital day celebrations, and projects, fostering an environment where technology celebrates tradition and enriches learning. As a JKKN student, you are not just receiving an education; you are being equipped with a toolkit for the future. We nurture thinkers, innovators, and leaders who are ready to take on the challenges of tomorrow. Choosing JKKN means choosing a path where education meets aspiration, and where you can confidently step into a world where AI empowers every ambition.',
+      backgroundColor: '#0b6d41',
+      accentColor: '#ffde59',
+      textColor: '#ffffff',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['institutions', 'colleges', 'schools', 'education', 'campus', 'about', 'why jkkn'],
+    editableProps: [
+      { name: 'pageTitle', type: 'string', label: 'Page Title' },
+      { name: 'mainImage', type: 'image', label: 'Main Image' },
+      { name: 'mainImageAlt', type: 'string', label: 'Image Alt Text' },
+      {
+        name: 'paragraphs',
+        type: 'array',
+        label: 'Description Paragraphs',
+        itemType: 'string',
+      },
+      { name: 'whyJkknTitle', type: 'string', label: 'Why JKKN Title' },
+      { name: 'whyJkknContent', type: 'string', label: 'Why JKKN Content', multiline: true },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'textColor', type: 'color', label: 'Text Color' },
+    ],
+  },
+
+  CoursePage: {
+    name: 'CoursePage',
+    displayName: 'Course Page',
+    category: 'content',
+    description: 'Course detail page with college title, description, and course categories (Undergraduate/Postgraduate) on gradient background',
+    icon: 'GraduationCap',
+    previewImage: '/cms-previews/CoursePage.png',
+    component: CoursePage,
+    propsSchema: z.object({
+      collegeTitle: z.string().default('JKKN College'),
+      description: z.string().default(''),
+      categories: z.array(z.object({
+        title: z.string(),
+        courses: z.array(z.object({
+          name: z.string(),
+          duration: z.string(),
+          specializations: z.array(z.string()).optional(),
+        })),
+      })).default([]),
+      backgroundColor: z.string().default('#0b6d41'),
+      accentColor: z.string().default('#ffde59'),
+      textColor: z.string().default('#ffffff'),
+    }),
+    defaultProps: {
+      collegeTitle: 'JKKN Dental College and Hospital',
+      description: 'At JKKN Dental College & Hospital, we are dedicated to providing our students with the highest quality education in dental surgery. Established in 1987 and located in Tamil Nadu, our college is affiliated with Dr. MGR Medical University and approved by the Government of Tamil Nadu. We offer undergraduate and postgraduate courses in dental surgery that prepare our students for successful careers in the field.',
+      categories: [
+        {
+          title: 'Undergraduate',
+          courses: [
+            {
+              name: 'Bachelor of Dental Surgery (BDS)',
+              duration: '4 years + 1 year Internship',
+              specializations: [],
+            },
+          ],
+        },
+        {
+          title: 'Postgraduate',
+          courses: [
+            {
+              name: 'Master of Dental Surgery (MDS)',
+              duration: '3 years',
+              specializations: [
+                'Prosthodontics Crown and Bridge',
+                'Conservative Dentistry and Endodontics',
+                'Periodontics',
+                'Orthodontics and Dentofacial Orthopedics',
+              ],
+            },
+          ],
+        },
+      ],
+      backgroundColor: '#0b6d41',
+      accentColor: '#ffde59',
+      textColor: '#ffffff',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['course', 'courses', 'program', 'degree', 'undergraduate', 'postgraduate', 'college', 'education'],
+    editableProps: [
+      { name: 'collegeTitle', type: 'string', label: 'College/Department Title' },
+      { name: 'description', type: 'string', label: 'Description', multiline: true },
+      {
+        name: 'categories',
+        type: 'array',
+        label: 'Course Categories',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            title: { type: 'string', label: 'Category Title', required: true },
+            courses: {
+              type: 'array',
+              label: 'Courses',
+              itemType: 'object',
+              itemSchema: {
+                properties: {
+                  name: { type: 'string', label: 'Course Name', required: true },
+                  duration: { type: 'string', label: 'Duration', required: true },
+                  specializations: { type: 'array', label: 'Specializations', itemType: 'string' },
+                },
+                required: ['name', 'duration'],
+              },
+            },
+          },
+          required: ['title'],
+        },
+      },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'textColor', type: 'color', label: 'Text Color' },
+    ],
+  },
+
+  FacilityPage: {
+    name: 'FacilityPage',
+    displayName: 'Facility Page',
+    category: 'content',
+    description: 'Full-page facility display with images, features, and descriptions - ideal for Transport, Library, Hostel pages',
+    icon: 'Building2',
+    previewImage: '/cms-previews/FacilityPage.png',
+    component: FacilityPage,
+    propsSchema: z.object({
+      facilityTitle: z.string(),
+      images: z.array(z.object({
+        src: z.string(),
+        alt: z.string().optional()
+      })),
+      introduction: z.string(),
+      features: z.array(z.object({
+        title: z.string(),
+        description: z.string()
+      })),
+      conclusion: z.string().optional(),
+      backgroundColor: z.string(),
+      accentColor: z.string(),
+      textColor: z.string()
+    }),
+    defaultProps: {
+      facilityTitle: 'TRANSPORT',
+      images: [
+        { src: '/images/facilities/transport-1.jpg', alt: 'Transport facility' },
+        { src: '/images/facilities/transport-2.jpg', alt: 'College buses' },
+        { src: '/images/facilities/transport-3.jpg', alt: 'Bus fleet' }
+      ],
+      introduction: 'Transportation is an essential aspect of any educational institution. It provides students and faculty members with a convenient way to reach the campus and enhances the overall educational experience.',
+      features: [
+        { title: 'Well-Maintained Buses', description: 'The transport facility is equipped with a well-maintained fleet of buses that are regularly serviced and cleaned.' },
+        { title: 'Trained Drivers', description: 'The drivers are highly trained and experienced with good understanding of local routes and traffic conditions.' }
+      ],
+      conclusion: 'The transport facility is well-equipped to provide safe, reliable, and affordable transportation to all students and faculty members.',
+      backgroundColor: '#0b6d41',
+      accentColor: '#ffde59',
+      textColor: '#ffffff'
+    },
+    supportsChildren: false,
+    keywords: ['facility', 'transport', 'library', 'hostel', 'infrastructure', 'amenities'],
+    editableProps: [
+      { name: 'facilityTitle', type: 'string', label: 'Facility Title', required: true },
+      {
+        name: 'images',
+        type: 'array',
+        label: 'Gallery Images',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            src: { type: 'string', label: 'Image URL', required: true, format: 'image' },
+            alt: { type: 'string', label: 'Alt Text' }
+          },
+          required: ['src'],
+        },
+      },
+      { name: 'introduction', type: 'textarea', label: 'Introduction Paragraph', required: true },
+      {
+        name: 'features',
+        type: 'array',
+        label: 'Features',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            title: { type: 'string', label: 'Feature Title', required: true },
+            description: { type: 'string', label: 'Feature Description', required: true }
+          },
+          required: ['title', 'description'],
+        },
+      },
+      { name: 'conclusion', type: 'textarea', label: 'Conclusion Paragraph' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'textColor', type: 'color', label: 'Text Color' },
+    ],
+  },
+
+  HostelPage: {
+    name: 'HostelPage',
+    displayName: 'Hostel Page',
+    category: 'content',
+    description: 'Hostel facility page with Boys/Girls tabs - switchable content sections',
+    icon: 'Home',
+    previewImage: '/cms-previews/HostelPage.png',
+    component: HostelPage,
+    propsSchema: z.object({
+      pageTitle: z.string(),
+      boysHostel: z.object({
+        title: z.string(),
+        images: z.array(z.object({ src: z.string(), alt: z.string().optional() })),
+        paragraphs: z.array(z.string()),
+        highlights: z.array(z.string())
+      }),
+      girlsHostel: z.object({
+        title: z.string(),
+        images: z.array(z.object({ src: z.string(), alt: z.string().optional() })),
+        paragraphs: z.array(z.string()),
+        highlights: z.array(z.string())
+      }),
+      defaultTab: z.enum(['boys', 'girls']),
+      backgroundColor: z.string(),
+      accentColor: z.string(),
+      textColor: z.string()
+    }),
+    defaultProps: {
+      pageTitle: 'Hostel',
+      boysHostel: {
+        title: 'Boys Hostel',
+        images: [],
+        paragraphs: ['Our hostel is located within the campus premises, making it an ideal choice for students.'],
+        highlights: ['Community living experience', 'Dedicated staff support']
+      },
+      girlsHostel: {
+        title: 'Girls Hostel',
+        images: [],
+        paragraphs: ['Our girls hostel is equipped with all modern facilities.'],
+        highlights: ['Safe and secure environment', 'Modern amenities']
+      },
+      defaultTab: 'boys',
+      backgroundColor: '#0b6d41',
+      accentColor: '#ffde59',
+      textColor: '#ffffff'
+    },
+    supportsChildren: false,
+    keywords: ['hostel', 'accommodation', 'boys', 'girls', 'dormitory', 'residence'],
+    editableProps: [
+      { name: 'pageTitle', type: 'string', label: 'Page Title', required: true },
+      { name: 'defaultTab', type: 'enum', label: 'Default Tab', options: ['boys', 'girls'] },
+      {
+        name: 'boysHostel',
+        type: 'object',
+        label: 'Boys Hostel',
+        properties: [
+          { name: 'title', type: 'string', label: 'Section Title' },
+          {
+            name: 'images',
+            type: 'array',
+            label: 'Images',
+            itemType: 'object',
+            itemSchema: {
+              properties: {
+                src: { type: 'string', label: 'Image URL', required: true, format: 'image' },
+                alt: { type: 'string', label: 'Alt Text' }
+              },
+              required: ['src'],
+            },
+          },
+          {
+            name: 'paragraphs',
+            type: 'array',
+            label: 'Paragraphs',
+            itemType: 'string',
+          },
+          {
+            name: 'highlights',
+            type: 'array',
+            label: 'Highlights',
+            itemType: 'string',
+          },
+        ],
+      },
+      {
+        name: 'girlsHostel',
+        type: 'object',
+        label: 'Girls Hostel',
+        properties: [
+          { name: 'title', type: 'string', label: 'Section Title' },
+          {
+            name: 'images',
+            type: 'array',
+            label: 'Images',
+            itemType: 'object',
+            itemSchema: {
+              properties: {
+                src: { type: 'string', label: 'Image URL', required: true, format: 'image' },
+                alt: { type: 'string', label: 'Alt Text' }
+              },
+              required: ['src'],
+            },
+          },
+          {
+            name: 'paragraphs',
+            type: 'array',
+            label: 'Paragraphs',
+            itemType: 'string',
+          },
+          {
+            name: 'highlights',
+            type: 'array',
+            label: 'Highlights',
+            itemType: 'string',
+          },
+        ],
+      },
       { name: 'backgroundColor', type: 'color', label: 'Background Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },
       { name: 'textColor', type: 'color', label: 'Text Color' },

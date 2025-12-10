@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/select'
 import { Search, X, Download, Loader2, ArrowUpDown, FileText, Globe, MoreVertical, Edit, Trash2, Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { getPages, publishPage, unpublishPage, archivePage, deletePage, duplicatePage } from '@/app/actions/cms/pages'
+import { getPages, publishPage, unpublishPage, archivePage, deletePage, duplicatePage, getAllNavigationPages } from '@/app/actions/cms/pages'
 import type { RowSelectionState } from '@tanstack/react-table'
 import { toast } from 'sonner'
 import {
@@ -78,6 +78,15 @@ export function PagesTable({
 
   // Reorder modal state
   const [isReorderModalOpen, setIsReorderModalOpen] = useState(false)
+  const [allNavigationPages, setAllNavigationPages] = useState<Array<{
+    id: string
+    title: string
+    slug: string
+    status: string
+    sort_order: number | null
+    parent_id: string | null
+  }>>([])
+  const [isLoadingNavPages, setIsLoadingNavPages] = useState(false)
 
   // Get selected page IDs from row selection
   const selectedPageIds = useMemo(() => {
@@ -412,6 +421,21 @@ export function PagesTable({
     }
   }
 
+  // Handle opening the reorder modal - fetch ALL navigation pages
+  const handleOpenReorderModal = async () => {
+    setIsLoadingNavPages(true)
+    setIsReorderModalOpen(true)
+    try {
+      const navPages = await getAllNavigationPages()
+      setAllNavigationPages(navPages)
+    } catch (error) {
+      console.error('Error fetching navigation pages:', error)
+      toast.error('Failed to load pages for reordering')
+    } finally {
+      setIsLoadingNavPages(false)
+    }
+  }
+
   // Create columns with action handlers
   const actionHandlers: PageActionHandlers = useMemo(() => ({
     onDuplicate: handleDuplicate,
@@ -508,7 +532,7 @@ export function PagesTable({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setIsReorderModalOpen(true)}
+              onClick={handleOpenReorderModal}
               className="gap-2 flex-1 sm:flex-none"
             >
               <ArrowUpDown className="h-4 w-4" />
@@ -643,14 +667,8 @@ export function PagesTable({
       <ReorderPagesModal
         open={isReorderModalOpen}
         onOpenChange={setIsReorderModalOpen}
-        pages={data.map((page) => ({
-          id: page.id,
-          title: page.title,
-          slug: page.slug,
-          status: page.status,
-          sort_order: page.sort_order,
-          parent_id: page.parent_id,
-        }))}
+        pages={allNavigationPages}
+        isLoading={isLoadingNavPages}
         onReorderComplete={fetchData}
       />
     </div>

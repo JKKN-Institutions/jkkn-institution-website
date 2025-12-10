@@ -55,15 +55,29 @@ export interface EditableProp {
   /** For array type: what kind of items (string, image, object) */
   itemType?: 'string' | 'image' | 'object'
   /** For array type with object items: the schema of each item */
-  itemSchema?: {
-    properties: Record<string, {
-      type: string
-      label?: string
-      required?: boolean
-      format?: string
-    }>
-    required?: string[]
-  }
+  itemSchema?: ItemSchema
+}
+
+/**
+ * Schema for array items - supports nested arrays for complex structures
+ */
+export interface ItemSchema {
+  properties: Record<string, ItemSchemaProperty>
+  required?: string[]
+}
+
+/**
+ * Property definition within an item schema - supports nested arrays
+ */
+export interface ItemSchemaProperty {
+  type: string
+  label?: string
+  required?: boolean
+  format?: string
+  /** For nested array properties */
+  itemType?: 'string' | 'image' | 'object'
+  /** For nested array with object items */
+  itemSchema?: ItemSchema
 }
 
 /**

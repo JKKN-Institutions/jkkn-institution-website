@@ -30,6 +30,7 @@ interface ReorderPagesModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   pages: PageItem[]
+  isLoading?: boolean
   onReorderComplete: () => void
 }
 
@@ -37,6 +38,7 @@ export function ReorderPagesModal({
   open,
   onOpenChange,
   pages: initialPages,
+  isLoading = false,
   onReorderComplete,
 }: ReorderPagesModalProps) {
   const [pages, setPages] = useState<PageItem[]>([])
@@ -218,33 +220,40 @@ export function ReorderPagesModal({
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto py-4">
-          <div className="space-y-2">
-            {/* Render parent pages with their children nested below */}
-            {parentPages.map((parent) => {
-              const currentParent = getPage(parent.id) || parent
-              const parentOrder = currentParent.sort_order ?? 1
-              const children = childrenMap.get(parent.id) || []
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              <span className="ml-2 text-muted-foreground">Loading pages...</span>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {/* Render parent pages with their children nested below */}
+              {parentPages.map((parent) => {
+                const currentParent = getPage(parent.id) || parent
+                const parentOrder = currentParent.sort_order ?? 1
+                const children = childrenMap.get(parent.id) || []
 
-              return (
-                <div key={parent.id} className="space-y-2">
-                  {/* Parent page */}
-                  {renderPageRow(parent, undefined, false)}
+                return (
+                  <div key={parent.id} className="space-y-2">
+                    {/* Parent page */}
+                    {renderPageRow(parent, undefined, false)}
 
-                  {/* Child pages */}
-                  {children.map((child) => renderPageRow(child, parentOrder, true))}
+                    {/* Child pages */}
+                    {children.map((child) => renderPageRow(child, parentOrder, true))}
+                  </div>
+                )
+              })}
+
+              {/* If there are pages without parents that aren't in parentPages (orphans) */}
+              {initialPages
+                .filter(p => p.parent_id && !parentPages.some(pp => pp.id === p.parent_id))
+                .map(orphan => renderPageRow(orphan, undefined, false))}
+
+              {pages.length === 0 && !isLoading && (
+                <div className="text-center py-8 text-muted-foreground">
+                  No pages to reorder
                 </div>
-              )
-            })}
-
-            {/* If there are pages without parents that aren't in parentPages (orphans) */}
-            {initialPages
-              .filter(p => p.parent_id && !parentPages.some(pp => pp.id === p.parent_id))
-              .map(orphan => renderPageRow(orphan, undefined, false))}
-          </div>
-
-          {pages.length === 0 && (
-            <div className="text-center py-8 text-muted-foreground">
-              No pages to reorder
+              )}
             </div>
           )}
         </div>

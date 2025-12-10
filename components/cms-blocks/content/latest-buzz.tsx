@@ -6,6 +6,7 @@ import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRef, useState, useEffect } from 'react'
+import { Zap, ChevronRight, ArrowRight, Sparkles } from 'lucide-react'
 
 /**
  * Buzz item schema
@@ -49,13 +50,40 @@ export const LatestBuzzPropsSchema = z.object({
 export type LatestBuzzProps = z.infer<typeof LatestBuzzPropsSchema> & BaseBlockProps
 
 /**
+ * Intersection Observer hook for animations
+ */
+function useInView(threshold = 0.1) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [isInView, setIsInView] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true)
+        }
+      },
+      { threshold }
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => observer.disconnect()
+  }, [threshold])
+
+  return { ref, isInView }
+}
+
+/**
  * LatestBuzz Component
  *
- * Trending content showcase with:
- * - Split-color header with brand colors
+ * Modern trending content showcase with:
+ * - Section badge with decorative elements
  * - Auto-scrolling carousel with pause on hover
- * - Uniform card sizing
- * - Simple image cards with titles
+ * - Scroll-triggered animations
+ * - Modern card design with hover effects
  */
 export function LatestBuzz({
   headerPart1 = 'Latest',
@@ -76,6 +104,8 @@ export function LatestBuzz({
 }: LatestBuzzProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isPaused, setIsPaused] = useState(false)
+  const headerRef = useInView()
+  const contentRef = useInView()
 
   const defaultBuzz: BuzzItem[] = [
     { title: 'Campus Drive', image: '', link: '/buzz/campus-drive' },
@@ -117,12 +147,57 @@ export function LatestBuzz({
 
   return (
     <section
-      className={cn('py-10 md:py-12 w-full', className)}
+      className={cn('relative py-12 md:py-16 lg:py-20 w-full overflow-hidden', className)}
       style={{ backgroundColor }}
     >
-      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24">
+      {/* Decorative Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Gradient overlay */}
+        <div
+          className="absolute top-0 left-0 w-1/3 h-full opacity-[0.03]"
+          style={{
+            background: `radial-gradient(ellipse at top left, ${accentColor} 0%, transparent 70%)`
+          }}
+        />
+
+        {/* Floating circles */}
+        <div
+          className="absolute -top-16 -left-16 w-64 h-64 rounded-full opacity-5"
+          style={{ backgroundColor: accentColor }}
+        />
+        <div
+          className="absolute bottom-20 -right-20 w-72 h-72 rounded-full opacity-5"
+          style={{ backgroundColor: accentColor }}
+        />
+
+        {/* Dot pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, ${accentColor} 1px, transparent 0)`,
+            backgroundSize: '30px 30px'
+          }}
+        />
+      </div>
+
+      <div className="relative w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24">
         {/* Header */}
-        <div className="text-center mb-8 md:mb-10">
+        <div
+          ref={headerRef.ref}
+          className={cn(
+            "text-center mb-10 md:mb-14 transition-all duration-1000",
+            headerRef.isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          )}
+        >
+          {/* Section Badge */}
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
+            style={{ backgroundColor: `${accentColor}15`, color: accentColor }}
+          >
+            <Zap className="w-4 h-4" />
+            <span>Trending Now</span>
+          </div>
+
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             <span style={{ color: headerPart1Color }}>{headerPart1}</span>{' '}
             <span
@@ -137,21 +212,50 @@ export function LatestBuzz({
               {subtitle}
             </p>
           )}
+
+          {/* Decorative line */}
+          <div
+            className="w-24 h-1 mx-auto mt-6 rounded-full"
+            style={{ backgroundColor: accentColor }}
+          />
         </div>
 
         {/* Content */}
-        {layout === 'carousel' ? (
-          <div
-            className="relative"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-          >
-            {/* Carousel - No navigation arrows */}
+        <div
+          ref={contentRef.ref}
+          className={cn(
+            "transition-all duration-1000 delay-200",
+            contentRef.isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          )}
+        >
+          {layout === 'carousel' ? (
             <div
-              ref={scrollRef}
-              className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              className="relative"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
             >
+              {/* Carousel */}
+              <div
+                ref={scrollRef}
+                className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {displayBuzz.map((buzz, index) => (
+                  <BuzzCard
+                    key={index}
+                    buzz={buzz}
+                    cardStyle={cardStyle}
+                    accentColor={accentColor}
+                    isEditing={isEditing}
+                    index={index}
+                    isInView={contentRef.isInView}
+                    className="snap-start flex-shrink-0 w-[300px] h-[300px]"
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className={cn('grid gap-6 max-w-7xl mx-auto', columnClasses[columns])}>
               {displayBuzz.map((buzz, index) => (
                 <BuzzCard
                   key={index}
@@ -159,32 +263,33 @@ export function LatestBuzz({
                   cardStyle={cardStyle}
                   accentColor={accentColor}
                   isEditing={isEditing}
-                  className="snap-start flex-shrink-0 w-[300px] h-[280px]"
+                  index={index}
+                  isInView={contentRef.isInView}
+                  className="h-[300px]"
                 />
               ))}
             </div>
-          </div>
-        ) : (
-          <div className={cn('grid gap-6 max-w-7xl mx-auto', columnClasses[columns])}>
-            {displayBuzz.map((buzz, index) => (
-              <BuzzCard
-                key={index}
-                buzz={buzz}
-                cardStyle={cardStyle}
-                accentColor={accentColor}
-                isEditing={isEditing}
-                className="h-[280px]"
-              />
-            ))}
-          </div>
-        )}
+          )}
+        </div>
+
+        {/* View All Link */}
+        <div className="text-center mt-10">
+          <a
+            href="/buzz"
+            className="group inline-flex items-center gap-2 font-semibold transition-all duration-300 hover:gap-3"
+            style={{ color: accentColor }}
+          >
+            View All Buzz
+            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </a>
+        </div>
       </div>
     </section>
   )
 }
 
 /**
- * Individual Buzz Card - Uniform sizing
+ * Individual Buzz Card - Modern Design
  */
 function BuzzCard({
   buzz,
@@ -192,57 +297,97 @@ function BuzzCard({
   accentColor,
   isEditing,
   className,
+  index,
+  isInView,
 }: {
   buzz: BuzzItem
   cardStyle: 'simple' | 'overlay' | 'bordered'
   accentColor: string
   isEditing?: boolean
   className?: string
+  index: number
+  isInView: boolean
 }) {
+  const [isHovered, setIsHovered] = useState(false)
+
   const cardContent = (
     <div
       className={cn(
-        'group overflow-hidden transition-all duration-300 h-full flex flex-col',
-        cardStyle === 'simple' && 'rounded-xl',
-        cardStyle === 'overlay' && 'rounded-xl relative',
-        cardStyle === 'bordered' && 'rounded-xl border-2 border-gray-200 hover:border-primary',
-        className
+        'group overflow-hidden transition-all duration-500 h-full flex flex-col hover:-translate-y-2',
+        cardStyle === 'simple' && 'rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-black/10',
+        cardStyle === 'overlay' && 'rounded-2xl relative shadow-lg hover:shadow-2xl',
+        cardStyle === 'bordered' && 'rounded-2xl border-2 border-gray-200 hover:border-primary shadow-lg',
+        "transition-all duration-700",
+        isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       )}
+      style={{ transitionDelay: `${index * 100}ms` }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image - Fixed height */}
-      <div className="relative h-[200px] overflow-hidden rounded-xl flex-shrink-0">
+      <div className="relative h-[220px] overflow-hidden rounded-2xl flex-shrink-0">
         {buzz.image ? (
           <Image
             src={buzz.image}
             alt={buzz.title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-            <span className="text-gray-400 text-sm">No image</span>
+            <Sparkles className="w-12 h-12 text-gray-300" />
           </div>
         )}
 
-        {/* Overlay for overlay style */}
-        {cardStyle === 'overlay' && (
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-        )}
+        {/* Gradient Overlay */}
+        <div
+          className={cn(
+            'absolute inset-0 transition-opacity duration-500',
+            cardStyle === 'overlay' || isHovered ? 'opacity-100' : 'opacity-0'
+          )}
+          style={{
+            background: `linear-gradient(to top, ${accentColor}dd 0%, ${accentColor}40 40%, transparent 100%)`
+          }}
+        />
 
-        {/* Title overlay for overlay style */}
-        {cardStyle === 'overlay' && (
-          <div className="absolute bottom-0 left-0 right-0 p-4">
-            <h3 className="text-lg font-semibold text-white line-clamp-2">{buzz.title}</h3>
-          </div>
-        )}
+        {/* Trending Badge */}
+        <div
+          className={cn(
+            'absolute top-4 right-4 w-10 h-10 rounded-full bg-white/95 backdrop-blur-sm flex items-center justify-center transition-all duration-500 shadow-lg',
+            isHovered ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-75 rotate-45'
+          )}
+        >
+          <Zap className="w-5 h-5" style={{ color: accentColor }} />
+        </div>
+
+        {/* Title overlay for overlay style and hover */}
+        <div
+          className={cn(
+            'absolute bottom-0 left-0 right-0 p-4 transition-all duration-500',
+            cardStyle === 'overlay' || isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          )}
+        >
+          <h3 className="text-lg font-bold text-white line-clamp-2">{buzz.title}</h3>
+          <span className="text-white/80 text-sm flex items-center gap-1 mt-2">
+            View Details
+            <ChevronRight className="w-4 h-4" />
+          </span>
+        </div>
       </div>
 
-      {/* Title for simple/bordered styles */}
+      {/* Title for simple/bordered styles (shown below image) */}
       {cardStyle !== 'overlay' && (
-        <div className="pt-4 flex-grow flex items-center justify-center">
+        <div className="relative p-4 flex-grow flex flex-col items-center justify-center bg-white">
+          {/* Accent Line */}
+          <div
+            className={cn(
+              'absolute top-0 left-1/2 -translate-x-1/2 h-1 rounded-full transition-all duration-500',
+              isHovered ? 'w-3/4' : 'w-0'
+            )}
+            style={{ backgroundColor: accentColor }}
+          />
           <h3
-            className="text-lg font-semibold text-gray-900 group-hover:text-primary transition-colors text-center line-clamp-2"
-            style={{ '--tw-text-opacity': 1, color: 'inherit' } as React.CSSProperties}
+            className="text-lg font-bold text-gray-900 group-hover:text-gray-800 transition-colors text-center line-clamp-2"
           >
             {buzz.title}
           </h3>

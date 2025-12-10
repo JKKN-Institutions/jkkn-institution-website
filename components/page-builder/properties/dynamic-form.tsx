@@ -14,7 +14,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { Plus, Trash2, Image as ImageIcon, X, Check } from 'lucide-react'
+import { Plus, Trash2, Image as ImageIcon, X, Check, ChevronDown, ChevronUp, GripVertical, User } from 'lucide-react'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import type { ComponentRegistryEntry } from '@/lib/cms/registry-types'
 import { BRAND_COLORS, BRAND_GRADIENTS, type BrandColor } from '@/lib/cms/brand-colors'
 import { isGoogleDriveUrl, convertToGoogleDriveImageUrl, convertToGoogleDriveVideoUrl, GOOGLE_DRIVE_INSTRUCTIONS } from '@/lib/utils/google-drive'
@@ -400,6 +401,574 @@ function ArrayField({ config, value, onChange }: FieldProps) {
         <Plus className="h-4 w-4 mr-2" />
         Add Item
       </Button>
+    </div>
+  )
+}
+
+/**
+ * NestedArrayField - For editing nested arrays within object array items
+ * Supports both simple string arrays (like specializations) and complex object arrays (like courses)
+ */
+interface NestedArrayFieldProps {
+  label: string
+  value: unknown[]
+  onChange: (value: unknown[]) => void
+  itemSchema?: {
+    properties: Record<string, {
+      type: string
+      label?: string
+      required?: boolean
+      itemType?: string
+      itemSchema?: {
+        properties: Record<string, { type: string; label?: string; required?: boolean }>
+      }
+    }>
+    required?: string[]
+  }
+  itemType?: string
+}
+
+function NestedArrayField({ label, value, onChange, itemSchema, itemType }: NestedArrayFieldProps) {
+  const arrayValue = Array.isArray(value) ? value : []
+  const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set([0]))
+
+  const toggleExpanded = (index: number) => {
+    const newSet = new Set(expandedItems)
+    if (newSet.has(index)) {
+      newSet.delete(index)
+    } else {
+      newSet.add(index)
+    }
+    setExpandedItems(newSet)
+  }
+
+  // Simple string array (like specializations)
+  if (!itemSchema || itemType === 'string') {
+    const handleAddString = () => {
+      onChange([...arrayValue, ''])
+    }
+
+    const handleRemoveString = (index: number) => {
+      const newValue = arrayValue.filter((_, i) => i !== index)
+      onChange(newValue)
+    }
+
+    const handleChangeString = (index: number, newVal: string) => {
+      const newValue = [...arrayValue]
+      newValue[index] = newVal
+      onChange(newValue)
+    }
+
+    return (
+      <div className="space-y-2 pl-2 border-l-2 border-border/40">
+        {arrayValue.map((item, index) => (
+          <div key={index} className="flex gap-2 items-center">
+            <Input
+              value={item as string}
+              onChange={(e) => handleChangeString(index, e.target.value)}
+              placeholder={`Enter ${label.toLowerCase().replace(/s$/, '')}...`}
+              className="h-8 text-sm bg-background/50 border-border/50 flex-1"
+            />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10 flex-shrink-0"
+              onClick={() => handleRemoveString(index)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        ))}
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full h-7 text-xs"
+          onClick={handleAddString}
+        >
+          <Plus className="h-3 w-3 mr-1" />
+          Add {label.replace(/s$/, '') || 'Item'}
+        </Button>
+      </div>
+    )
+  }
+
+  // Complex object array (like courses)
+  const handleAddObject = () => {
+    const newItem: Record<string, unknown> = {}
+    if (itemSchema?.properties) {
+      Object.entries(itemSchema.properties).forEach(([key, prop]) => {
+        if (prop.type === 'array') {
+          newItem[key] = []
+        } else if (prop.type === 'number') {
+          newItem[key] = 0
+        } else {
+          newItem[key] = ''
+        }
+      })
+    }
+    onChange([...arrayValue, newItem])
+    setExpandedItems(new Set([...expandedItems, arrayValue.length]))
+  }
+
+  const handleRemoveObject = (index: number) => {
+    const newValue = arrayValue.filter((_, i) => i !== index)
+    onChange(newValue)
+  }
+
+  const handleObjectFieldChange = (index: number, fieldKey: string, fieldValue: unknown) => {
+    const newValue = [...arrayValue]
+    newValue[index] = { ...(newValue[index] as Record<string, unknown>), [fieldKey]: fieldValue }
+    onChange(newValue)
+  }
+
+  // Get primary display field
+  const getPrimaryField = (): string => {
+    if (!itemSchema?.properties) return ''
+    const candidates = ['name', 'title', 'label']
+    for (const candidate of candidates) {
+      if (itemSchema.properties[candidate]) return candidate
+    }
+    return Object.keys(itemSchema.properties)[0] || ''
+  }
+
+  const primaryField = getPrimaryField()
+
+  return (
+    <div className="space-y-2 pl-2 border-l-2 border-border/40">
+      {arrayValue.map((item, index) => {
+        const itemObj = item as Record<string, unknown>
+        const isExpanded = expandedItems.has(index)
+        const displayValue = itemObj[primaryField] as string || `Item ${index + 1}`
+
+        return (
+          <Collapsible key={index} open={isExpanded} onOpenChange={() => toggleExpanded(index)}>
+            <div className="rounded-md border border-border/50 bg-background/30 overflow-hidden">
+              <CollapsibleTrigger asChild>
+                <div className="flex items-center gap-2 px-2 py-1.5 cursor-pointer hover:bg-muted/30 transition-colors">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-medium truncate">{displayValue}</p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6 text-destructive hover:text-destructive hover:bg-destructive/10 flex-shrink-0"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleRemoveObject(index)
+                    }}
+                  >
+                    <Trash2 className="h-3 w-3" />
+                  </Button>
+                  {isExpanded ? (
+                    <ChevronUp className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                  ) : (
+                    <ChevronDown className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                  )}
+                </div>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="px-2 pb-2 pt-1 space-y-2 border-t border-border/30">
+                  {itemSchema?.properties && Object.entries(itemSchema.properties).map(([fieldKey, propSchema]) => {
+                    const fieldLabel = propSchema.label || formatLabel(fieldKey)
+                    const fieldValue = itemObj[fieldKey] ?? (propSchema.type === 'array' ? [] : '')
+
+                    return (
+                      <div key={fieldKey} className="space-y-1">
+                        <Label className="text-[10px] text-muted-foreground">
+                          {fieldLabel}
+                          {itemSchema.required?.includes(fieldKey) && (
+                            <span className="text-red-500 ml-0.5">*</span>
+                          )}
+                        </Label>
+                        {propSchema.type === 'array' ? (
+                          // Nested nested array (like specializations within courses)
+                          <NestedArrayField
+                            label={fieldLabel}
+                            value={fieldValue as unknown[]}
+                            onChange={(newValue) => handleObjectFieldChange(index, fieldKey, newValue)}
+                            itemSchema={propSchema.itemSchema}
+                            itemType={propSchema.itemType}
+                          />
+                        ) : propSchema.type === 'number' ? (
+                          <Input
+                            type="number"
+                            value={fieldValue as number}
+                            onChange={(e) => handleObjectFieldChange(index, fieldKey, Number(e.target.value))}
+                            placeholder={`Enter ${fieldLabel.toLowerCase()}...`}
+                            className="h-7 text-xs bg-background/50 border-border/50"
+                          />
+                        ) : (
+                          <Input
+                            value={fieldValue as string}
+                            onChange={(e) => handleObjectFieldChange(index, fieldKey, e.target.value)}
+                            placeholder={`Enter ${fieldLabel.toLowerCase()}...`}
+                            className="h-7 text-xs bg-background/50 border-border/50"
+                          />
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </CollapsibleContent>
+            </div>
+          </Collapsible>
+        )
+      })}
+      <Button
+        variant="outline"
+        size="sm"
+        className="w-full h-7 text-xs"
+        onClick={handleAddObject}
+      >
+        <Plus className="h-3 w-3 mr-1" />
+        Add {label.replace(/s$/, '') || 'Item'}
+      </Button>
+    </div>
+  )
+}
+
+/**
+ * ObjectArrayField - For editing arrays of complex objects with individual fields
+ * Each item is rendered as a collapsible card with editable fields for each property
+ */
+interface ObjectArrayFieldProps extends FieldProps {
+  config: FieldConfig & {
+    itemSchema?: {
+      properties: Record<string, {
+        type: string
+        label?: string
+        required?: boolean
+        format?: string
+        description?: string
+        multiline?: boolean
+      }>
+      required?: string[]
+    }
+  }
+}
+
+function ObjectArrayField({ config, value, onChange }: ObjectArrayFieldProps) {
+  const [pickerOpen, setPickerOpen] = useState(false)
+  const [editingImageField, setEditingImageField] = useState<{ index: number; field: string } | null>(null)
+  const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set([0])) // First item expanded by default
+
+  const arrayValue = Array.isArray(value)
+    ? value.map(item => {
+        if (typeof item === 'object' && item !== null) {
+          return item as Record<string, unknown>
+        }
+        // Try to parse JSON string
+        if (typeof item === 'string') {
+          try {
+            return JSON.parse(item) as Record<string, unknown>
+          } catch {
+            return {}
+          }
+        }
+        return {}
+      })
+    : []
+
+  const schema = config.itemSchema
+
+  // Get the primary display field (usually 'name' or 'title')
+  const getPrimaryField = (): string => {
+    if (!schema?.properties) return ''
+    const candidates = ['name', 'title', 'label', 'heading']
+    for (const candidate of candidates) {
+      if (schema.properties[candidate]) return candidate
+    }
+    return Object.keys(schema.properties)[0] || ''
+  }
+
+  const primaryField = getPrimaryField()
+
+  // Create a default empty item based on schema
+  const createEmptyItem = (): Record<string, unknown> => {
+    if (!schema?.properties) return {}
+    const item: Record<string, unknown> = {}
+    for (const [key, propSchema] of Object.entries(schema.properties)) {
+      if (propSchema.type === 'string') {
+        item[key] = ''
+      } else if (propSchema.type === 'number') {
+        item[key] = 0
+      } else if (propSchema.type === 'boolean') {
+        item[key] = false
+      } else {
+        item[key] = ''
+      }
+    }
+    return item
+  }
+
+  const handleAddItem = () => {
+    const newItem = createEmptyItem()
+    const newArray = [...arrayValue, newItem]
+    onChange(newArray)
+    // Expand the new item
+    setExpandedItems(prev => new Set([...prev, newArray.length - 1]))
+  }
+
+  const handleRemoveItem = (index: number) => {
+    onChange(arrayValue.filter((_, i) => i !== index))
+    setExpandedItems(prev => {
+      const newSet = new Set<number>()
+      prev.forEach(i => {
+        if (i < index) newSet.add(i)
+        else if (i > index) newSet.add(i - 1)
+      })
+      return newSet
+    })
+  }
+
+  const handleItemFieldChange = (index: number, field: string, newValue: unknown) => {
+    const newArray = [...arrayValue]
+    newArray[index] = { ...newArray[index], [field]: newValue }
+    onChange(newArray)
+  }
+
+  const toggleExpanded = (index: number) => {
+    setExpandedItems(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(index)) {
+        newSet.delete(index)
+      } else {
+        newSet.add(index)
+      }
+      return newSet
+    })
+  }
+
+  const handleMediaSelect = (media: MediaItem | MediaItem[]) => {
+    if (!editingImageField) return
+    const selected = Array.isArray(media) ? media[0] : media
+    handleItemFieldChange(editingImageField.index, editingImageField.field, selected.file_url)
+    setEditingImageField(null)
+  }
+
+  const openMediaPicker = (index: number, field: string) => {
+    setEditingImageField({ index, field })
+    setPickerOpen(true)
+  }
+
+  // Determine if a field should use image picker
+  const isImageField = (fieldKey: string, propSchema: { type: string; format?: string }): boolean => {
+    // Check if type is explicitly 'image'
+    if (propSchema.type === 'image') return true
+
+    const imageKeywords = ['image', 'photo', 'picture', 'avatar', 'thumbnail', 'src']
+    const keyLower = fieldKey.toLowerCase()
+    return (
+      propSchema.format === 'uri' ||
+      propSchema.format === 'url' ||
+      imageKeywords.some(kw => keyLower.includes(kw))
+    )
+  }
+
+  // Determine if a field should be multiline
+  const isMultilineField = (fieldKey: string, propSchema: { type: string; multiline?: boolean; description?: string }): boolean => {
+    if (propSchema.multiline) return true
+    const multilineKeywords = ['message', 'description', 'content', 'text', 'bio', 'paragraph', 'body', 'quote']
+    const keyLower = fieldKey.toLowerCase()
+    return multilineKeywords.some(kw => keyLower.includes(kw))
+  }
+
+  if (!schema?.properties || Object.keys(schema.properties).length === 0) {
+    // Fallback to simple ArrayField if no schema
+    return <ArrayField config={config} value={value} onChange={onChange} />
+  }
+
+  return (
+    <div className="space-y-3">
+      {arrayValue.map((item, index) => {
+        const isExpanded = expandedItems.has(index)
+        const displayValue = item[primaryField] as string || `Item ${index + 1}`
+
+        return (
+          <Collapsible key={index} open={isExpanded} onOpenChange={() => toggleExpanded(index)}>
+            <div className="rounded-lg border border-border/60 bg-background/40 overflow-hidden">
+              {/* Header */}
+              <CollapsibleTrigger asChild>
+                <div className="flex items-center gap-2 px-3 py-2.5 cursor-pointer hover:bg-muted/30 transition-colors">
+                  <GripVertical className="h-4 w-4 text-muted-foreground/50 flex-shrink-0" />
+
+                  {/* Thumbnail for image fields */}
+                  {Object.entries(schema.properties).some(([k, v]) => isImageField(k, v)) && (
+                    <div className="w-10 h-10 rounded-md overflow-hidden border border-border/50 bg-muted flex-shrink-0">
+                      {(() => {
+                        const imageField = Object.entries(schema.properties).find(([k, v]) => isImageField(k, v))
+                        const imageUrl = imageField ? item[imageField[0]] as string : ''
+                        if (imageUrl) {
+                          return (
+                            <img
+                              src={imageUrl}
+                              alt={displayValue}
+                              className="w-full h-full object-cover"
+                            />
+                          )
+                        }
+                        return (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <User className="h-5 w-5 text-muted-foreground/50" />
+                          </div>
+                        )
+                      })()}
+                    </div>
+                  )}
+
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{displayValue}</p>
+                    {!isExpanded && (
+                      <p className="text-xs text-muted-foreground truncate">
+                        {Object.entries(item)
+                          .filter(([k]) => k !== primaryField)
+                          .slice(0, 2)
+                          .map(([k, v]) => `${formatLabel(k)}: ${String(v).slice(0, 20)}${String(v).length > 20 ? '...' : ''}`)
+                          .join(' • ')}
+                      </p>
+                    )}
+                  </div>
+
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7 text-destructive hover:text-destructive hover:bg-destructive/10 flex-shrink-0"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleRemoveItem(index)
+                    }}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+
+                  {isExpanded ? (
+                    <ChevronUp className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                  )}
+                </div>
+              </CollapsibleTrigger>
+
+              {/* Expanded Content */}
+              <CollapsibleContent>
+                <div className="px-3 pb-3 pt-1 space-y-3 border-t border-border/40">
+                  {Object.entries(schema.properties).map(([fieldKey, propSchema]) => {
+                    const fieldLabel = propSchema.label || formatLabel(fieldKey)
+                    const fieldValue = item[fieldKey] ?? ''
+                    const isImage = isImageField(fieldKey, propSchema)
+                    const isMultiline = isMultilineField(fieldKey, propSchema)
+
+                    return (
+                      <div key={fieldKey} className="space-y-1.5">
+                        <Label className="text-xs text-muted-foreground">
+                          {fieldLabel}
+                          {schema.required?.includes(fieldKey) && (
+                            <span className="text-red-500 ml-0.5">*</span>
+                          )}
+                        </Label>
+
+                        {isImage ? (
+                          // Image field with media picker
+                          <div className="flex gap-2 items-start">
+                            <div className="relative w-16 h-16 rounded-md overflow-hidden border border-border/50 bg-muted flex-shrink-0">
+                              {fieldValue ? (
+                                <img
+                                  src={fieldValue as string}
+                                  alt={fieldLabel}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <ImageIcon className="h-5 w-5 text-muted-foreground/50" />
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1 space-y-1.5">
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                className="w-full h-7 text-xs"
+                                onClick={() => openMediaPicker(index, fieldKey)}
+                              >
+                                <ImageIcon className="h-3 w-3 mr-1.5" />
+                                {fieldValue ? 'Change' : 'Select'} Image
+                              </Button>
+                              <Input
+                                value={fieldValue as string}
+                                onChange={(e) => handleItemFieldChange(index, fieldKey, e.target.value)}
+                                placeholder="Or paste URL..."
+                                className="h-7 text-xs bg-background/50 border-border/50"
+                              />
+                            </div>
+                          </div>
+                        ) : isMultiline ? (
+                          // Multiline text field
+                          <Textarea
+                            value={fieldValue as string}
+                            onChange={(e) => handleItemFieldChange(index, fieldKey, e.target.value)}
+                            placeholder={`Enter ${fieldLabel.toLowerCase()}...`}
+                            rows={3}
+                            className="text-sm bg-background/50 border-border/50 resize-none"
+                          />
+                        ) : propSchema.type === 'number' ? (
+                          // Number field
+                          <Input
+                            type="number"
+                            value={fieldValue as number}
+                            onChange={(e) => handleItemFieldChange(index, fieldKey, Number(e.target.value))}
+                            placeholder={`Enter ${fieldLabel.toLowerCase()}...`}
+                            className="h-8 text-sm bg-background/50 border-border/50"
+                          />
+                        ) : propSchema.type === 'array' ? (
+                          // Nested array field
+                          <NestedArrayField
+                            label={fieldLabel}
+                            value={fieldValue as unknown[]}
+                            onChange={(newValue) => handleItemFieldChange(index, fieldKey, newValue)}
+                            itemSchema={(propSchema as unknown as { itemSchema?: { properties: Record<string, { type: string; label?: string; required?: boolean }> } }).itemSchema}
+                            itemType={(propSchema as unknown as { itemType?: string }).itemType}
+                          />
+                        ) : (
+                          // Default string field
+                          <Input
+                            value={fieldValue as string}
+                            onChange={(e) => handleItemFieldChange(index, fieldKey, e.target.value)}
+                            placeholder={`Enter ${fieldLabel.toLowerCase()}...`}
+                            className="h-8 text-sm bg-background/50 border-border/50"
+                          />
+                        )}
+
+                        {propSchema.description && (
+                          <p className="text-[10px] text-muted-foreground">{propSchema.description}</p>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </CollapsibleContent>
+            </div>
+          </Collapsible>
+        )
+      })}
+
+      <Button
+        variant="outline"
+        size="sm"
+        className="w-full"
+        onClick={handleAddItem}
+      >
+        <Plus className="h-4 w-4 mr-2" />
+        Add {config.label.replace(/s$/, '') || 'Item'}
+      </Button>
+
+      <MediaPickerModal
+        open={pickerOpen}
+        onOpenChange={setPickerOpen}
+        onSelect={handleMediaSelect}
+        fileType="image"
+        currentValue={editingImageField ? (arrayValue[editingImageField.index]?.[editingImageField.field] as string) : undefined}
+      />
     </div>
   )
 }
@@ -825,7 +1394,15 @@ export function DynamicForm({ componentEntry, values, onChange }: DynamicFormPro
               />
             )}
 
-            {field.type === 'array' && field.itemType !== 'image' && (
+            {field.type === 'array' && field.itemType === 'object' && field.itemSchema && (
+              <ObjectArrayField
+                config={field}
+                value={fieldValue}
+                onChange={(v) => handleFieldChange(field.key, v)}
+              />
+            )}
+
+            {field.type === 'array' && field.itemType !== 'image' && field.itemType !== 'object' && (
               <ArrayField
                 config={field}
                 value={fieldValue}

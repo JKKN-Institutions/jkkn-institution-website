@@ -168,14 +168,14 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
 
                       {/* Dropdown */}
                       {item.children && item.children.length > 0 && openDropdown === item.id && (
-                        <div className="absolute top-full left-0 pt-1 w-52 origin-top animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-                          <div className="bg-white rounded-lg shadow-lg shadow-black/10 border border-gray-100 py-1.5 overflow-hidden">
+                        <div className="absolute top-full left-0 pt-1 w-72 origin-top animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                          <div className="bg-white rounded-lg shadow-lg shadow-black/10 border border-gray-100 py-1 overflow-hidden">
                             {item.children.map((child) => (
                               <Link
                                 key={child.id}
                                 href={child.href}
                                 className={cn(
-                                  'block px-4 py-2.5 text-sm transition-colors duration-150',
+                                  'block px-3 py-1.5 text-xs transition-colors duration-150',
                                   isActive(child.href)
                                     ? 'text-primary bg-primary/5 font-medium'
                                     : 'text-gray-700 hover:text-primary hover:bg-gray-50'
@@ -229,14 +229,14 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
 
                     {/* Dropdown */}
                     {item.children && item.children.length > 0 && openDropdown === item.id && (
-                      <div className="absolute top-full left-0 pt-1 w-52 origin-top animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-                        <div className="bg-white rounded-lg shadow-lg shadow-black/10 border border-gray-100 py-1.5 overflow-hidden">
+                      <div className="absolute top-full left-0 pt-1 w-72 origin-top animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                        <div className="bg-white rounded-lg shadow-lg shadow-black/10 border border-gray-100 py-1 overflow-hidden">
                           {item.children.map((child) => (
                             <Link
                               key={child.id}
                               href={child.href}
                               className={cn(
-                                'block px-4 py-2.5 text-sm transition-colors duration-150',
+                                'block px-3 py-1.5 text-xs transition-colors duration-150',
                                 isActive(child.href)
                                   ? 'text-primary bg-primary/5 font-medium'
                                   : 'text-gray-700 hover:text-primary hover:bg-gray-50'

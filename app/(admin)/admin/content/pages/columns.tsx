@@ -24,6 +24,8 @@ import {
   Send,
   EyeOff,
   Clock,
+  FolderTree,
+  CornerDownRight,
 } from 'lucide-react'
 import Link from 'next/link'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
@@ -122,24 +124,36 @@ export const createColumns = (handlers: PageActionHandlers = {}): ColumnDef<Page
     header: ({ column }) => <DataTableColumnHeader column={column} title="Page" />,
     cell: ({ row }) => {
       const page = row.original
+      const isChild = !!page.parent_id
 
       return (
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
+        <div className={`flex items-center gap-3 ${isChild ? 'pl-6' : ''}`}>
+          {/* Show indent indicator for child pages */}
+          {isChild && (
+            <CornerDownRight className="h-4 w-4 text-muted-foreground/50 -ml-5 flex-shrink-0" />
+          )}
+          <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${isChild ? 'bg-muted/50' : 'bg-primary/10'}`}>
             {page.is_homepage ? (
               <Home className="h-4 w-4 text-primary" />
+            ) : isChild ? (
+              <FileText className="h-4 w-4 text-muted-foreground" />
             ) : (
-              <FileText className="h-4 w-4 text-primary" />
+              <FolderTree className="h-4 w-4 text-primary" />
             )}
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <span className="font-medium text-foreground">
+              <span className={`font-medium ${isChild ? 'text-muted-foreground' : 'text-foreground'}`}>
                 {page.title}
               </span>
               {page.is_homepage && (
                 <Badge variant="secondary" className="text-xs bg-primary/10 text-primary">
                   Homepage
+                </Badge>
+              )}
+              {!isChild && !page.is_homepage && (
+                <Badge variant="outline" className="text-xs text-muted-foreground">
+                  Menu
                 </Badge>
               )}
             </div>

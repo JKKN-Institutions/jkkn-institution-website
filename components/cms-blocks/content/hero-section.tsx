@@ -2,6 +2,8 @@
 
 import { cn } from '@/lib/utils'
 import type { HeroSectionProps } from '@/lib/cms/registry-types'
+import { useEffect, useState, useRef } from 'react'
+import { ChevronDown, ArrowRight } from 'lucide-react'
 
 // Font size mapping for Tailwind classes - RESPONSIVE
 const fontSizeClasses: Record<string, string> = {
@@ -49,6 +51,26 @@ export default function HeroSection({
   className,
   isEditing,
 }: HeroSectionProps) {
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
+  const heroRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    setIsLoaded(true)
+
+    const handleScroll = () => {
+      if (heroRef.current) {
+        const rect = heroRef.current.getBoundingClientRect()
+        if (rect.bottom > 0) {
+          setScrollY(window.scrollY * 0.3)
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   const alignmentClasses: Record<string, string> = {
     left: 'items-start text-left',
     center: 'items-center text-center',
@@ -58,56 +80,131 @@ export default function HeroSection({
 
   return (
     <section
+      ref={heroRef}
       className={cn(
-        'relative flex flex-col justify-center',
+        'relative flex flex-col justify-center overflow-hidden',
         alignmentClasses[alignment],
         className
       )}
-      style={{
-        minHeight,
-        backgroundImage:
-          backgroundType === 'image' && backgroundImage
-            ? `url(${backgroundImage})`
-            : backgroundType === 'gradient'
-              ? backgroundGradient
-              : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
+      style={{ minHeight }}
     >
-      {overlay && backgroundImage && (
+      {/* Parallax Background */}
+      <div
+        className="absolute inset-0 transition-transform duration-100"
+        style={{
+          backgroundImage:
+            backgroundType === 'image' && backgroundImage
+              ? `url(${backgroundImage})`
+              : backgroundType === 'gradient'
+                ? backgroundGradient
+                : undefined,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          transform: `translateY(${scrollY}px) scale(1.1)`,
+        }}
+      />
+
+      {/* Gradient Overlay */}
+      {overlay && (
         <div
-          className="absolute inset-0 bg-black"
-          style={{ opacity: overlayOpacity }}
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(135deg, rgba(11, 109, 65, ${overlayOpacity}) 0%, rgba(0, 0, 0, ${overlayOpacity * 0.8}) 50%, rgba(6, 77, 46, ${overlayOpacity}) 100%)`,
+          }}
         />
       )}
+
+      {/* Animated Decorative Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Floating circles */}
+        <div
+          className="absolute top-20 left-10 w-64 h-64 rounded-full opacity-10 animate-[float_8s_ease-in-out_infinite]"
+          style={{ backgroundColor: '#ffde59' }}
+        />
+        <div
+          className="absolute bottom-40 right-20 w-96 h-96 rounded-full opacity-5 animate-[float_12s_ease-in-out_infinite_reverse]"
+          style={{ backgroundColor: '#ffde59' }}
+        />
+        <div
+          className="absolute top-1/3 right-1/4 w-48 h-48 rounded-full opacity-5 animate-[float_10s_ease-in-out_infinite]"
+          style={{ backgroundColor: '#ffffff' }}
+        />
+
+        {/* Grid pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: 'radial-gradient(circle at 1px 1px, #ffffff 1px, transparent 0)',
+            backgroundSize: '50px 50px'
+          }}
+        />
+
+        {/* Diagonal lines */}
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: 'repeating-linear-gradient(45deg, #ffffff 0, #ffffff 1px, transparent 0, transparent 50%)',
+            backgroundSize: '40px 40px'
+          }}
+        />
+      </div>
+
+      {/* Main Content */}
       <div className="container relative z-10 mx-auto px-4 py-16">
+        {/* Animated Badge */}
+        <div
+          className={cn(
+            "inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8 transition-all duration-1000",
+            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          )}
+          style={{ backgroundColor: 'rgba(255, 222, 89, 0.2)', color: '#ffde59' }}
+        >
+          <span className="w-2 h-2 rounded-full bg-current animate-pulse" />
+          Excellence in Education Since 1969
+        </div>
+
+        {/* Animated Title */}
         <h1
           className={cn(
-            'tracking-tight',
+            'tracking-tight transition-all duration-1000 delay-200',
             fontSizeClasses[titleFontSize] || 'text-5xl',
             fontWeightClasses[titleFontWeight] || 'font-bold',
-            titleFontStyle === 'italic' && 'italic'
+            titleFontStyle === 'italic' && 'italic',
+            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}
           style={{ color: titleColor }}
         >
           {title}
         </h1>
+
+        {/* Animated Subtitle */}
         {subtitle && (
           <p
             className={cn(
-              'mt-4',
+              'mt-6 max-w-2xl transition-all duration-1000 delay-300',
+              alignment === 'center' && 'mx-auto',
               fontSizeClasses[subtitleFontSize] || 'text-xl',
               fontWeightClasses[subtitleFontWeight] || 'font-normal',
-              subtitleFontStyle === 'italic' && 'italic'
+              subtitleFontStyle === 'italic' && 'italic',
+              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             )}
             style={{ color: subtitleColor }}
           >
             {subtitle}
           </p>
         )}
+
+        {/* CTA Buttons with Modern Styling */}
         {ctaButtons.length > 0 && (
-          <div className="mt-8 flex flex-wrap gap-4 justify-center">
+          <div
+            className={cn(
+              "mt-10 flex flex-wrap gap-4 transition-all duration-1000 delay-500",
+              alignment === 'center' && 'justify-center',
+              alignment === 'left' && 'justify-start',
+              alignment === 'right' && 'justify-end',
+              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            )}
+          >
             {ctaButtons.map((btn, index) => (
               <a
                 key={index}
@@ -115,23 +212,47 @@ export default function HeroSection({
                 target={btn.openInNewTab ? '_blank' : undefined}
                 rel={btn.openInNewTab ? 'noopener noreferrer' : undefined}
                 className={cn(
-                  'inline-flex items-center justify-center rounded-md px-6 py-3 text-sm font-medium transition-colors',
-                  btn.variant === 'primary' && 'bg-primary text-primary-foreground hover:bg-primary/90',
-                  btn.variant === 'secondary' && 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-                  btn.variant === 'outline' && 'border border-input bg-background hover:bg-accent'
+                  'group inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-base font-semibold transition-all duration-300',
+                  btn.variant === 'primary' && 'bg-[#ffde59] text-[#0b6d41] hover:bg-[#ffe57a] hover:shadow-lg hover:shadow-[#ffde59]/30 hover:scale-105',
+                  btn.variant === 'secondary' && 'bg-white/10 backdrop-blur-sm text-white border border-white/30 hover:bg-white/20 hover:scale-105',
+                  btn.variant === 'outline' && 'border-2 border-white text-white hover:bg-white hover:text-[#0b6d41] hover:scale-105'
                 )}
               >
                 {btn.label}
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
             ))}
           </div>
         )}
       </div>
+
+      {/* Scroll Indicator */}
+      <div
+        className={cn(
+          "absolute bottom-8 left-1/2 -translate-x-1/2 transition-all duration-1000 delay-700",
+          isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+        )}
+      >
+        <div className="flex flex-col items-center gap-2 text-white/60">
+          <span className="text-xs uppercase tracking-widest">Scroll</span>
+          <ChevronDown className="w-5 h-5 animate-bounce" />
+        </div>
+      </div>
+
+      {/* Editor Placeholder */}
       {isEditing && !backgroundImage && (
         <div className="absolute inset-0 flex items-center justify-center bg-muted/50 border-2 border-dashed border-muted-foreground/25">
           <p className="text-muted-foreground">Click to configure hero section</p>
         </div>
       )}
+
+      {/* Custom Keyframes */}
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-30px) rotate(5deg); }
+        }
+      `}</style>
     </section>
   )
 }

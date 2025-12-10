@@ -120,6 +120,7 @@ export interface PageTreeNode {
 
 /**
  * Get all pages with pagination and filtering
+ * Returns pages in hierarchical order: parent pages followed by their children
  */
 export async function getPages(options?: {
   page?: number
@@ -131,7 +132,8 @@ export async function getPages(options?: {
   const supabase = await createServerSupabaseClient()
   const { page = 1, limit = 20, status, search, parent_id } = options || {}
 
-  let query = supabase
+  // First, get ALL pages to build hierarchy (we'll paginate after sorting)
+  let allPagesQuery = supabase
     .from('cms_pages')
     .select(
       `
@@ -139,47 +141,83 @@ export async function getPages(options?: {
       cms_seo_metadata (
         seo_score
       )
-    `,
-      { count: 'exact' }
+    `
     )
-    .order('sort_order', { ascending: true })
-    .order('created_at', { ascending: false })
+    .order('sort_order', { ascending: true, nullsFirst: false })
+    .order('title', { ascending: true })
 
-  // Apply filters
+  // Apply filters (but not pagination yet)
   if (status) {
-    query = query.eq('status', status)
+    allPagesQuery = allPagesQuery.eq('status', status)
   }
 
   if (search) {
-    query = query.or(`title.ilike.%${search}%,slug.ilike.%${search}%`)
+    allPagesQuery = allPagesQuery.or(`title.ilike.%${search}%,slug.ilike.%${search}%`)
   }
 
+  // Only apply parent_id filter if explicitly set
   if (parent_id !== undefined) {
     if (parent_id === null) {
-      query = query.is('parent_id', null)
+      allPagesQuery = allPagesQuery.is('parent_id', null)
     } else {
-      query = query.eq('parent_id', parent_id)
+      allPagesQuery = allPagesQuery.eq('parent_id', parent_id)
     }
   }
 
-  // Apply pagination
-  const from = (page - 1) * limit
-  const to = from + limit - 1
-  query = query.range(from, to)
-
-  const { data, error, count } = await query
+  const { data: allPages, error } = await allPagesQuery
 
   if (error) {
     console.error('Error fetching pages:', error)
     throw new Error('Failed to fetch pages')
   }
 
+  // Build hierarchical order: parent pages followed by their children
+  const pages = allPages || []
+  const parentPages = pages.filter(p => !p.parent_id).sort((a, b) =>
+    (a.sort_order ?? 999) - (b.sort_order ?? 999)
+  )
+  const childrenMap = new Map<string, typeof pages>()
+
+  // Group children by parent_id
+  pages.forEach(p => {
+    if (p.parent_id) {
+      const children = childrenMap.get(p.parent_id) || []
+      children.push(p)
+      childrenMap.set(p.parent_id, children)
+    }
+  })
+
+  // Sort children within each parent
+  childrenMap.forEach((children) => {
+    children.sort((a, b) => (a.sort_order ?? 999) - (b.sort_order ?? 999))
+  })
+
+  // Build final ordered list: parent followed by children
+  const orderedPages: typeof pages = []
+  parentPages.forEach(parent => {
+    orderedPages.push(parent)
+    const children = childrenMap.get(parent.id) || []
+    orderedPages.push(...children)
+  })
+
+  // Add orphan pages (children whose parents don't exist or are filtered out)
+  const orphans = pages.filter(p =>
+    p.parent_id && !parentPages.some(pp => pp.id === p.parent_id)
+  )
+  orderedPages.push(...orphans)
+
+  // Now apply pagination to the ordered list
+  const total = orderedPages.length
+  const from = (page - 1) * limit
+  const to = from + limit
+  const paginatedPages = orderedPages.slice(from, to)
+
   return {
-    pages: data || [],
-    total: count || 0,
+    pages: paginatedPages,
+    total,
     page,
     limit,
-    totalPages: Math.ceil((count || 0) / limit),
+    totalPages: Math.ceil(total / limit),
   }
 }
 
@@ -225,6 +263,36 @@ export async function getPageTree(): Promise<PageTreeNode[]> {
   })
 
   return rootPages
+}
+
+/**
+ * Get all navigation pages for reordering (flat list with parent info)
+ * Returns ALL pages that show in navigation, sorted by hierarchy
+ */
+export async function getAllNavigationPages(): Promise<Array<{
+  id: string
+  title: string
+  slug: string
+  status: string
+  sort_order: number | null
+  parent_id: string | null
+  show_in_navigation: boolean | null
+}>> {
+  const supabase = await createServerSupabaseClient()
+
+  const { data, error } = await supabase
+    .from('cms_pages')
+    .select('id, title, slug, status, sort_order, parent_id, show_in_navigation')
+    .eq('show_in_navigation', true)
+    .order('sort_order', { ascending: true, nullsFirst: false })
+    .order('title', { ascending: true })
+
+  if (error) {
+    console.error('Error fetching navigation pages:', error)
+    throw new Error('Failed to fetch navigation pages')
+  }
+
+  return data || []
 }
 
 /**

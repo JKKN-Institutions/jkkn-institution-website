@@ -6,7 +6,7 @@ import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
-import { Calendar } from 'lucide-react'
+import { Calendar, Newspaper, ChevronRight, ArrowRight } from 'lucide-react'
 
 /**
  * News item schema
@@ -52,13 +52,40 @@ export const CollegeNewsPropsSchema = z.object({
 export type CollegeNewsProps = z.infer<typeof CollegeNewsPropsSchema> & BaseBlockProps
 
 /**
+ * Intersection Observer hook for animations
+ */
+function useInView(threshold = 0.1) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [isInView, setIsInView] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true)
+        }
+      },
+      { threshold }
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => observer.disconnect()
+  }, [threshold])
+
+  return { ref, isInView }
+}
+
+/**
  * CollegeNews Component
  *
- * News section with carousel or grid layout featuring:
- * - Split-color header with brand colors
+ * Modern news section with carousel or grid layout featuring:
+ * - Section badge and decorative elements
  * - Auto-scrolling carousel with pause on hover
- * - Uniform card sizing
- * - Date badges on images
+ * - Scroll-triggered animations
+ * - Glassmorphism date badges
  */
 export function CollegeNews({
   headerPart1 = 'College',
@@ -79,6 +106,8 @@ export function CollegeNews({
 }: CollegeNewsProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isPaused, setIsPaused] = useState(false)
+  const headerRef = useInView()
+  const contentRef = useInView()
 
   const defaultNews: NewsItem[] = [
     { title: 'NAAC A+ Accreditation', image: '', date: 'Jan 15, 2025', link: '/news/naac' },
@@ -119,12 +148,57 @@ export function CollegeNews({
 
   return (
     <section
-      className={cn('py-10 md:py-12 w-full', className)}
+      className={cn('relative py-12 md:py-16 lg:py-20 w-full overflow-hidden', className)}
       style={{ backgroundColor }}
     >
-      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24">
+      {/* Decorative Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Gradient overlay */}
+        <div
+          className="absolute top-0 right-0 w-1/3 h-full opacity-[0.03]"
+          style={{
+            background: `radial-gradient(ellipse at top right, ${accentColor} 0%, transparent 70%)`
+          }}
+        />
+
+        {/* Floating circles */}
+        <div
+          className="absolute -top-20 -right-20 w-72 h-72 rounded-full opacity-5"
+          style={{ backgroundColor: accentColor }}
+        />
+        <div
+          className="absolute bottom-20 -left-16 w-56 h-56 rounded-full opacity-5"
+          style={{ backgroundColor: accentColor }}
+        />
+
+        {/* Dot pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, ${accentColor} 1px, transparent 0)`,
+            backgroundSize: '30px 30px'
+          }}
+        />
+      </div>
+
+      <div className="relative w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24">
         {/* Header */}
-        <div className="text-center mb-8 md:mb-10">
+        <div
+          ref={headerRef.ref}
+          className={cn(
+            "text-center mb-10 md:mb-14 transition-all duration-1000",
+            headerRef.isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          )}
+        >
+          {/* Section Badge */}
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
+            style={{ backgroundColor: `${accentColor}15`, color: accentColor }}
+          >
+            <Newspaper className="w-4 h-4" />
+            <span>Latest Updates</span>
+          </div>
+
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             <span style={{ color: headerPart1Color }}>{headerPart1}</span>{' '}
             <span
@@ -139,21 +213,50 @@ export function CollegeNews({
               {subtitle}
             </p>
           )}
+
+          {/* Decorative line */}
+          <div
+            className="w-24 h-1 mx-auto mt-6 rounded-full"
+            style={{ backgroundColor: accentColor }}
+          />
         </div>
 
         {/* News Display */}
-        {layout === 'carousel' ? (
-          <div
-            className="relative"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-          >
-            {/* Carousel - No navigation arrows */}
+        <div
+          ref={contentRef.ref}
+          className={cn(
+            "transition-all duration-1000 delay-200",
+            contentRef.isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          )}
+        >
+          {layout === 'carousel' ? (
             <div
-              ref={scrollRef}
-              className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              className="relative"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
             >
+              {/* Carousel */}
+              <div
+                ref={scrollRef}
+                className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {displayNews.map((news, index) => (
+                  <NewsCard
+                    key={index}
+                    news={news}
+                    dateBadgeColor={dateBadgeColor}
+                    accentColor={accentColor}
+                    isEditing={isEditing}
+                    index={index}
+                    isInView={contentRef.isInView}
+                    className="snap-start flex-shrink-0 w-[300px] h-[340px]"
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className={cn('grid gap-6 max-w-7xl mx-auto', columnClasses[columns])}>
               {displayNews.map((news, index) => (
                 <NewsCard
                   key={index}
@@ -161,32 +264,33 @@ export function CollegeNews({
                   dateBadgeColor={dateBadgeColor}
                   accentColor={accentColor}
                   isEditing={isEditing}
-                  className="snap-start flex-shrink-0 w-[300px] h-[320px]"
+                  index={index}
+                  isInView={contentRef.isInView}
+                  className="h-[340px]"
                 />
               ))}
             </div>
-          </div>
-        ) : (
-          <div className={cn('grid gap-6 max-w-7xl mx-auto', columnClasses[columns])}>
-            {displayNews.map((news, index) => (
-              <NewsCard
-                key={index}
-                news={news}
-                dateBadgeColor={dateBadgeColor}
-                accentColor={accentColor}
-                isEditing={isEditing}
-                className="h-[320px]"
-              />
-            ))}
-          </div>
-        )}
+          )}
+        </div>
+
+        {/* View All Link */}
+        <div className="text-center mt-10">
+          <a
+            href="/news"
+            className="group inline-flex items-center gap-2 font-semibold transition-all duration-300 hover:gap-3"
+            style={{ color: accentColor }}
+          >
+            View All News
+            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </a>
+        </div>
       </div>
     </section>
   )
 }
 
 /**
- * Individual News Card - Uniform sizing
+ * Individual News Card - Modern Design
  */
 function NewsCard({
   news,
@@ -194,15 +298,30 @@ function NewsCard({
   accentColor,
   isEditing,
   className,
+  index,
+  isInView,
 }: {
   news: NewsItem
   dateBadgeColor: string
   accentColor: string
   isEditing?: boolean
   className?: string
+  index: number
+  isInView: boolean
 }) {
+  const [isHovered, setIsHovered] = useState(false)
+
   const cardContent = (
-    <div className={cn('group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 h-full flex flex-col', className)}>
+    <div
+      className={cn(
+        'group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-black/10 transition-all duration-500 h-full flex flex-col hover:-translate-y-2',
+        "transition-all duration-700",
+        isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      )}
+      style={{ transitionDelay: `${index * 100}ms` }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {/* Image - Fixed height */}
       <div className="relative h-[180px] overflow-hidden flex-shrink-0">
         {news.image ? (
@@ -210,32 +329,77 @@ function NewsCard({
             src={news.image}
             alt={news.title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-            <span className="text-gray-400 text-sm">No image</span>
+            <Newspaper className="w-12 h-12 text-gray-300" />
           </div>
         )}
 
-        {/* Date Badge */}
+        {/* Gradient Overlay on Hover */}
         <div
-          className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-white text-sm font-medium flex items-center gap-1.5"
-          style={{ backgroundColor: dateBadgeColor }}
+          className={cn(
+            'absolute inset-0 transition-opacity duration-500',
+            isHovered ? 'opacity-100' : 'opacity-0'
+          )}
+          style={{
+            background: `linear-gradient(to top, ${accentColor}cc 0%, transparent 60%)`
+          }}
+        />
+
+        {/* Date Badge with glassmorphism */}
+        <div
+          className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-white text-sm font-medium flex items-center gap-1.5 backdrop-blur-sm shadow-lg"
+          style={{ backgroundColor: `${dateBadgeColor}ee` }}
         >
           <Calendar className="w-3.5 h-3.5" />
           {news.date}
         </div>
+
+        {/* Read More on Hover */}
+        <div
+          className={cn(
+            'absolute bottom-4 left-4 transition-all duration-500',
+            isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          )}
+        >
+          <span className="text-white font-semibold flex items-center gap-2">
+            Read More
+            <ChevronRight className="w-4 h-4" />
+          </span>
+        </div>
       </div>
 
-      {/* Content - Flex grow to fill remaining space */}
-      <div className="p-5 flex-grow flex flex-col">
-        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2">
+      {/* Content */}
+      <div className="relative p-5 flex-grow flex flex-col">
+        {/* Accent Line */}
+        <div
+          className={cn(
+            'absolute top-0 left-1/2 -translate-x-1/2 h-1 rounded-full transition-all duration-500',
+            isHovered ? 'w-3/4' : 'w-0'
+          )}
+          style={{ backgroundColor: accentColor }}
+        />
+
+        <h3 className="text-lg font-bold text-gray-900 group-hover:text-gray-800 transition-colors line-clamp-2 mt-2">
           {news.title}
         </h3>
         {news.excerpt && (
-          <p className="text-sm text-gray-600 mt-2 line-clamp-2 flex-grow">{news.excerpt}</p>
+          <p className="text-sm text-gray-500 mt-2 line-clamp-2 flex-grow">{news.excerpt}</p>
         )}
+
+        {/* Hover Link */}
+        <div
+          className={cn(
+            'mt-4 flex items-center text-sm font-semibold transition-all duration-500',
+            isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+          )}
+          style={{ color: accentColor }}
+        >
+          <span>Read Full Article</span>
+          <ChevronRight className="w-4 h-4 ml-1 transition-transform duration-300 group-hover:translate-x-1" />
+        </div>
       </div>
     </div>
   )

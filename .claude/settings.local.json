@@ -81,7 +81,11 @@
       "WebSearch",
       "Bash(npx shadcn@latest add:*)",
       "Bash(claude mcp add:*)",
-      "mcp__shadcn__getComponents"
+      "mcp__shadcn__getComponents",
+      "mcp__chrome-devtools__list_network_requests",
+      "mcp__chrome-devtools__performance_start_trace",
+      "mcp__chrome-devtools__performance_analyze_insight",
+      "mcp__chrome-devtools__fill"
     ],
     "deny": [],
     "ask": [],

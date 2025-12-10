@@ -5,6 +5,8 @@ import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import { DEFAULT_COLOR_SCHEME } from '@/lib/cms/brand-colors'
 import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
+import { Award, ArrowRight } from 'lucide-react'
 
 /**
  * AboutSection props schema
@@ -39,12 +41,40 @@ export const AboutSectionPropsSchema = z.object({
 export type AboutSectionProps = z.infer<typeof AboutSectionPropsSchema> & BaseBlockProps
 
 /**
+ * Intersection Observer hook for animations
+ */
+function useInView(threshold = 0.1) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [isInView, setIsInView] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true)
+        }
+      },
+      { threshold }
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => observer.disconnect()
+  }, [threshold])
+
+  return { ref, isInView }
+}
+
+/**
  * AboutSection Component
  *
- * A two-column about section with:
- * - Split-color header
- * - Left: title + paragraphs
+ * A modern two-column about section with:
+ * - Split-color header with animations
+ * - Left: title + paragraphs with scroll animations
  * - Right: image with badge, overlay, and decorative elements
+ * - Glassmorphism effects and modern styling
  */
 export function AboutSection({
   headerPart1 = 'About',
@@ -68,15 +98,67 @@ export function AboutSection({
   isEditing,
 }: AboutSectionProps) {
   const isReversed = layout === 'reversed'
+  const headerRef = useInView()
+  const contentRef = useInView()
+  const imageRef = useInView()
 
   return (
     <section
-      className={cn('pt-6 pb-12 md:pt-8 md:pb-16 lg:pt-10 lg:pb-20 w-full', className)}
+      className={cn('relative pt-12 pb-16 md:pt-16 md:pb-24 lg:pt-20 lg:pb-32 w-full overflow-hidden', className)}
       style={{ backgroundColor }}
     >
-      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24">
+      {/* Decorative Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Subtle gradient overlay */}
+        <div
+          className="absolute top-0 right-0 w-1/2 h-full opacity-[0.03]"
+          style={{
+            background: `radial-gradient(ellipse at top right, ${badgeColor} 0%, transparent 70%)`
+          }}
+        />
+
+        {/* Floating decorative circles */}
+        {showDecorative && (
+          <>
+            <div
+              className="absolute -top-20 -right-20 w-80 h-80 rounded-full opacity-5"
+              style={{ backgroundColor: badgeColor }}
+            />
+            <div
+              className="absolute bottom-20 -left-20 w-64 h-64 rounded-full opacity-5"
+              style={{ backgroundColor: badgeColor }}
+            />
+          </>
+        )}
+
+        {/* Dot pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, ${badgeColor} 1px, transparent 0)`,
+            backgroundSize: '30px 30px'
+          }}
+        />
+      </div>
+
+      <div className="relative w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24">
         {/* Header */}
-        <div className="text-center mb-12 md:mb-16">
+        <div
+          ref={headerRef.ref}
+          className={cn(
+            "text-center mb-12 md:mb-16 lg:mb-20 transition-all duration-1000",
+            headerRef.isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          )}
+        >
+          {/* Section Badge */}
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
+            style={{ backgroundColor: `${badgeColor}15`, color: badgeColor }}
+          >
+            <Award className="w-4 h-4" />
+            <span>Our Legacy</span>
+          </div>
+
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             <span style={{ color: headerPart1Color }}>{headerPart1}</span>{' '}
             <span style={{ color: headerPart2Color }}>{headerPart2}</span>
@@ -86,6 +168,12 @@ export function AboutSection({
               {subtitle}
             </p>
           )}
+
+          {/* Decorative line */}
+          <div
+            className="w-24 h-1 mx-auto mt-6 rounded-full"
+            style={{ backgroundColor: badgeColor }}
+          />
         </div>
 
         {/* Two-column layout */}
@@ -96,22 +184,46 @@ export function AboutSection({
           )}
         >
           {/* Left Column - Content */}
-          <div className={cn(isReversed && 'lg:col-start-2')}>
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-              {sectionTitle}
-            </h3>
+          <div
+            ref={contentRef.ref}
+            className={cn(
+              isReversed && 'lg:col-start-2',
+              "transition-all duration-1000 delay-200",
+              contentRef.isInView ? "opacity-100 translate-x-0" : isReversed ? "opacity-0 translate-x-10" : "opacity-0 -translate-x-10"
+            )}
+          >
+            {/* Section Title with accent */}
+            <div className="flex items-start gap-4 mb-6">
+              <div
+                className="w-1 h-12 rounded-full flex-shrink-0 mt-1"
+                style={{ backgroundColor: badgeColor }}
+              />
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
+                {sectionTitle}
+              </h3>
+            </div>
 
             {paragraph1 && (
-              <p className="text-gray-600 leading-relaxed mb-4">
+              <p className="text-gray-600 leading-relaxed mb-6 text-base md:text-lg">
                 {paragraph1}
               </p>
             )}
 
             {paragraph2 && (
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 leading-relaxed mb-8 text-base md:text-lg">
                 {paragraph2}
               </p>
             )}
+
+            {/* Learn More Button */}
+            <a
+              href="/about"
+              className="group inline-flex items-center gap-2 font-semibold transition-all duration-300 hover:gap-3"
+              style={{ color: badgeColor }}
+            >
+              Learn More About Us
+              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </a>
 
             {/* Empty state for editor */}
             {isEditing && !paragraph1 && !paragraph2 && (
@@ -122,11 +234,25 @@ export function AboutSection({
           </div>
 
           {/* Right Column - Image */}
-          <div className={cn('relative', isReversed && 'lg:col-start-1 lg:row-start-1')}>
+          <div
+            ref={imageRef.ref}
+            className={cn(
+              'relative',
+              isReversed && 'lg:col-start-1 lg:row-start-1',
+              "transition-all duration-1000 delay-400",
+              imageRef.isInView ? "opacity-100 translate-x-0" : isReversed ? "opacity-0 -translate-x-10" : "opacity-0 translate-x-10"
+            )}
+          >
             {image ? (
-              <div className="relative">
+              <div className="relative group">
+                {/* Decorative background frame */}
+                <div
+                  className="absolute -inset-4 rounded-3xl opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-500"
+                  style={{ backgroundColor: badgeColor }}
+                />
+
                 {/* Main Image Container */}
-                <div className="relative rounded-2xl overflow-hidden shadow-xl">
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl transform transition-transform duration-500 group-hover:scale-[1.02]">
                   <Image
                     src={image}
                     alt={imageAlt}
@@ -138,23 +264,23 @@ export function AboutSection({
                   {/* Badge (top-right) */}
                   {imageBadge && (
                     <div
-                      className="absolute top-4 right-4 px-4 py-2 rounded-full text-white text-sm font-semibold shadow-lg"
-                      style={{ backgroundColor: badgeColor }}
+                      className="absolute top-4 right-4 px-4 py-2 rounded-full text-white text-sm font-bold shadow-lg backdrop-blur-sm"
+                      style={{ backgroundColor: `${badgeColor}ee` }}
                     >
                       {imageBadge}
                     </div>
                   )}
 
-                  {/* Bottom Overlay */}
+                  {/* Bottom Overlay with glassmorphism */}
                   {(imageTitle || imageSubtitle) && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-6 pt-16">
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-6 pt-20">
                       {imageTitle && (
-                        <h4 className="text-white text-xl md:text-2xl font-bold">
+                        <h4 className="text-white text-xl md:text-2xl font-bold mb-1">
                           {imageTitle}
                         </h4>
                       )}
                       {imageSubtitle && (
-                        <p className="text-white/80 text-sm md:text-base mt-1">
+                        <p className="text-white/80 text-sm md:text-base">
                           {imageSubtitle}
                         </p>
                       )}
@@ -162,18 +288,34 @@ export function AboutSection({
                   )}
                 </div>
 
-                {/* Decorative Circle Element */}
+                {/* Decorative Elements */}
                 {showDecorative && (
-                  <div
-                    className="absolute -bottom-6 -right-6 w-32 h-32 rounded-full border-4 opacity-20 pointer-events-none hidden lg:block"
-                    style={{ borderColor: badgeColor }}
-                  />
+                  <>
+                    {/* Corner accent */}
+                    <div
+                      className="absolute -bottom-6 -right-6 w-32 h-32 rounded-full border-4 opacity-30 pointer-events-none hidden lg:block"
+                      style={{ borderColor: badgeColor }}
+                    />
+                    {/* Small floating badge */}
+                    <div
+                      className="absolute -top-4 -left-4 w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg hidden lg:flex"
+                      style={{ backgroundColor: badgeColor }}
+                    >
+                      <span className="text-white text-2xl font-bold">55+</span>
+                    </div>
+                    <span
+                      className="absolute -top-4 left-14 text-xs font-medium hidden lg:block"
+                      style={{ color: badgeColor }}
+                    >
+                      Years of Excellence
+                    </span>
+                  </>
                 )}
               </div>
             ) : (
               /* Placeholder for editor */
               isEditing && (
-                <div className="bg-gray-100 rounded-2xl h-[400px] flex items-center justify-center text-gray-400">
+                <div className="bg-gray-100 rounded-2xl h-[400px] flex items-center justify-center text-gray-400 border-2 border-dashed border-gray-300">
                   <div className="text-center">
                     <svg
                       className="w-16 h-16 mx-auto mb-4 opacity-50"
