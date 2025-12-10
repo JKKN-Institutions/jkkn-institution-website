@@ -33,7 +33,7 @@ export interface EditableProp {
   /** Display label (defaults to formatted name) */
   label?: string
   /** Property type for form field rendering */
-  type: 'string' | 'number' | 'boolean' | 'enum' | 'array' | 'color' | 'url' | 'image' | 'video' | 'media'
+  type: 'string' | 'number' | 'boolean' | 'enum' | 'array' | 'object' | 'color' | 'url' | 'image' | 'video' | 'media'
   /** Description shown below the field */
   description?: string
   /** Whether this field is required */
@@ -56,6 +56,8 @@ export interface EditableProp {
   itemType?: 'string' | 'image' | 'object'
   /** For array type with object items: the schema of each item */
   itemSchema?: ItemSchema
+  /** For object type: nested properties */
+  properties?: EditableProp[]
 }
 
 /**

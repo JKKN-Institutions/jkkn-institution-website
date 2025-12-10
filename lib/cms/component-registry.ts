@@ -1937,7 +1937,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
           required: ['src'],
         },
       },
-      { name: 'introduction', type: 'textarea', label: 'Introduction Paragraph', required: true },
+      { name: 'introduction', type: 'string', multiline: true, label: 'Introduction Paragraph', required: true },
       {
         name: 'features',
         type: 'array',
@@ -1951,7 +1951,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
           required: ['title', 'description'],
         },
       },
-      { name: 'conclusion', type: 'textarea', label: 'Conclusion Paragraph' },
+      { name: 'conclusion', type: 'string', multiline: true, label: 'Conclusion Paragraph' },
       { name: 'backgroundColor', type: 'color', label: 'Background Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },
       { name: 'textColor', type: 'color', label: 'Text Color' },
