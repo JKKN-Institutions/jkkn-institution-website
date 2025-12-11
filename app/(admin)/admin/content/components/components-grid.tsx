@@ -269,6 +269,8 @@ export function ComponentsGrid({
           <div className="relative flex-1 sm:flex-initial sm:w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
+              id="components-search"
+              name="components-search"
               placeholder="Search components..."
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}

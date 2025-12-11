@@ -381,6 +381,8 @@ export function MediaLibrary({ initialMedia, folders, stats, folderStats, select
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
+            id="media-search"
+            name="media-search"
             placeholder="Search files..."
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}

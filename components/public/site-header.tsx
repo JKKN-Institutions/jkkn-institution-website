@@ -22,6 +22,7 @@ export interface NavItem {
   label: string
   href: string
   is_homepage?: boolean
+  external_url?: string | null
   children?: NavItem[]
 }
 
@@ -127,6 +128,7 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                   src="https://jkkn.ac.in/wp-content/uploads/2023/04/Untitled-design-2023-03-13T105521.479.png"
                   alt="JKKN Institution Logo"
                   fill
+                  sizes="(max-width: 640px) 64px, (max-width: 1024px) 80px, 96px"
                   className="object-contain"
                   priority
                 />
@@ -170,20 +172,32 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                       {item.children && item.children.length > 0 && openDropdown === item.id && (
                         <div className="absolute top-full left-0 pt-1 w-72 origin-top animate-in fade-in slide-in-from-top-2 duration-200 z-50">
                           <div className="bg-white rounded-lg shadow-lg shadow-black/10 border border-gray-100 py-1 overflow-hidden">
-                            {item.children.map((child) => (
-                              <Link
-                                key={child.id}
-                                href={child.href}
-                                className={cn(
-                                  'block px-3 py-1.5 text-xs transition-colors duration-150',
-                                  isActive(child.href)
-                                    ? 'text-primary bg-primary/5 font-medium'
-                                    : 'text-gray-700 hover:text-primary hover:bg-gray-50'
-                                )}
-                              >
-                                {child.label}
-                              </Link>
-                            ))}
+                            {item.children.map((child) =>
+                              child.external_url ? (
+                                <a
+                                  key={child.id}
+                                  href={child.external_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="block px-3 py-1.5 text-xs text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-150"
+                                >
+                                  {child.label}
+                                </a>
+                              ) : (
+                                <Link
+                                  key={child.id}
+                                  href={child.href}
+                                  className={cn(
+                                    'block px-3 py-1.5 text-xs transition-colors duration-150',
+                                    isActive(child.href)
+                                      ? 'text-primary bg-primary/5 font-medium'
+                                      : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                                  )}
+                                >
+                                  {child.label}
+                                </Link>
+                              )
+                            )}
                           </div>
                         </div>
                       )}
@@ -231,20 +245,32 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                     {item.children && item.children.length > 0 && openDropdown === item.id && (
                       <div className="absolute top-full left-0 pt-1 w-72 origin-top animate-in fade-in slide-in-from-top-2 duration-200 z-50">
                         <div className="bg-white rounded-lg shadow-lg shadow-black/10 border border-gray-100 py-1 overflow-hidden">
-                          {item.children.map((child) => (
-                            <Link
-                              key={child.id}
-                              href={child.href}
-                              className={cn(
-                                'block px-3 py-1.5 text-xs transition-colors duration-150',
-                                isActive(child.href)
-                                  ? 'text-primary bg-primary/5 font-medium'
-                                  : 'text-gray-700 hover:text-primary hover:bg-gray-50'
-                              )}
-                            >
-                              {child.label}
-                            </Link>
-                          ))}
+                          {item.children.map((child) =>
+                            child.external_url ? (
+                              <a
+                                key={child.id}
+                                href={child.external_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block px-3 py-1.5 text-xs text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-150"
+                              >
+                                {child.label}
+                              </a>
+                            ) : (
+                              <Link
+                                key={child.id}
+                                href={child.href}
+                                className={cn(
+                                  'block px-3 py-1.5 text-xs transition-colors duration-150',
+                                  isActive(child.href)
+                                    ? 'text-primary bg-primary/5 font-medium'
+                                    : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                                )}
+                              >
+                                {child.label}
+                              </Link>
+                            )
+                          )}
                         </div>
                       </div>
                     )}
@@ -311,6 +337,7 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                   src="https://jkkn.ac.in/wp-content/uploads/2023/04/Untitled-design-2023-03-13T105521.479.png"
                   alt="JKKN"
                   fill
+                  sizes="56px"
                   className="object-contain"
                 />
               </div>
@@ -354,21 +381,34 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                         openDropdown === item.id ? 'max-h-[500px] pb-2' : 'max-h-0'
                       )}>
                         <div className="pl-4 border-l-2 border-primary/30 ml-2 space-y-1">
-                          {item.children.map((child) => (
-                            <Link
-                              key={child.id}
-                              href={child.href}
-                              onClick={() => setIsMobileMenuOpen(false)}
-                              className={cn(
-                                'block py-2 text-sm transition-colors',
-                                isActive(child.href)
-                                  ? 'text-primary font-medium'
-                                  : 'text-gray-600 hover:text-primary'
-                              )}
-                            >
-                              {child.label}
-                            </Link>
-                          ))}
+                          {item.children.map((child) =>
+                            child.external_url ? (
+                              <a
+                                key={child.id}
+                                href={child.external_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="block py-2 text-sm text-gray-600 hover:text-primary transition-colors"
+                              >
+                                {child.label}
+                              </a>
+                            ) : (
+                              <Link
+                                key={child.id}
+                                href={child.href}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className={cn(
+                                  'block py-2 text-sm transition-colors',
+                                  isActive(child.href)
+                                    ? 'text-primary font-medium'
+                                    : 'text-gray-600 hover:text-primary'
+                                )}
+                              >
+                                {child.label}
+                              </Link>
+                            )
+                          )}
                         </div>
                       </div>
                     </div>

@@ -24,6 +24,7 @@ const CreatePageSchema = z.object({
   show_in_navigation: z.boolean().default(true),
   navigation_label: z.string().optional(),
   is_homepage: z.boolean().default(false),
+  external_url: z.string().url().nullable().optional(),
 })
 
 const UpdatePageSchema = CreatePageSchema.partial().extend({
@@ -72,6 +73,7 @@ export interface PageWithBlocks {
   is_homepage: boolean | null
   show_in_navigation: boolean | null
   navigation_label: string | null
+  external_url: string | null
   metadata: Record<string, unknown> | null
   created_by: string
   updated_by: string | null
@@ -716,6 +718,7 @@ export async function createPage(
     show_in_navigation: formData.get('show_in_navigation') === 'true',
     navigation_label: formData.get('navigation_label') || undefined,
     is_homepage: formData.get('is_homepage') === 'true',
+    external_url: formData.get('external_url') || null,
   })
 
   if (!validation.success) {
@@ -771,6 +774,7 @@ export async function createPage(
       show_in_navigation: validation.data.show_in_navigation,
       navigation_label: validation.data.navigation_label,
       is_homepage: validation.data.is_homepage,
+      external_url: validation.data.external_url,
       created_by: user.id,
     })
     .select()
@@ -848,6 +852,7 @@ export async function updatePage(
 
   // Validate input
   const sortOrderValue = formData.get('sort_order')
+  const externalUrlValue = formData.get('external_url')
   const validation = UpdatePageSchema.safeParse({
     id: formData.get('id'),
     title: formData.get('title') || undefined,
@@ -867,6 +872,7 @@ export async function updatePage(
       formData.get('is_homepage') !== null
         ? formData.get('is_homepage') === 'true'
         : undefined,
+    external_url: externalUrlValue !== null ? (externalUrlValue || null) : undefined,
   })
 
   if (!validation.success) {

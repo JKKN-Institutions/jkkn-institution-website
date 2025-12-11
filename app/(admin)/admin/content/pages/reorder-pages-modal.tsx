@@ -173,6 +173,8 @@ export function ReorderPagesModal({
             </span>
           )}
           <Input
+            id={`page-order-${page.id}`}
+            name={`page-order-${page.id}`}
             type="number"
             min="1"
             value={displayOrder}

@@ -18,6 +18,7 @@ interface PageDetailHeaderProps {
     parent_id?: string | null
     show_in_navigation: boolean | null
     is_homepage: boolean | null
+    external_url?: string | null
   }
   parentOrder?: number | null
 }

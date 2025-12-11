@@ -49,6 +49,7 @@ const pageSettingsSchema = z.object({
   sort_order: z.number().min(1, 'Order must be at least 1').optional(),
   show_in_navigation: z.boolean(),
   is_homepage: z.boolean(),
+  external_url: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
 })
 
 type PageSettingsFormData = z.infer<typeof pageSettingsSchema>
@@ -66,6 +67,7 @@ interface PageSettingsModalProps {
     parent_id?: string | null
     show_in_navigation: boolean | null
     is_homepage: boolean | null
+    external_url?: string | null
   }
   parentOrder?: number | null
 }
@@ -87,6 +89,7 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
       sort_order: page.sort_order ?? 1,
       show_in_navigation: page.show_in_navigation ?? true,
       is_homepage: page.is_homepage ?? false,
+      external_url: page.external_url || '',
     },
   })
 
@@ -100,6 +103,7 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
       sort_order: page.sort_order ?? 1,
       show_in_navigation: page.show_in_navigation ?? true,
       is_homepage: page.is_homepage ?? false,
+      external_url: page.external_url || '',
     })
   }, [page, form])
 
@@ -134,6 +138,7 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
       formData.append('sort_order', String(data.sort_order ?? 1))
       formData.append('show_in_navigation', String(data.show_in_navigation))
       formData.append('is_homepage', String(data.is_homepage))
+      formData.append('external_url', data.external_url || '')
 
       const result = await updatePage({ success: false }, formData)
 
@@ -309,6 +314,29 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
                     </FormItem>
                   )}
                 />
+
+                {form.watch('show_in_navigation') && (
+                  <FormField
+                    control={form.control}
+                    name="external_url"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>External URL</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="url"
+                            placeholder="https://example.com"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormDescription className="text-xs">
+                          If set, navigation will link to this URL instead of the page (opens in new tab)
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
 
                 <FormField
                   control={form.control}

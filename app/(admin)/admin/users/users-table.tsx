@@ -361,6 +361,8 @@ export function UsersTable({
           <div className="relative w-full sm:w-auto sm:min-w-[200px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
+              id="users-search"
+              name="users-search"
               placeholder="Search by email..."
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}

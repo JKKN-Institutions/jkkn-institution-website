@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
 import { ChevronRight, ExternalLink, GraduationCap, Building2 } from 'lucide-react'
+import { DecorativePatterns } from '../shared/decorative-patterns'
 
 /**
  * Institution item schema
@@ -26,9 +27,9 @@ export type InstitutionItem = z.infer<typeof InstitutionItemSchema>
 export const InstitutionsGridPropsSchema = z.object({
   // Header
   headerPart1: z.string().default('Our JKKN').describe('First part of header'),
-  headerPart2: z.string().default('Institutions').describe('Second part of header (colored)'),
-  headerPart1Color: z.string().default('#000000').describe('Color for first part'),
-  headerPart2Color: z.string().default('#0b6d41').describe('Color for second part'),
+  headerPart2: z.string().default('Institutions').describe('Second part of header'),
+  headerPart1Color: z.string().default('#0b6d41').describe('Color for first part of header'),
+  headerPart2Color: z.string().default('#0b6d41').describe('Color for second part of header'),
   subtitle: z.string().optional().describe('Subtitle below header'),
 
   // Institutions
@@ -39,10 +40,10 @@ export const InstitutionsGridPropsSchema = z.object({
   gap: z.enum(['sm', 'md', 'lg']).default('md').describe('Gap between cards'),
 
   // Styling
-  backgroundColor: z.string().default('#ffffff').describe('Section background color'),
-  cardStyle: z.enum(['modern', 'minimal', 'bordered']).default('modern').describe('Card design style'),
+  variant: z.enum(['modern-dark', 'modern-light', 'classic']).default('modern-light').describe('Visual style'),
+  cardStyle: z.enum(['glassmorphic', 'modern', 'minimal']).default('glassmorphic').describe('Card design style'),
   showHoverEffect: z.boolean().default(true).describe('Show hover animation'),
-  accentColor: z.string().default('#0b6d41').describe('Accent color for hover effects'),
+  showDecorations: z.boolean().default(true).describe('Show decorative patterns'),
 })
 
 export type InstitutionsGridProps = z.infer<typeof InstitutionsGridPropsSchema> & BaseBlockProps
@@ -78,30 +79,33 @@ function useInView(threshold = 0.1) {
  * InstitutionsGrid Component
  *
  * A modern grid of institution cards featuring:
- * - Split-color header with section badge
+ * - Serif header with gold accent
+ * - Decorative circle patterns
+ * - Glassmorphic or modern card designs
  * - Responsive grid layout with scroll animations
- * - Modern card design with glassmorphism effects
  * - Hover effects with brand colors
- * - Decorative background elements
  */
 export function InstitutionsGrid({
   headerPart1 = 'Our JKKN',
   headerPart2 = 'Institutions',
-  headerPart1Color = '#000000',
+  headerPart1Color = '#0b6d41',
   headerPart2Color = '#0b6d41',
   subtitle,
   institutions = [],
   columns = '3',
   gap = 'md',
-  backgroundColor = '#ffffff',
-  cardStyle = 'modern',
+  variant = 'modern-light',
+  cardStyle = 'glassmorphic',
   showHoverEffect = true,
-  accentColor = '#0b6d41',
+  showDecorations = true,
   className,
   isEditing,
 }: InstitutionsGridProps) {
   const headerRef = useInView()
   const gridRef = useInView()
+
+  const isDark = variant === 'modern-dark'
+  const isModern = variant !== 'classic'
 
   // Column classes
   const columnClasses = {
@@ -119,72 +123,50 @@ export function InstitutionsGrid({
 
   return (
     <section
-      className={cn('relative pt-12 pb-16 md:pt-16 md:pb-24 lg:pt-20 lg:pb-32 w-full overflow-hidden', className)}
-      style={{ backgroundColor }}
+      className={cn(
+        'relative w-full overflow-hidden py-16 md:py-20 lg:py-24',
+        isDark ? 'section-green-gradient' : 'bg-brand-cream',
+        className
+      )}
     >
-      {/* Decorative Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Subtle gradient overlay */}
-        <div
-          className="absolute top-0 left-0 w-1/2 h-full opacity-[0.03]"
-          style={{
-            background: `radial-gradient(ellipse at top left, ${accentColor} 0%, transparent 70%)`
-          }}
-        />
+      {/* Decorative Patterns */}
+      {showDecorations && isModern && (
+        <DecorativePatterns variant="default" color={isDark ? 'white' : 'green'} />
+      )}
 
-        {/* Floating decorative circles */}
-        <div
-          className="absolute -top-20 -left-20 w-80 h-80 rounded-full opacity-5"
-          style={{ backgroundColor: accentColor }}
-        />
-        <div
-          className="absolute bottom-20 -right-20 w-64 h-64 rounded-full opacity-5"
-          style={{ backgroundColor: accentColor }}
-        />
-
-        {/* Dot pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, ${accentColor} 1px, transparent 0)`,
-            backgroundSize: '30px 30px'
-          }}
-        />
-      </div>
-
-      <div className="relative w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24">
+      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24">
         {/* Header */}
         <div
           ref={headerRef.ref}
           className={cn(
-            "text-center mb-12 md:mb-16 lg:mb-20 transition-all duration-1000",
+            "text-center mb-12 md:mb-16 transition-all duration-700",
             headerRef.isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}
         >
           {/* Section Badge */}
           <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
-            style={{ backgroundColor: `${accentColor}15`, color: accentColor }}
+            className={cn(
+              "inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6",
+              isDark ? "bg-white/10 backdrop-blur-sm text-white" : "bg-brand-primary/10 text-brand-primary"
+            )}
           >
             <Building2 className="w-4 h-4" />
             <span>Our Institutions</span>
           </div>
 
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase">
             <span style={{ color: headerPart1Color }}>{headerPart1}</span>{' '}
             <span style={{ color: headerPart2Color }}>{headerPart2}</span>
           </h2>
+
           {subtitle && (
-            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className={cn(
+              "text-lg md:text-xl max-w-3xl mx-auto",
+              isDark ? "text-white/70" : "text-gray-600"
+            )}>
               {subtitle}
             </p>
           )}
-
-          {/* Decorative line */}
-          <div
-            className="w-24 h-1 mx-auto mt-6 rounded-full"
-            style={{ backgroundColor: accentColor }}
-          />
         </div>
 
         {/* Institutions Grid */}
@@ -203,7 +185,7 @@ export function InstitutionsGrid({
                 institution={institution}
                 cardStyle={cardStyle}
                 showHoverEffect={showHoverEffect}
-                accentColor={accentColor}
+                isDark={isDark}
                 isEditing={isEditing}
                 index={index}
                 isInView={gridRef.isInView}
@@ -215,10 +197,16 @@ export function InstitutionsGrid({
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div
                   key={i}
-                  className="bg-gray-100 rounded-2xl h-72 flex items-center justify-center text-gray-400 border-2 border-dashed border-gray-300"
+                  className={cn(
+                    "rounded-2xl h-72 flex items-center justify-center border-2 border-dashed",
+                    isDark ? "bg-white/5 border-white/20 text-white/40" : "bg-gray-100 border-gray-300 text-gray-400"
+                  )}
                 >
                   <div className="text-center">
-                    <div className="w-16 h-16 rounded-full bg-gray-200 mx-auto mb-3 flex items-center justify-center">
+                    <div className={cn(
+                      "w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center",
+                      isDark ? "bg-white/10" : "bg-gray-200"
+                    )}>
                       <GraduationCap className="w-8 h-8 opacity-50" />
                     </div>
                     <p className="text-sm">Add institution {i}</p>
@@ -234,21 +222,21 @@ export function InstitutionsGrid({
 }
 
 /**
- * Individual Institution Card - Modern Design
+ * Individual Institution Card
  */
 function InstitutionCard({
   institution,
   cardStyle,
   showHoverEffect,
-  accentColor,
+  isDark,
   isEditing,
   index,
   isInView,
 }: {
   institution: InstitutionItem
-  cardStyle: 'modern' | 'minimal' | 'bordered'
+  cardStyle: 'glassmorphic' | 'modern' | 'minimal'
   showHoverEffect: boolean
-  accentColor: string
+  isDark: boolean
   isEditing?: boolean
   index: number
   isInView: boolean
@@ -259,10 +247,11 @@ function InstitutionCard({
     <div
       className={cn(
         'group relative overflow-hidden rounded-2xl transition-all duration-500 h-full flex flex-col',
-        cardStyle === 'modern' && 'bg-white shadow-lg hover:shadow-2xl hover:shadow-black/10',
+        cardStyle === 'glassmorphic' && isDark && 'glass-card-dark',
+        cardStyle === 'glassmorphic' && !isDark && 'bg-white shadow-lg hover:shadow-xl',
+        cardStyle === 'modern' && 'bg-white shadow-lg hover:shadow-2xl',
         cardStyle === 'minimal' && 'bg-white',
-        cardStyle === 'bordered' && 'bg-white border-2 border-gray-200 hover:border-primary',
-        showHoverEffect && 'hover:-translate-y-3',
+        showHoverEffect && 'hover:-translate-y-2',
         "transition-all duration-700",
         isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       )}
@@ -276,7 +265,7 @@ function InstitutionCard({
           "absolute -inset-1 rounded-2xl opacity-0 blur-xl transition-opacity duration-500",
           isHovered && "opacity-20"
         )}
-        style={{ backgroundColor: accentColor }}
+        style={{ backgroundColor: '#ffde59' }}
       />
 
       {/* Image Container */}
@@ -286,14 +275,15 @@ function InstitutionCard({
             src={institution.image}
             alt={institution.name}
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className={cn(
               'object-cover transition-transform duration-700',
               showHoverEffect && 'group-hover:scale-110'
             )}
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-            <GraduationCap className="w-12 h-12 text-gray-300" />
+          <div className="w-full h-full bg-gradient-to-br from-brand-primary to-brand-primary-dark flex items-center justify-center">
+            <GraduationCap className="w-12 h-12 text-white/40" />
           </div>
         )}
 
@@ -304,7 +294,7 @@ function InstitutionCard({
             isHovered ? 'opacity-100' : 'opacity-0'
           )}
           style={{
-            background: `linear-gradient(to top, ${accentColor}dd 0%, ${accentColor}40 40%, transparent 100%)`,
+            background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 40%, transparent 100%)',
           }}
         />
 
@@ -313,64 +303,61 @@ function InstitutionCard({
           <div
             className={cn(
               'absolute top-4 right-4 w-10 h-10 rounded-full bg-white/95 backdrop-blur-sm flex items-center justify-center transition-all duration-500 shadow-lg',
-              isHovered ? 'opacity-100 translate-y-0 rotate-0' : 'opacity-0 -translate-y-4 rotate-45'
+              isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
             )}
           >
-            <ExternalLink className="h-4 w-4" style={{ color: accentColor }} />
+            <ExternalLink className="h-4 w-4 text-brand-primary" />
           </div>
         )}
 
         {/* Hover Title Overlay */}
-        {showHoverEffect && institution.link && (
+        {showHoverEffect && (
           <div
             className={cn(
               'absolute bottom-0 left-0 right-0 p-4 transition-all duration-500',
               isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
-            <span className="text-white font-semibold flex items-center gap-2">
-              Explore
-              <ChevronRight className="h-4 w-4" />
+            <span className="text-white font-bold text-lg line-clamp-2">
+              {institution.name}
             </span>
           </div>
         )}
       </div>
 
       {/* Card Content */}
-      <div className="relative p-5 flex-grow flex flex-col bg-white">
-        {/* Accent Line Top */}
+      <div className={cn(
+        "relative p-5 flex-grow flex flex-col",
+        isDark && cardStyle === 'glassmorphic' ? 'bg-transparent' : 'bg-white'
+      )}>
+        {/* Gold accent line on hover */}
         <div
           className={cn(
             'absolute top-0 left-1/2 -translate-x-1/2 h-1 rounded-full transition-all duration-500',
             isHovered ? 'w-3/4' : 'w-0'
           )}
-          style={{ backgroundColor: accentColor }}
+          style={{ backgroundColor: '#ffde59' }}
         />
 
-        <h3
-          className={cn(
-            'text-base md:text-lg font-bold text-gray-900 transition-colors duration-300 text-center line-clamp-2 min-h-[3rem] mt-2',
-            showHoverEffect && 'group-hover:text-gray-800'
-          )}
-        >
+        <h3 className={cn(
+          "text-base md:text-lg font-bold transition-colors duration-300 text-center line-clamp-2 min-h-[3rem] mt-2",
+          isDark && cardStyle === 'glassmorphic' ? 'text-white' : 'text-brand-primary'
+        )}>
           {institution.name}
         </h3>
 
         {institution.description && (
-          <p className="text-sm text-gray-500 mt-2 line-clamp-2 text-center flex-grow">
+          <p className={cn(
+            "text-sm mt-2 line-clamp-2 text-center flex-grow",
+            isDark && cardStyle === 'glassmorphic' ? 'text-white/60' : 'text-gray-500'
+          )}>
             {institution.description}
           </p>
         )}
 
         {/* View More Link */}
         {institution.link && (
-          <div
-            className={cn(
-              'mt-4 flex items-center justify-center text-sm font-semibold transition-all duration-500',
-              isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-            )}
-            style={{ color: accentColor }}
-          >
+          <div className="mt-4 flex items-center justify-center text-sm font-semibold text-gold">
             <span>Learn More</span>
             <ChevronRight className="h-4 w-4 ml-1 transition-transform duration-300 group-hover:translate-x-1" />
           </div>
@@ -378,17 +365,15 @@ function InstitutionCard({
       </div>
 
       {/* Bottom Accent Gradient */}
-      {cardStyle === 'modern' && (
-        <div
-          className={cn(
-            'absolute bottom-0 left-0 right-0 h-1 transition-all duration-500',
-            isHovered ? 'opacity-100' : 'opacity-0'
-          )}
-          style={{
-            background: `linear-gradient(to right, transparent, ${accentColor}, transparent)`
-          }}
-        />
-      )}
+      <div
+        className={cn(
+          'absolute bottom-0 left-0 right-0 h-1 transition-all duration-500',
+          isHovered ? 'opacity-100' : 'opacity-0'
+        )}
+        style={{
+          background: 'linear-gradient(to right, transparent, #ffde59, transparent)'
+        }}
+      />
     </div>
   )
 

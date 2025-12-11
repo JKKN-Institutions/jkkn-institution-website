@@ -499,6 +499,8 @@ export function PagesTable({
         <div className="relative w-full">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
+            id="pages-search"
+            name="pages-search"
             placeholder="Search by title or slug..."
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}

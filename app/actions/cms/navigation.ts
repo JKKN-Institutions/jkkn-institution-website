@@ -7,6 +7,7 @@ export interface NavItem {
   label: string
   href: string
   is_homepage: boolean
+  external_url?: string | null
   children?: NavItem[]
 }
 
@@ -18,6 +19,7 @@ interface PageNavData {
   sort_order: number | null
   navigation_label: string | null
   is_homepage: boolean
+  external_url: string | null
 }
 
 /**
@@ -28,12 +30,14 @@ function buildNavTree(pages: PageNavData[]): NavItem[] {
 
   // Create nav items from pages
   pages.forEach((page) => {
-    const href = page.is_homepage ? '/' : `/${page.slug}`
+    // Use external_url if set, otherwise use internal page path
+    const href = page.external_url || (page.is_homepage ? '/' : `/${page.slug}`)
     pageMap.set(page.id, {
       id: page.id,
       label: page.navigation_label || page.title,
       href,
       is_homepage: page.is_homepage,
+      external_url: page.external_url,
       parent_id: page.parent_id,
       sort_order: page.sort_order ?? 999,
       children: [],
@@ -63,6 +67,7 @@ function buildNavTree(pages: PageNavData[]): NavItem[] {
         const { sort_order, parent_id, ...rest } = item as NavItem & { sort_order?: number; parent_id?: string }
         return {
           ...rest,
+          external_url: item.external_url,
           children: item.children && item.children.length > 0
             ? sortItems(item.children as (NavItem & { sort_order?: number })[])
             : undefined,
@@ -82,7 +87,7 @@ export async function getPublicNavigation(): Promise<NavItem[]> {
 
   const { data, error } = await supabase
     .from('cms_pages')
-    .select('id, title, slug, parent_id, sort_order, navigation_label, is_homepage')
+    .select('id, title, slug, parent_id, sort_order, navigation_label, is_homepage, external_url')
     .eq('status', 'published')
     .eq('visibility', 'public')
     .eq('show_in_navigation', true)
@@ -121,7 +126,7 @@ export async function getSectionNavigation(parentSlug: string): Promise<NavItem[
   // Get child pages
   const { data, error } = await supabase
     .from('cms_pages')
-    .select('id, title, slug, parent_id, sort_order, navigation_label, is_homepage')
+    .select('id, title, slug, parent_id, sort_order, navigation_label, is_homepage, external_url')
     .eq('parent_id', parentPage.id)
     .eq('status', 'published')
     .eq('visibility', 'public')

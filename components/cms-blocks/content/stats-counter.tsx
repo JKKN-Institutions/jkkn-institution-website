@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import { useEffect, useState, useRef } from 'react'
+import { DecorativePatterns, CurveDivider } from '../shared/decorative-patterns'
 
 /**
  * Stat item schema
@@ -21,10 +22,7 @@ export type StatItem = z.infer<typeof StatItemSchema>
 export const StatsCounterPropsSchema = z.object({
   // Header
   headerPart1: z.string().default('Our').describe('First part of header'),
-  headerPart2: z.string().default('Strength').describe('Second part of header'),
-  headerPart1Color: z.string().default('#ffffff').describe('Color for first part'),
-  headerPart2Color: z.string().default('#ffde59').describe('Color for second part (yellow)'),
-  headerPart2Italic: z.boolean().default(true).describe('Make second part italic'),
+  headerPart2: z.string().default('Strength').describe('Second part of header (gold italic)'),
   subtitle: z.string().default('Numbers that speak volumes about our commitment to excellence').describe('Subtitle below header'),
 
   // Stats
@@ -35,136 +33,93 @@ export const StatsCounterPropsSchema = z.object({
 
   // Layout
   columns: z.enum(['2', '3', '4', '6']).default('6').describe('Number of columns'),
+  rows: z.enum(['1', '2']).default('2').describe('Number of rows (1 = single row, 2 = two rows)'),
 
   // Styling
-  backgroundColor: z.string().default('#0b6d41').describe('Section background color'),
-  backgroundGradient: z.boolean().default(true).describe('Use gradient background'),
-  gradientFrom: z.string().default('#0b6d41').describe('Gradient start color'),
-  gradientTo: z.string().default('#1a8f5c').describe('Gradient end color'),
-  statValueColor: z.string().default('#ffffff').describe('Stat value color'),
-  statLabelColor: z.string().default('#ffffff').describe('Stat label color'),
-  cardBackgroundColor: z.string().default('rgba(255,255,255,0.1)').describe('Card background'),
+  variant: z.enum(['modern-dark', 'modern-light', 'classic']).default('modern-dark').describe('Visual style'),
   showAnimation: z.boolean().default(true).describe('Animate numbers on scroll'),
-  showDecorations: z.boolean().default(true).describe('Show decorative circles'),
-  rows: z.enum(['1', '2']).default('2').describe('Number of rows (1 = single row, 2 = two rows)'),
+  showDecorations: z.boolean().default(true).describe('Show decorative patterns'),
+  showCurve: z.boolean().default(false).describe('Show curved bottom divider'),
 })
 
 export type StatsCounterProps = z.infer<typeof StatsCounterPropsSchema> & BaseBlockProps
 
 /**
- * Decorative Circles Component
- */
-function DecorativeCircles() {
-  return (
-    <div className="absolute left-0 top-0 bottom-0 w-64 overflow-hidden pointer-events-none">
-      {/* Large circle */}
-      <div
-        className="absolute -left-32 top-1/4 w-64 h-64 rounded-full border-2 border-white/20"
-        style={{ transform: 'translateY(-50%)' }}
-      />
-      {/* Medium circle */}
-      <div
-        className="absolute -left-20 top-1/2 w-48 h-48 rounded-full border-2 border-white/15"
-        style={{ transform: 'translateY(-30%)' }}
-      />
-      {/* Small circle */}
-      <div
-        className="absolute -left-10 top-2/3 w-32 h-32 rounded-full border-2 border-white/10"
-      />
-    </div>
-  )
-}
-
-/**
  * StatsCounter Component
  *
- * Displays key statistics in a grid layout with:
- * - Split-color header with optional italic
- * - Decorative circles on left side
+ * Displays key statistics in a modern grid layout with:
+ * - Serif header with gold italic accent
+ * - Decorative circle patterns
  * - Animated number counting
+ * - Glassmorphic card backgrounds
  * - Responsive grid
- * - Tagline at bottom
  */
 export function StatsCounter({
   headerPart1 = 'Our',
   headerPart2 = 'Strength',
-  headerPart1Color = '#ffffff',
-  headerPart2Color = '#ffde59',
-  headerPart2Italic = true,
   subtitle = 'Numbers that speak volumes about our commitment to excellence',
   stats = [],
   tagline,
   columns = '6',
-  backgroundColor = '#0b6d41',
-  backgroundGradient = true,
-  gradientFrom = '#0b6d41',
-  gradientTo = '#1a8f5c',
-  statValueColor = '#ffffff',
-  statLabelColor = '#ffffff',
-  cardBackgroundColor = 'rgba(255,255,255,0.1)',
+  rows = '2',
+  variant = 'modern-dark',
   showAnimation = true,
   showDecorations = true,
-  rows = '2',
+  showCurve = false,
   className,
   isEditing,
 }: StatsCounterProps) {
-  // Generate background style
-  const backgroundStyle = backgroundGradient
-    ? { background: `linear-gradient(135deg, ${gradientFrom} 0%, ${gradientTo} 100%)` }
-    : { backgroundColor }
-  // Grid classes based on rows setting
-  // rows='1' = all in one row (6 columns), rows='2' = two rows (3 columns each)
-  const getGridClass = () => {
-    if (rows === '1') {
-      return 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-6' // Single row on desktop
-    }
-    // Default: 2 rows (3 columns each)
-    return 'grid-cols-2 sm:grid-cols-3' // 3 columns = 2 rows for 6 items
-  }
+  const isDark = variant === 'modern-dark'
+  const isModern = variant !== 'classic'
 
+  // Grid classes based on rows setting
   const columnClasses = {
     '2': 'grid-cols-1 sm:grid-cols-2',
     '3': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
     '4': 'grid-cols-2 lg:grid-cols-4',
     '6': rows === '1' ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-6' : 'grid-cols-2 sm:grid-cols-3',
-    'auto': 'grid-cols-2 sm:grid-cols-3 md:grid-cols-6',
   }
 
   const defaultStats: StatItem[] = [
-    { value: '25+', label: 'Years of Excellence' },
-    { value: '5000+', label: 'Students' },
-    { value: '95%', label: 'Placement Rate' },
-    { value: '50+', label: 'Courses Offered' },
-    { value: '200+', label: 'Expert Faculty' },
-    { value: '500+', label: 'Industry Partners' },
+    { value: '25', label: 'Years of Excellence' },
+    { value: '15000', label: 'Students' },
+    { value: '95', label: 'Placement Rate' },
+    { value: '50', label: 'Courses Offered' },
+    { value: '500', label: 'Expert Faculty' },
+    { value: '100', label: 'Industry Partners' },
   ]
 
-  // Always show default stats if empty (not just in editing mode)
   const displayStats = stats.length > 0 ? stats : defaultStats
 
   return (
     <section
-      className={cn('py-8 sm:py-10 md:py-12 lg:py-16 w-full relative overflow-hidden', className)}
-      style={backgroundStyle}
+      className={cn(
+        'relative w-full overflow-hidden py-12 md:py-16 lg:py-20',
+        isDark ? 'section-green-gradient' : 'bg-brand-cream',
+        className
+      )}
     >
-      {/* Decorative Circles */}
-      {showDecorations && <DecorativeCircles />}
+      {/* Decorative Patterns */}
+      {showDecorations && isModern && (
+        <DecorativePatterns variant="minimal" color={isDark ? 'white' : 'green'} />
+      )}
 
-      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24 relative z-10">
+      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24">
         {/* Header */}
         {(headerPart1 || headerPart2) && (
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              <span style={{ color: headerPart1Color }}>{headerPart1}</span>{' '}
-              <span
-                className={headerPart2Italic ? 'italic' : ''}
-                style={{ color: headerPart2Color }}
-              >
-                {headerPart2}
-              </span>
+          <div className="text-center mb-10 md:mb-14">
+            <h2 className={cn(
+              'font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase',
+              isDark ? 'text-white' : 'text-gray-900'
+            )}>
+              {headerPart1}{' '}
+              <span className={isDark ? "text-gold-italic" : "text-green-accent"}>{headerPart2}</span>
             </h2>
             {subtitle && (
-              <p className="text-lg md:text-xl max-w-3xl mx-auto" style={{ color: statLabelColor, opacity: 0.9 }}>
+              <p className={cn(
+                'text-base sm:text-lg md:text-xl max-w-3xl mx-auto',
+                isDark ? 'text-white/70' : 'text-gray-600'
+              )}>
                 {subtitle}
               </p>
             )}
@@ -172,14 +127,12 @@ export function StatsCounter({
         )}
 
         {/* Stats Grid */}
-        <div className={cn('grid gap-3 sm:gap-4 md:gap-6 max-w-6xl mx-auto', columnClasses[columns])}>
+        <div className={cn('grid gap-4 sm:gap-6 max-w-6xl mx-auto', columnClasses[columns])}>
           {displayStats.map((stat, index) => (
             <StatCard
               key={index}
               stat={stat}
-              valueColor={statValueColor}
-              labelColor={statLabelColor}
-              cardBg={cardBackgroundColor}
+              isDark={isDark}
               animate={showAnimation && !isEditing}
               delay={index * 100}
             />
@@ -188,14 +141,16 @@ export function StatsCounter({
 
         {/* Tagline */}
         {tagline && (
-          <p
-            className="text-center mt-12 text-lg md:text-xl italic"
-            style={{ color: headerPart2Color }}
-          >
+          <p className="text-center mt-12 text-lg md:text-xl font-serif-heading italic text-gold">
             {tagline}
           </p>
         )}
       </div>
+
+      {/* Curved Bottom Divider */}
+      {showCurve && (
+        <CurveDivider position="bottom" color="#fbfbee" />
+      )}
     </section>
   )
 }
@@ -205,16 +160,12 @@ export function StatsCounter({
  */
 function StatCard({
   stat,
-  valueColor,
-  labelColor,
-  cardBg,
+  isDark,
   animate,
   delay,
 }: {
   stat: StatItem
-  valueColor: string
-  labelColor: string
-  cardBg: string
+  isDark: boolean
   animate: boolean
   delay: number
 }) {
@@ -244,10 +195,7 @@ function StatCard({
   useEffect(() => {
     if (!animate || !isVisible) return
 
-    // Ensure stat.value is a string
     const valueStr = String(stat.value || '')
-
-    // Parse the value to extract number and suffix
     const match = valueStr.match(/^([\d,]+)(.*)$/)
     if (!match) {
       setDisplayValue(valueStr)
@@ -257,7 +205,6 @@ function StatCard({
     const targetNum = parseInt(match[1].replace(/,/g, ''), 10)
     const suffix = match[2] || ''
 
-    // Animate counting
     const duration = 2000
     const startTime = Date.now() + delay
 
@@ -287,19 +234,22 @@ function StatCard({
   return (
     <div
       ref={ref}
-      className="rounded-xl p-4 sm:p-6 md:p-8 text-center transition-transform duration-300 hover:scale-105"
-      style={{ backgroundColor: cardBg }}
+      className={cn(
+        'rounded-xl p-6 sm:p-8 text-center transition-all duration-300 hover:scale-105',
+        isDark ? 'glass-card-dark' : 'glass-card'
+      )}
     >
-      <div
-        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-1 sm:mb-2 md:mb-3"
-        style={{ color: valueColor }}
-      >
+      <div className={cn(
+        'stat-number mb-2',
+        isDark ? 'text-white' : 'text-brand-primary'
+      )}>
         {displayValue}
+        {!displayValue.includes('%') && !displayValue.includes('+') && '+'}
       </div>
-      <div
-        className="text-sm sm:text-base md:text-lg font-medium"
-        style={{ color: labelColor }}
-      >
+      <div className={cn(
+        'stat-label',
+        isDark ? 'text-white/70' : 'text-gray-600'
+      )}>
         {stat.label}
       </div>
     </div>

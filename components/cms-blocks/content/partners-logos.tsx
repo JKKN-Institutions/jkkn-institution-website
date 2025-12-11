@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRef, useState, useEffect } from 'react'
 import { Handshake, ExternalLink } from 'lucide-react'
+import { DecorativePatterns } from '../shared/decorative-patterns'
 
 /**
  * Partner item schema
@@ -15,6 +16,7 @@ export const PartnerItemSchema = z.object({
   name: z.string().describe('Partner name'),
   logo: z.string().describe('Partner logo URL'),
   link: z.string().optional().describe('Partner website URL'),
+  category: z.string().optional().describe('Partner category'),
 })
 
 export type PartnerItem = z.infer<typeof PartnerItemSchema>
@@ -25,10 +27,9 @@ export type PartnerItem = z.infer<typeof PartnerItemSchema>
 export const PartnersLogosPropsSchema = z.object({
   // Header
   headerPart1: z.string().default('Supporting').describe('First part of header'),
-  headerPart2: z.string().default('Partners').describe('Second part of header (colored)'),
-  headerPart1Color: z.string().default('#0b6d41').describe('Color for first part'),
-  headerPart2Color: z.string().default('#0b6d41').describe('Color for second part'),
-  headerPart2Italic: z.boolean().default(true).describe('Make second part italic'),
+  headerPart2: z.string().default('Partners').describe('Second part of header'),
+  headerPart1Color: z.string().default('#0b6d41').describe('Color for first part of header'),
+  headerPart2Color: z.string().default('#0b6d41').describe('Color for second part of header'),
   subtitle: z.string().optional().describe('Subtitle below header'),
 
   // Partners
@@ -39,13 +40,13 @@ export const PartnersLogosPropsSchema = z.object({
   columns: z.enum(['4', '5', '6', '8']).default('6').describe('Number of columns'),
 
   // Styling
-  backgroundColor: z.string().default('#ffffff').describe('Section background color'),
-  cardBackgroundColor: z.string().default('#ffffff').describe('Logo card background'),
-  showBorder: z.boolean().default(true).describe('Show border around logos'),
+  variant: z.enum(['modern-dark', 'modern-light', 'classic']).default('modern-light').describe('Visual style'),
+  cardStyle: z.enum(['glassmorphic', 'bordered', 'minimal']).default('bordered').describe('Card style'),
+  showDecorations: z.boolean().default(true).describe('Show decorative patterns'),
   grayscale: z.boolean().default(false).describe('Display logos in grayscale'),
-  accentColor: z.string().default('#0b6d41').describe('Accent color'),
 
   // Autoplay
+  autoplay: z.boolean().default(true).describe('Enable autoplay'),
   autoplaySpeed: z.number().default(2000).describe('Autoplay speed in ms'),
 })
 
@@ -81,28 +82,28 @@ function useInView(threshold = 0.1) {
 /**
  * PartnersLogos Component
  *
- * Modern partner logo showcase with:
- * - Section badge with decorative elements
- * - Auto-scrolling carousel with pause on hover
- * - Scroll-triggered animations
- * - Multiple layout options (carousel, grid, marquee)
- * - Modern card hover effects with external link indicator
+ * Modern partner logo showcase featuring:
+ * - Serif header with gold italic accent
+ * - Decorative circle patterns
+ * - Multiple layouts (carousel, grid, marquee)
+ * - Glassmorphic or bordered card styles
+ * - Hover effects with gold accents
+ * - External link indicators
  */
 export function PartnersLogos({
   headerPart1 = 'Supporting',
   headerPart2 = 'Partners',
   headerPart1Color = '#0b6d41',
   headerPart2Color = '#0b6d41',
-  headerPart2Italic = true,
   subtitle,
   partners = [],
   layout = 'carousel',
   columns = '6',
-  backgroundColor = '#ffffff',
-  cardBackgroundColor = '#ffffff',
-  showBorder = true,
+  variant = 'modern-light',
+  cardStyle = 'bordered',
+  showDecorations = true,
   grayscale = false,
-  accentColor = '#0b6d41',
+  autoplay = true,
   autoplaySpeed = 2000,
   className,
   isEditing,
@@ -112,30 +113,31 @@ export function PartnersLogos({
   const headerRef = useInView()
   const contentRef = useInView()
 
+  const isDark = variant === 'modern-dark'
+  const isModern = variant !== 'classic'
+
   const defaultPartners: PartnerItem[] = [
-    { name: 'Yi Accessibility', logo: '', link: '#' },
-    { name: 'Yi Innovation', logo: '', link: '#' },
-    { name: 'Yi Learning', logo: '', link: '#' },
-    { name: 'Road Safety', logo: '', link: '#' },
-    { name: 'Young Indians', logo: '', link: '#' },
-    { name: 'CII', logo: '', link: '#' },
-    { name: 'NASSCOM', logo: '', link: '#' },
-    { name: 'TCS', logo: '', link: '#' },
+    { name: 'Yi Accessibility', logo: '', link: '#', category: 'Industry' },
+    { name: 'Yi Innovation', logo: '', link: '#', category: 'Industry' },
+    { name: 'Yi Learning', logo: '', link: '#', category: 'Education' },
+    { name: 'Road Safety', logo: '', link: '#', category: 'Government' },
+    { name: 'Young Indians', logo: '', link: '#', category: 'Industry' },
+    { name: 'CII', logo: '', link: '#', category: 'Industry' },
+    { name: 'NASSCOM', logo: '', link: '#', category: 'Technology' },
+    { name: 'TCS', logo: '', link: '#', category: 'Technology' },
   ]
 
-  // Always show default partners if empty (users can add real data via admin panel)
   const displayPartners = partners.length > 0 ? partners : defaultPartners
 
   // Autoplay carousel
   useEffect(() => {
-    if (layout !== 'carousel' || isEditing || isPaused) return
+    if (layout !== 'carousel' || isEditing || isPaused || !autoplay) return
 
     const interval = setInterval(() => {
       if (scrollRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
-        const cardWidth = 180
+        const cardWidth = 190
 
-        // If near the end, scroll back to start
         if (scrollLeft + clientWidth >= scrollWidth - 10) {
           scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' })
         } else {
@@ -145,7 +147,7 @@ export function PartnersLogos({
     }, autoplaySpeed)
 
     return () => clearInterval(interval)
-  }, [layout, isEditing, isPaused, autoplaySpeed])
+  }, [layout, isEditing, isPaused, autoplaySpeed, autoplay])
 
   const columnClasses = {
     '4': 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4',
@@ -156,84 +158,57 @@ export function PartnersLogos({
 
   return (
     <section
-      className={cn('relative py-12 md:py-16 lg:py-20 w-full overflow-hidden', className)}
-      style={{ backgroundColor }}
+      className={cn(
+        'relative py-16 md:py-20 lg:py-24 w-full overflow-hidden',
+        isDark ? 'section-green-gradient' : 'bg-brand-cream',
+        className
+      )}
     >
-      {/* Decorative Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Gradient overlay */}
-        <div
-          className="absolute top-0 right-0 w-1/3 h-full opacity-[0.03]"
-          style={{
-            background: `radial-gradient(ellipse at top right, ${accentColor} 0%, transparent 70%)`
-          }}
-        />
+      {/* Decorative Patterns */}
+      {showDecorations && isModern && (
+        <DecorativePatterns variant="minimal" color={isDark ? 'white' : 'green'} />
+      )}
 
-        {/* Floating circles */}
-        <div
-          className="absolute -top-20 -right-20 w-64 h-64 rounded-full opacity-5"
-          style={{ backgroundColor: accentColor }}
-        />
-        <div
-          className="absolute bottom-16 -left-16 w-56 h-56 rounded-full opacity-5"
-          style={{ backgroundColor: accentColor }}
-        />
-
-        {/* Dot pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, ${accentColor} 1px, transparent 0)`,
-            backgroundSize: '30px 30px'
-          }}
-        />
-      </div>
-
-      <div className="relative w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24">
+      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24">
         {/* Header */}
         <div
           ref={headerRef.ref}
           className={cn(
-            "text-center mb-10 md:mb-14 transition-all duration-1000",
+            "text-center mb-12 md:mb-16 transition-all duration-700",
             headerRef.isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}
         >
           {/* Section Badge */}
           <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
-            style={{ backgroundColor: `${accentColor}15`, color: accentColor }}
+            className={cn(
+              "inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6",
+              isDark ? "bg-white/10 backdrop-blur-sm text-white" : "bg-brand-primary/10 text-brand-primary"
+            )}
           >
             <Handshake className="w-4 h-4" />
             <span>Trusted Partners</span>
           </div>
 
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase">
             <span style={{ color: headerPart1Color }}>{headerPart1}</span>{' '}
-            <span
-              className={headerPart2Italic ? 'italic' : ''}
-              style={{ color: headerPart2Color }}
-            >
-              {headerPart2}
-            </span>
+            <span style={{ color: headerPart2Color }}>{headerPart2}</span>
           </h2>
+
           {subtitle && (
-            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className={cn(
+              "text-lg md:text-xl max-w-3xl mx-auto",
+              isDark ? "text-white/70" : "text-gray-600"
+            )}>
               {subtitle}
             </p>
           )}
-
-          {/* Decorative line */}
-          <div
-            className="w-24 h-1 mx-auto mt-6 rounded-full"
-            style={{ backgroundColor: accentColor }}
-          />
         </div>
 
         {/* Partners Display */}
         <div
           ref={contentRef.ref}
           className={cn(
-            "transition-all duration-1000 delay-200",
+            "transition-all duration-700 delay-200",
             contentRef.isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}
         >
@@ -246,16 +221,15 @@ export function PartnersLogos({
               {/* Carousel */}
               <div
                 ref={scrollRef}
-                className="flex gap-6 overflow-x-auto scrollbar-hide pb-4"
+                className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 justify-center"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {displayPartners.map((partner, index) => (
                   <PartnerCard
                     key={index}
                     partner={partner}
-                    cardBg={cardBackgroundColor}
-                    accentColor={accentColor}
-                    showBorder={showBorder}
+                    cardStyle={cardStyle}
+                    isDark={isDark}
                     grayscale={grayscale}
                     isEditing={isEditing}
                     index={index}
@@ -268,9 +242,8 @@ export function PartnersLogos({
           ) : layout === 'marquee' ? (
             <MarqueeLogos
               partners={displayPartners}
-              cardBg={cardBackgroundColor}
-              accentColor={accentColor}
-              showBorder={showBorder}
+              cardStyle={cardStyle}
+              isDark={isDark}
               grayscale={grayscale}
               isEditing={isEditing}
             />
@@ -280,9 +253,8 @@ export function PartnersLogos({
                 <PartnerCard
                   key={index}
                   partner={partner}
-                  cardBg={cardBackgroundColor}
-                  accentColor={accentColor}
-                  showBorder={showBorder}
+                  cardStyle={cardStyle}
+                  isDark={isDark}
                   grayscale={grayscale}
                   isEditing={isEditing}
                   index={index}
@@ -303,9 +275,8 @@ export function PartnersLogos({
  */
 function PartnerCard({
   partner,
-  cardBg,
-  accentColor,
-  showBorder,
+  cardStyle,
+  isDark,
   grayscale,
   isEditing,
   className,
@@ -313,9 +284,8 @@ function PartnerCard({
   isInView,
 }: {
   partner: PartnerItem
-  cardBg: string
-  accentColor: string
-  showBorder: boolean
+  cardStyle: 'glassmorphic' | 'bordered' | 'minimal'
+  isDark: boolean
   grayscale: boolean
   isEditing?: boolean
   className?: string
@@ -327,78 +297,108 @@ function PartnerCard({
   const cardContent = (
     <div
       className={cn(
-        'group p-4 rounded-xl flex items-center justify-center h-full transition-all duration-500 hover:shadow-lg hover:-translate-y-1',
-        showBorder && 'border border-gray-200 hover:border-gray-300',
+        'group relative p-4 rounded-xl flex items-center justify-center h-full transition-all duration-500',
+        cardStyle === 'glassmorphic' && isDark && 'glass-card-dark',
+        cardStyle === 'glassmorphic' && !isDark && 'bg-white/80 backdrop-blur-sm shadow-lg',
+        cardStyle === 'bordered' && 'bg-white border border-gray-200 hover:border-gold',
+        cardStyle === 'minimal' && 'bg-white',
+        'hover:shadow-lg hover:-translate-y-1',
         "transition-all duration-700",
         isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       )}
       style={{
-        backgroundColor: cardBg,
         transitionDelay: `${index * 50}ms`,
-        boxShadow: isHovered ? `0 8px 30px ${accentColor}15` : undefined
+        boxShadow: isHovered ? '0 8px 30px rgba(255, 222, 89, 0.15)' : undefined
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {partner.logo ? (
-        <Image
-          src={partner.logo}
-          alt={partner.name}
-          width={120}
-          height={60}
-          className={cn(
-            'object-contain max-h-16 transition-all duration-500',
-            grayscale && 'grayscale group-hover:grayscale-0',
-            'group-hover:scale-110'
-          )}
-        />
-      ) : (
-        <div className="text-center">
-          <div
+      {/* Gold accent glow on hover */}
+      <div
+        className={cn(
+          "absolute -inset-0.5 rounded-xl opacity-0 blur transition-opacity duration-500",
+          isHovered && "opacity-30"
+        )}
+        style={{ backgroundColor: '#ffde59' }}
+      />
+
+      <div className="relative z-10">
+        {partner.logo ? (
+          <Image
+            src={partner.logo}
+            alt={partner.name}
+            width={120}
+            height={60}
+            sizes="120px"
             className={cn(
-              "w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center transition-all duration-500",
-              isHovered ? "scale-110" : "scale-100"
+              'object-contain max-h-16 transition-all duration-500',
+              grayscale && 'grayscale group-hover:grayscale-0',
+              'group-hover:scale-110'
             )}
-            style={{
-              backgroundColor: isHovered ? `${accentColor}15` : '#f3f4f6',
-            }}
-          >
-            <span
-              className="text-xs font-bold transition-colors duration-300"
-              style={{ color: isHovered ? accentColor : '#9ca3af' }}
+          />
+        ) : (
+          <div className="text-center">
+            <div
+              className={cn(
+                "w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center transition-all duration-500",
+                isHovered ? "scale-110" : "scale-100"
+              )}
+              style={{
+                backgroundColor: isHovered ? 'rgba(255, 222, 89, 0.15)' : isDark ? 'rgba(255,255,255,0.1)' : '#f3f4f6',
+              }}
             >
-              {partner.name.charAt(0)}
+              <span
+                className={cn(
+                  "text-lg font-bold transition-colors duration-300",
+                  isDark ? "text-white" : isHovered ? "text-gold" : "text-gray-400"
+                )}
+              >
+                {partner.name.charAt(0)}
+              </span>
+            </div>
+            <span className={cn(
+              "text-xs line-clamp-1 transition-colors",
+              isDark ? "text-white/60 group-hover:text-white" : "text-gray-500 group-hover:text-gray-700"
+            )}>
+              {partner.name}
             </span>
           </div>
-          <span className="text-xs text-gray-500 line-clamp-1 group-hover:text-gray-700 transition-colors">
-            {partner.name}
-          </span>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* External Link Indicator */}
       {partner.link && (
         <div
           className={cn(
-            'absolute top-2 right-2 w-6 h-6 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm transition-all duration-300',
+            'absolute top-2 right-2 w-6 h-6 rounded-full flex items-center justify-center shadow-sm transition-all duration-300',
+            isDark ? 'bg-white/10 backdrop-blur-sm' : 'bg-white/90 backdrop-blur-sm',
             isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
           )}
         >
-          <ExternalLink className="w-3 h-3" style={{ color: accentColor }} />
+          <ExternalLink className="w-3 h-3 text-gold" />
         </div>
       )}
+
+      {/* Bottom gold accent line on hover */}
+      <div
+        className={cn(
+          'absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-500',
+          isHovered ? 'w-3/4' : 'w-0'
+        )}
+        style={{ backgroundColor: '#ffde59' }}
+      />
     </div>
   )
 
   if (partner.link && !isEditing) {
     return (
-      <Link href={partner.link} target="_blank" rel="noopener noreferrer" className={cn('block relative', className)}>
+      <Link href={partner.link} target="_blank" rel="noopener noreferrer" className={cn('block', className)}>
         {cardContent}
       </Link>
     )
   }
 
-  return <div className={cn('relative', className)}>{cardContent}</div>
+  return <div className={className}>{cardContent}</div>
 }
 
 /**
@@ -406,16 +406,14 @@ function PartnerCard({
  */
 function MarqueeLogos({
   partners,
-  cardBg,
-  accentColor,
-  showBorder,
+  cardStyle,
+  isDark,
   grayscale,
   isEditing,
 }: {
   partners: PartnerItem[]
-  cardBg: string
-  accentColor: string
-  showBorder: boolean
+  cardStyle: 'glassmorphic' | 'bordered' | 'minimal'
+  isDark: boolean
   grayscale: boolean
   isEditing?: boolean
 }) {
@@ -437,9 +435,8 @@ function MarqueeLogos({
           <PartnerCard
             key={index}
             partner={partner}
-            cardBg={cardBg}
-            accentColor={accentColor}
-            showBorder={showBorder}
+            cardStyle={cardStyle}
+            isDark={isDark}
             grayscale={grayscale}
             isEditing={isEditing}
             index={index % partners.length}

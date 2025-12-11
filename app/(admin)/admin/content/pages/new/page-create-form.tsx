@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Loader2, CheckCircle2, XCircle, Info, Home, Globe, Lock, Eye } from 'lucide-react'
+import { Loader2, CheckCircle2, XCircle, Info, Home, Globe, Lock, Eye, ExternalLink } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface PageCreateFormProps {
@@ -75,6 +75,7 @@ export function PageCreateForm({ parentPages, templates }: PageCreateFormProps) 
   const [visibility, setVisibility] = useState<string>('public')
   const [isHomepage, setIsHomepage] = useState(false)
   const [showInNavigation, setShowInNavigation] = useState(true)
+  const [externalUrl, setExternalUrl] = useState('')
 
   // Auto-generate slug from title
   useEffect(() => {
@@ -316,6 +317,30 @@ export function PageCreateForm({ parentPages, templates }: PageCreateFormProps) 
         />
         <input type="hidden" name="show_in_navigation" value={showInNavigation ? 'true' : 'false'} />
       </div>
+
+      {/* External URL Field (when navigation is enabled) */}
+      {showInNavigation && (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <ExternalLink className="h-4 w-4 text-muted-foreground" />
+            <Label htmlFor="external_url" className="text-foreground">
+              External URL (Optional)
+            </Label>
+          </div>
+          <Input
+            id="external_url"
+            name="external_url"
+            type="url"
+            placeholder="https://example.com"
+            value={externalUrl}
+            onChange={(e) => setExternalUrl(e.target.value)}
+            className="bg-background/50 border-border/50 focus:border-primary/30 focus:ring-primary/20"
+          />
+          <p className="text-xs text-muted-foreground">
+            If set, navigation will link to this URL instead of the page content (opens in new tab)
+          </p>
+        </div>
+      )}
 
       {/* Status (hidden, default to draft) */}
       <input type="hidden" name="status" value="draft" />
