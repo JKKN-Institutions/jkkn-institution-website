@@ -105,7 +105,7 @@ export function DashboardStatsCards() {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="p-5 rounded-xl bg-card border border-border">
+          <div key={i} className="p-5 rounded-xl bg-card border border-border min-w-0">
             <div className="flex items-center justify-between">
               <div className="space-y-2">
                 <Skeleton className="h-4 w-20" />
@@ -126,7 +126,7 @@ export function DashboardStatsCards() {
         <div
           key={item.label}
           className={cn(
-            'relative flex items-center justify-between p-5 rounded-xl transition-all duration-300',
+            'relative flex items-center justify-between p-5 rounded-xl transition-all duration-300 min-w-0',
             'bg-card border border-border',
             'hover:shadow-lg hover:-translate-y-0.5'
           )}

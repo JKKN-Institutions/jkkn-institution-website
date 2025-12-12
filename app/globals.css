@@ -676,10 +676,10 @@
     @apply mt-4 text-base sm:text-lg opacity-80 max-w-2xl mx-auto;
   }
 
-  /* Stats number display */
+  /* Stats number display - responsive to prevent overflow on mobile */
   .stat-number {
     font-family: var(--font-poppins), 'Poppins', sans-serif;
-    @apply text-4xl sm:text-5xl md:text-6xl font-bold;
+    @apply text-2xl min-[400px]:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold;
   }
 
   .stat-label {

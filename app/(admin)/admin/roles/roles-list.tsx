@@ -88,9 +88,9 @@ export function RolesList({ roles }: RolesListProps) {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       {roles.map((role) => (
-        <Card key={role.id} className="glass-card border-0 overflow-hidden hover-glow transition-all duration-300">
+        <Card key={role.id} className="glass-card border-0 overflow-hidden hover-glow transition-all duration-300 min-w-0">
           {/* Color Bar */}
           <div className={`h-2 bg-gradient-to-r ${getRoleColor(role.name)}`} />
 

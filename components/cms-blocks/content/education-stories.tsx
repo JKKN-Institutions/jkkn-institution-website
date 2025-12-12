@@ -97,21 +97,19 @@ export function EducationStories({
     tall: 'h-[240px] sm:h-[260px]',
   }
 
-  // Default stories for demo
+  // Default stories for demo - 6 cards
   const defaultStories: StoryItem[] = [
-    { name: 'Priya Kumar', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=600&fit=crop', role: 'Engineering Graduate', isNew: true },
     { name: 'Rahul Sharma', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop', role: 'Medical Student', isNew: true },
     { name: 'Anitha Raj', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop', role: 'Pharmacy Alumni', isNew: false },
     { name: 'Vikram Singh', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=600&fit=crop', role: 'Nursing Excellence', isNew: false },
     { name: 'Deepa Nair', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop', role: 'Dental Sciences', isNew: true },
     { name: 'Karthik M', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=600&fit=crop', role: 'Arts & Science', isNew: false },
     { name: 'Lakshmi P', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop', role: 'Management Studies', isNew: false },
-    { name: 'Arjun Kumar', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=600&fit=crop', role: 'Agricultural Science', isNew: true },
-    { name: 'Meena S', image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=600&fit=crop', role: 'Physiotherapy', isNew: false },
-    { name: 'Ravi Krishnan', image: 'https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=600&fit=crop', role: 'Engineering Topper', isNew: true },
   ]
 
-  const displayStories = stories.length > 0 ? stories : defaultStories
+  // Limit to exactly 6 stories
+  const allStories = stories.length > 0 ? stories : defaultStories
+  const displayStories = allStories.slice(0, 6)
 
   // Check scroll position
   const updateScrollButtons = useCallback(() => {
@@ -122,15 +120,21 @@ export function EducationStories({
     }
   }, [])
 
-  // Autoplay
+  // Autoplay - only on mobile (1 card at a time), disabled on desktop where all cards visible
   useEffect(() => {
     if (!autoplay || isEditing || isPaused || isDragging) return
 
     const interval = setInterval(() => {
       if (scrollRef.current) {
-        const { scrollLeft: sl, scrollWidth, clientWidth } = scrollRef.current
-        const cardWidth = 175 // Approximate card width + gap
+        const isMobile = window.innerWidth < 640
 
+        // On desktop, all 6 cards are visible - no autoplay needed
+        if (!isMobile) return
+
+        const { scrollLeft: sl, scrollWidth, clientWidth } = scrollRef.current
+        const cardWidth = clientWidth + 12 // Full card width + gap on mobile
+
+        // Loop back to start after last card
         if (sl + clientWidth >= scrollWidth - 10) {
           scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' })
           setActiveIndex(0)
@@ -167,7 +171,7 @@ export function EducationStories({
     }
   }
 
-  // Touch/Mouse drag handling for manual scroll
+  // Mouse drag handling for desktop
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!scrollRef.current) return
     setIsDragging(true)
@@ -190,6 +194,25 @@ export function EducationStories({
   const handleMouseLeave = () => {
     setIsDragging(false)
     setIsPaused(false)
+  }
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!scrollRef.current) return
+    setIsDragging(true)
+    setStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
+    setScrollLeft(scrollRef.current.scrollLeft)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !scrollRef.current) return
+    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const walk = (x - startX) * 1.5
+    scrollRef.current.scrollLeft = scrollLeft - walk
+  }
+
+  const handleTouchEnd = () => {
+    setIsDragging(false)
   }
 
   return (
@@ -226,16 +249,17 @@ export function EducationStories({
 
         {/* Reels Carousel */}
         <div
-          className="relative group mx-4 sm:mx-8 md:mx-12 lg:mx-16"
+          className="relative group mx-4 sm:mx-8 md:mx-12 lg:mx-16 overflow-hidden"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={handleMouseLeave}
         >
-          {/* Scroll Left Button */}
+          {/* Scroll Left Button - mobile only */}
           <button
             onClick={() => scroll('left')}
             className={cn(
-              'absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center',
+              'absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center',
               'transition-all duration-300 hover:scale-110 shadow-lg',
+              'sm:hidden', // Hide on desktop - all cards visible
               isDark ? 'bg-white/20 backdrop-blur-sm text-white hover:bg-white/30' : 'bg-white text-brand-primary hover:bg-gray-50',
               canScrollLeft ? 'opacity-0 group-hover:opacity-100' : 'opacity-0 pointer-events-none'
             )}
@@ -244,24 +268,28 @@ export function EducationStories({
             <ChevronLeft className="w-5 h-5" />
           </button>
 
-          {/* Reels Container */}
-          <div
-            ref={scrollRef}
-            className={cn(
-              'flex gap-3 sm:gap-4 overflow-x-auto py-2',
-              'cursor-grab active:cursor-grabbing select-none',
-              '[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'
-            )}
-            style={{
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none',
-              WebkitOverflowScrolling: 'touch',
-            }}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-          >
-            {displayStories.map((story, index) => (
+          {/* Reels Container - all 6 cards visible on desktop */}
+          <div className="max-w-[1100px] mx-auto">
+            <div
+              ref={scrollRef}
+              className={cn(
+                'flex gap-3 sm:gap-4 overflow-x-auto py-2 snap-x snap-mandatory',
+                'cursor-grab active:cursor-grabbing select-none',
+                '[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'
+              )}
+              style={{
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch',
+              }}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              {displayStories.map((story, index) => (
               <ReelCard
                 key={index}
                 story={story}
@@ -272,16 +300,19 @@ export function EducationStories({
                 isPaused={isPaused}
                 isEditing={isEditing}
                 index={index}
-              />
-            ))}
+                autoplaySpeed={autoplaySpeed}
+                />
+              ))}
+            </div>
           </div>
 
-          {/* Scroll Right Button */}
+          {/* Scroll Right Button - mobile only */}
           <button
             onClick={() => scroll('right')}
             className={cn(
-              'absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center',
+              'absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center',
               'transition-all duration-300 hover:scale-110 shadow-lg',
+              'sm:hidden', // Hide on desktop - all cards visible
               isDark ? 'bg-white/20 backdrop-blur-sm text-white hover:bg-white/30' : 'bg-white text-brand-primary hover:bg-gray-50',
               canScrollRight ? 'opacity-0 group-hover:opacity-100' : 'opacity-0 pointer-events-none'
             )}
@@ -291,14 +322,15 @@ export function EducationStories({
           </button>
         </div>
 
-        {/* Progress Dots */}
-        <div className="flex justify-center gap-1.5 mt-6">
-          {displayStories.slice(0, Math.min(displayStories.length, 10)).map((_, index) => (
+        {/* Progress Dots - mobile only */}
+        <div className="flex sm:hidden justify-center gap-1.5 mt-6">
+          {displayStories.map((_, index) => (
             <button
               key={index}
               onClick={() => {
                 if (scrollRef.current) {
-                  const cardWidth = 175
+                  const isMobile = window.innerWidth < 640
+                  const cardWidth = isMobile ? scrollRef.current.clientWidth + 12 : 181
                   scrollRef.current.scrollTo({ left: cardWidth * index, behavior: 'smooth' })
                   setActiveIndex(index)
                 }
@@ -330,6 +362,7 @@ function ReelCard({
   isPaused,
   isEditing,
   index,
+  autoplaySpeed = 3000,
 }: {
   story: StoryItem
   height: string
@@ -339,13 +372,15 @@ function ReelCard({
   isPaused: boolean
   isEditing?: boolean
   index: number
+  autoplaySpeed?: number
 }) {
   const [isHovered, setIsHovered] = useState(false)
 
   const content = (
     <div
       className={cn(
-        'relative flex-shrink-0 w-[150px] sm:w-[165px] rounded-xl overflow-hidden',
+        'relative flex-shrink-0 rounded-xl overflow-hidden snap-start',
+        'w-[calc(100vw-3rem)] sm:w-[165px]', // Full width on mobile, fixed on desktop
         'transition-all duration-500 group',
         height,
         isActive && !isEditing && 'scale-[1.02] shadow-2xl',
@@ -459,7 +494,10 @@ function ReelCard({
       {isActive && !isPaused && (
         <div className="absolute top-0 left-0 right-0 h-1 bg-white/20">
           <div
-            className="h-full bg-[#ffde59] animate-[progress_3s_linear_infinite]"
+            className="h-full bg-[#ffde59]"
+            style={{
+              animation: `progress ${autoplaySpeed}ms linear infinite`
+            }}
           />
         </div>
       )}

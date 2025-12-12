@@ -76,6 +76,8 @@ export interface ItemSchemaProperty {
   label?: string
   required?: boolean
   format?: string
+  /** For multiline text fields */
+  multiline?: boolean
   /** For nested array properties */
   itemType?: 'string' | 'image' | 'object'
   /** For nested array with object items */

@@ -112,8 +112,30 @@ export function PastEvents({
 }: PastEventsProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isPaused, setIsPaused] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [scrollLeft, setScrollLeft] = useState(0)
   const headerRef = useInView()
   const contentRef = useInView()
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!scrollRef.current) return
+    setIsDragging(true)
+    setStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
+    setScrollLeft(scrollRef.current.scrollLeft)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !scrollRef.current) return
+    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const walk = (x - startX) * 1.5
+    scrollRef.current.scrollLeft = scrollLeft - walk
+  }
+
+  const handleTouchEnd = () => {
+    setIsDragging(false)
+  }
 
   const isDark = variant === 'modern-dark'
   const isModern = variant !== 'classic'
@@ -122,7 +144,6 @@ export function PastEvents({
     { title: 'Pongal Celebration 2025', image: '', date: 'January 14, 2025', link: '/events/pongal-2025', location: 'Main Campus' },
     { title: 'Senior Internship Program Inauguration', image: '', date: 'February 21, 2025', link: '/events/internship', location: 'Auditorium' },
     { title: 'Mental Health & Suicide Awareness Initiative', image: '', date: 'February 11, 2024', link: '/events/mental-health', location: 'Seminar Hall' },
-    { title: 'Annual Day Celebration', image: '', date: 'March 15, 2024', link: '/events/annual-day', location: 'Open Air Theatre' },
   ]
 
   const displayEvents = events.length > 0 ? events : defaultEvents
@@ -216,13 +237,17 @@ export function PastEvents({
               onMouseLeave={() => setIsPaused(false)}
             >
               {/* Carousel */}
-              <div
-                ref={scrollRef}
-                className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              >
-                {displayEvents.map((event, index) => (
-                  <EventCard
+              <div className="max-w-[1008px] mx-auto">
+                <div
+                  ref={scrollRef}
+                  className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                >
+                  {displayEvents.map((event, index) => (
+                    <EventCard
                     key={index}
                     event={event}
                     cardStyle={cardStyle}
@@ -231,9 +256,10 @@ export function PastEvents({
                     isEditing={isEditing}
                     index={index}
                     isInView={contentRef.isInView}
-                    className="snap-start flex-shrink-0 w-[320px]"
-                  />
-                ))}
+                      className="snap-start flex-shrink-0 w-[calc(100vw-2rem)] sm:w-[320px]"
+                    />
+                  ))}
+                </div>
               </div>
 
               {/* Carousel Indicators */}

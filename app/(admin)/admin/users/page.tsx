@@ -68,7 +68,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
       {/* User Stats Cards - 4 cards in a row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Users */}
-        <div className="bg-card border border-border rounded-xl p-5">
+        <div className="bg-card border border-border rounded-xl p-5 min-w-0">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
             <UsersIcon className="h-4 w-4" />
             <span className="text-sm font-medium">Total Users</span>
@@ -77,7 +77,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
         </div>
 
         {/* Active Users */}
-        <div className="bg-card border border-border rounded-xl p-5">
+        <div className="bg-card border border-border rounded-xl p-5 min-w-0">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
             <UserCheck className="h-4 w-4" />
             <span className="text-sm font-medium">Active Users</span>
@@ -86,7 +86,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
         </div>
 
         {/* Pending Users */}
-        <div className="bg-card border border-border rounded-xl p-5">
+        <div className="bg-card border border-border rounded-xl p-5 min-w-0">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
             <Clock className="h-4 w-4" />
             <span className="text-sm font-medium">Pending Users</span>
@@ -95,7 +95,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
         </div>
 
         {/* Blocked Users */}
-        <div className="bg-card border border-border rounded-xl p-5">
+        <div className="bg-card border border-border rounded-xl p-5 min-w-0">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
             <UserX className="h-4 w-4" />
             <span className="text-sm font-medium">Blocked Users</span>

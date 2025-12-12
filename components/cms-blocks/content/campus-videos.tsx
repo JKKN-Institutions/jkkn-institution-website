@@ -114,8 +114,30 @@ export function CampusVideos({
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isPaused, setIsPaused] = useState(false)
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [scrollLeft, setScrollLeft] = useState(0)
   const headerRef = useInView()
   const contentRef = useInView()
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!scrollRef.current) return
+    setIsDragging(true)
+    setStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
+    setScrollLeft(scrollRef.current.scrollLeft)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !scrollRef.current) return
+    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const walk = (x - startX) * 1.5
+    scrollRef.current.scrollLeft = scrollLeft - walk
+  }
+
+  const handleTouchEnd = () => {
+    setIsDragging(false)
+  }
 
   const isDark = variant === 'modern-dark'
   const isModern = variant !== 'classic'
@@ -124,7 +146,6 @@ export function CampusVideos({
     { title: 'JKKN Centenary Exhibition', thumbnail: '', videoUrl: '', category: 'Founders Day', description: 'JKKN Centenary Exhibition', duration: '4:32' },
     { title: 'Pongal Celebration 2025', thumbnail: '', videoUrl: '', category: 'Events', description: 'Pongal celebration', duration: '3:15' },
     { title: 'JKKN Centenary Celebration', thumbnail: '', videoUrl: '', category: 'Founders Day', description: 'Celebrating 100 years', duration: '5:48' },
-    { title: 'Campus Virtual Tour', thumbnail: '', videoUrl: '', category: 'Campus Life', description: 'Virtual campus tour', duration: '8:20' },
   ]
 
   const displayVideos = videos.length > 0 ? videos : defaultVideos
@@ -225,13 +246,17 @@ export function CampusVideos({
                 onMouseLeave={() => setIsPaused(false)}
               >
                 {/* Carousel */}
-                <div
-                  ref={scrollRef}
-                  className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
-                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                >
-                  {displayVideos.map((video, index) => (
-                    <VideoCard
+                <div className="max-w-[1008px] mx-auto">
+                  <div
+                    ref={scrollRef}
+                    className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                  >
+                    {displayVideos.map((video, index) => (
+                      <VideoCard
                       key={index}
                       video={video}
                       cardStyle={cardStyle}
@@ -241,9 +266,10 @@ export function CampusVideos({
                       onPlay={() => handlePlayVideo(video)}
                       index={index}
                       isInView={contentRef.isInView}
-                      className="snap-start flex-shrink-0 w-[320px]"
-                    />
-                  ))}
+                        className="snap-start flex-shrink-0 w-[calc(100vw-2rem)] sm:w-[320px]"
+                      />
+                    ))}
+                  </div>
                 </div>
 
                 {/* Carousel Indicators */}

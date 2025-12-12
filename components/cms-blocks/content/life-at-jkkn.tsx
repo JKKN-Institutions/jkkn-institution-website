@@ -122,10 +122,32 @@ export function LifeAtJKKN({
   const isModern = variant !== 'classic'
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isPaused, setIsPaused] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [scrollLeft, setScrollLeft] = useState(0)
   const headerRef = useInView()
   const contentRef = useInView()
 
-  // Default items for demo
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!scrollRef.current) return
+    setIsDragging(true)
+    setStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
+    setScrollLeft(scrollRef.current.scrollLeft)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !scrollRef.current) return
+    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const walk = (x - startX) * 1.5
+    scrollRef.current.scrollLeft = scrollLeft - walk
+  }
+
+  const handleTouchEnd = () => {
+    setIsDragging(false)
+  }
+
+  // Default items for demo - 3 cards
   const defaultItems: LifeItem[] = [
     {
       title: 'Sports & Athletics',
@@ -144,36 +166,6 @@ export function LifeAtJKKN({
       category: 'Community',
       description: 'Join various clubs - from coding to photography, there\'s something for everyone.',
       icon: 'Users',
-    },
-    {
-      title: 'Research Labs',
-      category: 'Academics',
-      description: 'Cutting-edge research facilities fostering innovation and discovery.',
-      icon: 'Microscope',
-    },
-    {
-      title: 'Campus Cafeteria',
-      category: 'Lifestyle',
-      description: 'Hygienic and delicious food options catering to diverse tastes.',
-      icon: 'Utensils',
-    },
-    {
-      title: 'Fitness Center',
-      category: 'Health',
-      description: 'Modern gym and fitness facilities for a healthy student life.',
-      icon: 'Dumbbell',
-    },
-    {
-      title: 'Art & Design Studio',
-      category: 'Creative',
-      description: 'Express your creativity in our well-equipped art studios.',
-      icon: 'Palette',
-    },
-    {
-      title: 'Library & Learning',
-      category: 'Academics',
-      description: 'Extensive library with digital resources and quiet study spaces.',
-      icon: 'Book',
     },
   ]
 
@@ -293,13 +285,17 @@ export function LifeAtJKKN({
                 <ChevronLeft className="w-6 h-6" />
               </button>
 
-              <div
-                ref={scrollRef}
-                className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              >
-                {displayItems.map((item, index) => (
-                  <LifeCard
+              <div className="max-w-[1008px] mx-auto">
+                <div
+                  ref={scrollRef}
+                  className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                >
+                  {displayItems.map((item, index) => (
+                    <LifeCard
                     key={index}
                     item={item}
                     cardStyle={cardStyle}
@@ -307,9 +303,10 @@ export function LifeAtJKKN({
                     isEditing={isEditing}
                     index={index}
                     isInView={contentRef.isInView}
-                    className="snap-start flex-shrink-0 w-[320px]"
-                  />
-                ))}
+                      className="snap-start flex-shrink-0 w-[calc(100vw-2rem)] sm:w-[320px]"
+                    />
+                  ))}
+                </div>
               </div>
 
               <button

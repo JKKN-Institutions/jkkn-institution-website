@@ -110,8 +110,30 @@ export function LatestBuzz({
 }: LatestBuzzProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isPaused, setIsPaused] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [scrollLeft, setScrollLeft] = useState(0)
   const headerRef = useInView()
   const contentRef = useInView()
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!scrollRef.current) return
+    setIsDragging(true)
+    setStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
+    setScrollLeft(scrollRef.current.scrollLeft)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !scrollRef.current) return
+    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const walk = (x - startX) * 1.5
+    scrollRef.current.scrollLeft = scrollLeft - walk
+  }
+
+  const handleTouchEnd = () => {
+    setIsDragging(false)
+  }
 
   const isDark = variant === 'modern-dark'
   const isModern = variant !== 'classic'
@@ -120,8 +142,6 @@ export function LatestBuzz({
     { title: 'Campus Drive 2025', image: '', link: '/buzz/campus-drive', category: 'Placement' },
     { title: 'Placement Day Celebration', image: '', link: '/buzz/placement-celebration', category: 'Events' },
     { title: 'Industry Immersion Program', image: '', link: '/buzz/industry-immersion', category: 'Learning' },
-    { title: 'Annual Sports Meet', image: '', link: '/buzz/sports-meet', category: 'Sports' },
-    { title: 'Cultural Festival Highlights', image: '', link: '/buzz/cultural-fest', category: 'Culture' },
   ]
 
   const displayBuzz = buzzItems.length > 0 ? buzzItems : defaultBuzz
@@ -215,13 +235,17 @@ export function LatestBuzz({
               onMouseLeave={() => setIsPaused(false)}
             >
               {/* Carousel */}
-              <div
-                ref={scrollRef}
-                className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              >
-                {displayBuzz.map((buzz, index) => (
-                  <BuzzCard
+              <div className="max-w-[1008px] mx-auto">
+                <div
+                  ref={scrollRef}
+                  className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                >
+                  {displayBuzz.map((buzz, index) => (
+                    <BuzzCard
                     key={index}
                     buzz={buzz}
                     cardStyle={cardStyle}
@@ -230,9 +254,10 @@ export function LatestBuzz({
                     isEditing={isEditing}
                     index={index}
                     isInView={contentRef.isInView}
-                    className="snap-start flex-shrink-0 w-[320px]"
-                  />
-                ))}
+                      className="snap-start flex-shrink-0 w-[calc(100vw-2rem)] sm:w-[320px]"
+                    />
+                  ))}
+                </div>
               </div>
 
               {/* Carousel Indicators */}

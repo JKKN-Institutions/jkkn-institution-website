@@ -17,7 +17,7 @@ export default async function PublicLayout({
       <SiteHeader navigation={navigation} />
 
       {/* Main Content */}
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 overflow-x-hidden">{children}</main>
 
       {/* Site Footer */}
       <SiteFooter />

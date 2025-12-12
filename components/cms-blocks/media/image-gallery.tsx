@@ -85,7 +85,7 @@ export default function ImageGallery({
               'relative overflow-hidden rounded-lg group',
               layout === 'grid' && 'aspect-square',
               layout === 'masonry' && 'break-inside-avoid mb-4',
-              layout === 'carousel' && 'min-w-[300px] flex-shrink-0 snap-center aspect-video',
+              layout === 'carousel' && 'min-w-[calc(100vw-2rem)] sm:min-w-[300px] flex-shrink-0 snap-center aspect-video',
               lightbox && 'cursor-pointer'
             )}
           >

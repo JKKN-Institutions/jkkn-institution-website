@@ -115,10 +115,32 @@ export function CollegeAlumni({
   const isModern = variant !== 'classic'
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isPaused, setIsPaused] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [scrollLeft, setScrollLeft] = useState(0)
   const headerRef = useInView()
   const contentRef = useInView()
 
-  // Default alumni for demo
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!scrollRef.current) return
+    setIsDragging(true)
+    setStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
+    setScrollLeft(scrollRef.current.scrollLeft)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !scrollRef.current) return
+    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const walk = (x - startX) * 1.5
+    scrollRef.current.scrollLeft = scrollLeft - walk
+  }
+
+  const handleTouchEnd = () => {
+    setIsDragging(false)
+  }
+
+  // Default alumni for demo - 3 cards
   const defaultAlumni: AlumniItem[] = [
     {
       name: 'Dr. Priya Venkatesh',
@@ -146,24 +168,6 @@ export function CollegeAlumni({
       company: 'Cipla',
       location: 'Mumbai',
       testimonial: 'World-class labs and research facilities at JKKN helped shape my career.',
-    },
-    {
-      name: 'Karthik Rajan',
-      batch: '2019',
-      department: 'Management',
-      currentRole: 'Product Manager',
-      company: 'Amazon',
-      location: 'Hyderabad',
-      testimonial: 'JKKN\'s industry connections opened doors I never knew existed.',
-    },
-    {
-      name: 'Dr. Meena Krishnan',
-      batch: '2014',
-      department: 'Nursing',
-      currentRole: 'Head Nurse',
-      company: 'AIIMS Delhi',
-      location: 'New Delhi',
-      testimonial: 'The clinical training at JKKN was invaluable for my nursing career.',
     },
   ]
 
@@ -278,13 +282,17 @@ export function CollegeAlumni({
                 <ChevronLeft className="w-6 h-6" />
               </button>
 
-              <div
-                ref={scrollRef}
-                className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              >
-                {displayAlumni.map((alum, index) => (
-                  <AlumniCard
+              <div className="max-w-[1098px] mx-auto">
+                <div
+                  ref={scrollRef}
+                  className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                >
+                  {displayAlumni.map((alum, index) => (
+                    <AlumniCard
                     key={index}
                     alumni={alum}
                     cardStyle={cardStyle}
@@ -292,9 +300,10 @@ export function CollegeAlumni({
                     isEditing={isEditing}
                     index={index}
                     isInView={contentRef.isInView}
-                    className="snap-start flex-shrink-0 w-[350px]"
-                  />
-                ))}
+                      className="snap-start flex-shrink-0 w-[calc(100vw-2rem)] sm:w-[350px]"
+                    />
+                  ))}
+                </div>
               </div>
 
               <button

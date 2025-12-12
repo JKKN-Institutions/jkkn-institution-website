@@ -112,6 +112,9 @@ export function CollegeNews({
 }: CollegeNewsProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isPaused, setIsPaused] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [scrollLeft, setScrollLeft] = useState(0)
   const headerRef = useInView()
   const contentRef = useInView()
 
@@ -122,8 +125,6 @@ export function CollegeNews({
     { title: 'NAAC A+ Accreditation Achieved', image: '', date: 'Jan 15, 2025', link: '/news/naac', category: 'Achievement' },
     { title: 'Students Win National Level Hackathon', image: '', date: 'Jan 10, 2025', link: '/news/hackathon', category: 'Events' },
     { title: 'New Research Lab Inaugurated', image: '', date: 'Jan 5, 2025', link: '/news/research-lab', category: 'Infrastructure' },
-    { title: 'Record Breaking Placement Season', image: '', date: 'Dec 28, 2024', link: '/news/placements', category: 'Placements' },
-    { title: 'Faculty Excellence Award', image: '', date: 'Dec 20, 2024', link: '/news/faculty-award', category: 'Recognition' },
   ]
 
   const displayNews = newsItems.length > 0 ? newsItems : defaultNews
@@ -147,6 +148,25 @@ export function CollegeNews({
 
     return () => clearInterval(interval)
   }, [layout, isEditing, isPaused, autoplaySpeed, autoplay])
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!scrollRef.current) return
+    setIsDragging(true)
+    setStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
+    setScrollLeft(scrollRef.current.scrollLeft)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !scrollRef.current) return
+    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const walk = (x - startX) * 1.5
+    scrollRef.current.scrollLeft = scrollLeft - walk
+  }
+
+  const handleTouchEnd = () => {
+    setIsDragging(false)
+  }
 
   const columnClasses = {
     '2': 'grid-cols-1 sm:grid-cols-2',
@@ -216,25 +236,30 @@ export function CollegeNews({
               onMouseEnter={() => setIsPaused(true)}
               onMouseLeave={() => setIsPaused(false)}
             >
-              {/* Carousel */}
-              <div
-                ref={scrollRef}
-                className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              >
-                {displayNews.map((news, index) => (
-                  <NewsCard
-                    key={index}
-                    news={news}
-                    cardStyle={cardStyle}
-                    isDark={isDark}
-                    showCategory={showCategory}
-                    isEditing={isEditing}
-                    index={index}
-                    isInView={contentRef.isInView}
-                    className="snap-start flex-shrink-0 w-[320px]"
-                  />
-                ))}
+              {/* Carousel - max 3 cards visible on desktop */}
+              <div className="max-w-[1008px] mx-auto">
+                <div
+                  ref={scrollRef}
+                  className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                >
+                  {displayNews.map((news, index) => (
+                    <NewsCard
+                      key={index}
+                      news={news}
+                      cardStyle={cardStyle}
+                      isDark={isDark}
+                      showCategory={showCategory}
+                      isEditing={isEditing}
+                      index={index}
+                      isInView={contentRef.isInView}
+                      className="snap-start flex-shrink-0 w-[calc(100vw-2rem)] sm:w-[320px]"
+                    />
+                  ))}
+                </div>
               </div>
 
               {/* Carousel Indicators */}

@@ -39,7 +39,7 @@ export default function Testimonials({
               key={index}
               className={cn(
                 'bg-card rounded-lg p-6 shadow-sm',
-                layout === 'carousel' && 'min-w-[300px] flex-shrink-0 snap-center'
+                layout === 'carousel' && 'min-w-[calc(100vw-2rem)] sm:min-w-[300px] flex-shrink-0 snap-center'
               )}
             >
               {showRating && testimonial.rating !== undefined && (

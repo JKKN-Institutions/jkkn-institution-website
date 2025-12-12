@@ -185,22 +185,22 @@ function StatCard({
   return (
     <div
       className={cn(
-        "relative bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20",
+        "relative bg-white/10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 min-w-0",
         "transform transition-all duration-700 hover:scale-105 hover:bg-white/15",
         isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       )}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
       <div
-        className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
+        className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center mb-3 sm:mb-4"
         style={{ backgroundColor: `${accentColor}25` }}
       >
-        <IconComponent className="w-7 h-7" style={{ color: accentColor }} />
+        <IconComponent className="w-5 h-5 sm:w-7 sm:h-7" style={{ color: accentColor }} />
       </div>
-      <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+      <div className="text-xl min-[400px]:text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2">
         <AnimatedCounter value={stat.value} isInView={isInView} />
       </div>
-      <div className="text-white/70 font-medium">{stat.label}</div>
+      <div className="text-white/70 font-medium text-xs sm:text-sm md:text-base">{stat.label}</div>
     </div>
   )
 }
@@ -453,7 +453,7 @@ The Trust actively engages in various social service activities, including healt
         ref={statsRef.ref}
         className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-20"
       >
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {displayStats.map((stat, index) => (
             <StatCard
               key={index}
