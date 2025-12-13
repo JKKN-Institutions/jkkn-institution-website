@@ -3,7 +3,6 @@ import { Suspense } from 'react'
 import { Metadata } from 'next'
 import { getPageBySlug, getPageWithVisibility } from '@/app/actions/cms/pages'
 import { PageRenderer } from '@/components/cms-blocks/page-renderer'
-import { PageFab } from '@/components/public/page-fab'
 import { Skeleton } from '@/components/ui/skeleton'
 import { LandingPage } from '@/components/public/landing-page'
 import { PasswordProtectedPage, PrivatePageGate } from '@/components/public/password-protected-page'
@@ -130,16 +129,11 @@ export default async function DynamicPage({ params }: PageProps) {
       is_visible: block.is_visible ?? true,
     }))
 
-    const fabConfig = page.cms_page_fab_config
-
     return (
       <article>
         <Suspense fallback={<BlocksSkeleton />}>
           <PageRenderer blocks={blocks} />
         </Suspense>
-        {fabConfig && fabConfig.is_enabled && (
-          <PageFab config={fabConfig} />
-        )}
       </article>
     )
   }
@@ -177,19 +171,11 @@ export default async function DynamicPage({ params }: PageProps) {
     is_visible: block.is_visible ?? true,
   }))
 
-  // Get FAB config for this page
-  const fabConfig = page.cms_page_fab_config
-
   return (
     <article>
       <Suspense fallback={<BlocksSkeleton />}>
         <PageRenderer blocks={blocks} />
       </Suspense>
-
-      {/* Page-specific FAB (overrides layout FAB if configured) */}
-      {fabConfig && fabConfig.is_enabled && (
-        <PageFab config={fabConfig} />
-      )}
     </article>
   )
 }

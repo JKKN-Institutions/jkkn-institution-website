@@ -9,6 +9,9 @@ import {
   MapPin,
   X,
   Plus,
+  Edit2,
+  RefreshCw,
+  Settings,
 } from 'lucide-react'
 
 // Type for CMS FAB config from database
@@ -32,18 +35,31 @@ interface CMSFabConfig {
   hide_on_scroll?: boolean | null
   theme?: string | null
   custom_css?: string | null
+  // Admin actions
+  show_add?: boolean | null
+  add_label?: string | null
+  add_url?: string | null
+  show_edit?: boolean | null
+  edit_label?: string | null
+  show_update?: boolean | null
+  update_label?: string | null
+  show_settings?: boolean | null
+  settings_label?: string | null
+  settings_url?: string | null
 }
 
 interface PageFabProps {
   config?: CMSFabConfig | null
 }
 
-type Position = 'bottom-right' | 'bottom-left'
+type Position = 'bottom-right' | 'bottom-left' | 'bottom-center' | 'top-right' | 'top-left' | 'top-center'
+type PrimaryAction = 'contact' | 'whatsapp' | 'phone' | 'email' | 'custom' | 'admin-menu'
 type Animation = 'none' | 'bounce' | 'pulse' | 'shake'
 
 interface FabConfig {
   isEnabled: boolean
   position: Position
+  primaryAction: PrimaryAction
   showPhone: boolean
   phoneNumber: string
   showWhatsapp: boolean
@@ -55,11 +71,23 @@ interface FabConfig {
   delaySeconds: number
   hideOnScroll: boolean
   animation: Animation
+  // Admin actions
+  showAdd: boolean
+  addLabel: string
+  addUrl: string
+  showEdit: boolean
+  editLabel: string
+  showUpdate: boolean
+  updateLabel: string
+  showSettings: boolean
+  settingsLabel: string
+  settingsUrl: string
 }
 
 const defaultConfig: FabConfig = {
   isEnabled: true,
   position: 'bottom-right',
+  primaryAction: 'contact',
   showPhone: true,
   phoneNumber: '+914222661100',
   showWhatsapp: true,
@@ -71,6 +99,17 @@ const defaultConfig: FabConfig = {
   delaySeconds: 2,
   hideOnScroll: false,
   animation: 'none',
+  // Admin actions
+  showAdd: false,
+  addLabel: 'Add New',
+  addUrl: '',
+  showEdit: false,
+  editLabel: 'Edit',
+  showUpdate: false,
+  updateLabel: 'Update',
+  showSettings: false,
+  settingsLabel: 'Settings',
+  settingsUrl: '',
 }
 
 export function PageFab({ config: cmsConfig }: PageFabProps) {
@@ -81,8 +120,16 @@ export function PageFab({ config: cmsConfig }: PageFabProps) {
 
   // Helper to validate position
   const getPosition = (pos: string | null | undefined): Position => {
-    if (pos === 'bottom-left') return 'bottom-left'
+    const validPositions: Position[] = ['bottom-right', 'bottom-left', 'bottom-center', 'top-right', 'top-left', 'top-center']
+    if (pos && validPositions.includes(pos as Position)) return pos as Position
     return 'bottom-right'
+  }
+
+  // Helper to validate primary action
+  const getPrimaryAction = (action: string | null | undefined): PrimaryAction => {
+    const validActions: PrimaryAction[] = ['contact', 'whatsapp', 'phone', 'email', 'custom', 'admin-menu']
+    if (action && validActions.includes(action as PrimaryAction)) return action as PrimaryAction
+    return 'contact'
   }
 
   // Helper to validate animation
@@ -95,6 +142,7 @@ export function PageFab({ config: cmsConfig }: PageFabProps) {
   const config: FabConfig = {
     isEnabled: cmsConfig.is_enabled ?? defaultConfig.isEnabled,
     position: getPosition(cmsConfig.position),
+    primaryAction: getPrimaryAction(cmsConfig.primary_action),
     showPhone: cmsConfig.show_phone ?? defaultConfig.showPhone,
     phoneNumber: cmsConfig.phone_number ?? defaultConfig.phoneNumber,
     showWhatsapp: cmsConfig.show_whatsapp ?? defaultConfig.showWhatsapp,
@@ -106,6 +154,17 @@ export function PageFab({ config: cmsConfig }: PageFabProps) {
     delaySeconds: cmsConfig.delay_seconds ?? defaultConfig.delaySeconds,
     hideOnScroll: cmsConfig.hide_on_scroll ?? defaultConfig.hideOnScroll,
     animation: getAnimation(cmsConfig.animation),
+    // Admin actions
+    showAdd: cmsConfig.show_add ?? defaultConfig.showAdd,
+    addLabel: cmsConfig.add_label ?? defaultConfig.addLabel,
+    addUrl: cmsConfig.add_url ?? defaultConfig.addUrl,
+    showEdit: cmsConfig.show_edit ?? defaultConfig.showEdit,
+    editLabel: cmsConfig.edit_label ?? defaultConfig.editLabel,
+    showUpdate: cmsConfig.show_update ?? defaultConfig.showUpdate,
+    updateLabel: cmsConfig.update_label ?? defaultConfig.updateLabel,
+    showSettings: cmsConfig.show_settings ?? defaultConfig.showSettings,
+    settingsLabel: cmsConfig.settings_label ?? defaultConfig.settingsLabel,
+    settingsUrl: cmsConfig.settings_url ?? defaultConfig.settingsUrl,
   }
 
   return <PageFabInner config={config} />
@@ -148,7 +207,8 @@ function PageFabInner({ config }: { config: FabConfig }) {
 
   if (!config.isEnabled) return null
 
-  const actions = [
+  // Contact actions (for contact menu)
+  const contactActions = [
     {
       id: 'phone',
       icon: Phone,
@@ -183,9 +243,55 @@ function PageFabInner({ config }: { config: FabConfig }) {
     },
   ].filter((action) => action.show)
 
+  // Admin actions (for admin-menu)
+  const adminActions = [
+    {
+      id: 'add',
+      icon: Plus,
+      label: config.addLabel,
+      href: config.addUrl,
+      color: 'bg-green-500 hover:bg-green-600',
+      show: config.showAdd,
+    },
+    {
+      id: 'edit',
+      icon: Edit2,
+      label: config.editLabel,
+      href: '#',
+      color: 'bg-blue-500 hover:bg-blue-600',
+      show: config.showEdit,
+    },
+    {
+      id: 'update',
+      icon: RefreshCw,
+      label: config.updateLabel,
+      href: '#',
+      color: 'bg-orange-500 hover:bg-orange-600',
+      show: config.showUpdate,
+    },
+    {
+      id: 'settings',
+      icon: Settings,
+      label: config.settingsLabel,
+      href: config.settingsUrl,
+      color: 'bg-purple-500 hover:bg-purple-600',
+      show: config.showSettings,
+    },
+  ].filter((action) => action.show)
+
+  // Select actions based on primary action type
+  const actions = config.primaryAction === 'admin-menu' ? adminActions : contactActions
+
+  // Check if position is at top
+  const isTopPosition = config.position.startsWith('top')
+
   const positionClasses = {
     'bottom-right': 'bottom-6 right-6',
     'bottom-left': 'bottom-6 left-6',
+    'bottom-center': 'bottom-6 left-1/2 -translate-x-1/2',
+    'top-right': 'top-6 right-6',
+    'top-left': 'top-6 left-6',
+    'top-center': 'top-6 left-1/2 -translate-x-1/2',
   }
 
   const animationClasses = {
@@ -198,9 +304,15 @@ function PageFabInner({ config }: { config: FabConfig }) {
   return (
     <div
       className={cn(
-        'fixed z-[60] flex flex-col-reverse items-end gap-3 transition-all duration-500',
+        'fixed z-[60] flex items-end gap-3 transition-all duration-500',
+        // For top positions, expand downward (flex-col); for bottom, expand upward (flex-col-reverse)
+        isTopPosition ? 'flex-col' : 'flex-col-reverse',
         positionClasses[config.position],
-        isVisible && !isHidden ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
+        isVisible && !isHidden
+          ? 'opacity-100 translate-y-0'
+          : isTopPosition
+            ? 'opacity-0 -translate-y-10 pointer-events-none'
+            : 'opacity-0 translate-y-10 pointer-events-none'
       )}
     >
       {/* Action Buttons */}

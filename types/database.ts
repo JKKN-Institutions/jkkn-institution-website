@@ -39,7 +39,68 @@ export type Database = {
           notes?: string | null
           status?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "approved_emails_added_by_fkey"
+            columns: ["added_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cms_component_collections: {
+        Row: {
+          color: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_system: boolean | null
+          name: string
+          parent_id: string | null
+          slug: string
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_system?: boolean | null
+          name: string
+          parent_id?: string | null
+          slug: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          color?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_system?: boolean | null
+          name?: string
+          parent_id?: string | null
+          slug?: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_component_collections_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "cms_component_collections"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       cms_component_registry: {
         Row: {
@@ -85,6 +146,161 @@ export type Database = {
           props_schema?: Json
           sort_order?: number | null
           supports_children?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      cms_custom_components: {
+        Row: {
+          category: string
+          code: string
+          collection_id: string | null
+          created_at: string | null
+          created_by: string | null
+          default_props: Json | null
+          dependencies: Json | null
+          description: string | null
+          display_name: string
+          editable_props: Json | null
+          file_path: string
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          is_full_width: boolean | null
+          keywords: string[] | null
+          name: string
+          preview_image: string | null
+          preview_status: string | null
+          props_schema: Json | null
+          source_registry: string | null
+          source_type: string
+          source_url: string | null
+          supports_children: boolean | null
+          updated_at: string | null
+          updated_by: string | null
+          version: string | null
+        }
+        Insert: {
+          category: string
+          code: string
+          collection_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          default_props?: Json | null
+          dependencies?: Json | null
+          description?: string | null
+          display_name: string
+          editable_props?: Json | null
+          file_path: string
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_full_width?: boolean | null
+          keywords?: string[] | null
+          name: string
+          preview_image?: string | null
+          preview_status?: string | null
+          props_schema?: Json | null
+          source_registry?: string | null
+          source_type: string
+          source_url?: string | null
+          supports_children?: boolean | null
+          updated_at?: string | null
+          updated_by?: string | null
+          version?: string | null
+        }
+        Update: {
+          category?: string
+          code?: string
+          collection_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          default_props?: Json | null
+          dependencies?: Json | null
+          description?: string | null
+          display_name?: string
+          editable_props?: Json | null
+          file_path?: string
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_full_width?: boolean | null
+          keywords?: string[] | null
+          name?: string
+          preview_image?: string | null
+          preview_status?: string | null
+          props_schema?: Json | null
+          source_registry?: string | null
+          source_type?: string
+          source_url?: string | null
+          supports_children?: boolean | null
+          updated_at?: string | null
+          updated_by?: string | null
+          version?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_custom_components_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "cms_component_collections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cms_external_registries: {
+        Row: {
+          api_endpoint: string | null
+          auth_config: Json | null
+          cached_components: Json | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          last_synced_at: string | null
+          name: string
+          registry_type: string
+          registry_url: string
+          slug: string
+          sync_error: string | null
+          sync_status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          api_endpoint?: string | null
+          auth_config?: Json | null
+          cached_components?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_synced_at?: string | null
+          name: string
+          registry_type: string
+          registry_url: string
+          slug: string
+          sync_error?: string | null
+          sync_status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          api_endpoint?: string | null
+          auth_config?: Json | null
+          cached_components?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_synced_at?: string | null
+          name?: string
+          registry_type?: string
+          registry_url?: string
+          slug?: string
+          sync_error?: string | null
+          sync_status?: string | null
           updated_at?: string | null
         }
         Relationships: []
@@ -214,6 +430,8 @@ export type Database = {
       }
       cms_page_fab_config: {
         Row: {
+          add_label: string | null
+          add_url: string | null
           animation: string | null
           created_at: string | null
           custom_action_icon: string | null
@@ -222,6 +440,7 @@ export type Database = {
           custom_css: string | null
           delay_ms: number | null
           directions_url: string | null
+          edit_label: string | null
           email_address: string | null
           hide_on_scroll: boolean | null
           id: string
@@ -230,15 +449,24 @@ export type Database = {
           phone_number: string | null
           position: string | null
           primary_action: string | null
+          settings_label: string | null
+          settings_url: string | null
+          show_add: boolean | null
           show_directions: boolean | null
+          show_edit: boolean | null
           show_email: boolean | null
           show_phone: boolean | null
+          show_settings: boolean | null
+          show_update: boolean | null
           show_whatsapp: boolean | null
           theme: string | null
+          update_label: string | null
           updated_at: string | null
           whatsapp_number: string | null
         }
         Insert: {
+          add_label?: string | null
+          add_url?: string | null
           animation?: string | null
           created_at?: string | null
           custom_action_icon?: string | null
@@ -247,6 +475,7 @@ export type Database = {
           custom_css?: string | null
           delay_ms?: number | null
           directions_url?: string | null
+          edit_label?: string | null
           email_address?: string | null
           hide_on_scroll?: boolean | null
           id?: string
@@ -255,15 +484,24 @@ export type Database = {
           phone_number?: string | null
           position?: string | null
           primary_action?: string | null
+          settings_label?: string | null
+          settings_url?: string | null
+          show_add?: boolean | null
           show_directions?: boolean | null
+          show_edit?: boolean | null
           show_email?: boolean | null
           show_phone?: boolean | null
+          show_settings?: boolean | null
+          show_update?: boolean | null
           show_whatsapp?: boolean | null
           theme?: string | null
+          update_label?: string | null
           updated_at?: string | null
           whatsapp_number?: string | null
         }
         Update: {
+          add_label?: string | null
+          add_url?: string | null
           animation?: string | null
           created_at?: string | null
           custom_action_icon?: string | null
@@ -272,6 +510,7 @@ export type Database = {
           custom_css?: string | null
           delay_ms?: number | null
           directions_url?: string | null
+          edit_label?: string | null
           email_address?: string | null
           hide_on_scroll?: boolean | null
           id?: string
@@ -280,11 +519,18 @@ export type Database = {
           phone_number?: string | null
           position?: string | null
           primary_action?: string | null
+          settings_label?: string | null
+          settings_url?: string | null
+          show_add?: boolean | null
           show_directions?: boolean | null
+          show_edit?: boolean | null
           show_email?: boolean | null
           show_phone?: boolean | null
+          show_settings?: boolean | null
+          show_update?: boolean | null
           show_whatsapp?: boolean | null
           theme?: string | null
+          update_label?: string | null
           updated_at?: string | null
           whatsapp_number?: string | null
         }
@@ -404,6 +650,7 @@ export type Database = {
           created_at: string | null
           created_by: string
           description: string | null
+          external_url: string | null
           featured_image: string | null
           id: string
           is_homepage: boolean | null
@@ -427,6 +674,7 @@ export type Database = {
           created_at?: string | null
           created_by: string
           description?: string | null
+          external_url?: string | null
           featured_image?: string | null
           id?: string
           is_homepage?: boolean | null
@@ -450,6 +698,7 @@ export type Database = {
           created_at?: string | null
           created_by?: string
           description?: string | null
+          external_url?: string | null
           featured_image?: string | null
           id?: string
           is_homepage?: boolean | null
@@ -482,6 +731,112 @@ export type Database = {
             columns: ["template_id"]
             isOneToOne: false
             referencedRelation: "cms_page_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cms_preview_jobs: {
+        Row: {
+          attempts: number | null
+          completed_at: string | null
+          component_id: string
+          created_at: string | null
+          error_message: string | null
+          id: string
+          max_attempts: number | null
+          scheduled_at: string | null
+          started_at: string | null
+          status: string | null
+        }
+        Insert: {
+          attempts?: number | null
+          completed_at?: string | null
+          component_id: string
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          max_attempts?: number | null
+          scheduled_at?: string | null
+          started_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          attempts?: number | null
+          completed_at?: string | null
+          component_id?: string
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          max_attempts?: number | null
+          scheduled_at?: string | null
+          started_at?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_preview_jobs_component_id_fkey"
+            columns: ["component_id"]
+            isOneToOne: false
+            referencedRelation: "cms_custom_components"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cms_preview_links: {
+        Row: {
+          allowed_emails: string[] | null
+          created_at: string | null
+          created_by: string
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          last_viewed_at: string | null
+          max_views: number | null
+          name: string | null
+          page_id: string
+          password_hash: string | null
+          token: string
+          updated_at: string | null
+          view_count: number | null
+        }
+        Insert: {
+          allowed_emails?: string[] | null
+          created_at?: string | null
+          created_by: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_viewed_at?: string | null
+          max_views?: number | null
+          name?: string | null
+          page_id: string
+          password_hash?: string | null
+          token: string
+          updated_at?: string | null
+          view_count?: number | null
+        }
+        Update: {
+          allowed_emails?: string[] | null
+          created_at?: string | null
+          created_by?: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_viewed_at?: string | null
+          max_views?: number | null
+          name?: string | null
+          page_id?: string
+          password_hash?: string | null
+          token?: string
+          updated_at?: string | null
+          view_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_preview_links_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "cms_pages"
             referencedColumns: ["id"]
           },
         ]
@@ -566,6 +921,247 @@ export type Database = {
           },
         ]
       }
+      contact_submissions: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          ip_address: string | null
+          message: string
+          name: string
+          phone: string | null
+          replied_at: string | null
+          replied_by: string | null
+          source: string | null
+          status: string | null
+          subject: string
+          updated_at: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          ip_address?: string | null
+          message: string
+          name: string
+          phone?: string | null
+          replied_at?: string | null
+          replied_by?: string | null
+          source?: string | null
+          status?: string | null
+          subject: string
+          updated_at?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          ip_address?: string | null
+          message?: string
+          name?: string
+          phone?: string | null
+          replied_at?: string | null
+          replied_by?: string | null
+          source?: string | null
+          status?: string | null
+          subject?: string
+          updated_at?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      dashboard_layouts: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_default: boolean | null
+          layout_config: Json
+          role_id: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_default?: boolean | null
+          layout_config?: Json
+          role_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_default?: boolean | null
+          layout_config?: Json
+          role_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dashboard_layouts_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dashboard_quick_actions: {
+        Row: {
+          action_key: string
+          created_at: string | null
+          icon: string
+          id: string
+          is_active: boolean | null
+          label: string
+          link: string
+          order_index: number | null
+          permission_required: string | null
+          role_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          action_key: string
+          created_at?: string | null
+          icon: string
+          id?: string
+          is_active?: boolean | null
+          label: string
+          link: string
+          order_index?: number | null
+          permission_required?: string | null
+          role_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          action_key?: string
+          created_at?: string | null
+          icon?: string
+          id?: string
+          is_active?: boolean | null
+          label?: string
+          link?: string
+          order_index?: number | null
+          permission_required?: string | null
+          role_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dashboard_quick_actions_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dashboard_widgets: {
+        Row: {
+          category: string
+          component_name: string
+          created_at: string | null
+          default_config: Json | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          max_height: number | null
+          max_width: number | null
+          min_height: number | null
+          min_width: number | null
+          name: string
+          required_permissions: string[] | null
+          sort_order: number | null
+          updated_at: string | null
+          widget_key: string
+        }
+        Insert: {
+          category: string
+          component_name: string
+          created_at?: string | null
+          default_config?: Json | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_height?: number | null
+          max_width?: number | null
+          min_height?: number | null
+          min_width?: number | null
+          name: string
+          required_permissions?: string[] | null
+          sort_order?: number | null
+          updated_at?: string | null
+          widget_key: string
+        }
+        Update: {
+          category?: string
+          component_name?: string
+          created_at?: string | null
+          default_config?: Json | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_height?: number | null
+          max_width?: number | null
+          min_height?: number | null
+          min_width?: number | null
+          name?: string
+          required_permissions?: string[] | null
+          sort_order?: number | null
+          updated_at?: string | null
+          widget_key?: string
+        }
+        Relationships: []
+      }
+      in_app_notifications: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          expires_at: string | null
+          icon: string | null
+          id: string
+          is_read: boolean | null
+          link: string | null
+          metadata: Json | null
+          read_at: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          icon?: string | null
+          id?: string
+          is_read?: boolean | null
+          link?: string | null
+          metadata?: Json | null
+          read_at?: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          icon?: string | null
+          id?: string
+          is_read?: boolean | null
+          link?: string | null
+          metadata?: Json | null
+          read_at?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       members: {
         Row: {
           chapter: string | null
@@ -624,6 +1220,7 @@ export type Database = {
           employee_id: string | null
           full_name: string | null
           id: string
+          last_login_at: string | null
           phone: string | null
           updated_at: string | null
         }
@@ -637,6 +1234,7 @@ export type Database = {
           employee_id?: string | null
           full_name?: string | null
           id: string
+          last_login_at?: string | null
           phone?: string | null
           updated_at?: string | null
         }
@@ -650,6 +1248,7 @@ export type Database = {
           employee_id?: string | null
           full_name?: string | null
           id?: string
+          last_login_at?: string | null
           phone?: string | null
           updated_at?: string | null
         }
@@ -711,6 +1310,42 @@ export type Database = {
           is_system_role?: boolean | null
           name?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          id: string
+          is_public: boolean | null
+          setting_key: string
+          setting_value: Json
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_public?: boolean | null
+          setting_key: string
+          setting_value?: Json
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_public?: boolean | null
+          setting_key?: string
+          setting_value?: Json
+          updated_at?: string | null
+          updated_by?: string | null
         }
         Relationships: []
       }
@@ -791,6 +1426,47 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      user_dashboard_preferences: {
+        Row: {
+          config: Json | null
+          created_at: string | null
+          id: string
+          is_visible: boolean | null
+          position: Json
+          updated_at: string | null
+          user_id: string
+          widget_id: string
+        }
+        Insert: {
+          config?: Json | null
+          created_at?: string | null
+          id?: string
+          is_visible?: boolean | null
+          position?: Json
+          updated_at?: string | null
+          user_id: string
+          widget_id: string
+        }
+        Update: {
+          config?: Json | null
+          created_at?: string | null
+          id?: string
+          is_visible?: boolean | null
+          position?: Json
+          updated_at?: string | null
+          user_id?: string
+          widget_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_dashboard_preferences_widget_id_fkey"
+            columns: ["widget_id"]
+            isOneToOne: false
+            referencedRelation: "dashboard_widgets"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_role_changes: {
         Row: {
@@ -905,6 +1581,7 @@ export type Database = {
           role_name: string
         }[]
       }
+      get_user_stats: { Args: never; Returns: Json }
       has_permission: {
         Args: { required_permission: string; user_uuid: string }
         Returns: boolean

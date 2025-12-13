@@ -39,15 +39,18 @@ import {
   Eye,
   EyeOff,
   Link2,
+  Plus,
+  Edit2,
+  Wrench,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export interface FabConfig {
   id?: string
   is_enabled: boolean
-  position: 'bottom-right' | 'bottom-left' | 'bottom-center'
+  position: 'bottom-right' | 'bottom-left' | 'bottom-center' | 'top-right' | 'top-left' | 'top-center'
   theme: 'auto' | 'light' | 'dark' | 'brand'
-  primary_action: 'contact' | 'whatsapp' | 'phone' | 'email' | 'custom'
+  primary_action: 'contact' | 'whatsapp' | 'phone' | 'email' | 'custom' | 'admin-menu'
   custom_action_label: string | null
   custom_action_url: string | null
   custom_action_icon: string | null
@@ -63,6 +66,17 @@ export interface FabConfig {
   delay_ms: number
   hide_on_scroll: boolean
   custom_css: string | null
+  // Admin actions
+  show_add: boolean
+  add_label: string | null
+  add_url: string | null
+  show_edit: boolean
+  edit_label: string | null
+  show_update: boolean
+  update_label: string | null
+  show_settings: boolean
+  settings_label: string | null
+  settings_url: string | null
 }
 
 interface FabPanelProps {
@@ -92,14 +106,30 @@ const DEFAULT_CONFIG: FabConfig = {
   delay_ms: 0,
   hide_on_scroll: false,
   custom_css: null,
+  // Admin actions
+  show_add: false,
+  add_label: 'Add New',
+  add_url: null,
+  show_edit: false,
+  edit_label: 'Edit',
+  show_update: false,
+  update_label: 'Update',
+  show_settings: false,
+  settings_label: 'Settings',
+  settings_url: null,
 }
 
 // FAB Preview Component
 function FabPreview({ config }: { config: FabConfig }) {
+  const isTopPosition = config.position.startsWith('top')
+
   const positionClasses = {
-    'bottom-right': 'right-4',
-    'bottom-left': 'left-4',
-    'bottom-center': 'left-1/2 -translate-x-1/2',
+    'bottom-right': 'bottom-4 right-4',
+    'bottom-left': 'bottom-4 left-4',
+    'bottom-center': 'bottom-4 left-1/2 -translate-x-1/2',
+    'top-right': 'top-4 right-4',
+    'top-left': 'top-4 left-4',
+    'top-center': 'top-4 left-1/2 -translate-x-1/2',
   }
 
   const themeClasses = {
@@ -140,13 +170,31 @@ function FabPreview({ config }: { config: FabConfig }) {
       {/* FAB Preview */}
       <div
         className={cn(
-          'absolute bottom-4',
-          positionClasses[config.position]
+          'absolute flex items-center',
+          positionClasses[config.position],
+          // For top positions, expand downward; for bottom, expand upward
+          isTopPosition ? 'flex-col' : 'flex-col-reverse'
         )}
       >
-        {/* Expanded Actions (when showing multiple) */}
+        {/* Main FAB Button */}
+        <div
+          className={cn(
+            'w-14 h-14 rounded-full flex items-center justify-center shadow-lg cursor-pointer',
+            themeClasses[config.theme],
+            animationClasses[config.animation]
+          )}
+        >
+          {config.primary_action === 'contact' && <MessageCircle className="h-6 w-6" />}
+          {config.primary_action === 'whatsapp' && <MessageCircle className="h-6 w-6" />}
+          {config.primary_action === 'phone' && <Phone className="h-6 w-6" />}
+          {config.primary_action === 'email' && <Mail className="h-6 w-6" />}
+          {config.primary_action === 'custom' && <Link2 className="h-6 w-6" />}
+          {config.primary_action === 'admin-menu' && <Settings2 className="h-6 w-6" />}
+        </div>
+
+        {/* Expanded Contact Actions */}
         {config.primary_action === 'contact' && (
-          <div className="flex flex-col gap-2 mb-2 items-center">
+          <div className={cn('flex flex-col gap-2 items-center', isTopPosition ? 'mt-2' : 'mb-2')}>
             {config.show_whatsapp && (
               <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center shadow-md">
                 <MessageCircle className="h-5 w-5 text-white" />
@@ -170,20 +218,31 @@ function FabPreview({ config }: { config: FabConfig }) {
           </div>
         )}
 
-        {/* Main FAB Button */}
-        <div
-          className={cn(
-            'w-14 h-14 rounded-full flex items-center justify-center shadow-lg cursor-pointer',
-            themeClasses[config.theme],
-            animationClasses[config.animation]
-          )}
-        >
-          {config.primary_action === 'contact' && <MessageCircle className="h-6 w-6" />}
-          {config.primary_action === 'whatsapp' && <MessageCircle className="h-6 w-6" />}
-          {config.primary_action === 'phone' && <Phone className="h-6 w-6" />}
-          {config.primary_action === 'email' && <Mail className="h-6 w-6" />}
-          {config.primary_action === 'custom' && <Link2 className="h-6 w-6" />}
-        </div>
+        {/* Expanded Admin Actions */}
+        {config.primary_action === 'admin-menu' && (
+          <div className={cn('flex flex-col gap-2 items-center', isTopPosition ? 'mt-2' : 'mb-2')}>
+            {config.show_add && (
+              <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center shadow-md" title={config.add_label || 'Add New'}>
+                <Plus className="h-5 w-5 text-white" />
+              </div>
+            )}
+            {config.show_edit && (
+              <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center shadow-md" title={config.edit_label || 'Edit'}>
+                <Edit2 className="h-5 w-5 text-white" />
+              </div>
+            )}
+            {config.show_update && (
+              <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center shadow-md" title={config.update_label || 'Update'}>
+                <RefreshCw className="h-5 w-5 text-white" />
+              </div>
+            )}
+            {config.show_settings && (
+              <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center shadow-md" title={config.settings_label || 'Settings'}>
+                <Settings2 className="h-5 w-5 text-white" />
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Position indicator */}
@@ -214,6 +273,7 @@ export function FabPanel({
   const [openSections, setOpenSections] = useState({
     general: true,
     contactOptions: false,
+    adminActions: false,
     contactInfo: false,
     appearance: false,
     behavior: false,
@@ -324,6 +384,9 @@ export function FabPanel({
                     <SelectItem value="bottom-right">Bottom Right</SelectItem>
                     <SelectItem value="bottom-left">Bottom Left</SelectItem>
                     <SelectItem value="bottom-center">Bottom Center</SelectItem>
+                    <SelectItem value="top-right">Top Right</SelectItem>
+                    <SelectItem value="top-left">Top Left</SelectItem>
+                    <SelectItem value="top-center">Top Center</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -354,6 +417,7 @@ export function FabPanel({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="contact">Contact Menu (Expandable)</SelectItem>
+                    <SelectItem value="admin-menu">Admin Menu (Expandable)</SelectItem>
                     <SelectItem value="whatsapp">WhatsApp Direct</SelectItem>
                     <SelectItem value="phone">Phone Direct</SelectItem>
                     <SelectItem value="email">Email Direct</SelectItem>
@@ -454,6 +518,136 @@ export function FabPanel({
                     checked={config.show_directions}
                     onCheckedChange={(checked) => updateField('show_directions', checked)}
                   />
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+          )}
+
+          {/* Admin Actions (only for admin-menu) */}
+          {config.primary_action === 'admin-menu' && (
+            <Collapsible
+              open={openSections.adminActions}
+              onOpenChange={() => toggleSection('adminActions')}
+            >
+              <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+                <div className="flex items-center gap-2">
+                  <Wrench className="h-4 w-4 text-purple-500" />
+                  <span className="font-medium text-sm">Admin Actions</span>
+                </div>
+                <ChevronDown
+                  className={cn(
+                    'h-4 w-4 transition-transform',
+                    openSections.adminActions && 'rotate-180'
+                  )}
+                />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pt-3 space-y-4">
+                {/* Add New Action */}
+                <div className="space-y-2 p-3 rounded-md bg-background border">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Plus className="h-4 w-4 text-green-500" />
+                      <span className="text-sm font-medium">Add New</span>
+                    </div>
+                    <Switch
+                      checked={config.show_add}
+                      onCheckedChange={(checked) => updateField('show_add', checked)}
+                    />
+                  </div>
+                  {config.show_add && (
+                    <div className="space-y-2 pt-2 border-t">
+                      <Input
+                        placeholder="Button label (e.g., Add New)"
+                        value={config.add_label || ''}
+                        onChange={(e) => updateField('add_label', e.target.value)}
+                      />
+                      <Input
+                        placeholder="URL (e.g., /admin/content/pages/new)"
+                        value={config.add_url || ''}
+                        onChange={(e) => updateField('add_url', e.target.value)}
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Edit Action */}
+                <div className="space-y-2 p-3 rounded-md bg-background border">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Edit2 className="h-4 w-4 text-blue-500" />
+                      <span className="text-sm font-medium">Edit</span>
+                    </div>
+                    <Switch
+                      checked={config.show_edit}
+                      onCheckedChange={(checked) => updateField('show_edit', checked)}
+                    />
+                  </div>
+                  {config.show_edit && (
+                    <div className="space-y-2 pt-2 border-t">
+                      <Input
+                        placeholder="Button label (e.g., Edit Page)"
+                        value={config.edit_label || ''}
+                        onChange={(e) => updateField('edit_label', e.target.value)}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Edit action triggers inline editing mode
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Update Action */}
+                <div className="space-y-2 p-3 rounded-md bg-background border">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <RefreshCw className="h-4 w-4 text-orange-500" />
+                      <span className="text-sm font-medium">Update</span>
+                    </div>
+                    <Switch
+                      checked={config.show_update}
+                      onCheckedChange={(checked) => updateField('show_update', checked)}
+                    />
+                  </div>
+                  {config.show_update && (
+                    <div className="space-y-2 pt-2 border-t">
+                      <Input
+                        placeholder="Button label (e.g., Save Changes)"
+                        value={config.update_label || ''}
+                        onChange={(e) => updateField('update_label', e.target.value)}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Update action saves current changes
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Settings Action */}
+                <div className="space-y-2 p-3 rounded-md bg-background border">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Settings2 className="h-4 w-4 text-purple-500" />
+                      <span className="text-sm font-medium">Settings</span>
+                    </div>
+                    <Switch
+                      checked={config.show_settings}
+                      onCheckedChange={(checked) => updateField('show_settings', checked)}
+                    />
+                  </div>
+                  {config.show_settings && (
+                    <div className="space-y-2 pt-2 border-t">
+                      <Input
+                        placeholder="Button label (e.g., Settings)"
+                        value={config.settings_label || ''}
+                        onChange={(e) => updateField('settings_label', e.target.value)}
+                      />
+                      <Input
+                        placeholder="URL (e.g., /admin/settings)"
+                        value={config.settings_url || ''}
+                        onChange={(e) => updateField('settings_url', e.target.value)}
+                      />
+                    </div>
+                  )}
                 </div>
               </CollapsibleContent>
             </Collapsible>

@@ -29,8 +29,8 @@ export const NewsTickerPropsSchema = z.object({
   separator: z.string().default('|').describe('Separator between items'),
 
   // Styling
-  backgroundColor: z.string().default(DEFAULT_COLOR_SCHEME.primary).describe('Background color'),
-  labelBackgroundColor: z.string().default('#085032').describe('Label background color'),
+  backgroundColor: z.string().default('#171717').describe('Background color (Brand Dark)'),
+  labelBackgroundColor: z.string().default('#085032').describe('Label background color (Green Dark)'),
   textColor: z.string().default('#ffffff').describe('Text color'),
   highlightColor: z.string().default(DEFAULT_COLOR_SCHEME.secondary).describe('Highlight text color'),
   separatorColor: z.string().default('rgba(255,255,255,0.5)').describe('Separator color'),
@@ -66,7 +66,7 @@ export function NewsTicker({
   label = 'NEWS',
   items = [],
   separator = '|',
-  backgroundColor = DEFAULT_COLOR_SCHEME.primary,
+  backgroundColor = '#171717',
   labelBackgroundColor = '#085032',
   textColor = '#ffffff',
   highlightColor = DEFAULT_COLOR_SCHEME.secondary,
@@ -173,7 +173,7 @@ export function NewsTicker({
   return (
     <div
       className={cn(
-        'relative overflow-hidden w-full',
+        'relative overflow-hidden w-full shadow-lg border-t border-b border-black/10',
         heightClasses[height],
         className
       )}

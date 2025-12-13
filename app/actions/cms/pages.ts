@@ -1842,6 +1842,17 @@ export async function updatePageFab(
     delay_ms?: number
     hide_on_scroll?: boolean
     custom_css?: string | null
+    // Admin actions
+    show_add?: boolean
+    add_label?: string | null
+    add_url?: string | null
+    show_edit?: boolean
+    edit_label?: string | null
+    show_update?: boolean
+    update_label?: string | null
+    show_settings?: boolean
+    settings_label?: string | null
+    settings_url?: string | null
   }
 ): Promise<FormState> {
   const supabase = await createServerSupabaseClient()
