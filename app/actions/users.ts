@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { logActivity } from '@/lib/utils/activity-logger'
 import { checkPermission } from './permissions'
+import { NotificationHelpers, sendNotification } from '@/lib/utils/notification-sender'
 
 // Validation schemas
 const AddApprovedEmailSchema = z.object({
@@ -626,6 +627,18 @@ export async function assignRole(
     changed_by: user.id,
   })
 
+  // Get role name for notification
+  const { data: roleData } = await supabase
+    .from('roles')
+    .select('display_name')
+    .eq('id', roleId)
+    .single()
+
+  // Send notification to user about role change
+  if (roleData) {
+    await NotificationHelpers.roleChanged(targetUserId, roleData.display_name)
+  }
+
   // Log activity
   await logActivity({
     userId: user.id,
@@ -698,6 +711,13 @@ export async function removeRole(
     }
   }
 
+  // Get role name for notification before removing
+  const { data: roleData } = await supabase
+    .from('roles')
+    .select('display_name')
+    .eq('id', roleId)
+    .single()
+
   // Remove role
   const { error } = await supabase
     .from('user_roles')
@@ -717,6 +737,17 @@ export async function removeRole(
     action: 'removed',
     changed_by: user.id,
   })
+
+  // Send notification to user about role removal
+  if (roleData) {
+    await sendNotification({
+      userId: targetUserId,
+      title: 'Role Removed',
+      message: `Your "${roleData.display_name}" role has been removed. Some features may no longer be accessible.`,
+      type: 'warning',
+      link: '/admin/dashboard',
+    })
+  }
 
   // Log activity
   await logActivity({
@@ -815,6 +846,15 @@ export async function reactivateUser(userId: string): Promise<FormState> {
     console.error('Error reactivating user:', error)
     return { success: false, message: 'Failed to reactivate user. Please try again.' }
   }
+
+  // Notify user that their account has been reactivated
+  await sendNotification({
+    userId,
+    title: 'Account Reactivated',
+    message: 'Your account has been reactivated. You now have full access to the system.',
+    type: 'success',
+    link: '/admin/dashboard',
+  })
 
   // Log activity
   await logActivity({

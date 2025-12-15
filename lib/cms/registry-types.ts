@@ -323,6 +323,9 @@ export const ResponsiveValueSchema = <T extends z.ZodTypeAny>(valueSchema: T) =>
 export const HeroSectionPropsSchema = z.object({
   title: z.string().default('Welcome'),
   subtitle: z.string().optional(),
+  // Logo settings
+  logoImage: z.string().optional(),
+  showAiBadge: z.boolean().default(true),
   // Title styling
   titleColor: z.string().default('#ffffff'),
   titleFontSize: z.enum(['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl']).default('5xl'),

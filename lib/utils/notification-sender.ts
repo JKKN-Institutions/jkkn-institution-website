@@ -112,6 +112,7 @@ export async function sendBulkNotifications({
 
 /**
  * Send notification to all users with a specific role
+ * Uses the user_roles junction table to find users by role name
  */
 export async function sendNotificationToRole({
   role,
@@ -128,22 +129,34 @@ export async function sendNotificationToRole({
   try {
     const supabase = await createServerSupabaseClient()
 
-    // Get all users with the specified role
-    const { data: users, error: usersError } = await supabase
-      .from('members')
+    // First, get the role ID from the roles table
+    const { data: roleData, error: roleError } = await supabase
+      .from('roles')
       .select('id')
-      .eq('role', role)
+      .eq('name', role)
+      .single()
+
+    if (roleError || !roleData) {
+      console.error('Failed to find role:', role, roleError)
+      return { success: false, error: `Role "${role}" not found` }
+    }
+
+    // Get all users with the specified role from user_roles junction table
+    const { data: userRoles, error: usersError } = await supabase
+      .from('user_roles')
+      .select('user_id')
+      .eq('role_id', roleData.id)
 
     if (usersError) {
       console.error('Failed to fetch users by role:', usersError)
       return { success: false, error: usersError.message }
     }
 
-    if (!users || users.length === 0) {
+    if (!userRoles || userRoles.length === 0) {
       return { success: true, count: 0 }
     }
 
-    const userIds = users.map((u) => u.id)
+    const userIds = userRoles.map((ur) => ur.user_id)
     return sendBulkNotifications({ userIds, title, message, type, link, metadata })
   } catch (error) {
     console.error('Failed to send notification to role:', error)

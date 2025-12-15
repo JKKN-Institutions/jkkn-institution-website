@@ -406,6 +406,9 @@ const PastEvents = lazy(() => import('@/components/cms-blocks/content/past-event
 // Campus Videos
 const CampusVideos = lazy(() => import('@/components/cms-blocks/content/campus-videos'))
 
+// Education Videos (new inline player with playlist)
+const EducationVideos = lazy(() => import('@/components/cms-blocks/content/education-videos'))
+
 // Partners Logos
 const PartnersLogos = lazy(() => import('@/components/cms-blocks/content/partners-logos'))
 
@@ -509,10 +512,12 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     component: HeroSection,
     propsSchema: HeroSectionPropsSchema,
     defaultProps: {
-      title: 'Welcome to JKKN',
-      subtitle: 'Excellence in Education Since 1971',
+      title: 'JKKN INSTITUTIONS',
+      subtitle: '',
+      logoImage: '',
+      showAiBadge: true,
       titleColor: '#ffffff',
-      titleFontSize: '5xl',
+      titleFontSize: '6xl',
       titleFontWeight: 'bold',
       titleFontStyle: 'normal',
       subtitleColor: '#fbfbee', // Brand cream for better visibility
@@ -525,8 +530,8 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       overlay: true,
       overlayOpacity: 0.3,
       ctaButtons: [
-        { label: 'Explore Programs', link: '/programs', variant: 'primary' },
-        { label: 'Apply Now', link: '/apply', variant: 'secondary' },
+        { label: 'Online Admissions 2025-2026', link: '/admissions', variant: 'primary' },
+        { label: 'Academic Calendar', link: '/academic-calendar', variant: 'secondary' },
       ],
       minHeight: '100vh',
     },
@@ -534,6 +539,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     isFullWidth: true,
     keywords: ['hero', 'banner', 'header', 'landing'],
     editableProps: [
+      // Logo settings
+      { name: 'logoImage', type: 'image', label: 'Logo Image', description: 'Upload a custom logo to display above the title' },
+      { name: 'showAiBadge', type: 'boolean', label: 'Show AI Badge', description: 'Show the default "India\'s First AI Empowered College" badge when no logo is uploaded' },
       // Title settings
       { name: 'title', type: 'string', label: 'Title', required: true },
       { name: 'titleColor', type: 'color', label: 'Title Color' },
@@ -546,6 +554,22 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'subtitleFontSize', type: 'enum', label: 'Subtitle Font Size', options: ['sm', 'md', 'lg', 'xl', '2xl'] },
       { name: 'subtitleFontWeight', type: 'enum', label: 'Subtitle Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
       { name: 'subtitleFontStyle', type: 'enum', label: 'Subtitle Font Style', options: ['normal', 'italic'] },
+      // CTA Buttons
+      {
+        name: 'ctaButtons',
+        type: 'array',
+        label: 'CTA Buttons',
+        description: 'Add action buttons like Online Admissions, Academic Calendar',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            label: { type: 'string', label: 'Button Text', required: true },
+            link: { type: 'string', label: 'Link URL', required: true },
+            variant: { type: 'string', label: 'Style' },
+          },
+          required: ['label', 'link'],
+        },
+      },
       // Background settings
       { name: 'backgroundType', type: 'enum', label: 'Background Type', options: ['image', 'video', 'gradient'] },
       { name: 'backgroundImage', type: 'image', label: 'Background Image' },
@@ -1444,6 +1468,46 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'playButtonColor', type: 'color', label: 'Play Button Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color', description: 'Color for underlines and highlights' },
       { name: 'autoplaySpeed', type: 'number', label: 'Autoplay Speed (ms)' },
+    ],
+  },
+
+  EducationVideos: {
+    name: 'EducationVideos',
+    displayName: 'Education Videos',
+    category: 'content',
+    description: 'YouTube video player with playlist sidebar - videos managed from admin panel',
+    icon: 'Video',
+    previewImage: '/cms-previews/EducationVideos.png',
+    component: EducationVideos,
+    propsSchema: z.object({
+      headerPart1: z.string().default('Education'),
+      headerPart2: z.string().default('Videos'),
+      headerPart1Color: z.string().default('#ffde59'),
+      headerPart2Color: z.string().default('#ffde59'),
+      subtitle: z.string().optional(),
+      variant: z.enum(['modern-dark', 'modern-light']).default('modern-dark'),
+      showDecorations: z.boolean().default(true),
+    }),
+    defaultProps: {
+      headerPart1: 'Education',
+      headerPart2: 'Videos',
+      headerPart1Color: '#ffde59',
+      headerPart2Color: '#ffde59',
+      subtitle: 'Watch educational content from JKKN Institution',
+      variant: 'modern-dark',
+      showDecorations: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['videos', 'youtube', 'education', 'player', 'playlist', 'media'],
+    editableProps: [
+      { name: 'headerPart1', type: 'string', label: 'Header Part 1' },
+      { name: 'headerPart2', type: 'string', label: 'Header Part 2' },
+      { name: 'headerPart1Color', type: 'color', label: 'Header Part 1 Color' },
+      { name: 'headerPart2Color', type: 'color', label: 'Header Part 2 Color' },
+      { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
+      { name: 'variant', type: 'enum', label: 'Style Variant', options: ['modern-dark', 'modern-light'] },
+      { name: 'showDecorations', type: 'boolean', label: 'Show Decorations' },
     ],
   },
 

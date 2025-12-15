@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { useUserData } from '@/components/providers/user-data-provider'
 import {
   LayoutDashboard,
   Users,
@@ -21,6 +22,14 @@ import {
   Mail,
   Puzzle,
   Layers,
+  Video,
+  PenLine,
+  Tags,
+  FolderOpen,
+  MessageSquare,
+  Briefcase,
+  Building2,
+  UserCheck,
 } from 'lucide-react'
 
 // Types
@@ -50,9 +59,6 @@ interface NavGroup {
   items: NavModule[]
 }
 
-interface ResponsiveNavigationProps {
-  userPermissions: string[]
-}
 
 // Navigation configuration with grouped sections (matching target design)
 const navigationGroups: NavGroup[] = [
@@ -152,6 +158,89 @@ const navigationGroups: NavGroup[] = [
             href: '/admin/content/media',
             icon: Image,
             permission: 'cms:media:view',
+          },
+          {
+            id: 'videos',
+            label: 'Videos',
+            href: '/admin/videos',
+            icon: Video,
+            permission: 'cms:videos:view',
+          },
+        ],
+      },
+      {
+        id: 'blog',
+        label: 'Blog',
+        href: '/admin/content/blog',
+        icon: PenLine,
+        color: 'bg-emerald-500',
+        permission: 'cms:blog:view',
+        subModules: [
+          {
+            id: 'blog-posts',
+            label: 'All Posts',
+            href: '/admin/content/blog',
+            icon: PenLine,
+            permission: 'cms:blog:view',
+          },
+          {
+            id: 'blog-categories',
+            label: 'Categories',
+            href: '/admin/content/blog/categories',
+            icon: FolderOpen,
+            permission: 'cms:blog:view',
+          },
+          {
+            id: 'blog-tags',
+            label: 'Tags',
+            href: '/admin/content/blog/tags',
+            icon: Tags,
+            permission: 'cms:blog:view',
+          },
+          {
+            id: 'blog-comments',
+            label: 'Comments',
+            href: '/admin/content/blog/comments',
+            icon: MessageSquare,
+            permission: 'cms:blog:comments',
+          },
+        ],
+      },
+      {
+        id: 'careers',
+        label: 'Careers',
+        href: '/admin/content/careers',
+        icon: Briefcase,
+        color: 'bg-amber-500',
+        permission: 'cms:careers:view',
+        subModules: [
+          {
+            id: 'career-jobs',
+            label: 'All Jobs',
+            href: '/admin/content/careers',
+            icon: Briefcase,
+            permission: 'cms:careers:view',
+          },
+          {
+            id: 'career-departments',
+            label: 'Departments',
+            href: '/admin/content/careers/departments',
+            icon: Building2,
+            permission: 'cms:careers:view',
+          },
+          {
+            id: 'career-applications',
+            label: 'Applications',
+            href: '/admin/content/careers/applications',
+            icon: UserCheck,
+            permission: 'cms:careers:applications',
+          },
+          {
+            id: 'career-emails',
+            label: 'Email Templates',
+            href: '/admin/content/careers/emails',
+            icon: Mail,
+            permission: 'cms:careers:emails',
           },
         ],
       },
@@ -554,10 +643,13 @@ function MobileMenuButton({ onClick }: { onClick: () => void }) {
 }
 
 // Main Responsive Navigation Component
-export function ResponsiveNavigation({ userPermissions }: ResponsiveNavigationProps) {
+export function ResponsiveNavigation() {
   const pathname = usePathname()
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  // Get user permissions from context (cached, doesn't re-fetch on navigation)
+  const { permissions: userPermissions } = useUserData()
 
   // Permission check helper
   const hasPermission = (permission?: string): boolean => {

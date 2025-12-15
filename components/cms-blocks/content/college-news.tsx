@@ -5,9 +5,10 @@ import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState, useRef, useEffect } from 'react'
-import { Calendar, Newspaper, ChevronRight, ArrowRight } from 'lucide-react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { Calendar, Newspaper, ChevronRight, ArrowRight, Loader2 } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
+import { getBlogPostsByCategory } from '@/app/actions/cms/homepage-blog'
 
 /**
  * News item schema
@@ -34,7 +35,12 @@ export const CollegeNewsPropsSchema = z.object({
   headerPart2Color: z.string().default('#0b6d41').describe('Color for second part of header'),
   subtitle: z.string().optional().describe('Subtitle below header'),
 
-  // News items
+  // Dynamic data
+  useDynamicData: z.boolean().default(false).describe('Fetch news dynamically from blog posts'),
+  categorySlug: z.string().default('college-news').describe('Blog category slug to fetch posts from'),
+  maxItems: z.number().default(6).describe('Maximum number of items to display'),
+
+  // News items (used when useDynamicData is false)
   newsItems: z.array(NewsItemSchema).default([]).describe('List of news articles'),
 
   // Layout
@@ -50,6 +56,10 @@ export const CollegeNewsPropsSchema = z.object({
   // Autoplay
   autoplay: z.boolean().default(true).describe('Enable autoplay for carousel'),
   autoplaySpeed: z.number().default(4000).describe('Autoplay speed in ms'),
+
+  // View All Link
+  viewAllLink: z.string().default('/blog/category/college-news').describe('Link for View All button'),
+  viewAllText: z.string().default('View All News').describe('Text for View All button'),
 })
 
 export type CollegeNewsProps = z.infer<typeof CollegeNewsPropsSchema> & BaseBlockProps
@@ -98,6 +108,9 @@ export function CollegeNews({
   headerPart1Color = '#0b6d41',
   headerPart2Color = '#0b6d41',
   subtitle,
+  useDynamicData = false,
+  categorySlug = 'college-news',
+  maxItems = 6,
   newsItems = [],
   layout = 'carousel',
   columns = '4',
@@ -107,6 +120,8 @@ export function CollegeNews({
   showCategory = true,
   autoplay = true,
   autoplaySpeed = 4000,
+  viewAllLink = '/blog/category/college-news',
+  viewAllText = 'View All News',
   className,
   isEditing,
 }: CollegeNewsProps) {
@@ -115,11 +130,46 @@ export function CollegeNews({
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
+  const [dynamicNews, setDynamicNews] = useState<NewsItem[]>([])
+  const [isLoading, setIsLoading] = useState(false)
   const headerRef = useInView()
   const contentRef = useInView()
 
   const isDark = variant === 'modern-dark'
   const isModern = variant !== 'classic'
+
+  // Fetch dynamic data from blog posts
+  const fetchDynamicData = useCallback(async () => {
+    if (!useDynamicData || !categorySlug) return
+
+    setIsLoading(true)
+    try {
+      const { posts } = await getBlogPostsByCategory(categorySlug, maxItems)
+      const newsData: NewsItem[] = posts.map((post) => ({
+        title: post.title,
+        image: post.featured_image || '',
+        date: post.published_at
+          ? new Date(post.published_at).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })
+          : '',
+        link: `/blog/${post.slug}`,
+        excerpt: post.excerpt || undefined,
+        category: post.category?.name || 'News',
+      }))
+      setDynamicNews(newsData)
+    } catch (error) {
+      console.error('Error fetching dynamic news:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [useDynamicData, categorySlug, maxItems])
+
+  useEffect(() => {
+    fetchDynamicData()
+  }, [fetchDynamicData])
 
   const defaultNews: NewsItem[] = [
     { title: 'NAAC A+ Accreditation Achieved', image: '', date: 'Jan 15, 2025', link: '/news/naac', category: 'Achievement' },
@@ -127,7 +177,12 @@ export function CollegeNews({
     { title: 'New Research Lab Inaugurated', image: '', date: 'Jan 5, 2025', link: '/news/research-lab', category: 'Infrastructure' },
   ]
 
-  const displayNews = newsItems.length > 0 ? newsItems : defaultNews
+  // Priority: dynamic data > props data > default data
+  const displayNews = useDynamicData && dynamicNews.length > 0
+    ? dynamicNews
+    : newsItems.length > 0
+      ? newsItems
+      : defaultNews
 
   // Autoplay carousel
   useEffect(() => {
@@ -335,7 +390,7 @@ export function CollegeNews({
         {/* View All Link */}
         <div className="text-center mt-12">
           <Link
-            href="/news"
+            href={viewAllLink}
             className={cn(
               "group inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300",
               isDark
@@ -343,10 +398,17 @@ export function CollegeNews({
                 : "bg-brand-primary text-white hover:bg-brand-primary-dark"
             )}
           >
-            View All News
+            {viewAllText}
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
+
+        {/* Loading indicator for dynamic data */}
+        {isLoading && useDynamicData && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-black/50 backdrop-blur-sm z-20">
+            <Loader2 className="w-8 h-8 animate-spin text-brand-primary" />
+          </div>
+        )}
       </div>
     </section>
   )

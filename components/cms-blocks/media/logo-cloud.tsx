@@ -39,7 +39,7 @@ export default function LogoCloud({
             }),
           }}
         >
-          {logos.map((logo, index) => {
+          {logos.filter(l => l.src).map((logo, index) => {
             const LogoContent = (
               <img
                 src={logo.src}

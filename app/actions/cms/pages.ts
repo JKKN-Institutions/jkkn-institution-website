@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { logActivity } from '@/lib/utils/activity-logger'
 import { checkPermission } from '../permissions'
+import { NotificationHelpers } from '@/lib/utils/notification-sender'
 
 // Validation schemas
 const CreatePageSchema = z.object({
@@ -1193,6 +1194,22 @@ export async function publishPage(pageId: string): Promise<FormState> {
       change_summary: 'Published',
       created_by: user.id,
     })
+  }
+
+  // Get page creator to notify them
+  const { data: pageData } = await supabase
+    .from('cms_pages')
+    .select('created_by')
+    .eq('id', pageId)
+    .single()
+
+  // Notify the page creator (if not the same as publisher)
+  if (pageData?.created_by && pageData.created_by !== user.id) {
+    await NotificationHelpers.contentPublished(
+      pageData.created_by,
+      page.title,
+      page.slug
+    )
   }
 
   // Log activity

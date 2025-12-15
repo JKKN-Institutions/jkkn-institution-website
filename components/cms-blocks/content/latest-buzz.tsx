@@ -5,9 +5,10 @@ import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRef, useState, useEffect } from 'react'
-import { Zap, ChevronRight, ArrowRight, Sparkles, TrendingUp } from 'lucide-react'
+import { useRef, useState, useEffect, useCallback } from 'react'
+import { Zap, ChevronRight, ArrowRight, Sparkles, TrendingUp, Loader2 } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
+import { getBlogPostsByCategory } from '@/app/actions/cms/homepage-blog'
 
 /**
  * Buzz item schema
@@ -32,7 +33,12 @@ export const LatestBuzzPropsSchema = z.object({
   headerPart2Color: z.string().default('#ffde59').describe('Color for second part of header'),
   subtitle: z.string().optional().describe('Subtitle below header'),
 
-  // Buzz items
+  // Dynamic data
+  useDynamicData: z.boolean().default(false).describe('Fetch buzz items dynamically from blog posts'),
+  categorySlug: z.string().default('latest-buzz').describe('Blog category slug to fetch posts from'),
+  maxItems: z.number().default(6).describe('Maximum number of items to display'),
+
+  // Buzz items (used when useDynamicData is false)
   buzzItems: z.array(BuzzItemSchema).default([]).describe('List of buzz items'),
 
   // Layout
@@ -48,6 +54,10 @@ export const LatestBuzzPropsSchema = z.object({
   // Autoplay
   autoplay: z.boolean().default(true).describe('Enable autoplay'),
   autoplaySpeed: z.number().default(4000).describe('Autoplay speed in ms'),
+
+  // View All Link
+  viewAllLink: z.string().default('/blog/category/latest-buzz').describe('Link for View All button'),
+  viewAllText: z.string().default('View All Buzz').describe('Text for View All button'),
 })
 
 export type LatestBuzzProps = z.infer<typeof LatestBuzzPropsSchema> & BaseBlockProps
@@ -96,6 +106,9 @@ export function LatestBuzz({
   headerPart1Color = '#ffde59',
   headerPart2Color = '#ffde59',
   subtitle,
+  useDynamicData = false,
+  categorySlug = 'latest-buzz',
+  maxItems = 6,
   buzzItems = [],
   layout = 'carousel',
   columns = '4',
@@ -105,6 +118,8 @@ export function LatestBuzz({
   showCategory = true,
   autoplay = true,
   autoplaySpeed = 4000,
+  viewAllLink = '/blog/category/latest-buzz',
+  viewAllText = 'View All Buzz',
   className,
   isEditing,
 }: LatestBuzzProps) {
@@ -113,8 +128,35 @@ export function LatestBuzz({
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
+  const [dynamicBuzz, setDynamicBuzz] = useState<BuzzItem[]>([])
+  const [isLoading, setIsLoading] = useState(false)
   const headerRef = useInView()
   const contentRef = useInView()
+
+  // Fetch dynamic data from blog posts
+  const fetchDynamicData = useCallback(async () => {
+    if (!useDynamicData || !categorySlug) return
+
+    setIsLoading(true)
+    try {
+      const { posts } = await getBlogPostsByCategory(categorySlug, maxItems)
+      const buzzData: BuzzItem[] = posts.map((post) => ({
+        title: post.title,
+        image: post.featured_image || '',
+        link: `/blog/${post.slug}`,
+        category: post.category?.name || 'Buzz',
+      }))
+      setDynamicBuzz(buzzData)
+    } catch (error) {
+      console.error('Error fetching dynamic buzz:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [useDynamicData, categorySlug, maxItems])
+
+  useEffect(() => {
+    fetchDynamicData()
+  }, [fetchDynamicData])
 
   // Touch handlers for mobile swipe
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -144,7 +186,12 @@ export function LatestBuzz({
     { title: 'Industry Immersion Program', image: '', link: '/buzz/industry-immersion', category: 'Learning' },
   ]
 
-  const displayBuzz = buzzItems.length > 0 ? buzzItems : defaultBuzz
+  // Priority: dynamic data > props data > default data
+  const displayBuzz = useDynamicData && dynamicBuzz.length > 0
+    ? dynamicBuzz
+    : buzzItems.length > 0
+      ? buzzItems
+      : defaultBuzz
 
   // Autoplay carousel
   useEffect(() => {
@@ -300,7 +347,7 @@ export function LatestBuzz({
         {/* View All Link */}
         <div className="text-center mt-12">
           <Link
-            href="/buzz"
+            href={viewAllLink}
             className={cn(
               "group inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300",
               isDark
@@ -308,10 +355,17 @@ export function LatestBuzz({
                 : "bg-brand-primary text-white hover:bg-brand-primary-dark"
             )}
           >
-            View All Buzz
+            {viewAllText}
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
+
+        {/* Loading indicator for dynamic data */}
+        {isLoading && useDynamicData && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-black/50 backdrop-blur-sm z-20">
+            <Loader2 className="w-8 h-8 animate-spin text-brand-primary" />
+          </div>
+        )}
       </div>
     </section>
   )

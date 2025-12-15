@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Loader2, AlertCircle } from 'lucide-react'
+import { Loader2, AlertCircle, Shield } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -50,20 +50,20 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center">
-      {/* Logo with gradient background */}
+      {/* Logo with gradient background - Hidden on mobile since left panel shows it */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}
-        className="mb-6"
+        className="mb-4 hidden lg:block"
       >
-        <div className="w-20 h-20 rounded-2xl bg-white border-2 border-gray-100 flex items-center justify-center shadow-lg shadow-gray-200/50 p-2">
+        <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-[#0b6d41] to-[#0f8f56] flex items-center justify-center shadow-lg shadow-[#0b6d41]/20 p-2">
           <Image
             src="https://jkkn.ac.in/wp-content/uploads/2023/04/Untitled-design-2023-03-13T105521.479.png"
             alt="JKKN Logo"
-            width={56}
-            height={56}
-            className="w-full h-full object-contain"
+            width={48}
+            height={48}
+            className="w-full h-full object-contain brightness-0 invert"
             unoptimized
           />
         </div>
@@ -74,13 +74,13 @@ export default function LoginPage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
-        className="text-center mb-8"
+        className="text-center mb-5"
       >
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
           Welcome Back
         </h1>
         <p className="text-gray-500 text-sm">
-          Continue with Google
+          Sign in to access your JKKN Admin dashboard
         </p>
       </motion.div>
 
@@ -106,17 +106,17 @@ export default function LoginPage() {
         <button
           onClick={handleGoogleLogin}
           disabled={loading}
-          className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-white border-2 border-gray-200 rounded-xl text-gray-700 font-medium transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-white border-2 border-gray-200 rounded-xl text-gray-700 font-medium transition-all duration-300 hover:border-[#0b6d41]/30 hover:bg-[#0b6d41]/5 hover:shadow-lg hover:shadow-[#0b6d41]/10 disabled:opacity-50 disabled:cursor-not-allowed group"
         >
           {loading ? (
             <>
-              <Loader2 className="w-5 h-5 animate-spin text-gray-500" />
+              <Loader2 className="w-5 h-5 animate-spin text-[#0b6d41]" />
               <span>Signing in...</span>
             </>
           ) : (
             <>
               {/* Google Icon - Colored */}
-              <svg className="w-5 h-5" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24">
                 <path
                   fill="#4285F4"
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -140,30 +140,33 @@ export default function LoginPage() {
         </button>
       </motion.div>
 
-      {/* Domain notice - subtle */}
-      <motion.p
+      {/* Domain notice with shield icon */}
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, delay: 0.3 }}
-        className="mt-6 text-center text-gray-400 text-xs"
+        className="mt-4 flex items-center justify-center gap-2 text-gray-400"
       >
-        Only @jkkn.ac.in emails are allowed
-      </motion.p>
+        <Shield className="w-4 h-4" />
+        <p className="text-xs">
+          Only <span className="font-medium text-gray-500">@jkkn.ac.in</span> emails are allowed
+        </p>
+      </motion.div>
 
       {/* Create Account Link */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, delay: 0.4 }}
-        className="mt-8 pt-6 border-t border-gray-100 w-full text-center"
+        className="mt-5 pt-4 border-t border-gray-100 w-full text-center"
       >
         <p className="text-gray-500 text-sm">
           New to JKKN Admin?{' '}
           <Link
             href="/auth/register"
-            className="text-[#0b6d41] font-semibold hover:text-[#0a5c36] transition-colors"
+            className="text-[#0b6d41] font-semibold hover:text-[#0a5c36] transition-colors hover:underline underline-offset-2"
           >
-            Create Account
+            Request Access
           </Link>
         </p>
       </motion.div>

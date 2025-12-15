@@ -38,7 +38,19 @@ const fallbackNavigation: NavItem[] = [
   { id: 'about', label: 'About', href: '/about' },
   { id: 'academics', label: 'Academics', href: '/academics' },
   { id: 'admissions', label: 'Admissions', href: '/admissions' },
+  { id: 'blog', label: 'Blog', href: '/blog' },
   { id: 'contact', label: 'Contact', href: '/contact' },
+  {
+    id: 'more',
+    label: 'More',
+    href: '#',
+    children: [
+      { id: 'careers', label: 'Careers', href: '/careers' },
+      { id: 'events', label: 'Events', href: '/events' },
+      { id: 'gallery', label: 'Gallery', href: '/gallery' },
+      { id: 'news', label: 'News & Updates', href: '/news' },
+    ],
+  },
 ]
 
 const socialLinks = [
@@ -150,23 +162,36 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                       onMouseEnter={() => item.children && item.children.length > 0 && setOpenDropdown(item.id)}
                       onMouseLeave={() => setOpenDropdown(null)}
                     >
-                      <Link
-                        href={item.href}
-                        className={cn(
-                          'flex items-center gap-1 px-1 xl:px-2 py-2 text-xs xl:text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
-                          isActive(item.href)
-                            ? 'text-primary border-primary'
-                            : 'text-gray-800 hover:text-primary border-transparent hover:border-primary'
-                        )}
-                      >
-                        {item.label}
-                        {item.children && item.children.length > 0 && (
+                      {item.children && item.children.length > 0 ? (
+                        <button
+                          type="button"
+                          onClick={() => setOpenDropdown(openDropdown === item.id ? null : item.id)}
+                          className={cn(
+                            'flex items-center gap-1 px-1 xl:px-2 py-2 text-xs xl:text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
+                            openDropdown === item.id
+                              ? 'text-primary border-primary'
+                              : 'text-gray-800 hover:text-primary border-transparent hover:border-primary'
+                          )}
+                        >
+                          {item.label}
                           <ChevronDown className={cn(
                             'h-3 w-3 transition-transform duration-200',
                             openDropdown === item.id && 'rotate-180'
                           )} />
-                        )}
-                      </Link>
+                        </button>
+                      ) : (
+                        <Link
+                          href={item.href}
+                          className={cn(
+                            'flex items-center gap-1 px-1 xl:px-2 py-2 text-xs xl:text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
+                            isActive(item.href)
+                              ? 'text-primary border-primary'
+                              : 'text-gray-800 hover:text-primary border-transparent hover:border-primary'
+                          )}
+                        >
+                          {item.label}
+                        </Link>
+                      )}
 
                       {/* Dropdown */}
                       {item.children && item.children.length > 0 && openDropdown === item.id && (
@@ -177,8 +202,6 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                                 <a
                                   key={child.id}
                                   href={child.external_url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
                                   className="block px-3 py-1.5 text-xs text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-150"
                                 >
                                   {child.label}
@@ -223,23 +246,36 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                     onMouseEnter={() => item.children && item.children.length > 0 && setOpenDropdown(item.id)}
                     onMouseLeave={() => setOpenDropdown(null)}
                   >
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        'flex items-center gap-1 px-1 xl:px-2 py-2 text-xs xl:text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
-                        isActive(item.href)
-                          ? 'text-primary border-primary'
-                          : 'text-gray-800 hover:text-primary border-transparent hover:border-primary'
-                      )}
-                    >
-                      {item.label}
-                      {item.children && item.children.length > 0 && (
+                    {item.children && item.children.length > 0 ? (
+                      <button
+                        type="button"
+                        onClick={() => setOpenDropdown(openDropdown === item.id ? null : item.id)}
+                        className={cn(
+                          'flex items-center gap-1 px-1 xl:px-2 py-2 text-xs xl:text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
+                          openDropdown === item.id
+                            ? 'text-primary border-primary'
+                            : 'text-gray-800 hover:text-primary border-transparent hover:border-primary'
+                        )}
+                      >
+                        {item.label}
                         <ChevronDown className={cn(
                           'h-3 w-3 transition-transform duration-200',
                           openDropdown === item.id && 'rotate-180'
                         )} />
-                      )}
-                    </Link>
+                      </button>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          'flex items-center gap-1 px-1 xl:px-2 py-2 text-xs xl:text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
+                          isActive(item.href)
+                            ? 'text-primary border-primary'
+                            : 'text-gray-800 hover:text-primary border-transparent hover:border-primary'
+                        )}
+                      >
+                        {item.label}
+                      </Link>
+                    )}
 
                     {/* Dropdown */}
                     {item.children && item.children.length > 0 && openDropdown === item.id && (
@@ -250,8 +286,6 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                               <a
                                 key={child.id}
                                 href={child.external_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
                                 className="block px-3 py-1.5 text-xs text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-150"
                               >
                                 {child.label}
@@ -386,8 +420,6 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                               <a
                                 key={child.id}
                                 href={child.external_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className="block py-2 text-sm text-gray-600 hover:text-primary transition-colors"
                               >

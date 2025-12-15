@@ -5,9 +5,10 @@ import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRef, useState, useEffect } from 'react'
-import { Calendar, CalendarDays, ChevronRight, ArrowRight, MapPin } from 'lucide-react'
+import { useRef, useState, useEffect, useCallback } from 'react'
+import { Calendar, CalendarDays, ChevronRight, ArrowRight, MapPin, Loader2 } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
+import { getBlogPostsByCategory } from '@/app/actions/cms/homepage-blog'
 
 /**
  * Event item schema
@@ -34,7 +35,12 @@ export const PastEventsPropsSchema = z.object({
   headerPart2Color: z.string().default('#0b6d41').describe('Color for second part of header'),
   subtitle: z.string().optional().describe('Subtitle below header'),
 
-  // Events
+  // Dynamic data
+  useDynamicData: z.boolean().default(false).describe('Fetch events dynamically from blog posts'),
+  categorySlug: z.string().default('past-events').describe('Blog category slug to fetch posts from'),
+  maxItems: z.number().default(6).describe('Maximum number of items to display'),
+
+  // Events (used when useDynamicData is false)
   events: z.array(EventItemSchema).default([]).describe('List of past events'),
 
   // Layout
@@ -50,6 +56,10 @@ export const PastEventsPropsSchema = z.object({
   // Autoplay
   autoplay: z.boolean().default(true).describe('Enable autoplay'),
   autoplaySpeed: z.number().default(4000).describe('Autoplay speed in ms'),
+
+  // View All Link
+  viewAllLink: z.string().default('/blog/category/past-events').describe('Link for View All button'),
+  viewAllText: z.string().default('View All Events').describe('Text for View All button'),
 })
 
 export type PastEventsProps = z.infer<typeof PastEventsPropsSchema> & BaseBlockProps
@@ -98,6 +108,9 @@ export function PastEvents({
   headerPart1Color = '#0b6d41',
   headerPart2Color = '#0b6d41',
   subtitle,
+  useDynamicData = false,
+  categorySlug = 'past-events',
+  maxItems = 6,
   events = [],
   layout = 'carousel',
   columns = '4',
@@ -107,6 +120,8 @@ export function PastEvents({
   showLocation = false,
   autoplay = true,
   autoplaySpeed = 4000,
+  viewAllLink = '/blog/category/past-events',
+  viewAllText = 'View All Events',
   className,
   isEditing,
 }: PastEventsProps) {
@@ -115,8 +130,46 @@ export function PastEvents({
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
+  const [dynamicEvents, setDynamicEvents] = useState<EventItem[]>([])
+  const [isLoading, setIsLoading] = useState(false)
   const headerRef = useInView()
   const contentRef = useInView()
+
+  // Fetch dynamic data from blog posts
+  const fetchDynamicData = useCallback(async () => {
+    if (!useDynamicData || !categorySlug) return
+
+    setIsLoading(true)
+    try {
+      const { posts } = await getBlogPostsByCategory(categorySlug, maxItems)
+      const eventsData: EventItem[] = posts.map((post) => {
+        const metadata = post.metadata as Record<string, unknown> | null
+        return {
+          title: post.title,
+          image: post.featured_image || '',
+          date: post.published_at
+            ? new Date(post.published_at).toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+              })
+            : '',
+          link: `/blog/${post.slug}`,
+          description: post.excerpt || undefined,
+          location: (metadata?.location as string) || undefined,
+        }
+      })
+      setDynamicEvents(eventsData)
+    } catch (error) {
+      console.error('Error fetching dynamic events:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [useDynamicData, categorySlug, maxItems])
+
+  useEffect(() => {
+    fetchDynamicData()
+  }, [fetchDynamicData])
 
   // Touch handlers for mobile swipe
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -146,7 +199,12 @@ export function PastEvents({
     { title: 'Mental Health & Suicide Awareness Initiative', image: '', date: 'February 11, 2024', link: '/events/mental-health', location: 'Seminar Hall' },
   ]
 
-  const displayEvents = events.length > 0 ? events : defaultEvents
+  // Priority: dynamic data > props data > default data
+  const displayEvents = useDynamicData && dynamicEvents.length > 0
+    ? dynamicEvents
+    : events.length > 0
+      ? events
+      : defaultEvents
 
   // Autoplay carousel
   useEffect(() => {
@@ -344,7 +402,7 @@ export function PastEvents({
         {/* View All Link */}
         <div className="text-center mt-12">
           <Link
-            href="/events"
+            href={viewAllLink}
             className={cn(
               "group inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300",
               isDark
@@ -352,10 +410,17 @@ export function PastEvents({
                 : "bg-brand-primary text-white hover:bg-brand-primary-dark"
             )}
           >
-            View All Events
+            {viewAllText}
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
+
+        {/* Loading indicator for dynamic data */}
+        {isLoading && useDynamicData && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-black/50 backdrop-blur-sm z-20">
+            <Loader2 className="w-8 h-8 animate-spin text-brand-primary" />
+          </div>
+        )}
       </div>
     </section>
   )

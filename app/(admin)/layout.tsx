@@ -2,6 +2,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { ResponsiveNavigation } from '@/components/admin/responsive-navigation'
 import { AdminHeader } from '@/components/admin/admin-header'
+import { AdminLayoutClient } from '@/components/admin/admin-layout-client'
 
 // Type for role relation from Supabase join
 type RoleData = { id: string; name: string; display_name: string }
@@ -85,30 +86,36 @@ export default async function AdminLayout({
   // Get user data including permissions
   const userData = await getUserData(session.user.id)
 
+  // Pass initial user data to client - this gets cached and won't re-fetch on navigation
+  const initialUserData = {
+    name: userData.name,
+    email: userData.email,
+    role: userData.role,
+    permissions: userData.permissions,
+  }
+
   return (
-    <div className="admin-layout flex h-screen w-full max-w-full overflow-hidden bg-background">
-      {/* Decorative gradient background */}
-      <div className="fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 -left-40 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 right-1/3 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+    <AdminLayoutClient userId={session.user.id} initialUserData={initialUserData}>
+      <div className="admin-layout flex h-screen w-full max-w-full overflow-hidden bg-background">
+        {/* Decorative gradient background */}
+        <div className="fixed inset-0 -z-10 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 -left-40 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 right-1/3 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+        </div>
+
+        {/* Responsive Navigation (Desktop Sidebar + Mobile Bottom Nav) */}
+        <ResponsiveNavigation />
+
+        {/* Main Content Area with Fixed Header */}
+        <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden">
+          {/* Fixed Header - uses user data from context */}
+          <AdminHeader />
+
+          {/* Scrollable Page Content */}
+          <main className="flex-1 overflow-y-auto overflow-x-hidden w-full p-4 lg:p-6">{children}</main>
+        </div>
       </div>
-
-      {/* Responsive Navigation (Desktop Sidebar + Mobile Bottom Nav) */}
-      <ResponsiveNavigation userPermissions={userData.permissions} />
-
-      {/* Main Content Area with Fixed Header */}
-      <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden">
-        {/* Fixed Header */}
-        <AdminHeader
-          userName={userData.name}
-          userEmail={userData.email}
-          userRole={userData.role}
-        />
-
-        {/* Scrollable Page Content */}
-        <main className="flex-1 overflow-y-auto overflow-x-hidden w-full p-4 lg:p-6">{children}</main>
-      </div>
-    </div>
+    </AdminLayoutClient>
   )
 }

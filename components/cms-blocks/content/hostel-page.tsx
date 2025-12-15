@@ -115,7 +115,7 @@ function HostelContent({
   return (
     <div key={tabKey} className="space-y-8 md:space-y-12">
       {/* Images Gallery */}
-      {images.length > 0 && (
+      {images.filter(img => img.src).length > 0 && (
         <div
           className={`
             grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6
@@ -123,7 +123,7 @@ function HostelContent({
             ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
           `}
         >
-          {images.map((image, index) => (
+          {images.filter(img => img.src).map((image, index) => (
             <div
               key={index}
               className="relative aspect-[4/3] rounded-2xl overflow-hidden border-4 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl"

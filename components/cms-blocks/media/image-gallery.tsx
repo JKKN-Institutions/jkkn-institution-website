@@ -77,29 +77,31 @@ export default function ImageGallery({
         }}
       >
         {images.map((image, index) => (
-          <button
-            key={index}
-            type="button"
-            onClick={() => openLightbox(index)}
-            className={cn(
-              'relative overflow-hidden rounded-lg group',
-              layout === 'grid' && 'aspect-square',
-              layout === 'masonry' && 'break-inside-avoid mb-4',
-              layout === 'carousel' && 'min-w-[calc(100vw-2rem)] sm:min-w-[300px] flex-shrink-0 snap-center aspect-video',
-              lightbox && 'cursor-pointer'
-            )}
-          >
-            <img
-              src={image.src}
-              alt={image.alt || ''}
-              className="w-full h-full object-cover transition-transform group-hover:scale-105"
-            />
-            {image.caption && (
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                <p className="text-white text-sm">{image.caption}</p>
-              </div>
-            )}
-          </button>
+          image.src && (
+            <button
+              key={index}
+              type="button"
+              onClick={() => openLightbox(index)}
+              className={cn(
+                'relative overflow-hidden rounded-lg group',
+                layout === 'grid' && 'aspect-square',
+                layout === 'masonry' && 'break-inside-avoid mb-4',
+                layout === 'carousel' && 'min-w-[calc(100vw-2rem)] sm:min-w-[300px] flex-shrink-0 snap-center aspect-video',
+                lightbox && 'cursor-pointer'
+              )}
+            >
+              <img
+                src={image.src}
+                alt={image.alt || ''}
+                className="w-full h-full object-cover transition-transform group-hover:scale-105"
+              />
+              {image.caption && (
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <p className="text-white text-sm">{image.caption}</p>
+                </div>
+              )}
+            </button>
+          )
         ))}
       </div>
 
@@ -130,12 +132,14 @@ export default function ImageGallery({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <img
-            src={images[activeIndex]?.src}
-            alt={images[activeIndex]?.alt || ''}
-            className="max-h-[90vh] max-w-[90vw] object-contain"
-            onClick={(e) => e.stopPropagation()}
-          />
+          {images[activeIndex]?.src && (
+            <img
+              src={images[activeIndex].src}
+              alt={images[activeIndex]?.alt || ''}
+              className="max-h-[90vh] max-w-[90vw] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
           <button
             type="button"
             className="absolute right-4 text-white hover:text-gray-300"

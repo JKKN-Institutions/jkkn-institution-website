@@ -170,7 +170,7 @@ export function FacilityPage({
         </div>
 
         {/* Images Gallery */}
-        {images.length > 0 && (
+        {images.filter(img => img.src).length > 0 && (
           <div
             ref={imagesRef}
             className={`
@@ -179,7 +179,7 @@ export function FacilityPage({
               ${imagesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
             `}
           >
-            {images.map((image, index) => (
+            {images.filter(img => img.src).map((image, index) => (
               <div
                 key={index}
                 className="relative aspect-[4/3] rounded-2xl overflow-hidden border-4 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl"

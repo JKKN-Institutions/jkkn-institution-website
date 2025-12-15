@@ -69,7 +69,7 @@ export default function ImageCarousel({
     >
       {/* Slides */}
       <div className="relative w-full h-full">
-        {images.map((image, index) => (
+        {images.filter(img => img.src).map((image, index) => (
           <div
             key={index}
             className={cn(

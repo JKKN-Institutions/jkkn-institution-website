@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import type { HeroSectionProps } from '@/lib/cms/registry-types'
 import { useEffect, useState, useRef } from 'react'
 import { ChevronDown, ArrowRight } from 'lucide-react'
+import Image from 'next/image'
 
 // Font size mapping for Tailwind classes - RESPONSIVE
 const fontSizeClasses: Record<string, string> = {
@@ -27,11 +28,14 @@ const fontWeightClasses: Record<string, string> = {
 }
 
 export default function HeroSection({
-  title = 'Welcome',
+  title = 'JKKN INSTITUTIONS',
   subtitle,
+  // Logo props
+  logoImage,
+  showAiBadge = true,
   // Title styling props
   titleColor = '#ffffff',
-  titleFontSize = '5xl',
+  titleFontSize = '6xl',
   titleFontWeight = 'bold',
   titleFontStyle = 'normal',
   // Subtitle styling props
@@ -77,6 +81,14 @@ export default function HeroSection({
     right: 'items-end text-right',
     justify: 'items-stretch text-justify',
   }
+
+  // Default buttons if none provided
+  const defaultButtons = [
+    { label: 'Online Admissions 2025-2026', link: '/admissions', variant: 'primary' as const },
+    { label: 'Academic Calendar', link: '/academic-calendar', variant: 'secondary' as const },
+  ]
+
+  const buttons = ctaButtons.length > 0 ? ctaButtons : defaultButtons
 
   return (
     <section
@@ -138,41 +150,64 @@ export default function HeroSection({
             backgroundSize: '50px 50px'
           }}
         />
-
-        {/* Diagonal lines */}
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: 'repeating-linear-gradient(45deg, #ffffff 0, #ffffff 1px, transparent 0, transparent 50%)',
-            backgroundSize: '40px 40px'
-          }}
-        />
       </div>
 
       {/* Main Content */}
-      <div className="container relative z-10 mx-auto px-4 py-16">
-        {/* Animated Badge */}
-        <div
-          className={cn(
-            "inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8 transition-all duration-1000",
-            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          )}
-          style={{ backgroundColor: 'rgba(255, 222, 89, 0.2)', color: '#ffde59' }}
-        >
-          <span className="w-2 h-2 rounded-full bg-current animate-pulse" />
-          Excellence in Education Since 1969
-        </div>
+      <div className="container relative z-10 mx-auto px-4 py-16 flex flex-col items-center">
+        {/* Logo Badge - Custom logo or default AI badge */}
+        {(logoImage || showAiBadge) && (
+          <div
+            className={cn(
+              "mb-6 transition-all duration-1000",
+              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"
+            )}
+          >
+            {logoImage ? (
+              /* Custom uploaded logo */
+              <div className="inline-block bg-white rounded-xl p-3 sm:p-4 shadow-2xl">
+                <Image
+                  src={logoImage}
+                  alt="Logo"
+                  width={120}
+                  height={120}
+                  className="w-auto h-20 sm:h-24 md:h-28 object-contain"
+                />
+              </div>
+            ) : (
+              /* Default AI Empowered College badge */
+              <div className="inline-flex flex-col items-center bg-white rounded-xl p-3 sm:p-4 shadow-2xl">
+                {/* India's First Text */}
+                <span className="text-[10px] sm:text-xs font-bold text-primary tracking-wider uppercase">
+                  India&apos;s First
+                </span>
+
+                {/* Ai Logo */}
+                <div className="bg-primary rounded-lg px-4 sm:px-6 py-2 sm:py-3 my-1">
+                  <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-secondary">Ai</span>
+                </div>
+
+                {/* Empowered College Text */}
+                <span className="text-[10px] sm:text-xs font-bold text-primary tracking-wider uppercase">
+                  Empowered College
+                </span>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Animated Title */}
         <h1
           className={cn(
-            'tracking-tight transition-all duration-1000 delay-200',
+            'tracking-wide transition-all duration-1000 delay-200',
             fontSizeClasses[titleFontSize] || 'text-5xl',
             fontWeightClasses[titleFontWeight] || 'font-bold',
             titleFontStyle === 'italic' && 'italic',
             isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}
-          style={{ color: titleColor }}
+          style={{
+            color: titleColor,
+            textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+          }}
         >
           {title}
         </h1>
@@ -181,7 +216,7 @@ export default function HeroSection({
         {subtitle && (
           <p
             className={cn(
-              'mt-6 max-w-2xl transition-all duration-1000 delay-300',
+              'mt-4 max-w-2xl transition-all duration-1000 delay-300',
               alignment === 'center' && 'mx-auto',
               fontSizeClasses[subtitleFontSize] || 'text-xl',
               fontWeightClasses[subtitleFontWeight] || 'font-normal',
@@ -194,36 +229,36 @@ export default function HeroSection({
           </p>
         )}
 
-        {/* CTA Buttons with Modern Styling */}
-        {ctaButtons.length > 0 && (
-          <div
-            className={cn(
-              "mt-10 flex flex-wrap gap-4 transition-all duration-1000 delay-500",
-              alignment === 'center' && 'justify-center',
-              alignment === 'left' && 'justify-start',
-              alignment === 'right' && 'justify-end',
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            )}
-          >
-            {ctaButtons.map((btn, index) => (
-              <a
-                key={index}
-                href={btn.link}
-                target={btn.openInNewTab ? '_blank' : undefined}
-                rel={btn.openInNewTab ? 'noopener noreferrer' : undefined}
-                className={cn(
-                  'group inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-base font-semibold transition-all duration-300',
-                  btn.variant === 'primary' && 'bg-[#ffde59] text-[#0b6d41] hover:bg-[#ffe57a] hover:shadow-lg hover:shadow-[#ffde59]/30 hover:scale-105',
-                  btn.variant === 'secondary' && 'bg-white/10 backdrop-blur-sm text-white border border-white/30 hover:bg-white/20 hover:scale-105',
-                  btn.variant === 'outline' && 'border-2 border-white text-white hover:bg-white hover:text-[#0b6d41] hover:scale-105'
-                )}
-              >
-                {btn.label}
+        {/* CTA Buttons - Updated Styling */}
+        <div
+          className={cn(
+            "mt-8 flex flex-col sm:flex-row flex-wrap gap-4 transition-all duration-1000 delay-500",
+            alignment === 'center' && 'justify-center',
+            alignment === 'left' && 'justify-start',
+            alignment === 'right' && 'justify-end',
+            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          )}
+        >
+          {buttons.map((btn, index) => (
+            <a
+              key={index}
+              href={btn.link}
+              target={'openInNewTab' in btn && btn.openInNewTab ? '_blank' : undefined}
+              rel={'openInNewTab' in btn && btn.openInNewTab ? 'noopener noreferrer' : undefined}
+              className={cn(
+                'group inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-base sm:text-lg font-bold transition-all duration-300',
+                btn.variant === 'primary' && 'bg-secondary text-gray-900 hover:bg-yellow-400 hover:shadow-2xl hover:scale-105 min-w-[280px]',
+                btn.variant === 'secondary' && 'bg-primary text-white border-2 border-white/20 hover:bg-primary/90 hover:shadow-2xl hover:scale-105 min-w-[200px]',
+                btn.variant === 'outline' && 'border-2 border-white text-white hover:bg-white hover:text-primary hover:scale-105'
+              )}
+            >
+              {btn.label}
+              {btn.variant === 'outline' && (
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </a>
-            ))}
-          </div>
-        )}
+              )}
+            </a>
+          ))}
+        </div>
       </div>
 
       {/* Scroll Indicator */}

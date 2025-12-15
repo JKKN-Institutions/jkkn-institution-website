@@ -364,7 +364,7 @@ export function MediaPickerModal({
             </div>
 
             {/* Media Grid */}
-            <ScrollArea className="flex-1">
+            <ScrollArea className="flex-1 h-0 min-h-0">
               {loading ? (
                 <div className="grid grid-cols-4 gap-4 pb-4">
                   {Array.from({ length: 12 }).map((_, i) => (

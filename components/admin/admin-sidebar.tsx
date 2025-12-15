@@ -22,6 +22,14 @@ import {
   Globe,
   Layers,
   Puzzle,
+  PenLine,
+  Tags,
+  FolderOpen,
+  MessageSquare,
+  Briefcase,
+  Building2,
+  UserCheck,
+  Mail,
 } from 'lucide-react'
 
 interface NavItem {
@@ -93,6 +101,70 @@ const navigationItems: NavItem[] = [
     ],
   },
   {
+    title: 'Blog',
+    href: '/admin/content/blog',
+    icon: PenLine,
+    permission: 'cms:blog:view',
+    children: [
+      {
+        title: 'All Posts',
+        href: '/admin/content/blog',
+        icon: PenLine,
+        permission: 'cms:blog:view',
+      },
+      {
+        title: 'Categories',
+        href: '/admin/content/blog/categories',
+        icon: FolderOpen,
+        permission: 'cms:blog:view',
+      },
+      {
+        title: 'Tags',
+        href: '/admin/content/blog/tags',
+        icon: Tags,
+        permission: 'cms:blog:view',
+      },
+      {
+        title: 'Comments',
+        href: '/admin/content/blog/comments',
+        icon: MessageSquare,
+        permission: 'cms:blog:comments',
+      },
+    ],
+  },
+  {
+    title: 'Careers',
+    href: '/admin/content/careers',
+    icon: Briefcase,
+    permission: 'cms:careers:view',
+    children: [
+      {
+        title: 'All Jobs',
+        href: '/admin/content/careers',
+        icon: Briefcase,
+        permission: 'cms:careers:view',
+      },
+      {
+        title: 'Departments',
+        href: '/admin/content/careers/departments',
+        icon: Building2,
+        permission: 'cms:careers:view',
+      },
+      {
+        title: 'Applications',
+        href: '/admin/content/careers/applications',
+        icon: UserCheck,
+        permission: 'cms:careers:applications',
+      },
+      {
+        title: 'Email Templates',
+        href: '/admin/content/careers/emails',
+        icon: Mail,
+        permission: 'cms:careers:emails',
+      },
+    ],
+  },
+  {
     title: 'Settings',
     href: '/admin/settings',
     icon: Settings,
@@ -105,15 +177,21 @@ export function AdminSidebar({
 }: AdminSidebarProps) {
   const pathname = usePathname()
   const [isMobileOpen, setIsMobileOpen] = useState(false)
-  const [expandedItems, setExpandedItems] = useState<string[]>(['/admin/content'])
+  const [expandedItems, setExpandedItems] = useState<string[]>([])
 
   // Auto-expand parent sections based on current path
   useEffect(() => {
     const expanded: string[] = []
-    // Always expand Content section
-    expanded.push('/admin/content')
+    // Auto-expand based on current path
+    if (pathname.startsWith('/admin/content/blog')) {
+      expanded.push('/admin/content/blog')
+    } else if (pathname.startsWith('/admin/content/careers')) {
+      expanded.push('/admin/content/careers')
+    } else if (pathname.startsWith('/admin/content')) {
+      expanded.push('/admin/content')
+    }
     setExpandedItems(expanded)
-  }, [])
+  }, [pathname])
 
   const hasPermission = (permission?: string): boolean => {
     if (!permission) return true

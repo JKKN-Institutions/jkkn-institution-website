@@ -97,6 +97,7 @@
     "supabase",
     "sequential-thinking",
     "actor-critic-thinking",
-    "next-devtools"
+    "next-devtools",
+    "chrome-devtools"
   ]
 }
