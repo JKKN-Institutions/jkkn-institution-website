@@ -1212,6 +1212,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'dateBadgeColor', type: 'color', label: 'Date Badge Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color', description: 'Color for underlines and highlights' },
       { name: 'autoplaySpeed', type: 'number', label: 'Autoplay Speed (ms)' },
+      { name: 'showViewAllButton', type: 'boolean', label: 'Show View All Button' },
     ],
   },
 
@@ -1293,6 +1294,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['simple', 'overlay', 'bordered'] },
       { name: 'accentColor', type: 'color', label: 'Accent Color', description: 'Color for underlines and highlights' },
       { name: 'autoplaySpeed', type: 'number', label: 'Autoplay Speed (ms)' },
+      { name: 'showViewAllButton', type: 'boolean', label: 'Show View All Button' },
     ],
   },
 
@@ -1380,6 +1382,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'dateBadgeColor', type: 'color', label: 'Date Badge Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color', description: 'Color for underlines and highlights' },
       { name: 'autoplaySpeed', type: 'number', label: 'Autoplay Speed (ms)' },
+      { name: 'showViewAllButton', type: 'boolean', label: 'Show View All Button' },
     ],
   },
 
@@ -1468,6 +1471,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'playButtonColor', type: 'color', label: 'Play Button Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color', description: 'Color for underlines and highlights' },
       { name: 'autoplaySpeed', type: 'number', label: 'Autoplay Speed (ms)' },
+      { name: 'showViewAllButton', type: 'boolean', label: 'Show View All Button' },
     ],
   },
 
@@ -2094,6 +2098,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['simple', 'bordered', 'elevated'] },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },
       { name: 'autoplaySpeed', type: 'number', label: 'Autoplay Speed (ms)' },
+      { name: 'showViewAllButton', type: 'boolean', label: 'Show View All Button' },
     ],
   },
 
@@ -2180,6 +2185,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'textColor', type: 'enum', label: 'Text Color', options: ['dark', 'light'] },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },
       { name: 'autoplaySpeed', type: 'number', label: 'Autoplay Speed (ms)' },
+      { name: 'showViewAllButton', type: 'boolean', label: 'Show View All Button' },
     ],
   },
 

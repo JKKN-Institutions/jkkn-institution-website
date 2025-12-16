@@ -60,6 +60,7 @@ export const PastEventsPropsSchema = z.object({
   // View All Link
   viewAllLink: z.string().default('/blog/category/past-events').describe('Link for View All button'),
   viewAllText: z.string().default('View All Events').describe('Text for View All button'),
+  showViewAllButton: z.boolean().default(true).describe('Show/hide the View All button'),
 })
 
 export type PastEventsProps = z.infer<typeof PastEventsPropsSchema> & BaseBlockProps
@@ -122,6 +123,7 @@ export function PastEvents({
   autoplaySpeed = 4000,
   viewAllLink = '/blog/category/past-events',
   viewAllText = 'View All Events',
+  showViewAllButton = true,
   className,
   isEditing,
 }: PastEventsProps) {
@@ -400,20 +402,22 @@ export function PastEvents({
         </div>
 
         {/* View All Link */}
-        <div className="text-center mt-12">
-          <Link
-            href={viewAllLink}
-            className={cn(
-              "group inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300",
-              isDark
-                ? "bg-white/10 backdrop-blur-sm text-white border border-white/20 hover:bg-white/20"
-                : "bg-brand-primary text-white hover:bg-brand-primary-dark"
-            )}
-          >
-            {viewAllText}
-            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
-        </div>
+        {showViewAllButton && (
+          <div className="text-center mt-12">
+            <Link
+              href={viewAllLink}
+              className={cn(
+                "group inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300",
+                isDark
+                  ? "bg-white/10 backdrop-blur-sm text-white border border-white/20 hover:bg-white/20"
+                  : "bg-brand-primary text-white hover:bg-brand-primary-dark"
+              )}
+            >
+              {viewAllText}
+              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </div>
+        )}
 
         {/* Loading indicator for dynamic data */}
         {isLoading && useDynamicData && (

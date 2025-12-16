@@ -54,6 +54,9 @@ export const LifeAtJKKNPropsSchema = z.object({
   // Autoplay
   autoplay: z.boolean().default(true).describe('Enable autoplay'),
   autoplaySpeed: z.number().default(3500).describe('Autoplay speed in ms'),
+
+  // View All Button
+  showViewAllButton: z.boolean().default(true).describe('Show/hide the Explore Campus Life button'),
 })
 
 export type LifeAtJKKNProps = z.infer<typeof LifeAtJKKNPropsSchema> & BaseBlockProps
@@ -115,6 +118,7 @@ export function LifeAtJKKN({
   showDecorations = true,
   autoplay = true,
   autoplaySpeed = 3500,
+  showViewAllButton = true,
   className,
   isEditing,
 }: LifeAtJKKNProps) {
@@ -353,21 +357,23 @@ export function LifeAtJKKN({
         </div>
 
         {/* View All Link */}
-        <div className="text-center mt-12">
-          <Link
-            href="/campus-life"
-            className={cn(
-              "group inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300",
-              isDark
-                ? "bg-white/10 backdrop-blur-sm text-white border border-white/20 hover:bg-white/20"
-                : "bg-brand-primary text-white hover:bg-brand-primary-dark"
-            )}
-          >
-            <Camera className="w-5 h-5" />
-            Explore Campus Life
-            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
-        </div>
+        {showViewAllButton && (
+          <div className="text-center mt-12">
+            <Link
+              href="/campus-life"
+              className={cn(
+                "group inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300",
+                isDark
+                  ? "bg-white/10 backdrop-blur-sm text-white border border-white/20 hover:bg-white/20"
+                  : "bg-brand-primary text-white hover:bg-brand-primary-dark"
+              )}
+            >
+              <Camera className="w-5 h-5" />
+              Explore Campus Life
+              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   )

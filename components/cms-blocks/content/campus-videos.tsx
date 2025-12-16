@@ -70,6 +70,9 @@ export const CampusVideosPropsSchema = z.object({
   // Autoplay
   autoplay: z.boolean().default(true).describe('Enable autoplay'),
   autoplaySpeed: z.number().default(4000).describe('Autoplay speed in ms'),
+
+  // View All Button
+  showViewAllButton: z.boolean().default(true).describe('Show/hide the View All button'),
 })
 
 export type CampusVideosProps = z.infer<typeof CampusVideosPropsSchema> & BaseBlockProps
@@ -128,6 +131,7 @@ export function CampusVideos({
   showDuration = true,
   autoplay = true,
   autoplaySpeed = 4000,
+  showViewAllButton = true,
   className,
   isEditing,
 }: CampusVideosProps) {
@@ -365,20 +369,22 @@ export function CampusVideos({
           </div>
 
           {/* View All Link */}
-          <div className="text-center mt-12">
-            <a
-              href="/videos"
-              className={cn(
-                "group inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300",
-                isDark
-                  ? "bg-white/10 backdrop-blur-sm text-white border border-white/20 hover:bg-white/20"
-                  : "bg-brand-primary text-white hover:bg-brand-primary-dark"
-              )}
-            >
-              View All Videos
-              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </a>
-          </div>
+          {showViewAllButton && (
+            <div className="text-center mt-12">
+              <a
+                href="/videos"
+                className={cn(
+                  "group inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300",
+                  isDark
+                    ? "bg-white/10 backdrop-blur-sm text-white border border-white/20 hover:bg-white/20"
+                    : "bg-brand-primary text-white hover:bg-brand-primary-dark"
+                )}
+              >
+                View All Videos
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
+            </div>
+          )}
         </div>
       </section>
 

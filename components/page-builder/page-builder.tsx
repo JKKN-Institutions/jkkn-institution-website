@@ -34,6 +34,7 @@ import type { LayoutPreset } from '@/lib/cms/layout-presets'
 import { OfflineBanner } from '@/lib/hooks/use-network-status'
 import { SiteHeader } from '@/components/public/site-header'
 import { SiteFooter } from '@/components/public/site-footer'
+import { ResizablePanel } from './resizable-panel'
 
 // Auto-save debounce delay in milliseconds
 const AUTO_SAVE_DELAY = 3000
@@ -576,9 +577,16 @@ function PageBuilderContent({
         <div className="flex flex-1 overflow-hidden">
           {/* Left Sidebar - Component Palette */}
           {!isPreviewMode && (
-            <div className="w-[280px] min-w-[280px] max-w-[280px] border-r border-border bg-card flex flex-col overflow-hidden">
+            <ResizablePanel
+              side="left"
+              defaultWidth={280}
+              minWidth={200}
+              maxWidth={400}
+              storageKey="editor-left-panel"
+              className="border-r border-border bg-card overflow-hidden"
+            >
               <ComponentPalette />
-            </div>
+            </ResizablePanel>
           )}
 
           {/* Navigator Panel (Elementor-style layer tree) */}
@@ -608,7 +616,14 @@ function PageBuilderContent({
 
           {/* Right Sidebar - Properties/SEO/FAB Panel */}
           {!isPreviewMode && (
-            <div className="w-[350px] border-l border-border bg-card flex flex-col min-h-0">
+            <ResizablePanel
+              side="right"
+              defaultWidth={380}
+              minWidth={300}
+              maxWidth={500}
+              storageKey="editor-right-panel"
+              className="border-l border-border bg-card min-h-0"
+            >
               <Tabs
                 value={rightPanelTab}
                 onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab')}
@@ -651,7 +666,7 @@ function PageBuilderContent({
                   />
                 </TabsContent>
               </Tabs>
-            </div>
+            </ResizablePanel>
           )}
         </div>
       </div>

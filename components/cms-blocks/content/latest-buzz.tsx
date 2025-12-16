@@ -58,6 +58,7 @@ export const LatestBuzzPropsSchema = z.object({
   // View All Link
   viewAllLink: z.string().default('/blog/category/latest-buzz').describe('Link for View All button'),
   viewAllText: z.string().default('View All Buzz').describe('Text for View All button'),
+  showViewAllButton: z.boolean().default(true).describe('Show/hide the View All button'),
 })
 
 export type LatestBuzzProps = z.infer<typeof LatestBuzzPropsSchema> & BaseBlockProps
@@ -120,6 +121,7 @@ export function LatestBuzz({
   autoplaySpeed = 4000,
   viewAllLink = '/blog/category/latest-buzz',
   viewAllText = 'View All Buzz',
+  showViewAllButton = true,
   className,
   isEditing,
 }: LatestBuzzProps) {
@@ -345,20 +347,22 @@ export function LatestBuzz({
         </div>
 
         {/* View All Link */}
-        <div className="text-center mt-12">
-          <Link
-            href={viewAllLink}
-            className={cn(
-              "group inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300",
-              isDark
-                ? "bg-white/10 backdrop-blur-sm text-white border border-white/20 hover:bg-white/20"
-                : "bg-brand-primary text-white hover:bg-brand-primary-dark"
-            )}
-          >
-            {viewAllText}
-            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
-        </div>
+        {showViewAllButton && (
+          <div className="text-center mt-12">
+            <Link
+              href={viewAllLink}
+              className={cn(
+                "group inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300",
+                isDark
+                  ? "bg-white/10 backdrop-blur-sm text-white border border-white/20 hover:bg-white/20"
+                  : "bg-brand-primary text-white hover:bg-brand-primary-dark"
+              )}
+            >
+              {viewAllText}
+              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </div>
+        )}
 
         {/* Loading indicator for dynamic data */}
         {isLoading && useDynamicData && (

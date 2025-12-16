@@ -816,7 +816,7 @@ function ObjectArrayField({ config, value, onChange }: ObjectArrayFieldProps) {
     // Check if type is explicitly 'image'
     if (propSchema.type === 'image') return true
 
-    const imageKeywords = ['image', 'photo', 'picture', 'avatar', 'thumbnail', 'src']
+    const imageKeywords = ['image', 'photo', 'picture', 'avatar', 'thumbnail', 'src', 'logo']
     const keyLower = fieldKey.toLowerCase()
     return (
       propSchema.format === 'uri' ||
@@ -897,24 +897,25 @@ function ObjectArrayField({ config, value, onChange }: ObjectArrayFieldProps) {
                     </div>
                   )}
 
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-8 w-8 border-destructive/50 bg-destructive/10 text-destructive hover:bg-destructive hover:text-white hover:border-destructive flex-shrink-0 transition-all"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleRemoveItem(index)
-                    }}
-                    title="Delete this item"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-
-                  {isExpanded ? (
-                    <ChevronUp className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                  )}
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6 text-destructive/70 hover:text-destructive hover:bg-destructive/10"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleRemoveItem(index)
+                      }}
+                      title="Delete this item"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                    {isExpanded ? (
+                      <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                    )}
+                  </div>
                 </div>
               </CollapsibleTrigger>
 
