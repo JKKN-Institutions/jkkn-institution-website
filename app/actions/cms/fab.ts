@@ -1,6 +1,4 @@
-'use server'
-
-import { createServerSupabaseClient } from '@/lib/supabase/server'
+import { createPublicSupabaseClient } from '@/lib/supabase/public'
 
 // FAB Config type matching cms_page_fab_config table
 export interface GlobalFabConfig {
@@ -46,7 +44,7 @@ const DEFAULT_FAB_CONFIG: GlobalFabConfig = {
  */
 export async function getGlobalFabConfig(): Promise<GlobalFabConfig> {
   try {
-    const supabase = await createServerSupabaseClient()
+    const supabase = createPublicSupabaseClient()
 
     // Try to get FAB config from "home" page first
     const { data: homePageConfig, error: homeError } = await supabase
