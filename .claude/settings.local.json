@@ -88,7 +88,8 @@
       "mcp__chrome-devtools__fill",
       "mcp__chrome-devtools__emulate",
       "mcp__chrome-devtools__get_console_message",
-      "Skill(bug-boundary-integration)"
+      "Skill(bug-boundary-integration)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": [],
