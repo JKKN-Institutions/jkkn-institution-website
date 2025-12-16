@@ -7,6 +7,26 @@ import Image from 'next/image'
 import { useRef, useState, useEffect } from 'react'
 import { Play, Video, ArrowRight, X, Film } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
+import { extractYouTubeVideoId } from '@/lib/utils/youtube'
+
+/**
+ * Convert video URL to embeddable format
+ */
+function getEmbedUrl(url: string): string {
+  // Check if it's a YouTube URL
+  const youtubeId = extractYouTubeVideoId(url)
+  if (youtubeId) {
+    return `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0`
+  }
+
+  // Check if it's already an embed URL
+  if (url.includes('/embed/')) {
+    return url
+  }
+
+  // Return as-is for other video sources (Vimeo, Google Drive, etc.)
+  return url
+}
 
 /**
  * Video item schema
@@ -380,7 +400,7 @@ export function CampusVideos({
             </button>
             {activeVideo.videoUrl && (
               <iframe
-                src={activeVideo.videoUrl}
+                src={getEmbedUrl(activeVideo.videoUrl)}
                 className="w-full h-full"
                 allow="autoplay; encrypted-media"
                 allowFullScreen

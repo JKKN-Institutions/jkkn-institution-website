@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useTransition } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -14,11 +14,13 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { Plus, Trash2, Image as ImageIcon, X, Check, ChevronDown, ChevronUp, GripVertical, User } from 'lucide-react'
+import { Plus, Trash2, Image as ImageIcon, X, Check, ChevronDown, ChevronUp, GripVertical, User, Loader2 } from 'lucide-react'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import type { ComponentRegistryEntry } from '@/lib/cms/registry-types'
 import { BRAND_COLORS, BRAND_GRADIENTS, type BrandColor } from '@/lib/cms/brand-colors'
 import { isGoogleDriveUrl, convertToGoogleDriveImageUrl, convertToGoogleDriveVideoUrl, GOOGLE_DRIVE_INSTRUCTIONS } from '@/lib/utils/google-drive'
+import { extractYouTubeVideoId } from '@/lib/utils/youtube'
+import { getYouTubeVideoMetadata } from '@/app/actions/cms/youtube'
 import { cn } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { MediaPickerModal } from '@/components/cms/media-picker-modal'
@@ -32,7 +34,7 @@ interface DynamicFormProps {
 
 interface FieldConfig {
   key: string
-  type: 'string' | 'number' | 'boolean' | 'enum' | 'array' | 'color' | 'url' | 'image' | 'video' | 'media'
+  type: 'string' | 'number' | 'boolean' | 'enum' | 'array' | 'color' | 'url' | 'image' | 'video' | 'media' | 'object'
   label: string
   description?: string
   required?: boolean
@@ -55,6 +57,23 @@ interface FieldConfig {
     }>
     required?: string[]
   }
+  /** For object type: nested property definitions */
+  properties?: Array<{
+    name: string
+    type: string
+    label?: string
+    required?: boolean
+    itemType?: string
+    itemSchema?: {
+      properties: Record<string, {
+        type: string
+        label?: string
+        required?: boolean
+        format?: string
+      }>
+      required?: string[]
+    }
+  }>
 }
 
 // Helper to convert camelCase/snake_case to Title Case
@@ -651,6 +670,7 @@ function ObjectArrayField({ config, value, onChange }: ObjectArrayFieldProps) {
   const [pickerOpen, setPickerOpen] = useState(false)
   const [editingImageField, setEditingImageField] = useState<{ index: number; field: string } | null>(null)
   const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set([0])) // First item expanded by default
+  const [fetchingYouTube, setFetchingYouTube] = useState<Set<number>>(new Set()) // Track which items are fetching YouTube metadata
 
   const arrayValue = Array.isArray(value)
     ? value.map(item => {
@@ -721,10 +741,50 @@ function ObjectArrayField({ config, value, onChange }: ObjectArrayFieldProps) {
     })
   }
 
-  const handleItemFieldChange = (index: number, field: string, newValue: unknown) => {
+  const handleItemFieldChange = async (index: number, field: string, newValue: unknown) => {
     const newArray = [...arrayValue]
     newArray[index] = { ...newArray[index], [field]: newValue }
     onChange(newArray)
+
+    // Auto-fetch YouTube metadata when videoUrl field changes
+    if (field === 'videoUrl' && typeof newValue === 'string' && newValue.trim()) {
+      const videoId = extractYouTubeVideoId(newValue)
+      if (videoId) {
+        // Check if title and thumbnail are empty (don't override existing values)
+        const currentItem = newArray[index]
+        const hasTitle = currentItem.title && String(currentItem.title).trim()
+        const hasThumbnail = currentItem.thumbnail && String(currentItem.thumbnail).trim()
+
+        if (!hasTitle || !hasThumbnail) {
+          // Set loading state
+          setFetchingYouTube(prev => new Set([...prev, index]))
+
+          try {
+            const result = await getYouTubeVideoMetadata(newValue)
+            if (result.success && result.data) {
+              // Create updated array with fetched metadata
+              const updatedArray = [...arrayValue]
+              updatedArray[index] = {
+                ...updatedArray[index],
+                [field]: newValue,
+                ...((!hasTitle) && { title: result.data.title }),
+                ...((!hasThumbnail) && { thumbnail: result.data.thumbnail })
+              }
+              onChange(updatedArray)
+            }
+          } catch (error) {
+            console.error('Failed to fetch YouTube metadata:', error)
+          } finally {
+            // Clear loading state
+            setFetchingYouTube(prev => {
+              const newSet = new Set(prev)
+              newSet.delete(index)
+              return newSet
+            })
+          }
+        }
+      }
+    }
   }
 
   const toggleExpanded = (index: number) => {
@@ -829,14 +889,23 @@ function ObjectArrayField({ config, value, onChange }: ObjectArrayFieldProps) {
                     )}
                   </div>
 
+                  {/* Loading indicator for YouTube metadata fetch */}
+                  {fetchingYouTube.has(index) && (
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground flex-shrink-0">
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      <span>Fetching...</span>
+                    </div>
+                  )}
+
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="icon"
-                    className="h-7 w-7 text-destructive hover:text-destructive hover:bg-destructive/10 flex-shrink-0"
+                    className="h-8 w-8 border-destructive/50 bg-destructive/10 text-destructive hover:bg-destructive hover:text-white hover:border-destructive flex-shrink-0 transition-all"
                     onClick={(e) => {
                       e.stopPropagation()
                       handleRemoveItem(index)
                     }}
+                    title="Delete this item"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -1272,6 +1341,302 @@ function MediaField({ config, value, onChange, mediaType }: MediaFieldProps) {
   )
 }
 
+/**
+ * ObjectField - For editing nested object properties (like boysHostel, girlsHostel)
+ * Renders a collapsible section containing all nested fields
+ */
+interface ObjectFieldProps extends FieldProps {
+  config: FieldConfig & {
+    properties?: Array<{
+      name: string
+      type: string
+      label?: string
+      required?: boolean
+      itemType?: string
+      itemSchema?: {
+        properties: Record<string, {
+          type: string
+          label?: string
+          required?: boolean
+          format?: string
+        }>
+        required?: string[]
+      }
+    }>
+  }
+}
+
+function ObjectField({ config, value, onChange }: ObjectFieldProps) {
+  const [isOpen, setIsOpen] = useState(true)
+  const [pickerOpen, setPickerOpen] = useState(false)
+  const [editingImageField, setEditingImageField] = useState<{ arrayIndex: number; field: string } | null>(null)
+
+  const objectValue = (value && typeof value === 'object' && !Array.isArray(value))
+    ? value as Record<string, unknown>
+    : {}
+
+  const handleFieldChange = (fieldKey: string, newValue: unknown) => {
+    onChange({ ...objectValue, [fieldKey]: newValue })
+  }
+
+  const handleMediaSelect = (media: MediaItem | MediaItem[]) => {
+    if (!editingImageField) return
+    const selected = Array.isArray(media) ? media[0] : media
+
+    // Update the image in the array
+    const currentArray = objectValue[editingImageField.field] as Array<{ src: string; alt?: string }> || []
+    const newArray = [...currentArray]
+    if (editingImageField.arrayIndex < newArray.length) {
+      newArray[editingImageField.arrayIndex] = { ...newArray[editingImageField.arrayIndex], src: selected.file_url }
+    } else {
+      newArray.push({ src: selected.file_url, alt: '' })
+    }
+    handleFieldChange(editingImageField.field, newArray)
+    setEditingImageField(null)
+  }
+
+  if (!config.properties || config.properties.length === 0) {
+    return (
+      <div className="text-sm text-muted-foreground p-3 bg-muted/30 rounded-md">
+        No configurable properties
+      </div>
+    )
+  }
+
+  return (
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <div className="rounded-lg border border-border/60 bg-background/40 overflow-hidden">
+        <CollapsibleTrigger asChild>
+          <div className="flex items-center gap-2 px-3 py-2.5 cursor-pointer hover:bg-muted/30 transition-colors">
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium">{config.label}</p>
+            </div>
+            {isOpen ? (
+              <ChevronUp className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+            ) : (
+              <ChevronDown className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+            )}
+          </div>
+        </CollapsibleTrigger>
+
+        <CollapsibleContent>
+          <div className="px-3 pb-3 pt-1 space-y-4 border-t border-border/40">
+            {config.properties.map((prop) => {
+              const fieldLabel = prop.label || formatLabel(prop.name)
+              const fieldValue = objectValue[prop.name]
+
+              // Handle nested arrays with images
+              if (prop.type === 'array' && prop.itemType === 'object' && prop.itemSchema) {
+                const arrayValue = Array.isArray(fieldValue) ? fieldValue as Array<Record<string, unknown>> : []
+
+                // Check if this is an image array (has 'src' property with image format)
+                const isImageArray = prop.itemSchema.properties?.src?.format === 'image' ||
+                  prop.name.toLowerCase().includes('image')
+
+                if (isImageArray) {
+                  return (
+                    <div key={prop.name} className="space-y-2">
+                      <Label className="text-xs text-muted-foreground font-medium">
+                        {fieldLabel}
+                        {prop.required && <span className="text-red-500 ml-0.5">*</span>}
+                      </Label>
+                      <div className="space-y-2">
+                        {arrayValue.map((item, index) => (
+                          <div key={index} className="flex gap-2 items-start p-2 rounded-md border border-border/40 bg-background/30">
+                            <div className="relative w-16 h-16 rounded-md overflow-hidden border border-border/50 bg-muted flex-shrink-0">
+                              {item.src ? (
+                                <img
+                                  src={item.src as string}
+                                  alt={item.alt as string || `Image ${index + 1}`}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <ImageIcon className="h-5 w-5 text-muted-foreground/50" />
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1 space-y-1.5">
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                className="w-full h-7 text-xs"
+                                onClick={() => {
+                                  setEditingImageField({ arrayIndex: index, field: prop.name })
+                                  setPickerOpen(true)
+                                }}
+                              >
+                                <ImageIcon className="h-3 w-3 mr-1.5" />
+                                {item.src ? 'Change' : 'Select'} Image
+                              </Button>
+                              <Input
+                                value={item.alt as string || ''}
+                                onChange={(e) => {
+                                  const newArray = [...arrayValue]
+                                  newArray[index] = { ...newArray[index], alt: e.target.value }
+                                  handleFieldChange(prop.name, newArray)
+                                }}
+                                placeholder="Alt text"
+                                className="h-7 text-xs bg-background/50 border-border/50"
+                              />
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7 text-destructive hover:text-destructive hover:bg-destructive/10 flex-shrink-0"
+                              onClick={() => {
+                                const newArray = arrayValue.filter((_, i) => i !== index)
+                                handleFieldChange(prop.name, newArray)
+                              }}
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="w-full h-8 text-xs"
+                          onClick={() => {
+                            setEditingImageField({ arrayIndex: arrayValue.length, field: prop.name })
+                            setPickerOpen(true)
+                          }}
+                        >
+                          <Plus className="h-3.5 w-3.5 mr-1.5" />
+                          Add Image
+                        </Button>
+                      </div>
+                    </div>
+                  )
+                }
+
+                // Non-image object arrays
+                return (
+                  <div key={prop.name} className="space-y-2">
+                    <Label className="text-xs text-muted-foreground font-medium">
+                      {fieldLabel}
+                      {prop.required && <span className="text-red-500 ml-0.5">*</span>}
+                    </Label>
+                    <ObjectArrayField
+                      config={{
+                        key: prop.name,
+                        type: 'array',
+                        label: fieldLabel,
+                        itemType: 'object',
+                        itemSchema: prop.itemSchema
+                      }}
+                      value={fieldValue}
+                      onChange={(v) => handleFieldChange(prop.name, v)}
+                    />
+                  </div>
+                )
+              }
+
+              // Handle simple string arrays (paragraphs, highlights)
+              if (prop.type === 'array' && (!prop.itemType || prop.itemType === 'string')) {
+                const stringArray = Array.isArray(fieldValue) ? fieldValue as string[] : []
+
+                return (
+                  <div key={prop.name} className="space-y-2">
+                    <Label className="text-xs text-muted-foreground font-medium">
+                      {fieldLabel}
+                      {prop.required && <span className="text-red-500 ml-0.5">*</span>}
+                    </Label>
+                    <div className="space-y-2">
+                      {stringArray.map((item, index) => (
+                        <div key={index} className="flex gap-2 items-start">
+                          <Textarea
+                            value={item}
+                            onChange={(e) => {
+                              const newArray = [...stringArray]
+                              newArray[index] = e.target.value
+                              handleFieldChange(prop.name, newArray)
+                            }}
+                            placeholder={`Enter ${fieldLabel.toLowerCase().replace(/s$/, '')}...`}
+                            rows={2}
+                            className="flex-1 text-sm bg-background/50 border-border/50 resize-none"
+                          />
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10 flex-shrink-0 mt-1"
+                            onClick={() => {
+                              const newArray = stringArray.filter((_, i) => i !== index)
+                              handleFieldChange(prop.name, newArray)
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full h-8 text-xs"
+                        onClick={() => {
+                          handleFieldChange(prop.name, [...stringArray, ''])
+                        }}
+                      >
+                        <Plus className="h-3.5 w-3.5 mr-1.5" />
+                        Add {fieldLabel.replace(/s$/, '') || 'Item'}
+                      </Button>
+                    </div>
+                  </div>
+                )
+              }
+
+              // Handle simple string fields
+              if (prop.type === 'string') {
+                return (
+                  <div key={prop.name} className="space-y-1.5">
+                    <Label className="text-xs text-muted-foreground font-medium">
+                      {fieldLabel}
+                      {prop.required && <span className="text-red-500 ml-0.5">*</span>}
+                    </Label>
+                    <Input
+                      value={fieldValue as string || ''}
+                      onChange={(e) => handleFieldChange(prop.name, e.target.value)}
+                      placeholder={`Enter ${fieldLabel.toLowerCase()}...`}
+                      className="h-8 text-sm bg-background/50 border-border/50"
+                    />
+                  </div>
+                )
+              }
+
+              // Default: render as text input
+              return (
+                <div key={prop.name} className="space-y-1.5">
+                  <Label className="text-xs text-muted-foreground font-medium">
+                    {fieldLabel}
+                  </Label>
+                  <Input
+                    value={String(fieldValue || '')}
+                    onChange={(e) => handleFieldChange(prop.name, e.target.value)}
+                    placeholder={`Enter ${fieldLabel.toLowerCase()}...`}
+                    className="h-8 text-sm bg-background/50 border-border/50"
+                  />
+                </div>
+              )
+            })}
+          </div>
+        </CollapsibleContent>
+      </div>
+
+      <MediaPickerModal
+        open={pickerOpen}
+        onOpenChange={setPickerOpen}
+        onSelect={handleMediaSelect}
+        fileType="image"
+        currentValue={editingImageField && objectValue[editingImageField.field]
+          ? ((objectValue[editingImageField.field] as Array<{ src: string }>)[editingImageField.arrayIndex]?.src)
+          : undefined
+        }
+      />
+    </Collapsible>
+  )
+}
+
 // Generate field configs from component entry metadata
 function getFieldConfigs(componentEntry: ComponentRegistryEntry): FieldConfig[] {
   const fields: FieldConfig[] = []
@@ -1300,6 +1665,7 @@ function getFieldConfigs(componentEntry: ComponentRegistryEntry): FieldConfig[] 
       placeholder: prop.placeholder,
       itemType: prop.itemType,
       itemSchema: prop.itemSchema,
+      properties: prop.properties,
     }
 
     fields.push(config)
@@ -1434,6 +1800,14 @@ export function DynamicForm({ componentEntry, values, onChange }: DynamicFormPro
                 value={fieldValue}
                 onChange={(v) => handleFieldChange(field.key, v)}
                 mediaType="all"
+              />
+            )}
+
+            {field.type === 'object' && field.properties && (
+              <ObjectField
+                config={field}
+                value={fieldValue}
+                onChange={(v) => handleFieldChange(field.key, v)}
               />
             )}
 

@@ -564,29 +564,59 @@ export async function getMediaUsage(
 }
 
 /**
- * Get all folders in the media library
+ * Folder interface for type safety
+ */
+export interface MediaFolder {
+  id: string
+  name: string
+  slug: string
+  parent_id: string | null
+  color: string | null
+  icon: string | null
+  sort_order: number
+  created_by: string | null
+  created_at: string | null
+  updated_at: string | null
+}
+
+/**
+ * Get all folders from the cms_folders table
  */
 export async function getMediaFolders(): Promise<string[]> {
   const supabase = await createServerSupabaseClient()
 
   const { data, error } = await supabase
-    .from('cms_media_library')
-    .select('folder')
-    .not('folder', 'is', null)
+    .from('cms_folders')
+    .select('slug')
+    .order('sort_order', { ascending: true })
+    .order('name', { ascending: true })
 
   if (error) {
     console.error('Error fetching folders:', error)
     return ['general']
   }
 
-  const folders = new Set<string>(['general'])
-  data?.forEach((item) => {
-    if (item.folder) {
-      folders.add(item.folder)
-    }
-  })
+  return data?.map((f) => f.slug) || ['general']
+}
 
-  return Array.from(folders).sort()
+/**
+ * Get all folders with full details
+ */
+export async function getMediaFoldersWithDetails(): Promise<MediaFolder[]> {
+  const supabase = await createServerSupabaseClient()
+
+  const { data, error } = await supabase
+    .from('cms_folders')
+    .select('*')
+    .order('sort_order', { ascending: true })
+    .order('name', { ascending: true })
+
+  if (error) {
+    console.error('Error fetching folders:', error)
+    return []
+  }
+
+  return data as MediaFolder[]
 }
 
 /**
@@ -641,8 +671,7 @@ export async function moveMediaToFolder(
 }
 
 /**
- * Create a new folder (virtual - folders are derived from media items)
- * This updates all items with an empty folder to move them to the new folder
+ * Create a new folder in the cms_folders table
  */
 export async function createFolder(folderName: string): Promise<FormState> {
   const supabase = await createServerSupabaseClient()
@@ -666,33 +695,69 @@ export async function createFolder(folderName: string): Promise<FormState> {
     return { success: false, message: 'Folder name is required' }
   }
 
-  const sanitizedName = folderName.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '-')
+  // Sanitize slug (lowercase, alphanumeric with hyphens/underscores)
+  const sanitizedSlug = folderName.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '-')
+  // Keep original name for display
+  const displayName = folderName.trim()
 
   // Check if folder already exists
-  const existingFolders = await getMediaFolders()
-  if (existingFolders.includes(sanitizedName)) {
+  const { data: existingFolder } = await supabase
+    .from('cms_folders')
+    .select('id')
+    .eq('slug', sanitizedSlug)
+    .single()
+
+  if (existingFolder) {
     return { success: false, message: 'A folder with this name already exists' }
   }
 
-  // Log activity (folder creation is virtual - no DB changes needed)
+  // Get max sort order for new folder
+  const { data: maxOrderResult } = await supabase
+    .from('cms_folders')
+    .select('sort_order')
+    .order('sort_order', { ascending: false })
+    .limit(1)
+    .single()
+
+  const newSortOrder = (maxOrderResult?.sort_order || 0) + 1
+
+  // Insert into cms_folders table
+  const { data: newFolder, error } = await supabase
+    .from('cms_folders')
+    .insert({
+      name: displayName,
+      slug: sanitizedSlug,
+      sort_order: newSortOrder,
+      created_by: user.id,
+    })
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error creating folder:', error)
+    return { success: false, message: 'Failed to create folder. Please try again.' }
+  }
+
+  // Log activity
   await logActivity({
     userId: user.id,
     action: 'create',
     module: 'cms',
     resourceType: 'folder',
-    metadata: { folder: sanitizedName },
+    resourceId: newFolder.id,
+    metadata: { folder: sanitizedSlug, name: displayName },
   })
 
   revalidatePath('/admin/content/media')
 
-  return { success: true, message: 'Folder created successfully', data: { folder: sanitizedName } }
+  return { success: true, message: 'Folder created successfully', data: { folder: sanitizedSlug, id: newFolder.id } }
 }
 
 /**
- * Rename a folder (updates all media items in that folder)
+ * Rename a folder (updates cms_folders table and all media items)
  */
 export async function renameFolder(
-  oldName: string,
+  oldSlug: string,
   newName: string
 ): Promise<FormState> {
   const supabase = await createServerSupabaseClient()
@@ -712,34 +777,56 @@ export async function renameFolder(
   }
 
   // Validate names
-  if (!oldName || !newName) {
+  if (!oldSlug || !newName) {
     return { success: false, message: 'Folder names are required' }
   }
 
-  if (oldName === 'general') {
+  if (oldSlug === 'general') {
     return { success: false, message: 'Cannot rename the general folder' }
   }
 
-  const sanitizedNewName = newName.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '-')
+  const sanitizedNewSlug = newName.trim().toLowerCase().replace(/[^a-z0-9-_]/g, '-')
+  const displayName = newName.trim()
 
-  // Check if new folder name already exists
-  const existingFolders = await getMediaFolders()
-  if (existingFolders.includes(sanitizedNewName) && sanitizedNewName !== oldName) {
-    return { success: false, message: 'A folder with this name already exists' }
+  // Check if new folder slug already exists (and is different from old)
+  if (sanitizedNewSlug !== oldSlug) {
+    const { data: existingFolder } = await supabase
+      .from('cms_folders')
+      .select('id')
+      .eq('slug', sanitizedNewSlug)
+      .single()
+
+    if (existingFolder) {
+      return { success: false, message: 'A folder with this name already exists' }
+    }
+  }
+
+  // Update cms_folders table
+  const { error: folderError } = await supabase
+    .from('cms_folders')
+    .update({
+      name: displayName,
+      slug: sanitizedNewSlug,
+    })
+    .eq('slug', oldSlug)
+
+  if (folderError) {
+    console.error('Error renaming folder in cms_folders:', folderError)
+    return { success: false, message: 'Failed to rename folder. Please try again.' }
   }
 
   // Update all media items in the old folder
-  const { error, count } = await supabase
+  const { error: mediaError, count } = await supabase
     .from('cms_media_library')
     .update({
-      folder: sanitizedNewName,
+      folder: sanitizedNewSlug,
       updated_at: new Date().toISOString(),
     })
-    .eq('folder', oldName)
+    .eq('folder', oldSlug)
 
-  if (error) {
-    console.error('Error renaming folder:', error)
-    return { success: false, message: 'Failed to rename folder. Please try again.' }
+  if (mediaError) {
+    console.error('Error updating media folder references:', mediaError)
+    // Don't fail completely - folder was renamed, media references just need manual fix
   }
 
   // Log activity
@@ -748,7 +835,7 @@ export async function renameFolder(
     action: 'rename',
     module: 'cms',
     resourceType: 'folder',
-    metadata: { oldName, newName: sanitizedNewName, itemsUpdated: count },
+    metadata: { oldSlug, newSlug: sanitizedNewSlug, newName: displayName, itemsUpdated: count },
   })
 
   revalidatePath('/admin/content/media')
@@ -757,10 +844,10 @@ export async function renameFolder(
 }
 
 /**
- * Delete a folder (moves all items to general folder)
+ * Delete a folder from cms_folders table (moves all media items to general folder)
  */
 export async function deleteFolder(
-  folderName: string,
+  folderSlug: string,
   moveToGeneral: boolean = true
 ): Promise<FormState> {
   const supabase = await createServerSupabaseClient()
@@ -779,34 +866,56 @@ export async function deleteFolder(
     return { success: false, message: 'You do not have permission to manage folders' }
   }
 
-  if (folderName === 'general') {
+  if (folderSlug === 'general') {
     return { success: false, message: 'Cannot delete the general folder' }
   }
 
+  // Get folder ID before deletion for logging
+  const { data: folder } = await supabase
+    .from('cms_folders')
+    .select('id, name')
+    .eq('slug', folderSlug)
+    .single()
+
+  let itemsMoved = 0
+
   if (moveToGeneral) {
     // Move all files to general folder
-    const { error, count } = await supabase
+    const { error: mediaError, count } = await supabase
       .from('cms_media_library')
       .update({
         folder: 'general',
         updated_at: new Date().toISOString(),
       })
-      .eq('folder', folderName)
+      .eq('folder', folderSlug)
 
-    if (error) {
-      console.error('Error deleting folder:', error)
-      return { success: false, message: 'Failed to delete folder. Please try again.' }
+    if (mediaError) {
+      console.error('Error moving media to general folder:', mediaError)
+      // Continue with folder deletion anyway
     }
-
-    // Log activity
-    await logActivity({
-      userId: user.id,
-      action: 'delete',
-      module: 'cms',
-      resourceType: 'folder',
-      metadata: { folder: folderName, itemsMovedToGeneral: count },
-    })
+    itemsMoved = count || 0
   }
+
+  // Delete from cms_folders table
+  const { error: deleteError } = await supabase
+    .from('cms_folders')
+    .delete()
+    .eq('slug', folderSlug)
+
+  if (deleteError) {
+    console.error('Error deleting folder:', deleteError)
+    return { success: false, message: 'Failed to delete folder. Please try again.' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'delete',
+    module: 'cms',
+    resourceType: 'folder',
+    resourceId: folder?.id,
+    metadata: { folder: folderSlug, name: folder?.name, itemsMovedToGeneral: itemsMoved },
+  })
 
   revalidatePath('/admin/content/media')
 
@@ -814,22 +923,39 @@ export async function deleteFolder(
 }
 
 /**
- * Get folder statistics (file count per folder)
+ * Get folder statistics (file count per folder, including empty folders)
  */
 export async function getFolderStats(): Promise<Record<string, number>> {
   const supabase = await createServerSupabaseClient()
 
-  const { data, error } = await supabase
-    .from('cms_media_library')
-    .select('folder')
+  // First, get all folders from cms_folders table
+  const { data: folders, error: foldersError } = await supabase
+    .from('cms_folders')
+    .select('slug')
 
-  if (error) {
-    console.error('Error fetching folder stats:', error)
+  if (foldersError) {
+    console.error('Error fetching folders:', foldersError)
     return { general: 0 }
   }
 
-  const stats: Record<string, number> = { general: 0 }
-  data?.forEach((item) => {
+  // Initialize stats with all folders set to 0
+  const stats: Record<string, number> = {}
+  folders?.forEach((f) => {
+    stats[f.slug] = 0
+  })
+
+  // Then get file counts from media library
+  const { data: mediaData, error: mediaError } = await supabase
+    .from('cms_media_library')
+    .select('folder')
+
+  if (mediaError) {
+    console.error('Error fetching media stats:', mediaError)
+    return stats
+  }
+
+  // Count files per folder
+  mediaData?.forEach((item) => {
     const folder = item.folder || 'general'
     stats[folder] = (stats[folder] || 0) + 1
   })

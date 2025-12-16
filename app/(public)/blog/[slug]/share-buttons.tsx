@@ -27,14 +27,14 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
 
   const buttonClasses = cn(
     'h-9 w-9 rounded-xl transition-all duration-300',
-    'bg-white/10 backdrop-blur-sm border border-white/20',
+    'bg-gray-100 border border-gray-200',
     'hover:bg-secondary/20 hover:border-secondary/30 hover:text-secondary',
-    'hover:shadow-md hover:scale-105 text-white/70'
+    'hover:shadow-md hover:scale-105 text-primary/70'
   )
 
   return (
-    <div className="flex items-center gap-2 p-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg">
-      <span className="text-sm text-white/70 flex items-center gap-1.5 pr-2 border-r border-white/20">
+    <div className="flex items-center gap-2 p-3 bg-gray-50 border border-gray-200 rounded-2xl shadow-lg">
+      <span className="text-sm text-primary/70 flex items-center gap-1.5 pr-2 border-r border-gray-200">
         <Share2 className="h-4 w-4" />
         Share
       </span>

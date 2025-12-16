@@ -77,7 +77,7 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
 
       case 'paragraph':
         return (
-          <p key={index} className="mb-4 leading-relaxed">
+          <p key={index} className="mb-4 leading-relaxed text-primary/90">
             {content?.map((child, i) => renderNode(child, i))}
           </p>
         )
@@ -85,12 +85,12 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
       case 'heading':
         const level = (node.attrs as { level: number })?.level || 2
         const headingClasses = {
-          1: 'text-3xl font-bold mb-6 mt-8',
-          2: 'text-2xl font-bold mb-4 mt-6',
-          3: 'text-xl font-semibold mb-3 mt-5',
-          4: 'text-lg font-semibold mb-2 mt-4',
-          5: 'text-base font-medium mb-2 mt-3',
-          6: 'text-sm font-medium mb-2 mt-3',
+          1: 'text-3xl font-bold mb-6 mt-8 text-primary',
+          2: 'text-2xl font-bold mb-4 mt-6 text-primary',
+          3: 'text-xl font-semibold mb-3 mt-5 text-primary',
+          4: 'text-lg font-semibold mb-2 mt-4 text-primary',
+          5: 'text-base font-medium mb-2 mt-3 text-primary',
+          6: 'text-sm font-medium mb-2 mt-3 text-primary',
         }
         const headingClass = headingClasses[level as keyof typeof headingClasses]
         const headingChildren = content?.map((child, i) => renderNode(child, i))
@@ -103,36 +103,36 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
 
       case 'bulletList':
         return (
-          <ul key={index} className="list-disc pl-6 mb-4 space-y-1">
+          <ul key={index} className="list-disc pl-6 mb-4 space-y-1 text-primary/90 marker:text-primary/70">
             {content?.map((child, i) => renderNode(child, i))}
           </ul>
         )
 
       case 'orderedList':
         return (
-          <ol key={index} className="list-decimal pl-6 mb-4 space-y-1">
+          <ol key={index} className="list-decimal pl-6 mb-4 space-y-1 text-primary/90 marker:text-primary/70">
             {content?.map((child, i) => renderNode(child, i))}
           </ol>
         )
 
       case 'listItem':
         return (
-          <li key={index}>
+          <li key={index} className="text-primary/90">
             {content?.map((child, i) => renderNode(child, i))}
           </li>
         )
 
       case 'blockquote':
         return (
-          <blockquote key={index} className="border-l-4 border-primary pl-4 italic my-6 text-muted-foreground">
+          <blockquote key={index} className="border-l-4 border-secondary pl-4 italic my-6 text-primary/70">
             {content?.map((child, i) => renderNode(child, i))}
           </blockquote>
         )
 
       case 'codeBlock':
         return (
-          <pre key={index} className="bg-muted rounded-lg p-4 my-4 overflow-x-auto">
-            <code className="text-sm font-mono">
+          <pre key={index} className="bg-gray-100 rounded-lg p-4 my-4 overflow-x-auto border border-gray-200">
+            <code className="text-sm font-mono text-primary/90">
               {content?.map((child, i) => renderNode(child, i))}
             </code>
           </pre>
@@ -150,7 +150,7 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
               className="rounded-lg w-full"
             />
             {imageAttrs.title && (
-              <figcaption className="text-center text-sm text-muted-foreground mt-2">
+              <figcaption className="text-center text-sm text-primary/60 mt-2">
                 {imageAttrs.title}
               </figcaption>
             )}
@@ -158,7 +158,7 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
         )
 
       case 'horizontalRule':
-        return <hr key={index} className="my-8 border-border" />
+        return <hr key={index} className="my-8 border-primary/20" />
 
       case 'text':
         let textContent: React.ReactNode = text
@@ -178,7 +178,7 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
                 <a
                   key={index}
                   href={href}
-                  className="text-primary hover:underline"
+                  className="text-secondary hover:underline hover:text-secondary/80"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -188,7 +188,7 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
               break
             case 'code':
               textContent = (
-                <code key={index} className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono">
+                <code key={index} className="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono text-secondary">
                   {textContent}
                 </code>
               )
@@ -218,7 +218,7 @@ async function RelatedPosts({ postId }: { postId: string }) {
 
   return (
     <section className="mt-12">
-      <h2 className="text-2xl font-bold mb-6 flex items-center gap-2 text-white">
+      <h2 className="text-2xl font-bold mb-6 flex items-center gap-2 text-primary">
         <span className="w-1 h-6 bg-gradient-to-b from-secondary to-secondary/50 rounded-full" />
         Related Posts
       </h2>
@@ -226,7 +226,7 @@ async function RelatedPosts({ postId }: { postId: string }) {
         {posts.map((post) => (
           <div
             key={post.id}
-            className="overflow-hidden group rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 transition-all duration-300"
+            className="overflow-hidden group rounded-2xl bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300"
           >
             <Link href={`/blog/${post.slug}`} className="block relative aspect-video">
               {post.featured_image ? (
@@ -243,7 +243,7 @@ async function RelatedPosts({ postId }: { postId: string }) {
             </Link>
             <div className="p-4">
               <Link href={`/blog/${post.slug}`}>
-                <h3 className="font-semibold text-base line-clamp-2 text-white group-hover:text-secondary transition-colors">
+                <h3 className="font-semibold text-base line-clamp-2 text-primary group-hover:text-secondary transition-colors">
                   {post.title}
                 </h3>
               </Link>
@@ -281,21 +281,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL || ''}/blog/${slug}`
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary via-primary/95 to-[#064d2e] relative overflow-hidden">
-      {/* Floating Decorative Circles */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-[#0a8a52]/30 blur-3xl" />
-        <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-teal-600/20 blur-3xl" />
-        <div className="absolute top-2/3 left-1/2 w-80 h-80 rounded-full bg-[#0a8a52]/25 blur-3xl" />
-        <div className="absolute top-10 right-10 w-64 h-64 rounded-full bg-secondary/10 blur-3xl" />
-      </div>
+    <div className="min-h-screen bg-white relative overflow-hidden">
 
       {/* Hero Section */}
       <section className="relative py-12 md:py-16 z-10">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {/* Back Button */}
-            <Button variant="ghost" asChild className="mb-6 -ml-2 text-white/80 hover:text-white hover:bg-white/10">
+            <Button variant="ghost" asChild className="mb-6 -ml-2 text-primary/80 hover:text-primary hover:bg-primary/10">
               <Link href="/">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Home
@@ -306,8 +299,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {post.category && (
               <Link href={`/blog/category/${post.category.slug}`}>
                 <Badge
-                  className="mb-4 bg-secondary text-primary font-semibold"
-                  style={{ backgroundColor: post.category.color || undefined }}
+                  className="mb-4 font-semibold text-white hover:opacity-90 transition-opacity"
+                  style={{ backgroundColor: post.category.color || '#F5A623' }}
                 >
                   {post.category.name}
                 </Badge>
@@ -315,21 +308,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             )}
 
             {/* Title */}
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-6">
               {post.title}
             </h1>
 
             {/* Meta */}
-            <div className="flex flex-wrap items-center gap-4 text-sm text-white/70 mb-6">
+            <div className="flex flex-wrap items-center gap-4 text-sm text-primary/70 mb-6">
               {/* Author */}
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
                   <span className="text-sm font-bold text-primary">JK</span>
                 </div>
-                <span className="text-white/90">JKKN ADMIN</span>
+                <span className="text-primary/90">JKKN ADMIN</span>
               </div>
 
-              <Separator orientation="vertical" className="h-4 bg-white/30" />
+              <Separator orientation="vertical" className="h-4 bg-primary/30" />
 
               {/* Date */}
               <div className="flex items-center gap-1">
@@ -337,7 +330,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <span>{formatDate(post.published_at)}</span>
               </div>
 
-              <Separator orientation="vertical" className="h-4 bg-white/30" />
+              <Separator orientation="vertical" className="h-4 bg-primary/30" />
 
               {/* Reading Time */}
               {post.reading_time_minutes && (
@@ -347,7 +340,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
               )}
 
-              <Separator orientation="vertical" className="h-4 bg-white/30" />
+              <Separator orientation="vertical" className="h-4 bg-primary/30" />
 
               {/* Views */}
               <div className="flex items-center gap-1">
@@ -359,12 +352,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (
               <div className="flex items-center gap-2 flex-wrap">
-                <Tag className="h-4 w-4 text-white/60" />
+                <Tag className="h-4 w-4 text-primary/60" />
                 {post.tags.map((tag) => (
                   <Link key={tag.id} href={`/blog/tag/${tag.slug}`}>
                     <Badge
                       variant="outline"
-                      className="border-white/30 text-white/90 hover:bg-white/20 hover:text-white transition-colors"
+                      className="border-primary/30 text-primary/90 hover:bg-primary/10 hover:text-primary transition-colors"
                     >
                       {tag.name}
                     </Badge>
@@ -401,43 +394,43 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="max-w-4xl mx-auto">
             {/* Excerpt */}
             {post.excerpt && (
-              <p className="text-xl text-white/80 mb-8 leading-relaxed">
+              <p className="text-xl text-primary/80 mb-8 leading-relaxed">
                 {post.excerpt}
               </p>
             )}
 
-            {/* Content - Dark glass card matching the theme */}
-            <article className="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-xl ring-1 ring-white/20">
-              <div className="prose prose-lg max-w-none prose-headings:text-white prose-p:text-white/90 prose-strong:text-white prose-a:text-secondary prose-li:text-white/90 prose-ul:text-white/90 prose-ol:text-white/90">
+            {/* Content - Light card for white background */}
+            <article className="bg-gray-50 rounded-2xl p-6 md:p-8 shadow-lg border border-gray-200">
+              <div className="prose prose-lg max-w-none prose-headings:text-primary prose-p:text-primary/90 prose-strong:text-primary prose-a:text-secondary prose-li:text-primary/90 prose-ul:text-primary/90 prose-ol:text-primary/90">
                 <ContentRenderer content={post.content} />
               </div>
             </article>
 
-            <Separator className="my-8 bg-white/20" />
+            <Separator className="my-8 bg-primary/20" />
 
             {/* Share Section */}
             <div className="flex items-center justify-between flex-wrap gap-4">
               <ShareButtons title={post.title} url={postUrl} />
 
               {/* Author Card */}
-              <div className="flex items-center gap-3 p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg hover:shadow-xl hover:bg-white/15 transition-all duration-300">
+              <div className="flex items-center gap-3 p-4 bg-gray-50 border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl hover:bg-gray-100 transition-all duration-300">
                 <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center ring-2 ring-secondary/30">
                   <span className="text-xl font-bold text-primary">JK</span>
                 </div>
                 <div>
-                  <p className="text-sm text-white/60">Written by</p>
-                  <p className="font-semibold text-white">JKKN ADMIN</p>
+                  <p className="text-sm text-primary/60">Written by</p>
+                  <p className="font-semibold text-primary">JKKN ADMIN</p>
                 </div>
               </div>
             </div>
 
             {/* Comments Section */}
-            <Suspense fallback={<div className="mt-12 h-16 bg-white/10 backdrop-blur-md rounded-2xl animate-pulse" />}>
+            <Suspense fallback={<div className="mt-12 h-16 bg-gray-100 rounded-2xl animate-pulse" />}>
               <CommentsWrapper postId={post.id} allowComments={post.allow_comments || false} />
             </Suspense>
 
             {/* Related Posts */}
-            <Suspense fallback={<div className="mt-12 h-48 bg-white/10 rounded-lg animate-pulse" />}>
+            <Suspense fallback={<div className="mt-12 h-48 bg-gray-100 rounded-lg animate-pulse" />}>
               <RelatedPosts postId={post.id} />
             </Suspense>
           </div>

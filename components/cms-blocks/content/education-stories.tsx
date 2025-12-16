@@ -90,26 +90,25 @@ export function EducationStories({
   const isDark = variant === 'modern-dark'
   const isModern = variant !== 'classic'
 
-  // Height configurations for reels - shorter sizes
+  // Height configurations for reels - taller mobile stories format
   const heightConfig = {
-    short: 'h-[180px] sm:h-[200px]',
-    medium: 'h-[200px] sm:h-[220px]',
-    tall: 'h-[240px] sm:h-[260px]',
+    short: 'h-[260px] sm:h-[280px]',
+    medium: 'h-[300px] sm:h-[320px]',
+    tall: 'h-[340px] sm:h-[360px]',
   }
 
-  // Default stories for demo - 6 cards
+  // Default stories for demo - 5 cards
   const defaultStories: StoryItem[] = [
     { name: 'Rahul Sharma', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop', role: 'Medical Student', isNew: true },
     { name: 'Anitha Raj', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop', role: 'Pharmacy Alumni', isNew: false },
     { name: 'Vikram Singh', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=600&fit=crop', role: 'Nursing Excellence', isNew: false },
     { name: 'Deepa Nair', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop', role: 'Dental Sciences', isNew: true },
     { name: 'Karthik M', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=600&fit=crop', role: 'Arts & Science', isNew: false },
-    { name: 'Lakshmi P', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop', role: 'Management Studies', isNew: false },
   ]
 
-  // Limit to exactly 6 stories
+  // Limit to exactly 5 stories
   const allStories = stories.length > 0 ? stories : defaultStories
-  const displayStories = allStories.slice(0, 6)
+  const displayStories = allStories.slice(0, 5)
 
   // Check scroll position
   const updateScrollButtons = useCallback(() => {
@@ -268,12 +267,12 @@ export function EducationStories({
             <ChevronLeft className="w-5 h-5" />
           </button>
 
-          {/* Reels Container - all 6 cards visible on desktop */}
-          <div className="max-w-[1100px] mx-auto">
+          {/* Reels Container - all 5 cards visible on desktop */}
+          <div className="max-w-[1150px] mx-auto">
             <div
               ref={scrollRef}
               className={cn(
-                'flex gap-3 sm:gap-4 overflow-x-auto py-2 snap-x snap-mandatory',
+                'flex gap-3 sm:gap-4 overflow-x-auto py-2 snap-x snap-mandatory sm:justify-center',
                 'cursor-grab active:cursor-grabbing select-none',
                 '[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'
               )}
@@ -380,7 +379,7 @@ function ReelCard({
     <div
       className={cn(
         'relative flex-shrink-0 rounded-xl overflow-hidden snap-start',
-        'w-[calc(100vw-3rem)] sm:w-[165px]', // Full width on mobile, fixed on desktop
+        'w-[calc(100vw-3rem)] sm:w-[200px]', // Full width on mobile, wider on desktop
         'transition-all duration-500 group',
         height,
         isActive && !isEditing && 'scale-[1.02] shadow-2xl',

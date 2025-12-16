@@ -13,7 +13,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   Upload,
   File,
@@ -276,7 +275,7 @@ export function MediaUploader({ folders, onSuccess }: MediaUploaderProps) {
       <div
         {...getRootProps()}
         className={cn(
-          'relative border-2 border-dashed rounded-lg p-8 transition-colors cursor-pointer',
+          'relative border-2 border-dashed rounded-lg p-6 transition-colors cursor-pointer',
           isDragActive
             ? 'border-primary bg-primary/5'
             : 'border-border hover:border-primary/50 hover:bg-muted/50'
@@ -353,8 +352,8 @@ export function MediaUploader({ folders, onSuccess }: MediaUploaderProps) {
 
       {/* File list */}
       {files.length > 0 && (
-        <ScrollArea className="max-h-64">
-          <div className="space-y-2">
+        <div className="max-h-48 overflow-y-auto border rounded-lg">
+          <div className="space-y-2 p-2">
             {files.map((file) => {
               const Icon = getFileIcon(file.file.type)
 
@@ -423,7 +422,7 @@ export function MediaUploader({ folders, onSuccess }: MediaUploaderProps) {
               )
             })}
           </div>
-        </ScrollArea>
+        </div>
       )}
 
       {/* Actions */}

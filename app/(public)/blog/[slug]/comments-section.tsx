@@ -41,16 +41,16 @@ export function CommentsSection({ postId, comments, allowComments }: CommentsSec
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           'w-full flex items-center justify-between p-4 rounded-2xl',
-          'bg-white/10 backdrop-blur-md border border-white/20',
+          'bg-gray-50 border border-gray-200',
           'shadow-lg hover:shadow-xl transition-all duration-300',
-          'hover:bg-white/15 group cursor-pointer'
+          'hover:bg-gray-100 group cursor-pointer'
         )}
       >
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-xl bg-secondary/20 text-secondary">
             <MessageCircle className="h-5 w-5" />
           </div>
-          <span className="font-semibold text-white">
+          <span className="font-semibold text-primary">
             Comments
             <span className="ml-2 px-2 py-0.5 rounded-full bg-secondary/20 text-secondary text-sm">
               {comments.length}
@@ -59,7 +59,7 @@ export function CommentsSection({ postId, comments, allowComments }: CommentsSec
         </div>
         <ChevronDown
           className={cn(
-            'h-5 w-5 text-white/60 transition-transform duration-300',
+            'h-5 w-5 text-primary/60 transition-transform duration-300',
             isOpen && 'rotate-180'
           )}
         />
@@ -74,14 +74,14 @@ export function CommentsSection({ postId, comments, allowComments }: CommentsSec
       >
         <div className="space-y-4">
           {comments.length === 0 ? (
-            <div className="p-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
-              <p className="text-center text-white/70">
+            <div className="p-6 bg-gray-50 border border-gray-200 rounded-2xl">
+              <p className="text-center text-primary/70">
                 No comments yet. Be the first to share your thoughts!
               </p>
             </div>
           ) : (
             comments.map((comment) => (
-              <div key={comment.id} className="p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
+              <div key={comment.id} className="p-4 bg-gray-50 border border-gray-200 rounded-2xl">
                 <div className="flex items-start gap-3">
                   {comment.author_avatar ? (
                     <Image
@@ -100,12 +100,12 @@ export function CommentsSection({ postId, comments, allowComments }: CommentsSec
                   )}
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <h4 className="font-semibold text-white">{comment.author_name}</h4>
-                      <span className="text-xs text-white/50">
+                      <h4 className="font-semibold text-primary">{comment.author_name}</h4>
+                      <span className="text-xs text-primary/50">
                         {formatDate(comment.created_at)}
                       </span>
                     </div>
-                    <p className="mt-1 text-white/80">{comment.content}</p>
+                    <p className="mt-1 text-primary/80">{comment.content}</p>
                   </div>
                 </div>
               </div>

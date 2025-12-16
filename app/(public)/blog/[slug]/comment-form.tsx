@@ -32,18 +32,18 @@ export function CommentForm({ postId, parentId, onSuccess, onCancel }: CommentFo
   }, [state.success, onSuccess])
 
   return (
-    <div className="mt-6 p-0 overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
+    <div className="mt-6 p-0 overflow-hidden bg-gray-50 border border-gray-200 rounded-2xl">
       {/* Header with gradient accent */}
-      <div className="p-4 border-b border-white/10 bg-gradient-to-r from-secondary/10 via-transparent to-primary/10">
+      <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-secondary/10 via-transparent to-primary/10">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-xl bg-secondary/20 text-secondary">
             <MessageSquare className="h-5 w-5" />
           </div>
           <div>
-            <h3 className="font-semibold text-white">
+            <h3 className="font-semibold text-primary">
               {parentId ? 'Reply to Comment' : 'Leave a Comment'}
             </h3>
-            <p className="text-sm text-white/60">
+            <p className="text-sm text-primary/60">
               {parentId
                 ? 'Share your reply to this comment'
                 : 'Share your thoughts on this post'
@@ -77,23 +77,23 @@ export function CommentForm({ postId, parentId, onSuccess, onCancel }: CommentFo
 
             {/* Name field */}
             <div className="space-y-2">
-              <Label htmlFor="author_name" className="font-medium text-white/90">Name *</Label>
+              <Label htmlFor="author_name" className="font-medium text-primary/90">Name *</Label>
               <Input
                 id="author_name"
                 name="author_name"
                 placeholder="Your name"
                 required
                 disabled={isPending}
-                className={`bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder:text-white/40 focus:border-secondary/50 focus:ring-secondary/20 ${state.errors?.author_name ? 'border-red-500/50' : ''}`}
+                className={`bg-white border-gray-300 text-primary placeholder:text-primary/40 focus:border-secondary/50 focus:ring-secondary/20 ${state.errors?.author_name ? 'border-red-500/50' : ''}`}
               />
               {state.errors?.author_name && (
-                <p className="text-sm text-red-400">{state.errors.author_name[0]}</p>
+                <p className="text-sm text-red-500">{state.errors.author_name[0]}</p>
               )}
             </div>
 
             {/* Email field */}
             <div className="space-y-2">
-              <Label htmlFor="author_email" className="font-medium text-white/90">Email *</Label>
+              <Label htmlFor="author_email" className="font-medium text-primary/90">Email *</Label>
               <Input
                 id="author_email"
                 name="author_email"
@@ -101,19 +101,19 @@ export function CommentForm({ postId, parentId, onSuccess, onCancel }: CommentFo
                 placeholder="your.email@example.com"
                 required
                 disabled={isPending}
-                className={`bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder:text-white/40 focus:border-secondary/50 focus:ring-secondary/20 ${state.errors?.author_email ? 'border-red-500/50' : ''}`}
+                className={`bg-white border-gray-300 text-primary placeholder:text-primary/40 focus:border-secondary/50 focus:ring-secondary/20 ${state.errors?.author_email ? 'border-red-500/50' : ''}`}
               />
               {state.errors?.author_email && (
-                <p className="text-sm text-red-400">{state.errors.author_email[0]}</p>
+                <p className="text-sm text-red-500">{state.errors.author_email[0]}</p>
               )}
-              <p className="text-xs text-white/50">
+              <p className="text-xs text-primary/50">
                 Your email will not be published.
               </p>
             </div>
 
             {/* Comment field */}
             <div className="space-y-2">
-              <Label htmlFor="content" className="font-medium text-white/90">Comment *</Label>
+              <Label htmlFor="content" className="font-medium text-primary/90">Comment *</Label>
               <Textarea
                 id="content"
                 name="content"
@@ -121,10 +121,10 @@ export function CommentForm({ postId, parentId, onSuccess, onCancel }: CommentFo
                 rows={4}
                 required
                 disabled={isPending}
-                className={`bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder:text-white/40 focus:border-secondary/50 focus:ring-secondary/20 ${state.errors?.content ? 'border-red-500/50' : ''}`}
+                className={`bg-white border-gray-300 text-primary placeholder:text-primary/40 focus:border-secondary/50 focus:ring-secondary/20 ${state.errors?.content ? 'border-red-500/50' : ''}`}
               />
               {state.errors?.content && (
-                <p className="text-sm text-red-400">{state.errors.content[0]}</p>
+                <p className="text-sm text-red-500">{state.errors.content[0]}</p>
               )}
             </div>
 
@@ -148,13 +148,13 @@ export function CommentForm({ postId, parentId, onSuccess, onCancel }: CommentFo
                 )}
               </Button>
               {onCancel && (
-                <Button type="button" variant="ghost" onClick={onCancel} disabled={isPending} className="text-white/70 hover:text-white hover:bg-white/10">
+                <Button type="button" variant="ghost" onClick={onCancel} disabled={isPending} className="text-primary/70 hover:text-primary hover:bg-primary/10">
                   Cancel
                 </Button>
               )}
             </div>
 
-            <p className="text-xs text-white/50">
+            <p className="text-xs text-primary/50">
               All comments are moderated and will appear after approval.
             </p>
           </form>

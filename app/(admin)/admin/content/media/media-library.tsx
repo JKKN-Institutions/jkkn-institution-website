@@ -724,7 +724,7 @@ export function MediaLibrary({ initialMedia, folders, stats, folderStats, select
 
       {/* Upload Dialog */}
       <Dialog open={showUploader} onOpenChange={setShowUploader}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Upload Files</DialogTitle>
             <DialogDescription>
