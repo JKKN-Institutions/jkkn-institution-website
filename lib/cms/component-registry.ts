@@ -1579,7 +1579,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         itemSchema: {
           properties: {
             name: { type: 'string', label: 'Name', required: true },
-            logo: { type: 'string', label: 'Logo URL' },
+            logo: { type: 'string', label: 'Logo', format: 'image' },
             link: { type: 'string', label: 'Website URL' },
           },
           required: ['name'],
