@@ -49,7 +49,34 @@ import {
   extractPropsSchema,
   type FormState,
 } from '@/app/actions/cms/components'
-import type { editor } from 'monaco-editor'
+// Monaco editor types - using inline types to avoid dependency issues
+type MonacoEditor = {
+  getValue: () => string
+  setValue: (value: string) => void
+  onDidChangeModelContent: (callback: () => void) => { dispose: () => void }
+}
+
+// Monaco marker data type for validation errors
+interface IMarkerData {
+  severity: number
+  message: string
+  startLineNumber: number
+  startColumn: number
+  endLineNumber: number
+  endColumn: number
+}
+
+// Namespace to match monaco-editor's editor namespace
+const editor = {
+  MarkerSeverity: {
+    Error: 8,
+    Warning: 4,
+    Info: 2,
+    Hint: 1,
+  }
+}
+
+type EditorIMarkerData = IMarkerData
 import * as LucideIcons from 'lucide-react'
 
 // Form schema
@@ -124,7 +151,7 @@ export function EditComponentForm({
     warnings: string[]
   } | null>(null)
   const [isValidating, setIsValidating] = useState(false)
-  const [editorMarkers, setEditorMarkers] = useState<editor.IMarkerData[]>([])
+  const [editorMarkers, setEditorMarkers] = useState<IMarkerData[]>([])
 
   // Form action state
   const [state, formAction] = useActionState<FormState, FormData>(updateCustomComponent, {})
@@ -173,7 +200,7 @@ export function EditComponentForm({
   }, [watchCode])
 
   // Handle Monaco editor markers
-  const handleEditorValidate = (markers: editor.IMarkerData[]) => {
+  const handleEditorValidate = (markers: IMarkerData[]) => {
     setEditorMarkers(markers.filter((m) => m.severity >= 8)) // Only errors
   }
 

@@ -2,7 +2,32 @@
 
 import { useRef, useCallback, useState } from 'react'
 import Editor, { OnMount, BeforeMount, OnChange, Monaco } from '@monaco-editor/react'
-import type { editor, Uri } from 'monaco-editor'
+// Monaco editor types - inline to avoid dependency issues
+interface IMarkerData {
+  severity: number
+  message: string
+  startLineNumber: number
+  startColumn: number
+  endLineNumber: number
+  endColumn: number
+}
+
+interface IStandaloneCodeEditor {
+  getValue: () => string
+  setValue: (value: string) => void
+  getModel: () => unknown
+  focus: () => void
+  layout: () => void
+  getAction: (id: string) => { run: () => void } | null
+  addAction: (descriptor: unknown) => void
+}
+
+// Monaco Uri type
+type Uri = {
+  toString: () => string
+  path: string
+  scheme: string
+}
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -18,7 +43,7 @@ interface CodeEditorProps {
   readOnly?: boolean
   minimap?: boolean
   lineNumbers?: boolean
-  onValidate?: (markers: editor.IMarkerData[]) => void
+  onValidate?: (markers: IMarkerData[]) => void
   placeholder?: string
 }
 
@@ -35,7 +60,7 @@ export function CodeEditor({
   placeholder = '// Paste your component code here...',
 }: CodeEditorProps) {
   const { resolvedTheme } = useTheme()
-  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
+  const editorRef = useRef<IStandaloneCodeEditor | null>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
   const [hasChanges, setHasChanges] = useState(false)
@@ -157,7 +182,7 @@ export function CodeEditor({
         id: 'format-document',
         label: 'Format Document',
         keybindings: [monaco.KeyMod.Shift | monaco.KeyMod.Alt | monaco.KeyCode.KeyF],
-        run: (ed) => {
+        run: (ed: IStandaloneCodeEditor & { getAction: (id: string) => { run: () => void } | undefined }) => {
           ed.getAction('editor.action.formatDocument')?.run()
         },
       })
