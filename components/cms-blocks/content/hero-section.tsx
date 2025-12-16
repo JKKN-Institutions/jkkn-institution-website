@@ -47,6 +47,7 @@ export default function HeroSection({
   backgroundType = 'image',
   backgroundImage,
   backgroundGradient,
+  backgroundVideo,
   ctaButtons = [],
   alignment = 'center',
   overlay = true,
@@ -115,6 +116,20 @@ export default function HeroSection({
           transform: `translateY(${scrollY}px) scale(1.1)`,
         }}
       />
+
+      {/* Video Background */}
+      {backgroundType === 'video' && backgroundVideo && (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ transform: 'scale(1.1)' }}
+        >
+          <source src={backgroundVideo} type="video/mp4" />
+        </video>
+      )}
 
       {/* Gradient Overlay */}
       {overlay && (
@@ -246,9 +261,9 @@ export default function HeroSection({
               target={'openInNewTab' in btn && btn.openInNewTab ? '_blank' : undefined}
               rel={'openInNewTab' in btn && btn.openInNewTab ? 'noopener noreferrer' : undefined}
               className={cn(
-                'group inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-base sm:text-lg font-bold transition-all duration-300',
-                btn.variant === 'primary' && 'bg-secondary text-gray-900 hover:bg-yellow-400 hover:shadow-2xl hover:scale-105 min-w-[280px]',
-                btn.variant === 'secondary' && 'bg-primary text-white border-2 border-white/20 hover:bg-primary/90 hover:shadow-2xl hover:scale-105 min-w-[200px]',
+                'group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base lg:text-lg font-bold transition-all duration-300',
+                btn.variant === 'primary' && 'bg-secondary text-gray-900 hover:bg-yellow-400 hover:shadow-2xl hover:scale-105 min-w-0 sm:min-w-[280px]',
+                btn.variant === 'secondary' && 'bg-primary text-white border-2 border-white/20 hover:bg-primary/90 hover:shadow-2xl hover:scale-105 min-w-0 sm:min-w-[200px]',
                 btn.variant === 'outline' && 'border-2 border-white text-white hover:bg-white hover:text-primary hover:scale-105'
               )}
             >
@@ -275,7 +290,7 @@ export default function HeroSection({
       </div>
 
       {/* Editor Placeholder */}
-      {isEditing && !backgroundImage && (
+      {isEditing && !backgroundImage && !backgroundVideo && (
         <div className="absolute inset-0 flex items-center justify-center bg-muted/50 border-2 border-dashed border-muted-foreground/25">
           <p className="text-muted-foreground">Click to configure hero section</p>
         </div>

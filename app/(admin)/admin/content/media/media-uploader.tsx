@@ -19,6 +19,7 @@ import {
   File,
   ImageIcon,
   FileVideo,
+  FileAudio,
   X,
   Check,
   Loader2,
@@ -293,6 +294,28 @@ export function MediaUploader({ folders, onSuccess }: MediaUploaderProps) {
               <p className="text-sm font-medium">Drag & drop files here</p>
               <p className="text-xs text-muted-foreground mt-1">
                 or click to browse (max 50MB per file)
+              </p>
+              {/* Supported file types */}
+              <div className="flex flex-wrap items-center justify-center gap-4 mt-4 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <ImageIcon className="h-4 w-4 text-blue-500" />
+                  <span>Images</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <FileVideo className="h-4 w-4 text-purple-500" />
+                  <span>Videos</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <FileAudio className="h-4 w-4 text-green-500" />
+                  <span>Audio</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <File className="h-4 w-4 text-amber-500" />
+                  <span>Documents</span>
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground/70 mt-2">
+                Supported: JPG, PNG, GIF, WebP, MP4, WebM, MOV, MP3, WAV, PDF, DOC, DOCX
               </p>
             </>
           )}

@@ -7,22 +7,18 @@ import { getBlogPostBySlug, getRelatedBlogPosts } from '@/app/actions/cms/blog'
 import { getPostComments } from '@/app/actions/cms/blog-comments'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { GlassCard } from '@/components/public/glass-card'
 import {
   Calendar,
   Clock,
-  User,
   ArrowLeft,
   Eye,
-  Share2,
-  Twitter,
-  Facebook,
-  Linkedin,
-  Link as LinkIcon,
-  MessageCircle,
   Tag
 } from 'lucide-react'
+import { ShareButtons } from './share-buttons'
+import { CommentsSection } from './comments-section'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -214,62 +210,6 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
   )
 }
 
-// Share Buttons Component
-function ShareButtons({ title, url }: { title: string; url: string }) {
-  const encodedTitle = encodeURIComponent(title)
-  const encodedUrl = encodeURIComponent(url)
-
-  return (
-    <div className="flex items-center gap-2">
-      <span className="text-sm text-muted-foreground flex items-center gap-1">
-        <Share2 className="h-4 w-4" />
-        Share:
-      </span>
-      <Button variant="ghost" size="icon" asChild className="h-8 w-8">
-        <a
-          href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Share on Twitter"
-        >
-          <Twitter className="h-4 w-4" />
-        </a>
-      </Button>
-      <Button variant="ghost" size="icon" asChild className="h-8 w-8">
-        <a
-          href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Share on Facebook"
-        >
-          <Facebook className="h-4 w-4" />
-        </a>
-      </Button>
-      <Button variant="ghost" size="icon" asChild className="h-8 w-8">
-        <a
-          href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Share on LinkedIn"
-        >
-          <Linkedin className="h-4 w-4" />
-        </a>
-      </Button>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="h-8 w-8"
-        onClick={() => {
-          navigator.clipboard.writeText(url)
-        }}
-        title="Copy link"
-      >
-        <LinkIcon className="h-4 w-4" />
-      </Button>
-    </div>
-  )
-}
-
 // Related Posts Component
 async function RelatedPosts({ postId }: { postId: string }) {
   const posts = await getRelatedBlogPosts(postId, 3)
@@ -278,10 +218,16 @@ async function RelatedPosts({ postId }: { postId: string }) {
 
   return (
     <section className="mt-12">
-      <h2 className="text-2xl font-bold mb-6">Related Posts</h2>
+      <h2 className="text-2xl font-bold mb-6 flex items-center gap-2 text-white">
+        <span className="w-1 h-6 bg-gradient-to-b from-secondary to-secondary/50 rounded-full" />
+        Related Posts
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {posts.map((post) => (
-          <Card key={post.id} className="overflow-hidden group">
+          <div
+            key={post.id}
+            className="overflow-hidden group rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 transition-all duration-300"
+          >
             <Link href={`/blog/${post.slug}`} className="block relative aspect-video">
               {post.featured_image ? (
                 <Image
@@ -291,96 +237,36 @@ async function RelatedPosts({ postId }: { postId: string }) {
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary/5" />
+                <div className="absolute inset-0 bg-gradient-to-br from-secondary/30 to-primary/20" />
               )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
             </Link>
-            <CardHeader className="pb-2">
+            <div className="p-4">
               <Link href={`/blog/${post.slug}`}>
-                <CardTitle className="text-base line-clamp-2 group-hover:text-primary transition-colors">
+                <h3 className="font-semibold text-base line-clamp-2 text-white group-hover:text-secondary transition-colors">
                   {post.title}
-                </CardTitle>
+                </h3>
               </Link>
-            </CardHeader>
-          </Card>
+            </div>
+          </div>
         ))}
       </div>
     </section>
   )
 }
 
-// Comments Section Component
-async function CommentsSection({ postId, allowComments }: { postId: string; allowComments: boolean }) {
+// Comments Wrapper - Fetches comments and passes to collapsible CommentsSection
+async function CommentsWrapper({ postId, allowComments }: { postId: string; allowComments: boolean }) {
   if (!allowComments) return null
 
   const comments = await getPostComments(postId)
 
   return (
-    <section className="mt-12">
-      <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-        <MessageCircle className="h-6 w-6" />
-        Comments ({comments.length})
-      </h2>
-
-      {comments.length === 0 ? (
-        <Card className="bg-muted/50">
-          <CardContent className="py-8 text-center">
-            <p className="text-muted-foreground">
-              No comments yet. Be the first to share your thoughts!
-            </p>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="space-y-4">
-          {comments.map((comment) => (
-            <Card key={comment.id}>
-              <CardHeader className="pb-2">
-                <div className="flex items-center gap-3">
-                  {comment.author_avatar ? (
-                    <Image
-                      src={comment.author_avatar}
-                      alt={comment.author_name}
-                      width={40}
-                      height={40}
-                      className="rounded-full"
-                    />
-                  ) : (
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <span className="text-lg font-medium text-primary">
-                        {comment.author_name[0].toUpperCase()}
-                      </span>
-                    </div>
-                  )}
-                  <div>
-                    <CardTitle className="text-base">{comment.author_name}</CardTitle>
-                    <CardDescription className="text-xs">
-                      {formatDate(comment.created_at)}
-                    </CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{comment.content}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
-
-      {/* Comment Form - TODO: Implement client component */}
-      <Card className="mt-6">
-        <CardHeader>
-          <CardTitle className="text-lg">Leave a Comment</CardTitle>
-          <CardDescription>
-            Share your thoughts on this post
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">
-            Comment form coming soon. Please check back later.
-          </p>
-        </CardContent>
-      </Card>
-    </section>
+    <CommentsSection
+      postId={postId}
+      comments={comments}
+      allowComments={allowComments}
+    />
   )
 }
 
@@ -395,16 +281,24 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL || ''}/blog/${slug}`
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-gradient-to-br from-primary via-primary/95 to-[#064d2e] relative overflow-hidden">
+      {/* Floating Decorative Circles */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-[#0a8a52]/30 blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-teal-600/20 blur-3xl" />
+        <div className="absolute top-2/3 left-1/2 w-80 h-80 rounded-full bg-[#0a8a52]/25 blur-3xl" />
+        <div className="absolute top-10 right-10 w-64 h-64 rounded-full bg-secondary/10 blur-3xl" />
+      </div>
+
       {/* Hero Section */}
-      <section className="relative py-12 md:py-16 bg-gradient-to-br from-primary/5 to-primary/10">
+      <section className="relative py-12 md:py-16 z-10">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {/* Back Button */}
-            <Button variant="ghost" asChild className="mb-6 -ml-2">
-              <Link href="/blog">
+            <Button variant="ghost" asChild className="mb-6 -ml-2 text-white/80 hover:text-white hover:bg-white/10">
+              <Link href="/">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Blog
+                Back to Home
               </Link>
             </Button>
 
@@ -412,7 +306,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {post.category && (
               <Link href={`/blog/category/${post.category.slug}`}>
                 <Badge
-                  className="mb-4"
+                  className="mb-4 bg-secondary text-primary font-semibold"
                   style={{ backgroundColor: post.category.color || undefined }}
                 >
                   {post.category.name}
@@ -421,31 +315,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             )}
 
             {/* Title */}
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
               {post.title}
             </h1>
 
             {/* Meta */}
-            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6">
+            <div className="flex flex-wrap items-center gap-4 text-sm text-white/70 mb-6">
               {/* Author */}
-              {post.author && (
-                <div className="flex items-center gap-2">
-                  {post.author.avatar_url ? (
-                    <Image
-                      src={post.author.avatar_url}
-                      alt={post.author.full_name || 'Author'}
-                      width={32}
-                      height={32}
-                      className="rounded-full"
-                    />
-                  ) : (
-                    <User className="h-5 w-5" />
-                  )}
-                  <span>{post.author.full_name || 'Author'}</span>
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+                  <span className="text-sm font-bold text-primary">JK</span>
                 </div>
-              )}
+                <span className="text-white/90">JKKN ADMIN</span>
+              </div>
 
-              <Separator orientation="vertical" className="h-4" />
+              <Separator orientation="vertical" className="h-4 bg-white/30" />
 
               {/* Date */}
               <div className="flex items-center gap-1">
@@ -453,7 +337,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <span>{formatDate(post.published_at)}</span>
               </div>
 
-              <Separator orientation="vertical" className="h-4" />
+              <Separator orientation="vertical" className="h-4 bg-white/30" />
 
               {/* Reading Time */}
               {post.reading_time_minutes && (
@@ -463,7 +347,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
               )}
 
-              <Separator orientation="vertical" className="h-4" />
+              <Separator orientation="vertical" className="h-4 bg-white/30" />
 
               {/* Views */}
               <div className="flex items-center gap-1">
@@ -475,13 +359,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (
               <div className="flex items-center gap-2 flex-wrap">
-                <Tag className="h-4 w-4 text-muted-foreground" />
+                <Tag className="h-4 w-4 text-white/60" />
                 {post.tags.map((tag) => (
                   <Link key={tag.id} href={`/blog/tag/${tag.slug}`}>
                     <Badge
                       variant="outline"
-                      className="hover:bg-primary hover:text-primary-foreground transition-colors"
-                      style={{ borderColor: tag.color || undefined }}
+                      className="border-white/30 text-white/90 hover:bg-white/20 hover:text-white transition-colors"
                     >
                       {tag.name}
                     </Badge>
@@ -495,10 +378,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       {/* Featured Image */}
       {post.featured_image && (
-        <section className="relative -mt-4 mb-8">
+        <section className="relative -mt-4 mb-8 z-10">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <div className="relative aspect-video rounded-xl overflow-hidden shadow-xl">
+              <div className="relative aspect-video rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/20">
                 <Image
                   src={post.featured_image}
                   alt={post.title}
@@ -513,60 +396,48 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       )}
 
       {/* Content Section */}
-      <section className="py-8 md:py-12">
+      <section className="py-8 md:py-12 relative z-10">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {/* Excerpt */}
             {post.excerpt && (
-              <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+              <p className="text-xl text-white/80 mb-8 leading-relaxed">
                 {post.excerpt}
               </p>
             )}
 
-            {/* Content */}
-            <article className="prose-content">
-              <ContentRenderer content={post.content} />
+            {/* Content - Dark glass card matching the theme */}
+            <article className="bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-xl ring-1 ring-white/20">
+              <div className="prose prose-lg max-w-none prose-headings:text-white prose-p:text-white/90 prose-strong:text-white prose-a:text-secondary prose-li:text-white/90 prose-ul:text-white/90 prose-ol:text-white/90">
+                <ContentRenderer content={post.content} />
+              </div>
             </article>
 
-            <Separator className="my-8" />
+            <Separator className="my-8 bg-white/20" />
 
             {/* Share Section */}
             <div className="flex items-center justify-between flex-wrap gap-4">
               <ShareButtons title={post.title} url={postUrl} />
 
               {/* Author Card */}
-              {post.author && (
-                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                  {post.author.avatar_url ? (
-                    <Image
-                      src={post.author.avatar_url}
-                      alt={post.author.full_name || 'Author'}
-                      width={48}
-                      height={48}
-                      className="rounded-full"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <span className="text-xl font-medium text-primary">
-                        {(post.author.full_name || 'A')[0].toUpperCase()}
-                      </span>
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-sm text-muted-foreground">Written by</p>
-                    <p className="font-medium">{post.author.full_name || 'Author'}</p>
-                  </div>
+              <div className="flex items-center gap-3 p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg hover:shadow-xl hover:bg-white/15 transition-all duration-300">
+                <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center ring-2 ring-secondary/30">
+                  <span className="text-xl font-bold text-primary">JK</span>
                 </div>
-              )}
+                <div>
+                  <p className="text-sm text-white/60">Written by</p>
+                  <p className="font-semibold text-white">JKKN ADMIN</p>
+                </div>
+              </div>
             </div>
 
             {/* Comments Section */}
-            <Suspense fallback={<div className="mt-12 h-48 bg-muted/50 rounded-lg animate-pulse" />}>
-              <CommentsSection postId={post.id} allowComments={post.allow_comments || false} />
+            <Suspense fallback={<div className="mt-12 h-16 bg-white/10 backdrop-blur-md rounded-2xl animate-pulse" />}>
+              <CommentsWrapper postId={post.id} allowComments={post.allow_comments || false} />
             </Suspense>
 
             {/* Related Posts */}
-            <Suspense fallback={<div className="mt-12 h-48 bg-muted/50 rounded-lg animate-pulse" />}>
+            <Suspense fallback={<div className="mt-12 h-48 bg-white/10 rounded-lg animate-pulse" />}>
               <RelatedPosts postId={post.id} />
             </Suspense>
           </div>

@@ -84,16 +84,10 @@ export async function getPostComments(
 ): Promise<BlogCommentWithRelations[]> {
   const supabase = await createServerSupabaseClient()
 
+  // Simple query without complex nested relationships
   let query = supabase
     .from('blog_comments')
-    .select(`
-      *,
-      author:profiles!blog_comments_author_id_fkey(id, full_name, email, avatar_url),
-      replies:blog_comments!blog_comments_parent_id_fkey(
-        *,
-        author:profiles!blog_comments_author_id_fkey(id, full_name, email, avatar_url)
-      )
-    `)
+    .select('*')
     .eq('post_id', postId)
     .eq('status', 'approved')
     .is('parent_id', null)
@@ -106,16 +100,14 @@ export async function getPostComments(
   const { data, error } = await query
 
   if (error) {
-    console.error('Error fetching comments:', error)
+    console.error('Error fetching comments:', error.message, error.code, error.details)
     return []
   }
 
-  // Filter approved replies
+  // Return comments without nested relationships for now
   return (data || []).map((comment) => ({
     ...comment,
-    replies: options?.includeReplies !== false
-      ? (comment.replies || []).filter((r: BlogComment) => r.status === 'approved')
-      : [],
+    replies: [],
   }))
 }
 

@@ -86,7 +86,8 @@
       "mcp__chrome-devtools__performance_start_trace",
       "mcp__chrome-devtools__performance_analyze_insight",
       "mcp__chrome-devtools__fill",
-      "mcp__chrome-devtools__emulate"
+      "mcp__chrome-devtools__emulate",
+      "mcp__chrome-devtools__get_console_message"
     ],
     "deny": [],
     "ask": [],

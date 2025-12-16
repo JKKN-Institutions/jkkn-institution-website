@@ -728,7 +728,7 @@ export function MediaLibrary({ initialMedia, folders, stats, folderStats, select
           <DialogHeader>
             <DialogTitle>Upload Files</DialogTitle>
             <DialogDescription>
-              Drag and drop files or click to browse. Supports images, videos, and documents.
+              Upload images (JPG, PNG, GIF, WebP), videos (MP4, WebM, MOV), audio (MP3, WAV), and documents (PDF, DOC). Max 50MB per file.
             </DialogDescription>
           </DialogHeader>
           <MediaUploader
