@@ -12,15 +12,9 @@ interface IMarkerData {
   endColumn: number
 }
 
-interface IStandaloneCodeEditor {
-  getValue: () => string
-  setValue: (value: string) => void
-  getModel: () => unknown
-  focus: () => void
-  layout: () => void
-  getAction: (id: string) => { run: () => void } | null
-  addAction: (descriptor: unknown) => void
-}
+// Use a more flexible editor type to avoid version mismatch issues
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type MonacoEditor = any
 
 // Monaco Uri type
 type Uri = {
@@ -60,7 +54,7 @@ export function CodeEditor({
   placeholder = '// Paste your component code here...',
 }: CodeEditorProps) {
   const { resolvedTheme } = useTheme()
-  const editorRef = useRef<IStandaloneCodeEditor | null>(null)
+  const editorRef = useRef<MonacoEditor | null>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
   const [hasChanges, setHasChanges] = useState(false)
@@ -182,7 +176,7 @@ export function CodeEditor({
         id: 'format-document',
         label: 'Format Document',
         keybindings: [monaco.KeyMod.Shift | monaco.KeyMod.Alt | monaco.KeyCode.KeyF],
-        run: (ed: IStandaloneCodeEditor & { getAction: (id: string) => { run: () => void } | undefined }) => {
+        run: (ed: MonacoEditor) => {
           ed.getAction('editor.action.formatDocument')?.run()
         },
       })
