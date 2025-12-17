@@ -82,6 +82,9 @@ export function CareerJobForm({
     hiring_manager_id: job?.hiring_manager_id || '',
   })
 
+  // Track if slug has been manually edited
+  const [slugManuallyEdited, setSlugManuallyEdited] = useState(!!job?.slug)
+
   // Form actions
   const action = isEditing ? updateCareerJob : createCareerJob
   const [formState, formAction] = useActionState(action, {})
@@ -98,19 +101,21 @@ export function CareerJobForm({
     }
   }, [formState, isEditing, router])
 
-  // Generate slug from title
-  const handleTitleChange = (title: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      title,
-      slug:
-        !isEditing && !prev.slug
-          ? title
-              .toLowerCase()
-              .replace(/[^a-z0-9]+/g, '-')
-              .replace(/^-|-$/g, '')
-          : prev.slug,
-    }))
+  // Auto-generate slug from title
+  useEffect(() => {
+    if (!isEditing && formData.title && !slugManuallyEdited) {
+      const generatedSlug = formData.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '')
+      setFormData((prev) => ({ ...prev, slug: generatedSlug }))
+    }
+  }, [formData.title, slugManuallyEdited, isEditing])
+
+  // Handle manual slug edits
+  const handleSlugChange = (value: string) => {
+    setSlugManuallyEdited(true)
+    setFormData((prev) => ({ ...prev, slug: value }))
   }
 
   return (
@@ -132,7 +137,7 @@ export function CareerJobForm({
                   id="title"
                   name="title"
                   value={formData.title}
-                  onChange={(e) => handleTitleChange(e.target.value)}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
                   placeholder="e.g., Senior Software Engineer"
                   required
                 />
@@ -147,7 +152,7 @@ export function CareerJobForm({
                   id="slug"
                   name="slug"
                   value={formData.slug}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, slug: e.target.value }))}
+                  onChange={(e) => handleSlugChange(e.target.value)}
                   placeholder="senior-software-engineer"
                   required
                 />

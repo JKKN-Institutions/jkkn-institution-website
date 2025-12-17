@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -14,7 +14,6 @@ import {
   Instagram,
   Linkedin,
   Youtube,
-  Search,
 } from 'lucide-react'
 
 export interface NavItem {
@@ -227,13 +226,6 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                     </div>
                   ))}
                 </nav>
-                {/* Search Icon */}
-                <button
-                  className="flex-shrink-0 p-2 ml-2 text-gray-700 hover:text-primary transition-colors"
-                  aria-label="Search"
-                >
-                  <Search className="h-5 w-5" />
-                </button>
               </div>
 
               {/* Row 2 - Remaining menu items (max 7 more, strictly 2 rows only) */}
@@ -461,14 +453,6 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                 </div>
               ))}
             </nav>
-
-            {/* Search */}
-            <div className="px-4 py-3 border-t border-gray-200">
-              <button className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-600 bg-white rounded-lg border border-gray-200 hover:border-primary hover:text-primary transition-colors">
-                <Search className="h-4 w-4" />
-                Search
-              </button>
-            </div>
 
             {/* Contact Info */}
             <div className="px-4 py-4 border-t border-gray-200 bg-white/50">

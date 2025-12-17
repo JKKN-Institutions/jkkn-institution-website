@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState, useTransition, useCallback, useEffect, useMemo } from 'react'
+import { useState, useTransition, useCallback, useEffect, useMemo, useRef } from 'react'
 import { DataTable } from '@/components/data-table/data-table'
 import { columns, type UserRow } from './columns'
 import { Input } from '@/components/ui/input'
@@ -65,6 +65,9 @@ export function UsersTable({
 
   // Row selection state
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+
+  // Search input ref for focus on icon click
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
   // Column visibility state
   const [columnVisibility, setColumnVisibility] = useState<Record<string, boolean>>({
@@ -359,8 +362,12 @@ export function UsersTable({
         <div className="flex flex-wrap items-center gap-2 flex-1">
           {/* Search */}
           <div className="relative w-full sm:w-auto sm:min-w-[200px]">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
+              onClick={() => searchInputRef.current?.focus()}
+            />
             <Input
+              ref={searchInputRef}
               id="users-search"
               name="users-search"
               placeholder="Search by email..."
