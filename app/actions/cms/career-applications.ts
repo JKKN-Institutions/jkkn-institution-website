@@ -87,9 +87,16 @@ const submitApplicationSchema = z.object({
   applicant_email: z.string().email('Invalid email address'),
   applicant_phone: z.string().max(20).optional().nullable(),
   cover_letter: z.string().max(5000).optional().nullable(),
-  resume_url: z.string().url().optional().nullable(),
-  portfolio_url: z.string().url().optional().nullable(),
-  linkedin_url: z.string().url().optional().nullable(),
+
+  // Resume options (one required)
+  resume_url: z.string().transform(val => val === '' ? null : val).pipe(z.string().url().optional().nullable()),
+  resume_file_path: z.string().transform(val => val === '' ? null : val).optional().nullable(),
+  resume_file_name: z.string().transform(val => val === '' ? null : val).optional().nullable(),
+  resume_file_size: z.string().transform(val => val === '' ? null : val).pipe(z.coerce.number().optional().nullable()),
+  resume_mime_type: z.string().transform(val => val === '' ? null : val).optional().nullable(),
+
+  portfolio_url: z.string().transform(val => val === '' ? null : val).pipe(z.string().url().optional().nullable()),
+  linkedin_url: z.string().transform(val => val === '' ? null : val).pipe(z.string().url().optional().nullable()),
   answers: z.string().transform((val) => {
     try {
       return JSON.parse(val)
@@ -97,7 +104,10 @@ const submitApplicationSchema = z.object({
       return {}
     }
   }).optional(),
-})
+}).refine(
+  (data) => data.resume_url || data.resume_file_path,
+  { message: 'Resume (URL or file) is required', path: ['resume_url'] }
+)
 
 const updateApplicationSchema = z.object({
   status: z.enum(['new', 'reviewing', 'shortlisted', 'interview', 'offered', 'hired', 'rejected', 'withdrawn']),
@@ -318,7 +328,14 @@ export async function submitApplication(
     applicant_email: formData.get('applicant_email') as string,
     applicant_phone: formData.get('applicant_phone') as string || null,
     cover_letter: formData.get('cover_letter') as string || null,
+
+    // Resume options
     resume_url: formData.get('resume_url') as string || null,
+    resume_file_path: formData.get('resume_file_path') as string || null,
+    resume_file_name: formData.get('resume_file_name') as string || null,
+    resume_file_size: formData.get('resume_file_size') as string || null,
+    resume_mime_type: formData.get('resume_mime_type') as string || null,
+
     portfolio_url: formData.get('portfolio_url') as string || null,
     linkedin_url: formData.get('linkedin_url') as string || null,
     answers: formData.get('answers') as string || '{}',
@@ -400,7 +417,14 @@ export async function submitApplication(
       applicant_phone: data.applicant_phone,
       applicant_user_id: user?.id || null,
       cover_letter: data.cover_letter,
+
+      // Resume data (URL or file)
       resume_url: data.resume_url,
+      resume_file_path: data.resume_file_path,
+      resume_file_name: data.resume_file_name,
+      resume_file_size: data.resume_file_size,
+      resume_mime_type: data.resume_mime_type,
+
       portfolio_url: data.portfolio_url,
       linkedin_url: data.linkedin_url,
       answers: data.answers,

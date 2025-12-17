@@ -4,6 +4,7 @@ import { useActionState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { submitApplication } from '@/app/actions/cms/career-applications'
+import { ResumeFileUpload } from '@/components/public/resume-file-upload'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -32,6 +33,30 @@ export function ApplicationForm({ jobId, jobTitle, jobSlug }: ApplicationFormPro
   const router = useRouter()
   const [state, formAction, isPending] = useActionState(submitApplication, null)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [resumeInputType, setResumeInputType] = useState<'url' | 'file'>('file')
+
+  // Handle file upload success
+  const handleFileUploadSuccess = (fileData: {
+    file_path: string
+    file_name: string
+    file_size: number
+    mime_type: string
+  }) => {
+    // Update hidden fields
+    const pathInput = document.getElementById('resume_file_path') as HTMLInputElement
+    const nameInput = document.getElementById('resume_file_name') as HTMLInputElement
+    const sizeInput = document.getElementById('resume_file_size') as HTMLInputElement
+    const mimeInput = document.getElementById('resume_mime_type') as HTMLInputElement
+
+    if (pathInput) pathInput.value = fileData.file_path
+    if (nameInput) nameInput.value = fileData.file_name
+    if (sizeInput) sizeInput.value = fileData.file_size.toString()
+    if (mimeInput) mimeInput.value = fileData.mime_type
+
+    // Clear URL field if file uploaded
+    const urlInput = document.getElementById('resume_url') as HTMLInputElement
+    if (urlInput) urlInput.value = ''
+  }
 
   // Handle successful submission
   useEffect(() => {
@@ -143,25 +168,84 @@ export function ApplicationForm({ jobId, jobTitle, jobSlug }: ApplicationFormPro
       <div className="space-y-4">
         <h3 className="font-semibold text-lg border-b pb-2">Professional Links</h3>
 
-        {/* Resume URL */}
-        <div className="space-y-2">
-          <Label htmlFor="resume_url" className="flex items-center gap-2">
-            <Upload className="h-4 w-4" />
-            Resume/CV URL
+        {/* Resume Section with Toggle */}
+        <div className="space-y-4">
+          <Label className="text-base">
+            Resume/CV <span className="text-destructive">*</span>
           </Label>
-          <Input
-            id="resume_url"
-            name="resume_url"
-            type="url"
-            placeholder="https://drive.google.com/your-resume"
-            disabled={isPending}
-          />
-          <p className="text-xs text-muted-foreground">
-            Upload your resume to Google Drive, Dropbox, or any cloud storage and paste the link here
-          </p>
-          {state?.errors?.resume_url && (
-            <p className="text-sm text-destructive">{state.errors.resume_url[0]}</p>
+
+          {/* Toggle Buttons */}
+          <div className="flex gap-2 p-1 bg-muted rounded-lg">
+            <Button
+              type="button"
+              variant={resumeInputType === 'file' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => {
+                setResumeInputType('file')
+                // Clear URL when switching to file
+                const urlInput = document.getElementById('resume_url') as HTMLInputElement
+                if (urlInput) urlInput.value = ''
+              }}
+              className="flex-1"
+              disabled={isPending}
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              Upload File
+            </Button>
+            <Button
+              type="button"
+              variant={resumeInputType === 'url' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => {
+                setResumeInputType('url')
+                // Clear file metadata when switching to URL
+                const pathInput = document.getElementById('resume_file_path') as HTMLInputElement
+                const nameInput = document.getElementById('resume_file_name') as HTMLInputElement
+                const sizeInput = document.getElementById('resume_file_size') as HTMLInputElement
+                const mimeInput = document.getElementById('resume_mime_type') as HTMLInputElement
+                if (pathInput) pathInput.value = ''
+                if (nameInput) nameInput.value = ''
+                if (sizeInput) sizeInput.value = ''
+                if (mimeInput) mimeInput.value = ''
+              }}
+              className="flex-1"
+              disabled={isPending}
+            >
+              <LinkIcon className="h-4 w-4 mr-2" />
+              Paste URL
+            </Button>
+          </div>
+
+          {/* Conditional Rendering */}
+          {resumeInputType === 'file' ? (
+            <ResumeFileUpload
+              jobId={jobId}
+              onUploadSuccess={handleFileUploadSuccess}
+              disabled={isPending}
+            />
+          ) : (
+            <div className="space-y-2">
+              <Input
+                id="resume_url"
+                name="resume_url"
+                type="url"
+                placeholder="https://drive.google.com/your-resume"
+                disabled={isPending}
+              />
+              <p className="text-xs text-muted-foreground">
+                Upload your resume to Google Drive, Dropbox, or any cloud storage and paste the link here
+              </p>
+              {state?.errors?.resume_url && (
+                <p className="text-sm text-destructive">{state.errors.resume_url[0]}</p>
+              )}
+            </div>
           )}
+
+          {/* Hidden fields for file metadata */}
+          <input type="hidden" name="resume_file_path" id="resume_file_path" />
+          <input type="hidden" name="resume_file_name" id="resume_file_name" />
+          <input type="hidden" name="resume_file_size" id="resume_file_size" />
+          <input type="hidden" name="resume_mime_type" id="resume_mime_type" />
         </div>
 
         {/* Portfolio URL */}
