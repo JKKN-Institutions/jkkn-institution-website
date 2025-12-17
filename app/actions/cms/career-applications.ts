@@ -89,14 +89,14 @@ const submitApplicationSchema = z.object({
   cover_letter: z.string().max(5000).optional().nullable(),
 
   // Resume options (one required)
-  resume_url: z.string().transform(val => val === '' ? null : val).pipe(z.string().url().optional().nullable()),
+  resume_url: z.string().transform(val => val === '' ? null : val).pipe(z.union([z.string().url(), z.null()])),
   resume_file_path: z.string().transform(val => val === '' ? null : val).optional().nullable(),
   resume_file_name: z.string().transform(val => val === '' ? null : val).optional().nullable(),
-  resume_file_size: z.string().transform(val => val === '' ? null : val).pipe(z.coerce.number().optional().nullable()),
+  resume_file_size: z.string().transform(val => val === '' ? null : val).pipe(z.union([z.string().transform(v => Number(v)), z.null()])),
   resume_mime_type: z.string().transform(val => val === '' ? null : val).optional().nullable(),
 
-  portfolio_url: z.string().transform(val => val === '' ? null : val).pipe(z.string().url().optional().nullable()),
-  linkedin_url: z.string().transform(val => val === '' ? null : val).pipe(z.string().url().optional().nullable()),
+  portfolio_url: z.string().transform(val => val === '' ? null : val).pipe(z.union([z.string().url(), z.null()])),
+  linkedin_url: z.string().transform(val => val === '' ? null : val).pipe(z.union([z.string().url(), z.null()])),
   answers: z.string().transform((val) => {
     try {
       return JSON.parse(val)
