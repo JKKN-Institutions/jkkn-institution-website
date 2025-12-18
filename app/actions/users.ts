@@ -893,6 +893,95 @@ export async function reactivateUser(userId: string): Promise<FormState> {
 }
 
 /**
+ * Permanently delete a user (DESTRUCTIVE - use with caution)
+ * Only super_admin can perform this action
+ */
+export async function deleteUser(userId: string): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission (only super_admin should have users:users:delete)
+  const hasPermission = await checkPermission(user.id, 'users:users:delete')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to delete users' }
+  }
+
+  // Prevent self-deletion
+  if (userId === user.id) {
+    return { success: false, message: 'Cannot delete your own account' }
+  }
+
+  try {
+    // Get user details before deletion for logging
+    const { data: userToDelete, error: fetchError } = await supabase
+      .from('profiles')
+      .select('email, full_name, user_id')
+      .eq('user_id', userId)
+      .single()
+
+    if (fetchError || !userToDelete) {
+      console.error('Error fetching user to delete:', fetchError)
+      return { success: false, message: 'User not found' }
+    }
+
+    // Archive user data before deletion (for audit and compliance)
+    const { error: archiveError } = await supabase.from('deleted_users_archive').insert({
+      user_id: userId,
+      email: userToDelete.email,
+      full_name: userToDelete.full_name,
+      deleted_by: user.id,
+      deleted_at: new Date().toISOString(),
+      deletion_reason: 'Manual deletion via admin panel',
+    })
+
+    if (archiveError) {
+      console.error('Error archiving user data:', archiveError)
+      return { success: false, message: 'Failed to archive user data before deletion' }
+    }
+
+    // Log activity BEFORE deletion (so we can still reference the user)
+    await logActivity({
+      userId: user.id,
+      action: 'delete',
+      module: 'users',
+      resourceType: 'user',
+      resourceId: userId,
+      metadata: {
+        email: userToDelete.email,
+        full_name: userToDelete.full_name,
+      },
+    })
+
+    // Delete user from auth.users (cascades to profiles, members, user_roles via ON DELETE CASCADE)
+    const { error: authError } = await supabase.auth.admin.deleteUser(userId)
+
+    if (authError) {
+      console.error('Error deleting user from auth:', authError)
+      return { success: false, message: `Failed to delete user: ${authError.message}` }
+    }
+
+    // Revalidate paths
+    revalidatePath('/admin/users')
+    revalidatePath(`/admin/users/${userId}`)
+
+    return { success: true, message: 'User permanently deleted' }
+  } catch (error) {
+    console.error('Delete user error:', error)
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to delete user',
+    }
+  }
+}
+
+/**
  * Get user activity logs
  */
 export async function getUserActivityLogs(params?: {

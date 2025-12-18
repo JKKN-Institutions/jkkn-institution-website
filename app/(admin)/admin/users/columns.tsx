@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -23,15 +23,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { MoreHorizontal, Eye, Edit, UserMinus, UserPlus, Loader2, Check, X, AlertCircle, Clock } from 'lucide-react'
+import { MoreHorizontal, Eye, Edit, UserMinus, UserPlus, Loader2, Check, X, AlertCircle, Clock, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import { Checkbox } from '@/components/ui/checkbox'
 import { formatDistanceToNow } from 'date-fns'
-import { deactivateUser, reactivateUser } from '@/app/actions/users'
+import { deactivateUser, reactivateUser, deleteUser } from '@/app/actions/users'
 import { toast } from 'sonner'
-import { usePermission } from '@/lib/hooks/use-permissions'
+import { usePermission, useRole } from '@/lib/hooks/use-permissions'
 import { EditUserModal } from './edit-user-modal'
 
 export type UserRow = {
@@ -261,12 +261,17 @@ function ActionCell({ user }: { user: UserRow }) {
   const router = useRouter()
   const [showDeactivateDialog, setShowDeactivateDialog] = useState(false)
   const [showActivateDialog, setShowActivateDialog] = useState(false)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [isPending, setIsPending] = useState(false)
 
   // Permission checks for UI hiding
   const { hasPermission: canEdit } = usePermission('users:profiles:edit')
-  const { hasPermission: canManageStatus } = usePermission('users:profiles:delete')
+  const { hasPermission: canManageStatusPerm } = usePermission('users:profiles:delete')
+  const { hasRole: isSuperAdmin } = useRole('super_admin')
+
+  // Super admin can always manage status, or if user has explicit permission
+  const canManageStatus = isSuperAdmin || canManageStatusPerm
 
   const member = user.members?.[0]
   const isActive = member?.status === 'active'
@@ -290,6 +295,20 @@ function ActionCell({ user }: { user: UserRow }) {
     const result = await reactivateUser(user.id)
     setIsPending(false)
     setShowActivateDialog(false)
+
+    if (result.success) {
+      toast.success(result.message)
+      router.refresh()
+    } else {
+      toast.error(result.message)
+    }
+  }
+
+  const handleDelete = async () => {
+    setIsPending(true)
+    const result = await deleteUser(user.id)
+    setIsPending(false)
+    setShowDeleteDialog(false)
 
     if (result.success) {
       toast.success(result.message)
@@ -341,6 +360,18 @@ function ActionCell({ user }: { user: UserRow }) {
               <UserPlus className="mr-2 h-4 w-4" />
               Activate
             </DropdownMenuItem>
+          )}
+          {isSuperAdmin && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="text-destructive cursor-pointer"
+                onClick={() => setShowDeleteDialog(true)}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete Permanently
+              </DropdownMenuItem>
+            </>
           )}
         </DropdownMenuContent>
       </DropdownMenu>
@@ -395,6 +426,47 @@ function ActionCell({ user }: { user: UserRow }) {
             >
               {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Activate
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-destructive">
+              ⚠️ Permanently Delete User
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-3">
+              <span className="block font-semibold text-foreground">
+                Are you ABSOLUTELY sure you want to delete{' '}
+                <strong>{user.full_name || user.email}</strong>?
+              </span>
+              <div className="space-y-2">
+                <span className="block font-medium">This action will:</span>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Permanently remove the user from auth.users</li>
+                  <li>Delete their profile and member records</li>
+                  <li>Remove all role assignments</li>
+                  <li>Cannot be undone</li>
+                </ul>
+              </div>
+              <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
+                <span className="block text-destructive font-semibold text-sm">
+                  ⚠️ This is IRREVERSIBLE. Consider using "Deactivate" instead.
+                </span>
+              </div>
+            </AlertDialogDescription>          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              disabled={isPending}
+              className="bg-destructive hover:bg-destructive/90"
+            >
+              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Yes, Delete Permanently
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

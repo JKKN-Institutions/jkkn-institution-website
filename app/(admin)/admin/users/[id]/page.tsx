@@ -4,6 +4,7 @@ import { getRoles } from '@/app/actions/roles'
 import { checkPermission } from '@/app/actions/permissions'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { UserDetailView } from './user-detail-view'
+import { DeleteUserButton } from './delete-user-button'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Edit, User, Sparkles, Activity } from 'lucide-react'
@@ -79,6 +80,12 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
                 Edit User
               </Link>
             </Button>
+            <DeleteUserButton
+              userId={id}
+              userEmail={user.email}
+              userName={user.full_name}
+              currentUserId={currentUser.id}
+            />
           </div>
         </div>
       </div>
