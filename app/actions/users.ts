@@ -6,6 +6,13 @@ import { z } from 'zod'
 import { logActivity } from '@/lib/utils/activity-logger'
 import { checkPermission } from './permissions'
 import { NotificationHelpers, sendNotification } from '@/lib/utils/notification-sender'
+import {
+  logError,
+  getErrorCode,
+  getActionableMessage,
+  serializeError,
+} from '@/lib/utils/error-logger'
+import { validateSupabaseEnv } from '@/lib/utils/env-validator'
 
 // Validation schemas
 const AddApprovedEmailSchema = z.object({
@@ -66,6 +73,9 @@ export type FormState = {
   success?: boolean
   message?: string
   errors?: Record<string, string[]>
+  errorCode?: string // NEW: Error classification
+  errorDetails?: string // NEW: Detailed error information
+  correlationId?: string // NEW: Tracking ID for support
 }
 
 /**
@@ -374,6 +384,61 @@ export async function createUser(data: {
 
   const { email, full_name, phone, institution, department, designation, role_id } = validation.data
 
+  // ===========================
+  // NEW: Pre-flight Checks
+  // ===========================
+
+  // Validate environment before proceeding
+  const envValidation = validateSupabaseEnv()
+  if (!envValidation.isValid) {
+    const correlationId = crypto.randomUUID()
+
+    await logError(
+      new Error('Environment validation failed'),
+      'create_user_preflight',
+      {
+        correlationId,
+        validation: envValidation,
+        email,
+        userId: user.id,
+      }
+    )
+
+    return {
+      success: false,
+      message: 'System misconfiguration detected. Please contact administrator.',
+      errorCode: 'ENV_MISSING',
+      errorDetails: `Missing or invalid environment variables. Reference: ${correlationId}`,
+      correlationId,
+    }
+  }
+
+  // Check if guest role exists (required for trigger)
+  const { data: guestRole, error: guestRoleError } = await supabase
+    .from('roles')
+    .select('id')
+    .eq('name', 'guest')
+    .single()
+
+  if (guestRoleError || !guestRole) {
+    const correlationId = crypto.randomUUID()
+
+    await logError(guestRoleError, 'create_user_preflight', {
+      correlationId,
+      check: 'guest_role',
+      email,
+      userId: user.id,
+    })
+
+    return {
+      success: false,
+      message: 'System configuration error: Default role not found.',
+      errorCode: 'ROLE_NOT_FOUND',
+      errorDetails: `Guest role is missing from database. Reference: ${correlationId}`,
+      correlationId,
+    }
+  }
+
   // Check if email already exists in profiles
   const { data: existingProfile } = await supabase
     .from('profiles')
@@ -385,12 +450,40 @@ export async function createUser(data: {
     return {
       success: false,
       message: 'A user with this email already exists',
+      errorCode: 'DUPLICATE_EMAIL',
     }
   }
 
+  // ===========================
+  // Create Auth User
+  // ===========================
+
   // Import admin client (imported at top of file)
   const { createAdminSupabaseClient } = await import('@/lib/supabase/server')
-  const adminSupabase = await createAdminSupabaseClient()
+
+  let adminSupabase
+  try {
+    adminSupabase = await createAdminSupabaseClient()
+  } catch (error) {
+    const correlationId = crypto.randomUUID()
+
+    await logError(error, 'create_admin_client', {
+      correlationId,
+      email,
+      userId: user.id,
+    })
+
+    const errorCode = getErrorCode(error)
+    const actionableMessage = getActionableMessage(errorCode)
+
+    return {
+      success: false,
+      message: actionableMessage,
+      errorCode,
+      errorDetails: `Failed to create admin client. Reference: ${correlationId}`,
+      correlationId,
+    }
+  }
 
   // Create user in auth.users using Auth Admin API
   const { data: authUser, error: authError } = await adminSupabase.auth.admin.createUser({
@@ -402,14 +495,81 @@ export async function createUser(data: {
   })
 
   if (authError || !authUser.user) {
-    console.error('Error creating auth user:', authError)
-    return { success: false, message: 'Failed to create user account. Please try again.' }
+    const correlationId = crypto.randomUUID()
+
+    // Extract comprehensive error details
+    const errorDetails = {
+      message: authError?.message,
+      status: authError?.status,
+      name: authError?.name,
+      code: (authError as any)?.code,
+      details: (authError as any)?.details,
+      hint: (authError as any)?.hint,
+    }
+
+    // Comprehensive error logging
+    await logError(authError, 'create_auth_user', {
+      correlationId,
+      email,
+      userId: user.id,
+      errorDetails,
+      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      serviceRoleKeyConfigured: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+      envValidation,
+    })
+
+    // Classify error and get actionable message
+    const errorCode = getErrorCode(authError)
+    const actionableMessage = getActionableMessage(errorCode)
+
+    return {
+      success: false,
+      message: actionableMessage,
+      errorCode,
+      errorDetails: `${errorDetails.message || 'Unknown error'}. Reference: ${correlationId}`,
+      correlationId,
+    }
   }
 
   const newUserId = authUser.user.id
 
-  // Wait a moment for the trigger to complete
+  // ===========================
+  // Verify Trigger Completion
+  // ===========================
+
+  // Wait for trigger to complete
   await new Promise((resolve) => setTimeout(resolve, 500))
+
+  // Verify profile was created by trigger
+  const { data: profile, error: profileCheckError } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('id', newUserId)
+    .single()
+
+  if (profileCheckError || !profile) {
+    const correlationId = crypto.randomUUID()
+
+    await logError(profileCheckError, 'create_user_trigger_check', {
+      correlationId,
+      userId: user.id,
+      newUserId,
+      check: 'profile_creation',
+      email,
+    })
+
+    return {
+      success: false,
+      message: 'User account created but profile setup failed. Contact administrator.',
+      errorCode: 'TRIGGER_FAILED',
+      errorDetails: `Profile creation failed for user ${newUserId}. Reference: ${correlationId}`,
+      correlationId,
+    }
+  }
+
+  // ===========================
+  // Update Profile & Member
+  // ===========================
 
   // Update profile with additional fields (trigger already created basic profile)
   if (phone || department || designation) {
@@ -443,23 +603,18 @@ export async function createUser(data: {
     }
   }
 
-  // Get guest role ID (trigger assigns this by default)
-  const { data: guestRole } = await supabase
-    .from('roles')
-    .select('id')
-    .eq('name', 'guest')
-    .single()
+  // ===========================
+  // Role Assignment
+  // ===========================
 
   // If a different role is specified, replace the guest role
-  if (role_id && role_id !== guestRole?.id) {
+  if (role_id && role_id !== guestRole.id) {
     // Remove guest role
-    if (guestRole) {
-      await supabase
-        .from('user_roles')
-        .delete()
-        .eq('user_id', newUserId)
-        .eq('role_id', guestRole.id)
-    }
+    await supabase
+      .from('user_roles')
+      .delete()
+      .eq('user_id', newUserId)
+      .eq('role_id', guestRole.id)
 
     // Assign new role
     const { error: roleError } = await supabase.from('user_roles').insert({
@@ -473,6 +628,10 @@ export async function createUser(data: {
       // Don't fail the entire operation, user still has guest role
     }
   }
+
+  // ===========================
+  // Approved Emails & Activity
+  // ===========================
 
   // Also add to approved_emails for future Google OAuth login
   await supabase.from('approved_emails').insert({

@@ -19,7 +19,7 @@ const routePermissions: Record<string, string> = {
 }
 
 // Routes that guests CAN access (even with pending approval)
-const guestAllowedRoutes = ['/admin', '/admin/dashboard', '/admin/access-denied']
+const guestAllowedRoutes = ['/admin', '/admin/dashboard', '/auth/access-denied']
 
 export async function middleware(request: NextRequest) {
   const { supabase, response } = createMiddlewareClient(request)
@@ -73,6 +73,17 @@ export async function middleware(request: NextRequest) {
     const isSuperAdmin = roles.includes('super_admin')
     const isGuestOnly = roles.length > 0 && roles.every((r) => r === 'guest')
 
+    // SAFETY CHECK: If user has super_admin, grant full access immediately
+    if (isSuperAdmin) {
+      // Super admin has full access - skip all permission checks
+      return response
+    }
+
+    // Log warning if multiple roles detected (excluding super admin case)
+    if (roles.length > 1) {
+      console.warn(`User ${session.user.id} has multiple roles:`, roles)
+    }
+
     // Guest user protection
     if (isGuestOnly) {
       const isAllowedRoute = guestAllowedRoutes.some(
@@ -80,7 +91,7 @@ export async function middleware(request: NextRequest) {
       )
 
       if (!isAllowedRoute) {
-        return NextResponse.redirect(new URL('/admin/access-denied', request.url))
+        return NextResponse.redirect(new URL('/auth/access-denied', request.url))
       }
     }
 
@@ -97,7 +108,7 @@ export async function middleware(request: NextRequest) {
         )
 
         if (!hasPermission) {
-          return NextResponse.redirect(new URL('/admin/unauthorized', request.url))
+          return NextResponse.redirect(new URL('/auth/unauthorized', request.url))
         }
       }
     }

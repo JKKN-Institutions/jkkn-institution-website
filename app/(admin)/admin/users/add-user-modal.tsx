@@ -20,7 +20,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { UserPlus, Loader2 } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { UserPlus, Loader2, AlertCircle, Copy, ExternalLink } from 'lucide-react'
 import { createUser } from '@/app/actions/users'
 import { getRoles } from '@/app/actions/roles'
 import { toast } from 'sonner'
@@ -50,6 +51,13 @@ export function AddUserModal({ trigger }: AddUserModalProps) {
   const [department, setDepartment] = useState('')
   const [designation, setDesignation] = useState('')
   const [roleId, setRoleId] = useState('')
+
+  // Error details state (NEW)
+  const [errorDetails, setErrorDetails] = useState<{
+    code: string
+    details: string
+    correlationId?: string
+  } | null>(null)
 
   // Available departments based on selected institution
   const [departments, setDepartments] = useState<string[]>([])
@@ -96,11 +104,13 @@ export function AddUserModal({ trigger }: AddUserModalProps) {
     setDepartment('')
     setDesignation('')
     setRoleId('')
+    setErrorDetails(null) // Clear error details
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setErrorDetails(null) // Clear previous errors
 
     try {
       const result = await createUser({
@@ -120,12 +130,57 @@ export function AddUserModal({ trigger }: AddUserModalProps) {
         router.refresh()
       } else {
         toast.error(result.message || 'Failed to create user')
+
+        // Store detailed error information for display
+        if (result.errorCode) {
+          setErrorDetails({
+            code: result.errorCode,
+            details: result.errorDetails || result.message || 'Unknown error',
+            correlationId: result.correlationId,
+          })
+        }
       }
     } catch (error) {
       toast.error('An unexpected error occurred')
+      console.error('Unexpected error:', error)
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  const copyErrorDetails = () => {
+    if (!errorDetails) return
+
+    const errorText = [
+      `Error Code: ${errorDetails.code}`,
+      `Details: ${errorDetails.details}`,
+      errorDetails.correlationId ? `Reference ID: ${errorDetails.correlationId}` : '',
+    ]
+      .filter(Boolean)
+      .join('\n')
+
+    navigator.clipboard.writeText(errorText)
+    toast.success('Error details copied to clipboard')
+  }
+
+  const getTroubleshootingHint = (errorCode: string): string => {
+    const hints: Record<string, string> = {
+      ENV_MISSING:
+        'The system administrator needs to configure environment variables in the deployment platform (e.g., Vercel).',
+      ENV_INVALID:
+        'The Supabase service role key is invalid. Administrator should verify the key format and value.',
+      AUTH_FAILED:
+        'Check Supabase Dashboard > Authentication > Providers for email configuration and domain restrictions.',
+      DUPLICATE_EMAIL: 'This email address is already registered. Try a different email.',
+      TRIGGER_FAILED:
+        'Database setup failed. Administrator needs to check database triggers and the guest role.',
+      ROLE_NOT_FOUND:
+        'The default user role is missing. Administrator should run the seed migration.',
+      RATE_LIMIT: 'Too many requests. Please wait a few minutes and try again.',
+      PERMISSION_DENIED:
+        'Verify that you have the users:profiles:create permission and the service role key is correct.',
+    }
+    return hints[errorCode] || 'Please contact your system administrator for assistance.'
   }
 
   return (
@@ -285,6 +340,43 @@ export function AddUserModal({ trigger }: AddUserModalProps) {
                 </Select>
               </div>
             </div>
+
+            {/* Error Details Display */}
+            {errorDetails && (
+              <Alert variant="destructive" className="mt-6">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle className="font-semibold">Error Details</AlertTitle>
+                <AlertDescription>
+                  <div className="space-y-3">
+                    <p className="text-sm">{errorDetails.details}</p>
+
+                    {errorDetails.correlationId && (
+                      <p className="text-xs text-muted-foreground font-mono bg-muted/50 px-2 py-1 rounded">
+                        Reference ID: {errorDetails.correlationId}
+                      </p>
+                    )}
+
+                    {/* Troubleshooting Hint */}
+                    <div className="text-xs bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded p-2">
+                      <p className="font-medium text-amber-900 dark:text-amber-100 mb-1">
+                        Troubleshooting:
+                      </p>
+                      <p className="text-amber-800 dark:text-amber-200">
+                        {getTroubleshootingHint(errorDetails.code)}
+                      </p>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-2 mt-3">
+                      <Button size="sm" variant="outline" onClick={copyErrorDetails}>
+                        <Copy className="h-3 w-3 mr-1" />
+                        Copy Details
+                      </Button>
+                    </div>
+                  </div>
+                </AlertDescription>
+              </Alert>
+            )}
           </form>
         </div>
 
