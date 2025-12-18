@@ -388,69 +388,90 @@ export async function createUser(data: {
     }
   }
 
-  // Generate a UUID for the new user
-  const newUserId = crypto.randomUUID()
+  // Import admin client (imported at top of file)
+  const { createAdminSupabaseClient } = await import('@/lib/supabase/server')
+  const adminSupabase = await createAdminSupabaseClient()
 
-  // Insert profile
-  const { data: profile, error: profileError } = await supabase
-    .from('profiles')
-    .insert({
-      id: newUserId,
-      email,
+  // Create user in auth.users using Auth Admin API
+  const { data: authUser, error: authError } = await adminSupabase.auth.admin.createUser({
+    email,
+    email_confirm: true, // Auto-confirm email (no verification needed)
+    user_metadata: {
       full_name,
-      phone: phone || null,
-      department: department || null,
-      designation: designation || null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    })
-    .select()
-    .single()
-
-  if (profileError) {
-    console.error('Error creating profile:', profileError)
-    return { success: false, message: 'Failed to create user profile. Please try again.' }
-  }
-
-  // Insert member record
-  const { error: memberError } = await supabase.from('members').insert({
-    user_id: newUserId,
-    profile_id: newUserId,
-    chapter: institution || null,
-    status: 'active',
-    membership_type: 'regular',
-    joined_at: new Date().toISOString(),
+    },
   })
 
-  if (memberError) {
-    console.error('Error creating member record:', memberError)
-    // Rollback profile creation
-    await supabase.from('profiles').delete().eq('id', newUserId)
-    return { success: false, message: 'Failed to create member record. Please try again.' }
+  if (authError || !authUser.user) {
+    console.error('Error creating auth user:', authError)
+    return { success: false, message: 'Failed to create user account. Please try again.' }
   }
 
-  // Assign role - use provided role_id or fall back to guest role
-  let assignedRoleId = role_id
+  const newUserId = authUser.user.id
 
-  if (!assignedRoleId) {
-    // Get guest role ID as default
-    const { data: guestRole } = await supabase
-      .from('roles')
-      .select('id')
-      .eq('name', 'guest')
-      .single()
+  // Wait a moment for the trigger to complete
+  await new Promise((resolve) => setTimeout(resolve, 500))
 
-    if (guestRole) {
-      assignedRoleId = guestRole.id
+  // Update profile with additional fields (trigger already created basic profile)
+  if (phone || department || designation) {
+    const { error: profileUpdateError } = await supabase
+      .from('profiles')
+      .update({
+        phone: phone || null,
+        department: department || null,
+        designation: designation || null,
+      })
+      .eq('id', newUserId)
+
+    if (profileUpdateError) {
+      console.error('Error updating profile:', profileUpdateError)
+      // Don't fail the entire operation, just log the error
     }
   }
 
-  if (assignedRoleId) {
-    await supabase.from('user_roles').insert({
+  // Update member record with institution (trigger already created member)
+  if (institution) {
+    const { error: memberUpdateError } = await supabase
+      .from('members')
+      .update({
+        chapter: institution,
+      })
+      .eq('user_id', newUserId)
+
+    if (memberUpdateError) {
+      console.error('Error updating member:', memberUpdateError)
+      // Don't fail the entire operation, just log the error
+    }
+  }
+
+  // Get guest role ID (trigger assigns this by default)
+  const { data: guestRole } = await supabase
+    .from('roles')
+    .select('id')
+    .eq('name', 'guest')
+    .single()
+
+  // If a different role is specified, replace the guest role
+  if (role_id && role_id !== guestRole?.id) {
+    // Remove guest role
+    if (guestRole) {
+      await supabase
+        .from('user_roles')
+        .delete()
+        .eq('user_id', newUserId)
+        .eq('role_id', guestRole.id)
+    }
+
+    // Assign new role
+    const { error: roleError } = await supabase.from('user_roles').insert({
       user_id: newUserId,
-      role_id: assignedRoleId,
+      role_id,
       assigned_by: user.id,
     })
+
+    if (roleError) {
+      console.error('Error assigning role:', roleError)
+      // Don't fail the entire operation, user still has guest role
+    }
   }
 
   // Also add to approved_emails for future Google OAuth login
