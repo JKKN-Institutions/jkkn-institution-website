@@ -201,7 +201,7 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                                 <a
                                   key={child.id}
                                   href={child.external_url}
-                                  className="block px-3 py-1.5 text-xs text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-150"
+                                  className="block px-3 py-1.5 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-150"
                                 >
                                   {child.label}
                                 </a>
@@ -210,7 +210,7 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                                   key={child.id}
                                   href={child.href}
                                   className={cn(
-                                    'block px-3 py-1.5 text-xs transition-colors duration-150',
+                                    'block px-3 py-1.5 text-sm transition-colors duration-150',
                                     isActive(child.href)
                                       ? 'text-primary bg-primary/5 font-medium'
                                       : 'text-gray-700 hover:text-primary hover:bg-gray-50'
@@ -278,7 +278,7 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                               <a
                                 key={child.id}
                                 href={child.external_url}
-                                className="block px-3 py-1.5 text-xs text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-150"
+                                className="block px-3 py-1.5 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-150"
                               >
                                 {child.label}
                               </a>
@@ -287,7 +287,7 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                                 key={child.id}
                                 href={child.href}
                                 className={cn(
-                                  'block px-3 py-1.5 text-xs transition-colors duration-150',
+                                  'block px-3 py-1.5 text-sm transition-colors duration-150',
                                   isActive(child.href)
                                     ? 'text-primary bg-primary/5 font-medium'
                                     : 'text-gray-700 hover:text-primary hover:bg-gray-50'

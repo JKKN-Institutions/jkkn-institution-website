@@ -77,7 +77,7 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
 
       case 'paragraph':
         return (
-          <p key={index} className="mb-4 leading-relaxed text-primary/90">
+          <p key={index} className="mb-4 leading-relaxed text-gray-900">
             {content?.map((child, i) => renderNode(child, i))}
           </p>
         )
@@ -103,28 +103,28 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
 
       case 'bulletList':
         return (
-          <ul key={index} className="list-disc pl-6 mb-4 space-y-1 text-primary/90 marker:text-primary/70">
+          <ul key={index} className="list-disc pl-6 mb-4 space-y-1 text-gray-900 marker:text-gray-600">
             {content?.map((child, i) => renderNode(child, i))}
           </ul>
         )
 
       case 'orderedList':
         return (
-          <ol key={index} className="list-decimal pl-6 mb-4 space-y-1 text-primary/90 marker:text-primary/70">
+          <ol key={index} className="list-decimal pl-6 mb-4 space-y-1 text-gray-900 marker:text-gray-600">
             {content?.map((child, i) => renderNode(child, i))}
           </ol>
         )
 
       case 'listItem':
         return (
-          <li key={index} className="text-primary/90">
+          <li key={index} className="text-gray-900">
             {content?.map((child, i) => renderNode(child, i))}
           </li>
         )
 
       case 'blockquote':
         return (
-          <blockquote key={index} className="border-l-4 border-secondary pl-4 italic my-6 text-primary/70">
+          <blockquote key={index} className="border-l-4 border-secondary pl-4 italic my-6 text-gray-700">
             {content?.map((child, i) => renderNode(child, i))}
           </blockquote>
         )
@@ -132,7 +132,7 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
       case 'codeBlock':
         return (
           <pre key={index} className="bg-gray-100 rounded-lg p-4 my-4 overflow-x-auto border border-gray-200">
-            <code className="text-sm font-mono text-primary/90">
+            <code className="text-sm font-mono text-gray-900">
               {content?.map((child, i) => renderNode(child, i))}
             </code>
           </pre>
@@ -150,7 +150,7 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
               className="rounded-lg w-full"
             />
             {imageAttrs.title && (
-              <figcaption className="text-center text-sm text-primary/60 mt-2">
+              <figcaption className="text-center text-sm text-gray-600 mt-2">
                 {imageAttrs.title}
               </figcaption>
             )}
@@ -158,7 +158,7 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
         )
 
       case 'horizontalRule':
-        return <hr key={index} className="my-8 border-primary/20" />
+        return <hr key={index} className="my-8 border-gray-300" />
 
       case 'text':
         let textContent: React.ReactNode = text
@@ -394,19 +394,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="max-w-4xl mx-auto">
             {/* Excerpt */}
             {post.excerpt && (
-              <p className="text-xl text-primary/80 mb-8 leading-relaxed">
+              <p className="text-xl text-gray-800 mb-8 leading-relaxed">
                 {post.excerpt}
               </p>
             )}
 
             {/* Content - Light card for white background */}
             <article className="bg-gray-50 rounded-2xl p-6 md:p-8 shadow-lg border border-gray-200">
-              <div className="prose prose-lg max-w-none prose-headings:text-primary prose-p:text-primary/90 prose-strong:text-primary prose-a:text-secondary prose-li:text-primary/90 prose-ul:text-primary/90 prose-ol:text-primary/90">
+              <div className="prose prose-lg max-w-none prose-headings:text-primary prose-p:text-gray-900 prose-strong:text-gray-900 prose-a:text-secondary prose-li:text-gray-900 prose-ul:text-gray-900 prose-ol:text-gray-900">
                 <ContentRenderer content={post.content} />
               </div>
             </article>
 
-            <Separator className="my-8 bg-primary/20" />
+            <Separator className="my-8 bg-gray-300" />
 
             {/* Share Section */}
             <div className="flex items-center justify-between flex-wrap gap-4">

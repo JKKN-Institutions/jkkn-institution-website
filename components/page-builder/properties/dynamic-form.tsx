@@ -897,18 +897,18 @@ function ObjectArrayField({ config, value, onChange }: ObjectArrayFieldProps) {
                     </div>
                   )}
 
-                  <div className="flex items-center gap-1 flex-shrink-0">
+                  <div className="flex items-center gap-1 flex-shrink-0 min-w-fit">
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-6 w-6 text-destructive/70 hover:text-destructive hover:bg-destructive/10"
+                      className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/20"
                       onClick={(e) => {
                         e.stopPropagation()
                         handleRemoveItem(index)
                       }}
                       title="Delete this item"
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <Trash2 className="h-4 w-4" />
                     </Button>
                     {isExpanded ? (
                       <ChevronUp className="h-4 w-4 text-muted-foreground" />

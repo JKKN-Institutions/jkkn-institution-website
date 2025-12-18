@@ -116,10 +116,10 @@ export function FloatingActionButton({ config: propConfig }: FloatingActionButto
         />
       )}
 
-      {/* FAB Container - BOTTOM RIGHT */}
+      {/* FAB Container - BOTTOM RIGHT (positioned above mobile bottom nav) */}
       <div
         className={cn(
-          'fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 transition-all duration-500',
+          'fixed bottom-20 right-6 md:bottom-6 z-50 flex flex-col items-end gap-3 transition-all duration-500',
           isVisible
             ? 'opacity-100 translate-y-0'
             : 'opacity-0 translate-y-10 pointer-events-none'

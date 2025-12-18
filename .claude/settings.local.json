@@ -90,7 +90,9 @@
       "mcp__chrome-devtools__get_console_message",
       "Skill(bug-boundary-integration)",
       "Bash(git push:*)",
-      "mcp__chrome-devtools__fill_form"
+      "mcp__chrome-devtools__fill_form",
+      "Bash(git -C \"C:\\\\Users\\\\Admin\\\\Documents\\\\GitHub\\\\jkkn-institution-website\" diff --stat)",
+      "Bash(python:*)"
     ],
     "deny": [],
     "ask": [],
