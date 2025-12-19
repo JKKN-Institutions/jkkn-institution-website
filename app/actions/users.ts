@@ -1081,13 +1081,25 @@ export async function deleteUser(userId: string): Promise<FormState> {
     // Get user details before deletion for logging
     const { data: userToDelete, error: fetchError } = await supabase
       .from('profiles')
-      .select('email, full_name, user_id')
-      .eq('user_id', userId)
+      .select('id, email, full_name')
+      .eq('id', userId)
       .single()
 
     if (fetchError || !userToDelete) {
-      console.error('Error fetching user to delete:', fetchError)
-      return { success: false, message: 'User not found' }
+      console.error('Error fetching user to delete:', {
+        userId,
+        error: fetchError,
+        errorDetails: fetchError?.details,
+        errorHint: fetchError?.hint,
+        errorMessage: fetchError?.message,
+      })
+
+      return {
+        success: false,
+        message: fetchError
+          ? `Failed to fetch user details: ${fetchError.message}`
+          : 'User not found in profiles table',
+      }
     }
 
     // Archive user data before deletion (for audit and compliance)
