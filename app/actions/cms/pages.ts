@@ -96,8 +96,21 @@ export interface PageWithBlocks {
     id: string
     meta_title: string | null
     meta_description: string | null
+    meta_keywords: string[] | null
+    og_title: string | null
+    og_description: string | null
     og_image: string | null
+    og_type: string | null
+    twitter_card: string | null
+    twitter_title: string | null
+    twitter_description: string | null
+    twitter_image: string | null
+    canonical_url: string | null
+    robots_directive: string | null
+    structured_data: Record<string, unknown> | null
+    custom_head_tags: string | null
     seo_score: number | null
+    last_analyzed_at: string | null
   } | null
   cms_page_fab_config: {
     id: string

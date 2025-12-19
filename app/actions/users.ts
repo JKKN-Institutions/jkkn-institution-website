@@ -1,6 +1,6 @@
 'use server'
 
-import { createServerSupabaseClient } from '@/lib/supabase/server'
+import { createServerSupabaseClient, createAdminSupabaseClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { logActivity } from '@/lib/utils/activity-logger'
@@ -1056,6 +1056,7 @@ export async function reactivateUser(userId: string): Promise<FormState> {
  * Only super_admin can perform this action
  */
 export async function deleteUser(userId: string): Promise<FormState> {
+  // Create regular Supabase client for auth checks and queries
   const supabase = await createServerSupabaseClient()
 
   // Get current user
@@ -1078,6 +1079,18 @@ export async function deleteUser(userId: string): Promise<FormState> {
   }
 
   try {
+    // Create admin Supabase client for deletion (requires service role key)
+    let adminSupabase
+    try {
+      adminSupabase = await createAdminSupabaseClient()
+    } catch (adminError) {
+      console.error('Failed to create admin client:', adminError)
+      return {
+        success: false,
+        message: 'Admin client misconfigured - check service role key configuration',
+      }
+    }
+
     // Get user details before deletion for logging
     const { data: userToDelete, error: fetchError } = await supabase
       .from('profiles')
@@ -1130,12 +1143,56 @@ export async function deleteUser(userId: string): Promise<FormState> {
       },
     })
 
-    // Delete user from auth.users (cascades to profiles, members, user_roles via ON DELETE CASCADE)
-    const { error: authError } = await supabase.auth.admin.deleteUser(userId)
+    // Delete user from auth.users using admin client (requires service role)
+    // This should cascade to profiles, members, user_roles via ON DELETE CASCADE
+    console.log('About to delete user with admin client:', userId)
+    const { data: deleteData, error: authError } = await adminSupabase.auth.admin.deleteUser(userId)
+
+    console.log('Delete result:', {
+      userId,
+      hasData: !!deleteData,
+      hasError: !!authError,
+      errorType: typeof authError,
+      errorKeys: authError ? Object.keys(authError) : [],
+      error: authError,
+      errorString: authError ? String(authError) : null,
+      errorJSON: authError ? JSON.stringify(authError) : null,
+    })
 
     if (authError) {
-      console.error('Error deleting user from auth:', authError)
-      return { success: false, message: `Failed to delete user: ${authError.message}` }
+      console.error('Error deleting user from auth:', {
+        userId,
+        error: authError,
+        message: authError.message,
+        status: authError.status,
+        name: authError.name,
+      })
+
+      return {
+        success: false,
+        message: `Failed to delete user: ${authError.message || 'Unknown error'}`,
+      }
+    }
+
+    // Verify deletion actually happened by checking if user still exists
+    const { data: stillExists, error: verifyError } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', userId)
+      .maybeSingle()
+
+    if (verifyError) {
+      console.warn('Could not verify deletion:', verifyError)
+      // Don't fail - deletion might have succeeded
+    } else if (stillExists) {
+      console.error('User deletion appeared successful but user still exists:', {
+        userId,
+        email: userToDelete.email,
+      })
+      return {
+        success: false,
+        message: 'Deletion failed - user records still present in database',
+      }
     }
 
     // Revalidate paths
