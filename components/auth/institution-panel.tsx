@@ -59,12 +59,12 @@ export function InstitutionPanel() {
       <motion.div variants={itemVariants} className="mb-3 lg:mb-4">
         <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-xl bg-white/80 backdrop-blur-sm border border-white/30 flex items-center justify-center shadow-lg p-2">
           <Image
-            src="https://jkkn.ac.in/wp-content/uploads/2023/04/Untitled-design-2023-03-13T105521.479.png"
+            src="/Institution logo.png"
             alt="JKKN Logo"
             width={48}
             height={48}
             className="w-full h-full object-contain"
-            unoptimized
+            priority
           />
         </div>
       </motion.div>

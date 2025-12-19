@@ -59,12 +59,12 @@ export default function LoginPage() {
       >
         <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-[#0b6d41] to-[#0f8f56] flex items-center justify-center shadow-lg shadow-[#0b6d41]/20 p-2">
           <Image
-            src="https://jkkn.ac.in/wp-content/uploads/2023/04/Untitled-design-2023-03-13T105521.479.png"
+            src="/Institution logo.png"
             alt="JKKN Logo"
             width={48}
             height={48}
             className="w-full h-full object-contain brightness-0 invert"
-            unoptimized
+            priority
           />
         </div>
       </motion.div>

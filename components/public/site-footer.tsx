@@ -15,13 +15,16 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-const quickLinks = [
-  { label: 'About Us', href: '/about' },
-  { label: 'Academics', href: '/academics' },
-  { label: 'Admissions', href: '/admissions' },
-  { label: 'Campus Life', href: '/campus-life' },
-  { label: 'Research', href: '/academics/research' },
-  { label: 'Careers', href: '/careers' },
+const institutions = [
+  { label: 'JKKN Dental College and Hospital', href: '/institutions/dental' },
+  { label: 'JKKN College of Allied Health Science', href: '/institutions/allied-health' },
+  { label: 'JKKN College of Pharmacy', href: '/institutions/pharmacy' },
+  { label: 'Sresakthimayeil Institute of Nursing and Research', href: '/institutions/nursing' },
+  { label: 'JKKN College of Education', href: '/institutions/education' },
+  { label: 'JKKN College of Arts and Science (Autonomous)', href: '/institutions/arts-science' },
+  { label: 'JKKN College of Engineering and Technology', href: '/institutions/engineering' },
+  { label: 'JKKN Matriculation Higher Secondary School', href: '/institutions/school' },
+  { label: 'Nattraja Vidhyalya', href: '/institutions/nattraja' },
 ]
 
 const programLinks = [
@@ -130,14 +133,14 @@ export function SiteFooter() {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Our Institutions */}
           <div>
             <h4 className="text-lg font-semibold mb-6 flex items-center gap-2">
               <span className="w-8 h-0.5 bg-secondary rounded-full" />
-              Quick Links
+              Our Institutions
             </h4>
             <ul className="space-y-3">
-              {quickLinks.map((link) => (
+              {institutions.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

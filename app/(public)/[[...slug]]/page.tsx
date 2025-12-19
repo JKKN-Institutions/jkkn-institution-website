@@ -19,39 +19,58 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params
   const slugPath = slug?.join('/') ?? ''
 
-  // Homepage metadata
-  if (!slugPath) {
-    return {
-      title: 'JKKN Institution | Excellence in Education',
-      description: 'JKKN Group of Institutions - Shaping the future through quality education in Engineering, Medical Sciences, Arts & Science, Pharmacy, Management, and Allied Health.',
-      openGraph: {
-        title: 'JKKN Institution | Excellence in Education',
-        description: 'Discover world-class education at JKKN Institution. Where tradition meets innovation.',
-        type: 'website',
-      },
-    }
-  }
-
-  // Use the standard getPageBySlug for metadata (only returns public pages)
+  // Fetch page for both homepage and other pages
   const page = await getPageBySlug(slugPath)
 
+  // If no CMS page exists, return default metadata
   if (!page) {
-    return {
-      title: 'Page Not Found',
+    // Default fallback metadata for homepage
+    if (!slugPath) {
+      return {
+        title: 'JKKN Institution | Excellence in Education',
+        description: 'JKKN Group of Institutions - Shaping the future through quality education in Engineering, Medical Sciences, Arts & Science, Pharmacy, Management, and Allied Health.',
+        openGraph: {
+          title: 'JKKN Institution | Excellence in Education',
+          description: 'Discover world-class education at JKKN Institution. Where tradition meets innovation.',
+          type: 'website',
+        },
+      }
     }
+    return { title: 'Page Not Found' }
   }
 
   const seo = page.cms_seo_metadata
 
+  // Build comprehensive metadata from SEO fields with proper fallback chain
   return {
+    // Basic meta tags
     title: seo?.meta_title || page.title,
     description: seo?.meta_description || page.description || undefined,
+    keywords: seo?.meta_keywords || undefined,
+
+    // Open Graph (with fallback to meta fields)
     openGraph: {
-      title: seo?.meta_title || page.title,
-      description: seo?.meta_description || page.description || undefined,
+      title: seo?.og_title || seo?.meta_title || page.title,
+      description: seo?.og_description || seo?.meta_description || page.description || undefined,
       images: seo?.og_image ? [{ url: seo.og_image }] : undefined,
-      type: 'website',
+      type: (seo?.og_type as any) || 'website',
     },
+
+    // Twitter Card (with OG fallback)
+    twitter: {
+      card: (seo?.twitter_card as any) || 'summary_large_image',
+      title: seo?.twitter_title || seo?.og_title || seo?.meta_title || page.title,
+      description: seo?.twitter_description || seo?.og_description || seo?.meta_description || page.description || undefined,
+      images: seo?.twitter_image ? [seo.twitter_image] : (seo?.og_image ? [seo.og_image] : undefined),
+    },
+
+    // Canonical URL
+    alternates: seo?.canonical_url ? {
+      canonical: seo.canonical_url,
+    } : undefined,
+
+    // Robots directive
+    robots: seo?.robots_directive || undefined,
   }
 }
 
