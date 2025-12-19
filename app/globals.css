@@ -1224,6 +1224,17 @@
   }
 }
 
+@keyframes aurora {
+  0%, 100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-10px) scale(1.05);
+  }
+}
+
 /* Animation utility classes */
 .animate-float {
   animation: float 3s ease-in-out infinite;
@@ -1255,6 +1266,10 @@
 
 .animate-spin-slow {
   animation: spin-slow 20s linear infinite;
+}
+
+.animate-aurora {
+  animation: aurora 15s ease-in-out infinite;
 }
 
 /* Staggered animation delays */

@@ -98,19 +98,19 @@ function StatCard({ stat, index, isVisible }: { stat: typeof stats[0], index: nu
       )}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
-      <div className="relative h-full p-6 lg:p-8 rounded-3xl bg-white/80 backdrop-blur-xl border border-gray-100 shadow-lg shadow-black/5 overflow-hidden transition-all duration-300 hover:bg-white hover:shadow-xl hover:-translate-y-2">
+      <div className="relative h-full p-6 lg:p-8 rounded-3xl bg-black/30 backdrop-blur-md border border-white/10 shadow-2xl shadow-primary/10 overflow-hidden transition-all duration-300 hover:bg-black/40 hover:shadow-primary/20 hover:border-white/20 hover:-translate-y-2">
         {/* Glow effect */}
-        <div className="absolute -inset-px bg-gradient-to-r from-secondary/20 via-transparent to-primary/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute -inset-px bg-gradient-to-r from-secondary/30 via-transparent to-primary/30 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
         <div className="relative">
           {/* Icon */}
-          <div className="inline-flex p-3 rounded-2xl bg-gradient-to-r from-secondary/20 to-yellow-100 mb-6 group-hover:scale-110 transition-all duration-300">
-            <stat.icon className="w-7 h-7 text-primary" />
+          <div className="inline-flex p-3 rounded-2xl bg-gradient-to-r from-secondary/30 to-yellow-500/30 backdrop-blur-sm mb-6 group-hover:scale-110 transition-all duration-300">
+            <stat.icon className="w-7 h-7 text-secondary" />
           </div>
 
           {/* Value */}
           <div className="mb-2">
-            <span className="text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
+            <span className="text-4xl lg:text-5xl font-bold text-white tracking-tight">
               {count.toLocaleString()}
             </span>
             <span className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-secondary to-yellow-500 bg-clip-text text-transparent">
@@ -119,10 +119,10 @@ function StatCard({ stat, index, isVisible }: { stat: typeof stats[0], index: nu
           </div>
 
           {/* Label */}
-          <h3 className="text-lg font-semibold text-gray-900 mb-1">
+          <h3 className="text-lg font-semibold text-white mb-1">
             {stat.label}
           </h3>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-400">
             {stat.description}
           </p>
         </div>
@@ -155,19 +155,19 @@ export function StatsSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-b from-cream to-white"
+      className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-b from-gray-900 via-[#085032]/30 to-gray-900"
     >
       {/* Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-secondary/10 to-yellow-100/50 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-primary/20 to-emerald-700/30 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-primary/15 rounded-full blur-3xl" />
       </div>
 
       {/* Grid Pattern */}
       <div
-        className="absolute inset-0 opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.05]"
         style={{
-          backgroundImage: `linear-gradient(#0b6d41 1px, transparent 1px), linear-gradient(90deg, #0b6d41 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(rgba(15,143,86,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(15,143,86,0.3) 1px, transparent 1px)`,
           backgroundSize: '40px 40px'
         }}
       />
@@ -178,16 +178,16 @@ export function StatsSection() {
           'text-center max-w-3xl mx-auto mb-16 lg:mb-20 transition-all duration-700',
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         )}>
-          <span className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-secondary/20 to-yellow-100 text-primary text-sm font-semibold mb-4 border border-secondary/30">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/20 backdrop-blur-sm text-secondary text-sm font-semibold mb-4 border border-secondary/40">
             Our Impact
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
             Numbers That{' '}
             <span className="bg-gradient-to-r from-secondary to-yellow-500 bg-clip-text text-transparent">
               Speak
             </span>
           </h2>
-          <p className="text-lg text-gray-600 leading-relaxed">
+          <p className="text-lg text-gray-300 leading-relaxed">
             Our achievements reflect our commitment to excellence in education,
             research, and student success.
           </p>

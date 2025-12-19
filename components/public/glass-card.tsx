@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { forwardRef } from 'react'
 
 interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'light' | 'dark' | 'gradient' | 'brand'
+  variant?: 'light' | 'dark' | 'dark-elegant' | 'gradient' | 'brand'
   blur?: 'sm' | 'md' | 'lg' | 'xl'
   hover?: boolean
   glow?: boolean
@@ -22,6 +22,7 @@ const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
     const variants = {
       light: 'bg-white/70 border-white/30 shadow-lg',
       dark: 'bg-black/20 border-white/10 shadow-xl',
+      'dark-elegant': 'bg-black/30 border-white/10 shadow-2xl shadow-primary/20',
       gradient: 'bg-gradient-to-br from-white/80 to-white/40 border-white/30 shadow-lg',
       brand: 'bg-primary/10 border-primary/20 shadow-lg shadow-primary/10',
     }

@@ -29,19 +29,19 @@ export function CTASection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-b from-white to-cream"
+      className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-b from-gray-900 via-[#085032]/50 to-gray-900"
     >
       {/* Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-secondary/10 to-yellow-100/50 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-primary/20 to-emerald-700/30 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-primary/15 rounded-full blur-3xl" />
       </div>
 
       {/* Grid Pattern */}
       <div
-        className="absolute inset-0 opacity-[0.02]"
+        className="absolute inset-0 opacity-[0.05]"
         style={{
-          backgroundImage: `linear-gradient(#0b6d41 1px, transparent 1px), linear-gradient(90deg, #0b6d41 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(rgba(15,143,86,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(15,143,86,0.3) 1px, transparent 1px)`,
           backgroundSize: '50px 50px'
         }}
       />
@@ -54,16 +54,16 @@ export function CTASection() {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           )}>
             <div>
-              <span className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-secondary/20 to-yellow-100 text-primary text-sm font-semibold mb-4 border border-secondary/30">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/20 backdrop-blur-sm text-secondary text-sm font-semibold mb-4 border border-secondary/40">
                 Start Your Journey
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
                 Ready to Shape{' '}
                 <span className="bg-gradient-to-r from-secondary to-yellow-500 bg-clip-text text-transparent">
                   Your Future?
                 </span>
               </h2>
-              <p className="text-lg text-gray-600 leading-relaxed">
+              <p className="text-lg text-gray-300 leading-relaxed">
                 Join thousands of successful students who started their journey at JKKN.
                 Applications for 2025-26 academic year are now open.
               </p>
@@ -71,22 +71,22 @@ export function CTASection() {
 
             {/* Key Dates */}
             <div className="space-y-4">
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/80 backdrop-blur-sm border border-gray-100 shadow-sm">
-                <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/20 to-yellow-100">
-                  <Calendar className="w-6 h-6 text-primary" />
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-black/30 backdrop-blur-lg border border-white/10 shadow-lg shadow-primary/10">
+                <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/30 to-yellow-500/30 backdrop-blur-sm">
+                  <Calendar className="w-6 h-6 text-secondary" />
                 </div>
                 <div>
-                  <p className="text-gray-900 font-semibold">Application Deadline</p>
-                  <p className="text-sm text-gray-500">March 31, 2025</p>
+                  <p className="text-white font-semibold">Application Deadline</p>
+                  <p className="text-sm text-gray-400">March 31, 2025</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/80 backdrop-blur-sm border border-gray-100 shadow-sm">
-                <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/20 to-yellow-100">
-                  <Clock className="w-6 h-6 text-primary" />
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-black/30 backdrop-blur-lg border border-white/10 shadow-lg shadow-primary/10">
+                <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/30 to-yellow-500/30 backdrop-blur-sm">
+                  <Clock className="w-6 h-6 text-secondary" />
                 </div>
                 <div>
-                  <p className="text-gray-900 font-semibold">Entrance Exam</p>
-                  <p className="text-sm text-gray-500">April 15-20, 2025</p>
+                  <p className="text-white font-semibold">Entrance Exam</p>
+                  <p className="text-sm text-gray-400">April 15-20, 2025</p>
                 </div>
               </div>
             </div>
@@ -107,7 +107,7 @@ export function CTASection() {
               </Link>
               <Link
                 href="/admissions/brochure"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-primary border-2 border-primary/20 hover:border-primary hover:bg-primary/5 transition-all duration-300"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-white bg-black/30 backdrop-blur-lg border-2 border-white/20 hover:border-secondary hover:bg-black/40 hover:shadow-lg hover:shadow-secondary/30 transition-all duration-300"
               >
                 Download Brochure
               </Link>
@@ -119,46 +119,46 @@ export function CTASection() {
             'transition-all duration-700 delay-200',
             isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
           )}>
-            <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 lg:p-10 border border-gray-100 shadow-xl shadow-black/5">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">Get in Touch</h3>
+            <div className="bg-black/30 backdrop-blur-lg rounded-3xl p-8 lg:p-10 border border-white/10 shadow-2xl shadow-primary/20">
+              <h3 className="text-xl font-bold text-white mb-6">Get in Touch</h3>
 
               <div className="space-y-6">
                 <a
                   href="tel:+914222661100"
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 hover:bg-gradient-to-r hover:from-secondary/10 hover:to-yellow-50 border border-gray-100 hover:border-secondary/30 transition-all duration-300 group"
+                  className="flex items-center gap-4 p-4 rounded-2xl bg-black/30 hover:bg-black/40 border border-white/10 hover:border-secondary/30 transition-all duration-300 group"
                 >
-                  <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/20 to-yellow-100 group-hover:from-secondary/30 group-hover:to-yellow-200 transition-colors">
-                    <Phone className="w-6 h-6 text-primary" />
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/30 to-yellow-500/30 group-hover:from-secondary/40 group-hover:to-yellow-500/40 transition-colors backdrop-blur-sm">
+                    <Phone className="w-6 h-6 text-secondary" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Call Us</p>
-                    <p className="text-gray-900 font-semibold">+91 422 266 1100</p>
+                    <p className="text-sm text-gray-400">Call Us</p>
+                    <p className="text-white font-semibold">+91 422 266 1100</p>
                   </div>
                 </a>
 
                 <a
                   href="mailto:admissions@jkkn.ac.in"
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 hover:bg-gradient-to-r hover:from-secondary/10 hover:to-yellow-50 border border-gray-100 hover:border-secondary/30 transition-all duration-300 group"
+                  className="flex items-center gap-4 p-4 rounded-2xl bg-black/30 hover:bg-black/40 border border-white/10 hover:border-secondary/30 transition-all duration-300 group"
                 >
-                  <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/20 to-yellow-100 group-hover:from-secondary/30 group-hover:to-yellow-200 transition-colors">
-                    <Mail className="w-6 h-6 text-primary" />
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/30 to-yellow-500/30 group-hover:from-secondary/40 group-hover:to-yellow-500/40 transition-colors backdrop-blur-sm">
+                    <Mail className="w-6 h-6 text-secondary" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Email Us</p>
-                    <p className="text-gray-900 font-semibold">admissions@jkkn.ac.in</p>
+                    <p className="text-sm text-gray-400">Email Us</p>
+                    <p className="text-white font-semibold">admissions@jkkn.ac.in</p>
                   </div>
                 </a>
 
-                <div className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                  <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/20 to-yellow-100">
-                    <MapPin className="w-6 h-6 text-primary" />
+                <div className="flex items-start gap-4 p-4 rounded-2xl bg-black/30 border border-white/10">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/30 to-yellow-500/30 backdrop-blur-sm">
+                    <MapPin className="w-6 h-6 text-secondary" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Visit Us</p>
-                    <p className="text-gray-900 font-semibold">
+                    <p className="text-sm text-gray-400">Visit Us</p>
+                    <p className="text-white font-semibold">
                       JKKN Group of Institutions
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-400">
                       Komarapalayam, Namakkal District,
                       <br />
                       Tamil Nadu - 638183
@@ -168,9 +168,9 @@ export function CTASection() {
               </div>
 
               {/* Office Hours */}
-              <div className="mt-6 pt-6 border-t border-gray-100">
-                <p className="text-sm text-gray-500 mb-2">Office Hours</p>
-                <p className="text-gray-900 font-medium">
+              <div className="mt-6 pt-6 border-t border-white/10">
+                <p className="text-sm text-gray-400 mb-2">Office Hours</p>
+                <p className="text-white font-medium">
                   Mon - Sat: 9:00 AM - 5:00 PM
                 </p>
               </div>

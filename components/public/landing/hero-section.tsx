@@ -36,13 +36,15 @@ export function HeroSection() {
             onError={() => setImageError(true)}
           />
         ) : (
-          /* Fallback gradient background */
-          <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-emerald-800" />
+          /* Fallback gradient background - Darker, richer gradient */
+          <div className="absolute inset-0 bg-gradient-to-br from-[#085032] via-primary to-emerald-900" />
         )}
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-black/40" />
-        {/* Green gradient overlay from top and bottom */}
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/60 via-transparent to-primary/40" />
+        {/* Dark overlay for text readability - Increased opacity */}
+        <div className="absolute inset-0 bg-black/50" />
+        {/* Green gradient overlay from top and bottom - Enhanced */}
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-transparent to-primary/50" />
+        {/* Aurora-like animated gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 via-transparent to-emerald-600/20 animate-pulse" style={{ animationDuration: '8s' }} />
       </div>
 
       {/* Content */}

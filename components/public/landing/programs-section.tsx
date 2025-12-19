@@ -93,9 +93,9 @@ export function ProgramsSection() {
       className="relative py-24 lg:py-32 overflow-hidden"
     >
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white to-cream" />
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-gradient-to-r from-secondary/10 to-yellow-100/50 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2" />
-      <div className="absolute top-1/4 right-0 w-80 h-80 bg-gradient-to-l from-secondary/10 to-yellow-50/50 rounded-full blur-3xl translate-x-1/2" />
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-[#085032]/40 to-gray-900" />
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-gradient-to-r from-primary/20 to-emerald-700/30 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2" />
+      <div className="absolute top-1/4 right-0 w-80 h-80 bg-gradient-to-l from-primary/20 to-emerald-800/30 rounded-full blur-3xl translate-x-1/2" />
 
       <div className="relative container mx-auto px-4 lg:px-8">
         {/* Section Header */}
@@ -104,16 +104,16 @@ export function ProgramsSection() {
             'max-w-2xl transition-all duration-700',
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           )}>
-            <span className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-secondary/20 to-yellow-100 text-primary text-sm font-semibold mb-4 border border-secondary/30">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/20 backdrop-blur-sm text-secondary text-sm font-semibold mb-4 border border-secondary/40">
               Academic Programs
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
               Explore Our{' '}
               <span className="bg-gradient-to-r from-secondary to-yellow-500 bg-clip-text text-transparent">
                 Programs
               </span>
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-300">
               Choose from a wide range of undergraduate, postgraduate, and doctoral programs
               designed to prepare you for a successful career.
             </p>
@@ -122,7 +122,7 @@ export function ProgramsSection() {
           <Link
             href="/academics"
             className={cn(
-              'hidden lg:inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-primary border-2 border-primary/20 hover:border-primary hover:bg-primary/5 transition-all duration-300',
+              'hidden lg:inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-black/30 backdrop-blur-lg border-2 border-white/20 hover:border-secondary hover:bg-black/40 hover:shadow-lg hover:shadow-secondary/30 transition-all duration-300',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             )}
             style={{ transitionDelay: '200ms' }}
@@ -146,10 +146,10 @@ export function ProgramsSection() {
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              <div className="relative h-full p-6 lg:p-8 rounded-3xl bg-white/80 backdrop-blur-sm border border-gray-100 shadow-lg shadow-black/5 overflow-hidden transition-all duration-500 group-hover:shadow-2xl group-hover:border-secondary/30 group-hover:-translate-y-2">
+              <div className="relative h-full p-6 lg:p-8 rounded-3xl bg-black/30 backdrop-blur-lg border border-white/10 shadow-2xl shadow-primary/10 overflow-hidden transition-all duration-500 group-hover:shadow-primary/30 group-hover:border-white/20 group-hover:bg-black/40 group-hover:-translate-y-2">
                 {/* Background Gradient on Hover */}
                 <div className={cn(
-                  'absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-500',
+                  'absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-500',
                   program.color
                 )} />
 
@@ -163,19 +163,19 @@ export function ProgramsSection() {
 
                 {/* Content */}
                 <div className="relative">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-secondary transition-colors">
                     {program.title}
                   </h3>
-                  <p className="text-gray-500 mb-4 leading-relaxed">
+                  <p className="text-gray-400 mb-4 leading-relaxed">
                     {program.description}
                   </p>
 
                   {/* Footer */}
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <span className="text-sm font-medium text-gray-400">
+                  <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                    <span className="text-sm font-medium text-gray-500">
                       {program.courses} Courses
                     </span>
-                    <span className="flex items-center gap-1 text-sm font-semibold text-primary opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                    <span className="flex items-center gap-1 text-sm font-semibold text-secondary opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
                       Explore
                       <ChevronRight className="w-4 h-4" />
                     </span>
