@@ -110,7 +110,7 @@ export function InstitutionsGrid({
   // Column classes
   const columnClasses = {
     '2': 'grid-cols-1 sm:grid-cols-2',
-    '3': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+    '3': 'grid-cols-2 sm:grid-cols-2 lg:grid-cols-3',
     '4': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
   }
 
@@ -124,17 +124,26 @@ export function InstitutionsGrid({
   return (
     <section
       className={cn(
-        'relative w-full overflow-hidden py-16 md:py-20 lg:py-24',
-        isDark ? 'section-green-gradient' : 'bg-brand-cream',
+        'relative w-full overflow-hidden',
         className
       )}
     >
-      {/* Decorative Patterns */}
-      {showDecorations && isModern && (
-        <DecorativePatterns variant="default" color={isDark ? 'white' : 'green'} />
-      )}
+      {/* Glassmorphic Background Layer */}
+      <div className={cn(
+        "absolute inset-0 backdrop-blur-md",
+        isDark
+          ? "bg-gradient-to-br from-brand-primary/90 via-brand-primary-dark/85 to-brand-primary-darker/90"
+          : "bg-gradient-to-br from-brand-cream/95 via-white/90 to-brand-cream/95"
+      )} />
 
-      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24">
+      {/* Content Container */}
+      <div className="relative py-16 md:py-20 lg:py-24">
+        {/* Decorative Patterns */}
+        {showDecorations && isModern && (
+          <DecorativePatterns variant="default" color={isDark ? 'white' : 'green'} />
+        )}
+
+        <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24">
         {/* Header */}
         <div
           ref={headerRef.ref}
@@ -217,7 +226,8 @@ export function InstitutionsGrid({
           ) : null}
         </div>
       </div>
-    </section>
+    </div> {/* Close content container */}
+  </section>
   )
 }
 

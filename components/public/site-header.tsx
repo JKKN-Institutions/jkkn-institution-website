@@ -136,7 +136,7 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
                 hasSecondRow ? 'lg:w-24 lg:h-24' : 'lg:w-20 lg:h-20'
               )}>
                 <Image
-                  src="https://jkkn.ac.in/wp-content/uploads/2023/04/Untitled-design-2023-03-13T105521.479.png"
+                  src="/images/logo.png"
                   alt="JKKN Institution Logo"
                   fill
                   sizes="(max-width: 640px) 64px, (max-width: 1024px) 80px, 96px"
@@ -350,18 +350,18 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
           onClick={() => setIsMobileMenuOpen(false)}
         />
 
-        {/* Menu Panel - Slide from Right */}
+        {/* Menu Panel - Slide from Left */}
         <div className={cn(
-          'absolute top-0 right-0 h-full w-[85%] max-w-[320px] bg-[#faf8f0] shadow-2xl transition-transform duration-300 ease-out',
-          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          'absolute top-0 left-0 h-full w-[85%] max-w-[320px] bg-[#faf8f0] shadow-2xl transition-transform duration-300 ease-out',
+          isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
         )}>
           {/* Header with Logo and Close */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
               <div className="relative w-14 h-14">
                 <Image
-                  src="https://jkkn.ac.in/wp-content/uploads/2023/04/Untitled-design-2023-03-13T105521.479.png"
-                  alt="JKKN"
+                  src="/images/logo.png"
+                  alt="JKKN Institution Logo"
                   fill
                   sizes="56px"
                   className="object-contain"

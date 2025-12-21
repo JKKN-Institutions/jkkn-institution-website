@@ -2280,7 +2280,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       pageSubtitle: z.string().default('J.K.K. Rangammal Charitable Trust'),
       founderName: z.string().default('SHRI. J.K.K. NATARAJAH'),
       founderTitle: z.string().default('Founder of J.K.K. Rangammal Charitable Trust'),
-      founderImage: z.string().default('https://jkkn.ac.in/wp-content/uploads/2023/04/ft1-293x300-1.webp'),
+      founderImage: z.string().default('/images/founder.webp'),
       founderImageAlt: z.string().default('Shri J.K.K. Natarajah - Founder'),
       storyTitle: z.string().default('Our Story'),
       storyContent: z.string().default(''),
@@ -2304,7 +2304,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       pageSubtitle: 'J.K.K. Rangammal Charitable Trust',
       founderName: 'SHRI. J.K.K. NATARAJAH',
       founderTitle: 'Founder of J.K.K. Rangammal Charitable Trust',
-      founderImage: 'https://jkkn.ac.in/wp-content/uploads/2023/04/ft1-293x300-1.webp',
+      founderImage: '/images/founder.webp',
       founderImageAlt: 'Shri J.K.K. Natarajah - Founder',
       storyTitle: 'Our Story',
       storyContent: '',
@@ -2406,7 +2406,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         {
           name: 'SMT. N. SENDAMARAAI',
           title: 'CHAIRPERSON - JKKN EDUCATIONAL INSTITUTIONS',
-          image: 'https://jkkn.ac.in/wp-content/uploads/2023/04/Sendamaraai-photo.png',
+          image: '/images/chairperson.png',
           imageAlt: 'Smt. N. Sendamaraai - Chairperson',
           message: 'As the Chairperson of JKKN Educational Institutions, I am honoured to shoulder this immense responsibility, and I take great pride in our exceptional progress. We have earned the status of one of the most prestigious colleges in the region. "Leadership and Excellence" is not merely our motto but the foundation of our values, a testament to our state-of-the-art infrastructure, distinguished faculty, and unwavering commitment to quality education.',
           order: 1,
@@ -2414,7 +2414,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         {
           name: 'SHRI. S. OMMSHARRAVANA',
           title: 'DIRECTOR - JKKN EDUCATIONAL INSTITUTIONS',
-          image: 'https://jkkn.ac.in/wp-content/uploads/2023/04/Dir-Sharravana-photo.png',
+          image: '/images/director.png',
           imageAlt: 'Shri. S. Ommsharravana - Director',
           message: 'I extend my heartfelt congratulations to the college for its fervent and focused dedication to shaping future engineers of distinction. At JKKN, we are committed to innovative education methodologies that enable quality learning, foster independent thinking, and facilitate the development of well-rounded personalities. Our mission empowers students to contribute their best to society and the nation.',
           order: 2,
@@ -2471,7 +2471,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     component: OurInstitutions,
     propsSchema: z.object({
       pageTitle: z.string().default('OUR INSTITUTIONS'),
-      mainImage: z.string().default('https://jkkn.ac.in/wp-content/uploads/2023/07/JKKN-EI_11zon-1.png'),
+      mainImage: z.string().default('/images/campus.png'),
       mainImageAlt: z.string().default('JKKN Group of Institutions Campus'),
       paragraphs: z.array(z.string()).default([]),
       whyJkknTitle: z.string().default('Why JKKN?'),
@@ -2482,7 +2482,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     }),
     defaultProps: {
       pageTitle: 'OUR INSTITUTIONS',
-      mainImage: 'https://jkkn.ac.in/wp-content/uploads/2023/07/JKKN-EI_11zon-1.png',
+      mainImage: '/images/campus.png',
       mainImageAlt: 'JKKN Group of Institutions Campus',
       paragraphs: [
         'At JKKN Institutions, our core teaching objective is to empower students with technical knowledge and essential skills to meet the growing challenges of today\'s competitive world. We implement cutting-edge teaching practices, laying a robust foundation for holistic education.',

@@ -41,11 +41,11 @@ export function DashboardStatsCards() {
           .eq('action', 'login')
           .gte('created_at', thirtyDaysAgo.toISOString())
 
-        // Get pending inquiries count
+        // Get pending inquiries count (new status)
         const { count: pendingInquiries } = await supabase
           .from('contact_submissions')
           .select('*', { count: 'exact', head: true })
-          .eq('status', 'pending')
+          .eq('status', 'new')
 
         // Get page views (simulate for now)
         const pageViews = 2540

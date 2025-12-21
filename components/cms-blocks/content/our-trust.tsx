@@ -50,7 +50,7 @@ export const OurTrustPropsSchema = z.object({
   // Founder Section
   founderName: z.string().default('SHRI. J.K.K. NATARAJAH').describe('Founder name'),
   founderTitle: z.string().default('Founder of J.K.K. Rangammal Charitable Trust').describe('Founder title'),
-  founderImage: z.string().default('https://jkkn.ac.in/wp-content/uploads/2023/04/ft1-293x300-1.webp').describe('Founder image URL'),
+  founderImage: z.string().default('/images/founder.webp').describe('Founder image URL'),
   founderImageAlt: z.string().default('Shri J.K.K. Natarajah - Founder').describe('Founder image alt text'),
 
   // Trust Story
@@ -280,7 +280,7 @@ export function OurTrust({
   pageSubtitle = 'J.K.K. Rangammal Charitable Trust',
   founderName = 'SHRI. J.K.K. NATARAJAH',
   founderTitle = 'Founder of J.K.K. Rangammal Charitable Trust',
-  founderImage = 'https://jkkn.ac.in/wp-content/uploads/2023/04/ft1-293x300-1.webp',
+  founderImage = '/images/founder.webp',
   founderImageAlt = 'Shri J.K.K. Natarajah - Founder',
   storyTitle = 'Our Story',
   storyContent = '',

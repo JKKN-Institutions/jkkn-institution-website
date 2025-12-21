@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { GraduationCap, ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
+import { getInstagramEmbedUrl } from '@/lib/utils/instagram'
 
 /**
  * Story item schema
@@ -16,7 +17,11 @@ export const StoryItemSchema = z.object({
   name: z.string().describe('Person name or story title'),
   image: z.string().describe('Profile image URL'),
   role: z.string().optional().describe('Role or subtitle'),
+
+  // Video support
   video: z.string().optional().describe('Video URL for story'),
+  instagramUrl: z.string().optional().describe('Instagram Reel/Post URL'),
+
   link: z.string().optional().describe('Link to full story'),
   isNew: z.boolean().optional().default(false).describe('Show as new/unread'),
 })
@@ -48,9 +53,140 @@ export const EducationStoriesPropsSchema = z.object({
   // Autoplay
   autoplay: z.boolean().default(true).describe('Enable autoplay scroll'),
   autoplaySpeed: z.number().default(3000).describe('Autoplay speed in ms'),
+
+  // Video & Instagram
+  mutedAutoplay: z.boolean().default(true).describe('Enable muted autoplay when scrolled into view'),
+  showVolumeControl: z.boolean().default(true).describe('Show volume control button'),
+
+  // Glassmorphism
+  glassBlur: z.enum(['sm', 'md', 'lg']).default('md').describe('Glass blur intensity'),
+
+  // Animated Background
+  animatedBackground: z.boolean().default(true).describe('Enable animated gradient background'),
+  backgroundColors: z.array(z.string()).default(['#0b6d41', '#ffde59', '#fbfbee']).describe('Gradient background colors'),
 })
 
 export type EducationStoriesProps = z.infer<typeof EducationStoriesPropsSchema> & BaseBlockProps
+
+/**
+ * Animated Gradient Background Component
+ * Creates a smoothly animating gradient background for the section
+ */
+function AnimatedGradientBackground({
+  colors,
+  enabled,
+}: {
+  colors: string[]
+  enabled: boolean
+}) {
+  if (!enabled) return null
+
+  return (
+    <>
+      <div
+        className="absolute inset-0 -z-10 opacity-60"
+        style={{
+          background: `linear-gradient(-45deg, ${colors.join(', ')})`,
+          backgroundSize: '400% 400%',
+          animation: 'gradient-shift 15s ease infinite',
+        }}
+      />
+      <style jsx>{`
+        @keyframes gradient-shift {
+          0%,
+          100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+      `}</style>
+    </>
+  )
+}
+
+/**
+ * Instagram Reel Embed Component
+ * Embeds Instagram Reels with IntersectionObserver for autoplay control
+ */
+function InstagramReelEmbed({
+  url,
+  isActive,
+  mutedAutoplay,
+}: {
+  url: string
+  isActive: boolean
+  mutedAutoplay: boolean
+}) {
+  const iframeRef = useRef<HTMLIFrameElement>(null)
+  const [isInView, setIsInView] = useState(false)
+
+  // IntersectionObserver for viewport detection
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting)
+      },
+      { threshold: 0.5 }
+    )
+
+    if (iframeRef.current?.parentElement) {
+      observer.observe(iframeRef.current.parentElement)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
+  const embedUrl = getInstagramEmbedUrl(url, mutedAutoplay && isInView && isActive)
+
+  return (
+    <iframe
+      ref={iframeRef}
+      src={embedUrl}
+      className="absolute inset-0 w-full h-full"
+      frameBorder="0"
+      scrolling="no"
+      allowTransparency
+      allow="autoplay; encrypted-media"
+      title="Instagram Reel"
+    />
+  )
+}
+
+/**
+ * Glassmorphic Overlay Component
+ * Creates a frosted glass effect overlay for UI elements
+ */
+function GlassmorphicOverlay({
+  position,
+  blur,
+  children,
+}: {
+  position: 'top' | 'bottom'
+  blur: 'sm' | 'md' | 'lg'
+  children: React.ReactNode
+}) {
+  const blurClasses = {
+    sm: 'backdrop-blur-sm',
+    md: 'backdrop-blur-md',
+    lg: 'backdrop-blur-lg',
+  }
+
+  return (
+    <div
+      className={cn(
+        position === 'bottom' ? 'absolute inset-x-0 bottom-0' : 'absolute inset-x-0 top-0',
+        'bg-white/10',
+        blurClasses[blur],
+        'border-white/20',
+        position === 'bottom' ? 'border-t' : 'border-b'
+      )}
+    >
+      {children}
+    </div>
+  )
+}
 
 /**
  * EducationStories Component - Reels Format
@@ -61,6 +197,7 @@ export type EducationStoriesProps = z.infer<typeof EducationStoriesPropsSchema> 
  * - Autoplay with pause on hover/interaction
  * - Manual scroll support
  * - Play/pause indicators
+ * - Instagram Reels embeds with glassmorphism
  */
 export function EducationStories({
   showHeader = true,
@@ -75,6 +212,11 @@ export function EducationStories({
   showDecorations = true,
   autoplay = true,
   autoplaySpeed = 3000,
+  mutedAutoplay = true,
+  showVolumeControl = true,
+  glassBlur = 'md',
+  animatedBackground = true,
+  backgroundColors = ['#0b6d41', '#ffde59', '#fbfbee'],
   className,
   isEditing,
 }: EducationStoriesProps) {
@@ -222,6 +364,9 @@ export function EducationStories({
         className
       )}
     >
+      {/* Animated Gradient Background */}
+      <AnimatedGradientBackground colors={backgroundColors} enabled={animatedBackground} />
+
       {/* Decorative Patterns */}
       {showDecorations && isModern && (
         <DecorativePatterns variant="minimal" color={isDark ? 'white' : 'green'} />
@@ -300,6 +445,9 @@ export function EducationStories({
                 isEditing={isEditing}
                 index={index}
                 autoplaySpeed={autoplaySpeed}
+                mutedAutoplay={mutedAutoplay}
+                showVolumeControl={showVolumeControl}
+                glassBlur={glassBlur}
                 />
               ))}
             </div>
@@ -362,6 +510,9 @@ function ReelCard({
   isEditing,
   index,
   autoplaySpeed = 3000,
+  mutedAutoplay = true,
+  showVolumeControl = true,
+  glassBlur = 'md',
 }: {
   story: StoryItem
   height: string
@@ -372,8 +523,12 @@ function ReelCard({
   isEditing?: boolean
   index: number
   autoplaySpeed?: number
+  mutedAutoplay?: boolean
+  showVolumeControl?: boolean
+  glassBlur?: 'sm' | 'md' | 'lg'
 }) {
   const [isHovered, setIsHovered] = useState(false)
+  const [isMuted, setIsMuted] = useState(mutedAutoplay)
 
   const content = (
     <div
@@ -392,9 +547,15 @@ function ReelCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Background Image/Video */}
+      {/* Background Image/Video/Instagram */}
       <div className="absolute inset-0">
-        {story.image ? (
+        {story.instagramUrl ? (
+          <InstagramReelEmbed
+            url={story.instagramUrl}
+            isActive={isActive}
+            mutedAutoplay={mutedAutoplay}
+          />
+        ) : story.image ? (
           <Image
             src={story.image}
             alt={story.name}
@@ -439,11 +600,31 @@ function ReelCard({
         </div>
       )}
 
+      {/* Glassmorphic Volume Control - Top Right */}
+      {showVolumeControl && story.instagramUrl && (
+        <GlassmorphicOverlay position="top" blur={glassBlur}>
+          <div className="p-2 flex justify-end">
+            <button
+              onClick={() => setIsMuted(!isMuted)}
+              className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors"
+              aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+            >
+              {isMuted ? (
+                <VolumeX className="w-4 h-4 text-white" />
+              ) : (
+                <Volume2 className="w-4 h-4 text-white" />
+              )}
+            </button>
+          </div>
+        </GlassmorphicOverlay>
+      )}
+
       {/* Play/Pause Indicator */}
       <div className={cn(
         'absolute top-2 right-2 w-6 h-6 rounded-full flex items-center justify-center',
         'bg-white/20 backdrop-blur-sm transition-all duration-300',
-        isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+        isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-75',
+        story.instagramUrl && showVolumeControl && 'hidden' // Hide when volume control is shown
       )}>
         {isPaused ? (
           <Pause className="w-3 h-3 text-white" />
@@ -452,41 +633,47 @@ function ReelCard({
         )}
       </div>
 
-      {/* Content Overlay */}
+      {/* Glassmorphic Content Overlay - Bottom */}
       {showName && (
-        <div className="absolute bottom-0 left-0 right-0 p-2.5">
-          {/* Profile Info */}
-          <div className="flex items-center gap-1.5">
-            <div className="w-6 h-6 rounded-full overflow-hidden border border-white/50 flex-shrink-0">
-              {story.image ? (
-                <Image
-                  src={story.image}
-                  alt={story.name}
-                  width={24}
-                  height={24}
-                  className="object-cover w-full h-full"
-                />
-              ) : (
-                <div
-                  className="w-full h-full flex items-center justify-center text-[10px] font-bold text-white"
-                  style={{ background: 'linear-gradient(135deg, #0b6d41 0%, #064d2e 100%)' }}
-                >
-                  {story.name.charAt(0)}
-                </div>
-              )}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-white font-semibold text-xs truncate leading-tight">
-                {story.name}
-              </p>
-              {story.role && (
-                <p className="text-white/70 text-[10px] truncate leading-tight">
-                  {story.role}
+        <GlassmorphicOverlay position="bottom" blur={glassBlur}>
+          <div className="p-2.5">
+            {/* Profile Info */}
+            <div className="flex items-center gap-1.5">
+              <div className="w-6 h-6 rounded-full overflow-hidden border border-white/50 flex-shrink-0 relative">
+                {story.image ? (
+                  <Image
+                    src={story.image}
+                    alt={story.name}
+                    width={24}
+                    height={24}
+                    className="object-cover w-full h-full"
+                  />
+                ) : (
+                  <div
+                    className="w-full h-full flex items-center justify-center text-[10px] font-bold text-white"
+                    style={{ background: 'linear-gradient(135deg, #0b6d41 0%, #064d2e 100%)' }}
+                  >
+                    {story.name.charAt(0)}
+                  </div>
+                )}
+                {/* Gold ring for new/active */}
+                {story.isNew && (
+                  <div className="absolute inset-0 rounded-full border-2 border-[#ffde59]" />
+                )}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-white font-semibold text-xs truncate leading-tight">
+                  {story.name}
                 </p>
-              )}
+                {story.role && (
+                  <p className="text-white/70 text-[10px] truncate leading-tight">
+                    {story.role}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        </GlassmorphicOverlay>
       )}
 
       {/* Progress Bar (when active and playing) */}

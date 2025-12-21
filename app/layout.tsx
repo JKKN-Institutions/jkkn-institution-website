@@ -11,10 +11,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: 'JKKN Group of Institutions',
-    template: '%s | JKKN Institution',
-  },
+  title: 'JKKN Group of Institutions',
   description:
     'JKKN Group of Institutions - A leading educational institution in Tamil Nadu offering undergraduate, postgraduate, and research programs in Engineering, Medical Sciences, Management, and Arts & Science since 1975.',
   keywords: [

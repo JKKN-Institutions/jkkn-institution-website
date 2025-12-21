@@ -3,6 +3,8 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { headers } from 'next/headers'
+import { revalidatePath } from 'next/cache'
+import { logActivity } from '@/lib/utils/activity-logger'
 
 // Validation schema for contact form
 const ContactFormSchema = z.object({
@@ -202,5 +204,71 @@ export async function updateContactSubmissionStatus(
   } catch (error) {
     console.error('Error in updateContactSubmissionStatus:', error)
     return { success: false, error: 'Failed to update status' }
+  }
+}
+
+/**
+ * Reply to an inquiry (admin only)
+ */
+export async function replyToInquiry(inquiryId: string, replyMessage: string) {
+  try {
+    const supabase = await createServerSupabaseClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+      return { success: false, error: 'Unauthorized' }
+    }
+
+    // Permission check
+    const { data: hasPermission } = await supabase.rpc('has_permission', {
+      user_uuid: user.id,
+      required_permission: 'system:inquiries:reply'
+    })
+
+    if (!hasPermission) {
+      return { success: false, error: 'Unauthorized - insufficient permissions' }
+    }
+
+    // Validation
+    if (!replyMessage || replyMessage.trim().length < 10) {
+      return { success: false, error: 'Reply message must be at least 10 characters' }
+    }
+
+    // Update inquiry with reply
+    const { error } = await supabase
+      .from('contact_submissions')
+      .update({
+        reply_message: replyMessage.trim(),
+        status: 'replied',
+        replied_at: new Date().toISOString(),
+        replied_by: user.id
+      })
+      .eq('id', inquiryId)
+
+    if (error) {
+      console.error('Error replying to inquiry:', error)
+      return { success: false, error: error.message }
+    }
+
+    // Log activity
+    await logActivity({
+      userId: user.id,
+      action: 'reply',
+      module: 'inquiries',
+      resourceType: 'contact_submission',
+      resourceId: inquiryId,
+      metadata: { replyLength: replyMessage.length }
+    })
+
+    // Revalidate the inquiries page
+    revalidatePath('/admin/inquiries')
+
+    // TODO: Send email notification to user (implement when SMTP is configured)
+    // await sendReplyNotification(inquiryId, replyMessage)
+
+    return { success: true, message: 'Reply sent successfully' }
+  } catch (error) {
+    console.error('Error in replyToInquiry:', error)
+    return { success: false, error: 'Failed to send reply' }
   }
 }

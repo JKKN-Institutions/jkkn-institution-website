@@ -16,7 +16,7 @@ export const OurInstitutionsPropsSchema = z.object({
   pageTitle: z.string().default('OUR INSTITUTIONS').describe('Main page title'),
 
   // Main Image
-  mainImage: z.string().default('https://jkkn.ac.in/wp-content/uploads/2023/07/JKKN-EI_11zon-1.png').describe('Main institution image URL'),
+  mainImage: z.string().default('/images/campus.png').describe('Main institution image URL'),
   mainImageAlt: z.string().default('JKKN Group of Institutions Campus').describe('Image alt text'),
 
   // Content Paragraphs
@@ -80,7 +80,7 @@ function useInView(threshold = 0.1) {
  */
 export function OurInstitutions({
   pageTitle = 'OUR INSTITUTIONS',
-  mainImage = 'https://jkkn.ac.in/wp-content/uploads/2023/07/JKKN-EI_11zon-1.png',
+  mainImage = '/images/campus.png',
   mainImageAlt = 'JKKN Group of Institutions Campus',
   paragraphs = [],
   whyJkknTitle = 'Why JKKN?',
