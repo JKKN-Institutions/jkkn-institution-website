@@ -350,10 +350,10 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
           onClick={() => setIsMobileMenuOpen(false)}
         />
 
-        {/* Menu Panel - Slide from Left */}
+        {/* Menu Panel - Slide from Right */}
         <div className={cn(
-          'absolute top-0 left-0 h-full w-[85%] max-w-[320px] bg-[#faf8f0] shadow-2xl transition-transform duration-300 ease-out',
-          isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+          'absolute top-0 right-0 h-full w-[85%] max-w-[320px] bg-[#faf8f0] shadow-2xl transition-transform duration-300 ease-out',
+          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         )}>
           {/* Header with Logo and Close */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
