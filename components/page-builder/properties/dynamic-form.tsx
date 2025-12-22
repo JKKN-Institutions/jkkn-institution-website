@@ -43,6 +43,7 @@ interface FieldConfig {
   min?: number
   max?: number
   step?: number
+  unit?: string
   multiline?: boolean
   placeholder?: string
   /** For array type: what kind of items (string, image, object) */
@@ -141,15 +142,22 @@ function NumberField({ config, value, onChange }: FieldProps) {
   }
 
   return (
-    <Input
-      type="number"
-      value={numValue}
-      onChange={(e) => onChange(Number(e.target.value))}
-      min={config.min}
-      max={config.max}
-      step={config.step}
-      className="bg-background/50 border-border/50"
-    />
+    <div className="flex items-center gap-2">
+      <Input
+        type="number"
+        value={numValue}
+        onChange={(e) => onChange(Number(e.target.value))}
+        min={config.min}
+        max={config.max}
+        step={config.step}
+        className="bg-background/50 border-border/50 flex-1"
+      />
+      {config.unit && (
+        <span className="text-sm text-muted-foreground font-medium min-w-[2.5rem]">
+          {config.unit}
+        </span>
+      )}
+    </div>
   )
 }
 

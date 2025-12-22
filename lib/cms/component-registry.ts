@@ -521,7 +521,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       titleFontWeight: 'bold',
       titleFontStyle: 'normal',
       subtitleColor: '#fbfbee', // Brand cream for better visibility
-      subtitleFontSize: 'xl',
+      subtitleFontSize: 24,
       subtitleFontWeight: 'normal',
       subtitleFontStyle: 'normal',
       backgroundType: 'gradient',
@@ -551,7 +551,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       // Subtitle settings
       { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
       { name: 'subtitleColor', type: 'color', label: 'Subtitle Color' },
-      { name: 'subtitleFontSize', type: 'enum', label: 'Subtitle Font Size', options: ['sm', 'md', 'lg', 'xl', '2xl'] },
+      { name: 'subtitleFontSize', type: 'number', label: 'Subtitle Font Size', unit: 'px', min: 8, max: 120 },
       { name: 'subtitleFontWeight', type: 'enum', label: 'Subtitle Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
       { name: 'subtitleFontStyle', type: 'enum', label: 'Subtitle Font Style', options: ['normal', 'italic'] },
       // CTA Buttons

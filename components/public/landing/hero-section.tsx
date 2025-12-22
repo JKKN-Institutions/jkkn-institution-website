@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import { ChevronDown, Award, Shield, Medal, Calendar } from 'lucide-react'
+import { ChevronDown, Award, TrendingUp, Users, Calendar } from 'lucide-react'
 import { useParallax } from '@/lib/hooks/use-parallax'
 
 export function HeroSection() {
@@ -14,6 +14,13 @@ export function HeroSection() {
   useEffect(() => {
     setIsVisible(true)
   }, [])
+
+  const trustBadges = [
+    { icon: Award, text: "NAAC Accredited" },
+    { icon: TrendingUp, text: "95%+ Placements" },
+    { icon: Users, text: "100+ Top Recruiters" },
+    { icon: Calendar, text: "39 Years of Excellence" }
+  ]
 
   const scrollToContent = () => {
     window.scrollTo({
@@ -82,6 +89,37 @@ export function HeroSection() {
         >
           JKKN INSTITUTIONS
         </h1>
+
+        {/* Trust Badges */}
+        <div className={cn(
+          'flex flex-wrap justify-center items-center gap-3 max-w-3xl mx-auto mb-6 transition-all duration-1000 delay-300',
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        )}>
+          {trustBadges.map((badge, index) => {
+            const Icon = badge.icon
+            return (
+              <div
+                key={index}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/95 backdrop-blur-sm border border-white/30 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
+              >
+                <Icon className="w-4 h-4 text-primary flex-shrink-0" />
+                <span className="text-xs sm:text-sm font-semibold text-gray-900 whitespace-nowrap">
+                  {badge.text}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Subtitle */}
+        <p className={cn(
+          'text-base sm:text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto px-4 transition-all duration-1000 delay-350',
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        )}
+        style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}
+        >
+          Empowering Future Leaders Through Innovation and Excellence
+        </p>
 
         {/* CTA Buttons */}
         <div className={cn(

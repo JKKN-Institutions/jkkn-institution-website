@@ -6,7 +6,31 @@ import { useEffect, useState, useRef } from 'react'
 import { ChevronDown, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 
-// Font size mapping for Tailwind classes - RESPONSIVE
+/**
+ * Converts legacy enum font sizes to pixel values
+ * Handles backward compatibility for existing pages
+ */
+const getFontSize = (value: string | number | undefined): string => {
+  // Default fallback
+  if (value === undefined || value === null) return '24px'
+
+  // Handle legacy enum values from old pages
+  if (typeof value === 'string') {
+    const legacyMap: Record<string, string> = {
+      'sm': '14px',
+      'md': '16px',
+      'lg': '18px',
+      'xl': '20px',
+      '2xl': '24px'
+    }
+    return legacyMap[value] || '24px'
+  }
+
+  // Handle new numeric pixel values
+  return `${value}px`
+}
+
+// Font size mapping for Tailwind classes - RESPONSIVE (used for title only)
 const fontSizeClasses: Record<string, string> = {
   sm: 'text-xs sm:text-sm',
   md: 'text-sm sm:text-base',
@@ -40,7 +64,7 @@ export default function HeroSection({
   titleFontStyle = 'normal',
   // Subtitle styling props
   subtitleColor = '#e5e5e5',
-  subtitleFontSize = 'xl',
+  subtitleFontSize = 24,
   subtitleFontWeight = 'normal',
   subtitleFontStyle = 'normal',
   // Background props
@@ -233,12 +257,14 @@ export default function HeroSection({
             className={cn(
               'mt-4 max-w-2xl transition-all duration-1000 delay-300',
               alignment === 'center' && 'mx-auto',
-              fontSizeClasses[subtitleFontSize] || 'text-xl',
               fontWeightClasses[subtitleFontWeight] || 'font-normal',
               subtitleFontStyle === 'italic' && 'italic',
               isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             )}
-            style={{ color: subtitleColor }}
+            style={{
+              color: subtitleColor,
+              fontSize: getFontSize(subtitleFontSize)
+            }}
           >
             {subtitle}
           </p>

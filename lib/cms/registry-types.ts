@@ -48,6 +48,8 @@ export interface EditableProp {
   max?: number
   /** Step value for number type */
   step?: number
+  /** Unit suffix for number inputs (e.g., 'px', 'rem', '%') */
+  unit?: string
   /** Whether to show multiline textarea for string type */
   multiline?: boolean
   /** Placeholder text */
@@ -333,7 +335,7 @@ export const HeroSectionPropsSchema = z.object({
   titleFontStyle: z.enum(['normal', 'italic']).default('normal'),
   // Subtitle styling
   subtitleColor: z.string().default('#e5e5e5'),
-  subtitleFontSize: z.enum(['sm', 'md', 'lg', 'xl', '2xl']).default('xl'),
+  subtitleFontSize: z.number().min(8).max(120).default(24),
   subtitleFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('normal'),
   subtitleFontStyle: z.enum(['normal', 'italic']).default('normal'),
   // Background settings
