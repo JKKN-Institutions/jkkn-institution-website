@@ -5,15 +5,14 @@ import { cn } from '@/lib/utils'
 import {
   GraduationCap,
   Users,
-  Award,
+  Trophy,
   Building2,
-  Globe,
-  Briefcase,
+  TrendingUp,
 } from 'lucide-react'
 
 const stats = [
   {
-    icon: Award,
+    icon: Trophy,
     value: 74,
     suffix: '+',
     label: 'Years of Excellence',
@@ -21,7 +20,7 @@ const stats = [
     useSteppedAnimation: false,
   },
   {
-    icon: GraduationCap,
+    icon: Users,
     value: 100000,
     suffix: '+',
     label: 'Students Trained',
@@ -29,7 +28,7 @@ const stats = [
     useSteppedAnimation: true,
   },
   {
-    icon: Briefcase,
+    icon: TrendingUp,
     value: 95,
     suffix: '%',
     label: 'Placement Rate',
@@ -37,7 +36,7 @@ const stats = [
     useSteppedAnimation: false,
   },
   {
-    icon: Building2,
+    icon: GraduationCap,
     value: 50,
     suffix: '+',
     label: 'Courses Offered',
@@ -167,7 +166,7 @@ function StatCard({ stat, index, isVisible }: { stat: typeof stats[0], index: nu
       )}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
-      <div className="relative h-full p-6 lg:p-8 rounded-3xl bg-white/70 backdrop-blur-lg lg:backdrop-blur-xl border-2 border-white/60 shadow-xl shadow-gray-400/15 overflow-hidden transition-all duration-300 hover:bg-white/75 hover:shadow-2xl hover:shadow-green-500/25 hover:border-white/80 hover:-translate-y-2 focus-within:ring-2 focus-within:ring-green-500 focus-within:ring-offset-2 will-change-transform [@supports_not_(backdrop-filter:blur(0))]:bg-white/90">
+      <div className="relative h-full p-6 lg:p-8 rounded-3xl bg-white border-2 border-gray-100 shadow-xl shadow-gray-400/20 overflow-hidden transition-all duration-300 hover:bg-white hover:shadow-2xl hover:shadow-green-500/25 hover:border-green-200 hover:-translate-y-2 focus-within:ring-2 focus-within:ring-green-500 focus-within:ring-offset-2 will-change-transform">
         {/* Glow effect */}
         <div className="absolute -inset-px bg-gradient-to-r from-green-500/20 via-transparent to-emerald-500/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
@@ -184,7 +183,7 @@ function StatCard({ stat, index, isVisible }: { stat: typeof stats[0], index: nu
 
         <div className="relative">
           {/* Icon */}
-          <div className="inline-flex p-3 rounded-2xl bg-gradient-to-r from-green-400/30 to-emerald-500/30 backdrop-blur-sm mb-6 group-hover:scale-110 transition-all duration-300">
+          <div className="inline-flex p-3 rounded-2xl bg-gradient-to-r from-green-400/20 to-emerald-500/20 mb-6 group-hover:scale-110 transition-all duration-300">
             <stat.icon className="w-7 h-7 text-green-700" />
           </div>
 
@@ -266,7 +265,7 @@ export function StatsSection() {
           'text-center max-w-3xl mx-auto mb-16 lg:mb-20 transition-all duration-700',
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         )}>
-          <span className="inline-block px-4 py-1.5 rounded-full bg-green-100 text-green-700 text-sm font-semibold mb-4 border border-green-300 backdrop-blur-sm">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-green-100 text-green-700 text-sm font-semibold mb-4 border border-green-300">
             Our Impact
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">

@@ -6,7 +6,7 @@ import { DynamicForm } from './dynamic-form'
 import { getComponentEntry } from '@/lib/cms/component-registry'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Settings, Info, Paintbrush, FileText, Code, Sparkles } from 'lucide-react'
+import { Settings, Info, Paintbrush, FileText, Code, Sparkles, Eye, EyeOff } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import {
@@ -19,6 +19,7 @@ import {
 import { MotionControls, type MotionSettings } from '../elementor/motion-controls'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { Switch } from '@/components/ui/switch'
 
 // Style data structure matching the StyleControls components
 interface BlockStyles {
@@ -72,7 +73,7 @@ interface BlockStyles {
 }
 
 export function PropsPanel() {
-  const { selectedBlock, updateBlock, updateBlockFull } = usePageBuilder()
+  const { selectedBlock, updateBlock, updateBlockFull, updateBlockVisibility } = usePageBuilder()
   const [activeTab, setActiveTab] = useState<'content' | 'style' | 'motion' | 'advanced'>('content')
 
   // Parse styles from the block's custom props or use defaults
@@ -170,17 +171,36 @@ export function PropsPanel() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="p-4 border-b border-border">
+      <div className="p-4 border-b border-border space-y-3">
         <div className="flex items-center gap-3">
           <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-primary/10">
             <IconComponent className="h-4 w-4 text-primary" />
           </div>
-          <div>
+          <div className="flex-1">
             <h2 className="font-semibold text-foreground">{entry.displayName}</h2>
             {entry.description && (
               <p className="text-xs text-muted-foreground">{entry.description}</p>
             )}
           </div>
+        </div>
+
+        {/* Visibility Toggle */}
+        <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+          <div className="flex items-center gap-2">
+            {selectedBlock.is_visible ? (
+              <Eye className="h-4 w-4 text-primary" />
+            ) : (
+              <EyeOff className="h-4 w-4 text-muted-foreground" />
+            )}
+            <Label htmlFor="block-visibility" className="text-sm font-medium cursor-pointer">
+              Visible on page
+            </Label>
+          </div>
+          <Switch
+            id="block-visibility"
+            checked={selectedBlock.is_visible ?? true}
+            onCheckedChange={(checked) => updateBlockVisibility(selectedBlock.id, checked)}
+          />
         </div>
       </div>
 

@@ -77,7 +77,7 @@ export function AboutSection() {
           'text-center max-w-3xl mx-auto mb-16 lg:mb-20 transition-all duration-700',
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         )}>
-          <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/20 backdrop-blur-sm text-secondary text-sm font-semibold mb-4 border border-secondary/40">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/30 text-secondary text-sm font-semibold mb-4 border border-secondary/40">
             About JKKN
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
@@ -99,8 +99,8 @@ export function AboutSection() {
             'group relative transition-all duration-700 delay-100',
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           )}>
-            <div className="h-full bg-black/30 backdrop-blur-lg rounded-3xl p-8 border border-white/10 shadow-2xl shadow-primary/20 hover:shadow-primary/30 hover:bg-black/40 hover:border-white/20 transition-all">
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-secondary/30 to-yellow-500/30 w-fit mb-6 group-hover:scale-110 transition-transform duration-300 backdrop-blur-sm">
+            <div className="h-full bg-gray-800/90 rounded-3xl p-8 border border-white/20 shadow-2xl shadow-primary/20 hover:shadow-primary/30 hover:bg-gray-800 hover:border-primary/30 transition-all hover:-translate-y-1">
+              <div className="p-3 rounded-2xl bg-gradient-to-r from-secondary/40 to-yellow-500/40 w-fit mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
                 <Target className="w-8 h-8 text-secondary" />
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Our Mission</h3>
@@ -117,7 +117,7 @@ export function AboutSection() {
             'group relative transition-all duration-700 delay-200',
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           )}>
-            <div className="h-full bg-gradient-to-br from-secondary/20 to-yellow-500/20 backdrop-blur-lg rounded-3xl p-8 border border-secondary/30 hover:border-secondary/50 transition-all shadow-2xl shadow-secondary/20">
+            <div className="h-full bg-gradient-to-br from-secondary/30 to-yellow-500/30 rounded-3xl p-8 border border-secondary/40 hover:border-secondary/60 transition-all shadow-2xl shadow-secondary/20">
               <div className="p-3 rounded-2xl bg-gradient-to-r from-secondary to-yellow-400 w-fit mb-6 group-hover:scale-110 transition-transform duration-300">
                 <Eye className="w-8 h-8 text-gray-900" />
               </div>
@@ -135,8 +135,8 @@ export function AboutSection() {
             'group relative transition-all duration-700 delay-300',
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           )}>
-            <div className="h-full bg-black/30 backdrop-blur-lg rounded-3xl p-8 border border-white/10 shadow-2xl shadow-primary/20 hover:shadow-primary/30 hover:bg-black/40 hover:border-white/20 transition-all">
-              <div className="p-3 rounded-2xl bg-gradient-to-r from-secondary/30 to-yellow-500/30 w-fit mb-6 group-hover:scale-110 transition-transform duration-300 backdrop-blur-sm">
+            <div className="h-full bg-gray-800/90 rounded-3xl p-8 border border-white/20 shadow-2xl shadow-primary/20 hover:shadow-primary/30 hover:bg-gray-800 hover:border-white/30 transition-all">
+              <div className="p-3 rounded-2xl bg-gradient-to-r from-secondary/40 to-yellow-500/40 w-fit mb-6 group-hover:scale-110 transition-transform duration-300">
                 <Heart className="w-8 h-8 text-secondary" />
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Our Values</h3>
@@ -160,9 +160,9 @@ export function AboutSection() {
               )}
               style={{ transitionDelay: `${400 + index * 100}ms` }}
             >
-              <div className="h-full p-6 rounded-2xl bg-black/30 backdrop-blur-lg border border-white/10 shadow-xl shadow-primary/10 hover:shadow-2xl hover:shadow-primary/20 hover:border-white/20 hover:bg-black/40 transition-all duration-300 hover:-translate-y-2">
+              <div className="h-full p-6 rounded-2xl bg-gray-800/90 border border-white/20 shadow-xl shadow-primary/10 hover:shadow-2xl hover:shadow-primary/20 hover:border-white/30 hover:bg-gray-800 transition-all duration-300 hover:-translate-y-2">
                 <div className={cn(
-                  'inline-flex p-3 rounded-xl mb-4 bg-gradient-to-br backdrop-blur-sm',
+                  'inline-flex p-3 rounded-xl mb-4 bg-gradient-to-br',
                   value.color
                 )}>
                   <value.icon className="w-6 h-6 text-gray-900" />
@@ -181,7 +181,7 @@ export function AboutSection() {
         )}>
           <Link
             href="/about"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-semibold text-white bg-black/30 backdrop-blur-lg border-2 border-white/20 hover:border-secondary hover:bg-black/40 hover:shadow-lg hover:shadow-secondary/30 transition-all duration-300"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-semibold text-white bg-gray-800/90 border-2 border-white/30 hover:border-secondary hover:bg-gray-800 hover:shadow-lg hover:shadow-secondary/30 transition-all duration-300"
           >
             Learn More About Us
             <ArrowRight className="w-5 h-5" />

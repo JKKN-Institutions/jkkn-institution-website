@@ -33,18 +33,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Loader2 } from 'lucide-react'
+import { Loader2, AlertTriangle } from 'lucide-react'
 import { toast } from 'sonner'
 import { updatePage } from '@/app/actions/cms/pages'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { createClient } from '@/lib/supabase/client'
 
 const pageSettingsSchema = z.object({
   title: z.string().min(1, 'Title is required').max(200, 'Title is too long'),
   slug: z
     .string()
     .min(1, 'Slug is required')
-    .max(200, 'Slug is too long')
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug must be lowercase with hyphens only'),
+    .max(500, 'Slug is too long') // Increased for hierarchical paths
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/,
+      'Slug must be lowercase with hyphens, paths separated by /'
+    ),
   description: z.string().optional(),
+  parent_id: z.string().uuid().nullable().optional(),
   visibility: z.enum(['public', 'private', 'password_protected']),
   sort_order: z.number().min(1, 'Order must be at least 1').optional(),
   show_in_navigation: z.boolean(),
@@ -75,6 +81,8 @@ interface PageSettingsModalProps {
 export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: PageSettingsModalProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [childrenCount, setChildrenCount] = useState(0)
+  const [parentPages, setParentPages] = useState<Array<{ id: string; title: string; slug: string }>>([])
 
   // Check if this is a child page
   const isChildPage = !!page.parent_id
@@ -85,6 +93,7 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
       title: page.title,
       slug: page.slug,
       description: page.description || '',
+      parent_id: page.parent_id || null,
       visibility: page.visibility as 'public' | 'private' | 'password_protected',
       sort_order: page.sort_order ?? 1,
       show_in_navigation: page.show_in_navigation ?? true,
@@ -93,12 +102,42 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
     },
   })
 
+  // Fetch children count and parent pages
+  useEffect(() => {
+    async function fetchData() {
+      const supabase = createClient()
+
+      // Check for children
+      const { data: children } = await supabase
+        .from('cms_pages')
+        .select('id')
+        .eq('parent_id', page.id)
+
+      setChildrenCount(children?.length || 0)
+
+      // Fetch potential parent pages (excluding self and descendants)
+      const { data: pages } = await supabase
+        .from('cms_pages')
+        .select('id, title, slug')
+        .is('parent_id', null) // Only root pages can be parents for now
+        .neq('id', page.id) // Exclude self
+        .order('title')
+
+      setParentPages(pages || [])
+    }
+
+    if (open) {
+      fetchData()
+    }
+  }, [open, page.id])
+
   // Reset form when page data changes
   useEffect(() => {
     form.reset({
       title: page.title,
       slug: page.slug,
       description: page.description || '',
+      parent_id: page.parent_id || null,
       visibility: page.visibility as 'public' | 'private' | 'password_protected',
       sort_order: page.sort_order ?? 1,
       show_in_navigation: page.show_in_navigation ?? true,
@@ -134,6 +173,7 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
       formData.append('title', data.title)
       formData.append('slug', data.slug)
       formData.append('description', data.description || '')
+      formData.append('parent_id', data.parent_id || '')
       formData.append('visibility', data.visibility)
       formData.append('sort_order', String(data.sort_order ?? 1))
       formData.append('show_in_navigation', String(data.show_in_navigation))
@@ -228,6 +268,55 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
                     <FormDescription className="text-xs">
                       Used for SEO if no meta description is set
                     </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Current Full Path Display */}
+              <div className="p-3 bg-muted rounded-md">
+                <p className="text-xs text-muted-foreground mb-1">Current Full Path:</p>
+                <p className="text-sm font-mono text-foreground break-all">/{page.slug}</p>
+              </div>
+
+              <FormField
+                control={form.control}
+                name="parent_id"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Parent Page</FormLabel>
+                    <Select
+                      value={field.value || 'none'}
+                      onValueChange={(val) => field.onChange(val === 'none' ? null : val)}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="None (Root level)" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="none">None (Root level page)</SelectItem>
+                        {parentPages.map((p) => (
+                          <SelectItem key={p.id} value={p.id}>
+                            {p.title} (/{p.slug})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormDescription className="text-xs">
+                      Nest this page under another page
+                    </FormDescription>
+
+                    {childrenCount > 0 && field.value !== page.parent_id && (
+                      <Alert variant="default" className="mt-2 border-yellow-200 bg-yellow-50 dark:border-yellow-900 dark:bg-yellow-950">
+                        <AlertTriangle className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
+                        <AlertDescription className="text-xs text-yellow-800 dark:text-yellow-200">
+                          This page has {childrenCount} child page{childrenCount !== 1 ? 's' : ''}.
+                          Changing the parent will update URLs for all descendants.
+                        </AlertDescription>
+                      </Alert>
+                    )}
+
                     <FormMessage />
                   </FormItem>
                 )}

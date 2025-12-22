@@ -104,7 +104,7 @@ export function ProgramsSection() {
             'max-w-2xl transition-all duration-700',
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           )}>
-            <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/20 backdrop-blur-sm text-secondary text-sm font-semibold mb-4 border border-secondary/40">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/30 text-secondary text-sm font-semibold mb-4 border border-secondary/40">
               Academic Programs
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
@@ -122,7 +122,7 @@ export function ProgramsSection() {
           <Link
             href="/academics"
             className={cn(
-              'hidden lg:inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-black/30 backdrop-blur-lg border-2 border-white/20 hover:border-secondary hover:bg-black/40 hover:shadow-lg hover:shadow-secondary/30 transition-all duration-300',
+              'hidden lg:inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-gray-800/90 border-2 border-white/30 hover:border-secondary hover:bg-gray-800 hover:shadow-lg hover:shadow-secondary/30 transition-all duration-300',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             )}
             style={{ transitionDelay: '200ms' }}
@@ -146,19 +146,22 @@ export function ProgramsSection() {
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              <div className="relative h-full p-6 lg:p-8 rounded-3xl bg-black/30 backdrop-blur-lg border border-white/10 shadow-2xl shadow-primary/10 overflow-hidden transition-all duration-500 group-hover:shadow-primary/30 group-hover:border-white/20 group-hover:bg-black/40 group-hover:-translate-y-2">
+              <div className="relative h-full p-6 lg:p-8 rounded-3xl bg-gray-800/90 border border-white/20 shadow-2xl shadow-primary/10 overflow-hidden transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/30 group-hover:border-primary/30 group-hover:bg-gray-800 group-hover:-translate-y-2 group-hover:scale-105">
                 {/* Background Gradient on Hover */}
                 <div className={cn(
                   'absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-500',
                   program.color
                 )} />
 
-                {/* Icon */}
-                <div className={cn(
-                  'relative inline-flex p-4 rounded-2xl mb-6 bg-gradient-to-br transition-transform duration-500 group-hover:scale-110',
-                  program.color
-                )}>
-                  <program.icon className="w-8 h-8 text-gray-900" />
+                {/* Icon with circular background */}
+                <div className="relative mb-6">
+                  <div className="absolute inset-0 bg-white/5 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className={cn(
+                    'relative inline-flex p-4 rounded-2xl bg-gradient-to-br transition-all duration-500 group-hover:scale-110 group-hover:rotate-6',
+                    program.color
+                  )}>
+                    <program.icon className="w-8 h-8 text-gray-900" />
+                  </div>
                 </div>
 
                 {/* Content */}

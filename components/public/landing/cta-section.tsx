@@ -29,22 +29,8 @@ export function CTASection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-b from-gray-900 via-[#085032]/50 to-gray-900"
+      className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-b from-[#f0f9f4] to-[#faf8f0]"
     >
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-primary/20 to-emerald-700/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-primary/15 rounded-full blur-3xl" />
-      </div>
-
-      {/* Grid Pattern */}
-      <div
-        className="absolute inset-0 opacity-[0.05]"
-        style={{
-          backgroundImage: `linear-gradient(rgba(15,143,86,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(15,143,86,0.3) 1px, transparent 1px)`,
-          backgroundSize: '50px 50px'
-        }}
-      />
 
       <div className="relative container mx-auto px-4 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -54,7 +40,7 @@ export function CTASection() {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           )}>
             <div>
-              <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/20 backdrop-blur-sm text-secondary text-sm font-semibold mb-4 border border-secondary/40">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/30 text-secondary text-sm font-semibold mb-4 border border-secondary/40">
                 Start Your Journey
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
@@ -71,8 +57,8 @@ export function CTASection() {
 
             {/* Key Dates */}
             <div className="space-y-4">
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-black/30 backdrop-blur-lg border border-white/10 shadow-lg shadow-primary/10">
-                <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/30 to-yellow-500/30 backdrop-blur-sm">
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-800/90 border border-white/20 shadow-lg shadow-primary/10">
+                <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/40 to-yellow-500/40">
                   <Calendar className="w-6 h-6 text-secondary" />
                 </div>
                 <div>
@@ -80,8 +66,8 @@ export function CTASection() {
                   <p className="text-sm text-gray-400">March 31, 2025</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-black/30 backdrop-blur-lg border border-white/10 shadow-lg shadow-primary/10">
-                <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/30 to-yellow-500/30 backdrop-blur-sm">
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-800/90 border border-white/20 shadow-lg shadow-primary/10">
+                <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/40 to-yellow-500/40">
                   <Clock className="w-6 h-6 text-secondary" />
                 </div>
                 <div>
@@ -107,7 +93,7 @@ export function CTASection() {
               </Link>
               <Link
                 href="/admissions/brochure"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-white bg-black/30 backdrop-blur-lg border-2 border-white/20 hover:border-secondary hover:bg-black/40 hover:shadow-lg hover:shadow-secondary/30 transition-all duration-300"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-white bg-gray-800/90 border-2 border-white/30 hover:border-secondary hover:bg-gray-800 hover:shadow-lg hover:shadow-secondary/30 transition-all duration-300"
               >
                 Download Brochure
               </Link>
@@ -119,15 +105,15 @@ export function CTASection() {
             'transition-all duration-700 delay-200',
             isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
           )}>
-            <div className="bg-black/30 backdrop-blur-lg rounded-3xl p-8 lg:p-10 border border-white/10 shadow-2xl shadow-primary/20">
+            <div className="bg-gray-800/90 rounded-3xl p-8 lg:p-10 border border-white/20 shadow-2xl shadow-primary/20">
               <h3 className="text-xl font-bold text-white mb-6">Get in Touch</h3>
 
               <div className="space-y-6">
                 <a
                   href="tel:+914222661100"
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-black/30 hover:bg-black/40 border border-white/10 hover:border-secondary/30 transition-all duration-300 group"
+                  className="flex items-center gap-4 p-4 rounded-2xl bg-gray-700/80 hover:bg-gray-700 border border-white/20 hover:border-secondary/30 transition-all duration-300 group"
                 >
-                  <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/30 to-yellow-500/30 group-hover:from-secondary/40 group-hover:to-yellow-500/40 transition-colors backdrop-blur-sm">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/40 to-yellow-500/40 group-hover:from-secondary/50 group-hover:to-yellow-500/50 transition-colors">
                     <Phone className="w-6 h-6 text-secondary" />
                   </div>
                   <div>
@@ -138,9 +124,9 @@ export function CTASection() {
 
                 <a
                   href="mailto:admissions@jkkn.ac.in"
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-black/30 hover:bg-black/40 border border-white/10 hover:border-secondary/30 transition-all duration-300 group"
+                  className="flex items-center gap-4 p-4 rounded-2xl bg-gray-700/80 hover:bg-gray-700 border border-white/20 hover:border-secondary/30 transition-all duration-300 group"
                 >
-                  <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/30 to-yellow-500/30 group-hover:from-secondary/40 group-hover:to-yellow-500/40 transition-colors backdrop-blur-sm">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/40 to-yellow-500/40 group-hover:from-secondary/50 group-hover:to-yellow-500/50 transition-colors">
                     <Mail className="w-6 h-6 text-secondary" />
                   </div>
                   <div>
@@ -149,8 +135,8 @@ export function CTASection() {
                   </div>
                 </a>
 
-                <div className="flex items-start gap-4 p-4 rounded-2xl bg-black/30 border border-white/10">
-                  <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/30 to-yellow-500/30 backdrop-blur-sm">
+                <div className="flex items-start gap-4 p-4 rounded-2xl bg-gray-700/80 border border-white/20">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-secondary/40 to-yellow-500/40">
                     <MapPin className="w-6 h-6 text-secondary" />
                   </div>
                   <div>

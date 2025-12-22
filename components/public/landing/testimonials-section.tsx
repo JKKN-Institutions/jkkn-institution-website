@@ -104,7 +104,7 @@ export function TestimonialsSection() {
           'text-center max-w-3xl mx-auto mb-16 lg:mb-20 transition-all duration-700',
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         )}>
-          <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/20 backdrop-blur-sm text-secondary text-sm font-semibold mb-4 border border-secondary/40">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/30 text-secondary text-sm font-semibold mb-4 border border-secondary/40">
             Success Stories
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
@@ -124,7 +124,7 @@ export function TestimonialsSection() {
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         )}>
           {/* Main Card */}
-          <div className="relative bg-black/30 backdrop-blur-lg rounded-3xl shadow-2xl shadow-primary/20 border border-white/10 p-8 lg:p-12 overflow-hidden">
+          <div className="relative bg-gray-800/90 rounded-3xl shadow-2xl shadow-primary/20 border border-white/20 p-8 lg:p-12 overflow-hidden">
             {/* Quote Icon */}
             <div className="absolute top-6 right-6 lg:top-8 lg:right-8">
               <Quote className="w-16 h-16 lg:w-24 lg:h-24 text-secondary/30" />
@@ -169,21 +169,21 @@ export function TestimonialsSection() {
               ))}
             </div>
 
-            {/* Navigation */}
-            <div className="absolute bottom-6 right-6 lg:bottom-8 lg:right-8 flex items-center gap-2">
+            {/* Navigation - Enhanced Styling */}
+            <div className="absolute bottom-6 right-6 lg:bottom-8 lg:right-8 flex items-center gap-3">
               <button
                 onClick={goToPrev}
-                className="p-2 rounded-xl bg-black/40 backdrop-blur-sm border border-white/10 text-white hover:bg-gradient-to-r hover:from-secondary hover:to-yellow-400 hover:text-gray-900 transition-all"
+                className="group p-3 rounded-xl bg-gray-700/80 border border-white/30 text-white hover:bg-gradient-to-r hover:from-secondary hover:to-yellow-400 hover:text-gray-900 hover:border-transparent hover:scale-110 hover:shadow-lg hover:shadow-secondary/30 transition-all duration-300"
                 aria-label="Previous testimonial"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
               </button>
               <button
                 onClick={goToNext}
-                className="p-2 rounded-xl bg-black/40 backdrop-blur-sm border border-white/10 text-white hover:bg-gradient-to-r hover:from-secondary hover:to-yellow-400 hover:text-gray-900 transition-all"
+                className="group p-3 rounded-xl bg-gray-700/80 border border-white/30 text-white hover:bg-gradient-to-r hover:from-secondary hover:to-yellow-400 hover:text-gray-900 hover:border-transparent hover:scale-110 hover:shadow-lg hover:shadow-secondary/30 transition-all duration-300"
                 aria-label="Next testimonial"
               >
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
               </button>
             </div>
           </div>

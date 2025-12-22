@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Award, Shield, Medal, Calendar } from 'lucide-react'
+import { useParallax } from '@/lib/hooks/use-parallax'
 
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false)

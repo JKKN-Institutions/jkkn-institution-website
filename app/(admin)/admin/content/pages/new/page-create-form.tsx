@@ -76,6 +76,7 @@ export function PageCreateForm({ parentPages, templates }: PageCreateFormProps) 
   const [isHomepage, setIsHomepage] = useState(false)
   const [showInNavigation, setShowInNavigation] = useState(true)
   const [externalUrl, setExternalUrl] = useState('')
+  const [slugPreview, setSlugPreview] = useState<string>('')
 
   // Auto-generate slug from title
   useEffect(() => {
@@ -83,6 +84,21 @@ export function PageCreateForm({ parentPages, templates }: PageCreateFormProps) 
       setSlug(generateSlug(title))
     }
   }, [title, slugManuallyEdited])
+
+  // Update slug preview when parent or slug changes
+  useEffect(() => {
+    if (!parentId || parentId === 'none' || parentId === '') {
+      setSlugPreview(`/${slug}`)
+      return
+    }
+
+    const parent = parentPages.find((p) => p.id === parentId)
+    if (parent && slug) {
+      setSlugPreview(`/${parent.slug}/${slug}`)
+    } else if (slug) {
+      setSlugPreview(`/${slug}`)
+    }
+  }, [parentId, slug, parentPages])
 
   useEffect(() => {
     if (state.success && state.data) {
@@ -172,7 +188,9 @@ export function PageCreateForm({ parentPages, templates }: PageCreateFormProps) 
           </p>
         )}
         <p id="slug-help" className="text-xs text-muted-foreground">
-          Lowercase letters, numbers, and hyphens only. Auto-generated from title.
+          {parentId && parentId !== 'none'
+            ? 'Enter only the page segment (parent path will be added automatically)'
+            : 'Lowercase letters, numbers, and hyphens only. Auto-generated from title.'}
         </p>
       </div>
 
@@ -215,6 +233,12 @@ export function PageCreateForm({ parentPages, templates }: PageCreateFormProps) 
         <p className="text-xs text-muted-foreground">
           Nest this page under another page for hierarchical structure
         </p>
+        {slugPreview && slug && (
+          <div className="mt-2 p-3 bg-primary/5 rounded-md border border-primary/20">
+            <p className="text-xs text-muted-foreground mb-1">Final URL Preview:</p>
+            <p className="text-sm font-mono text-primary break-all">{slugPreview}</p>
+          </div>
+        )}
       </div>
 
       {/* Template Field */}

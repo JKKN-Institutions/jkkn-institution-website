@@ -6,6 +6,15 @@ import { z } from 'zod'
 import { logActivity } from '@/lib/utils/activity-logger'
 import { checkPermission } from '../permissions'
 import { NotificationHelpers } from '@/lib/utils/notification-sender'
+import {
+  extractSlugSegment,
+  validateSlugHierarchy,
+  validateSlugDepth,
+  validateHomepageParent,
+  preventCircularParent,
+  updateChildSlugs,
+  getPageChildren,
+} from '@/lib/utils/page-hierarchy'
 
 // Validation schemas
 const CreatePageSchema = z.object({
@@ -13,8 +22,11 @@ const CreatePageSchema = z.object({
   slug: z
     .string()
     .min(1, 'Slug is required')
-    .max(200, 'Slug is too long')
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug must be lowercase with hyphens only'),
+    .max(500, 'Slug is too long') // Increased for hierarchical paths
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/,
+      'Slug must be lowercase with hyphens, paths separated by /'
+    ),
   description: z.string().optional(),
   parent_id: z.string().uuid().nullable().optional(),
   template_id: z.string().uuid().nullable().optional(),
@@ -719,19 +731,56 @@ export async function createPage(
     return { success: false, message: 'You do not have permission to create pages' }
   }
 
-  // Validate input
+  // Get raw input values
+  const rawSlug = formData.get('slug') as string
+  const parentId = formData.get('parent_id') as string | null
+  const isHomepage = formData.get('is_homepage') === 'true'
+
+  // Build hierarchical slug if parent exists
+  let finalSlug = rawSlug
+
+  if (parentId && parentId !== 'none' && parentId !== '') {
+    const { data: parent } = await supabase
+      .from('cms_pages')
+      .select('slug')
+      .eq('id', parentId)
+      .single()
+
+    if (!parent) {
+      return { success: false, message: 'Parent page not found' }
+    }
+
+    // Prepend parent path if not already included
+    if (!rawSlug.startsWith(`${parent.slug}/`)) {
+      finalSlug = `${parent.slug}/${rawSlug}`
+    }
+  }
+
+  // Validate homepage parent constraint
+  const homepageValidation = validateHomepageParent(isHomepage, parentId)
+  if (!homepageValidation.valid) {
+    return { success: false, message: homepageValidation.error }
+  }
+
+  // Validate slug depth
+  const depthValidation = validateSlugDepth(finalSlug)
+  if (!depthValidation.valid) {
+    return { success: false, message: depthValidation.error }
+  }
+
+  // Validate input with hierarchical slug
   const validation = CreatePageSchema.safeParse({
     title: formData.get('title'),
-    slug: formData.get('slug'),
+    slug: finalSlug,
     description: formData.get('description') || undefined,
-    parent_id: formData.get('parent_id') || null,
+    parent_id: parentId || null,
     template_id: formData.get('template_id') || null,
     status: formData.get('status') || 'draft',
     visibility: formData.get('visibility') || 'public',
     featured_image: formData.get('featured_image') || null,
     show_in_navigation: formData.get('show_in_navigation') === 'true',
     navigation_label: formData.get('navigation_label') || undefined,
-    is_homepage: formData.get('is_homepage') === 'true',
+    is_homepage: isHomepage,
     external_url: formData.get('external_url') || null,
   })
 
@@ -743,15 +792,16 @@ export async function createPage(
     }
   }
 
-  // Check if slug already exists
-  const { data: existing } = await supabase
-    .from('cms_pages')
-    .select('id')
-    .eq('slug', validation.data.slug)
-    .single()
+  // Validate hierarchical slug structure
+  const slugValidation = await validateSlugHierarchy(
+    finalSlug,
+    parentId || null,
+    null,
+    supabase
+  )
 
-  if (existing) {
-    return { success: false, message: 'A page with this slug already exists' }
+  if (!slugValidation.valid) {
+    return { success: false, message: slugValidation.error }
   }
 
   // If setting as homepage, unset any existing homepage
@@ -864,15 +914,93 @@ export async function updatePage(
     return { success: false, message: 'You do not have permission to edit pages' }
   }
 
+  // Get page ID and new values
+  const pageId = formData.get('id') as string
+  const newSlug = formData.get('slug') as string | undefined
+  const newParentId = formData.get('parent_id') as string | null
+  const isHomepage = formData.get('is_homepage') === 'true'
+
+  // Get current page state
+  const { data: currentPage, error: fetchError } = await supabase
+    .from('cms_pages')
+    .select('slug, parent_id')
+    .eq('id', pageId)
+    .single()
+
+  if (fetchError || !currentPage) {
+    return { success: false, message: 'Page not found' }
+  }
+
+  // Detect if parent is changing
+  const parentChanged = currentPage.parent_id !== newParentId
+
+  // Prevent circular parent references
+  if (newParentId && newParentId !== 'none' && newParentId !== '') {
+    const circularCheck = await preventCircularParent(pageId, newParentId, supabase)
+    if (!circularCheck.valid) {
+      return { success: false, message: circularCheck.error }
+    }
+  }
+
+  // Build hierarchical slug if parent changed or slug changed
+  let finalSlug = newSlug || currentPage.slug
+
+  if (parentChanged && newSlug) {
+    if (newParentId && newParentId !== 'none' && newParentId !== '') {
+      const { data: parent } = await supabase
+        .from('cms_pages')
+        .select('slug')
+        .eq('id', newParentId)
+        .single()
+
+      if (!parent) {
+        return { success: false, message: 'Parent page not found' }
+      }
+
+      // Build hierarchical slug
+      const segment = extractSlugSegment(newSlug)
+      finalSlug = `${parent.slug}/${segment}`
+    } else {
+      // Moved to root: use segment only
+      finalSlug = extractSlugSegment(newSlug)
+    }
+  }
+
+  // Validate homepage parent constraint
+  const homepageValidation = validateHomepageParent(isHomepage, newParentId)
+  if (!homepageValidation.valid) {
+    return { success: false, message: homepageValidation.error }
+  }
+
+  // Validate slug depth if slug is being updated
+  if (finalSlug !== currentPage.slug) {
+    const depthValidation = validateSlugDepth(finalSlug)
+    if (!depthValidation.valid) {
+      return { success: false, message: depthValidation.error }
+    }
+
+    // Validate hierarchical slug structure
+    const slugValidation = await validateSlugHierarchy(
+      finalSlug,
+      newParentId || null,
+      pageId,
+      supabase
+    )
+
+    if (!slugValidation.valid) {
+      return { success: false, message: slugValidation.error }
+    }
+  }
+
   // Validate input
   const sortOrderValue = formData.get('sort_order')
   const externalUrlValue = formData.get('external_url')
   const validation = UpdatePageSchema.safeParse({
-    id: formData.get('id'),
+    id: pageId,
     title: formData.get('title') || undefined,
-    slug: formData.get('slug') || undefined,
+    slug: finalSlug,
     description: formData.get('description') || undefined,
-    parent_id: formData.get('parent_id') || null,
+    parent_id: newParentId || null,
     status: formData.get('status') || undefined,
     visibility: formData.get('visibility') || undefined,
     featured_image: formData.get('featured_image') || null,
@@ -882,10 +1010,7 @@ export async function updatePage(
         ? formData.get('show_in_navigation') === 'true'
         : undefined,
     navigation_label: formData.get('navigation_label') || undefined,
-    is_homepage:
-      formData.get('is_homepage') !== null
-        ? formData.get('is_homepage') === 'true'
-        : undefined,
+    is_homepage: isHomepage || undefined,
     external_url: externalUrlValue !== null ? (externalUrlValue || null) : undefined,
   })
 
@@ -898,20 +1023,6 @@ export async function updatePage(
   }
 
   const { id, ...updateData } = validation.data
-
-  // Check if slug is being changed and already exists
-  if (updateData.slug) {
-    const { data: existing } = await supabase
-      .from('cms_pages')
-      .select('id')
-      .eq('slug', updateData.slug)
-      .neq('id', id)
-      .single()
-
-    if (existing) {
-      return { success: false, message: 'A page with this slug already exists' }
-    }
-  }
 
   // If setting as homepage, unset any existing homepage
   if (updateData.is_homepage) {
@@ -933,6 +1044,22 @@ export async function updatePage(
     return { success: false, message: 'Failed to update page. Please try again.' }
   }
 
+  // Cascade slug updates to children if slug changed
+  let childrenAffected = 0
+  if (currentPage.slug !== finalSlug) {
+    try {
+      const children = await getPageChildren(id, supabase)
+      childrenAffected = children.length
+
+      if (childrenAffected > 0) {
+        await updateChildSlugs(id, finalSlug, supabase)
+      }
+    } catch (cascadeError) {
+      console.error('Error cascading slug updates:', cascadeError)
+      // Don't fail the update - children can be updated manually if needed
+    }
+  }
+
   // Log activity
   await logActivity({
     userId: user.id,
@@ -940,7 +1067,12 @@ export async function updatePage(
     module: 'cms',
     resourceType: 'page',
     resourceId: id,
-    metadata: { changes: updateData },
+    metadata: {
+      changes: updateData,
+      slug_changed: currentPage.slug !== finalSlug,
+      children_affected: childrenAffected,
+      parent_changed: parentChanged,
+    },
   })
 
   revalidatePath('/admin/content/pages')

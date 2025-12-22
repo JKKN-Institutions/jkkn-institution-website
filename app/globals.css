@@ -108,10 +108,10 @@
   --sidebar-border: rgba(11, 109, 65, 0.15);
   --sidebar-ring: #0b6d41;
 
-  /* Glassmorphism variables */
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.3);
-  --glass-shadow: 0 8px 32px rgba(11, 109, 65, 0.1);
+  /* Glassmorphism variables - REMOVED (no longer using glassmorphism on landing page) */
+  /* --glass-bg: rgba(255, 255, 255, 0.7); */
+  /* --glass-border: rgba(255, 255, 255, 0.3); */
+  /* --glass-shadow: 0 8px 32px rgba(11, 109, 65, 0.1); */
 }
 
 .dark {
@@ -293,10 +293,10 @@
 }
 
 @layer components {
-  /* ===== GLASSMORPHISM DESIGN SYSTEM ===== */
+  /* ===== GLASSMORPHISM DESIGN SYSTEM - COMMENTED OUT (No longer using on landing page) ===== */
 
   /* Glass Card - Standard */
-  .glass-card {
+  /* .glass-card {
     background: var(--glass-bg);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -308,10 +308,10 @@
   .glass-card:hover {
     box-shadow: 0 12px 40px rgba(11, 109, 65, 0.12);
     transform: translateY(-2px);
-  }
+  } */
 
   /* Glass Card - Elevated (for widgets, panels) */
-  .glass-card-elevated {
+  /* .glass-card-elevated {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -330,10 +330,10 @@
       0 4px 6px rgba(0, 0, 0, 0.1),
       0 10px 20px rgba(0, 0, 0, 0.2),
       0 20px 40px rgba(0, 0, 0, 0.15);
-  }
+  } */
 
   /* Glass Panel - For main content areas */
-  .glass-panel {
+  /* .glass-panel {
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
@@ -344,10 +344,10 @@
   .dark .glass-panel {
     background: rgba(26, 26, 26, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.06);
-  }
+  } */
 
   /* Glassmorphism Sidebar - Premium */
-  .glass-sidebar {
+  /* .glass-sidebar {
     background: linear-gradient(
       180deg,
       rgba(255, 255, 255, 0.95) 0%,
@@ -367,10 +367,10 @@
     );
     border-right: 1px solid rgba(255, 255, 255, 0.06);
     box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3);
-  }
+  } */
 
   /* Glassmorphism Header - Floating */
-  .glass-header {
+  /* .glass-header {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -382,10 +382,10 @@
     background: rgba(26, 26, 26, 0.9);
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  }
+  } */
 
   /* Glass Button - Interactive */
-  .glass-button {
+  /* .glass-button {
     @apply relative overflow-hidden rounded-xl;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
@@ -402,10 +402,10 @@
 
   .glass-button:active {
     transform: scale(0.98);
-  }
+  } */
 
   /* Glass Input - Form elements */
-  .glass-input {
+  /* .glass-input {
     background: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -428,10 +428,10 @@
     background: rgba(38, 38, 38, 0.7);
     border-color: rgba(15, 143, 86, 0.4);
     box-shadow: 0 0 0 3px rgba(15, 143, 86, 0.15);
-  }
+  } */
 
   /* Glass Badge */
-  .glass-badge {
+  /* .glass-badge {
     background: rgba(11, 109, 65, 0.1);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -442,16 +442,16 @@
   .dark .glass-badge {
     background: rgba(15, 143, 86, 0.15);
     border: 1px solid rgba(15, 143, 86, 0.25);
-  }
+  } */
 
   /* Glass Tooltip */
-  .glass-tooltip {
+  /* .glass-tooltip {
     background: rgba(26, 26, 26, 0.9);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     @apply rounded-lg px-3 py-2 text-sm text-white shadow-xl;
-  }
+  } */
 
   /* Glass Divider */
   .glass-divider {
@@ -642,8 +642,8 @@
     inset: -6px;
   }
 
-  /* Glassmorphic card on dark green */
-  .glass-card-dark {
+  /* Glassmorphic card on dark green - COMMENTED OUT */
+  /* .glass-card-dark {
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -654,7 +654,7 @@
   .glass-card-dark:hover {
     background: rgba(255, 255, 255, 0.12);
     border-color: rgba(255, 255, 255, 0.2);
-  }
+  } */
 
   /* Section heading with gold accent */
   .section-heading {
@@ -793,13 +793,13 @@
     display: none;
   }
 
-  /* Glassmorphism utility */
-  .glass {
+  /* Glassmorphism utility - COMMENTED OUT */
+  /* .glass {
     background: var(--glass-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border);
-  }
+  } */
 
   /* Brand shadow */
   .shadow-brand {

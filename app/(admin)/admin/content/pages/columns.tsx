@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -157,7 +158,17 @@ export const createColumns = (handlers: PageActionHandlers = {}): ColumnDef<Page
                 </Badge>
               )}
             </div>
-            <span className="text-sm text-muted-foreground">/{page.slug}</span>
+            <div className="text-sm text-muted-foreground flex items-center gap-1">
+              <span>/</span>
+              {page.slug.split('/').map((segment, i, arr) => (
+                <React.Fragment key={i}>
+                  <span className={i === arr.length - 1 ? 'font-medium text-foreground' : ''}>
+                    {segment}
+                  </span>
+                  {i < arr.length - 1 && <span className="text-muted-foreground/50">/</span>}
+                </React.Fragment>
+              ))}
+            </div>
           </div>
         </div>
       )
