@@ -7,8 +7,7 @@ import { getComponentEntry } from '@/lib/cms/component-registry'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
-import { SheetClose } from '@/components/ui/sheet'
-import { Settings, Info, Paintbrush, FileText, Code, Sparkles, Eye, EyeOff, X } from 'lucide-react'
+import { Settings, Info, Paintbrush, FileText, Code, Sparkles, Eye, EyeOff } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import {
@@ -186,11 +185,7 @@ export function PropsPanel() {
               )}
             </div>
           </div>
-          <SheetClose asChild>
-            <Button variant="ghost" size="icon">
-              <X className="h-4 w-4" />
-            </Button>
-          </SheetClose>
+          {/* Close button removed - SheetContent has built-in close button */}
         </div>
 
         {/* Visibility Toggle - mobile */}

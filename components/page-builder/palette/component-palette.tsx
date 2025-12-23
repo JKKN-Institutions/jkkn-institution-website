@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
-import { SheetClose } from '@/components/ui/sheet'
 import {
   Tooltip,
   TooltipContent,
@@ -35,7 +34,6 @@ import {
   Puzzle,
   Library,
   Component,
-  X,
 } from 'lucide-react'
 import { BrowseComponentsModal } from '@/components/page-builder/modals/browse-components-modal'
 import * as LucideIcons from 'lucide-react'
@@ -348,11 +346,7 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
       <div className="border-b border-border p-4 lg:hidden flex-shrink-0">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Components</h2>
-          <SheetClose asChild>
-            <Button variant="ghost" size="icon">
-              <X className="h-4 w-4" />
-            </Button>
-          </SheetClose>
+          {/* Close button removed - SheetContent has built-in close button */}
         </div>
       </div>
 
