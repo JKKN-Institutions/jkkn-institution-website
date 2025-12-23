@@ -13,16 +13,6 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet'
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import {
   History,
   RotateCcw,
   Trash2,
@@ -33,6 +23,7 @@ import {
   Check,
   Save,
   GitCompare,
+  AlertTriangle,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
@@ -307,55 +298,89 @@ export function VersionHistoryPanel({
         </SheetContent>
       </Sheet>
 
-      {/* Restore Confirmation */}
-      <AlertDialog open={showRestoreConfirm} onOpenChange={setShowRestoreConfirm}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              Restore to Version {versionToAction?.version_number}?
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              This will replace the current page content with this version. A backup of the
-              current state will be saved automatically.
-              {versionToAction?.change_summary && (
-                <span className="block mt-2 font-medium">
-                  &quot;{versionToAction.change_summary}&quot;
-                </span>
-              )}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isRestoring}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleRestore} disabled={isRestoring}>
-              {isRestoring && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-              Restore Version
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {/* Restore Confirmation - Custom inline to avoid Dialog/Sheet context conflicts */}
+      {showRestoreConfirm && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center">
+          <div className="fixed inset-0 bg-black/50" onClick={() => !isRestoring && setShowRestoreConfirm(false)} />
+          <div className="relative z-[101] w-full max-w-md mx-4 bg-background rounded-lg border shadow-lg p-6">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                  <RotateCcw className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold">
+                    Restore to Version {versionToAction?.version_number}?
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    This will replace the current page content with this version. A backup of the
+                    current state will be saved automatically.
+                  </p>
+                  {versionToAction?.change_summary && (
+                    <p className="text-sm font-medium mt-2 text-foreground">
+                      &quot;{versionToAction.change_summary}&quot;
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowRestoreConfirm(false)}
+                  disabled={isRestoring}
+                >
+                  Cancel
+                </Button>
+                <Button onClick={handleRestore} disabled={isRestoring}>
+                  {isRestoring && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                  Restore Version
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
-      {/* Delete Confirmation */}
-      <AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete Version {versionToAction?.version_number}?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will permanently delete this auto-save version. This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDelete}
-              disabled={isDeleting}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              {isDeleting && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {/* Delete Confirmation - Custom inline to avoid Dialog/Sheet context conflicts */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center">
+          <div className="fixed inset-0 bg-black/50" onClick={() => !isDeleting && setShowDeleteConfirm(false)} />
+          <div className="relative z-[101] w-full max-w-md mx-4 bg-background rounded-lg border shadow-lg p-6">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-destructive/10 flex items-center justify-center">
+                  <AlertTriangle className="h-5 w-5 text-destructive" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold">
+                    Delete Version {versionToAction?.version_number}?
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    This will permanently delete this auto-save version. This action cannot be undone.
+                  </p>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowDeleteConfirm(false)}
+                  disabled={isDeleting}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  variant="destructive"
+                >
+                  {isDeleting && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                  Delete
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
