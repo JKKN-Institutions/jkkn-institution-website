@@ -314,6 +314,7 @@ import {
   TabsBlockPropsSchema,
   TimelinePropsSchema,
   PricingTablesPropsSchema,
+  TrustBadgesPropsSchema,
   ImageBlockPropsSchema,
   ImageGalleryPropsSchema,
   VideoPlayerPropsSchema,
@@ -351,6 +352,7 @@ const FAQAccordion = lazy(() => import('@/components/cms-blocks/content/faq-acco
 const TabsBlock = lazy(() => import('@/components/cms-blocks/content/tabs-block'))
 const Timeline = lazy(() => import('@/components/cms-blocks/content/timeline'))
 const PricingTables = lazy(() => import('@/components/cms-blocks/content/pricing-tables'))
+const TrustBadges = lazy(() => import('@/components/cms-blocks/content/trust-badges'))
 
 // Media blocks
 const ImageBlock = lazy(() => import('@/components/cms-blocks/media/image-block'))
@@ -524,6 +526,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       subtitleFontSize: 24,
       subtitleFontWeight: 'normal',
       subtitleFontStyle: 'normal',
+      showTrustBadges: false,
+      trustBadgesStyle: 'glass',
+      trustBadgesPosition: 'below-subtitle',
       backgroundType: 'gradient',
       backgroundGradient: 'linear-gradient(135deg, #0b6d41, #085032)', // JKKN Green gradient
       alignment: 'center',
@@ -554,6 +559,10 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'subtitleFontSize', type: 'number', label: 'Subtitle Font Size', unit: 'px', min: 8, max: 120 },
       { name: 'subtitleFontWeight', type: 'enum', label: 'Subtitle Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
       { name: 'subtitleFontStyle', type: 'enum', label: 'Subtitle Font Style', options: ['normal', 'italic'] },
+      // Trust Badges settings
+      { name: 'showTrustBadges', type: 'boolean', label: 'Show Trust Badges', description: 'Display trust badges (NAAC, Placements, etc.) in the hero section' },
+      { name: 'trustBadgesStyle', type: 'enum', label: 'Trust Badges Style', options: ['glass', 'solid', 'outline'], description: 'Visual style of trust badges' },
+      { name: 'trustBadgesPosition', type: 'enum', label: 'Trust Badges Position', options: ['below-subtitle', 'below-title'], description: 'Where to display trust badges' },
       // CTA Buttons
       {
         name: 'ctaButtons',
@@ -781,6 +790,69 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'currency', type: 'string', label: 'Currency Symbol', placeholder: '₹' },
       { name: 'billingPeriod', type: 'string', label: 'Billing Period', placeholder: '/month' },
       { name: 'highlightPopular', type: 'boolean', label: 'Highlight Popular Plan' },
+    ],
+  },
+
+  TrustBadges: {
+    name: 'TrustBadges',
+    displayName: 'Trust Badges',
+    category: 'content',
+    description: 'Display trust indicators, achievements, and accolades with icons - perfect below hero sections',
+    icon: 'Award',
+    previewImage: '/cms-previews/TrustBadges.png',
+    component: TrustBadges,
+    propsSchema: TrustBadgesPropsSchema,
+    defaultProps: {
+      badges: [
+        { icon: 'Award', text: 'NAAC Accredited' },
+        { icon: 'TrendingUp', text: '95%+ Placements' },
+        { icon: 'Users', text: '100+ Top Recruiters' },
+        { icon: 'Calendar', text: '39 Years of Excellence' }
+      ],
+      alignment: 'center',
+      badgeStyle: 'pill',
+      backgroundColor: '#ffffff',
+      textColor: '#171717',
+      iconColor: '#0b6d41',
+      borderColor: '#ffffff4d',
+      gap: 'md',
+      animated: true,
+    },
+    supportsChildren: false,
+    isFullWidth: false,
+    keywords: ['trust', 'badges', 'achievements', 'awards', 'accreditation', 'stats', 'social proof'],
+    editableProps: [
+      {
+        name: 'badges',
+        type: 'array',
+        label: 'Trust Badges',
+        description: 'Add trust indicators with icons and text',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            icon: {
+              type: 'string',
+              label: 'Icon',
+              required: true,
+              format: 'icon-select',
+            },
+            text: {
+              type: 'string',
+              label: 'Text',
+              required: true,
+            },
+          },
+          required: ['icon', 'text'],
+        },
+      },
+      { name: 'alignment', type: 'enum', label: 'Alignment', options: ['left', 'center', 'right'] },
+      { name: 'badgeStyle', type: 'enum', label: 'Badge Style', options: ['pill', 'card', 'minimal'], description: 'Visual style of badges' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'textColor', type: 'color', label: 'Text Color' },
+      { name: 'iconColor', type: 'color', label: 'Icon Color' },
+      { name: 'borderColor', type: 'color', label: 'Border Color' },
+      { name: 'gap', type: 'enum', label: 'Gap Between Badges', options: ['sm', 'md', 'lg'] },
+      { name: 'animated', type: 'boolean', label: 'Enable Animations', description: 'Hover effects and transitions' },
     ],
   },
 

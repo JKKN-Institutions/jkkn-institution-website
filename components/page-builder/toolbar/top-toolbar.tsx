@@ -52,6 +52,7 @@ import {
   Pencil,
   Check,
   X,
+  Menu,
 } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
@@ -238,7 +239,7 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
     <TooltipProvider delayDuration={300}>
       <div className="h-14 border-b border-border bg-card flex items-center justify-between px-4">
         {/* Left section: Back button and page info */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" asChild>
@@ -250,11 +251,11 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
             <TooltipContent>Back to pages</TooltipContent>
           </Tooltip>
 
-          <div className="h-6 w-px bg-border" />
+          <div className="hidden sm:block h-6 w-px bg-border" />
 
-          <div className="flex items-center gap-3">
-            <FileText className="h-4 w-4 text-muted-foreground" />
-            <div>
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 max-w-[200px] sm:max-w-[300px]">
+            <FileText className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+            <div className="min-w-0">
               <div className="flex items-center gap-2">
                 {isEditingTitle ? (
                   <div className="flex items-center gap-1">
@@ -295,36 +296,36 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
                     <TooltipTrigger asChild>
                       <button
                         onClick={() => setIsEditingTitle(true)}
-                        className="flex items-center gap-1.5 font-medium text-foreground hover:text-primary transition-colors group"
+                        className="flex items-center gap-1.5 font-medium text-foreground hover:text-primary transition-colors group truncate min-w-0"
                       >
-                        {page?.title || 'Untitled Page'}
-                        <Pencil className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <span className="truncate">{page?.title || 'Untitled Page'}</span>
+                        <Pencil className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent>Click to edit title</TooltipContent>
                   </Tooltip>
                 )}
                 {isDirty && !isEditingTitle && (
-                  <span className="text-xs text-amber-600">• Unsaved changes</span>
+                  <span className="text-xs text-amber-600 hidden sm:inline">• Unsaved changes</span>
                 )}
               </div>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-muted-foreground truncate">
                 /{page?.slug || ''}
               </span>
             </div>
           </div>
 
           {page?.status && (
-            <Badge variant="secondary" className={getStatusColor(page.status)}>
+            <Badge variant="secondary" className={cn(getStatusColor(page.status), "hidden xs:inline-flex")}>
               {page.status.charAt(0).toUpperCase() + page.status.slice(1)}
             </Badge>
           )}
         </div>
 
         {/* Center section: Device preview and undo/redo */}
-        <div className="flex items-center gap-2">
-          {/* Undo/Redo */}
-          <div className="flex items-center gap-1 mr-2">
+        <div className="flex items-center gap-2 min-w-0 flex-1 justify-center">
+          {/* Undo/Redo - hide on mobile */}
+          <div className="hidden sm:flex items-center gap-1 mr-2">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -354,9 +355,9 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
             </Tooltip>
           </div>
 
-          <div className="h-6 w-px bg-border" />
+          <div className="hidden sm:block h-6 w-px bg-border" />
 
-          {/* Navigator toggle */}
+          {/* Navigator toggle - hide on mobile */}
           {onNavigatorToggle && (
             <Tooltip>
               <TooltipTrigger asChild>
@@ -365,6 +366,7 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
                   size="icon"
                   onClick={onNavigatorToggle}
                   disabled={isPreviewMode}
+                  className="hidden sm:flex"
                 >
                   <List className="h-4 w-4" />
                 </Button>
@@ -373,7 +375,7 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
             </Tooltip>
           )}
 
-          <div className="h-6 w-px bg-border" />
+          <div className="hidden sm:block h-6 w-px bg-border" />
 
           {/* Device preview */}
           <div className="flex items-center bg-muted rounded-lg p-1">
@@ -423,7 +425,7 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
 
         {/* Right section: Actions */}
         <div className="flex items-center gap-2">
-          {/* Layout Presets button */}
+          {/* Layout Presets button - hide on mobile */}
           {onPresetSelect && (
             <Tooltip>
               <TooltipTrigger asChild>
@@ -432,6 +434,7 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
                   size="sm"
                   onClick={() => setIsLayoutPresetsOpen(true)}
                   disabled={isPreviewMode}
+                  className="hidden md:flex"
                 >
                   <Layers className="h-4 w-4 mr-2" />
                   Presets
@@ -443,7 +446,7 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
             </Tooltip>
           )}
 
-          {/* Preview toggle */}
+          {/* Preview toggle - responsive */}
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -451,8 +454,8 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
                 size="sm"
                 onClick={() => setPreviewMode(!isPreviewMode)}
               >
-                <Eye className="h-4 w-4 mr-2" />
-                {isPreviewMode ? 'Exit Preview' : 'Preview'}
+                <Eye className="h-4 w-4 md:mr-2" />
+                <span className="hidden md:inline">{isPreviewMode ? 'Exit Preview' : 'Preview'}</span>
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -460,7 +463,7 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
             </TooltipContent>
           </Tooltip>
 
-          {/* Save button */}
+          {/* Save button - responsive */}
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -470,11 +473,11 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
                 disabled={!isDirty || isSaving}
               >
                 {isSaving ? (
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loader2 className="h-4 w-4 md:mr-2 animate-spin" />
                 ) : (
-                  <Save className="h-4 w-4 mr-2" />
+                  <Save className="h-4 w-4 md:mr-2" />
                 )}
-                {isSaving ? 'Saving...' : 'Save'}
+                <span className="hidden md:inline">{isSaving ? 'Saving...' : 'Save'}</span>
               </Button>
             </TooltipTrigger>
             <TooltipContent>Save changes (Ctrl+S)</TooltipContent>
@@ -561,10 +564,84 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
             </DropdownMenu>
           )}
 
-          {/* More actions dropdown */}
+          {/* Mobile hamburger menu - only visible on mobile */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              {/* Undo/Redo on mobile */}
+              <DropdownMenuItem onClick={undo} disabled={!canUndo || isPreviewMode}>
+                <Undo2 className="mr-2 h-4 w-4" />
+                Undo
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={redo} disabled={!canRedo || isPreviewMode}>
+                <Redo2 className="mr-2 h-4 w-4" />
+                Redo
+              </DropdownMenuItem>
+              {onNavigatorToggle && (
+                <DropdownMenuItem onClick={onNavigatorToggle} disabled={isPreviewMode}>
+                  <List className="mr-2 h-4 w-4" />
+                  {isNavigatorOpen ? 'Hide' : 'Show'} Navigator
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuSeparator />
+              {/* Preview */}
+              <DropdownMenuItem onClick={() => setPreviewMode(!isPreviewMode)}>
+                <Eye className="mr-2 h-4 w-4" />
+                {isPreviewMode ? 'Exit Preview' : 'Preview'}
+              </DropdownMenuItem>
+              {/* Save */}
+              <DropdownMenuItem onClick={onSave} disabled={!isDirty || isSaving}>
+                <Save className="mr-2 h-4 w-4" />
+                Save
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              {/* Publish options */}
+              {page?.status !== 'published' && (
+                <>
+                  <DropdownMenuItem onClick={handlePublish} disabled={isPublishing}>
+                    <Send className="mr-2 h-4 w-4" />
+                    Publish Now
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setIsScheduleDialogOpen(true)}>
+                    <Clock className="mr-2 h-4 w-4" />
+                    Schedule
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                </>
+              )}
+              {/* Other actions */}
+              {onPresetSelect && (
+                <DropdownMenuItem onClick={() => setIsLayoutPresetsOpen(true)} disabled={isPreviewMode}>
+                  <Layers className="mr-2 h-4 w-4" />
+                  Layout Presets
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem onClick={() => setIsVersionHistoryOpen(true)}>
+                <History className="mr-2 h-4 w-4" />
+                Version History
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setIsSaveTemplateOpen(true)}>
+                <BookTemplate className="mr-2 h-4 w-4" />
+                Save as Template
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link href={`/admin/content/pages/${page?.id}`}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  Page Settings
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* More actions dropdown - desktop only */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="hidden md:flex">
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>

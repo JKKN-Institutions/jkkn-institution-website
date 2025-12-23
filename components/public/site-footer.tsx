@@ -14,47 +14,37 @@ import {
   GraduationCap,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import type { FooterSettings } from '@/app/actions/cms/footer'
 
-const institutions = [
-  { label: 'JKKN Dental College and Hospital', href: '/institutions/dental' },
-  { label: 'JKKN College of Allied Health Science', href: '/institutions/allied-health' },
-  { label: 'JKKN College of Pharmacy', href: '/institutions/pharmacy' },
-  { label: 'Sresakthimayeil Institute of Nursing and Research', href: '/institutions/nursing' },
-  { label: 'JKKN College of Education', href: '/institutions/education' },
-  { label: 'JKKN College of Arts and Science (Autonomous)', href: '/institutions/arts-science' },
-  { label: 'JKKN College of Engineering and Technology', href: '/institutions/engineering' },
-  { label: 'JKKN Matriculation Higher Secondary School', href: '/institutions/school' },
-  { label: 'Nattraja Vidhyalya', href: '/institutions/nattraja' },
-]
+interface SiteFooterProps {
+  settings?: FooterSettings
+}
 
-const programLinks = [
-  { label: 'Engineering', href: '/academics/programs/engineering' },
-  { label: 'Medical Sciences', href: '/academics/programs/medical' },
-  { label: 'Arts & Science', href: '/academics/programs/arts-science' },
-  { label: 'Pharmacy', href: '/academics/programs/pharmacy' },
-  { label: 'Management', href: '/academics/programs/management' },
-  { label: 'Allied Health', href: '/academics/programs/allied-health' },
-]
+// Icon mapping for social media
+const socialIconMap = {
+  facebook: Facebook,
+  twitter: Twitter,
+  instagram: Instagram,
+  linkedin: Linkedin,
+  youtube: Youtube,
+}
 
-const resourceLinks = [
-  { label: 'Student Portal', href: '/portal' },
-  { label: 'Library', href: '/resources/library' },
-  { label: 'Downloads', href: '/resources/downloads' },
-  { label: 'Calendar', href: '/calendar' },
-  { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Terms of Use', href: '/terms' },
-  { label: 'Admin Login', href: '/admin' },
-]
+export function SiteFooter({ settings }: SiteFooterProps) {
+  if (!settings) return null
 
-const socialLinks = [
-  { icon: Facebook, href: 'https://facebook.com/jkkn', label: 'Facebook' },
-  { icon: Twitter, href: 'https://twitter.com/jkkn', label: 'Twitter' },
-  { icon: Instagram, href: 'https://instagram.com/jkkn', label: 'Instagram' },
-  { icon: Linkedin, href: 'https://linkedin.com/company/jkkn', label: 'LinkedIn' },
-  { icon: Youtube, href: 'https://youtube.com/jkkn', label: 'YouTube' },
-]
+  // Filter visible links
+  const visibleInstitutions = settings.institutions.filter(link => link.visible)
+  const visiblePrograms = settings.programs.filter(link => link.visible)
+  const visibleResources = settings.resources.filter(link => link.visible)
 
-export function SiteFooter() {
+  // Build social links array
+  const socialLinks = Object.entries(settings.socialLinks || {})
+    .filter(([_, url]) => url)
+    .map(([platform, url]) => ({
+      icon: socialIconMap[platform as keyof typeof socialIconMap],
+      href: url as string,
+      label: platform.charAt(0).toUpperCase() + platform.slice(1)
+    }))
   return (
     <footer className="relative bg-gradient-to-br from-primary via-primary to-emerald-700 text-white overflow-hidden">
       {/* Background Elements */}
@@ -140,7 +130,7 @@ export function SiteFooter() {
               Our Institutions
             </h4>
             <ul className="space-y-3">
-              {institutions.map((link) => (
+              {visibleInstitutions.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -161,7 +151,7 @@ export function SiteFooter() {
               Programs
             </h4>
             <ul className="space-y-3">
-              {programLinks.map((link) => (
+              {visiblePrograms.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -182,7 +172,7 @@ export function SiteFooter() {
               Resources
             </h4>
             <ul className="space-y-3">
-              {resourceLinks.map((link) => (
+              {visibleResources.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

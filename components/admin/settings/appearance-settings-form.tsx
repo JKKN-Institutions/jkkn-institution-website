@@ -17,7 +17,8 @@ import {
 } from '@/components/ui/form'
 import { ColorPicker } from './color-picker'
 import { ImageUpload } from './image-upload'
-import { Loader2, Save, Palette, Image as ImageIcon } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { Loader2, Save, Palette, Image as ImageIcon, Maximize2 } from 'lucide-react'
 import { toast } from 'sonner'
 
 const appearanceSettingsSchema = z.object({
@@ -27,6 +28,11 @@ const appearanceSettingsSchema = z.object({
   logo_dark_url: z.string().optional(),
   favicon_url: z.string().optional(),
   hero_background_url: z.string().optional(),
+  // Logo sizes
+  logo_mobile_size: z.number().min(32).max(128),
+  logo_tablet_size: z.number().min(32).max(128),
+  logo_desktop_size: z.number().min(32).max(128),
+  logo_desktop_large_size: z.number().min(32).max(128),
 })
 
 type AppearanceSettingsFormValues = z.infer<typeof appearanceSettingsSchema>
@@ -47,6 +53,10 @@ export function AppearanceSettingsForm({ initialSettings }: AppearanceSettingsFo
       logo_dark_url: (initialSettings.logo_dark_url as string) || '',
       favicon_url: (initialSettings.favicon_url as string) || '',
       hero_background_url: (initialSettings.hero_background_url as string) || '',
+      logo_mobile_size: Number(initialSettings.logo_mobile_size) || 64,
+      logo_tablet_size: Number(initialSettings.logo_tablet_size) || 80,
+      logo_desktop_size: Number(initialSettings.logo_desktop_size) || 80,
+      logo_desktop_large_size: Number(initialSettings.logo_desktop_large_size) || 96,
     },
   })
 
@@ -210,6 +220,136 @@ export function AppearanceSettingsForm({ initialSettings }: AppearanceSettingsFo
                     folder="backgrounds"
                     maxSize={5}
                   />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+
+        {/* Logo Sizes */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 pb-2 border-b">
+            <Maximize2 className="h-5 w-5 text-muted-foreground" />
+            <h3 className="font-medium">Logo Sizes</h3>
+          </div>
+
+          <p className="text-sm text-muted-foreground">
+            Adjust logo sizes for different screen sizes. Changes apply to the navigation header.
+          </p>
+
+          <div className="grid gap-6 sm:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="logo_mobile_size"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Mobile Logo Size</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type="number"
+                        min={32}
+                        max={128}
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        className="pr-12"
+                      />
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                        px
+                      </span>
+                    </div>
+                  </FormControl>
+                  <FormDescription>
+                    Logo size on mobile devices (32-128px)
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="logo_tablet_size"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tablet Logo Size</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type="number"
+                        min={32}
+                        max={128}
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        className="pr-12"
+                      />
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                        px
+                      </span>
+                    </div>
+                  </FormControl>
+                  <FormDescription>
+                    Logo size on tablet devices (32-128px)
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="logo_desktop_size"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Desktop Logo Size</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type="number"
+                        min={32}
+                        max={128}
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        className="pr-12"
+                      />
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                        px
+                      </span>
+                    </div>
+                  </FormControl>
+                  <FormDescription>
+                    Logo size on desktop (single-row nav)
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="logo_desktop_large_size"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Desktop Large Logo Size</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type="number"
+                        min={32}
+                        max={128}
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        className="pr-12"
+                      />
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                        px
+                      </span>
+                    </div>
+                  </FormControl>
+                  <FormDescription>
+                    Logo size on desktop (double-row nav)
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

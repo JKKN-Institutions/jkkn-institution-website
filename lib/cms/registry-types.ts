@@ -338,6 +338,10 @@ export const HeroSectionPropsSchema = z.object({
   subtitleFontSize: z.number().min(8).max(120).default(24),
   subtitleFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('normal'),
   subtitleFontStyle: z.enum(['normal', 'italic']).default('normal'),
+  // Trust Badges settings
+  showTrustBadges: z.boolean().default(false),
+  trustBadgesStyle: z.enum(['glass', 'solid', 'outline']).default('glass'),
+  trustBadgesPosition: z.enum(['below-subtitle', 'below-title']).default('below-subtitle'),
   // Background settings
   backgroundType: z.enum(['image', 'video', 'gradient']).default('image'),
   backgroundImage: z.string().optional(),
@@ -709,6 +713,31 @@ export const BlogPostsGridPropsSchema = z.object({
   dataSource: z.enum(['manual', 'database']).default('manual'),
 })
 export type BlogPostsGridProps = z.infer<typeof BlogPostsGridPropsSchema> & BaseBlockProps
+
+// Trust Badges Block
+export const TrustBadgeItemSchema = z.object({
+  icon: z.string().default('Award'),
+  text: z.string(),
+})
+export type TrustBadgeItem = z.infer<typeof TrustBadgeItemSchema>
+
+export const TrustBadgesPropsSchema = z.object({
+  badges: z.array(TrustBadgeItemSchema).default([
+    { icon: 'Award', text: 'NAAC Accredited' },
+    { icon: 'TrendingUp', text: '95%+ Placements' },
+    { icon: 'Users', text: '100+ Top Recruiters' },
+    { icon: 'Calendar', text: '39 Years of Excellence' }
+  ]),
+  alignment: AlignmentSchema.default('center'),
+  badgeStyle: z.enum(['pill', 'card', 'minimal']).default('pill'),
+  backgroundColor: z.string().default('#ffffff'),
+  textColor: z.string().default('#171717'),
+  iconColor: z.string().default('#0b6d41'),
+  borderColor: z.string().default('#ffffff4d'),
+  gap: z.enum(['sm', 'md', 'lg']).default('md'),
+  animated: z.boolean().default(true),
+})
+export type TrustBadgesProps = z.infer<typeof TrustBadgesPropsSchema> & BaseBlockProps
 
 // ==========================================
 // Utility Functions for Type Conversion

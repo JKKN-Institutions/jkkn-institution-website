@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
+import { SheetClose } from '@/components/ui/sheet'
 import {
   Tooltip,
   TooltipContent,
@@ -34,6 +35,7 @@ import {
   Puzzle,
   Library,
   Component,
+  X,
 } from 'lucide-react'
 import { BrowseComponentsModal } from '@/components/page-builder/modals/browse-components-modal'
 import * as LucideIcons from 'lucide-react'
@@ -342,9 +344,21 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
   return (
     <TooltipProvider>
     <div className="flex flex-col h-full w-full overflow-hidden">
-      {/* Header */}
-      <div className="p-4 border-b border-border flex-shrink-0">
-        <h2 className="font-semibold text-foreground mb-3">Components</h2>
+      {/* Mobile sheet header - only shown in Sheet component */}
+      <div className="border-b border-border p-4 lg:hidden flex-shrink-0">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Components</h2>
+          <SheetClose asChild>
+            <Button variant="ghost" size="icon">
+              <X className="h-4 w-4" />
+            </Button>
+          </SheetClose>
+        </div>
+      </div>
+
+      {/* Header - desktop and mobile */}
+      <div className="p-3 sm:p-4 border-b border-border lg:border-t-0 flex-shrink-0">
+        <h2 className="font-semibold text-foreground mb-3 hidden lg:block">Components</h2>
 
         {/* Search */}
         <div className="relative">

@@ -28,13 +28,15 @@ import { blocksToPageBlocks, type PageBlock } from '@/lib/cms/registry-types'
 import { cn } from '@/lib/utils'
 import { getComponentEntry, supportsChildren } from '@/lib/cms/component-registry'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Settings, Search, MessageCircle } from 'lucide-react'
+import { Settings, Search, MessageCircle, Component, Settings2 } from 'lucide-react'
 import type { SeoData } from '@/lib/utils/seo-analyzer'
 import type { LayoutPreset } from '@/lib/cms/layout-presets'
 import { OfflineBanner } from '@/lib/hooks/use-network-status'
 import { SiteHeader } from '@/components/public/site-header'
 import { SiteFooter } from '@/components/public/site-footer'
 import { ResizablePanel } from './resizable-panel'
+import { Sheet, SheetContent } from '@/components/ui/sheet'
+import { Button } from '@/components/ui/button'
 
 // Auto-save debounce delay in milliseconds
 const AUTO_SAVE_DELAY = 3000
@@ -125,6 +127,10 @@ function PageBuilderContent({
   const [isSavingFab, setIsSavingFab] = useState(false)
   const [isNavigatorOpen, setIsNavigatorOpen] = useState(false)
   const [autoSaveFailCount, setAutoSaveFailCount] = useState(0)
+
+  // Mobile panel state
+  const [mobileLeftPanel, setMobileLeftPanel] = useState(false)
+  const [mobileRightPanel, setMobileRightPanel] = useState(false)
 
   // Drag state
   const [activeId, setActiveId] = useState<string | null>(null)
@@ -573,9 +579,38 @@ function PageBuilderContent({
           onNavigatorToggle={() => setIsNavigatorOpen(!isNavigatorOpen)}
         />
 
+        {/* Mobile FAB buttons - only visible on mobile/tablet */}
+        {!isPreviewMode && (
+          <>
+            <div className="fixed bottom-6 left-6 z-50 flex gap-3 lg:hidden">
+              <Button
+                size="icon"
+                className="h-12 w-12 rounded-full shadow-lg"
+                onClick={() => setMobileLeftPanel(true)}
+                variant="secondary"
+              >
+                <Component className="h-5 w-5" />
+                <span className="sr-only">Components</span>
+              </Button>
+            </div>
+
+            <div className="fixed bottom-6 right-6 z-50 flex gap-3 lg:hidden">
+              <Button
+                size="icon"
+                className="h-12 w-12 rounded-full shadow-lg"
+                onClick={() => setMobileRightPanel(true)}
+                variant="secondary"
+              >
+                <Settings2 className="h-5 w-5" />
+                <span className="sr-only">Properties</span>
+              </Button>
+            </div>
+          </>
+        )}
+
         {/* Main Content Area */}
         <div className="flex flex-1 overflow-hidden">
-          {/* Left Sidebar - Component Palette */}
+          {/* Left Sidebar - Component Palette (Desktop only) */}
           {!isPreviewMode && (
             <ResizablePanel
               side="left"
@@ -583,10 +618,19 @@ function PageBuilderContent({
               minWidth={200}
               maxWidth={400}
               storageKey="editor-left-panel"
-              className="border-r border-border bg-card overflow-hidden"
+              className="hidden lg:flex border-r border-border bg-card overflow-hidden"
             >
               <ComponentPalette />
             </ResizablePanel>
+          )}
+
+          {/* Left Sidebar - Component Palette (Mobile/Tablet Sheet) */}
+          {!isPreviewMode && (
+            <Sheet open={mobileLeftPanel} onOpenChange={setMobileLeftPanel}>
+              <SheetContent side="left" className="w-[280px] p-0 lg:hidden">
+                <ComponentPalette />
+              </SheetContent>
+            </Sheet>
           )}
 
           {/* Navigator Panel (Elementor-style layer tree) */}
@@ -598,7 +642,7 @@ function PageBuilderContent({
           )}
 
           {/* Center - Canvas */}
-          <div className="flex-1 overflow-auto bg-muted/30">
+          <div className="flex-1 overflow-auto bg-muted/30 p-2 sm:p-4 md:p-6">
             <div
               className={cn(
                 'mx-auto transition-all duration-300',
@@ -614,7 +658,7 @@ function PageBuilderContent({
             </div>
           </div>
 
-          {/* Right Sidebar - Properties/SEO/FAB Panel */}
+          {/* Right Sidebar - Properties/SEO/FAB Panel (Desktop only) */}
           {!isPreviewMode && (
             <ResizablePanel
               side="right"
@@ -622,7 +666,7 @@ function PageBuilderContent({
               minWidth={300}
               maxWidth={500}
               storageKey="editor-right-panel"
-              className="border-l border-border bg-card min-h-0"
+              className="hidden lg:flex border-l border-border bg-card min-h-0"
             >
               <Tabs
                 value={rightPanelTab}
@@ -667,6 +711,56 @@ function PageBuilderContent({
                 </TabsContent>
               </Tabs>
             </ResizablePanel>
+          )}
+
+          {/* Right Sidebar - Properties/SEO/FAB Panel (Mobile/Tablet Sheet) */}
+          {!isPreviewMode && (
+            <Sheet open={mobileRightPanel} onOpenChange={setMobileRightPanel}>
+              <SheetContent side="right" className="w-full sm:w-[380px] p-0 lg:hidden">
+                <Tabs
+                  value={rightPanelTab}
+                  onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab')}
+                  className="flex flex-col h-full min-h-0"
+                >
+                  <div className="border-b border-border px-2 pt-2 flex-shrink-0">
+                    <TabsList className="grid grid-cols-3 w-full">
+                      <TabsTrigger value="properties" className="flex items-center gap-1.5 text-xs">
+                        <Settings className="h-3.5 w-3.5" />
+                        Props
+                      </TabsTrigger>
+                      <TabsTrigger value="seo" className="flex items-center gap-1.5 text-xs">
+                        <Search className="h-3.5 w-3.5" />
+                        SEO
+                      </TabsTrigger>
+                      <TabsTrigger value="fab" className="flex items-center gap-1.5 text-xs">
+                        <MessageCircle className="h-3.5 w-3.5" />
+                        FAB
+                      </TabsTrigger>
+                    </TabsList>
+                  </div>
+                  <TabsContent value="properties" className="flex-1 m-0 overflow-y-auto min-h-0">
+                    <PropsPanel />
+                  </TabsContent>
+                  <TabsContent value="seo" className="flex-1 m-0 overflow-y-auto min-h-0">
+                    <SeoPanel
+                      pageId={pageId}
+                      pageSlug={pageSlug}
+                      initialSeoData={initialSeoData || undefined}
+                      onSave={handleSaveSeo}
+                      isSaving={isSavingSeo}
+                    />
+                  </TabsContent>
+                  <TabsContent value="fab" className="flex-1 m-0 overflow-y-auto min-h-0">
+                    <FabPanel
+                      pageId={pageId}
+                      initialConfig={initialFabConfig || undefined}
+                      onSave={handleSaveFab}
+                      isSaving={isSavingFab}
+                    />
+                  </TabsContent>
+                </Tabs>
+              </SheetContent>
+            </Sheet>
           )}
         </div>
       </div>

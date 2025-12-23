@@ -560,3 +560,160 @@ export async function clearCache(): Promise<FormState> {
     return { success: false, message: 'Failed to clear cache' }
   }
 }
+
+// Validation schema for footer settings
+const FooterSettingsSchema = z.object({
+  tagline: z.string(),
+  description: z.string(),
+  institutions: z.array(z.object({
+    label: z.string(),
+    href: z.string(),
+    order: z.number(),
+    visible: z.boolean(),
+  })),
+  programs: z.array(z.object({
+    label: z.string(),
+    href: z.string(),
+    order: z.number(),
+    visible: z.boolean(),
+  })),
+  resources: z.array(z.object({
+    label: z.string(),
+    href: z.string(),
+    order: z.number(),
+    visible: z.boolean(),
+  })),
+  show_about: z.boolean(),
+  show_institutions: z.boolean(),
+  show_programs: z.boolean(),
+  show_resources: z.boolean(),
+  show_social: z.boolean(),
+  contactEmail: z.string().email(),
+  contactPhone: z.string(),
+  address_line1: z.string(),
+  address_line2: z.string().optional(),
+  address_city: z.string(),
+  address_state: z.string(),
+  address_pincode: z.string(),
+  address_country: z.string(),
+  social_facebook: z.string().optional(),
+  social_twitter: z.string().optional(),
+  social_instagram: z.string().optional(),
+  social_linkedin: z.string().optional(),
+  social_youtube: z.string().optional(),
+})
+
+/**
+ * Update footer settings (super_admin only)
+ */
+export async function updateFooterSettings(
+  data: z.infer<typeof FooterSettingsSchema>
+): Promise<FormState> {
+  try {
+    const supabase = await createServerSupabaseClient()
+
+    // Check authentication
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return { success: false, message: 'You must be logged in to update footer settings' }
+    }
+
+    // Check permission
+    const hasPermission = await checkPermission(user.id, 'system:settings:edit')
+    if (!hasPermission) {
+      return { success: false, message: 'You do not have permission to update footer settings' }
+    }
+
+    // Validate input
+    const validation = FooterSettingsSchema.safeParse(data)
+    if (!validation.success) {
+      return {
+        success: false,
+        message: 'Invalid input',
+        errors: validation.error.flatten().fieldErrors as Record<string, string[]>,
+      }
+    }
+
+    // Prepare settings to update
+    const settingsToUpdate = {
+      footer_tagline: data.tagline,
+      footer_description: data.description,
+      footer_institutions: data.institutions,
+      footer_programs: data.programs,
+      footer_resources: data.resources,
+      footer_sections_visibility: {
+        show_about: data.show_about,
+        show_institutions: data.show_institutions,
+        show_programs: data.show_programs,
+        show_resources: data.show_resources,
+        show_social: data.show_social,
+      },
+      contact_email: data.contactEmail,
+      contact_phone: data.contactPhone,
+      address: {
+        line1: data.address_line1,
+        line2: data.address_line2 || '',
+        city: data.address_city,
+        state: data.address_state,
+        pincode: data.address_pincode,
+        country: data.address_country,
+      },
+      social_links: {
+        facebook: data.social_facebook || '',
+        twitter: data.social_twitter || '',
+        instagram: data.social_instagram || '',
+        linkedin: data.social_linkedin || '',
+        youtube: data.social_youtube || '',
+      },
+    }
+
+    // Update each setting
+    const updates = Object.entries(settingsToUpdate).map(([key, value]) =>
+      supabase
+        .from('site_settings')
+        .update({
+          setting_value: value,
+          updated_by: user.id,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('setting_key', key)
+    )
+
+    const results = await Promise.all(updates)
+
+    // Check for errors
+    const errors = results.filter((r) => r.error)
+    if (errors.length > 0) {
+      console.error('Errors updating footer settings:', errors.map((e) => e.error))
+      return {
+        success: false,
+        message: `Failed to update ${errors.length} footer setting(s)`,
+      }
+    }
+
+    // Log activity
+    await logActivity({
+      userId: user.id,
+      action: 'update',
+      module: 'settings',
+      resourceType: 'footer_settings',
+      resourceId: 'footer',
+      metadata: {
+        updated_keys: Object.keys(settingsToUpdate),
+        count: Object.keys(settingsToUpdate).length,
+      },
+    })
+
+    // Revalidate pages
+    revalidatePath('/admin/settings/footer')
+    revalidatePath('/', 'layout')
+
+    return {
+      success: true,
+      message: 'Footer settings updated successfully',
+    }
+  } catch (error) {
+    console.error('Error in updateFooterSettings:', error)
+    return { success: false, message: 'Failed to update footer settings' }
+  }
+}

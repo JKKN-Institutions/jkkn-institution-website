@@ -29,6 +29,13 @@ interface SiteHeaderProps {
   navigation?: NavItem[]
   /** When true, header uses static positioning (for page builder preview) */
   isPreview?: boolean
+  /** Logo sizes for different breakpoints (in pixels) */
+  logoSizes?: {
+    mobile?: number
+    tablet?: number
+    desktop?: number
+    desktopLarge?: number
+  }
 }
 
 // Fallback navigation when CMS is empty
@@ -60,7 +67,16 @@ const socialLinks = [
   { icon: Youtube, href: 'https://youtube.com/jkkn', label: 'YouTube' },
 ]
 
-export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
+export function SiteHeader({
+  navigation,
+  isPreview = false,
+  logoSizes = {
+    mobile: 64,
+    tablet: 80,
+    desktop: 80,
+    desktopLarge: 96
+  }
+}: SiteHeaderProps) {
   const pathname = usePathname()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -125,21 +141,23 @@ export function SiteHeader({ navigation, isPreview = false }: SiteHeaderProps) {
             'flex items-center justify-between h-16 sm:h-20',
             hasSecondRow ? 'lg:h-24' : 'lg:h-20'
           )}>
-            {/* Logo - Adjusts based on single/double row */}
+            {/* Logo - Adjusts based on single/double row and CMS settings */}
             <Link href="/" className={cn(
               'flex-shrink-0 flex items-center group relative z-10',
               hasSecondRow ? 'lg:w-[20%]' : 'lg:w-[15%]'
             )}>
-              <div className={cn(
-                'relative transition-transform duration-300 group-hover:scale-105',
-                'w-16 h-16 sm:w-20 sm:h-20',
-                hasSecondRow ? 'lg:w-24 lg:h-24' : 'lg:w-20 lg:h-20'
-              )}>
+              <div
+                className="relative transition-transform duration-300 group-hover:scale-105"
+                style={{
+                  width: `clamp(${logoSizes.mobile}px, 10vw, ${hasSecondRow ? logoSizes.desktopLarge : logoSizes.desktop}px)`,
+                  height: `clamp(${logoSizes.mobile}px, 10vw, ${hasSecondRow ? logoSizes.desktopLarge : logoSizes.desktop}px)`,
+                }}
+              >
                 <Image
                   src="/images/logo.png"
                   alt="JKKN Institution Logo"
                   fill
-                  sizes="(max-width: 640px) 64px, (max-width: 1024px) 80px, 96px"
+                  sizes={`(max-width: 640px) ${logoSizes.mobile}px, (max-width: 1024px) ${logoSizes.tablet}px, ${hasSecondRow ? logoSizes.desktopLarge : logoSizes.desktop}px`}
                   className="object-contain"
                   priority
                 />

@@ -5,8 +5,8 @@ import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRef, useState, useEffect } from 'react'
-import { Handshake, ExternalLink } from 'lucide-react'
+import { useRef, useState, useEffect, useCallback } from 'react'
+import { Handshake, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
 
 /**
@@ -47,7 +47,12 @@ export const PartnersLogosPropsSchema = z.object({
 
   // Autoplay
   autoplay: z.boolean().default(true).describe('Enable autoplay'),
-  autoplaySpeed: z.number().default(2000).describe('Autoplay speed in ms'),
+  autoplaySpeed: z.number().default(3000).describe('Autoplay speed in ms'),
+
+  // Mobile settings
+  enableSwipe: z.boolean().default(true).describe('Enable touch swipe on mobile'),
+  showNavigationDots: z.boolean().default(true).describe('Show navigation dots'),
+  showNavigationArrows: z.boolean().default(true).describe('Show navigation arrows'),
 })
 
 export type PartnersLogosProps = z.infer<typeof PartnersLogosPropsSchema> & BaseBlockProps
@@ -82,13 +87,13 @@ function useInView(threshold = 0.1) {
 /**
  * PartnersLogos Component
  *
- * Modern partner logo showcase featuring:
- * - Serif header with gold italic accent
- * - Decorative circle patterns
- * - Multiple layouts (carousel, grid, marquee)
- * - Glassmorphic or bordered card styles
- * - Hover effects with gold accents
- * - External link indicators
+ * Optimized partner logo showcase featuring:
+ * - Touch/swipe support for mobile
+ * - Performance optimized with CSS transforms
+ * - Navigation dots and arrows
+ * - Smooth scroll snapping
+ * - Reduced repaints and reflows
+ * - GPU-accelerated animations
  */
 export function PartnersLogos({
   headerPart1 = 'Supporting',
@@ -104,12 +109,18 @@ export function PartnersLogos({
   showDecorations = true,
   grayscale = false,
   autoplay = true,
-  autoplaySpeed = 2000,
+  autoplaySpeed = 3000,
+  enableSwipe = true,
+  showNavigationDots = true,
+  showNavigationArrows = true,
   className,
   isEditing,
 }: PartnersLogosProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isPaused, setIsPaused] = useState(false)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [touchStart, setTouchStart] = useState(0)
+  const [touchEnd, setTouchEnd] = useState(0)
   const headerRef = useInView()
   const contentRef = useInView()
 
@@ -129,25 +140,130 @@ export function PartnersLogos({
 
   const displayPartners = partners.length > 0 ? partners : defaultPartners
 
+  // Calculate cards per view based on viewport
+  const getCardsPerView = useCallback(() => {
+    if (typeof window === 'undefined') return 1
+    const width = window.innerWidth
+    if (width >= 1024) return 4 // Desktop: 4 cards
+    if (width >= 768) return 3 // Tablet: 3 cards
+    if (width >= 640) return 2 // Small tablet: 2 cards
+    return 1 // Mobile: 1 card
+  }, [])
+
+  const [cardsPerView, setCardsPerView] = useState(getCardsPerView())
+
+  // Update cards per view on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setCardsPerView(getCardsPerView())
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [getCardsPerView])
+
+  // Total pages for navigation dots
+  const totalPages = Math.ceil(displayPartners.length / cardsPerView)
+
+  // Scroll to specific index
+  const scrollToIndex = useCallback((index: number) => {
+    if (!scrollRef.current) return
+
+    const cardWidth = 190 // Card width + gap
+    const scrollPosition = index * cardWidth
+
+    scrollRef.current.scrollTo({
+      left: scrollPosition,
+      behavior: 'smooth'
+    })
+
+    setCurrentIndex(index)
+  }, [])
+
+  // Navigate to next/prev
+  const navigateNext = useCallback(() => {
+    const nextIndex = (currentIndex + cardsPerView) % displayPartners.length
+    scrollToIndex(nextIndex)
+  }, [currentIndex, cardsPerView, displayPartners.length, scrollToIndex])
+
+  const navigatePrev = useCallback(() => {
+    const prevIndex = currentIndex - cardsPerView
+    const newIndex = prevIndex < 0 ? displayPartners.length - cardsPerView : prevIndex
+    scrollToIndex(newIndex)
+  }, [currentIndex, cardsPerView, displayPartners.length, scrollToIndex])
+
+  // Touch handlers for swipe support
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!enableSwipe) return
+    setTouchStart(e.targetTouches[0].clientX)
+    setIsPaused(true)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!enableSwipe) return
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (!enableSwipe) return
+
+    const swipeThreshold = 50
+    const swipeDistance = touchStart - touchEnd
+
+    if (Math.abs(swipeDistance) > swipeThreshold) {
+      if (swipeDistance > 0) {
+        // Swiped left - go to next
+        navigateNext()
+      } else {
+        // Swiped right - go to previous
+        navigatePrev()
+      }
+    }
+
+    setIsPaused(false)
+  }
+
   // Autoplay carousel
   useEffect(() => {
     if (layout !== 'carousel' || isEditing || isPaused || !autoplay) return
 
     const interval = setInterval(() => {
-      if (scrollRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
-        const cardWidth = 190
-
-        if (scrollLeft + clientWidth >= scrollWidth - 10) {
-          scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' })
-        } else {
-          scrollRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' })
-        }
-      }
+      navigateNext()
     }, autoplaySpeed)
 
     return () => clearInterval(interval)
-  }, [layout, isEditing, isPaused, autoplaySpeed, autoplay])
+  }, [layout, isEditing, isPaused, autoplaySpeed, autoplay, navigateNext])
+
+  // Update current index based on scroll position
+  const handleScroll = useCallback(() => {
+    if (!scrollRef.current) return
+
+    const cardWidth = 190
+    const scrollLeft = scrollRef.current.scrollLeft
+    const newIndex = Math.round(scrollLeft / cardWidth)
+
+    if (newIndex !== currentIndex) {
+      setCurrentIndex(newIndex)
+    }
+  }, [currentIndex])
+
+  // Debounced scroll handler
+  useEffect(() => {
+    const scrollContainer = scrollRef.current
+    if (!scrollContainer) return
+
+    let timeoutId: NodeJS.Timeout
+    const debouncedScroll = () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(handleScroll, 100)
+    }
+
+    scrollContainer.addEventListener('scroll', debouncedScroll, { passive: true })
+    return () => {
+      scrollContainer.removeEventListener('scroll', debouncedScroll)
+      clearTimeout(timeoutId)
+    }
+  }, [handleScroll])
 
   const columnClasses = {
     '4': 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4',
@@ -213,16 +329,61 @@ export function PartnersLogos({
           )}
         >
           {layout === 'carousel' ? (
-            <div
-              className="relative"
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
-            >
-              {/* Carousel */}
+            <div className="relative">
+              {/* Navigation Arrows */}
+              {showNavigationArrows && displayPartners.length > cardsPerView && (
+                <>
+                  <button
+                    onClick={navigatePrev}
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
+                    className={cn(
+                      "absolute left-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110",
+                      isDark ? "bg-white/10 backdrop-blur-sm text-white hover:bg-white/20" : "bg-white/90 backdrop-blur-sm text-gray-700 hover:bg-white",
+                      "hidden md:flex"
+                    )}
+                    aria-label="Previous partners"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={navigateNext}
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
+                    className={cn(
+                      "absolute right-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110",
+                      isDark ? "bg-white/10 backdrop-blur-sm text-white hover:bg-white/20" : "bg-white/90 backdrop-blur-sm text-gray-700 hover:bg-white",
+                      "hidden md:flex"
+                    )}
+                    aria-label="Next partners"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </>
+              )}
+
+              {/* Carousel Container */}
               <div
                 ref={scrollRef}
-                className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 justify-center"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                className={cn(
+                  "flex gap-6 overflow-x-auto pb-4 justify-start md:justify-center",
+                  "scrollbar-hide",
+                  "scroll-smooth",
+                  // CSS scroll snap for better mobile UX
+                  "snap-x snap-mandatory"
+                )}
+                style={{
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                  // GPU acceleration
+                  willChange: 'scroll-position',
+                  WebkitOverflowScrolling: 'touch',
+                }}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
               >
                 {displayPartners.map((partner, index) => (
                   <PartnerCard
@@ -233,11 +394,34 @@ export function PartnersLogos({
                     grayscale={grayscale}
                     isEditing={isEditing}
                     index={index}
-                    isInView={contentRef.isInView}
-                    className="flex-shrink-0 w-[170px] h-[110px]"
+                    className="flex-shrink-0 w-[170px] h-[110px] snap-center"
                   />
                 ))}
               </div>
+
+              {/* Navigation Dots */}
+              {showNavigationDots && totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-6">
+                  {Array.from({ length: totalPages }).map((_, index) => {
+                    const dotIndex = index * cardsPerView
+                    const isActive = currentIndex >= dotIndex && currentIndex < dotIndex + cardsPerView
+
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => scrollToIndex(dotIndex)}
+                        className={cn(
+                          "transition-all duration-300 rounded-full",
+                          isActive
+                            ? "w-8 h-2 bg-brand-primary"
+                            : "w-2 h-2 bg-gray-300 hover:bg-gray-400"
+                        )}
+                        aria-label={`Go to page ${index + 1}`}
+                      />
+                    )
+                  })}
+                </div>
+              )}
             </div>
           ) : layout === 'marquee' ? (
             <MarqueeLogos
@@ -258,7 +442,6 @@ export function PartnersLogos({
                   grayscale={grayscale}
                   isEditing={isEditing}
                   index={index}
-                  isInView={contentRef.isInView}
                   className="h-[110px]"
                 />
               ))}
@@ -271,7 +454,7 @@ export function PartnersLogos({
 }
 
 /**
- * Individual Partner Card - Modern Design
+ * Individual Partner Card - Optimized for Performance
  */
 function PartnerCard({
   partner,
@@ -281,7 +464,6 @@ function PartnerCard({
   isEditing,
   className,
   index,
-  isInView,
 }: {
   partner: PartnerItem
   cardStyle: 'glassmorphic' | 'bordered' | 'minimal'
@@ -290,24 +472,22 @@ function PartnerCard({
   isEditing?: boolean
   className?: string
   index: number
-  isInView: boolean
 }) {
   const [isHovered, setIsHovered] = useState(false)
 
   const cardContent = (
     <div
       className={cn(
-        'group relative p-4 rounded-xl flex items-center justify-center h-full transition-all duration-500',
+        'group relative p-4 rounded-xl flex items-center justify-center h-full transition-all duration-300',
         cardStyle === 'glassmorphic' && isDark && 'glass-card-dark',
         cardStyle === 'glassmorphic' && !isDark && 'bg-white/80 backdrop-blur-sm shadow-lg',
         cardStyle === 'bordered' && 'bg-white border border-gray-200 hover:border-gold',
         cardStyle === 'minimal' && 'bg-white',
         'hover:shadow-lg hover:-translate-y-1',
-        "transition-all duration-700",
-        isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       )}
       style={{
-        transitionDelay: `${index * 50}ms`,
+        // GPU acceleration for transforms
+        willChange: isHovered ? 'transform, box-shadow' : 'auto',
         boxShadow: isHovered ? '0 8px 30px rgba(255, 222, 89, 0.15)' : undefined
       }}
       onMouseEnter={() => setIsHovered(true)}
@@ -316,7 +496,7 @@ function PartnerCard({
       {/* Gold accent glow on hover */}
       <div
         className={cn(
-          "absolute -inset-0.5 rounded-xl opacity-0 blur transition-opacity duration-500",
+          "absolute -inset-0.5 rounded-xl opacity-0 blur transition-opacity duration-300",
           isHovered && "opacity-30"
         )}
         style={{ backgroundColor: '#ffde59' }}
@@ -331,16 +511,17 @@ function PartnerCard({
             height={60}
             sizes="120px"
             className={cn(
-              'object-contain max-h-16 transition-all duration-500',
+              'object-contain max-h-16 transition-all duration-300',
               grayscale && 'grayscale group-hover:grayscale-0',
               'group-hover:scale-110'
             )}
+            loading="lazy"
           />
         ) : (
           <div className="text-center">
             <div
               className={cn(
-                "w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center transition-all duration-500",
+                "w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center transition-all duration-300",
                 isHovered ? "scale-110" : "scale-100"
               )}
               style={{
@@ -382,7 +563,7 @@ function PartnerCard({
       {/* Bottom gold accent line on hover */}
       <div
         className={cn(
-          'absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-500',
+          'absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300',
           isHovered ? 'w-3/4' : 'w-0'
         )}
         style={{ backgroundColor: '#ffde59' }}
@@ -402,7 +583,7 @@ function PartnerCard({
 }
 
 /**
- * Marquee Animation for Logos
+ * Marquee Animation for Logos - Optimized
  */
 function MarqueeLogos({
   partners,
@@ -429,6 +610,8 @@ function MarqueeLogos({
         )}
         style={{
           animation: isEditing ? 'none' : 'marquee 30s linear infinite',
+          // GPU acceleration
+          willChange: isEditing ? 'auto' : 'transform',
         }}
       >
         {duplicatedPartners.map((partner, index) => (
@@ -440,7 +623,6 @@ function MarqueeLogos({
             grayscale={grayscale}
             isEditing={isEditing}
             index={index % partners.length}
-            isInView={true}
             className="flex-shrink-0 w-[160px] h-[100px]"
           />
         ))}
