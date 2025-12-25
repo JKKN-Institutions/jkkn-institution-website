@@ -89,10 +89,10 @@ export function InstitutionPanel() {
         50+ Years of Excellence | Digital Administration
       </motion.p>
 
-      {/* Features List */}
+      {/* Features List - Hidden on mobile to prevent crowding */}
       <motion.div
         variants={itemVariants}
-        className="space-y-2 lg:space-y-2.5 max-w-md"
+        className="space-y-2 lg:space-y-2.5 max-w-md hidden lg:block"
       >
         {features.map((feature, index) => (
           <motion.div
@@ -118,10 +118,10 @@ export function InstitutionPanel() {
         ))}
       </motion.div>
 
-      {/* Trust Badge */}
+      {/* Trust Badge - Hidden on mobile */}
       <motion.div
         variants={itemVariants}
-        className="mt-4 lg:mt-5 flex items-center gap-2"
+        className="mt-4 lg:mt-5 hidden lg:flex items-center gap-2"
       >
         <div className="flex -space-x-1.5">
           {[1, 2, 3, 4].map((i) => (

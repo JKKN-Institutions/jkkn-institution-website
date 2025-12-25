@@ -4,9 +4,7 @@ import { useState, useCallback } from 'react'
 import { usePageBuilder } from '../page-builder-provider'
 import { DynamicForm } from './dynamic-form'
 import { getComponentEntry } from '@/lib/cms/component-registry'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Button } from '@/components/ui/button'
 import { Settings, Info, Paintbrush, FileText, Code, Sparkles, Eye, EyeOff } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -271,21 +269,21 @@ export function PropsPanel() {
 
         {/* Content Tab */}
         <TabsContent value="content" className="flex-1 m-0 min-h-0">
-          <ScrollArea className="h-full">
-            <div className="p-4">
+          <div className="h-full overflow-auto">
+            <div className="p-4 min-w-max">
               <DynamicForm
                 componentEntry={entry}
                 values={selectedBlock.props}
                 onChange={handlePropsChange}
               />
             </div>
-          </ScrollArea>
+          </div>
         </TabsContent>
 
         {/* Style Tab */}
         <TabsContent value="style" className="flex-1 m-0 min-h-0">
-          <ScrollArea className="h-full">
-            <div className="p-2 space-y-1">
+          <div className="h-full overflow-auto">
+            <div className="p-2 space-y-1 min-w-max">
               <TypographyControls
                 typography={styles.typography}
                 onChange={(typography) => updateStyles('typography', typography)}
@@ -307,25 +305,25 @@ export function PropsPanel() {
                 onChange={(shadow) => updateStyles('shadow', shadow)}
               />
             </div>
-          </ScrollArea>
+          </div>
         </TabsContent>
 
         {/* Motion Tab */}
         <TabsContent value="motion" className="flex-1 m-0 min-h-0">
-          <ScrollArea className="h-full">
-            <div className="p-2">
+          <div className="h-full overflow-auto">
+            <div className="p-2 min-w-max">
               <MotionControls
                 motion={motion}
                 onChange={updateMotion}
               />
             </div>
-          </ScrollArea>
+          </div>
         </TabsContent>
 
         {/* Advanced Tab */}
         <TabsContent value="advanced" className="flex-1 m-0 min-h-0">
-          <ScrollArea className="h-full">
-            <div className="p-4 space-y-6">
+          <div className="h-full overflow-auto">
+            <div className="p-4 space-y-6 min-w-max">
               {/* Custom Classes */}
               <div className="space-y-2">
                 <Label className="text-sm font-medium">Custom CSS Classes</Label>
@@ -365,7 +363,7 @@ export function PropsPanel() {
                 </code>
               </div>
             </div>
-          </ScrollArea>
+          </div>
         </TabsContent>
       </Tabs>
 

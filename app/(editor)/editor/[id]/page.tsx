@@ -2,6 +2,7 @@ import { redirect, notFound } from 'next/navigation'
 import { checkPermission } from '@/app/actions/permissions'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { getPageById, getPageSeo, getPageFab } from '@/app/actions/cms/pages'
+import { getFooterSettings } from '@/app/actions/cms/footer'
 import { PageBuilder } from '@/components/page-builder'
 
 interface EditorPageProps {
@@ -42,10 +43,11 @@ export default async function StandaloneEditorPage({ params }: EditorPageProps) 
   await checkAccess()
 
   const { id } = await params
-  const [page, seoData, fabData] = await Promise.all([
+  const [page, seoData, fabData, footerSettings] = await Promise.all([
     getPageById(id),
     getPageSeo(id),
     getPageFab(id),
+    getFooterSettings(),
   ])
 
   if (!page) {
@@ -118,6 +120,7 @@ export default async function StandaloneEditorPage({ params }: EditorPageProps) 
       initialBlocks={blocks}
       initialSeoData={initialSeoData}
       initialFabConfig={initialFabConfig}
+      initialFooterSettings={footerSettings}
     />
   )
 }

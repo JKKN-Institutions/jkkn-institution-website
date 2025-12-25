@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { Plus, Trash2, Image as ImageIcon, X, Check, ChevronDown, ChevronUp, GripVertical, User, Loader2 } from 'lucide-react'
+import { Plus, Trash2, Image as ImageIcon, X, Check, ChevronDown, ChevronUp, GripVertical, User, Loader2, Type } from 'lucide-react'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import type { ComponentRegistryEntry } from '@/lib/cms/registry-types'
 import { BRAND_COLORS, BRAND_GRADIENTS, type BrandColor } from '@/lib/cms/brand-colors'
@@ -116,6 +116,179 @@ function StringField({ config, value, onChange }: FieldProps) {
       placeholder={config.placeholder || `Enter ${config.label.toLowerCase()}...`}
       className="bg-background/50 border-border/50"
     />
+  )
+}
+
+/**
+ * Typography settings for a text field
+ */
+interface FieldTypography {
+  fontFamily?: string
+  fontSize?: number
+  fontWeight?: string
+  color?: string
+}
+
+/**
+ * Extended FieldProps for StringFieldWithTypography
+ */
+interface StringFieldWithTypographyProps extends FieldProps {
+  typography?: FieldTypography
+  onTypographyChange?: (typography: FieldTypography) => void
+}
+
+/**
+ * String Field with collapsible Typography Controls
+ * Allows editing font family, size (px), weight, and color for text content
+ */
+function StringFieldWithTypography({
+  config,
+  value,
+  onChange,
+  typography = {},
+  onTypographyChange
+}: StringFieldWithTypographyProps) {
+  const stringValue = (value as string) || ''
+  const [isTypographyOpen, setIsTypographyOpen] = useState(false)
+
+  const fontFamilies = [
+    'inherit',
+    'Inter',
+    'Roboto',
+    'Open Sans',
+    'Lato',
+    'Montserrat',
+    'Poppins',
+    'Playfair Display',
+    'Georgia',
+    'Times New Roman',
+  ]
+
+  const fontWeights = [
+    { value: '400', label: 'Regular' },
+    { value: '500', label: 'Medium' },
+    { value: '600', label: 'Semi Bold' },
+    { value: '700', label: 'Bold' },
+    { value: '800', label: 'Extra Bold' },
+  ]
+
+  const updateTypography = (key: keyof FieldTypography, newValue: string | number) => {
+    if (onTypographyChange) {
+      onTypographyChange({ ...typography, [key]: newValue })
+    }
+  }
+
+  return (
+    <div className="space-y-2">
+      {/* Text Input */}
+      {config.multiline ? (
+        <Textarea
+          value={stringValue}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={config.placeholder || `Enter ${config.label.toLowerCase()}...`}
+          rows={3}
+          className="bg-background/50 border-border/50"
+        />
+      ) : (
+        <Input
+          type={config.type === 'url' ? 'url' : 'text'}
+          value={stringValue}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={config.placeholder || `Enter ${config.label.toLowerCase()}...`}
+          className="bg-background/50 border-border/50"
+        />
+      )}
+
+      {/* Collapsible Typography Controls */}
+      {onTypographyChange && (
+        <Collapsible open={isTypographyOpen} onOpenChange={setIsTypographyOpen}>
+          <CollapsibleTrigger className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors py-1">
+            <Type className="h-3 w-3" />
+            <span>Typography</span>
+            <ChevronDown className={cn('h-3 w-3 transition-transform', isTypographyOpen && 'rotate-180')} />
+          </CollapsibleTrigger>
+          <CollapsibleContent className="pt-2">
+            <div className="p-3 bg-muted/30 rounded-lg border border-border/50 space-y-3">
+              {/* Font Family & Weight Row */}
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <Label className="text-[10px] uppercase text-muted-foreground">Font</Label>
+                  <Select
+                    value={typography.fontFamily || 'inherit'}
+                    onValueChange={(v) => updateTypography('fontFamily', v)}
+                  >
+                    <SelectTrigger className="h-8 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {fontFamilies.map((font) => (
+                        <SelectItem key={font} value={font} style={{ fontFamily: font }}>
+                          {font}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-[10px] uppercase text-muted-foreground">Weight</Label>
+                  <Select
+                    value={typography.fontWeight || '400'}
+                    onValueChange={(v) => updateTypography('fontWeight', v)}
+                  >
+                    <SelectTrigger className="h-8 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {fontWeights.map((w) => (
+                        <SelectItem key={w.value} value={w.value}>
+                          {w.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Font Size & Color Row */}
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <Label className="text-[10px] uppercase text-muted-foreground">Size</Label>
+                  <div className="flex items-center gap-1">
+                    <Input
+                      type="number"
+                      value={typography.fontSize || 16}
+                      onChange={(e) => updateTypography('fontSize', parseInt(e.target.value) || 16)}
+                      className="h-8 text-xs flex-1"
+                      min={8}
+                      max={200}
+                    />
+                    <span className="text-xs text-muted-foreground">px</span>
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-[10px] uppercase text-muted-foreground">Color</Label>
+                  <div className="flex items-center gap-1">
+                    <input
+                      type="color"
+                      value={typography.color || '#000000'}
+                      onChange={(e) => updateTypography('color', e.target.value)}
+                      className="h-8 w-8 rounded border border-border cursor-pointer"
+                    />
+                    <Input
+                      type="text"
+                      value={typography.color || '#000000'}
+                      onChange={(e) => updateTypography('color', e.target.value)}
+                      className="h-8 text-xs flex-1 font-mono"
+                      placeholder="#000000"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+      )}
+    </div>
   )
 }
 
@@ -1693,6 +1866,27 @@ export function DynamicForm({ componentEntry, values, onChange }: DynamicFormPro
     [values, onChange]
   )
 
+  // Handle typography change for a specific field
+  const handleTypographyChange = useCallback(
+    (fieldKey: string, typography: FieldTypography) => {
+      const currentTypography = (values._fieldTypography as Record<string, FieldTypography>) || {}
+      onChange({
+        ...values,
+        _fieldTypography: {
+          ...currentTypography,
+          [fieldKey]: typography
+        }
+      })
+    },
+    [values, onChange]
+  )
+
+  // Get typography for a specific field
+  const getFieldTypography = (fieldKey: string): FieldTypography => {
+    const fieldTypography = values._fieldTypography as Record<string, FieldTypography> | undefined
+    return fieldTypography?.[fieldKey] || {}
+  }
+
   return (
     <div className="space-y-5">
       {fields.map((field) => {
@@ -1722,10 +1916,12 @@ export function DynamicForm({ componentEntry, values, onChange }: DynamicFormPro
             </Label>
 
             {field.type === 'string' && (
-              <StringField
+              <StringFieldWithTypography
                 config={field}
                 value={fieldValue}
                 onChange={(v) => handleFieldChange(field.key, v)}
+                typography={getFieldTypography(field.key)}
+                onTypographyChange={(t) => handleTypographyChange(field.key, t)}
               />
             )}
 

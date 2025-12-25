@@ -39,8 +39,8 @@ export default function LogoCloud({
             }),
           }}
         >
-          {logos.filter(l => l.src).map((logo, index) => {
-            const LogoContent = (
+          {logos.filter(l => l.src).map((logo, index) => (
+            <div key={index} className="flex justify-center">
               <img
                 src={logo.src}
                 alt={logo.alt || ''}
@@ -49,28 +49,8 @@ export default function LogoCloud({
                   grayscale && 'grayscale opacity-60 hover:grayscale-0 hover:opacity-100'
                 )}
               />
-            )
-
-            if (logo.link) {
-              return (
-                <a
-                  key={index}
-                  href={logo.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block"
-                >
-                  {LogoContent}
-                </a>
-              )
-            }
-
-            return (
-              <div key={index} className="flex justify-center">
-                {LogoContent}
-              </div>
-            )
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </section>

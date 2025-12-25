@@ -629,12 +629,12 @@ function MobileSidebar({
   )
 }
 
-// Mobile Menu Button Component
+// Mobile Menu Button Component (Hidden - using bottom navigation on mobile)
 function MobileMenuButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="lg:hidden fixed top-6 left-4 z-50 p-2 hover:bg-black/5 rounded-lg transition-colors"
+      className="hidden" // Hidden - bottom navigation is used on mobile
       aria-label="Open menu"
     >
       <Menu className="h-6 w-6 text-foreground" />

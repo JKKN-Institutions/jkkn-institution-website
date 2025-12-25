@@ -59,7 +59,7 @@ const defaultContactCards: ContactCard[] = [
     id: 'address',
     type: 'address',
     title: 'Address',
-    value: 'Natarajapuram, NH-544 (Salem to Coimbatore), Kumarapalayam - 638183, Namakkal (DT)',
+    value: 'Natarajapuram, NH-544 (Salem To Coimbatore National Highway), Kumarapalayam (TK), Namakkal (DT). Tamil Nadu. 638183.',
     link: 'https://maps.google.com/?q=JKKN+Educational+Institutions',
   },
 ]

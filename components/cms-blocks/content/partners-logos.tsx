@@ -4,9 +4,8 @@ import { cn } from '@/lib/utils'
 import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRef, useState, useEffect, useCallback } from 'react'
-import { Handshake, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Handshake, ChevronLeft, ChevronRight } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
 
 /**
@@ -547,19 +546,6 @@ function PartnerCard({
         )}
       </div>
 
-      {/* External Link Indicator */}
-      {partner.link && (
-        <div
-          className={cn(
-            'absolute top-2 right-2 w-6 h-6 rounded-full flex items-center justify-center shadow-sm transition-all duration-300',
-            isDark ? 'bg-white/10 backdrop-blur-sm' : 'bg-white/90 backdrop-blur-sm',
-            isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
-          )}
-        >
-          <ExternalLink className="w-3 h-3 text-gold" />
-        </div>
-      )}
-
       {/* Bottom gold accent line on hover */}
       <div
         className={cn(
@@ -570,14 +556,6 @@ function PartnerCard({
       />
     </div>
   )
-
-  if (partner.link && !isEditing) {
-    return (
-      <Link href={partner.link} target="_blank" rel="noopener noreferrer" className={cn('block', className)}>
-        {cardContent}
-      </Link>
-    )
-  }
 
   return <div className={className}>{cardContent}</div>
 }

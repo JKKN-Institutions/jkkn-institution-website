@@ -317,6 +317,7 @@ import {
   PricingTablesPropsSchema,
   TrustBadgesPropsSchema,
   AccreditationsSectionPropsSchema,
+  WhyChooseJKKNPropsSchema,
   ImageBlockPropsSchema,
   ImageGalleryPropsSchema,
   VideoPlayerPropsSchema,
@@ -357,6 +358,7 @@ const Timeline = lazy(() => import('@/components/cms-blocks/content/timeline'))
 const PricingTables = lazy(() => import('@/components/cms-blocks/content/pricing-tables'))
 const TrustBadges = lazy(() => import('@/components/cms-blocks/content/trust-badges'))
 const AccreditationsSection = lazy(() => import('@/components/cms-blocks/content/accreditations-section'))
+const WhyChooseJKKN = lazy(() => import('@/components/cms-blocks/content/why-choose-jkkn'))
 
 // Media blocks
 const ImageBlock = lazy(() => import('@/components/cms-blocks/media/image-block'))
@@ -456,6 +458,9 @@ const ContactPage = lazy(() => import('@/components/cms-blocks/content/contact-p
 
 // Hostel Page
 const HostelPage = lazy(() => import('@/components/cms-blocks/content/hostel-page'))
+
+// Admission Inquiry Form
+const AdmissionInquiryForm = lazy(() => import('@/components/cms-blocks/content/admission-inquiry-form'))
 
 // shadcn/ui blocks
 const ShadcnButtonBlock = lazy(() => import('@/components/cms-blocks/shadcn/button-block'))
@@ -952,6 +957,150 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         min: 50,
         max: 300,
         description: 'Delay between each card animation',
+      },
+    ],
+  },
+
+  WhyChooseJKKN: {
+    name: 'WhyChooseJKKN',
+    displayName: 'Why Choose JKKN (USPs)',
+    category: 'content',
+    description: 'Display institutional unique selling points with glassmorphism cards and staggered animations',
+    icon: 'Sparkles',
+    previewImage: '/cms-previews/WhyChooseJKKN.png',
+    component: WhyChooseJKKN,
+    propsSchema: WhyChooseJKKNPropsSchema,
+    defaultProps: {
+      sectionTitle: 'Why Choose JKKN?',
+      sectionSubtitle: '74+ Years of Transforming Lives Through Progressive Education',
+      sectionTagline: 'Where Legacy Meets Innovation | Excellence Without Elitism',
+      uspCards: [
+        {
+          icon: '🏛️',
+          title: '74+ Years of Educational Legacy',
+          description: 'Founded in 1951 by visionary Kodai Vallal Shri. J.K.K. Natarajah, JKKN has nurtured over 1,00,000+ Learners who are now leaders in healthcare, technology, business, and education across the globe. Our seven decades of experience means time-tested teaching methodologies, strong alumni networks, and institutional stability you can trust.',
+          order: 1,
+        },
+        {
+          icon: '💼',
+          title: '95% Placement Success Rate',
+          description: 'Our dedicated placement cell partners with 100+ leading recruiters including TCS, Infosys, Wipro, Zoho, Cognizant, and top healthcare organizations. With comprehensive soft skills training, mock interviews, industry internships, and on-campus recruitment drives, 95% of our eligible Learners secure placements before graduation.',
+          order: 2,
+        },
+        {
+          icon: '🏆',
+          title: 'NAAC A+ Accredited Quality',
+          description: "JKKN's A+ accreditation from the National Assessment and Accreditation Council validates our world-class infrastructure, qualified Learning Facilitators, innovative curriculum, and Learner-centric governance. This recognition ensures your education meets national benchmarks of excellence.",
+          order: 3,
+        },
+        {
+          icon: '👨‍🏫',
+          title: '500+ Expert Learning Facilitators',
+          description: 'Our Learning Facilitators are industry experts, researchers, and published academicians with an average experience of 15+ years. Many hold Ph.D. qualifications and bring real-world insights into Learning Studios. The favorable 1:15 Learning Facilitator-to-Learner ratio ensures personalized attention.',
+          order: 4,
+        },
+        {
+          icon: '🏫',
+          title: 'State-of-the-Art Infrastructure',
+          description: 'Spread across 100+ acres, JKKN campus features smart Learning Studios, advanced research labs, 500-bed multi-specialty hospital, digital library, sports complex, separate hostels, Wi-Fi campus, auditorium, food court, and all amenities for a complete campus experience.',
+          order: 5,
+        },
+        {
+          icon: '💰',
+          title: 'Affordable & Accessible Education',
+          description: 'Following our Founder\'s philosophy of "Excellence without Elitism," JKKN offers quality education at competitive fee structures. Multiple scholarship schemes, government benefits, and flexible payment options ensure deserving Learners are never denied education due to financial constraints.',
+          order: 6,
+        },
+      ],
+      additionalUsps: [
+        '50+ Industry-Relevant Programs across Medical, Engineering, Arts & Science',
+        'Multi-Specialty Hospital for clinical training and community healthcare',
+        'Industry-Integrated Curriculum with internships and live projects',
+        'Research & Innovation Hub with funded projects and patent support',
+        'Holistic Development through sports, cultural, and social activities',
+        'Safe & Secure Campus with 24/7 security and CCTV surveillance',
+        'Strong Alumni Network of 50,000+ professionals worldwide',
+        'Entrepreneurship Support through incubation centers and startup mentoring',
+      ],
+      layout: 'grid',
+      cardsPerRow: 3,
+      showAdditionalList: true,
+      glassmorphismVariant: 'brand',
+      animationPreset: 'stagger',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['usp', 'why', 'choose', 'benefits', 'features', 'advantages', 'differentiators', 'unique', 'selling', 'points'],
+    editableProps: [
+      // Section Header
+      { name: 'sectionTitle', type: 'string', label: 'Section Title', required: true, description: 'Main title (e.g., Why Choose JKKN?)' },
+      { name: 'sectionSubtitle', type: 'string', label: 'Subtitle', multiline: true, description: 'Large subtitle below title (e.g., 74+ Years of...)' },
+      { name: 'sectionTagline', type: 'string', label: 'Tagline', multiline: true, description: 'Small tagline text (e.g., Where Legacy Meets Innovation...)' },
+      // USP Cards Array
+      {
+        name: 'uspCards',
+        type: 'array',
+        label: 'USP Cards',
+        description: 'Main differentiator cards (recommended: 6 cards)',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            icon: {
+              type: 'string',
+              label: 'Icon',
+              required: true,
+              placeholder: '🏛️ or /images/icon.png',
+              description: 'Emoji or image URL',
+            },
+            title: {
+              type: 'string',
+              label: 'Title',
+              required: true,
+              placeholder: 'e.g., 74+ Years of Educational Legacy',
+            },
+            description: {
+              type: 'string',
+              label: 'Description',
+              required: true,
+              multiline: true,
+              placeholder: 'Detailed description of this USP',
+            },
+            order: {
+              type: 'number',
+              label: 'Display Order',
+              defaultValue: 0,
+            },
+          },
+          required: ['icon', 'title', 'description'],
+        },
+      },
+      // Additional USPs Array
+      {
+        name: 'additionalUsps',
+        type: 'array',
+        label: 'Additional Benefits',
+        description: 'Additional USPs shown as checklist (recommended: 8 items)',
+        itemType: 'string',
+      },
+      // Layout Configuration
+      { name: 'layout', type: 'enum', label: 'Layout', options: ['grid', 'slider'], description: 'How to display USP cards' },
+      { name: 'cardsPerRow', type: 'enum', label: 'Cards Per Row', options: ['2', '3', '4'], description: 'Number of cards per row in grid layout' },
+      { name: 'showAdditionalList', type: 'boolean', label: 'Show Additional Benefits', description: 'Display the checklist of additional USPs' },
+      // Styling
+      {
+        name: 'glassmorphismVariant',
+        type: 'enum',
+        label: 'Card Style',
+        options: ['light', 'dark', 'dark-elegant', 'gradient', 'brand'],
+        description: 'Glassmorphism styling for cards',
+      },
+      // Animation
+      {
+        name: 'animationPreset',
+        type: 'enum',
+        label: 'Animation',
+        options: ['fade-in-up', 'zoom-in', 'slide-up', 'stagger', 'none'],
+        description: 'Entrance animation style',
       },
     ],
   },
@@ -3121,6 +3270,194 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'backgroundColor', type: 'color', label: 'Background Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },
       { name: 'textColor', type: 'color', label: 'Text Color' },
+    ],
+  },
+
+  AdmissionInquiryForm: {
+    name: 'AdmissionInquiryForm',
+    displayName: 'Admission Inquiry Form',
+    category: 'content',
+    description: 'Interactive admission inquiry form with glassmorphism styling, dynamic course selection, and success confirmation',
+    icon: 'GraduationCap',
+    previewImage: '/cms-previews/AdmissionInquiryForm.png',
+    component: AdmissionInquiryForm,
+    propsSchema: z.object({
+      sectionTitle: z.string().default('Start Your Journey with JKKN'),
+      sectionSubtitle: z.string().default('Get personalized guidance from our admission counsellors'),
+      showHeader: z.boolean().default(true),
+      badge: z.string().default('Admissions Open'),
+      formLabels: z.object({
+        fullName: z.string().optional(),
+        mobileNumber: z.string().optional(),
+        email: z.string().optional(),
+        college: z.string().optional(),
+        course: z.string().optional(),
+        qualification: z.string().optional(),
+        districtCity: z.string().optional(),
+        contactTime: z.string().optional(),
+        consent: z.string().optional(),
+      }).optional(),
+      collegeOptions: z.array(z.object({
+        id: z.string(),
+        name: z.string(),
+        courses: z.array(z.string()),
+      })).default([]),
+      qualificationOptions: z.array(z.string()).default([]),
+      contactTimeOptions: z.array(z.string()).default([]),
+      successMessage: z.object({
+        title: z.string().optional(),
+        subtitle: z.string().optional(),
+        callbackMessage: z.string().optional(),
+        referencePrefix: z.string().optional(),
+        emailConfirmation: z.string().optional(),
+      }).optional(),
+      whatsappNumber: z.string().default('+919345855001'),
+      whatsappMessage: z.string().default('Hi, I just submitted an admission inquiry. My reference number is: '),
+      successLinks: z.array(z.object({
+        label: z.string(),
+        url: z.string(),
+        icon: z.string().optional(),
+      })).default([]),
+      variant: z.enum(['glass', 'solid']).default('glass'),
+      theme: z.enum(['light', 'dark']).default('dark'),
+      backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid-white', 'transparent']).default('gradient-dark'),
+      cardStyle: z.enum(['glass', 'solid', 'gradient']).default('glass'),
+      showAnimations: z.boolean().default(true),
+      layout: z.enum(['single-column', 'two-column']).default('two-column'),
+      showDecorations: z.boolean().default(true),
+    }),
+    defaultProps: {
+      sectionTitle: 'Start Your Journey with JKKN',
+      sectionSubtitle: 'Get personalized guidance from our admission counsellors',
+      showHeader: true,
+      badge: 'Admissions Open',
+      formLabels: {
+        fullName: 'Full Name',
+        mobileNumber: 'Mobile Number',
+        email: 'Email Address',
+        college: 'Select College',
+        course: 'Course Interested',
+        qualification: 'Current Qualification',
+        districtCity: 'District / City',
+        contactTime: 'Preferred Contact Time',
+        consent: 'I agree to receive communications from JKKN regarding admissions',
+      },
+      collegeOptions: [
+        { id: 'dental', name: 'JKKN Dental College & Hospital', courses: ['BDS', 'MDS - Orthodontics', 'MDS - Prosthodontics', 'MDS - Periodontics', 'MDS - Oral Surgery'] },
+        { id: 'pharmacy', name: 'JKKN College of Pharmacy', courses: ['B.Pharm', 'M.Pharm', 'Pharm.D', 'D.Pharm'] },
+        { id: 'engineering', name: 'JKKN College of Engineering & Technology', courses: ['B.E. CSE', 'B.E. ECE', 'B.E. EEE', 'B.E. Mechanical', 'M.E.', 'MBA'] },
+        { id: 'arts', name: 'JKKN College of Arts & Science', courses: ['B.Sc', 'M.Sc', 'BBA', 'BCA', 'B.Com', 'BA'] },
+        { id: 'nursing', name: 'JKKN College of Nursing', courses: ['B.Sc Nursing', 'M.Sc Nursing', 'GNM', 'ANM'] },
+        { id: 'allied', name: 'JKKN College of Allied Health Sciences', courses: ['BPT', 'BMLT', 'B.Sc Radiology', 'B.Sc Cardiac Technology'] },
+        { id: 'education', name: 'JKKN College of Education', courses: ['B.Ed', 'M.Ed', 'D.El.Ed'] },
+        { id: 'school', name: 'JKKN Matriculation Higher Secondary School', courses: ['Pre-KG to 12th Standard'] },
+      ],
+      qualificationOptions: [
+        '10th / SSLC',
+        '12th / HSC',
+        'Diploma',
+        "Undergraduate (Bachelor's)",
+        "Postgraduate (Master's)",
+        'Other',
+      ],
+      contactTimeOptions: [
+        'Morning (9 AM - 12 PM)',
+        'Afternoon (12 PM - 3 PM)',
+        'Evening (3 PM - 6 PM)',
+        'Any Time',
+      ],
+      successMessage: {
+        title: 'Thank You for Your Interest!',
+        subtitle: 'Your inquiry has been submitted successfully.',
+        callbackMessage: 'Our admissions team will contact you within 24 hours.',
+        referencePrefix: 'Your Reference Number:',
+        emailConfirmation: 'A confirmation email has been sent to your email address.',
+      },
+      whatsappNumber: '+919345855001',
+      whatsappMessage: 'Hi, I just submitted an admission inquiry. My reference number is: ',
+      successLinks: [
+        { label: 'Download Prospectus', url: '/downloads/prospectus.pdf', icon: 'Download' },
+        { label: 'Virtual Campus Tour', url: '/virtual-tour', icon: 'Video' },
+        { label: 'Scholarship Information', url: '/scholarships', icon: 'Award' },
+      ],
+      variant: 'glass',
+      theme: 'dark',
+      backgroundColor: 'gradient-dark',
+      cardStyle: 'glass',
+      showAnimations: true,
+      layout: 'two-column',
+      showDecorations: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['admission', 'inquiry', 'form', 'apply', 'enroll', 'contact', 'application', 'college'],
+    editableProps: [
+      // Section Header
+      { name: 'showHeader', type: 'boolean', label: 'Show Header' },
+      { name: 'badge', type: 'string', label: 'Badge Text' },
+      { name: 'sectionTitle', type: 'string', label: 'Section Title', required: true },
+      { name: 'sectionSubtitle', type: 'string', label: 'Subtitle', multiline: true },
+      // Form Labels
+      { name: 'formLabels.fullName', type: 'string', label: 'Full Name Label' },
+      { name: 'formLabels.mobileNumber', type: 'string', label: 'Mobile Number Label' },
+      { name: 'formLabels.email', type: 'string', label: 'Email Label' },
+      { name: 'formLabels.college', type: 'string', label: 'College Label' },
+      { name: 'formLabels.course', type: 'string', label: 'Course Label' },
+      { name: 'formLabels.qualification', type: 'string', label: 'Qualification Label' },
+      { name: 'formLabels.districtCity', type: 'string', label: 'District/City Label' },
+      { name: 'formLabels.contactTime', type: 'string', label: 'Contact Time Label' },
+      { name: 'formLabels.consent', type: 'string', label: 'Consent Text', multiline: true },
+      // College Options
+      {
+        name: 'collegeOptions',
+        type: 'array',
+        label: 'College Options',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            id: { type: 'string', label: 'ID', required: true },
+            name: { type: 'string', label: 'College Name', required: true },
+            courses: { type: 'array', label: 'Courses', itemType: 'string' },
+          },
+          required: ['id', 'name'],
+        },
+      },
+      // Qualification Options
+      { name: 'qualificationOptions', type: 'array', label: 'Qualification Options', itemType: 'string' },
+      // Contact Time Options
+      { name: 'contactTimeOptions', type: 'array', label: 'Contact Time Options', itemType: 'string' },
+      // Success Message
+      { name: 'successMessage.title', type: 'string', label: 'Success Title' },
+      { name: 'successMessage.subtitle', type: 'string', label: 'Success Subtitle' },
+      { name: 'successMessage.callbackMessage', type: 'string', label: 'Callback Message' },
+      { name: 'successMessage.referencePrefix', type: 'string', label: 'Reference Prefix' },
+      { name: 'successMessage.emailConfirmation', type: 'string', label: 'Email Confirmation' },
+      // WhatsApp
+      { name: 'whatsappNumber', type: 'string', label: 'WhatsApp Number' },
+      { name: 'whatsappMessage', type: 'string', label: 'WhatsApp Pre-fill Message', multiline: true },
+      // Success Links
+      {
+        name: 'successLinks',
+        type: 'array',
+        label: 'Success Action Links',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            label: { type: 'string', label: 'Label', required: true },
+            url: { type: 'string', label: 'URL', required: true },
+            icon: { type: 'string', label: 'Icon Name' },
+          },
+          required: ['label', 'url'],
+        },
+      },
+      // Styling
+      { name: 'variant', type: 'enum', label: 'Form Style', options: ['glass', 'solid'] },
+      { name: 'theme', type: 'enum', label: 'Theme', options: ['light', 'dark'] },
+      { name: 'backgroundColor', type: 'enum', label: 'Background', options: ['gradient-dark', 'gradient-light', 'solid-white', 'transparent'] },
+      { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['glass', 'solid', 'gradient'] },
+      { name: 'layout', type: 'enum', label: 'Layout', options: ['single-column', 'two-column'] },
+      { name: 'showAnimations', type: 'boolean', label: 'Enable Animations' },
+      { name: 'showDecorations', type: 'boolean', label: 'Show Decorations' },
     ],
   },
 

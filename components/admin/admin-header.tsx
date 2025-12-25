@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   DropdownMenu,
@@ -109,14 +110,25 @@ export function AdminHeader() {
 
   return (
     <header className="glass-header border-b border-border/50 flex-shrink-0 w-full max-w-full overflow-hidden sticky top-0 z-30 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="px-4 lg:px-6 py-4 w-full max-w-full overflow-hidden">
+      <div className="px-3 lg:px-6 py-2 lg:py-3 w-full max-w-full overflow-hidden">
         <div className="flex items-center justify-between">
-          {/* Page Title - with padding for mobile menu button */}
-          <div className="pl-12 lg:pl-0">
-            <h1 className="text-xl font-semibold text-foreground">{getPageTitle()}</h1>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Manage your institution efficiently
-            </p>
+          {/* Logo + Page Title */}
+          <div className="flex items-center gap-3">
+            {/* JKKN Logo - visible on mobile */}
+            <Link href="/admin" className="lg:hidden flex-shrink-0">
+              <div className="relative w-10 h-10">
+                <Image
+                  src="/images/logo.png"
+                  alt="JKKN Institution"
+                  fill
+                  sizes="40px"
+                  className="object-contain"
+                  priority
+                />
+              </div>
+            </Link>
+            {/* Page Title - no description */}
+            <h1 className="text-lg lg:text-xl font-semibold text-foreground">{getPageTitle()}</h1>
           </div>
 
           {/* Right Side Actions */}

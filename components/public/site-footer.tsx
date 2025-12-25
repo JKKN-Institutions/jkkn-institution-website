@@ -34,8 +34,6 @@ export function SiteFooter({ settings }: SiteFooterProps) {
 
   // Filter visible links
   const visibleInstitutions = settings.institutions.filter(link => link.visible)
-  const visiblePrograms = settings.programs.filter(link => link.visible)
-  const visibleResources = settings.resources.filter(link => link.visible)
 
   // Build social links array
   const socialLinks = Object.entries(settings.socialLinks || {})
@@ -78,14 +76,14 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                 </div>
               </div>
               <div>
-                <p className="text-xl font-bold">JKKN Institution</p>
+                <p className="text-xl font-bold">JKKN Institutions</p>
                 <p className="text-xs text-white/70 font-medium tracking-wider uppercase">
                   Excellence in Education
                 </p>
               </div>
             </Link>
             <p className="text-white/80 text-sm mb-8 leading-relaxed max-w-md">
-              JKKN Group of Institutions is committed to providing quality education and
+              JKKN Institutions is committed to providing quality education and
               fostering innovation, research, and holistic development of students to prepare
               them for global challenges.
             </p>
@@ -115,9 +113,10 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                   <MapPin className="h-4 w-4 text-secondary" />
                 </div>
                 <span className="text-sm">
-                  Natarajapuram, NH-544,<br />
-                  Kumarapalayam (TK), Namakkal (DT),<br />
-                  Tamil Nadu - 638183
+                  Natarajapuram, NH-544<br />
+                  (Salem To Coimbatore National Highway),<br />
+                  Kumarapalayam (TK), Namakkal (DT).<br />
+                  Tamil Nadu. 638183.
                 </span>
               </div>
             </div>
@@ -132,58 +131,46 @@ export function SiteFooter({ settings }: SiteFooterProps) {
             <ul className="space-y-3">
               {visibleInstitutions.map((link) => (
                 <li key={link.href}>
-                  <Link
+                  <a
                     href={link.href}
                     className="flex items-center gap-2 text-sm text-white/70 hover:text-white transition-all duration-300 group"
                   >
                     <ChevronRight className="h-4 w-4 text-secondary opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
                     {link.label}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Programs */}
-          <div>
+          {/* Location Map */}
+          <div className="lg:col-span-2">
             <h4 className="text-lg font-semibold mb-6 flex items-center gap-2">
               <span className="w-8 h-0.5 bg-secondary rounded-full" />
-              Programs
+              Our Location
             </h4>
-            <ul className="space-y-3">
-              {visiblePrograms.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="flex items-center gap-2 text-sm text-white/70 hover:text-white transition-all duration-300 group"
-                  >
-                    <ChevronRight className="h-4 w-4 text-secondary opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div>
-            <h4 className="text-lg font-semibold mb-6 flex items-center gap-2">
-              <span className="w-8 h-0.5 bg-secondary rounded-full" />
-              Resources
-            </h4>
-            <ul className="space-y-3">
-              {visibleResources.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="flex items-center gap-2 text-sm text-white/70 hover:text-white transition-all duration-300 group"
-                  >
-                    <ChevronRight className="h-4 w-4 text-secondary opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <div className="rounded-xl overflow-hidden border border-white/10 shadow-lg">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3914.2834563159936!2d77.58373!3d11.26611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba96d9e6b5f2e5d%3A0x4c4d5c5e2c7d3d5d!2sJKKN%20Educational%20Institutions!5e0!3m2!1sen!2sin!4v1703500000000!5m2!1sen!2sin"
+                width="100%"
+                height="200"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="JKKN Institutions Location"
+                className="grayscale hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
+            <a
+              href="https://www.google.com/maps/place/JKKN+Educational+Institutions/@11.26611,77.58373,17z"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-4 text-sm text-white/70 hover:text-secondary transition-colors"
+            >
+              <MapPin className="h-4 w-4" />
+              View on Google Maps
+            </a>
           </div>
         </div>
       </div>
@@ -192,9 +179,18 @@ export function SiteFooter({ settings }: SiteFooterProps) {
       <div className="relative border-t border-white/10">
         <div className="container mx-auto px-4 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <p className="text-sm text-white/70 text-center md:text-left" suppressHydrationWarning>
-              © {new Date().getFullYear()} JKKN Group of Institutions. All rights reserved.
-            </p>
+            <div className="flex items-center gap-4 text-sm text-white/70 text-center md:text-left">
+              <p suppressHydrationWarning>
+                © {new Date().getFullYear()} JKKN Institutions. All rights reserved.
+              </p>
+              <span className="hidden md:inline text-white/30">|</span>
+              <Link
+                href="/admin"
+                className="hover:text-secondary transition-colors"
+              >
+                Admin
+              </Link>
+            </div>
 
             {/* Social Links */}
             <div className="flex items-center gap-3">

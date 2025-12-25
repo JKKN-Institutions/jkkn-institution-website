@@ -142,12 +142,13 @@ export function CTASection() {
                   <div>
                     <p className="text-sm text-gray-400">Visit Us</p>
                     <p className="text-white font-semibold">
-                      JKKN Group of Institutions
+                      JKKN Institutions
                     </p>
                     <p className="text-sm text-gray-400">
-                      Komarapalayam, Namakkal District,
-                      <br />
-                      Tamil Nadu - 638183
+                      Natarajapuram, NH-544<br />
+                      (Salem To Coimbatore National Highway),<br />
+                      Kumarapalayam (TK), Namakkal (DT).<br />
+                      Tamil Nadu. 638183.
                     </p>
                   </div>
                 </div>

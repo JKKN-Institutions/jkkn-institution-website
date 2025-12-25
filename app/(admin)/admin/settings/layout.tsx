@@ -10,6 +10,7 @@ import {
   Shield,
   Search,
   ChevronRight,
+  PanelBottom,
 } from 'lucide-react'
 
 const settingsNavItems = [
@@ -42,6 +43,12 @@ const settingsNavItems = [
     href: '/admin/settings/seo',
     icon: Search,
     description: 'Meta tags and analytics',
+  },
+  {
+    title: 'Footer',
+    href: '/admin/settings/footer',
+    icon: PanelBottom,
+    description: 'Footer links and content',
   },
 ]
 

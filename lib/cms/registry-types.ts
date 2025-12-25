@@ -950,6 +950,52 @@ export const AccreditationsSectionPropsSchema = z.object({
 export type AccreditationsSectionProps = z.infer<typeof AccreditationsSectionPropsSchema> & BaseBlockProps
 
 // ==========================================
+// Why Choose JKKN (USPs) Section
+// ==========================================
+
+/**
+ * USP Card schema for individual differentiator cards
+ */
+export const USPCardSchema = z.object({
+  icon: z.string().describe('Emoji or image URL'),
+  title: z.string(),
+  description: z.string(),
+  order: z.number(),
+})
+export type USPCard = z.infer<typeof USPCardSchema>
+
+/**
+ * Why Choose JKKN Section Props
+ * Displays institutional unique selling points with glassmorphism cards
+ */
+export const WhyChooseJKKNPropsSchema = z.object({
+  // Section metadata
+  sectionTitle: z.string().default('Why Choose JKKN?'),
+  sectionSubtitle: z.string().optional(),
+  sectionTagline: z.string().optional(),
+
+  // USP cards (main 6 differentiators)
+  uspCards: z.array(USPCardSchema).default([]),
+
+  // Additional USPs (bullet list)
+  additionalUsps: z.array(z.string()).default([]),
+
+  // Layout configuration
+  layout: z.enum(['grid', 'slider']).default('grid'),
+  cardsPerRow: z.union([z.literal(2), z.literal(3), z.literal(4)]).default(3),
+
+  // Display options
+  showAdditionalList: z.boolean().default(true),
+
+  // Styling
+  glassmorphismVariant: z.enum(['light', 'dark', 'dark-elegant', 'gradient', 'brand']).default('brand'),
+
+  // Animation
+  animationPreset: z.enum(['fade-in-up', 'zoom-in', 'slide-up', 'stagger', 'none']).default('stagger'),
+})
+export type WhyChooseJKKNProps = z.infer<typeof WhyChooseJKKNPropsSchema> & BaseBlockProps
+
+// ==========================================
 // Utility Functions for Type Conversion
 // ==========================================
 

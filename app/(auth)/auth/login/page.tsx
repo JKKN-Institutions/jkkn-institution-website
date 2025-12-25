@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Loader2, AlertCircle, Shield } from 'lucide-react'
-import Link from 'next/link'
 import Image from 'next/image'
 
 export default function LoginPage() {
@@ -50,7 +49,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center">
-      {/* Logo with gradient background - Hidden on mobile since left panel shows it */}
+      {/* Logo with gradient background - Desktop only */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -69,12 +68,12 @@ export default function LoginPage() {
         </div>
       </motion.div>
 
-      {/* Welcome text */}
+      {/* Welcome text - Desktop only (mobile version in layout) */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
-        className="text-center mb-5"
+        className="text-center mb-5 hidden lg:block"
       >
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
           Welcome Back
@@ -89,10 +88,10 @@ export default function LoginPage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-full flex items-start gap-3 p-4 mb-6 bg-red-50 border border-red-100 rounded-xl"
+          className="w-full flex items-start gap-3 p-4 mb-4 lg:mb-6 bg-red-500/20 lg:bg-red-50 border border-red-400/30 lg:border-red-100 rounded-xl"
         >
-          <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-          <p className="text-red-600 text-sm">{errorMessage}</p>
+          <AlertCircle className="w-5 h-5 text-red-300 lg:text-red-500 flex-shrink-0 mt-0.5" />
+          <p className="text-red-200 lg:text-red-600 text-sm">{errorMessage}</p>
         </motion.div>
       )}
 
@@ -106,11 +105,11 @@ export default function LoginPage() {
         <button
           onClick={handleGoogleLogin}
           disabled={loading}
-          className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-white border-2 border-gray-200 rounded-xl text-gray-700 font-medium transition-all duration-300 hover:border-[#0b6d41]/30 hover:bg-[#0b6d41]/5 hover:shadow-lg hover:shadow-[#0b6d41]/10 disabled:opacity-50 disabled:cursor-not-allowed group"
+          className="w-full flex items-center justify-center gap-3 px-6 py-3.5 lg:py-3 bg-white/20 lg:bg-white border-2 border-white/30 lg:border-gray-200 rounded-xl text-white lg:text-gray-700 font-medium transition-all duration-300 hover:bg-white/30 lg:hover:border-[#0b6d41]/30 lg:hover:bg-[#0b6d41]/5 hover:shadow-lg hover:shadow-black/10 lg:hover:shadow-[#0b6d41]/10 disabled:opacity-50 disabled:cursor-not-allowed group backdrop-blur-sm lg:backdrop-blur-none"
         >
           {loading ? (
             <>
-              <Loader2 className="w-5 h-5 animate-spin text-[#0b6d41]" />
+              <Loader2 className="w-5 h-5 animate-spin text-white lg:text-[#0b6d41]" />
               <span>Signing in...</span>
             </>
           ) : (
@@ -145,31 +144,14 @@ export default function LoginPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, delay: 0.3 }}
-        className="mt-4 flex items-center justify-center gap-2 text-gray-400"
+        className="mt-4 flex items-center justify-center gap-2 text-white/50 lg:text-gray-400"
       >
         <Shield className="w-4 h-4" />
         <p className="text-xs">
-          Only <span className="font-medium text-gray-500">@jkkn.ac.in</span> emails are allowed
+          Only <span className="font-medium text-white/70 lg:text-gray-500">@jkkn.ac.in</span> emails are allowed
         </p>
       </motion.div>
 
-      {/* Create Account Link */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: 0.4 }}
-        className="mt-5 pt-4 border-t border-gray-100 w-full text-center"
-      >
-        <p className="text-gray-500 text-sm">
-          New to JKKN Admin?{' '}
-          <Link
-            href="/auth/register"
-            className="text-[#0b6d41] font-semibold hover:text-[#0a5c36] transition-colors hover:underline underline-offset-2"
-          >
-            Request Access
-          </Link>
-        </p>
-      </motion.div>
     </div>
   )
 }

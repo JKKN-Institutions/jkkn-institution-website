@@ -19,16 +19,19 @@ import { BuilderCanvas } from './canvas/builder-canvas'
 import { PropsPanel } from './properties/props-panel'
 import { SeoPanel } from './panels/seo-panel'
 import { FabPanel, type FabConfig } from './panels/fab-panel'
+import { FooterPanel } from './panels/footer-panel'
+import type { FooterSettings } from '@/app/actions/cms/footer'
 import { TopToolbar } from './toolbar/top-toolbar'
 import { NavigatorPanel } from './elementor/navigator-panel'
 import { updatePageContent, updatePageSeo, updatePageFab } from '@/app/actions/cms/pages'
+import { updateFooterSettings } from '@/app/actions/settings'
 import { toast } from 'sonner'
 import type { BlockData } from '@/lib/cms/registry-types'
 import { blocksToPageBlocks, type PageBlock } from '@/lib/cms/registry-types'
 import { cn } from '@/lib/utils'
 import { getComponentEntry, supportsChildren } from '@/lib/cms/component-registry'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Settings, Search, MessageCircle, Component, Settings2 } from 'lucide-react'
+import { Settings, Search, MessageCircle, Component, Settings2, FileText } from 'lucide-react'
 import type { SeoData } from '@/lib/utils/seo-analyzer'
 import type { LayoutPreset } from '@/lib/cms/layout-presets'
 import { OfflineBanner } from '@/lib/hooks/use-network-status'
@@ -64,6 +67,7 @@ interface PageBuilderProps {
   initialBlocks: BlockData[]
   initialSeoData?: SeoMetadata | null
   initialFabConfig?: Partial<FabConfig> | null
+  initialFooterSettings?: FooterSettings | null
 }
 
 // Drag overlay content component
@@ -84,11 +88,13 @@ function PageBuilderContent({
   pageSlug,
   initialSeoData,
   initialFabConfig,
+  initialFooterSettings,
 }: {
   pageId: string
   pageSlug: string
   initialSeoData?: SeoMetadata | null
   initialFabConfig?: Partial<FabConfig> | null
+  initialFooterSettings?: FooterSettings | null
 }) {
   // Stable ID for DndContext to prevent hydration mismatches
   const dndContextId = useId()
@@ -122,15 +128,39 @@ function PageBuilderContent({
   const { blocks, isDirty, isSaving, isPreviewMode, device } = state
 
   // Right panel tab state
-  const [rightPanelTab, setRightPanelTab] = useState<'properties' | 'seo' | 'fab'>('properties')
+  const [rightPanelTab, setRightPanelTab] = useState<'properties' | 'seo' | 'fab' | 'footer'>('properties')
   const [isSavingSeo, setIsSavingSeo] = useState(false)
   const [isSavingFab, setIsSavingFab] = useState(false)
+  const [isSavingFooter, setIsSavingFooter] = useState(false)
   const [isNavigatorOpen, setIsNavigatorOpen] = useState(false)
   const [autoSaveFailCount, setAutoSaveFailCount] = useState(0)
 
   // Mobile panel state
   const [mobileLeftPanel, setMobileLeftPanel] = useState(false)
   const [mobileRightPanel, setMobileRightPanel] = useState(false)
+
+  // Panel collapse state (desktop)
+  const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('editor-left-panel-collapsed') === 'true'
+    }
+    return false
+  })
+  const [rightPanelCollapsed, setRightPanelCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('editor-right-panel-collapsed') === 'true'
+    }
+    return false
+  })
+
+  // Persist panel collapse state
+  useEffect(() => {
+    localStorage.setItem('editor-left-panel-collapsed', String(leftPanelCollapsed))
+  }, [leftPanelCollapsed])
+
+  useEffect(() => {
+    localStorage.setItem('editor-right-panel-collapsed', String(rightPanelCollapsed))
+  }, [rightPanelCollapsed])
 
   // Drag state
   const [activeId, setActiveId] = useState<string | null>(null)
@@ -406,6 +436,54 @@ function PageBuilderContent({
     }
   }, [pageId])
 
+  // Footer save handler
+  const handleSaveFooter = useCallback(async (footerSettings: FooterSettings) => {
+    console.log('[Footer] Save started with:', footerSettings)
+    setIsSavingFooter(true)
+    try {
+      // Transform FooterSettings to the format expected by updateFooterSettings
+      const payload = {
+        tagline: footerSettings.tagline,
+        description: footerSettings.description,
+        institutions: footerSettings.institutions,
+        programs: footerSettings.programs,
+        resources: footerSettings.resources,
+        show_about: footerSettings.sectionsVisibility.show_about,
+        show_institutions: footerSettings.sectionsVisibility.show_institutions,
+        show_programs: footerSettings.sectionsVisibility.show_programs,
+        show_resources: footerSettings.sectionsVisibility.show_resources,
+        show_social: footerSettings.sectionsVisibility.show_social,
+        contactEmail: footerSettings.contactEmail,
+        contactPhone: footerSettings.contactPhone,
+        address_line1: footerSettings.address.line1,
+        address_line2: footerSettings.address.line2,
+        address_city: footerSettings.address.city,
+        address_state: footerSettings.address.state,
+        address_pincode: footerSettings.address.pincode,
+        address_country: footerSettings.address.country,
+        social_facebook: footerSettings.socialLinks?.facebook,
+        social_twitter: footerSettings.socialLinks?.twitter,
+        social_instagram: footerSettings.socialLinks?.instagram,
+        social_linkedin: footerSettings.socialLinks?.linkedin,
+        social_youtube: footerSettings.socialLinks?.youtube,
+      }
+      console.log('[Footer] Sending payload:', payload)
+      const result = await updateFooterSettings(payload)
+      console.log('[Footer] Save result:', result)
+      if (result.success) {
+        toast.success('Footer settings saved')
+      } else {
+        toast.error(result.message || 'Failed to save footer settings')
+        console.error('[Footer] Save failed:', result.message)
+      }
+    } catch (error) {
+      console.error('[Footer] Save error:', error)
+      toast.error('An error occurred while saving footer settings')
+    } finally {
+      setIsSavingFooter(false)
+    }
+  }, [])
+
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -438,6 +516,20 @@ function PageBuilderContent({
       if (ctrlKey && e.key === 'l') {
         e.preventDefault()
         setIsNavigatorOpen((prev) => !prev)
+        return
+      }
+
+      // Toggle Left Panel: Ctrl/Cmd + [
+      if (ctrlKey && e.key === '[') {
+        e.preventDefault()
+        setLeftPanelCollapsed((prev) => !prev)
+        return
+      }
+
+      // Toggle Right Panel: Ctrl/Cmd + ]
+      if (ctrlKey && e.key === ']') {
+        e.preventDefault()
+        setRightPanelCollapsed((prev) => !prev)
         return
       }
 
@@ -619,6 +711,8 @@ function PageBuilderContent({
               maxWidth={400}
               storageKey="editor-left-panel"
               className="hidden lg:flex border-r border-border bg-card overflow-hidden"
+              collapsed={leftPanelCollapsed}
+              onToggle={() => setLeftPanelCollapsed(!leftPanelCollapsed)}
             >
               <ComponentPalette />
             </ResizablePanel>
@@ -667,25 +761,31 @@ function PageBuilderContent({
               maxWidth={500}
               storageKey="editor-right-panel"
               className="hidden lg:flex border-l border-border bg-card min-h-0"
+              collapsed={rightPanelCollapsed}
+              onToggle={() => setRightPanelCollapsed(!rightPanelCollapsed)}
             >
               <Tabs
                 value={rightPanelTab}
-                onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab')}
+                onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab' | 'footer')}
                 className="flex flex-col h-full min-h-0"
               >
                 <div className="border-b border-border px-2 pt-2 flex-shrink-0">
-                  <TabsList className="grid grid-cols-3 w-full">
-                    <TabsTrigger value="properties" className="flex items-center gap-1.5 text-xs">
+                  <TabsList className="grid grid-cols-4 w-full">
+                    <TabsTrigger value="properties" className="flex items-center gap-1 text-xs px-1.5">
                       <Settings className="h-3.5 w-3.5" />
                       Props
                     </TabsTrigger>
-                    <TabsTrigger value="seo" className="flex items-center gap-1.5 text-xs">
+                    <TabsTrigger value="seo" className="flex items-center gap-1 text-xs px-1.5">
                       <Search className="h-3.5 w-3.5" />
                       SEO
                     </TabsTrigger>
-                    <TabsTrigger value="fab" className="flex items-center gap-1.5 text-xs">
+                    <TabsTrigger value="fab" className="flex items-center gap-1 text-xs px-1.5">
                       <MessageCircle className="h-3.5 w-3.5" />
                       FAB
+                    </TabsTrigger>
+                    <TabsTrigger value="footer" className="flex items-center gap-1 text-xs px-1.5">
+                      <FileText className="h-3.5 w-3.5" />
+                      Footer
                     </TabsTrigger>
                   </TabsList>
                 </div>
@@ -709,32 +809,45 @@ function PageBuilderContent({
                     isSaving={isSavingFab}
                   />
                 </TabsContent>
+                <TabsContent value="footer" className="flex-1 m-0 overflow-y-auto min-h-0">
+                  {initialFooterSettings && (
+                    <FooterPanel
+                      initialSettings={initialFooterSettings}
+                      onSave={handleSaveFooter}
+                      isSaving={isSavingFooter}
+                    />
+                  )}
+                </TabsContent>
               </Tabs>
             </ResizablePanel>
           )}
 
-          {/* Right Sidebar - Properties/SEO/FAB Panel (Mobile/Tablet Sheet) */}
+          {/* Right Sidebar - Properties/SEO/FAB/Footer Panel (Mobile/Tablet Sheet) */}
           {!isPreviewMode && (
             <Sheet open={mobileRightPanel} onOpenChange={setMobileRightPanel}>
               <SheetContent side="right" className="w-full sm:w-[380px] p-0 lg:hidden">
                 <Tabs
                   value={rightPanelTab}
-                  onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab')}
+                  onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab' | 'footer')}
                   className="flex flex-col h-full min-h-0"
                 >
                   <div className="border-b border-border px-2 pt-2 flex-shrink-0">
-                    <TabsList className="grid grid-cols-3 w-full">
-                      <TabsTrigger value="properties" className="flex items-center gap-1.5 text-xs">
+                    <TabsList className="grid grid-cols-4 w-full">
+                      <TabsTrigger value="properties" className="flex items-center gap-1 text-xs px-1">
                         <Settings className="h-3.5 w-3.5" />
                         Props
                       </TabsTrigger>
-                      <TabsTrigger value="seo" className="flex items-center gap-1.5 text-xs">
+                      <TabsTrigger value="seo" className="flex items-center gap-1 text-xs px-1">
                         <Search className="h-3.5 w-3.5" />
                         SEO
                       </TabsTrigger>
-                      <TabsTrigger value="fab" className="flex items-center gap-1.5 text-xs">
+                      <TabsTrigger value="fab" className="flex items-center gap-1 text-xs px-1">
                         <MessageCircle className="h-3.5 w-3.5" />
                         FAB
+                      </TabsTrigger>
+                      <TabsTrigger value="footer" className="flex items-center gap-1 text-xs px-1">
+                        <FileText className="h-3.5 w-3.5" />
+                        Footer
                       </TabsTrigger>
                     </TabsList>
                   </div>
@@ -757,6 +870,15 @@ function PageBuilderContent({
                       onSave={handleSaveFab}
                       isSaving={isSavingFab}
                     />
+                  </TabsContent>
+                  <TabsContent value="footer" className="flex-1 m-0 overflow-y-auto min-h-0">
+                    {initialFooterSettings && (
+                      <FooterPanel
+                        initialSettings={initialFooterSettings}
+                        onSave={handleSaveFooter}
+                        isSaving={isSavingFooter}
+                      />
+                    )}
                   </TabsContent>
                 </Tabs>
               </SheetContent>
@@ -798,6 +920,7 @@ export function PageBuilder({
   initialBlocks,
   initialSeoData,
   initialFabConfig,
+  initialFooterSettings,
 }: PageBuilderProps) {
   const initialPage = {
     id: pageId,
@@ -813,6 +936,7 @@ export function PageBuilder({
         pageSlug={pageSlug}
         initialSeoData={initialSeoData}
         initialFabConfig={initialFabConfig}
+        initialFooterSettings={initialFooterSettings}
       />
     </PageBuilderProvider>
   )
