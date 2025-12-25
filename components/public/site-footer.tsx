@@ -93,13 +93,13 @@ export function SiteFooter({ settings }: SiteFooterProps) {
             {/* Contact Info */}
             <div className="space-y-4">
               <a
-                href="tel:+914222661100"
+                href="tel:+919345855001"
                 className="flex items-center gap-4 text-white/80 hover:text-white transition-colors group"
               >
                 <div className="p-2.5 rounded-xl bg-white/10 group-hover:bg-secondary/30 transition-colors">
                   <Phone className="h-4 w-4 text-secondary" />
                 </div>
-                <span className="text-sm">+91 422 266 1100</span>
+                <span className="text-sm">+91 93458 55001</span>
               </a>
               <a
                 href="mailto:info@jkkn.ac.in"
@@ -115,8 +115,8 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                   <MapPin className="h-4 w-4 text-secondary" />
                 </div>
                 <span className="text-sm">
-                  JKKN Group of Institutions,<br />
-                  Komarapalayam, Namakkal District,<br />
+                  Natarajapuram, NH-544,<br />
+                  Kumarapalayam (TK), Namakkal (DT),<br />
                   Tamil Nadu - 638183
                 </span>
               </div>

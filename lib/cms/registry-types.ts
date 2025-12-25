@@ -80,6 +80,14 @@ export interface ItemSchemaProperty {
   format?: string
   /** For multiline text fields */
   multiline?: boolean
+  /** Placeholder text for input fields */
+  placeholder?: string
+  /** Options for enum type */
+  options?: string[]
+  /** Default value for the field */
+  defaultValue?: unknown
+  /** Description shown below the field */
+  description?: string
   /** For nested array properties */
   itemType?: 'string' | 'image' | 'object'
   /** For nested array with object items */
@@ -399,6 +407,7 @@ export type TestimonialsProps = z.infer<typeof TestimonialsPropsSchema> & BaseBl
 export const FAQItemSchema = z.object({
   question: z.string(),
   answer: z.string(),
+  category: z.enum(['general', 'admissions', 'academics', 'facilities', 'placements', 'fees']).default('general').optional(),
 })
 export type FAQItem = z.infer<typeof FAQItemSchema>
 
@@ -408,6 +417,69 @@ export const FAQAccordionPropsSchema = z.object({
   allowMultiple: z.boolean().default(false),
 })
 export type FAQAccordionProps = z.infer<typeof FAQAccordionPropsSchema> & BaseBlockProps
+
+export const FAQSectionPropsSchema = z.object({
+  // Section Header
+  badge: z.string().default('FAQ'),
+  title: z.string().default('Frequently Asked Questions'),
+  subtitle: z.string().default('Everything you need to know about JKKN Institutions'),
+
+  // FAQ Items - 10 JKKN-specific FAQs as default
+  faqs: z.array(FAQItemSchema).default([
+    {
+      question: 'What is JKKN Institutions and how long has it been established?',
+      answer: 'J.K.K. Nattraja Educational Institutions (JKKN) is a premier educational group established in 1969 under the J.K.K. Rangammal Trust. Founded by Kodai Vallal Shri. J.K.K. Natarajah with a vision to empower through education, JKKN has grown into a multi-disciplinary institution spanning 7 colleges and 2 schools, nurturing over 1,00,000+ Learners across 74+ years of educational excellence.',
+    },
+    {
+      question: 'What courses are offered at JKKN Institutions?',
+      answer: 'JKKN offers 50+ programs across multiple disciplines including Dental Sciences (BDS, MDS), Pharmacy (B.Pharm, M.Pharm, Pharm.D), Engineering & Technology (B.E/B.Tech, M.E/M.Tech), Nursing (B.Sc, M.Sc, GNM), Allied Health Sciences (BPT, BMLT, B.Sc Radiology), Arts & Science (BA, B.Sc, BCA, BBA, M.A, M.Sc), and Education (B.Ed, M.Ed). Each program is designed with industry-integrated curriculum and hands-on learning experiences.',
+    },
+    {
+      question: 'Is JKKN approved by AICTE, UGC, and other regulatory bodies?',
+      answer: 'Yes, all JKKN institutions are fully approved and recognized by respective regulatory bodies. Our colleges hold approvals from AICTE (All India Council for Technical Education), UGC (University Grants Commission), NAAC (National Assessment and Accreditation Council), NBA (National Board of Accreditation), DCI (Dental Council of India), PCI (Pharmacy Council of India), and INC (Indian Nursing Council). JKKN has achieved NAAC A+ Accreditation, reflecting our commitment to quality education.',
+    },
+    {
+      question: 'What is the placement rate at JKKN?',
+      answer: 'JKKN maintains an impressive 95%+ placement rate across all colleges. Our dedicated placement cell has strong partnerships with 100+ industry recruiters including TCS, Infosys, Wipro, Zoho, Cognizant, HCL, Dell, and leading hospitals. Over 50,000+ alumni are successfully placed in top organizations worldwide. We offer comprehensive placement training, mock interviews, and industry internship programs.',
+    },
+    {
+      question: 'How can I apply for admission at JKKN for 2025-26?',
+      answer: 'Admission to JKKN for the academic year 2025-26 is now open. You can apply through our online admission portal at jkkn.in/admission-form. The process includes online application, document verification, counselling (where applicable), fee payment, and admission confirmation. For direct assistance, call +91 422 266 1100 or email info@jkkn.ac.in.',
+    },
+    {
+      question: 'Does JKKN offer hostel and transportation facilities?',
+      answer: 'Yes, JKKN provides separate hostel facilities for boys and girls with 24/7 security, Wi-Fi connectivity, hygienic mess, and recreational areas. Our fleet of 50+ buses covers 30+ routes across Erode, Namakkal, Salem, Karur, and surrounding districts. All hostels and transport are managed with Learner safety as top priority.',
+    },
+    {
+      question: 'What scholarships are available at JKKN?',
+      answer: 'JKKN offers multiple scholarship schemes including merit scholarships for academic toppers (up to 100% tuition fee waiver), sports quota scholarships, government scholarships for SC/ST/OBC/MBC categories, economically weaker section (EWS) support, and special scholarships for single girl child and differently-abled Learners. The J.K.K. Rangammal Trust also provides need-based financial assistance.',
+    },
+    {
+      question: 'What are the unique facilities available at JKKN campus?',
+      answer: "JKKN's 100+ acre campus features smart Learning Studios, advanced research laboratories, digital library with 50,000+ books, 500-bed multi-specialty hospital, sports complex with indoor and outdoor facilities, auditorium (2000+ seating), food court, bank & post office, ambulance services, and complete Wi-Fi coverage. All facilities are designed to provide a holistic learning environment.",
+    },
+    {
+      question: 'What makes JKKN different from other colleges in Tamil Nadu?',
+      answer: 'JKKN stands apart with its 74+ years of educational legacy, industry-integrated curriculum, 95% placement record, NAAC A+ accreditation, 500+ expert Learning Facilitators, affordable fee structure, and a value-based education philosophy. Our Founder\'s vision of "Excellence without Elitism" ensures quality education is accessible to all deserving Learners regardless of their economic background.',
+    },
+    {
+      question: 'Where is JKKN located and how can I visit the campus?',
+      answer: 'JKKN Group of Institutions is located at Komarapalayam, Namakkal District, Tamil Nadu - 638183. The campus is well-connected by road and is approximately 50 km from Erode, 35 km from Salem, and 120 km from Coimbatore. Campus visits can be scheduled by contacting our admission office at +91 422 266 1100. We conduct regular open house events for prospective Learners and parents.',
+    },
+  ]),
+
+  // CTA Configuration
+  showCTA: z.boolean().default(true),
+  ctaTitle: z.string().default('Still have questions?'),
+  ctaDescription: z.string().default("Can't find the answer you're looking for? Our admissions team is here to help."),
+  ctaPhone: z.string().default('+91 422 266 1100'),
+  ctaEmail: z.string().default('info@jkkn.ac.in'),
+
+  // Styling
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  showAnimations: z.boolean().default(true),
+})
+export type FAQSectionProps = z.infer<typeof FAQSectionPropsSchema> & BaseBlockProps
 
 export const TabSchema = z.object({
   label: z.string(),
@@ -738,6 +810,144 @@ export const TrustBadgesPropsSchema = z.object({
   animated: z.boolean().default(true),
 })
 export type TrustBadgesProps = z.infer<typeof TrustBadgesPropsSchema> & BaseBlockProps
+
+// ==========================================
+// Accreditations & Approvals Section
+// ==========================================
+
+// Accreditation Card Schema
+export const AccreditationCardSchema = z.object({
+  icon: z.string().default('Award'),
+  name: z.string(),
+  description: z.string(),
+  order: z.number().default(0),
+})
+export type AccreditationCard = z.infer<typeof AccreditationCardSchema>
+
+// Trust Recognition Badge Schema
+export const TrustRecognitionBadgeSchema = z.object({
+  icon: z.string().default('Award'),
+  text: z.string(),
+  subtext: z.string().optional(),
+  order: z.number().default(0),
+})
+export type TrustRecognitionBadge = z.infer<typeof TrustRecognitionBadgeSchema>
+
+// Main Accreditations Section Props Schema
+export const AccreditationsSectionPropsSchema = z.object({
+  // Section Header
+  badge: z.string().default('ACCREDITATIONS'),
+  title: z.string().default('Accreditations & Approvals'),
+  titleAccentWord: z.string().optional().default('Approvals'),
+  subtitle: z.string().default('Recognized for Excellence by India\'s Premier Regulatory Bodies'),
+  description: z.string().default('JKKN Institutions proudly holds approvals and accreditations from all major national regulatory bodies, ensuring our Learners receive education that meets the highest standards of quality, compliance, and industry relevance.'),
+
+  // Accreditation Cards (8 cards)
+  accreditationCards: z.array(AccreditationCardSchema).default([
+    {
+      icon: 'Trophy',
+      name: 'NAAC A+ Accredited',
+      description: 'Awarded the prestigious A+ Grade by the National Assessment and Accreditation Council, recognizing excellence in curriculum, infrastructure, Learning outcomes, and governance.',
+      order: 1,
+    },
+    {
+      icon: 'CheckCircle',
+      name: 'AICTE Approved',
+      description: 'All India Council for Technical Education approval for Engineering, Pharmacy, and Management programs ensuring national standards compliance.',
+      order: 2,
+    },
+    {
+      icon: 'CheckCircle',
+      name: 'UGC Recognized',
+      description: 'University Grants Commission recognition for Arts, Science, and Humanities programs affiliated to reputed universities.',
+      order: 3,
+    },
+    {
+      icon: 'CheckCircle',
+      name: 'NBA Accredited',
+      description: 'National Board of Accreditation certification for select Engineering and Pharmacy programs, validating outcome-based education standards.',
+      order: 4,
+    },
+    {
+      icon: 'CheckCircle',
+      name: 'DCI Approved',
+      description: 'Dental Council of India approval for JKKN Dental College, authorizing BDS and MDS programs with 500-bed teaching hospital.',
+      order: 5,
+    },
+    {
+      icon: 'CheckCircle',
+      name: 'PCI Approved',
+      description: 'Pharmacy Council of India approval for B.Pharm, M.Pharm, and Pharm.D programs ensuring pharmaceutical education excellence.',
+      order: 6,
+    },
+    {
+      icon: 'CheckCircle',
+      name: 'INC Approved',
+      description: 'Indian Nursing Council approval for all Nursing programs at Sresakthimayeil Institute of Nursing and Research.',
+      order: 7,
+    },
+    {
+      icon: 'GraduationCap',
+      name: 'Affiliated Universities',
+      description: 'Programs affiliated to Tamil Nadu Dr. M.G.R. Medical University, Anna University, Periyar University, and Tamil Nadu Teachers Education University.',
+      order: 8,
+    },
+  ]),
+
+  // Trust & Recognition Badges (5 badges)
+  trustBadges: z.array(TrustRecognitionBadgeSchema).default([
+    {
+      icon: 'Calendar',
+      text: '74+ Years of Educational Excellence',
+      subtext: '(Est. 1951)',
+      order: 1,
+    },
+    {
+      icon: 'Heart',
+      text: 'J.K.K. Rangammal Charitable Trust',
+      subtext: '(Est. 1969)',
+      order: 2,
+    },
+    {
+      icon: 'Shield',
+      text: 'ISO 9001:2015 Certified',
+      subtext: 'Management System',
+      order: 3,
+    },
+    {
+      icon: 'Leaf',
+      text: 'Green Campus Certification',
+      subtext: '',
+      order: 4,
+    },
+    {
+      icon: 'TrendingUp',
+      text: 'NIRF Ranked Institution',
+      subtext: '',
+      order: 5,
+    },
+  ]),
+
+  // Section Toggles
+  showAccreditationCards: z.boolean().default(true),
+  showTrustBadges: z.boolean().default(true),
+
+  // Layout Configuration
+  cardsPerRow: z.enum(['2', '3', '4']).default('4'),
+  cardLayout: z.enum(['grid', 'slider']).default('grid'),
+  badgeLayout: z.enum(['row', 'grid']).default('row'),
+
+  // Styling
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  glassmorphismVariant: z.enum(['dark', 'light', 'dark-elegant']).default('dark'),
+  cardStyle: z.enum(['glass', 'solid', 'gradient']).default('glass'),
+
+  // Animation
+  showAnimations: z.boolean().default(true),
+  animationPreset: z.enum(['stagger', 'fade-in-up', 'zoom-in', 'none']).default('stagger'),
+  staggerDelay: z.number().min(50).max(300).default(100),
+})
+export type AccreditationsSectionProps = z.infer<typeof AccreditationsSectionPropsSchema> & BaseBlockProps
 
 // ==========================================
 // Utility Functions for Type Conversion

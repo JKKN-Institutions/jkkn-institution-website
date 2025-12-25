@@ -1,6 +1,7 @@
 import { SiteHeader } from '@/components/public/site-header'
 import { SiteFooter } from '@/components/public/site-footer'
 import { FloatingActionButton } from '@/components/public/floating-action-button'
+import { PublicBottomNav } from '@/components/navigation/bottom-nav/public/public-bottom-nav'
 import { getPublicNavigation } from '@/app/actions/cms/navigation'
 import { getGlobalFabConfig } from '@/app/actions/cms/fab'
 import { getLogoSizes } from '@/app/actions/cms/appearance'
@@ -24,14 +25,17 @@ export default async function PublicLayout({
       {/* Site Header with CMS Navigation and Logo Settings - Fixed glassmorphic */}
       <SiteHeader navigation={navigation} logoSizes={logoSizes} />
 
-      {/* Main Content */}
-      <main className="flex-1 overflow-x-hidden">{children}</main>
+      {/* Main Content - Add bottom padding for mobile navbar */}
+      <main className="flex-1 overflow-x-hidden pb-20 lg:pb-0">{children}</main>
 
       {/* Site Footer with CMS Settings */}
       <SiteFooter settings={footerSettings} />
 
       {/* Dynamic Contact FAB - Toggle at Bottom, Options fly to Top Right */}
       <FloatingActionButton config={fabConfig} />
+
+      {/* Mobile Bottom Navbar */}
+      <PublicBottomNav navigation={navigation} />
     </div>
   );
 }

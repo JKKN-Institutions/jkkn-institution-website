@@ -1,6 +1,8 @@
 export { HeroSection } from './hero-section'
 export { AboutSection } from './about-section'
+export { WhyChooseSection } from './why-choose-section'
 export { ProgramsSection } from './programs-section'
 export { StatsSection } from './stats-section'
 export { TestimonialsSection } from './testimonials-section'
+export { FAQSection } from './faq-section'
 export { CTASection } from './cta-section'

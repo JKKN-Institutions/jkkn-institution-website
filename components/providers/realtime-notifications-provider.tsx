@@ -29,10 +29,22 @@ interface RealtimeNotificationsContextValue {
 
 const RealtimeNotificationsContext = createContext<RealtimeNotificationsContextValue | null>(null)
 
+// Default values for SSR or when context is not available
+const defaultContextValue: RealtimeNotificationsContextValue = {
+  notifications: [],
+  unreadCount: 0,
+  isConnected: false,
+  markAsRead: async () => {},
+  markAllAsRead: async () => {},
+  clearNotification: async () => {},
+}
+
 export function useRealtimeNotifications() {
   const context = useContext(RealtimeNotificationsContext)
+  // Return default values during SSR or if context is not available
+  // This prevents errors during server-side rendering in Next.js 16
   if (!context) {
-    throw new Error('useRealtimeNotifications must be used within RealtimeNotificationsProvider')
+    return defaultContextValue
   }
   return context
 }

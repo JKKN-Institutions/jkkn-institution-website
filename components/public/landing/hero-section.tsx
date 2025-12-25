@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import { ChevronDown, Award, TrendingUp, Users, Calendar } from 'lucide-react'
+import { Award, TrendingUp, Users, Calendar } from 'lucide-react'
 import { useParallax } from '@/lib/hooks/use-parallax'
 
 export function HeroSection() {
@@ -23,12 +23,6 @@ export function HeroSection() {
   //   { icon: Calendar, text: "39 Years of Excellence" }
   // ]
 
-  const scrollToContent = () => {
-    window.scrollTo({
-      top: window.innerHeight - 100,
-      behavior: 'smooth'
-    })
-  }
 
   return (
     <section className="relative min-h-[85vh] md:min-h-screen flex items-center overflow-hidden">
@@ -154,15 +148,6 @@ export function HeroSection() {
           </Link>
         </div>
       </div>
-
-      {/* Scroll Indicator */}
-      <button
-        onClick={scrollToContent}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/80 hover:text-white transition-colors cursor-pointer animate-bounce"
-      >
-        <span className="text-xs font-medium tracking-wider uppercase">Scroll</span>
-        <ChevronDown className="w-5 h-5" />
-      </button>
     </section>
   )
 }

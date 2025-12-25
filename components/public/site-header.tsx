@@ -138,12 +138,15 @@ export function SiteHeader({
       >
         <div className="container mx-auto px-4 lg:px-6">
           <div className={cn(
-            'flex items-center justify-between h-16 sm:h-20',
+            'flex items-center h-16 sm:h-20',
+            // Mobile: center logo, Desktop: space-between for logo + nav
+            'justify-center lg:justify-between',
             hasSecondRow ? 'lg:h-24' : 'lg:h-20'
           )}>
-            {/* Logo - Adjusts based on single/double row and CMS settings */}
+            {/* Logo - Centered on mobile, left-aligned on desktop */}
             <Link href="/" className={cn(
               'flex-shrink-0 flex items-center group relative z-10',
+              // Mobile: no width constraint (centered), Desktop: fixed width
               hasSecondRow ? 'lg:w-[20%]' : 'lg:w-[15%]'
             )}>
               <div
@@ -324,11 +327,12 @@ export function SiteHeader({
               )}
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - Hidden on mobile (using bottom nav instead) */}
+            {/* Keeping the component but hidden for potential tablet use */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={cn(
-                'lg:hidden relative z-10 p-2.5 rounded-lg transition-all duration-300',
+                'hidden', // Hidden completely - using bottom navigation on mobile
                 isMobileMenuOpen
                   ? 'bg-primary/10'
                   : 'hover:bg-gray-100'
@@ -354,9 +358,9 @@ export function SiteHeader({
         </div>
       </header>
 
-      {/* Mobile Menu - Slide from Right */}
+      {/* Mobile Menu - Slide from Right (Hidden - using bottom navigation instead) */}
       <div className={cn(
-        'fixed inset-0 z-[100] lg:hidden transition-all duration-300',
+        'fixed inset-0 z-[100] hidden transition-all duration-300', // Hidden - bottom nav is used
         isMobileMenuOpen ? 'visible' : 'invisible pointer-events-none'
       )}>
         {/* Backdrop */}

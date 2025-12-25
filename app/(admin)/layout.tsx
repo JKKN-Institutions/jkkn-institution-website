@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { ResponsiveNavigation } from '@/components/admin/responsive-navigation'
 import { AdminHeader } from '@/components/admin/admin-header'
 import { AdminLayoutClient } from '@/components/admin/admin-layout-client'
+import { AdminBottomNav } from '@/components/navigation/bottom-nav/admin/admin-bottom-nav'
 
 // Type for role relation from Supabase join
 type RoleData = { id: string; name: string; display_name: string }
@@ -116,6 +117,9 @@ export default async function AdminLayout({
           <main className="flex-1 overflow-y-auto overflow-x-hidden w-full p-4 lg:p-6 pb-20 lg:pb-6">{children}</main>
         </div>
       </div>
+
+      {/* Mobile Bottom Navbar */}
+      <AdminBottomNav userPermissions={initialUserData.permissions} />
     </AdminLayoutClient>
   )
 }

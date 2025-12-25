@@ -311,10 +311,12 @@ import {
   CallToActionPropsSchema,
   TestimonialsPropsSchema,
   FAQAccordionPropsSchema,
+  FAQSectionPropsSchema,
   TabsBlockPropsSchema,
   TimelinePropsSchema,
   PricingTablesPropsSchema,
   TrustBadgesPropsSchema,
+  AccreditationsSectionPropsSchema,
   ImageBlockPropsSchema,
   ImageGalleryPropsSchema,
   VideoPlayerPropsSchema,
@@ -349,10 +351,12 @@ const Heading = lazy(() => import('@/components/cms-blocks/content/heading'))
 const CallToAction = lazy(() => import('@/components/cms-blocks/content/call-to-action'))
 const Testimonials = lazy(() => import('@/components/cms-blocks/content/testimonials'))
 const FAQAccordion = lazy(() => import('@/components/cms-blocks/content/faq-accordion'))
+const FAQSectionBlock = lazy(() => import('@/components/cms-blocks/content/faq-section-block'))
 const TabsBlock = lazy(() => import('@/components/cms-blocks/content/tabs-block'))
 const Timeline = lazy(() => import('@/components/cms-blocks/content/timeline'))
 const PricingTables = lazy(() => import('@/components/cms-blocks/content/pricing-tables'))
 const TrustBadges = lazy(() => import('@/components/cms-blocks/content/trust-badges'))
+const AccreditationsSection = lazy(() => import('@/components/cms-blocks/content/accreditations-section'))
 
 // Media blocks
 const ImageBlock = lazy(() => import('@/components/cms-blocks/media/image-block'))
@@ -715,6 +719,240 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'searchPlaceholder', type: 'string', label: 'Search Placeholder' },
       { name: 'allowMultiple', type: 'boolean', label: 'Allow Multiple Open' },
       { name: 'defaultOpen', type: 'number', label: 'Default Open Index', min: -1, description: '-1 for none' },
+    ],
+  },
+
+  FAQSectionBlock: {
+    name: 'FAQSectionBlock',
+    displayName: 'FAQ Section',
+    category: 'content',
+    description: 'Full-featured FAQ section with header, animations, and CTA for landing pages',
+    icon: 'HelpCircle',
+    previewImage: '/cms-previews/FAQSectionBlock.png',
+    component: FAQSectionBlock,
+    propsSchema: FAQSectionPropsSchema,
+    defaultProps: {
+      badge: 'FAQ',
+      title: 'Frequently Asked Questions',
+      subtitle: 'Everything you need to know about JKKN Institutions',
+      faqs: [],
+      showCTA: true,
+      ctaTitle: 'Still have questions?',
+      ctaDescription: "Can't find the answer you're looking for? Our admissions team is here to help.",
+      ctaPhone: '+91 422 266 1100',
+      ctaEmail: 'info@jkkn.ac.in',
+      backgroundColor: 'gradient-dark',
+      showAnimations: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['faq', 'questions', 'help', 'section', 'landing', 'accordion'],
+    editableProps: [
+      { name: 'badge', type: 'string', label: 'Badge Text', description: 'Small badge above title' },
+      { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+      {
+        name: 'faqs',
+        type: 'array',
+        label: 'FAQ Items',
+        description: 'Add questions and answers with categories',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            question: {
+              type: 'string',
+              label: 'Question',
+              required: true,
+              placeholder: 'Enter the FAQ question...',
+            },
+            answer: {
+              type: 'string',
+              label: 'Answer',
+              required: true,
+              multiline: true,
+              placeholder: 'Provide a detailed answer...',
+            },
+            category: {
+              type: 'enum',
+              label: 'Category',
+              options: ['general', 'admissions', 'academics', 'facilities', 'placements', 'fees'],
+              defaultValue: 'general',
+              description: 'Categorize this FAQ for better organization',
+            },
+          },
+          required: ['question', 'answer'],
+        },
+      },
+      { name: 'showCTA', type: 'boolean', label: 'Show Contact CTA' },
+      { name: 'ctaTitle', type: 'string', label: 'CTA Title' },
+      { name: 'ctaDescription', type: 'string', label: 'CTA Description' },
+      { name: 'ctaPhone', type: 'string', label: 'Phone Number' },
+      { name: 'ctaEmail', type: 'string', label: 'Email Address' },
+      {
+        name: 'backgroundColor',
+        type: 'enum',
+        label: 'Background Style',
+        options: ['gradient-dark', 'gradient-light', 'solid', 'transparent'],
+      },
+      { name: 'showAnimations', type: 'boolean', label: 'Enable Scroll Animations' },
+    ],
+  },
+
+  AccreditationsSection: {
+    name: 'AccreditationsSection',
+    displayName: 'Accreditations & Approvals',
+    category: 'content',
+    description: 'Display accreditations, regulatory approvals, and trust badges with glassmorphism styling and scroll animations',
+    icon: 'Award',
+    previewImage: '/cms-previews/AccreditationsSection.png',
+    component: AccreditationsSection,
+    propsSchema: AccreditationsSectionPropsSchema,
+    defaultProps: {
+      badge: 'ACCREDITATIONS',
+      title: 'Accreditations & Approvals',
+      titleAccentWord: 'Approvals',
+      subtitle: "Recognized for Excellence by India's Premier Regulatory Bodies",
+      description: 'JKKN Institutions proudly holds approvals and accreditations from all major national regulatory bodies, ensuring our Learners receive education that meets the highest standards of quality, compliance, and industry relevance.',
+      accreditationCards: [],
+      trustBadges: [],
+      showAccreditationCards: true,
+      showTrustBadges: true,
+      cardsPerRow: '4',
+      cardLayout: 'grid',
+      badgeLayout: 'row',
+      backgroundColor: 'gradient-dark',
+      glassmorphismVariant: 'dark',
+      cardStyle: 'glass',
+      showAnimations: true,
+      animationPreset: 'stagger',
+      staggerDelay: 100,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['accreditation', 'approval', 'naac', 'aicte', 'ugc', 'nba', 'dci', 'pci', 'inc', 'trust', 'badges', 'recognition', 'regulatory', 'certification'],
+    editableProps: [
+      // Section Header
+      { name: 'badge', type: 'string', label: 'Badge Text', description: 'Small badge above title' },
+      { name: 'title', type: 'string', label: 'Section Title', required: true },
+      { name: 'titleAccentWord', type: 'string', label: 'Title Accent Word', description: 'Word to highlight in gold/italic' },
+      { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
+      { name: 'description', type: 'string', label: 'Description Paragraph', multiline: true },
+      // Accreditation Cards Array
+      {
+        name: 'accreditationCards',
+        type: 'array',
+        label: 'Accreditation Cards',
+        description: 'Add/edit accreditation cards (NAAC, AICTE, UGC, etc.)',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            icon: {
+              type: 'string',
+              label: 'Icon',
+              required: true,
+              placeholder: 'Trophy, CheckCircle, Award, Shield, GraduationCap',
+              description: 'Lucide icon name',
+            },
+            name: {
+              type: 'string',
+              label: 'Name',
+              required: true,
+              placeholder: 'e.g., NAAC A+ Accredited',
+            },
+            description: {
+              type: 'string',
+              label: 'Description',
+              required: true,
+              multiline: true,
+              placeholder: 'Brief description of the accreditation',
+            },
+            order: {
+              type: 'number',
+              label: 'Display Order',
+              defaultValue: 0,
+            },
+          },
+          required: ['icon', 'name', 'description'],
+        },
+      },
+      // Trust Badges Array
+      {
+        name: 'trustBadges',
+        type: 'array',
+        label: 'Trust & Recognition Badges',
+        description: 'Add trust indicators (Years of Excellence, ISO, etc.)',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            icon: {
+              type: 'string',
+              label: 'Icon',
+              required: true,
+              placeholder: 'Calendar, Heart, Shield, Leaf, TrendingUp',
+            },
+            text: {
+              type: 'string',
+              label: 'Main Text',
+              required: true,
+              placeholder: 'e.g., 74+ Years of Educational Excellence',
+            },
+            subtext: {
+              type: 'string',
+              label: 'Subtext',
+              placeholder: 'e.g., (Est. 1951)',
+            },
+            order: {
+              type: 'number',
+              label: 'Display Order',
+              defaultValue: 0,
+            },
+          },
+          required: ['icon', 'text'],
+        },
+      },
+      // Section Toggles
+      { name: 'showAccreditationCards', type: 'boolean', label: 'Show Accreditation Cards' },
+      { name: 'showTrustBadges', type: 'boolean', label: 'Show Trust Badges' },
+      // Layout Configuration
+      { name: 'cardsPerRow', type: 'enum', label: 'Cards Per Row', options: ['2', '3', '4'] },
+      { name: 'cardLayout', type: 'enum', label: 'Card Layout', options: ['grid', 'slider'] },
+      { name: 'badgeLayout', type: 'enum', label: 'Badge Layout', options: ['row', 'grid'] },
+      // Styling
+      {
+        name: 'backgroundColor',
+        type: 'enum',
+        label: 'Background Style',
+        options: ['gradient-dark', 'gradient-light', 'solid', 'transparent'],
+        description: 'gradient-dark for JKKN green gradient',
+      },
+      {
+        name: 'glassmorphismVariant',
+        type: 'enum',
+        label: 'Glassmorphism Style',
+        options: ['dark', 'light', 'dark-elegant'],
+      },
+      {
+        name: 'cardStyle',
+        type: 'enum',
+        label: 'Card Style',
+        options: ['glass', 'solid', 'gradient'],
+      },
+      // Animation
+      { name: 'showAnimations', type: 'boolean', label: 'Enable Scroll Animations' },
+      {
+        name: 'animationPreset',
+        type: 'enum',
+        label: 'Animation Style',
+        options: ['stagger', 'fade-in-up', 'zoom-in', 'none'],
+      },
+      {
+        name: 'staggerDelay',
+        type: 'number',
+        label: 'Stagger Delay (ms)',
+        min: 50,
+        max: 300,
+        description: 'Delay between each card animation',
+      },
     ],
   },
 

@@ -143,11 +143,11 @@ function getDefaultFooterSettings(): FooterSettings {
       show_social: true
     },
     contactEmail: 'info@jkkn.ac.in',
-    contactPhone: '+91 422 266 1100',
+    contactPhone: '+91 93458 55001',
     address: {
-      line1: 'JKKN Group of Institutions,',
-      line2: 'Komarapalayam,',
-      city: 'Namakkal District',
+      line1: 'Natarajapuram,',
+      line2: 'NH-544 (Salem To Coimbatore National Highway),',
+      city: 'Kumarapalayam (TK), Namakkal (DT)',
       state: 'Tamil Nadu',
       pincode: '638183',
       country: 'India'

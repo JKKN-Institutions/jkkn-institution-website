@@ -3,9 +3,11 @@
 import {
   HeroSection,
   AboutSection,
+  WhyChooseSection,
   ProgramsSection,
   StatsSection,
   TestimonialsSection,
+  FAQSection,
   CTASection,
 } from './landing'
 
@@ -14,9 +16,11 @@ export function LandingPage() {
     <div className="overflow-hidden">
       <HeroSection />
       <AboutSection />
+      <WhyChooseSection />
       <ProgramsSection />
       <StatsSection />
       <TestimonialsSection />
+      <FAQSection />
       <CTASection />
     </div>
   )
