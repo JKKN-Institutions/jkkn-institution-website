@@ -56,6 +56,7 @@ export default function HeroSection({
   subtitle,
   // Logo props
   logoImage,
+  logoImageAlt = '',
   showAiBadge = true,
   // Title styling props
   titleColor = '#ffffff',
@@ -74,6 +75,7 @@ export default function HeroSection({
   // Background props
   backgroundType = 'image',
   backgroundImage,
+  backgroundImageAlt = '',
   backgroundGradient,
   backgroundVideo,
   ctaButtons = [],
@@ -177,31 +179,6 @@ export default function HeroSection({
         />
       )}
 
-      {/* Animated Decorative Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Floating circles */}
-        <div
-          className="absolute top-20 left-10 w-64 h-64 rounded-full opacity-10 animate-[float_8s_ease-in-out_infinite]"
-          style={{ backgroundColor: '#ffde59' }}
-        />
-        <div
-          className="absolute bottom-40 right-20 w-96 h-96 rounded-full opacity-5 animate-[float_12s_ease-in-out_infinite_reverse]"
-          style={{ backgroundColor: '#ffde59' }}
-        />
-        <div
-          className="absolute top-1/3 right-1/4 w-48 h-48 rounded-full opacity-5 animate-[float_10s_ease-in-out_infinite]"
-          style={{ backgroundColor: '#ffffff' }}
-        />
-
-        {/* Grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 1px 1px, #ffffff 1px, transparent 0)',
-            backgroundSize: '50px 50px'
-          }}
-        />
-      </div>
 
       {/* Main Content */}
       <div className="container relative z-10 mx-auto px-4 py-16 flex flex-col items-center">
@@ -218,7 +195,7 @@ export default function HeroSection({
               <div className="inline-block bg-white rounded-xl p-3 sm:p-4 shadow-2xl">
                 <Image
                   src={logoImage}
-                  alt="Logo"
+                  alt={logoImageAlt || 'Logo'}
                   width={120}
                   height={120}
                   className="w-auto h-20 sm:h-24 md:h-28 object-contain"
@@ -447,13 +424,6 @@ export default function HeroSection({
         </div>
       )}
 
-      {/* Custom Keyframes */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-30px) rotate(5deg); }
-        }
-      `}</style>
     </section>
   )
 }

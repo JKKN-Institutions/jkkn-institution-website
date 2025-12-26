@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useRef, useState, useMemo } from 'react'
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
 import {
   Trophy,
   CheckCircle,
@@ -17,6 +18,8 @@ import {
   FlaskConical,
   Star,
   Users,
+  ChevronLeft,
+  ChevronRight,
   type LucideIcon,
 } from 'lucide-react'
 import type {
@@ -323,6 +326,88 @@ function TrustBadgeItem({
   )
 }
 
+// Accreditation Logo Item for carousel/marquee
+interface AccreditationLogoItem {
+  name: string
+  logo?: string
+  icon?: string
+}
+
+// Default accreditation logos (using icon-based cards since we don't have actual logo URLs)
+const DEFAULT_ACCREDITATION_LOGOS: AccreditationLogoItem[] = [
+  { name: 'NAAC A+', icon: 'Trophy' },
+  { name: 'AICTE', icon: 'Award' },
+  { name: 'UGC', icon: 'CheckCircle' },
+  { name: 'NBA', icon: 'Shield' },
+  { name: 'DCI', icon: 'Stethoscope' },
+  { name: 'PCI', icon: 'FlaskConical' },
+  { name: 'INC', icon: 'Heart' },
+  { name: 'ISO 9001:2015', icon: 'Shield' },
+]
+
+// Accreditation Logo Card for carousel/marquee
+function AccreditationLogoCard({
+  item,
+  isDark,
+  index,
+  isInView,
+}: {
+  item: AccreditationLogoItem
+  isDark: boolean
+  index: number
+  isInView: boolean
+}) {
+  const [isHovered, setIsHovered] = useState(false)
+  const IconComponent = item.icon ? ICON_MAP[item.icon] || Award : Award
+
+  return (
+    <div
+      className={cn(
+        'flex-shrink-0 w-[140px] sm:w-[160px] h-[100px] sm:h-[110px] p-4 rounded-xl flex flex-col items-center justify-center gap-2',
+        'transition-all duration-500 ease-out',
+        'hover:scale-105 hover:-translate-y-1',
+        isDark
+          ? 'bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/15 hover:border-white/30'
+          : 'bg-white shadow-lg border border-gray-100 hover:shadow-xl',
+        isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+      )}
+      style={{ transitionDelay: `${index * 80}ms` }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {item.logo ? (
+        <Image
+          src={item.logo}
+          alt={item.name}
+          width={80}
+          height={50}
+          className="object-contain"
+        />
+      ) : (
+        <div
+          className={cn(
+            'w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300',
+            isDark
+              ? 'bg-gold/20 text-gold'
+              : 'bg-primary/10 text-primary',
+            isHovered && 'scale-110'
+          )}
+        >
+          <IconComponent className="w-5 h-5" strokeWidth={2} />
+        </div>
+      )}
+      <span
+        className={cn(
+          'text-xs sm:text-sm font-semibold text-center line-clamp-1',
+          isDark ? 'text-white' : 'text-gray-900'
+        )}
+      >
+        {item.name}
+      </span>
+    </div>
+  )
+}
+
 // Main Component
 export default function AccreditationsSection({
   badge = 'ACCREDITATIONS',
@@ -347,6 +432,64 @@ export default function AccreditationsSection({
 }: AccreditationsSectionProps) {
   const [isVisible, setIsVisible] = useState(!showAnimations || isEditing)
   const sectionRef = useRef<HTMLElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [isPaused, setIsPaused] = useState(false)
+
+  // Drag state for carousel
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragStartX, setDragStartX] = useState(0)
+  const [dragScrollLeft, setDragScrollLeft] = useState(0)
+
+  // Mouse drag handlers
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if (!scrollRef.current) return
+    setIsDragging(true)
+    setDragStartX(e.pageX - scrollRef.current.offsetLeft)
+    setDragScrollLeft(scrollRef.current.scrollLeft)
+    setIsPaused(true)
+  }, [])
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isDragging || !scrollRef.current) return
+    e.preventDefault()
+    const x = e.pageX - scrollRef.current.offsetLeft
+    const walk = (x - dragStartX) * 1.5
+    scrollRef.current.scrollLeft = dragScrollLeft - walk
+  }, [isDragging, dragStartX, dragScrollLeft])
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false)
+    setIsPaused(false)
+  }, [])
+
+  // Touch handlers
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (!scrollRef.current) return
+    setIsDragging(true)
+    setDragStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
+    setDragScrollLeft(scrollRef.current.scrollLeft)
+  }, [])
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isDragging || !scrollRef.current) return
+    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const walk = (x - dragStartX) * 1.5
+    scrollRef.current.scrollLeft = dragScrollLeft - walk
+  }, [isDragging, dragStartX, dragScrollLeft])
+
+  const handleTouchEnd = useCallback(() => {
+    setIsDragging(false)
+  }, [])
+
+  // Navigation
+  const scrollTo = useCallback((direction: 'left' | 'right') => {
+    if (!scrollRef.current) return
+    const scrollAmount = 180
+    scrollRef.current.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth'
+    })
+  }, [])
 
   // Sort cards and badges by order
   const sortedCards = useMemo(
@@ -410,7 +553,7 @@ export default function AccreditationsSection({
         'relative w-full overflow-hidden py-16 md:py-20 lg:py-28',
         backgroundColor === 'gradient-dark' && 'section-green-gradient',
         backgroundColor === 'gradient-light' && 'bg-gradient-to-br from-gray-50 to-white',
-        backgroundColor === 'solid' && 'bg-brand-cream',
+        backgroundColor === 'solid' && 'bg-white',
         backgroundColor === 'transparent' && 'bg-transparent'
       )}
     >
@@ -430,8 +573,114 @@ export default function AccreditationsSection({
           showAnimations={showAnimations}
         />
 
-        {/* Accreditation Cards Grid */}
-        {showAccreditationCards && sortedCards.length > 0 && (
+        {/* Accreditation Cards - Auto-scroll Marquee Layout */}
+        {showAccreditationCards && sortedCards.length > 0 && cardLayout === 'slider' && (
+          <div
+            className="relative mb-12 lg:mb-16 overflow-hidden"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            {/* Gradient Overlays for fade effect */}
+            <div className={cn(
+              'absolute left-0 top-0 bottom-0 w-20 z-10 pointer-events-none',
+              isDark
+                ? 'bg-gradient-to-r from-[#0b6d41] to-transparent'
+                : 'bg-gradient-to-r from-white to-transparent'
+            )} />
+            <div className={cn(
+              'absolute right-0 top-0 bottom-0 w-20 z-10 pointer-events-none',
+              isDark
+                ? 'bg-gradient-to-l from-[#0b6d41] to-transparent'
+                : 'bg-gradient-to-l from-white to-transparent'
+            )} />
+
+            {/* Auto-scrolling Marquee */}
+            <div
+              className={cn(
+                'flex gap-4 py-4',
+                isPaused ? '' : 'animate-marquee-slow'
+              )}
+              style={{
+                animationPlayState: isPaused ? 'paused' : 'running',
+              }}
+            >
+              {/* First set of cards */}
+              {sortedCards.map((card, index) => (
+                <div
+                  key={`logo-1-${index}`}
+                  className={cn(
+                    'flex-shrink-0 w-[140px] sm:w-[160px] h-[100px] sm:h-[110px] p-4 rounded-xl flex flex-col items-center justify-center gap-2',
+                    'transition-all duration-300',
+                    'hover:scale-105 hover:-translate-y-1',
+                    isDark
+                      ? 'bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/15'
+                      : 'bg-white shadow-md border border-primary/10 hover:shadow-lg hover:border-primary/30'
+                  )}
+                >
+                  <div className={cn(
+                    'w-12 h-12 rounded-xl flex items-center justify-center',
+                    isDark ? 'bg-gold/20 text-gold' : 'bg-primary/10 text-primary'
+                  )}>
+                    {(() => {
+                      const IconComp = getIconComponent(card.icon)
+                      return <IconComp className="w-6 h-6" strokeWidth={1.5} />
+                    })()}
+                  </div>
+                  <span className={cn(
+                    'text-xs sm:text-sm font-bold text-center line-clamp-1',
+                    isDark ? 'text-white' : 'text-primary'
+                  )}>
+                    {card.name}
+                  </span>
+                </div>
+              ))}
+              {/* Duplicate for seamless loop */}
+              {sortedCards.map((card, index) => (
+                <div
+                  key={`logo-2-${index}`}
+                  className={cn(
+                    'flex-shrink-0 w-[140px] sm:w-[160px] h-[100px] sm:h-[110px] p-4 rounded-xl flex flex-col items-center justify-center gap-2',
+                    'transition-all duration-300',
+                    'hover:scale-105 hover:-translate-y-1',
+                    isDark
+                      ? 'bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/15'
+                      : 'bg-white shadow-md border border-primary/10 hover:shadow-lg hover:border-primary/30'
+                  )}
+                >
+                  <div className={cn(
+                    'w-12 h-12 rounded-xl flex items-center justify-center',
+                    isDark ? 'bg-gold/20 text-gold' : 'bg-primary/10 text-primary'
+                  )}>
+                    {(() => {
+                      const IconComp = getIconComponent(card.icon)
+                      return <IconComp className="w-6 h-6" strokeWidth={1.5} />
+                    })()}
+                  </div>
+                  <span className={cn(
+                    'text-xs sm:text-sm font-bold text-center line-clamp-1',
+                    isDark ? 'text-white' : 'text-primary'
+                  )}>
+                    {card.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* CSS Animation */}
+            <style jsx>{`
+              @keyframes marquee-slow {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .animate-marquee-slow {
+                animation: marquee-slow 30s linear infinite;
+              }
+            `}</style>
+          </div>
+        )}
+
+        {/* Accreditation Cards Grid Layout */}
+        {showAccreditationCards && sortedCards.length > 0 && cardLayout === 'grid' && (
           <div
             className={cn(
               'grid gap-4 md:gap-6 lg:gap-8 mb-12 lg:mb-16',

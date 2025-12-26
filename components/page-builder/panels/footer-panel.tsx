@@ -27,6 +27,7 @@ import {
   GripVertical,
   Eye,
   EyeOff,
+  Map,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { FooterSettings, FooterLink } from '@/app/actions/cms/footer'
@@ -53,6 +54,7 @@ export function FooterPanel({
     resources: false,
     contact: false,
     social: false,
+    map: false,
   })
 
   // Toggle section
@@ -106,6 +108,21 @@ export function FooterPanel({
         ...prev,
         socialLinks: {
           ...prev.socialLinks,
+          [field]: value,
+        },
+      }))
+      setIsDirty(true)
+    },
+    []
+  )
+
+  // Update map
+  const updateMap = useCallback(
+    (field: keyof FooterSettings['map'], value: string) => {
+      setSettings((prev) => ({
+        ...prev,
+        map: {
+          ...prev.map,
           [field]: value,
         },
       }))
@@ -568,6 +585,57 @@ export function FooterPanel({
                     onChange={(e) => updateSocialLink('youtube', e.target.value)}
                     placeholder="https://youtube.com/jkkn"
                   />
+                </div>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+
+          {/* Map Settings */}
+          <Collapsible
+            open={openSections.map}
+            onOpenChange={() => toggleSection('map')}
+          >
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+              <div className="flex items-center gap-2">
+                <Map className="h-4 w-4 text-emerald-500" />
+                <span className="font-medium text-sm">Map Settings</span>
+              </div>
+              <ChevronDown
+                className={cn(
+                  'h-4 w-4 transition-transform',
+                  openSections.map && 'rotate-180'
+                )}
+              />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="pt-3 space-y-4">
+              <div className="space-y-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="mapEmbedUrl">Map Embed URL</Label>
+                  <Textarea
+                    id="mapEmbedUrl"
+                    value={settings.map?.embedUrl || ''}
+                    onChange={(e) => updateMap('embedUrl', e.target.value)}
+                    placeholder="https://www.google.com/maps/embed?pb=..."
+                    rows={3}
+                    className="text-xs"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Get this from Google Maps: Share → Embed a map → Copy the src URL
+                  </p>
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="mapLinkUrl">Map Link URL</Label>
+                  <Input
+                    id="mapLinkUrl"
+                    type="url"
+                    value={settings.map?.linkUrl || ''}
+                    onChange={(e) => updateMap('linkUrl', e.target.value)}
+                    placeholder="https://www.google.com/maps/place/..."
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Link for "View on Google Maps" button
+                  </p>
                 </div>
               </div>
             </CollapsibleContent>

@@ -12,19 +12,20 @@ import {
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { replyToInquiry } from '@/app/actions/contact'
+import { replyToAdmissionInquiry } from '@/app/actions/admission-inquiry'
 import { toast } from 'sonner'
 import { Send, AlertCircle } from 'lucide-react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 
 interface InquiryReplyModalProps {
   inquiryId: string
+  existingReply?: string | null
   onClose: () => void
   onSuccess: () => void
 }
 
-export function InquiryReplyModal({ inquiryId, onClose, onSuccess }: InquiryReplyModalProps) {
-  const [replyMessage, setReplyMessage] = useState('')
+export function InquiryReplyModal({ inquiryId, existingReply, onClose, onSuccess }: InquiryReplyModalProps) {
+  const [replyMessage, setReplyMessage] = useState(existingReply || '')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
@@ -34,26 +35,26 @@ export function InquiryReplyModal({ inquiryId, onClose, onSuccess }: InquiryRepl
 
     // Client-side validation
     if (replyMessage.trim().length < 10) {
-      setError('Reply must be at least 10 characters long')
+      setError('Notes must be at least 10 characters long')
       return
     }
 
     if (replyMessage.trim().length > 5000) {
-      setError('Reply must be less than 5000 characters')
+      setError('Notes must be less than 5000 characters')
       return
     }
 
     setIsSubmitting(true)
 
     try {
-      const result = await replyToInquiry(inquiryId, replyMessage)
+      const result = await replyToAdmissionInquiry(inquiryId, replyMessage)
 
       if (result.success) {
-        toast.success(result.message || 'Reply sent successfully')
+        toast.success(result.message || 'Notes saved successfully')
         onSuccess()
       } else {
-        setError(result.error || 'Failed to send reply')
-        toast.error(result.error || 'Failed to send reply')
+        setError(result.error || 'Failed to save notes')
+        toast.error(result.error || 'Failed to save notes')
       }
     } catch (err) {
       const errorMessage = 'An unexpected error occurred'
@@ -73,20 +74,20 @@ export function InquiryReplyModal({ inquiryId, onClose, onSuccess }: InquiryRepl
     <Dialog open onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Reply to Inquiry</DialogTitle>
+          <DialogTitle>{existingReply ? 'Update Notes' : 'Add Notes'}</DialogTitle>
           <DialogDescription>
-            Compose your response to this contact form submission. The reply will be saved to the system.
+            Add internal notes about this admission inquiry (e.g., call summary, follow-up actions).
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="reply-message">Your Reply *</Label>
+            <Label htmlFor="reply-message">Notes *</Label>
             <Textarea
               id="reply-message"
               value={replyMessage}
               onChange={(e) => setReplyMessage(e.target.value)}
-              placeholder="Type your reply here..."
+              placeholder="Enter notes about this inquiry (e.g., 'Called student, interested in BDS, will visit campus next week')"
               rows={8}
               className="resize-none"
               disabled={isSubmitting}
@@ -104,7 +105,7 @@ export function InquiryReplyModal({ inquiryId, onClose, onSuccess }: InquiryRepl
               </div>
               {isValid && (
                 <div className="text-green-600 dark:text-green-400 text-xs font-medium">
-                  Valid length ✓
+                  Valid length
                 </div>
               )}
             </div>
@@ -120,8 +121,7 @@ export function InquiryReplyModal({ inquiryId, onClose, onSuccess }: InquiryRepl
           <Alert>
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              <strong>Note:</strong> The reply will be saved to the database. Email notifications to the user are not yet configured.
-              You may need to manually send the reply via email.
+              <strong>Note:</strong> These notes are for internal use only. The student will not receive any notification.
             </AlertDescription>
           </Alert>
 
@@ -140,13 +140,13 @@ export function InquiryReplyModal({ inquiryId, onClose, onSuccess }: InquiryRepl
             >
               {isSubmitting ? (
                 <>
-                  <span className="mr-2">Sending...</span>
+                  <span className="mr-2">Saving...</span>
                   <span className="animate-spin">⏳</span>
                 </>
               ) : (
                 <>
                   <Send className="h-4 w-4 mr-2" />
-                  Send Reply
+                  Save Notes
                 </>
               )}
             </Button>

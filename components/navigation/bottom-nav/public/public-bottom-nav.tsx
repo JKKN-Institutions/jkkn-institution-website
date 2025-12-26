@@ -161,7 +161,7 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.12, ease: 'easeOut' }}
-            className="fixed inset-0 bg-background/60 backdrop-blur-sm z-[75] lg:hidden"
+            className="fixed inset-0 bg-background/60 backdrop-blur-sm z-[85] lg:hidden"
             onClick={() => setExpanded(false)}
           />
         )}
@@ -180,7 +180,7 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
           mass: 0.8
         }}
         className={cn(
-          'fixed bottom-0 left-0 right-0 z-[80]',
+          'fixed bottom-0 left-0 right-0 z-[90]',
           'lg:hidden', // Hide on desktop
           'bg-background border-t border-border',
           'shadow-[0_-4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.3)]'

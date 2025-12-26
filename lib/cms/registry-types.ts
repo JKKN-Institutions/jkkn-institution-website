@@ -335,6 +335,7 @@ export const HeroSectionPropsSchema = z.object({
   subtitle: z.string().optional(),
   // Logo settings
   logoImage: z.string().optional(),
+  logoImageAlt: z.string().default(''),
   showAiBadge: z.boolean().default(true),
   // Title styling
   titleColor: z.string().default('#ffffff'),
@@ -353,6 +354,7 @@ export const HeroSectionPropsSchema = z.object({
   // Background settings
   backgroundType: z.enum(['image', 'video', 'gradient']).default('image'),
   backgroundImage: z.string().optional(),
+  backgroundImageAlt: z.string().default(''),
   backgroundVideo: z.string().optional(),
   backgroundGradient: z.string().optional(),
   ctaButtons: z.array(CTAButtonSchema).default([]),
@@ -555,6 +557,7 @@ export const VideoPlayerPropsSchema = z.object({
   loop: z.boolean().default(false),
   muted: z.boolean().default(false),
   poster: z.string().optional(),
+  posterAlt: z.string().default(''),
   aspectRatio: z.string().default('16/9'),
 })
 export type VideoPlayerProps = z.infer<typeof VideoPlayerPropsSchema> & BaseBlockProps
@@ -570,7 +573,9 @@ export type ImageCarouselProps = z.infer<typeof ImageCarouselPropsSchema> & Base
 
 export const BeforeAfterSliderPropsSchema = z.object({
   beforeImage: z.string().default(''),
+  beforeImageAlt: z.string().default(''),
   afterImage: z.string().default(''),
+  afterImageAlt: z.string().default(''),
   beforeLabel: z.string().default('Before'),
   afterLabel: z.string().default('After'),
   startPosition: z.number().min(0).max(100).default(50),
@@ -642,6 +647,7 @@ export type DividerProps = z.infer<typeof DividerPropsSchema> & BaseBlockProps
 export const SectionWrapperPropsSchema = z.object({
   background: z.string().optional(),
   backgroundImage: z.string().optional(),
+  backgroundImageAlt: z.string().default(''),
   padding: z.string().default('16'),
   fullWidth: z.boolean().default(true),
   id: z.string().optional(),
@@ -954,44 +960,136 @@ export type AccreditationsSectionProps = z.infer<typeof AccreditationsSectionPro
 // ==========================================
 
 /**
- * USP Card schema for individual differentiator cards
+ * Company Logo schema for placement card
+ */
+export const CompanyLogoSchema = z.object({
+  name: z.string(),
+  logo: z.string().optional(),
+})
+export type CompanyLogo = z.infer<typeof CompanyLogoSchema>
+
+/**
+ * Accreditation Badge schema
+ */
+export const AccreditationBadgeSchema = z.object({
+  title: z.string(),
+  subtitle: z.string(),
+  image: z.string().optional(),
+})
+export type AccreditationBadge = z.infer<typeof AccreditationBadgeSchema>
+
+/**
+ * Legacy Card schema (Years of Educational Legacy)
+ */
+export const LegacyCardSchema = z.object({
+  statValue: z.string().default('74+'),
+  statLabel: z.string().default('Years of Educational Legacy'),
+  bulletPoints: z.array(z.string()).default([
+    'Founded in 1951...',
+    'Nurturing over 1,00,000+ Learners',
+    'Strong alumni networks & stability',
+  ]),
+  campusImage: z.string().optional(),
+})
+export type LegacyCard = z.infer<typeof LegacyCardSchema>
+
+/**
+ * Placement Card schema (Placement Success Rate)
+ */
+export const PlacementCardSchema = z.object({
+  statValue: z.string().default('95%'),
+  statLabel: z.string().default('Placement Success Rate'),
+  bulletPoints: z.array(z.string()).default([
+    '100+ leading recruiters.',
+    'Soft skills training & mock interviews.',
+    'Industry internships',
+  ]),
+  companyLogos: z.array(CompanyLogoSchema).default([
+    { name: 'TCS' },
+    { name: 'Infosys' },
+    { name: 'Wipro' },
+    { name: 'Zoho' },
+    { name: 'Cognizant' },
+    { name: 'HCL' },
+  ]),
+  accreditation: AccreditationBadgeSchema.default({
+    title: 'NAC A+',
+    subtitle: 'Validated for Excellence',
+  }),
+})
+export type PlacementCard = z.infer<typeof PlacementCardSchema>
+
+/**
+ * USP Card schema for Why Choose JKKN section
  */
 export const USPCardSchema = z.object({
-  icon: z.string().describe('Emoji or image URL'),
+  icon: z.enum(['heritage', 'career', 'excellence', 'expertise', 'facilities', 'value']),
   title: z.string(),
-  description: z.string(),
-  order: z.number(),
+  stat: z.string().optional(),
 })
 export type USPCard = z.infer<typeof USPCardSchema>
 
 /**
  * Why Choose JKKN Section Props
- * Displays institutional unique selling points with glassmorphism cards
+ * Modern card-based layout with typography customization:
+ * - Section header with badge, title, subtitle, tagline
+ * - 6 USP cards with icons and optional stats
+ * - Additional USPs list
+ * - Full typography control for all text elements
  */
 export const WhyChooseJKKNPropsSchema = z.object({
-  // Section metadata
-  sectionTitle: z.string().default('Why Choose JKKN?'),
-  sectionSubtitle: z.string().optional(),
-  sectionTagline: z.string().optional(),
+  // === CONTENT FIELDS ===
+  title: z.string().default('Why Choose JKKN?'),
+  subtitle: z.string().default('74+ Years of Transforming Lives Through Progressive Education'),
+  tagline: z.string().default('Where Legacy Meets Innovation | Excellence Without Elitism'),
+  badgeText: z.string().default('Why Choose Us'),
+  additionalUspsHeading: z.string().default('And Much More...'),
 
-  // USP cards (main 6 differentiators)
-  uspCards: z.array(USPCardSchema).default([]),
+  // USP Cards
+  uspCards: z.array(USPCardSchema).optional(),
+  additionalUsps: z.array(z.string()).optional(),
 
-  // Additional USPs (bullet list)
-  additionalUsps: z.array(z.string()).default([]),
+  // === BADGE TYPOGRAPHY ===
+  badgeColor: z.string().default('#0b6d41'),
+  badgeBgColor: z.string().default('#0b6d411a'),
+  badgeFontSize: z.enum(['sm', 'md', 'lg']).default('sm'),
+  badgeFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('semibold'),
 
-  // Layout configuration
-  layout: z.enum(['grid', 'slider']).default('grid'),
-  cardsPerRow: z.union([z.literal(2), z.literal(3), z.literal(4)]).default(3),
+  // === TITLE TYPOGRAPHY ===
+  titleColor: z.string().default('#171717'),
+  titleFontSize: z.enum(['2xl', '3xl', '4xl', '5xl', '6xl']).default('5xl'),
+  titleFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold', 'extrabold']).default('bold'),
 
-  // Display options
-  showAdditionalList: z.boolean().default(true),
+  // === SUBTITLE TYPOGRAPHY ===
+  subtitleColor: z.string().default('#0b6d41'),
+  subtitleFontSize: z.enum(['lg', 'xl', '2xl', '3xl']).default('2xl'),
+  subtitleFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('semibold'),
 
-  // Styling
-  glassmorphismVariant: z.enum(['light', 'dark', 'dark-elegant', 'gradient', 'brand']).default('brand'),
+  // === TAGLINE TYPOGRAPHY ===
+  taglineColor: z.string().default('#525252'),
+  taglineFontSize: z.enum(['sm', 'md', 'lg', 'xl']).default('lg'),
+  taglineFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('normal'),
 
-  // Animation
-  animationPreset: z.enum(['fade-in-up', 'zoom-in', 'slide-up', 'stagger', 'none']).default('stagger'),
+  // === CARD TYPOGRAPHY ===
+  cardTitleColor: z.string().default('#1f2937'),
+  cardTitleFontSize: z.enum(['sm', 'md', 'lg', 'xl']).default('md'),
+  cardTitleFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('semibold'),
+  cardStatColor: z.string().default('#0b6d41'),
+  cardStatFontSize: z.enum(['xl', '2xl', '3xl', '4xl']).default('3xl'),
+  cardStatFontWeight: z.enum(['medium', 'semibold', 'bold', 'extrabold']).default('bold'),
+
+  // === ADDITIONAL USPS TYPOGRAPHY ===
+  additionalUspsHeadingColor: z.string().default('#1f2937'),
+  additionalUspsHeadingFontSize: z.enum(['md', 'lg', 'xl']).default('lg'),
+  additionalUspsHeadingFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('semibold'),
+  additionalUspsTextColor: z.string().default('#374151'),
+  additionalUspsTextFontSize: z.enum(['xs', 'sm', 'md']).default('sm'),
+  additionalUspsTextFontWeight: z.enum(['normal', 'medium', 'semibold']).default('normal'),
+
+  // === LEGACY PROPS (keep for compatibility) ===
+  legacyCard: LegacyCardSchema.optional(),
+  placementCard: PlacementCardSchema.optional(),
+  primaryColor: z.string().default('#0b6d41'),
 })
 export type WhyChooseJKKNProps = z.infer<typeof WhyChooseJKKNPropsSchema> & BaseBlockProps
 

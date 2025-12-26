@@ -120,6 +120,10 @@ export function PartnersLogos({
   const [currentIndex, setCurrentIndex] = useState(0)
   const [touchStart, setTouchStart] = useState(0)
   const [touchEnd, setTouchEnd] = useState(0)
+  // Mouse drag state
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragStartX, setDragStartX] = useState(0)
+  const [dragScrollLeft, setDragScrollLeft] = useState(0)
   const headerRef = useInView()
   const contentRef = useInView()
 
@@ -219,6 +223,35 @@ export function PartnersLogos({
       }
     }
 
+    setIsPaused(false)
+  }
+
+  // Mouse drag handlers for desktop
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollRef.current) return
+    setIsDragging(true)
+    setDragStartX(e.pageX - scrollRef.current.offsetLeft)
+    setDragScrollLeft(scrollRef.current.scrollLeft)
+    setIsPaused(true)
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollRef.current) return
+    e.preventDefault()
+    const x = e.pageX - scrollRef.current.offsetLeft
+    const walk = (x - dragStartX) * 1.5
+    scrollRef.current.scrollLeft = dragScrollLeft - walk
+  }
+
+  const handleMouseUp = () => {
+    setIsDragging(false)
+    setIsPaused(false)
+  }
+
+  const handleMouseLeave = () => {
+    if (isDragging) {
+      setIsDragging(false)
+    }
     setIsPaused(false)
   }
 
@@ -369,7 +402,9 @@ export function PartnersLogos({
                   "scrollbar-hide",
                   "scroll-smooth",
                   // CSS scroll snap for better mobile UX
-                  "snap-x snap-mandatory"
+                  "snap-x snap-mandatory",
+                  // Drag cursor styles
+                  isDragging ? "cursor-grabbing select-none" : "cursor-grab"
                 )}
                 style={{
                   scrollbarWidth: 'none',
@@ -381,8 +416,10 @@ export function PartnersLogos({
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
-                onMouseEnter={() => setIsPaused(true)}
-                onMouseLeave={() => setIsPaused(false)}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseLeave}
               >
                 {displayPartners.map((partner, index) => (
                   <PartnerCard

@@ -1,7 +1,7 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { InquiriesTable } from './inquiries-table'
 import { Card } from '@/components/ui/card'
-import { MessageSquare, Mail, CheckCircle2, Archive } from 'lucide-react'
+import { GraduationCap, Clock, PhoneCall, CheckCircle2, XCircle } from 'lucide-react'
 
 interface StatsCardProps {
   label: string
@@ -14,7 +14,7 @@ function StatsCard({ label, value, variant = 'default', icon: Icon }: StatsCardP
   const variantStyles = {
     default: 'bg-blue-500',
     warning: 'bg-yellow-500',
-    info: 'bg-blue-500',
+    info: 'bg-cyan-500',
     success: 'bg-green-500',
     secondary: 'bg-gray-500'
   }
@@ -37,35 +37,37 @@ function StatsCard({ label, value, variant = 'default', icon: Icon }: StatsCardP
 export default async function InquiriesPage() {
   const supabase = await createServerSupabaseClient()
 
-  // Fetch stats
+  // Fetch stats from admission_inquiries
   const { data: allInquiries } = await supabase
-    .from('contact_submissions')
+    .from('admission_inquiries')
     .select('id, status')
 
   const stats = {
     total: allInquiries?.length || 0,
     new: allInquiries?.filter(i => i.status === 'new').length || 0,
-    read: allInquiries?.filter(i => i.status === 'read').length || 0,
-    replied: allInquiries?.filter(i => i.status === 'replied').length || 0,
-    archived: allInquiries?.filter(i => i.status === 'archived').length || 0
+    contacted: allInquiries?.filter(i => i.status === 'contacted').length || 0,
+    followUp: allInquiries?.filter(i => i.status === 'follow_up').length || 0,
+    converted: allInquiries?.filter(i => i.status === 'converted').length || 0,
+    closed: allInquiries?.filter(i => i.status === 'closed').length || 0
   }
 
   return (
     <div className="container mx-auto p-6 space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Inquiries</h1>
+        <h1 className="text-3xl font-bold">Admission Inquiries</h1>
         <p className="text-muted-foreground mt-1">
-          Manage and respond to contact form submissions
+          Manage and respond to admission inquiry form submissions
         </p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        <StatsCard label="Total" value={stats.total} variant="default" icon={MessageSquare} />
-        <StatsCard label="New" value={stats.new} variant="warning" icon={Mail} />
-        <StatsCard label="Read" value={stats.read} variant="info" icon={Mail} />
-        <StatsCard label="Replied" value={stats.replied} variant="success" icon={CheckCircle2} />
-        <StatsCard label="Archived" value={stats.archived} variant="secondary" icon={Archive} />
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <StatsCard label="Total" value={stats.total} variant="default" icon={GraduationCap} />
+        <StatsCard label="New" value={stats.new} variant="warning" icon={Clock} />
+        <StatsCard label="Contacted" value={stats.contacted} variant="info" icon={PhoneCall} />
+        <StatsCard label="Follow Up" value={stats.followUp} variant="info" icon={Clock} />
+        <StatsCard label="Converted" value={stats.converted} variant="success" icon={CheckCircle2} />
+        <StatsCard label="Closed" value={stats.closed} variant="secondary" icon={XCircle} />
       </div>
 
       {/* Data Table */}

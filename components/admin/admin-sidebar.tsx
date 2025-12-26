@@ -12,6 +12,7 @@ import {
   Image,
   Settings,
   Activity,
+  BarChart3,
   ChevronDown,
   ChevronRight,
   LogOut,
@@ -67,6 +68,12 @@ const navigationItems: NavItem[] = [
     href: '/admin/activity',
     icon: Activity,
     permission: 'users:activity:view',
+  },
+  {
+    title: 'Analytics',
+    href: '/admin/analytics',
+    icon: BarChart3,
+    permission: 'dashboard:analytics:view',
   },
   {
     title: 'Content',

@@ -199,7 +199,7 @@ The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 19
         <DecorativePatterns variant={isTwoColumn ? 'minimal' : 'dense'} color={isDark ? 'white' : 'green'} />
       )}
 
-      <div className="relative z-10 py-16 md:py-24 lg:py-32">
+      <div className="relative z-10 pt-8 pb-16 md:pt-12 md:pb-24 lg:pt-16 lg:pb-32">
         <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24">
           {/* Badge */}
           <div

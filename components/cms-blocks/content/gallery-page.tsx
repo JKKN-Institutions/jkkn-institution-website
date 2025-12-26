@@ -19,7 +19,9 @@ export const GalleryItemSchema = z.object({
   type: z.enum(['image', 'video']).describe('Content type'),
   title: z.string().describe('Item title'),
   thumbnail: z.string().describe('Thumbnail image URL'),
+  thumbnailAlt: z.string().default('').describe('Thumbnail alt text for accessibility'),
   fullSrc: z.string().describe('Full resolution image or video URL'),
+  fullSrcAlt: z.string().default('').describe('Full image alt text for accessibility'),
   category: z.string().describe('Category name'),
   description: z.string().optional().describe('Optional description'),
   date: z.string().optional().describe('Date string'),
@@ -66,21 +68,21 @@ export type GalleryPageProps = z.infer<typeof GalleryPagePropsSchema> & BaseBloc
  */
 const defaultGalleryItems: GalleryItem[] = [
   // Events
-  { id: '1', type: 'image', title: 'Annual Day Celebration 2024', thumbnail: '', fullSrc: '', category: 'Events', date: 'Dec 2024' },
-  { id: '2', type: 'image', title: 'Pongal Festival', thumbnail: '', fullSrc: '', category: 'Events', date: 'Jan 2025' },
-  { id: '3', type: 'video', title: 'Founders Day Highlights', thumbnail: '', fullSrc: '', category: 'Events', date: 'Nov 2024' },
-  { id: '4', type: 'image', title: 'Sports Day', thumbnail: '', fullSrc: '', category: 'Events', date: 'Feb 2025' },
+  { id: '1', type: 'image', title: 'Annual Day Celebration 2024', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Events', date: 'Dec 2024' },
+  { id: '2', type: 'image', title: 'Pongal Festival', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Events', date: 'Jan 2025' },
+  { id: '3', type: 'video', title: 'Founders Day Highlights', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Events', date: 'Nov 2024' },
+  { id: '4', type: 'image', title: 'Sports Day', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Events', date: 'Feb 2025' },
   // Campus
-  { id: '5', type: 'image', title: 'Main Campus Aerial View', thumbnail: '', fullSrc: '', category: 'Campus', date: '' },
-  { id: '6', type: 'image', title: 'Library & Resource Center', thumbnail: '', fullSrc: '', category: 'Campus', date: '' },
-  { id: '7', type: 'image', title: 'Modern Laboratories', thumbnail: '', fullSrc: '', category: 'Campus', date: '' },
-  { id: '8', type: 'video', title: 'Campus Tour', thumbnail: '', fullSrc: '', category: 'Campus', date: '' },
+  { id: '5', type: 'image', title: 'Main Campus Aerial View', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Campus', date: '' },
+  { id: '6', type: 'image', title: 'Library & Resource Center', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Campus', date: '' },
+  { id: '7', type: 'image', title: 'Modern Laboratories', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Campus', date: '' },
+  { id: '8', type: 'video', title: 'Campus Tour', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Campus', date: '' },
   // Students
-  { id: '9', type: 'image', title: 'Student Activities', thumbnail: '', fullSrc: '', category: 'Students', date: '' },
-  { id: '10', type: 'image', title: 'Cultural Club', thumbnail: '', fullSrc: '', category: 'Students', date: '' },
+  { id: '9', type: 'image', title: 'Student Activities', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Students', date: '' },
+  { id: '10', type: 'image', title: 'Cultural Club', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Students', date: '' },
   // Faculty
-  { id: '11', type: 'image', title: 'Faculty Meet 2024', thumbnail: '', fullSrc: '', category: 'Faculty', date: '' },
-  { id: '12', type: 'image', title: 'Research Symposium', thumbnail: '', fullSrc: '', category: 'Faculty', date: '' },
+  { id: '11', type: 'image', title: 'Faculty Meet 2024', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Faculty', date: '' },
+  { id: '12', type: 'image', title: 'Research Symposium', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Faculty', date: '' },
 ]
 
 /**
@@ -433,7 +435,7 @@ function GalleryCard({
         {item.thumbnail ? (
           <Image
             src={item.thumbnail}
-            alt={item.title}
+            alt={item.thumbnailAlt || item.title}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             className={cn(
@@ -625,7 +627,7 @@ function LightboxModal({
             {item.fullSrc || item.thumbnail ? (
               <Image
                 src={item.fullSrc || item.thumbnail}
-                alt={item.title}
+                alt={item.fullSrcAlt || item.thumbnailAlt || item.title}
                 fill
                 sizes="100vw"
                 className="object-contain"

@@ -132,6 +132,7 @@ function PageBuilderContent({
   const [isSavingSeo, setIsSavingSeo] = useState(false)
   const [isSavingFab, setIsSavingFab] = useState(false)
   const [isSavingFooter, setIsSavingFooter] = useState(false)
+  const [footerSettings, setFooterSettings] = useState<FooterSettings | null>(initialFooterSettings || null)
   const [isNavigatorOpen, setIsNavigatorOpen] = useState(false)
   const [autoSaveFailCount, setAutoSaveFailCount] = useState(0)
 
@@ -466,11 +467,15 @@ function PageBuilderContent({
         social_instagram: footerSettings.socialLinks?.instagram,
         social_linkedin: footerSettings.socialLinks?.linkedin,
         social_youtube: footerSettings.socialLinks?.youtube,
+        map_embed_url: footerSettings.map?.embedUrl,
+        map_link_url: footerSettings.map?.linkUrl,
       }
       console.log('[Footer] Sending payload:', payload)
       const result = await updateFooterSettings(payload)
       console.log('[Footer] Save result:', result)
       if (result.success) {
+        // Update local state for real-time preview
+        setFooterSettings(footerSettings)
         toast.success('Footer settings saved')
       } else {
         toast.error(result.message || 'Failed to save footer settings')
@@ -748,7 +753,7 @@ function PageBuilderContent({
               {/* Show header/footer in preview mode for full page experience */}
               {isPreviewMode && <SiteHeader isPreview />}
               <BuilderCanvas />
-              {isPreviewMode && <SiteFooter />}
+              {isPreviewMode && footerSettings && <SiteFooter settings={footerSettings} />}
             </div>
           </div>
 

@@ -34,34 +34,48 @@ import { InquiryDetailModal } from './inquiry-detail-modal'
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 
-interface ContactSubmission {
+export interface AdmissionInquiry {
   id: string
-  name: string
+  reference_number: string
+  full_name: string
   email: string
-  phone: string | null
-  subject: string
-  message: string
-  status: 'new' | 'read' | 'replied' | 'archived'
+  mobile_number: string
+  district_city: string
+  college_name: string
+  course_interested: string
+  current_qualification: string
+  preferred_contact_time: string | null
+  status: 'new' | 'contacted' | 'follow_up' | 'converted' | 'closed'
+  priority: string | null
   reply_message: string | null
-  created_at: string
   replied_at: string | null
   replied_by: string | null
+  created_at: string
 }
 
 const statusColors = {
   new: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-  read: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-  replied: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-  archived: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200'
+  contacted: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+  follow_up: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+  converted: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+  closed: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200'
+}
+
+const statusLabels = {
+  new: 'New',
+  contacted: 'Contacted',
+  follow_up: 'Follow Up',
+  converted: 'Converted',
+  closed: 'Closed'
 }
 
 export function InquiriesTable() {
-  const [data, setData] = useState<ContactSubmission[]>([])
+  const [data, setData] = useState<AdmissionInquiry[]>([])
   const [loading, setLoading] = useState(true)
   const [sorting, setSorting] = useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
-  const [selectedInquiry, setSelectedInquiry] = useState<ContactSubmission | null>(null)
+  const [selectedInquiry, setSelectedInquiry] = useState<AdmissionInquiry | null>(null)
   const supabase = createClient()
 
   // Fetch inquiries
@@ -69,7 +83,7 @@ export function InquiriesTable() {
     async function fetchInquiries() {
       setLoading(true)
       let query = supabase
-        .from('contact_submissions')
+        .from('admission_inquiries')
         .select('*')
         .order('created_at', { ascending: false })
 
@@ -93,11 +107,11 @@ export function InquiriesTable() {
   // Real-time subscription
   useEffect(() => {
     const channel = supabase
-      .channel('inquiries-changes')
+      .channel('admission-inquiries-changes')
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
-        table: 'contact_submissions'
+        table: 'admission_inquiries'
       }, () => {
         // Refetch data when changes occur
         fetchData()
@@ -111,7 +125,7 @@ export function InquiriesTable() {
 
   async function fetchData() {
     let query = supabase
-      .from('contact_submissions')
+      .from('admission_inquiries')
       .select('*')
       .order('created_at', { ascending: false })
 
@@ -125,46 +139,62 @@ export function InquiriesTable() {
     }
   }
 
-  const columns: ColumnDef<ContactSubmission>[] = [
+  const columns: ColumnDef<AdmissionInquiry>[] = [
     {
-      accessorKey: 'name',
+      accessorKey: 'reference_number',
+      header: 'Ref #',
+      cell: ({ row }) => (
+        <div className="font-mono text-xs text-muted-foreground">{row.getValue('reference_number')}</div>
+      ),
+    },
+    {
+      accessorKey: 'full_name',
       header: 'Name',
       cell: ({ row }) => (
-        <div className="font-medium">{row.getValue('name')}</div>
+        <div className="font-medium">{row.getValue('full_name')}</div>
       ),
     },
     {
-      accessorKey: 'email',
-      header: 'Email',
+      accessorKey: 'mobile_number',
+      header: 'Mobile',
       cell: ({ row }) => (
-        <div className="text-sm text-muted-foreground">{row.getValue('email')}</div>
+        <div className="text-sm">{row.getValue('mobile_number')}</div>
       ),
     },
     {
-      accessorKey: 'subject',
-      header: 'Subject',
+      accessorKey: 'college_name',
+      header: 'College',
       cell: ({ row }) => (
-        <div className="max-w-[300px] truncate">{row.getValue('subject')}</div>
+        <div className="max-w-[200px] truncate text-sm" title={row.getValue('college_name')}>
+          {row.getValue('college_name')}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'course_interested',
+      header: 'Course',
+      cell: ({ row }) => (
+        <div className="text-sm">{row.getValue('course_interested')}</div>
       ),
     },
     {
       accessorKey: 'status',
       header: 'Status',
       cell: ({ row }) => {
-        const status = row.getValue('status') as string
+        const status = row.getValue('status') as keyof typeof statusColors
         return (
-          <Badge className={statusColors[status as keyof typeof statusColors]} variant="outline">
-            {status.charAt(0).toUpperCase() + status.slice(1)}
+          <Badge className={statusColors[status]} variant="outline">
+            {statusLabels[status]}
           </Badge>
         )
       },
     },
     {
       accessorKey: 'created_at',
-      header: 'Date Submitted',
+      header: 'Date',
       cell: ({ row }) => {
         const date = new Date(row.getValue('created_at'))
-        return <div className="text-sm">{date.toLocaleDateString()} {date.toLocaleTimeString()}</div>
+        return <div className="text-sm">{date.toLocaleDateString()}</div>
       },
     },
     {
@@ -174,9 +204,12 @@ export function InquiriesTable() {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setSelectedInquiry(row.original)}
+          onClick={(e) => {
+            e.stopPropagation()
+            setSelectedInquiry(row.original)
+          }}
         >
-          View Details
+          View
         </Button>
       ),
     },
@@ -218,7 +251,7 @@ export function InquiriesTable() {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search inquiries..."
+            placeholder="Search by name, mobile, college..."
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
             className="pl-10"
@@ -231,9 +264,10 @@ export function InquiriesTable() {
           <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
             <SelectItem value="new">New</SelectItem>
-            <SelectItem value="read">Read</SelectItem>
-            <SelectItem value="replied">Replied</SelectItem>
-            <SelectItem value="archived">Archived</SelectItem>
+            <SelectItem value="contacted">Contacted</SelectItem>
+            <SelectItem value="follow_up">Follow Up</SelectItem>
+            <SelectItem value="converted">Converted</SelectItem>
+            <SelectItem value="closed">Closed</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -275,7 +309,7 @@ export function InquiriesTable() {
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No inquiries found.
+                  No admission inquiries found.
                 </TableCell>
               </TableRow>
             )}

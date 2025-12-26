@@ -6,7 +6,9 @@ import type { BeforeAfterSliderProps } from '@/lib/cms/registry-types'
 
 export default function BeforeAfterSlider({
   beforeImage = '',
+  beforeImageAlt = '',
   afterImage = '',
+  afterImageAlt = '',
   beforeLabel = 'Before',
   afterLabel = 'After',
   startPosition = 50,
@@ -90,7 +92,7 @@ export default function BeforeAfterSlider({
       {/* After Image (background) */}
       <img
         src={afterImage}
-        alt={afterLabel}
+        alt={afterImageAlt || afterLabel}
         className="absolute inset-0 w-full h-full object-cover"
         draggable={false}
       />
@@ -102,7 +104,7 @@ export default function BeforeAfterSlider({
       >
         <img
           src={beforeImage}
-          alt={beforeLabel}
+          alt={beforeImageAlt || beforeLabel}
           className="absolute inset-0 w-full h-full object-cover"
           style={{ width: `${100 / (position / 100)}%` }}
           draggable={false}

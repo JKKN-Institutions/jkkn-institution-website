@@ -6,6 +6,7 @@ import type { SectionWrapperProps } from '@/lib/cms/registry-types'
 export default function SectionWrapper({
   background,
   backgroundImage,
+  backgroundImageAlt = '',
   padding = '16',
   fullWidth = true,
   id,
@@ -13,6 +14,9 @@ export default function SectionWrapper({
   className,
   isEditing,
 }: SectionWrapperProps) {
+  // Note: backgroundImageAlt is available for accessibility documentation
+  // CSS background images don't support alt text natively
+  void backgroundImageAlt
   const hasChildren = children && (Array.isArray(children) ? children.length > 0 : true)
 
   // Build background style without mixing shorthand and non-shorthand properties

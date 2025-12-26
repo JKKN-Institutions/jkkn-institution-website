@@ -526,6 +526,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       title: 'JKKN INSTITUTIONS',
       subtitle: '',
       logoImage: '',
+      logoImageAlt: '',
       showAiBadge: true,
       titleColor: '#ffffff',
       titleFontSize: '6xl',
@@ -540,6 +541,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       trustBadgesPosition: 'below-subtitle',
       backgroundType: 'gradient',
       backgroundGradient: 'linear-gradient(135deg, #0b6d41, #085032)', // JKKN Green gradient
+      backgroundImageAlt: '',
       alignment: 'center',
       overlay: true,
       overlayOpacity: 0.3,
@@ -555,6 +557,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     editableProps: [
       // Logo settings
       { name: 'logoImage', type: 'image', label: 'Logo Image', description: 'Upload a custom logo to display above the title' },
+      { name: 'logoImageAlt', type: 'string', label: 'Logo Image Alt Text', required: true, description: 'Alt text for accessibility (required)' },
       { name: 'showAiBadge', type: 'boolean', label: 'Show AI Badge', description: 'Show the default "India\'s First AI Empowered College" badge when no logo is uploaded' },
       // Title settings
       { name: 'title', type: 'string', label: 'Title', required: true },
@@ -591,6 +594,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       // Background settings
       { name: 'backgroundType', type: 'enum', label: 'Background Type', options: ['image', 'video', 'gradient'] },
       { name: 'backgroundImage', type: 'image', label: 'Background Image' },
+      { name: 'backgroundImageAlt', type: 'string', label: 'Background Image Alt Text', required: true, description: 'Alt text for accessibility (required)' },
       { name: 'backgroundVideo', type: 'video', label: 'Background Video' },
       { name: 'alignment', type: 'enum', label: 'Alignment', options: ['left', 'center', 'right'] },
       { name: 'overlay', type: 'boolean', label: 'Show Overlay' },
@@ -963,145 +967,137 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
 
   WhyChooseJKKN: {
     name: 'WhyChooseJKKN',
-    displayName: 'Why Choose JKKN (USPs)',
+    displayName: 'Why Choose JKKN',
     category: 'content',
-    description: 'Display institutional unique selling points with glassmorphism cards and staggered animations',
+    description: 'Modern card-based layout with USP cards and full typography customization for all text elements',
     icon: 'Sparkles',
     previewImage: '/cms-previews/WhyChooseJKKN.png',
     component: WhyChooseJKKN,
     propsSchema: WhyChooseJKKNPropsSchema,
     defaultProps: {
-      sectionTitle: 'Why Choose JKKN?',
-      sectionSubtitle: '74+ Years of Transforming Lives Through Progressive Education',
-      sectionTagline: 'Where Legacy Meets Innovation | Excellence Without Elitism',
-      uspCards: [
-        {
-          icon: '🏛️',
-          title: '74+ Years of Educational Legacy',
-          description: 'Founded in 1951 by visionary Kodai Vallal Shri. J.K.K. Natarajah, JKKN has nurtured over 1,00,000+ Learners who are now leaders in healthcare, technology, business, and education across the globe. Our seven decades of experience means time-tested teaching methodologies, strong alumni networks, and institutional stability you can trust.',
-          order: 1,
-        },
-        {
-          icon: '💼',
-          title: '95% Placement Success Rate',
-          description: 'Our dedicated placement cell partners with 100+ leading recruiters including TCS, Infosys, Wipro, Zoho, Cognizant, and top healthcare organizations. With comprehensive soft skills training, mock interviews, industry internships, and on-campus recruitment drives, 95% of our eligible Learners secure placements before graduation.',
-          order: 2,
-        },
-        {
-          icon: '🏆',
-          title: 'NAAC A+ Accredited Quality',
-          description: "JKKN's A+ accreditation from the National Assessment and Accreditation Council validates our world-class infrastructure, qualified Learning Facilitators, innovative curriculum, and Learner-centric governance. This recognition ensures your education meets national benchmarks of excellence.",
-          order: 3,
-        },
-        {
-          icon: '👨‍🏫',
-          title: '500+ Expert Learning Facilitators',
-          description: 'Our Learning Facilitators are industry experts, researchers, and published academicians with an average experience of 15+ years. Many hold Ph.D. qualifications and bring real-world insights into Learning Studios. The favorable 1:15 Learning Facilitator-to-Learner ratio ensures personalized attention.',
-          order: 4,
-        },
-        {
-          icon: '🏫',
-          title: 'State-of-the-Art Infrastructure',
-          description: 'Spread across 100+ acres, JKKN campus features smart Learning Studios, advanced research labs, 500-bed multi-specialty hospital, digital library, sports complex, separate hostels, Wi-Fi campus, auditorium, food court, and all amenities for a complete campus experience.',
-          order: 5,
-        },
-        {
-          icon: '💰',
-          title: 'Affordable & Accessible Education',
-          description: 'Following our Founder\'s philosophy of "Excellence without Elitism," JKKN offers quality education at competitive fee structures. Multiple scholarship schemes, government benefits, and flexible payment options ensure deserving Learners are never denied education due to financial constraints.',
-          order: 6,
-        },
-      ],
-      additionalUsps: [
-        '50+ Industry-Relevant Programs across Medical, Engineering, Arts & Science',
-        'Multi-Specialty Hospital for clinical training and community healthcare',
-        'Industry-Integrated Curriculum with internships and live projects',
-        'Research & Innovation Hub with funded projects and patent support',
-        'Holistic Development through sports, cultural, and social activities',
-        'Safe & Secure Campus with 24/7 security and CCTV surveillance',
-        'Strong Alumni Network of 50,000+ professionals worldwide',
-        'Entrepreneurship Support through incubation centers and startup mentoring',
-      ],
-      layout: 'grid',
-      cardsPerRow: 3,
-      showAdditionalList: true,
-      glassmorphismVariant: 'brand',
-      animationPreset: 'stagger',
+      // Content
+      title: 'Why Choose JKKN?',
+      subtitle: '74+ Years of Transforming Lives Through Progressive Education',
+      tagline: 'Where Legacy Meets Innovation | Excellence Without Elitism',
+      badgeText: 'Why Choose Us',
+      additionalUspsHeading: 'And Much More...',
+      // Badge Typography
+      badgeColor: '#0b6d41',
+      badgeBgColor: '#0b6d411a',
+      badgeFontSize: 'sm',
+      badgeFontWeight: 'semibold',
+      // Title Typography
+      titleColor: '#171717',
+      titleFontSize: '5xl',
+      titleFontWeight: 'bold',
+      // Subtitle Typography
+      subtitleColor: '#0b6d41',
+      subtitleFontSize: '2xl',
+      subtitleFontWeight: 'semibold',
+      // Tagline Typography
+      taglineColor: '#525252',
+      taglineFontSize: 'lg',
+      taglineFontWeight: 'normal',
+      // Card Typography
+      cardTitleColor: '#1f2937',
+      cardTitleFontSize: 'md',
+      cardTitleFontWeight: 'semibold',
+      cardStatColor: '#0b6d41',
+      cardStatFontSize: '3xl',
+      cardStatFontWeight: 'bold',
+      // Additional USPs Typography
+      additionalUspsHeadingColor: '#1f2937',
+      additionalUspsHeadingFontSize: 'lg',
+      additionalUspsHeadingFontWeight: 'semibold',
+      additionalUspsTextColor: '#374151',
+      additionalUspsTextFontSize: 'sm',
+      additionalUspsTextFontWeight: 'normal',
+      // Legacy compatibility
+      primaryColor: '#0b6d41',
     },
     supportsChildren: false,
     isFullWidth: true,
-    keywords: ['usp', 'why', 'choose', 'benefits', 'features', 'advantages', 'differentiators', 'unique', 'selling', 'points'],
+    keywords: ['usp', 'why', 'choose', 'benefits', 'features', 'advantages', 'placement', 'legacy', 'typography'],
     editableProps: [
-      // Section Header
-      { name: 'sectionTitle', type: 'string', label: 'Section Title', required: true, description: 'Main title (e.g., Why Choose JKKN?)' },
-      { name: 'sectionSubtitle', type: 'string', label: 'Subtitle', multiline: true, description: 'Large subtitle below title (e.g., 74+ Years of...)' },
-      { name: 'sectionTagline', type: 'string', label: 'Tagline', multiline: true, description: 'Small tagline text (e.g., Where Legacy Meets Innovation...)' },
-      // USP Cards Array
+      // === CONTENT ===
+      { name: 'badgeText', type: 'string', label: 'Badge Text', placeholder: 'Why Choose Us' },
+      { name: 'title', type: 'string', label: 'Section Title', required: true, placeholder: 'Why Choose JKKN?' },
+      { name: 'subtitle', type: 'string', label: 'Subtitle', placeholder: '74+ Years of Transforming Lives...' },
+      { name: 'tagline', type: 'string', label: 'Tagline', placeholder: 'Where Legacy Meets Innovation...' },
+      { name: 'additionalUspsHeading', type: 'string', label: 'Additional USPs Heading', placeholder: 'And Much More...' },
+
+      // === BADGE TYPOGRAPHY ===
+      { name: 'badgeColor', type: 'color', label: 'Badge Text Color' },
+      { name: 'badgeBgColor', type: 'color', label: 'Badge Background' },
+      { name: 'badgeFontSize', type: 'enum', label: 'Badge Font Size', options: ['sm', 'md', 'lg'] },
+      { name: 'badgeFontWeight', type: 'enum', label: 'Badge Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
+
+      // === TITLE TYPOGRAPHY ===
+      { name: 'titleColor', type: 'color', label: 'Title Color' },
+      { name: 'titleFontSize', type: 'enum', label: 'Title Font Size', options: ['2xl', '3xl', '4xl', '5xl', '6xl'] },
+      { name: 'titleFontWeight', type: 'enum', label: 'Title Font Weight', options: ['normal', 'medium', 'semibold', 'bold', 'extrabold'] },
+
+      // === SUBTITLE TYPOGRAPHY ===
+      { name: 'subtitleColor', type: 'color', label: 'Subtitle Color' },
+      { name: 'subtitleFontSize', type: 'enum', label: 'Subtitle Font Size', options: ['lg', 'xl', '2xl', '3xl'] },
+      { name: 'subtitleFontWeight', type: 'enum', label: 'Subtitle Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
+
+      // === TAGLINE TYPOGRAPHY ===
+      { name: 'taglineColor', type: 'color', label: 'Tagline Color' },
+      { name: 'taglineFontSize', type: 'enum', label: 'Tagline Font Size', options: ['sm', 'md', 'lg', 'xl'] },
+      { name: 'taglineFontWeight', type: 'enum', label: 'Tagline Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
+
+      // === CARD TYPOGRAPHY ===
+      { name: 'cardStatColor', type: 'color', label: 'Card Stat Color' },
+      { name: 'cardStatFontSize', type: 'enum', label: 'Card Stat Size', options: ['xl', '2xl', '3xl', '4xl'] },
+      { name: 'cardStatFontWeight', type: 'enum', label: 'Card Stat Weight', options: ['medium', 'semibold', 'bold', 'extrabold'] },
+      { name: 'cardTitleColor', type: 'color', label: 'Card Title Color' },
+      { name: 'cardTitleFontSize', type: 'enum', label: 'Card Title Size', options: ['sm', 'md', 'lg', 'xl'] },
+      { name: 'cardTitleFontWeight', type: 'enum', label: 'Card Title Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
+
+      // === ADDITIONAL USPS TYPOGRAPHY ===
+      { name: 'additionalUspsHeadingColor', type: 'color', label: 'USPs Heading Color' },
+      { name: 'additionalUspsHeadingFontSize', type: 'enum', label: 'USPs Heading Size', options: ['md', 'lg', 'xl'] },
+      { name: 'additionalUspsHeadingFontWeight', type: 'enum', label: 'USPs Heading Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
+      { name: 'additionalUspsTextColor', type: 'color', label: 'USPs Text Color' },
+      { name: 'additionalUspsTextFontSize', type: 'enum', label: 'USPs Text Size', options: ['xs', 'sm', 'md'] },
+      { name: 'additionalUspsTextFontWeight', type: 'enum', label: 'USPs Text Weight', options: ['normal', 'medium', 'semibold'] },
+
+      // === USP CARDS ===
       {
         name: 'uspCards',
         type: 'array',
         label: 'USP Cards',
-        description: 'Main differentiator cards (recommended: 6 cards)',
+        description: '6 key differentiators with icons',
         itemType: 'object',
         itemSchema: {
           properties: {
             icon: {
-              type: 'string',
+              type: 'enum',
               label: 'Icon',
+              options: ['heritage', 'career', 'excellence', 'expertise', 'facilities', 'value'],
               required: true,
-              placeholder: '🏛️ or /images/icon.png',
-              description: 'Emoji or image URL',
             },
             title: {
               type: 'string',
-              label: 'Title',
+              label: 'Card Title',
               required: true,
-              placeholder: 'e.g., 74+ Years of Educational Legacy',
+              placeholder: 'Years of Educational Legacy',
             },
-            description: {
+            stat: {
               type: 'string',
-              label: 'Description',
-              required: true,
-              multiline: true,
-              placeholder: 'Detailed description of this USP',
-            },
-            order: {
-              type: 'number',
-              label: 'Display Order',
-              defaultValue: 0,
+              label: 'Stat Value',
+              placeholder: '74+',
+              description: 'Optional stat number',
             },
           },
-          required: ['icon', 'title', 'description'],
+          required: ['icon', 'title'],
         },
       },
-      // Additional USPs Array
-      {
-        name: 'additionalUsps',
-        type: 'array',
-        label: 'Additional Benefits',
-        description: 'Additional USPs shown as checklist (recommended: 8 items)',
-        itemType: 'string',
-      },
-      // Layout Configuration
-      { name: 'layout', type: 'enum', label: 'Layout', options: ['grid', 'slider'], description: 'How to display USP cards' },
-      { name: 'cardsPerRow', type: 'enum', label: 'Cards Per Row', options: ['2', '3', '4'], description: 'Number of cards per row in grid layout' },
-      { name: 'showAdditionalList', type: 'boolean', label: 'Show Additional Benefits', description: 'Display the checklist of additional USPs' },
-      // Styling
-      {
-        name: 'glassmorphismVariant',
-        type: 'enum',
-        label: 'Card Style',
-        options: ['light', 'dark', 'dark-elegant', 'gradient', 'brand'],
-        description: 'Glassmorphism styling for cards',
-      },
-      // Animation
-      {
-        name: 'animationPreset',
-        type: 'enum',
-        label: 'Animation',
-        options: ['fade-in-up', 'zoom-in', 'slide-up', 'stagger', 'none'],
-        description: 'Entrance animation style',
-      },
+      { name: 'additionalUsps', type: 'array', label: 'Additional USPs', itemType: 'string', description: 'Extra USP points shown as a list' },
+
+      // === LEGACY (kept for compatibility) ===
+      { name: 'primaryColor', type: 'color', label: 'Primary Accent Color', description: 'Legacy prop for accent color' },
     ],
   },
 
@@ -2157,7 +2153,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         type: z.enum(['image', 'video']),
         title: z.string(),
         thumbnail: z.string(),
+        thumbnailAlt: z.string(),
         fullSrc: z.string(),
+        fullSrcAlt: z.string(),
         category: z.string(),
         description: z.string().optional(),
         date: z.string().optional(),
@@ -2209,12 +2207,14 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
             type: { type: 'string', label: 'Type (image/video)', required: true },
             title: { type: 'string', label: 'Title', required: true },
             thumbnail: { type: 'image', label: 'Thumbnail Image', required: true },
+            thumbnailAlt: { type: 'string', label: 'Thumbnail Alt Text', required: true },
             fullSrc: { type: 'image', label: 'Full Image/Video URL', required: true },
+            fullSrcAlt: { type: 'string', label: 'Full Image Alt Text', required: true },
             category: { type: 'string', label: 'Category', required: true },
             description: { type: 'string', label: 'Description', multiline: true },
             date: { type: 'string', label: 'Date' },
           },
-          required: ['id', 'type', 'title', 'thumbnail', 'fullSrc', 'category'],
+          required: ['id', 'type', 'title', 'thumbnail', 'thumbnailAlt', 'fullSrc', 'fullSrcAlt', 'category'],
         },
       },
       {
@@ -3456,6 +3456,8 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'backgroundColor', type: 'enum', label: 'Background', options: ['gradient-dark', 'gradient-light', 'solid-white', 'transparent'] },
       { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['glass', 'solid', 'gradient'] },
       { name: 'layout', type: 'enum', label: 'Layout', options: ['single-column', 'two-column'] },
+      { name: 'sectionTitleColor', type: 'color', label: 'Title Color' },
+      { name: 'sectionSubtitleColor', type: 'color', label: 'Subtitle Color' },
       { name: 'showAnimations', type: 'boolean', label: 'Enable Animations' },
       { name: 'showDecorations', type: 'boolean', label: 'Show Decorations' },
     ],
@@ -3513,6 +3515,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       shadow: z.boolean().default(true),
       showThumbnail: z.boolean().default(false),
       thumbnailUrl: z.string().optional(),
+      thumbnailAlt: z.string().default(''),
       alignment: z.enum(['left', 'center', 'right']).default('center'),
     }),
     defaultProps: {
@@ -3524,6 +3527,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       rounded: true,
       shadow: true,
       showThumbnail: false,
+      thumbnailAlt: '',
       alignment: 'center',
     },
     supportsChildren: false,
@@ -3539,6 +3543,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'shadow', type: 'boolean', label: 'Show Shadow' },
       { name: 'showThumbnail', type: 'boolean', label: 'Show Thumbnail Before Play' },
       { name: 'thumbnailUrl', type: 'image', label: 'Custom Thumbnail' },
+      { name: 'thumbnailAlt', type: 'string', label: 'Thumbnail Alt Text', required: true },
       { name: 'alignment', type: 'enum', label: 'Alignment', options: ['left', 'center', 'right'] },
     ],
   },
@@ -3589,6 +3594,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       loop: false,
       muted: false,
       aspectRatio: '16/9',
+      posterAlt: '',
     },
     supportsChildren: false,
     keywords: ['video', 'youtube', 'vimeo', 'embed'],
@@ -3602,6 +3608,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'muted', type: 'boolean', label: 'Start Muted' },
       { name: 'aspectRatio', type: 'enum', label: 'Aspect Ratio', options: ['16/9', '4/3', '1/1', '9/16'] },
       { name: 'poster', type: 'image', label: 'Poster Image' },
+      { name: 'posterAlt', type: 'string', label: 'Poster Image Alt Text', required: true },
     ],
   },
 
@@ -3647,7 +3654,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     propsSchema: BeforeAfterSliderPropsSchema,
     defaultProps: {
       beforeImage: '',
+      beforeImageAlt: '',
       afterImage: '',
+      afterImageAlt: '',
       beforeLabel: 'Before',
       afterLabel: 'After',
       startPosition: 50,
@@ -3656,7 +3665,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     keywords: ['before', 'after', 'compare', 'slider'],
     editableProps: [
       { name: 'beforeImage', type: 'image', label: 'Before Image', required: true },
+      { name: 'beforeImageAlt', type: 'string', label: 'Before Image Alt Text', required: true },
       { name: 'afterImage', type: 'image', label: 'After Image', required: true },
+      { name: 'afterImageAlt', type: 'string', label: 'After Image Alt Text', required: true },
       { name: 'beforeLabel', type: 'string', label: 'Before Label' },
       { name: 'afterLabel', type: 'string', label: 'After Label' },
       { name: 'startPosition', type: 'number', label: 'Start Position (%)', min: 0, max: 100 },
@@ -3831,6 +3842,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     defaultProps: {
       padding: '16',
       fullWidth: true,
+      backgroundImageAlt: '',
     },
     supportsChildren: true,
     isFullWidth: true,
@@ -3842,6 +3854,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'fullWidth', type: 'boolean', label: 'Full Width' },
       { name: 'backgroundColor', type: 'color', label: 'Background Color' },
       { name: 'backgroundImage', type: 'image', label: 'Background Image' },
+      { name: 'backgroundImageAlt', type: 'string', label: 'Background Image Alt Text', required: true },
       { name: 'backgroundOverlay', type: 'boolean', label: 'Dark Overlay' },
       { name: 'overlayOpacity', type: 'number', label: 'Overlay Opacity', min: 0, max: 1, step: 0.1 },
       { name: 'minHeight', type: 'string', label: 'Min Height', placeholder: '400px' },
@@ -4128,6 +4141,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       title: z.string().default('Card Title'),
       description: z.string().optional(),
       image: z.string().optional(),
+      imageAlt: z.string().default(''),
       icon: z.string().optional(),
       badge: z.string().optional(),
       link: z.string().optional(),
@@ -4144,6 +4158,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       description: 'Discover our cutting-edge program designed to prepare you for the future.',
       badge: 'Popular',
       ctaText: 'Learn More',
+      imageAlt: '',
       variant: 'gradient-border',
       size: 'md',
       gradient: 'linear-gradient(135deg, #0b6d41, #085032)',
@@ -4157,6 +4172,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'title', type: 'string', label: 'Title', required: true },
       { name: 'description', type: 'string', label: 'Description', multiline: true },
       { name: 'image', type: 'image', label: 'Header Image' },
+      { name: 'imageAlt', type: 'string', label: 'Image Alt Text', required: true },
       { name: 'icon', type: 'string', label: 'Icon Name (Lucide)' },
       { name: 'badge', type: 'string', label: 'Badge Text' },
       { name: 'link', type: 'url', label: 'Link URL' },

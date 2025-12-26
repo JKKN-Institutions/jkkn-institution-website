@@ -36,6 +36,90 @@ export type AdmissionInquiryFormState = {
 }
 
 /**
+ * Update admission inquiry status (admin only)
+ */
+export async function updateAdmissionInquiryStatus(
+  id: string,
+  status: 'new' | 'contacted' | 'follow_up' | 'converted' | 'closed'
+) {
+  try {
+    const supabase = await createServerSupabaseClient()
+
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return { success: false, error: 'Unauthorized' }
+    }
+
+    const { error } = await supabase
+      .from('admission_inquiries')
+      .update({
+        status,
+        status_changed_at: new Date().toISOString(),
+        status_changed_by: user.id,
+        updated_at: new Date().toISOString(),
+        updated_by: user.id,
+      })
+      .eq('id', id)
+
+    if (error) {
+      console.error('Error updating admission inquiry:', error)
+      return { success: false, error: error.message }
+    }
+
+    revalidatePath('/admin/inquiries')
+    return { success: true, message: 'Status updated successfully' }
+  } catch (error) {
+    console.error('Error in updateAdmissionInquiryStatus:', error)
+    return { success: false, error: 'Failed to update status' }
+  }
+}
+
+/**
+ * Reply to an admission inquiry (admin only)
+ */
+export async function replyToAdmissionInquiry(inquiryId: string, replyMessage: string) {
+  try {
+    const supabase = await createServerSupabaseClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+      return { success: false, error: 'Unauthorized' }
+    }
+
+    // Validation
+    if (!replyMessage || replyMessage.trim().length < 10) {
+      return { success: false, error: 'Reply message must be at least 10 characters' }
+    }
+
+    // Update inquiry with reply
+    const { error } = await supabase
+      .from('admission_inquiries')
+      .update({
+        reply_message: replyMessage.trim(),
+        status: 'contacted',
+        replied_at: new Date().toISOString(),
+        replied_by: user.id,
+        status_changed_at: new Date().toISOString(),
+        status_changed_by: user.id,
+        updated_at: new Date().toISOString(),
+        updated_by: user.id,
+      })
+      .eq('id', inquiryId)
+
+    if (error) {
+      console.error('Error replying to admission inquiry:', error)
+      return { success: false, error: error.message }
+    }
+
+    revalidatePath('/admin/inquiries')
+    return { success: true, message: 'Reply saved successfully' }
+  } catch (error) {
+    console.error('Error in replyToAdmissionInquiry:', error)
+    return { success: false, error: 'Failed to save reply' }
+  }
+}
+
+/**
  * Submit an admission inquiry form
  */
 export async function submitAdmissionInquiry(

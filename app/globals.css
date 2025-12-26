@@ -1293,3 +1293,17 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ===== BUG REPORTER WIDGET POSITIONING ===== */
+/* Move bug icon above mobile bottom navigation */
+@media (max-width: 1023px) {
+  .bug-reporter-widget,
+  [class*="bug-reporter-floating"],
+  div[style*="position: fixed"][style*="bottom"]:has(button[aria-label*="bug"]),
+  div[style*="position: fixed"][style*="bottom"]:has(button[aria-label*="Bug"]),
+  div[style*="position: fixed"][style*="bottom"]:has(button[aria-label*="report"]),
+  div[style*="position: fixed"][style*="bottom"]:has(button[aria-label*="Report"]) {
+    bottom: 5.5rem !important; /* Position above bottom nav (~88px) */
+    z-index: 70 !important; /* Below bottom nav backdrop */
+  }
+}

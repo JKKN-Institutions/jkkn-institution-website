@@ -188,12 +188,16 @@ export const AdmissionInquiryFormPropsSchema = z.object({
 
   // Styling Options
   variant: z.enum(['glass', 'solid']).default('glass'),
-  theme: z.enum(['light', 'dark']).default('dark'),
+  theme: z.enum(['light', 'dark']).default('light'),
   backgroundColor: z
-    .enum(['gradient-dark', 'gradient-light', 'solid-white', 'transparent'])
-    .default('gradient-dark'),
+    .enum(['gradient-dark', 'gradient-light', 'solid-white', 'white-glassmorphism', 'white-professional', 'transparent'])
+    .default('solid-white'),
   cardStyle: z.enum(['glass', 'solid', 'gradient']).default('glass'),
   showAnimations: z.boolean().default(true),
+
+  // Title/Subtitle Colors
+  sectionTitleColor: z.string().optional(),
+  sectionSubtitleColor: z.string().optional(),
 
   // Layout
   layout: z.enum(['single-column', 'two-column']).default('two-column'),
@@ -234,28 +238,30 @@ const backgroundClasses = {
   'gradient-dark': 'bg-gradient-to-br from-primary via-primary/95 to-secondary',
   'gradient-light': 'bg-gradient-to-br from-gray-50 via-white to-gray-100',
   'solid-white': 'bg-white',
+  'white-glassmorphism': 'bg-white',
+  'white-professional': 'bg-gradient-to-br from-white via-gray-50/30 to-white',
   transparent: 'bg-transparent',
 }
 
 const cardStyleClasses = {
   glass: {
     dark: 'bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl',
-    light: 'bg-white/80 backdrop-blur-xl border border-gray-200 shadow-2xl',
+    light: 'bg-white/90 backdrop-blur-2xl border border-gray-200/50 shadow-[0_8px_40px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.02]',
   },
   solid: {
     dark: 'bg-gray-900/90 border border-gray-700 shadow-2xl',
-    light: 'bg-white border border-gray-200 shadow-2xl',
+    light: 'bg-white border border-gray-200 shadow-xl',
   },
   gradient: {
     dark: 'bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-xl border border-white/20 shadow-2xl',
-    light: 'bg-gradient-to-br from-white to-gray-50 border border-gray-200 shadow-2xl',
+    light: 'bg-gradient-to-br from-white via-white to-gray-50/50 border border-gray-100 shadow-xl',
   },
 }
 
 const inputClasses = {
   dark: 'bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-gold/50 focus:ring-gold/20',
   light:
-    'bg-white/50 border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-primary/50 focus:ring-primary/20',
+    'bg-gray-50/50 border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-primary focus:ring-primary/20 focus:bg-white transition-colors',
 }
 
 // ==========================================
@@ -269,6 +275,8 @@ function SectionHeader({
   isDark,
   isVisible,
   showAnimations,
+  titleColor,
+  subtitleColor,
 }: {
   badge: string
   title: string
@@ -276,6 +284,8 @@ function SectionHeader({
   isDark: boolean
   isVisible: boolean
   showAnimations: boolean
+  titleColor?: string
+  subtitleColor?: string
 }) {
   return (
     <div
@@ -289,7 +299,7 @@ function SectionHeader({
         <div className="flex justify-center mb-4">
           <span
             className={cn(
-              'inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase',
+              'inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-wider uppercase',
               isDark
                 ? 'bg-gold/20 text-gold border border-gold/30'
                 : 'bg-primary/10 text-primary border border-primary/20'
@@ -303,9 +313,10 @@ function SectionHeader({
 
       <h2
         className={cn(
-          'text-3xl sm:text-4xl lg:text-5xl font-bold mb-4',
-          isDark ? 'text-white' : 'text-gray-900'
+          'text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 not-italic',
+          !titleColor && (isDark ? 'text-white' : 'text-primary')
         )}
+        style={{ color: titleColor }}
       >
         {title}
       </h2>
@@ -314,8 +325,9 @@ function SectionHeader({
         <p
           className={cn(
             'text-lg md:text-xl max-w-2xl mx-auto',
-            isDark ? 'text-white/80' : 'text-gray-600'
+            !subtitleColor && (isDark ? 'text-white/80' : 'text-gray-600')
           )}
+          style={{ color: subtitleColor }}
         >
           {subtitle}
         </p>
@@ -478,10 +490,12 @@ export default function AdmissionInquiryForm({
   whatsappMessage = 'Hi, I just submitted an admission inquiry. My reference number is: ',
   successLinks = [],
   variant = 'glass',
-  theme = 'dark',
-  backgroundColor = 'gradient-dark',
+  theme = 'light',
+  backgroundColor = 'solid-white',
   cardStyle = 'glass',
   showAnimations = true,
+  sectionTitleColor,
+  sectionSubtitleColor,
   layout = 'two-column',
   showDecorations = true,
   className,
@@ -622,7 +636,7 @@ export default function AdmissionInquiryForm({
       id={id}
       className={cn('relative py-16 lg:py-24 overflow-hidden', backgroundClasses[backgroundColor], className)}
     >
-      {/* Decorative Patterns */}
+      {/* Decorative Patterns - Only show on dark themes for clean white backgrounds */}
       {showDecorations && isDark && <DecorativePatterns variant="scattered" />}
 
       <div className="container mx-auto px-4 relative z-10">
@@ -635,6 +649,8 @@ export default function AdmissionInquiryForm({
             isDark={isDark}
             isVisible={isVisible}
             showAnimations={showAnimations}
+            titleColor={sectionTitleColor}
+            subtitleColor={sectionSubtitleColor}
           />
         )}
 
@@ -643,6 +659,7 @@ export default function AdmissionInquiryForm({
           className={cn(
             'max-w-4xl mx-auto rounded-3xl p-6 sm:p-8 lg:p-10',
             cardStyleClasses[cardStyle][theme],
+            'hover:shadow-[0_12px_48px_rgba(0,0,0,0.08)] transition-shadow duration-500',
             showAnimations && 'transition-all duration-700 delay-200',
             showAnimations && (isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8')
           )}
@@ -697,7 +714,7 @@ export default function AdmissionInquiryForm({
                     htmlFor="fullName"
                     className={cn(
                       'text-sm font-medium',
-                      isDark ? 'text-white' : 'text-gray-700'
+                      isDark ? 'text-white' : 'text-gray-900'
                     )}
                   >
                     {labels.fullName} <span className="text-red-400">*</span>
@@ -730,7 +747,7 @@ export default function AdmissionInquiryForm({
                     htmlFor="mobileNumber"
                     className={cn(
                       'text-sm font-medium',
-                      isDark ? 'text-white' : 'text-gray-700'
+                      isDark ? 'text-white' : 'text-gray-900'
                     )}
                   >
                     {labels.mobileNumber} <span className="text-red-400">*</span>
@@ -765,7 +782,7 @@ export default function AdmissionInquiryForm({
                     htmlFor="email"
                     className={cn(
                       'text-sm font-medium',
-                      isDark ? 'text-white' : 'text-gray-700'
+                      isDark ? 'text-white' : 'text-gray-900'
                     )}
                   >
                     {labels.email} <span className="text-red-400">*</span>
@@ -798,7 +815,7 @@ export default function AdmissionInquiryForm({
                     htmlFor="districtCity"
                     className={cn(
                       'text-sm font-medium',
-                      isDark ? 'text-white' : 'text-gray-700'
+                      isDark ? 'text-white' : 'text-gray-900'
                     )}
                   >
                     {labels.districtCity} <span className="text-red-400">*</span>
@@ -831,7 +848,7 @@ export default function AdmissionInquiryForm({
                     htmlFor="collegeName"
                     className={cn(
                       'text-sm font-medium',
-                      isDark ? 'text-white' : 'text-gray-700'
+                      isDark ? 'text-white' : 'text-gray-900'
                     )}
                   >
                     {labels.college} <span className="text-red-400">*</span>
@@ -879,7 +896,7 @@ export default function AdmissionInquiryForm({
                     htmlFor="courseInterested"
                     className={cn(
                       'text-sm font-medium',
-                      isDark ? 'text-white' : 'text-gray-700'
+                      isDark ? 'text-white' : 'text-gray-900'
                     )}
                   >
                     {labels.course} <span className="text-red-400">*</span>
@@ -930,7 +947,7 @@ export default function AdmissionInquiryForm({
                     htmlFor="currentQualification"
                     className={cn(
                       'text-sm font-medium',
-                      isDark ? 'text-white' : 'text-gray-700'
+                      isDark ? 'text-white' : 'text-gray-900'
                     )}
                   >
                     {labels.qualification} <span className="text-red-400">*</span>
@@ -974,7 +991,7 @@ export default function AdmissionInquiryForm({
                     htmlFor="preferredContactTime"
                     className={cn(
                       'text-sm font-medium',
-                      isDark ? 'text-white' : 'text-gray-700'
+                      isDark ? 'text-white' : 'text-gray-900'
                     )}
                   >
                     {labels.contactTime}
@@ -1021,7 +1038,7 @@ export default function AdmissionInquiryForm({
                     'mt-0.5',
                     isDark
                       ? 'border-white/30 data-[state=checked]:bg-gold data-[state=checked]:border-gold'
-                      : 'border-gray-300 data-[state=checked]:bg-primary data-[state=checked]:border-primary'
+                      : 'border-primary/30 data-[state=checked]:bg-primary data-[state=checked]:border-primary'
                   )}
                 />
                 <Label
@@ -1046,7 +1063,7 @@ export default function AdmissionInquiryForm({
                   'w-full h-14 text-lg font-semibold rounded-xl transition-all duration-300',
                   isDark
                     ? 'bg-gold hover:bg-gold/90 text-primary shadow-lg hover:shadow-xl hover:-translate-y-0.5'
-                    : 'bg-primary hover:bg-primary/90 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5',
+                    : 'bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/20 hover:shadow-xl hover:shadow-green-600/30 hover:-translate-y-0.5',
                   (isPending || !consentChecked) && 'opacity-60 cursor-not-allowed hover:translate-y-0'
                 )}
               >
@@ -1086,9 +1103,9 @@ export default function AdmissionInquiryForm({
         </div>
       </div>
 
-      {/* Bottom Curve Divider */}
-      {showDecorations && (
-        <CurveDivider position="bottom" color={isDark ? '#ffffff' : '#f9fafb'} />
+      {/* Bottom Curve Divider - Only show on dark themes for clean white backgrounds */}
+      {showDecorations && isDark && (
+        <CurveDivider position="bottom" color="#ffffff" />
       )}
     </section>
   )

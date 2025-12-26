@@ -12,54 +12,69 @@ import {
 
 const faqs = [
   {
-    question: 'What is JKKN Institutions and how long has it been established?',
+    question: 'What is JKKN Institutions?',
     answer:
-      'J.K.K. Nattraja Educational Institutions (JKKN) is a premier educational group established in 1969 under the J.K.K. Rangammal Trust. Founded by Kodai Vallal Shri. J.K.K. Natarajah with a vision to empower through education, JKKN has grown into a multi-disciplinary institution spanning 7 colleges and 2 schools, nurturing over 1,00,000+ Learners across 74+ years of educational excellence.',
+      'JKKN Institutions (JKKN) is a premier educational group in Komarapalayam, Tamil Nadu, comprising 7 colleges and 4 schools. Established in 1952, JKKN offers 50+ programs in dental, pharmacy, engineering, nursing, allied and arts with 92%+ placement success.',
   },
   {
-    question: 'What courses are offered at JKKN Institutions?',
+    question: 'Why is JKKN the best college in Erode region?',
     answer:
-      'JKKN offers 50+ programs across multiple disciplines including Dental Sciences (BDS, MDS), Pharmacy (B.Pharm, M.Pharm, Pharm.D), Engineering & Technology (B.E/B.Tech, M.E/M.Tech), Nursing (B.Sc, M.Sc, GNM), Allied Health Sciences (BPT, BMLT, B.Sc Radiology), Arts & Science (BA, B.Sc, BCA, BBA, M.A, M.Sc), and Education (B.Ed, M.Ed). Each program is designed with industry-integrated curriculum and hands-on learning experiences.',
+      "JKKN is recognized as Erode's best college due to 74+ years of excellence, NAAC accreditation, 92%+ placement rate, and 50,000+ successful alumni. Top recruiters include Foxconn, Apex Pharma, Apotex, Cipla and Bosch making it the preferred choice for career-focused Learners.",
   },
   {
-    question: 'Is JKKN approved by AICTE, UGC, and other regulatory bodies?',
+    question: 'Who founded JKKN Institutions?',
     answer:
-      'Yes, all JKKN institutions are fully approved and recognized by respective regulatory bodies. Our colleges hold approvals from AICTE (All India Council for Technical Education), UGC (University Grants Commission), NAAC (National Assessment and Accreditation Council), NBA (National Board of Accreditation), DCI (Dental Council of India), PCI (Pharmacy Council of India), and INC (Indian Nursing Council). JKKN has achieved NAAC A+ Accreditation, reflecting our commitment to quality education.',
+      "JKKN was founded by visionary Kodai Vallal Shri. J.K.K. Natarajah, who started a school in 1965 to promote girls' education. His vision led to J.K.K. Rangammal Trust (1969), now led by Chairperson Smt. N. Sendamaraai and Director Shri. S. Ommsharravana.",
   },
   {
-    question: 'What is the placement rate at JKKN?',
+    question: 'How many colleges are under JKKN?',
     answer:
-      'JKKN maintains an impressive 95%+ placement rate across all colleges. Our dedicated placement cell has strong partnerships with 100+ industry recruiters including TCS, Infosys, Wipro, Zoho, Cognizant, HCL, Dell, and leading hospitals. Over 50,000+ alumni are successfully placed in top organizations worldwide. We offer comprehensive placement training, mock interviews, and industry internship programs.',
+      'JKKN comprises 11 institutions: Dental College, Pharmacy College, Engineering College, Allied Health Sciences, Arts & Science College (Autonomous), Education College, Nursing College, Matriculation School, Nattraja Vidhyalya, Elementary School and Girls Higher Secondary School —all located on one integrated residential campus in Komarapalayam.',
   },
   {
-    question: 'How can I apply for admission at JKKN for 2025-26?',
+    question: 'What courses does JKKN offer?',
     answer:
-      'Admission to JKKN for the academic year 2025-26 is now open. You can apply through our online admission portal at jkkn.in/admission-form. The process includes online application, document verification, counselling (where applicable), fee payment, and admission confirmation. For direct assistance, call +91 422 266 1100 or email info@jkkn.ac.in.',
+      'JKKN offers 50+ programs including BDS/MDS (Dental), B.Pharm/M.Pharm/Pharm.D (Pharmacy), B.E./B.Tech/MBA (Engineering), B.Sc/M.Sc Nursing, Allied Health Sciences, B.Ed, and various UG/PG Arts & Science degrees with industry-relevant specializations.',
   },
   {
-    question: 'Does JKKN offer hostel and transportation facilities?',
+    question: 'Which universities is JKKN affiliated with?',
     answer:
-      'Yes, JKKN provides separate hostel facilities for boys and girls with 24/7 security, Wi-Fi connectivity, hygienic mess, and recreational areas. Our fleet of 50+ buses covers 30+ routes across Erode, Namakkal, Salem, Karur, and surrounding districts. All hostels and transport are managed with Learner safety as top priority.',
+      'JKKN colleges are affiliated with Tamil Nadu Dr. M.G.R. Medical University (Dental/Nursing/Pharmacy), Anna University Chennai (Engineering), and Periyar University Salem (Arts & Science). All programs are approved by AICTE, DCI, PCI, INC, and NAAC.',
   },
   {
-    question: 'What scholarships are available at JKKN?',
+    question: 'How do I apply for JKKN admission 2026-27?',
     answer:
-      'JKKN offers multiple scholarship schemes including merit scholarships for academic toppers (up to 100% tuition fee waiver), sports quota scholarships, government scholarships for SC/ST/OBC/MBC categories, economically weaker section (EWS) support, and special scholarships for single girl child and differently-abled Learners. The J.K.K. Rangammal Trust also provides need-based financial assistance.',
+      "Apply online at jkkn.in/admission-form for 2026-27 admissions. Submit required documents, complete fee payment, and attend counseling if applicable. For Dental/Nursing, NEET scores are required; for Engineering, TNEA counseling applies. Early bird discounts available for early applicants.",
   },
   {
-    question: 'What are the unique facilities available at JKKN campus?',
+    question: 'What is the BDS admission process at JKKN Dental College?',
     answer:
-      "JKKN's 100+ acre campus features smart Learning Studios, advanced research laboratories, digital library with 50,000+ books, 500-bed multi-specialty hospital, sports complex with indoor and outdoor facilities, auditorium (2000+ seating), food court, bank & post office, ambulance services, and complete Wi-Fi coverage. All facilities are designed to provide a holistic learning environment.",
+      'BDS admission requires qualifying NEET UG and participating in Tamil Nadu DME counseling. Candidates must be 17+ years old and have completed 10+2 with Physics, Chemistry, and Biology. Admission is based on NEET scores and seat availability.',
   },
   {
-    question: 'What makes JKKN different from other colleges in Tamil Nadu?',
+    question: 'What are engineering admission requirements at JKKN?',
     answer:
-      'JKKN stands apart with its 74+ years of educational legacy, industry-integrated curriculum, 95% placement record, NAAC A+ accreditation, 500+ expert Learning Facilitators, affordable fee structure, and a value-based education philosophy. Our Founder\'s vision of "Excellence without Elitism" ensures quality education is accessible to all deserving Learners regardless of their economic background.',
+      "B.E./B.Tech admission is through TNEA (Tamil Nadu Engineering Admissions) counseling. Candidates need 10+2 with Mathematics, Physics, and Chemistry from a recognized board. The college follows Anna University guidelines. MBA have separate eligibility criteria.",
   },
   {
-    question: 'Where is JKKN located and how can I visit the campus?',
+    question: "What is JKKN's placement rate?",
     answer:
-      'JKKN Group of Institutions is located at Komarapalayam, Namakkal District, Tamil Nadu - 638183. The campus is well-connected by road and is approximately 50 km from Erode, 35 km from Salem, and 120 km from Coimbatore. Campus visits can be scheduled by contacting our admission office at +91 422 266 1100. We conduct regular open house events for prospective Learners and parents.',
+      'JKKN maintains an impressive 90%+ placement rate across institutions. The Dental College achieved 92% placements in 2024. The dedicated Placement Cell organizes campus drives, skill development programs, and mock interviews to enhance Learner employability.',
+  },
+  {
+    question: 'How do I reach JKKN from Erode?',
+    answer:
+      'JKKN is located just 15 km from Erode City on NH-544 (Salem-Coimbatore Highway). Reach by bus from Erode Bus Stand (30 minutes), train to Erode Junction (18 km), or air via Salem Airport (60 km) or Coimbatore Airport (100 km).',
+  },
+  {
+    question: "What is JKKN's address?",
+    answer:
+      'JKKN Institutions, Natarajapuram, NH-544 (Salem-Coimbatore Highway), Komarapalayam, Namakkal District, Tamil Nadu - 638183. Contact: 9345855001 | Email: info@jkkn.ac.in. Located on the main highway for easy accessibility.',
+  },
+  {
+    question: 'Which areas does JKKN serve?',
+    answer:
+      'JKKN primarily serves Learners from Erode, Salem, Namakkal, Komarapalayam, Tiruchengode, Sankagiri, Bhavani, Perundurai, and Gobichettipalayam. However, Learners from across Tamil Nadu, neighboring states locations attend due to its excellent reputation.',
   },
 ]
 
@@ -106,7 +121,7 @@ export function FAQSection() {
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
             Frequently Asked{' '}
-            <span className="bg-gradient-to-r from-secondary to-yellow-500 bg-clip-text text-transparent">
+            <span className="text-primary">
               Questions
             </span>
           </h2>
@@ -123,7 +138,7 @@ export function FAQSection() {
           )}
         >
           <Accordion type="single" collapsible className="space-y-4">
-            {faqs.map((faq, index) => (
+            {faqs.slice(0, 10).map((faq, index) => (
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
@@ -183,6 +198,25 @@ export function FAQSection() {
           </div>
         </div>
       </div>
+
+      {/* FAQ Schema for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: faqs.map((faq) => ({
+              '@type': 'Question',
+              name: faq.question,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: faq.answer,
+              },
+            })),
+          }),
+        }}
+      />
     </section>
   )
 }

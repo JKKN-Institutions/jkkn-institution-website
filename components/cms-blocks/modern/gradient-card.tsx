@@ -17,6 +17,7 @@ export const GradientCardPropsSchema = z.object({
   title: z.string().default('Card Title').describe('Card title'),
   description: z.string().optional().describe('Card description'),
   image: z.string().optional().describe('Header image URL'),
+  imageAlt: z.string().default('').describe('Image alt text for accessibility'),
   icon: z.string().optional().describe('Lucide icon name'),
   badge: z.string().optional().describe('Badge text'),
   link: z.string().optional().describe('Card link URL'),
@@ -60,6 +61,7 @@ export function GradientCard({
   title = 'Card Title',
   description,
   image,
+  imageAlt = '',
   icon,
   badge,
   link,
@@ -200,7 +202,7 @@ export function GradientCard({
           <div className="absolute inset-0 z-0">
             <Image
               src={image}
-              alt={title}
+              alt={imageAlt || title}
               fill
               className="object-cover"
             />
@@ -213,7 +215,7 @@ export function GradientCard({
           <div className="relative w-full h-48 overflow-hidden">
             <Image
               src={image}
-              alt={title}
+              alt={imageAlt || title}
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-105"
             />

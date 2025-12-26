@@ -47,7 +47,7 @@ export function BottomNavMoreMenu({
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent
         side="bottom"
-        className="h-[80vh] rounded-t-3xl flex flex-col z-[90]"
+        className="h-[80vh] rounded-t-3xl flex flex-col z-[100]"
       >
         <SheetHeader className="pb-2 flex-shrink-0">
           <SheetTitle className="text-lg font-semibold">All Menus</SheetTitle>
@@ -55,7 +55,7 @@ export function BottomNavMoreMenu({
 
         {/* Custom scrollable area with hidden scrollbar */}
         <div
-          className="flex-1 overflow-y-auto pb-8"
+          className="flex-1 overflow-y-auto pb-8 px-4"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none'

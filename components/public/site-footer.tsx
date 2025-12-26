@@ -78,45 +78,54 @@ export function SiteFooter({ settings }: SiteFooterProps) {
               <div>
                 <p className="text-xl font-bold">JKKN Institutions</p>
                 <p className="text-xs text-white/70 font-medium tracking-wider uppercase">
-                  Excellence in Education
+                  {settings.tagline || 'Excellence in Education'}
                 </p>
               </div>
             </Link>
             <p className="text-white/80 text-sm mb-8 leading-relaxed max-w-md">
-              JKKN Institutions is committed to providing quality education and
-              fostering innovation, research, and holistic development of students to prepare
-              them for global challenges.
+              {settings.description || 'JKKN Institutions is committed to providing quality education and fostering innovation, research, and holistic development of students to prepare them for global challenges.'}
             </p>
 
             {/* Contact Info */}
             <div className="space-y-4">
               <a
-                href="tel:+919345855001"
+                href={`tel:${(settings.contactPhone || '+91 93458 55001').replace(/\s/g, '')}`}
                 className="flex items-center gap-4 text-white/80 hover:text-white transition-colors group"
               >
                 <div className="p-2.5 rounded-xl bg-white/10 group-hover:bg-secondary/30 transition-colors">
                   <Phone className="h-4 w-4 text-secondary" />
                 </div>
-                <span className="text-sm">+91 93458 55001</span>
+                <span className="text-sm">{settings.contactPhone || '+91 93458 55001'}</span>
               </a>
               <a
-                href="mailto:info@jkkn.ac.in"
+                href={`mailto:${settings.contactEmail || 'info@jkkn.ac.in'}`}
                 className="flex items-center gap-4 text-white/80 hover:text-white transition-colors group"
               >
                 <div className="p-2.5 rounded-xl bg-white/10 group-hover:bg-secondary/30 transition-colors">
                   <Mail className="h-4 w-4 text-secondary" />
                 </div>
-                <span className="text-sm">info@jkkn.ac.in</span>
+                <span className="text-sm">{settings.contactEmail || 'info@jkkn.ac.in'}</span>
               </a>
               <div className="flex items-start gap-4 text-white/80">
                 <div className="p-2.5 rounded-xl bg-white/10 flex-shrink-0">
                   <MapPin className="h-4 w-4 text-secondary" />
                 </div>
                 <span className="text-sm">
-                  Natarajapuram, NH-544<br />
-                  (Salem To Coimbatore National Highway),<br />
-                  Kumarapalayam (TK), Namakkal (DT).<br />
-                  Tamil Nadu. 638183.
+                  {settings.address ? (
+                    <>
+                      {settings.address.line1}<br />
+                      {settings.address.line2 && <>{settings.address.line2}<br /></>}
+                      {settings.address.city}<br />
+                      {settings.address.state}. {settings.address.pincode}.
+                    </>
+                  ) : (
+                    <>
+                      Natarajapuram, NH-544<br />
+                      (Salem To Coimbatore National Highway),<br />
+                      Kumarapalayam (TK), Namakkal (DT).<br />
+                      Tamil Nadu. 638183.
+                    </>
+                  )}
                 </span>
               </div>
             </div>
@@ -151,7 +160,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
             </h4>
             <div className="rounded-xl overflow-hidden border border-white/10 shadow-lg">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3914.2834563159936!2d77.58373!3d11.26611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba96d9e6b5f2e5d%3A0x4c4d5c5e2c7d3d5d!2sJKKN%20Educational%20Institutions!5e0!3m2!1sen!2sin!4v1703500000000!5m2!1sen!2sin"
+                src={settings.map?.embedUrl || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3914.2834563159936!2d77.58373!3d11.26611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba96d9e6b5f2e5d%3A0x4c4d5c5e2c7d3d5d!2sJKKN%20Educational%20Institutions!5e0!3m2!1sen!2sin!4v1703500000000!5m2!1sen!2sin'}
                 width="100%"
                 height="200"
                 style={{ border: 0 }}
@@ -163,7 +172,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
               />
             </div>
             <a
-              href="https://www.google.com/maps/place/JKKN+Educational+Institutions/@11.26611,77.58373,17z"
+              href={settings.map?.linkUrl || 'https://www.google.com/maps/place/JKKN+Educational+Institutions/@11.26611,77.58373,17z'}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 mt-4 text-sm text-white/70 hover:text-secondary transition-colors"

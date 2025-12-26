@@ -11,10 +11,14 @@ export default function VideoPlayer({
   loop = false,
   muted = false,
   poster,
+  posterAlt = '',
   aspectRatio = '16/9',
   className,
   isEditing,
 }: VideoPlayerProps) {
+  // Note: posterAlt is available for accessibility documentation
+  // Video poster attribute doesn't support alt text natively
+  void posterAlt
   // Extract YouTube/Vimeo video ID
   const getEmbedUrl = (url: string, prov: string) => {
     if (prov === 'youtube' || url.includes('youtube') || url.includes('youtu.be')) {

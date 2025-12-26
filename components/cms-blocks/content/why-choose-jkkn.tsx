@@ -1,275 +1,331 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
-import { Sparkles, CheckCircle2, ChevronLeft, ChevronRight, Award, Trophy, Users, Building2, GraduationCap, Wallet } from 'lucide-react'
-import Image from 'next/image'
+import {
+  Landmark,
+  Briefcase,
+  Trophy,
+  GraduationCap,
+  Building2,
+  Wallet,
+  Check,
+  Sparkles,
+} from 'lucide-react'
 
 /**
  * WhyChooseJKKN CMS Block Component
  *
- * Professional glassmorphism USP section with brand colors and modern animations.
- * Features: Title-first layout, staggered animations, gradient backgrounds, hover effects.
+ * Modern Card-Based Layout with full typography customization:
+ * - Section header with badge, title, subtitle, and tagline
+ * - 6 USP cards (icon + title + optional stat)
+ * - Additional USPs as compact list
+ * - Complete font color, size, weight editing for all text elements
  */
 
-// Icon mapping for professional look
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  '🏛️': Award,
-  '💼': Trophy,
-  '🏆': Trophy,
-  '👨‍🏫': Users,
-  '🏫': Building2,
-  '💰': Wallet,
+// Font size mapping (responsive Tailwind classes)
+const fontSizeClasses: Record<string, string> = {
+  xs: 'text-xs',
+  sm: 'text-sm',
+  md: 'text-base',
+  lg: 'text-lg sm:text-xl',
+  xl: 'text-xl sm:text-2xl',
+  '2xl': 'text-2xl sm:text-3xl',
+  '3xl': 'text-3xl sm:text-4xl',
+  '4xl': 'text-4xl sm:text-5xl',
+  '5xl': 'text-4xl sm:text-5xl lg:text-6xl',
+  '6xl': 'text-5xl sm:text-6xl lg:text-7xl',
+}
+
+const fontWeightClasses: Record<string, string> = {
+  normal: 'font-normal',
+  medium: 'font-medium',
+  semibold: 'font-semibold',
+  bold: 'font-bold',
+  extrabold: 'font-extrabold',
 }
 
 // Type definitions
 export interface USPCard {
-  icon: string
+  icon: 'heritage' | 'career' | 'excellence' | 'expertise' | 'facilities' | 'value'
   title: string
-  description: string
-  order: number
+  stat?: string
 }
 
 export interface WhyChooseJKKNProps {
-  sectionTitle?: string
-  sectionSubtitle?: string
-  sectionTagline?: string
+  // Content
+  title?: string
+  subtitle?: string
+  tagline?: string
+  badgeText?: string
+  additionalUspsHeading?: string
   uspCards?: USPCard[]
   additionalUsps?: string[]
-  layout?: 'grid' | 'slider'
-  cardsPerRow?: 2 | 3 | 4
-  showAdditionalList?: boolean
-  glassmorphismVariant?: 'light' | 'dark' | 'dark-elegant' | 'gradient' | 'brand'
-  animationPreset?: 'fade-in-up' | 'zoom-in' | 'slide-up' | 'stagger' | 'none'
+
+  // Badge Typography
+  badgeColor?: string
+  badgeBgColor?: string
+  badgeFontSize?: string
+  badgeFontWeight?: string
+
+  // Title Typography
+  titleColor?: string
+  titleFontSize?: string
+  titleFontWeight?: string
+
+  // Subtitle Typography
+  subtitleColor?: string
+  subtitleFontSize?: string
+  subtitleFontWeight?: string
+
+  // Tagline Typography
+  taglineColor?: string
+  taglineFontSize?: string
+  taglineFontWeight?: string
+
+  // Card Typography
+  cardTitleColor?: string
+  cardTitleFontSize?: string
+  cardTitleFontWeight?: string
+  cardStatColor?: string
+  cardStatFontSize?: string
+  cardStatFontWeight?: string
+
+  // Additional USPs Typography
+  additionalUspsHeadingColor?: string
+  additionalUspsHeadingFontSize?: string
+  additionalUspsHeadingFontWeight?: string
+  additionalUspsTextColor?: string
+  additionalUspsTextFontSize?: string
+  additionalUspsTextFontWeight?: string
+
+  // System
   isEditing?: boolean
+  primaryColor?: string
 }
 
-// Floating particles component for background
-function FloatingParticles() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(6)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute w-2 h-2 rounded-full bg-secondary/30"
-          style={{
-            left: `${15 + i * 15}%`,
-            top: `${20 + (i % 3) * 25}%`,
-            animation: `float ${3 + i * 0.5}s ease-in-out infinite`,
-            animationDelay: `${i * 0.3}s`,
-          }}
-        />
-      ))}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
-          50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; }
+// Get icon component based on icon type
+function getIconComponent(iconType: USPCard['icon']) {
+  switch (iconType) {
+    case 'heritage':
+      return Landmark
+    case 'career':
+      return Briefcase
+    case 'excellence':
+      return Trophy
+    case 'expertise':
+      return GraduationCap
+    case 'facilities':
+      return Building2
+    case 'value':
+      return Wallet
+    default:
+      return Landmark
+  }
+}
+
+// Default USP Cards
+const defaultUspCards: USPCard[] = [
+  { icon: 'heritage', title: 'Years of Educational Legacy', stat: '74+' },
+  { icon: 'career', title: 'Placement Success Rate', stat: '95%' },
+  { icon: 'excellence', title: 'NAAC A+ Accredited Quality' },
+  { icon: 'expertise', title: 'Expert Learning Facilitators', stat: '500+' },
+  { icon: 'facilities', title: 'State-of-the-Art Infrastructure' },
+  { icon: 'value', title: 'Affordable & Accessible Education' },
+]
+
+// Default Additional USPs
+const defaultAdditionalUsps = [
+  '50+ Industry-Relevant Programs across Medical, Engineering, Arts & Science',
+  'Multi-Specialty Hospital for clinical training and community healthcare',
+  'Industry-Integrated Curriculum with internships and live projects',
+  'Research & Innovation Hub with funded projects and patent support',
+  'Holistic Development through sports, cultural, and social activities',
+  'Safe & Secure Campus with 24/7 security and CCTV surveillance',
+  'Strong Alumni Network of 50,000+ professionals worldwide',
+  'Entrepreneurship Support through incubation centers and startup mentoring',
+]
+
+// Intersection Observer hook
+function useInView(threshold = 0.2) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [isInView, setIsInView] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true)
         }
-      `}</style>
-    </div>
-  )
+      },
+      { threshold }
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => observer.disconnect()
+  }, [threshold])
+
+  return { ref, isInView }
 }
 
-// Professional Glass Card Component
-function ProfessionalGlassCard({
-  children,
-  className,
-  index = 0,
-  isVisible = true,
-  animationPreset = 'stagger',
+// USP Card Component
+function USPCardComponent({
+  card,
+  index,
+  isInView,
+  cardTitleColor,
+  cardTitleFontSize,
+  cardTitleFontWeight,
+  cardStatColor,
+  cardStatFontSize,
+  cardStatFontWeight,
 }: {
-  children: React.ReactNode
-  className?: string
-  index?: number
-  isVisible?: boolean
-  animationPreset?: string
+  card: USPCard
+  index: number
+  isInView: boolean
+  cardTitleColor?: string
+  cardTitleFontSize?: string
+  cardTitleFontWeight?: string
+  cardStatColor?: string
+  cardStatFontSize?: string
+  cardStatFontWeight?: string
 }) {
-  const delay = animationPreset === 'stagger' ? index * 120 : 0
+  const IconComponent = getIconComponent(card.icon)
 
   return (
     <div
       className={cn(
-        // Base glassmorphism styles
-        'relative group rounded-2xl overflow-hidden',
-        'bg-white/10 dark:bg-white/5',
-        'backdrop-blur-xl',
-        'border border-white/20 dark:border-white/10',
-        'shadow-[0_8px_32px_rgba(11,109,65,0.15)]',
-        // Animation states
-        'transition-all duration-700 ease-out',
-        isVisible
-          ? 'opacity-100 translate-y-0 scale-100'
-          : 'opacity-0 translate-y-8 scale-95',
-        // Hover effects
-        'hover:shadow-[0_20px_60px_rgba(11,109,65,0.25)]',
-        'hover:border-primary/40',
-        'hover:-translate-y-2',
-        'hover:bg-white/15 dark:hover:bg-white/10',
-        className
+        'group relative bg-white rounded-2xl p-6 shadow-sm border border-gray-100',
+        'hover:shadow-lg hover:border-primary/20 hover:-translate-y-1',
+        'transition-all duration-500 ease-out cursor-default',
+        isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       )}
-      style={{ transitionDelay: `${delay}ms` }}
+      style={{ transitionDelay: `${index * 100}ms` }}
     >
-      {/* Gradient overlay on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-      {/* Shimmer effect */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+      {/* Icon Container */}
+      <div
+        className={cn(
+          'w-14 h-14 rounded-xl flex items-center justify-center mb-4',
+          'bg-primary/10',
+          'group-hover:bg-primary',
+          'transition-all duration-300'
+        )}
+      >
+        <IconComponent
+          className={cn(
+            'w-7 h-7 text-primary',
+            'group-hover:text-white',
+            'transition-colors duration-300'
+          )}
+        />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10">
-        {children}
-      </div>
+      {/* Stat (if exists) */}
+      {card.stat && (
+        <div
+          className={cn(
+            'mb-1',
+            fontSizeClasses[cardStatFontSize || '3xl'],
+            fontWeightClasses[cardStatFontWeight || 'bold']
+          )}
+          style={{ color: cardStatColor || '#0b6d41' }}
+        >
+          {card.stat}
+        </div>
+      )}
 
-      {/* Bottom accent line */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+      {/* Title */}
+      <h3
+        className={cn(
+          'leading-tight',
+          fontSizeClasses[cardTitleFontSize || 'md'],
+          fontWeightClasses[cardTitleFontWeight || 'semibold']
+        )}
+        style={{ color: cardTitleColor || '#1f2937' }}
+      >
+        {card.title}
+      </h3>
+
+      {/* Decorative corner on hover */}
+      <div
+        className={cn(
+          'absolute top-0 right-0 w-16 h-16 overflow-hidden rounded-tr-2xl',
+          'opacity-0 group-hover:opacity-100 transition-opacity duration-300'
+        )}
+      >
+        <div className="absolute -top-8 -right-8 w-16 h-16 rotate-45 bg-secondary/20" />
+      </div>
     </div>
   )
 }
 
-// USP Card Component with professional design
-function USPCardComponent({
-  card,
-  index,
-  isVisible,
-  animationPreset,
-}: {
-  card: USPCard
-  index: number
-  isVisible: boolean
-  animationPreset: string
-}) {
-  const isImageUrl = card.icon.startsWith('http') || card.icon.startsWith('/')
-  const IconComponent = iconMap[card.icon] || GraduationCap
-
-  return (
-    <ProfessionalGlassCard
-      index={index}
-      isVisible={isVisible}
-      animationPreset={animationPreset}
-      className="p-6 md:p-8 h-full"
-    >
-      {/* Icon with gradient background */}
-      <div className="mb-6 flex justify-center">
-        <div className="relative">
-          {/* Glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity" />
-
-          {/* Icon container */}
-          <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-            {isImageUrl ? (
-              <Image
-                src={card.icon}
-                alt={card.title}
-                width={48}
-                height={48}
-                className="object-contain"
-              />
-            ) : (
-              <IconComponent className="w-8 h-8 md:w-10 md:h-10 text-white" />
-            )}
-          </div>
-
-          {/* Floating ring */}
-          <div className="absolute -inset-2 rounded-3xl border-2 border-primary/20 opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
-        </div>
-      </div>
-
-      {/* Title */}
-      <h3 className="text-xl md:text-2xl font-bold text-center mb-4 text-foreground group-hover:text-primary transition-colors duration-300">
-        {card.title}
-      </h3>
-
-      {/* Subtitle/Description */}
-      <p className="text-sm md:text-base text-muted-foreground leading-relaxed text-center">
-        {card.description}
-      </p>
-
-      {/* Card number badge */}
-      <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
-        <span className="text-xs font-bold text-secondary">{String(card.order).padStart(2, '0')}</span>
-      </div>
-    </ProfessionalGlassCard>
-  )
-}
-
+// Main Component
 export default function WhyChooseJKKN({
-  sectionTitle = 'Why Choose JKKN?',
-  sectionSubtitle,
-  sectionTagline,
-  uspCards = [],
-  additionalUsps = [],
-  layout = 'grid',
-  cardsPerRow = 3,
-  showAdditionalList = true,
-  glassmorphismVariant = 'brand',
-  animationPreset = 'stagger',
+  // Content
+  title = 'Why Choose JKKN?',
+  subtitle = '74+ Years of Transforming Lives Through Progressive Education',
+  tagline = 'Where Legacy Meets Innovation | Excellence Without Elitism',
+  badgeText = 'Why Choose Us',
+  additionalUspsHeading = 'And Much More...',
+  uspCards = defaultUspCards,
+  additionalUsps = defaultAdditionalUsps,
+
+  // Badge Typography
+  badgeColor = '#0b6d41',
+  badgeBgColor = '#0b6d411a',
+  badgeFontSize = 'sm',
+  badgeFontWeight = 'semibold',
+
+  // Title Typography
+  titleColor = '#171717',
+  titleFontSize = '5xl',
+  titleFontWeight = 'bold',
+
+  // Subtitle Typography
+  subtitleColor = '#0b6d41',
+  subtitleFontSize = '2xl',
+  subtitleFontWeight = 'semibold',
+
+  // Tagline Typography
+  taglineColor = '#525252',
+  taglineFontSize = 'lg',
+  taglineFontWeight = 'normal',
+
+  // Card Typography
+  cardTitleColor = '#1f2937',
+  cardTitleFontSize = 'md',
+  cardTitleFontWeight = 'semibold',
+  cardStatColor = '#0b6d41',
+  cardStatFontSize = '3xl',
+  cardStatFontWeight = 'bold',
+
+  // Additional USPs Typography
+  additionalUspsHeadingColor = '#1f2937',
+  additionalUspsHeadingFontSize = 'lg',
+  additionalUspsHeadingFontWeight = 'semibold',
+  additionalUspsTextColor = '#374151',
+  additionalUspsTextFontSize = 'sm',
+  additionalUspsTextFontWeight = 'normal',
+
+  // System
   isEditing = false,
 }: WhyChooseJKKNProps) {
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [isVisible, setIsVisible] = useState(animationPreset === 'none' || isEditing)
-  const [headerVisible, setHeaderVisible] = useState(animationPreset === 'none' || isEditing)
-  const sectionRef = useRef<HTMLElement>(null)
+  const sectionRef = useInView(0.1)
+  const cardsRef = useInView(0.2)
+  const listRef = useInView(0.2)
 
-  const sortedCards = [...uspCards].sort((a, b) => a.order - b.order)
-
-  // Intersection Observer for scroll animations
-  useEffect(() => {
-    if (animationPreset === 'none' || isEditing) {
-      setIsVisible(true)
-      setHeaderVisible(true)
-      return
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setHeaderVisible(true)
-          // Delay cards animation slightly after header
-          setTimeout(() => setIsVisible(true), 300)
-        }
-      },
-      { threshold: 0.1 }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [animationPreset, isEditing])
-
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % sortedCards.length)
-  }, [sortedCards.length])
-
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + sortedCards.length) % sortedCards.length)
-  }, [sortedCards.length])
-
-  // Auto-advance slider
-  useEffect(() => {
-    if (layout !== 'slider' || sortedCards.length <= 1) return
-    const interval = setInterval(nextSlide, 5000)
-    return () => clearInterval(interval)
-  }, [layout, sortedCards.length, nextSlide])
-
-  const gridColClasses = {
-    2: 'grid-cols-1 md:grid-cols-2',
-    3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-    4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
-  }
-
-  // Empty state
-  if (sortedCards.length === 0 && isEditing) {
+  // Empty state for editing
+  if (!uspCards?.length && !additionalUsps?.length && isEditing) {
     return (
-      <section className="py-20 px-4 relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+      <section className="py-16 px-4 relative overflow-hidden bg-gray-50">
         <div className="container mx-auto max-w-7xl">
-          <div className="max-w-4xl mx-auto p-12 border-2 border-dashed border-primary/30 rounded-2xl bg-white/5 backdrop-blur-sm">
+          <div className="max-w-4xl mx-auto p-12 border-2 border-dashed border-primary/30 rounded-2xl bg-white">
             <Sparkles className="w-16 h-16 text-primary/50 mx-auto mb-6" />
-            <p className="text-muted-foreground text-center text-lg">
-              Click to add USP cards through the page editor properties panel
+            <p className="text-gray-500 text-center text-lg">
+              Configure the Why Choose JKKN section through the page editor properties panel
             </p>
           </div>
         </div>
@@ -277,213 +333,142 @@ export default function WhyChooseJKKN({
     )
   }
 
-  if (sortedCards.length === 0 && !isEditing) return null
-
   return (
-    <section
-      ref={sectionRef}
-      className="py-16 md:py-24 px-4 relative overflow-hidden"
-    >
-      {/* Animated gradient background */}
-      <div className="absolute inset-0 -z-10">
-        {/* Primary gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-background to-secondary/8" />
+    <section className="py-16 md:py-24 relative overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+      {/* Background decorations using brand colors */}
+      <div className="absolute top-0 left-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
 
-        {/* Animated orbs */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-secondary/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-
-        {/* Grid pattern overlay */}
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
+        {/* Section Header */}
         <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `linear-gradient(rgba(11,109,65,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(11,109,65,0.5) 1px, transparent 1px)`,
-            backgroundSize: '50px 50px',
-          }}
-        />
-      </div>
-
-      <FloatingParticles />
-
-      <div className="container mx-auto max-w-7xl relative">
-        {/* Section Header with professional styling */}
-        <div
+          ref={sectionRef.ref}
           className={cn(
-            'text-center mb-16 transition-all duration-1000',
-            headerVisible
+            'text-center max-w-4xl mx-auto mb-12 md:mb-16',
+            'transition-all duration-700',
+            sectionRef.isInView || isEditing
               ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-10'
+              : 'opacity-0 translate-y-8'
           )}
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-            <span className="text-sm font-medium text-primary uppercase tracking-wider">Why Choose Us</span>
-          </div>
+          <span
+            className={cn(
+              'inline-block px-4 py-1.5 rounded-full mb-4',
+              fontSizeClasses[badgeFontSize],
+              fontWeightClasses[badgeFontWeight]
+            )}
+            style={{ color: badgeColor, backgroundColor: badgeBgColor }}
+          >
+            {badgeText}
+          </span>
 
-          {/* Main Title */}
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
-            <span className="bg-gradient-to-r from-primary via-primary to-primary/80 bg-clip-text text-transparent">
-              {sectionTitle}
-            </span>
+          {/* Title */}
+          <h2
+            className={cn(
+              'mb-3',
+              fontSizeClasses[titleFontSize],
+              fontWeightClasses[titleFontWeight]
+            )}
+            style={{ color: titleColor }}
+          >
+            {title}
           </h2>
 
-          {/* Subtitle - larger prominent text */}
-          {sectionSubtitle && (
-            <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground mb-6 max-w-4xl mx-auto leading-snug">
-              {sectionSubtitle}
-            </p>
-          )}
+          {/* Subtitle */}
+          <p
+            className={cn(
+              'mb-4',
+              fontSizeClasses[subtitleFontSize],
+              fontWeightClasses[subtitleFontWeight]
+            )}
+            style={{ color: subtitleColor }}
+          >
+            {subtitle}
+          </p>
 
-          {/* Tagline - smaller muted text */}
-          {sectionTagline && (
-            <div className="flex items-center justify-center gap-4 text-lg md:text-xl text-muted-foreground">
-              <div className="w-12 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-              <p className="max-w-2xl">{sectionTagline}</p>
-              <div className="w-12 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-            </div>
-          )}
-
-          {/* Decorative underline */}
-          <div className="mt-8 flex justify-center gap-1">
-            <div className="w-3 h-3 rounded-full bg-primary" />
-            <div className="w-12 h-3 rounded-full bg-gradient-to-r from-primary to-secondary" />
-            <div className="w-3 h-3 rounded-full bg-secondary" />
-          </div>
+          {/* Tagline */}
+          <p
+            className={cn(
+              fontSizeClasses[taglineFontSize],
+              fontWeightClasses[taglineFontWeight]
+            )}
+            style={{ color: taglineColor }}
+          >
+            {tagline}
+          </p>
         </div>
 
-        {/* Cards Section */}
-        {layout === 'slider' ? (
-          // Slider Layout
-          <div className="relative mb-16">
-            <div className="overflow-hidden rounded-3xl">
-              <div
-                className="flex transition-transform duration-700 ease-out"
-                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-              >
-                {sortedCards.map((card, index) => (
-                  <div key={index} className="w-full flex-shrink-0 px-4 py-2">
-                    <USPCardComponent
-                      card={card}
-                      index={0}
-                      isVisible={true}
-                      animationPreset="none"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
+        {/* USP Cards Grid */}
+        <div
+          ref={cardsRef.ref}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16"
+        >
+          {uspCards.map((card, index) => (
+            <USPCardComponent
+              key={index}
+              card={card}
+              index={index}
+              isInView={cardsRef.isInView || isEditing}
+              cardTitleColor={cardTitleColor}
+              cardTitleFontSize={cardTitleFontSize}
+              cardTitleFontWeight={cardTitleFontWeight}
+              cardStatColor={cardStatColor}
+              cardStatFontSize={cardStatFontSize}
+              cardStatFontWeight={cardStatFontWeight}
+            />
+          ))}
+        </div>
 
-            {/* Slider Controls */}
-            {sortedCards.length > 1 && (
-              <div className="flex items-center justify-center gap-6 mt-8">
-                <button
-                  onClick={prevSlide}
-                  className="p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-foreground hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 hover:scale-110"
-                  aria-label="Previous slide"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
-
-                <div className="flex gap-2">
-                  {sortedCards.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentSlide(index)}
-                      className={cn(
-                        'h-2 rounded-full transition-all duration-300',
-                        currentSlide === index
-                          ? 'w-8 bg-gradient-to-r from-primary to-secondary'
-                          : 'w-2 bg-primary/30 hover:bg-primary/50'
-                      )}
-                      aria-label={`Go to slide ${index + 1}`}
-                    />
-                  ))}
-                </div>
-
-                <button
-                  onClick={nextSlide}
-                  className="p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-foreground hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 hover:scale-110"
-                  aria-label="Next slide"
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
-              </div>
-            )}
-          </div>
-        ) : (
-          // Grid Layout
-          <div className={cn('grid gap-6 md:gap-8 mb-16', gridColClasses[cardsPerRow])}>
-            {sortedCards.map((card, index) => (
-              <USPCardComponent
-                key={index}
-                card={card}
-                index={index}
-                isVisible={isVisible}
-                animationPreset={animationPreset}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Additional USPs List with professional styling */}
-        {showAdditionalList && additionalUsps.length > 0 && (
+        {/* Additional USPs - Compact List */}
+        {additionalUsps && additionalUsps.length > 0 && (
           <div
+            ref={listRef.ref}
             className={cn(
-              'max-w-5xl mx-auto transition-all duration-700',
-              isVisible
+              'bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8',
+              'transition-all duration-700 delay-300',
+              listRef.isInView || isEditing
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-8'
             )}
-            style={{ transitionDelay: `${(sortedCards.length + 1) * 120}ms` }}
           >
-            <ProfessionalGlassCard className="p-8 md:p-10" index={sortedCards.length} isVisible={isVisible} animationPreset={animationPreset}>
-              {/* Section title */}
-              <div className="text-center mb-8">
-                <h3 className="text-2xl md:text-3xl font-bold mb-2">
-                  <span className="text-foreground">Additional </span>
-                  <span className="text-primary">Benefits</span>
-                </h3>
-                <div className="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full" />
-              </div>
-
-              {/* Benefits grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                {additionalUsps.map((usp, index) => (
-                  <div
-                    key={index}
-                    className={cn(
-                      'flex items-start gap-4 p-4 rounded-xl',
-                      'bg-white/5 hover:bg-white/10',
-                      'border border-transparent hover:border-primary/20',
-                      'transition-all duration-300',
-                      'group cursor-default'
-                    )}
-                  >
-                    {/* Check icon with gradient */}
-                    <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <CheckCircle2 className="w-5 h-5 text-white" />
-                    </div>
-
-                    {/* Text */}
-                    <span className="text-muted-foreground group-hover:text-foreground transition-colors leading-relaxed">
-                      {usp}
-                    </span>
+            <h3
+              className={cn(
+                'mb-4 text-center',
+                fontSizeClasses[additionalUspsHeadingFontSize],
+                fontWeightClasses[additionalUspsHeadingFontWeight]
+              )}
+              style={{ color: additionalUspsHeadingColor }}
+            >
+              {additionalUspsHeading}
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {additionalUsps.map((usp, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    'flex items-start gap-3 p-3 rounded-lg',
+                    'hover:bg-gray-50 transition-colors duration-200'
+                  )}
+                >
+                  <div className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 bg-primary/10">
+                    <Check className="w-3 h-3 text-primary" />
                   </div>
-                ))}
-              </div>
-            </ProfessionalGlassCard>
+                  <span
+                    className={cn(
+                      'leading-relaxed',
+                      fontSizeClasses[additionalUspsTextFontSize],
+                      fontWeightClasses[additionalUspsTextFontWeight]
+                    )}
+                    style={{ color: additionalUspsTextColor }}
+                  >
+                    {usp}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
-
-        {/* Bottom decorative element */}
-        <div className="flex justify-center mt-12">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-px bg-gradient-to-r from-transparent to-primary/50" />
-            <Sparkles className="w-5 h-5 text-primary/50" />
-            <div className="w-8 h-px bg-gradient-to-r from-primary/50 to-transparent" />
-          </div>
-        </div>
       </div>
     </section>
   )

@@ -601,6 +601,8 @@ const FooterSettingsSchema = z.object({
   social_instagram: z.string().optional(),
   social_linkedin: z.string().optional(),
   social_youtube: z.string().optional(),
+  map_embed_url: z.string().optional(),
+  map_link_url: z.string().optional(),
 })
 
 /**
@@ -664,6 +666,10 @@ export async function updateFooterSettings(
         instagram: data.social_instagram || '',
         linkedin: data.social_linkedin || '',
         youtube: data.social_youtube || '',
+      },
+      footer_map: {
+        embedUrl: data.map_embed_url || '',
+        linkUrl: data.map_link_url || '',
       },
     }
 
