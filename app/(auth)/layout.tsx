@@ -1,9 +1,36 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
-import { AnimatedOrbs } from '@/components/auth/animated-orbs'
 import { InstitutionPanel } from '@/components/auth/institution-panel'
 import Image from 'next/image'
+
+// Lazy load AnimatedOrbs - decorative component, non-critical
+const AnimatedOrbs = dynamic(
+  () => import('@/components/auth/animated-orbs').then(mod => ({ default: mod.AnimatedOrbs })),
+  {
+    ssr: false,
+    loading: () => (
+      // Static gradient fallback while loading
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          className="absolute -top-20 -left-20 w-80 h-80 rounded-full opacity-60"
+          style={{
+            background: 'radial-gradient(circle, #0f8f56 0%, #0b6d41 50%, transparent 70%)',
+            filter: 'blur(40px)',
+          }}
+        />
+        <div
+          className="absolute -bottom-32 -right-20 w-96 h-96 rounded-full opacity-50"
+          style={{
+            background: 'radial-gradient(circle, #ffde59 0%, #ffc107 50%, transparent 70%)',
+            filter: 'blur(50px)',
+          }}
+        />
+      </div>
+    )
+  }
+)
 
 export default function AuthLayout({
   children,

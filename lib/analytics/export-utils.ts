@@ -1,16 +1,17 @@
 /**
  * Analytics Export Utilities
  * PDF and enhanced export functionality for analytics dashboards
+ *
+ * Note: jsPDF and html2canvas are dynamically imported to reduce initial bundle size
  */
 
-import { jsPDF } from 'jspdf'
-import html2canvas from 'html2canvas'
 import { format as formatDate } from 'date-fns'
 import { generateCSV, downloadCSV } from '@/lib/utils/csv-export'
 import type { DateRange, ExportFormat, AnalyticsSection } from './types'
 
 /**
  * Export a DOM element as PDF
+ * Libraries are loaded dynamically on first use
  */
 export async function exportElementAsPDF(
   element: HTMLElement,
@@ -22,6 +23,12 @@ export async function exportElementAsPDF(
   }
 ): Promise<void> {
   const { title, subtitle, orientation = 'landscape' } = options || {}
+
+  // Dynamic imports for PDF libraries
+  const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+    import('html2canvas'),
+    import('jspdf')
+  ])
 
   // Create canvas from element
   const canvas = await html2canvas(element, {
@@ -213,6 +220,9 @@ export async function exportChartAsImage(
   filename: string,
   format: 'png' | 'jpeg' = 'png'
 ): Promise<void> {
+  // Dynamic import for html2canvas
+  const { default: html2canvas } = await import('html2canvas')
+
   const canvas = await html2canvas(chartElement, {
     scale: 2,
     useCORS: true,
@@ -233,6 +243,9 @@ export async function exportChartAsImage(
 export async function chartToBlob(
   chartElement: HTMLElement
 ): Promise<Blob> {
+  // Dynamic import for html2canvas
+  const { default: html2canvas } = await import('html2canvas')
+
   const canvas = await html2canvas(chartElement, {
     scale: 2,
     useCORS: true,

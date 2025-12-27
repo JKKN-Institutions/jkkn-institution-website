@@ -20,6 +20,7 @@ const CreateCategorySchema = z.object({
   color: z.string().max(7).optional().nullable(),
   sort_order: z.coerce.number().min(0).default(0),
   is_active: z.boolean().default(true),
+  category_type: z.enum(['blog', 'life_at_jkkn']).default('blog'),
 })
 
 const UpdateCategorySchema = CreateCategorySchema.partial().extend({
@@ -34,6 +35,8 @@ export type FormState = {
   data?: unknown
 }
 
+export type CategoryType = 'blog' | 'life_at_jkkn'
+
 export interface BlogCategory {
   id: string
   name: string
@@ -45,6 +48,7 @@ export interface BlogCategory {
   sort_order: number | null
   is_active: boolean | null
   post_count: number | null
+  category_type: CategoryType
   created_at: string | null
   updated_at: string | null
   parent?: BlogCategory | null
@@ -58,9 +62,10 @@ export async function getBlogCategories(options?: {
   includeInactive?: boolean
   parentId?: string | null
   search?: string
+  categoryType?: CategoryType
 }) {
   const supabase = await createServerSupabaseClient()
-  const { includeInactive = false, parentId, search } = options || {}
+  const { includeInactive = false, parentId, search, categoryType } = options || {}
 
   let query = supabase
     .from('blog_categories')
@@ -82,6 +87,11 @@ export async function getBlogCategories(options?: {
 
   if (search) {
     query = query.or(`name.ilike.%${search}%,slug.ilike.%${search}%`)
+  }
+
+  // Filter by category type (blog or life_at_jkkn)
+  if (categoryType) {
+    query = query.eq('category_type', categoryType)
   }
 
   const { data, error } = await query
@@ -196,6 +206,7 @@ export async function createBlogCategory(
     color: formData.get('color') || null,
     sort_order: formData.get('sort_order') || 0,
     is_active: formData.get('is_active') === 'true',
+    category_type: (formData.get('category_type') as CategoryType) || 'blog',
   }
 
   const validation = CreateCategorySchema.safeParse(rawData)
@@ -208,11 +219,12 @@ export async function createBlogCategory(
     }
   }
 
-  // Check for duplicate slug
+  // Check for duplicate slug within the same category type
   const { data: existing } = await supabase
     .from('blog_categories')
     .select('id')
     .eq('slug', validation.data.slug)
+    .eq('category_type', validation.data.category_type)
     .single()
 
   if (existing) {
@@ -289,6 +301,7 @@ export async function updateBlogCategory(
     color: formData.get('color') || null,
     sort_order: formData.get('sort_order') || 0,
     is_active: formData.get('is_active') === 'true',
+    category_type: formData.get('category_type') as CategoryType | undefined,
   }
 
   const validation = UpdateCategorySchema.safeParse(rawData)
@@ -303,12 +316,22 @@ export async function updateBlogCategory(
 
   const { id, ...updateData } = validation.data
 
-  // Check for duplicate slug (excluding current category)
+  // Get current category to check category_type for slug uniqueness
+  const { data: currentCategory } = await supabase
+    .from('blog_categories')
+    .select('category_type')
+    .eq('id', id)
+    .single()
+
+  const categoryType = updateData.category_type || currentCategory?.category_type || 'blog'
+
+  // Check for duplicate slug within the same category type (excluding current category)
   if (updateData.slug) {
     const { data: existing } = await supabase
       .from('blog_categories')
       .select('id')
       .eq('slug', updateData.slug)
+      .eq('category_type', categoryType)
       .neq('id', id)
       .single()
 

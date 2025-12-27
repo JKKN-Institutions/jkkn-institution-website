@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { BlogPostsTable } from './blog-posts-table'
-import { Plus, Newspaper, Tags, FolderOpen } from 'lucide-react'
+import { Plus, Newspaper, Tags, FolderOpen, Heart } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -34,6 +34,16 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         badge="Blog"
         actions={
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <Button
+              asChild
+              variant="outline"
+              className="min-h-[44px]"
+            >
+              <Link href="/admin/content/blog/life-at-jkkn">
+                <Heart className="mr-2 h-4 w-4" />
+                Life@JKKN
+              </Link>
+            </Button>
             <Button
               asChild
               variant="outline"

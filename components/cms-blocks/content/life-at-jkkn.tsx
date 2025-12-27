@@ -9,9 +9,10 @@ import { useRef, useState, useEffect } from 'react'
 import {
   Heart, Camera, ChevronLeft, ChevronRight, Play, ArrowRight,
   Users, Trophy, Music, Book, Coffee, Dumbbell,
-  Palette, Globe, Microscope, Utensils
+  Palette, Globe, Microscope, Utensils, Calendar
 } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
+import { getPublishedLifeAtJKKNItems, type LifeAtJKKNItem } from '@/app/actions/cms/life-at-jkkn'
 
 /**
  * Life item schema
@@ -129,8 +130,38 @@ export function LifeAtJKKN({
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
+  const [fetchedItems, setFetchedItems] = useState<LifeItem[]>([])
+  const [isLoading, setIsLoading] = useState(false)
   const headerRef = useInView()
   const contentRef = useInView()
+
+  // Fetch items from database when no items provided and not editing
+  useEffect(() => {
+    async function fetchItems() {
+      if (items.length > 0 || isEditing) return
+
+      setIsLoading(true)
+      try {
+        const result = await getPublishedLifeAtJKKNItems()
+        const mappedItems: LifeItem[] = result.data.map((item: LifeAtJKKNItem) => ({
+          title: item.title,
+          image: item.featured_image || undefined,
+          category: item.category?.name || undefined,
+          description: item.excerpt || undefined,
+          video: item.video || undefined,
+          link: item.link || undefined,
+          icon: item.icon || undefined,
+        }))
+        setFetchedItems(mappedItems)
+      } catch (error) {
+        console.error('Failed to fetch Life@JKKN items:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchItems()
+  }, [items.length, isEditing])
 
   // Touch handlers for mobile swipe
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -151,7 +182,7 @@ export function LifeAtJKKN({
     setIsDragging(false)
   }
 
-  // Default items for demo - 3 cards
+  // Default items for demo/editing - 3 cards
   const defaultItems: LifeItem[] = [
     {
       title: 'Sports & Athletics',
@@ -173,7 +204,12 @@ export function LifeAtJKKN({
     },
   ]
 
-  const displayItems = items.length > 0 ? items : defaultItems
+  // Priority: props items > fetched items > default items (for editing only)
+  const displayItems = items.length > 0
+    ? items
+    : fetchedItems.length > 0
+      ? fetchedItems
+      : (isEditing ? defaultItems : [])
 
   // Autoplay carousel
   useEffect(() => {
@@ -273,7 +309,37 @@ export function LifeAtJKKN({
             contentRef.isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}
         >
-          {layout === 'carousel' ? (
+          {/* Loading State */}
+          {isLoading && (
+            <div className={cn('grid gap-6 max-w-7xl mx-auto', gridClasses[columns])}>
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="rounded-2xl overflow-hidden bg-gray-200 animate-pulse h-[280px]"
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Empty State (only when not loading and no items) */}
+          {!isLoading && displayItems.length === 0 && !isEditing && (
+            <div className="text-center py-12">
+              <Heart className={cn(
+                "w-16 h-16 mx-auto mb-4",
+                isDark ? "text-white/30" : "text-gray-300"
+              )} />
+              <p className={cn(
+                "text-lg",
+                isDark ? "text-white/60" : "text-gray-500"
+              )}>
+                No campus life items to display yet.
+              </p>
+            </div>
+          )}
+
+          {/* Cards Display */}
+          {!isLoading && displayItems.length > 0 && (
+            layout === 'carousel' ? (
             <div
               className="relative group"
               onMouseEnter={() => setIsPaused(true)}
@@ -353,6 +419,7 @@ export function LifeAtJKKN({
                 />
               ))}
             </div>
+          )
           )}
         </div>
 

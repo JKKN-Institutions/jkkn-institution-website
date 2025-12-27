@@ -115,7 +115,13 @@ export function BlogPostForm({ post, categories, tags: initialTags, author }: Bl
 
   // Media library modal
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false)
-  const [mediaTarget, setMediaTarget] = useState<'featured' | 'og'>('featured')
+  const [mediaTarget, setMediaTarget] = useState<'featured' | 'og' | 'content' | 'gallery'>('featured')
+  const [contentImageInsertCallback, setContentImageInsertCallback] = useState<
+    ((src: string, alt?: string) => void) | null
+  >(null)
+  const [galleryImagesCallback, setGalleryImagesCallback] = useState<
+    ((images: Array<{src: string, alt?: string}>) => void) | null
+  >(null)
 
   // Generate slug from title (only if not manually edited)
   useEffect(() => {
@@ -191,15 +197,46 @@ export function BlogPostForm({ post, categories, tags: initialTags, author }: Bl
 
   // Handle media selection
   const handleMediaSelect = (media: MediaItem | MediaItem[]) => {
-    const item = Array.isArray(media) ? media[0] : media
-    if (!item) return
-
-    if (mediaTarget === 'featured') {
-      setFeaturedImage(item.file_url)
+    if (mediaTarget === 'gallery') {
+      // Handle gallery multi-select
+      const items = Array.isArray(media) ? media : [media]
+      if (items.length > 0 && galleryImagesCallback) {
+        const images = items.map(item => ({
+          src: item.file_url,
+          alt: item.alt_text || item.original_name || ''
+        }))
+        galleryImagesCallback(images)
+        setGalleryImagesCallback(null)
+      }
     } else {
-      setOgImage(item.file_url)
+      const item = Array.isArray(media) ? media[0] : media
+      if (!item) return
+
+      if (mediaTarget === 'featured') {
+        setFeaturedImage(item.file_url)
+      } else if (mediaTarget === 'og') {
+        setOgImage(item.file_url)
+      } else if (mediaTarget === 'content' && contentImageInsertCallback) {
+        // Insert image into editor content at cursor position
+        contentImageInsertCallback(item.file_url, item.alt_text || item.original_name || '')
+        setContentImageInsertCallback(null)
+      }
     }
     setIsMediaModalOpen(false)
+  }
+
+  // Handler for content image upload from rich text editor
+  const handleContentImageUpload = (insertCallback: (src: string, alt?: string) => void) => {
+    setContentImageInsertCallback(() => insertCallback)
+    setMediaTarget('content')
+    setIsMediaModalOpen(true)
+  }
+
+  // Handler for gallery image selection from rich text editor
+  const handleGalleryImageSelect = (onImagesSelected: (images: Array<{src: string, alt?: string}>) => void) => {
+    setGalleryImagesCallback(() => onImagesSelected)
+    setMediaTarget('gallery')
+    setIsMediaModalOpen(true)
   }
 
   // Calculate reading time from content
@@ -316,10 +353,8 @@ export function BlogPostForm({ post, categories, tags: initialTags, author }: Bl
                 content={content}
                 onChange={setContent}
                 placeholder="Start writing your blog post..."
-                onImageUpload={() => {
-                  setMediaTarget('featured')
-                  setIsMediaModalOpen(true)
-                }}
+                onContentImageUpload={handleContentImageUpload}
+                onGalleryImageSelect={handleGalleryImageSelect}
               />
               <div className="flex items-center gap-2 mt-4">
                 <Button
@@ -711,6 +746,7 @@ export function BlogPostForm({ post, categories, tags: initialTags, author }: Bl
         onOpenChange={setIsMediaModalOpen}
         onSelect={handleMediaSelect}
         fileType="image"
+        multiple={mediaTarget === 'gallery'}
       />
     </form>
   )

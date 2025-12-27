@@ -3,8 +3,6 @@ import { getSettings } from '@/app/actions/settings'
 import { NotificationSettingsForm } from '@/components/admin/settings/notification-settings-form'
 import { Skeleton } from '@/components/ui/skeleton'
 
-export const dynamic = 'force-dynamic'
-
 export const metadata = {
   title: 'Notification Settings | Admin',
   description: 'Configure email and notification settings',

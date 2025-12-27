@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Cache Components is available but requires all data fetches to use
+  // Suspense boundaries or "use cache" directive. Enable when ready:
+  // cacheComponents: true,
   images: {
     remotePatterns: [
       {

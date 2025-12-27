@@ -7,9 +7,6 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { LandingPage } from '@/components/public/landing-page'
 import { PasswordProtectedPage, PrivatePageGate } from '@/components/public/password-protected-page'
 
-// Force dynamic rendering since we fetch from database
-export const dynamic = 'force-dynamic'
-
 interface PageProps {
   params: Promise<{ slug?: string[] }>
 }

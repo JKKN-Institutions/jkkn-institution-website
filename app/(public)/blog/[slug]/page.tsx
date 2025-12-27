@@ -19,6 +19,7 @@ import {
 } from 'lucide-react'
 import { ShareButtons } from './share-buttons'
 import { CommentsSection } from './comments-section'
+import { GalleryBlock } from '@/components/public/blog/gallery-block'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -61,6 +62,35 @@ function formatDate(dateString: string | null): string {
     month: 'long',
     day: 'numeric',
   })
+}
+
+// Author display helper functions
+function getAuthorDisplayName(author: {
+  id: string
+  full_name: string | null
+  email: string
+  avatar_url: string | null
+} | null | undefined): string {
+  if (!author) return 'Anonymous'
+  if (author.full_name) return author.full_name
+  if (author.email) return author.email.split('@')[0]
+  return 'Anonymous'
+}
+
+function getAuthorInitials(author: {
+  id: string
+  full_name: string | null
+  email: string
+  avatar_url: string | null
+} | null | undefined): string {
+  const name = getAuthorDisplayName(author)
+  if (name === 'Anonymous') return 'A'
+
+  const parts = name.trim().split(' ')
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+  }
+  return name.substring(0, 2).toUpperCase()
 }
 
 // Content Renderer - Renders TipTap JSON content
@@ -155,6 +185,21 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
               </figcaption>
             )}
           </figure>
+        )
+
+      case 'imageGallery':
+        const galleryAttrs = node.attrs as {
+          images: Array<{ src: string; alt?: string; caption?: string }>
+          layout: 'carousel' | 'grid'
+          columns: number
+        }
+        return (
+          <GalleryBlock
+            key={index}
+            images={galleryAttrs.images || []}
+            layout={galleryAttrs.layout || 'carousel'}
+            columns={galleryAttrs.columns || 3}
+          />
         )
 
       case 'horizontalRule':
@@ -317,9 +362,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {/* Author */}
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
-                  <span className="text-sm font-bold text-primary">JK</span>
+                  <span className="text-sm font-bold text-primary">
+                    {getAuthorInitials(post.author)}
+                  </span>
                 </div>
-                <span className="text-primary/90">JKKN ADMIN</span>
+                <span className="text-primary/90">{getAuthorDisplayName(post.author)}</span>
               </div>
 
               <Separator orientation="vertical" className="h-4 bg-primary/30" />
@@ -415,11 +462,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {/* Author Card */}
               <div className="flex items-center gap-3 p-4 bg-gray-50 border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl hover:bg-gray-100 transition-all duration-300">
                 <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center ring-2 ring-secondary/30">
-                  <span className="text-xl font-bold text-primary">JK</span>
+                  <span className="text-xl font-bold text-primary">
+                    {getAuthorInitials(post.author)}
+                  </span>
                 </div>
                 <div>
                   <p className="text-sm text-primary/60">Written by</p>
-                  <p className="font-semibold text-primary">JKKN ADMIN</p>
+                  <p className="font-semibold text-primary">{getAuthorDisplayName(post.author)}</p>
                 </div>
               </div>
             </div>

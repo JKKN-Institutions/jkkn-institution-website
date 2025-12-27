@@ -40,6 +40,11 @@ export const StatsCounterPropsSchema = z.object({
   showAnimation: z.boolean().default(true).describe('Animate numbers on scroll'),
   showDecorations: z.boolean().default(true).describe('Show decorative patterns'),
   showCurve: z.boolean().default(false).describe('Show curved bottom divider'),
+
+  // Typography Colors
+  titleColor: z.string().optional().describe('Main title color'),
+  subtitleColor: z.string().optional().describe('Subtitle color'),
+  accentColor: z.string().optional().describe('Accent word color'),
 })
 
 export type StatsCounterProps = z.infer<typeof StatsCounterPropsSchema> & BaseBlockProps
@@ -66,6 +71,9 @@ export function StatsCounter({
   showAnimation = true,
   showDecorations = true,
   showCurve = false,
+  titleColor,
+  subtitleColor,
+  accentColor,
   className,
   isEditing,
 }: StatsCounterProps) {
@@ -108,18 +116,23 @@ export function StatsCounter({
         {/* Header */}
         {(headerPart1 || headerPart2) && (
           <div className="text-center mb-10 md:mb-14">
-            <h2 className={cn(
-              'font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase',
-              isDark ? 'text-white' : 'text-gray-900'
-            )}>
+            <h2
+              className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase"
+              style={{ color: titleColor || (isDark ? '#ffffff' : '#1f2937') }}
+            >
               {headerPart1}{' '}
-              <span className={isDark ? "text-gold-italic" : "text-green-accent"}>{headerPart2}</span>
+              <span
+                className="italic"
+                style={{ color: accentColor || (isDark ? '#D4AF37' : '#0b6d41') }}
+              >
+                {headerPart2}
+              </span>
             </h2>
             {subtitle && (
-              <p className={cn(
-                'text-base sm:text-lg md:text-xl max-w-3xl mx-auto',
-                isDark ? 'text-white/70' : 'text-gray-600'
-              )}>
+              <p
+                className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto"
+                style={{ color: subtitleColor || (isDark ? 'rgba(255,255,255,0.7)' : '#4b5563') }}
+              >
                 {subtitle}
               </p>
             )}

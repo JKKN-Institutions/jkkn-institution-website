@@ -11,8 +11,6 @@ import { Globe, Package, ArrowRight, RefreshCw, Blocks, Star } from 'lucide-reac
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
-export const dynamic = 'force-dynamic'
-
 export default async function BrowseLibrariesPage() {
   const { registries, error } = await getRegistries()
 

@@ -50,18 +50,27 @@ export function PageHero({
         className
       )}
     >
-      {/* Mesh Gradient Background */}
+      {/* Mesh Gradient Background - Consolidated for better CLS */}
       {variant === 'mesh' && (
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(at_40%_20%,rgba(11,109,65,0.15)_0%,transparent_50%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(at_80%_0%,rgba(255,222,89,0.1)_0%,transparent_50%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(at_0%_50%,rgba(11,109,65,0.1)_0%,transparent_50%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(at_100%_100%,rgba(255,222,89,0.08)_0%,transparent_50%)]" />
-        </div>
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            contain: 'layout paint',
+            background: `
+              radial-gradient(at 40% 20%, rgba(11,109,65,0.15) 0%, transparent 50%),
+              radial-gradient(at 80% 0%, rgba(255,222,89,0.1) 0%, transparent 50%),
+              radial-gradient(at 0% 50%, rgba(11,109,65,0.1) 0%, transparent 50%),
+              radial-gradient(at 100% 100%, rgba(255,222,89,0.08) 0%, transparent 50%)
+            `
+          }}
+        />
       )}
 
       {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwYjZkNDEiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyem0wLTRWMjhIMjR2Mmgxem0tMi0xMGgydjJoLTJ2LTJ6bTAgNGgydjJoLTJ2LTJ6bTIgMTR2MmgtMnYtMmgyem0tMTItNHYtMmgydjJoLTJ6bTAgNHYtMmgydjJoLTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-50" />
+      <div
+        className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwYjZkNDEiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyem0wLTRWMjhIMjR2Mmgxem0tMi0xMGgydjJoLTJ2LTJ6bTAgNGgydjJoLTJ2LTJ6bTIgMTR2MmgtMnYtMmgyem0tMTItNHYtMmgydjJoLTJ6bTAgNHYtMmgydjJoLTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-50 pointer-events-none"
+        style={{ contain: 'layout paint' }}
+      />
 
       <div className="container mx-auto px-4 py-20 relative z-10">
         <div className="max-w-4xl mx-auto text-center">

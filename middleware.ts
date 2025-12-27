@@ -22,8 +22,17 @@ const routePermissions: Record<string, string> = {
   '/admin/settings/modules': 'system:modules:view',
 }
 
+// Pre-compile route patterns at module load time (not per-request)
+// This avoids regex compilation overhead on each request
+const compiledRoutePatterns: Array<{ pattern: RegExp; permission: string }> = Object.entries(
+  routePermissions
+).map(([route, permission]) => ({
+  pattern: new RegExp(`^${route.replace(/\[.*?\]/g, '[^/]+')}(?:/.*)?$`),
+  permission,
+}))
+
 // Routes that guests CAN access (even with pending approval)
-const guestAllowedRoutes = ['/admin', '/admin/dashboard', '/auth/access-denied']
+const guestAllowedRoutes = new Set(['/admin', '/admin/dashboard', '/auth/access-denied'])
 
 export async function middleware(request: NextRequest) {
   const { supabase, response } = createMiddlewareClient(request)
@@ -88,13 +97,10 @@ export async function middleware(request: NextRequest) {
       console.warn(`User ${session.user.id} has multiple roles:`, roles)
     }
 
-    // Guest user protection
+    // Guest user protection - use Set for O(1) lookup
     if (isGuestOnly) {
-      const isAllowedRoute = guestAllowedRoutes.some(
-        (route) => pathname === route || pathname === route + '/'
-      )
-
-      if (!isAllowedRoute) {
+      const normalizedPath = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname
+      if (!guestAllowedRoutes.has(normalizedPath)) {
         return NextResponse.redirect(new URL('/auth/access-denied', request.url))
       }
     }
@@ -123,20 +129,17 @@ export async function middleware(request: NextRequest) {
 
 /**
  * Get the required permission for a route
+ * Uses pre-compiled regex patterns for better performance
  */
 function getRoutePermission(pathname: string): string | null {
-  // Check for exact match
+  // Check for exact match first (O(1) lookup)
   if (routePermissions[pathname]) {
     return routePermissions[pathname]
   }
 
-  // Check for dynamic routes (e.g., /admin/users/[id])
-  for (const [route, permission] of Object.entries(routePermissions)) {
-    // Convert route to regex pattern for matching
-    const routePattern = route.replace(/\[.*?\]/g, '[^/]+')
-    const regex = new RegExp(`^${routePattern}(?:/.*)?$`)
-
-    if (regex.test(pathname)) {
+  // Check for dynamic routes using pre-compiled patterns
+  for (const { pattern, permission } of compiledRoutePatterns) {
+    if (pattern.test(pathname)) {
       return permission
     }
   }

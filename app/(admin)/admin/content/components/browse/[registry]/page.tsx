@@ -13,8 +13,6 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Badge } from '@/components/ui/badge'
 
-export const dynamic = 'force-dynamic'
-
 interface Props {
   params: Promise<{ registry: string }>
 }

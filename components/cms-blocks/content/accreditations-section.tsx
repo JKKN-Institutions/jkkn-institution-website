@@ -88,6 +88,9 @@ function SectionHeader({
   isDark,
   isVisible,
   showAnimations,
+  titleColor,
+  subtitleColor,
+  accentColor,
 }: {
   badge: string
   title: string
@@ -97,6 +100,9 @@ function SectionHeader({
   isDark: boolean
   isVisible: boolean
   showAnimations: boolean
+  titleColor?: string
+  subtitleColor?: string
+  accentColor?: string
 }) {
   // Parse title for accent word styling
   const titleParts = useMemo(() => {
@@ -137,14 +143,12 @@ function SectionHeader({
 
       {/* Title with accent word */}
       <h2
-        className={cn(
-          'text-3xl sm:text-4xl lg:text-5xl font-bold mb-4',
-          isDark ? 'text-white' : 'text-gray-900'
-        )}
+        className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4"
+        style={{ color: titleColor || (isDark ? '#ffffff' : '#1f2937') }}
       >
         {titleParts.before}
         {titleParts.accent && (
-          <span className="text-gold italic"> {titleParts.accent}</span>
+          <span className="italic" style={{ color: accentColor || '#D4AF37' }}> {titleParts.accent}</span>
         )}
         {titleParts.after}
       </h2>
@@ -152,10 +156,8 @@ function SectionHeader({
       {/* Subtitle */}
       {subtitle && (
         <p
-          className={cn(
-            'text-lg sm:text-xl mb-4',
-            isDark ? 'text-white/80' : 'text-gray-600'
-          )}
+          className="text-lg sm:text-xl mb-4"
+          style={{ color: subtitleColor || (isDark ? 'rgba(255,255,255,0.8)' : '#4b5563') }}
         >
           {subtitle}
         </p>
@@ -429,6 +431,9 @@ export default function AccreditationsSection({
   animationPreset = 'stagger',
   staggerDelay = 100,
   isEditing = false,
+  titleColor,
+  subtitleColor,
+  accentColor,
 }: AccreditationsSectionProps) {
   const [isVisible, setIsVisible] = useState(!showAnimations || isEditing)
   const sectionRef = useRef<HTMLElement>(null)
@@ -571,6 +576,9 @@ export default function AccreditationsSection({
           isDark={isDark}
           isVisible={isVisible}
           showAnimations={showAnimations}
+          titleColor={titleColor}
+          subtitleColor={subtitleColor}
+          accentColor={accentColor}
         />
 
         {/* Accreditation Cards - Auto-scroll Marquee Layout */}

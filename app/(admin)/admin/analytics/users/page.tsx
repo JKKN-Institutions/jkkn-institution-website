@@ -1,5 +1,3 @@
-'use client'
-
 import { Suspense } from 'react'
 import { UserGrowthChart, UserGrowthChartSkeleton } from '@/components/analytics/charts/user-growth-chart'
 import { RoleDistributionChart, RoleDistributionChartSkeleton } from '@/components/analytics/charts/role-distribution-chart'

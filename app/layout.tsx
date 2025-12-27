@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { WebVitalsReporter } from "@/components/performance/web-vitals-reporter";
 
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  style: ["normal", "italic"],
-  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+  weight: ["400", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -83,6 +84,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <Providers>{children}</Providers>
+        <WebVitalsReporter />
       </body>
     </html>
   );

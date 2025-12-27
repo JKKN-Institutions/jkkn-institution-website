@@ -107,11 +107,6 @@
   --sidebar-accent-foreground: #0b6d41;
   --sidebar-border: rgba(11, 109, 65, 0.15);
   --sidebar-ring: #0b6d41;
-
-  /* Glassmorphism variables - REMOVED (no longer using glassmorphism on landing page) */
-  /* --glass-bg: rgba(255, 255, 255, 0.7); */
-  /* --glass-border: rgba(255, 255, 255, 0.3); */
-  /* --glass-shadow: 0 8px 32px rgba(11, 109, 65, 0.1); */
 }
 
 .dark {
@@ -293,166 +288,6 @@
 }
 
 @layer components {
-  /* ===== GLASSMORPHISM DESIGN SYSTEM - COMMENTED OUT (No longer using on landing page) ===== */
-
-  /* Glass Card - Standard */
-  /* .glass-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
-    @apply rounded-2xl transition-all duration-300;
-  }
-
-  .glass-card:hover {
-    box-shadow: 0 12px 40px rgba(11, 109, 65, 0.12);
-    transform: translateY(-2px);
-  } */
-
-  /* Glass Card - Elevated (for widgets, panels) */
-  /* .glass-card-elevated {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow:
-      0 4px 6px rgba(11, 109, 65, 0.04),
-      0 10px 20px rgba(11, 109, 65, 0.08),
-      0 20px 40px rgba(11, 109, 65, 0.06);
-    @apply rounded-2xl transition-all duration-300;
-  }
-
-  .dark .glass-card-elevated {
-    background: rgba(38, 38, 38, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow:
-      0 4px 6px rgba(0, 0, 0, 0.1),
-      0 10px 20px rgba(0, 0, 0, 0.2),
-      0 20px 40px rgba(0, 0, 0, 0.15);
-  } */
-
-  /* Glass Panel - For main content areas */
-  /* .glass-panel {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    @apply rounded-3xl;
-  }
-
-  .dark .glass-panel {
-    background: rgba(26, 26, 26, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-  } */
-
-  /* Glassmorphism Sidebar - Premium */
-  /* .glass-sidebar {
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.95) 0%,
-      rgba(255, 255, 255, 0.85) 100%
-    );
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-right: 1px solid rgba(11, 109, 65, 0.1);
-    box-shadow: 4px 0 30px rgba(11, 109, 65, 0.08);
-  }
-
-  .dark .glass-sidebar {
-    background: linear-gradient(
-      180deg,
-      rgba(26, 26, 26, 0.98) 0%,
-      rgba(20, 20, 20, 0.95) 100%
-    );
-    border-right: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3);
-  } */
-
-  /* Glassmorphism Header - Floating */
-  /* .glass-header {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(11, 109, 65, 0.08);
-    box-shadow: 0 4px 20px rgba(11, 109, 65, 0.06);
-  }
-
-  .dark .glass-header {
-    background: rgba(26, 26, 26, 0.9);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  } */
-
-  /* Glass Button - Interactive */
-  /* .glass-button {
-    @apply relative overflow-hidden rounded-xl;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    @apply transition-all duration-200;
-  }
-
-  .glass-button:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-1px);
-    box-shadow: 0 8px 20px rgba(11, 109, 65, 0.15);
-  }
-
-  .glass-button:active {
-    transform: scale(0.98);
-  } */
-
-  /* Glass Input - Form elements */
-  /* .glass-input {
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(11, 109, 65, 0.15);
-    @apply rounded-xl transition-all duration-200;
-  }
-
-  .glass-input:focus {
-    background: rgba(255, 255, 255, 0.7);
-    border-color: rgba(11, 109, 65, 0.3);
-    box-shadow: 0 0 0 3px rgba(11, 109, 65, 0.1);
-  }
-
-  .dark .glass-input {
-    background: rgba(38, 38, 38, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .dark .glass-input:focus {
-    background: rgba(38, 38, 38, 0.7);
-    border-color: rgba(15, 143, 86, 0.4);
-    box-shadow: 0 0 0 3px rgba(15, 143, 86, 0.15);
-  } */
-
-  /* Glass Badge */
-  /* .glass-badge {
-    background: rgba(11, 109, 65, 0.1);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(11, 109, 65, 0.2);
-    @apply rounded-full px-3 py-1 text-xs font-medium text-primary;
-  }
-
-  .dark .glass-badge {
-    background: rgba(15, 143, 86, 0.15);
-    border: 1px solid rgba(15, 143, 86, 0.25);
-  } */
-
-  /* Glass Tooltip */
-  /* .glass-tooltip {
-    background: rgba(26, 26, 26, 0.9);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    @apply rounded-lg px-3 py-2 text-sm text-white shadow-xl;
-  } */
-
   /* Glass Divider */
   .glass-divider {
     background: linear-gradient(
@@ -642,20 +477,6 @@
     inset: -6px;
   }
 
-  /* Glassmorphic card on dark green - COMMENTED OUT */
-  /* .glass-card-dark {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    @apply rounded-2xl transition-all duration-300;
-  }
-
-  .glass-card-dark:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.2);
-  } */
-
   /* Section heading with gold accent */
   .section-heading {
     @apply text-center;
@@ -792,14 +613,6 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
-
-  /* Glassmorphism utility - COMMENTED OUT */
-  /* .glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-  } */
 
   /* Brand shadow */
   .shadow-brand {

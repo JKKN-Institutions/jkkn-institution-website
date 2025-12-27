@@ -71,6 +71,11 @@ export const AboutSectionPropsSchema = z.object({
   variant: z.enum(['modern-dark', 'modern-light', 'classic']).default('modern-dark').describe('Visual style variant'),
   showDecorative: z.boolean().default(true).describe('Show decorative patterns'),
   showCurve: z.boolean().default(true).describe('Show curved bottom divider'),
+
+  // Typography Colors
+  titleColor: z.string().optional().describe('Main title color'),
+  subtitleColor: z.string().optional().describe('Subtitle color'),
+  accentColor: z.string().optional().describe('Accent word color'),
 })
 
 export type AboutSectionProps = z.infer<typeof AboutSectionPropsSchema> & BaseBlockProps
@@ -154,6 +159,9 @@ export function AboutSection({
   variant = 'modern-dark',
   showDecorative = true,
   showCurve = true,
+  titleColor,
+  subtitleColor,
+  accentColor,
   className,
   isEditing,
 }: AboutSectionProps) {
@@ -212,19 +220,24 @@ The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 19
             <span className="badge-gold mb-6 inline-block">{badge}</span>
 
             {/* Header */}
-            <h2 className={cn(
-              'font-serif-heading text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-4 uppercase',
-              isDark ? 'text-white' : 'text-gray-900'
-            )}>
+            <h2
+              className="font-serif-heading text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-4 uppercase"
+              style={{ color: titleColor || (isDark ? '#ffffff' : '#1f2937') }}
+            >
               {headerPart1}{' '}
-              <span className={isDark ? "text-gold-italic" : "text-green-accent"}>{headerPart2}</span>
+              <span
+                className="italic"
+                style={{ color: accentColor || (isDark ? '#D4AF37' : '#0b6d41') }}
+              >
+                {headerPart2}
+              </span>
             </h2>
 
             {subtitle && (
-              <p className={cn(
-                'text-lg md:text-xl max-w-2xl mx-auto',
-                isDark ? 'text-white/70' : 'text-gray-600'
-              )}>
+              <p
+                className="text-lg md:text-xl max-w-2xl mx-auto"
+                style={{ color: subtitleColor || (isDark ? 'rgba(255,255,255,0.7)' : '#4b5563') }}
+              >
                 {subtitle}
               </p>
             )}

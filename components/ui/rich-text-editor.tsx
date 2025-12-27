@@ -10,7 +10,8 @@ import TextAlign from '@tiptap/extension-text-align'
 import Highlight from '@tiptap/extension-highlight'
 import { TextStyle } from '@tiptap/extension-text-style'
 import Color from '@tiptap/extension-color'
-import { useCallback, useEffect, useState } from 'react'
+import { ImageGallery, type GalleryImage } from './rich-text-editor/extensions/image-gallery'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -29,6 +30,7 @@ import {
   Redo,
   Link as LinkIcon,
   Image as ImageIcon,
+  Images,
   AlignLeft,
   AlignCenter,
   AlignRight,
@@ -58,6 +60,8 @@ interface RichTextEditorProps {
   placeholder?: string
   className?: string
   onImageUpload?: () => void
+  onContentImageUpload?: (insertCallback: (src: string, alt?: string) => void) => void
+  onGalleryImageSelect?: (onImagesSelected: (images: Array<{src: string, alt?: string}>) => void) => void
 }
 
 // Toolbar Button Component
@@ -188,9 +192,19 @@ function LinkPopover({ editor }: { editor: Editor }) {
 }
 
 // Image Popover
-function ImagePopover({ editor, onImageUpload }: { editor: Editor; onImageUpload?: () => void }) {
+function ImagePopover({
+  editor,
+  onImageUpload,
+  onContentImageUpload
+}: {
+  editor: Editor
+  onImageUpload?: () => void
+  onContentImageUpload?: (insertCallback: (src: string, alt?: string) => void) => void
+}) {
   const [url, setUrl] = useState('')
   const [isOpen, setIsOpen] = useState(false)
+  // Store editor selection/position before opening media modal
+  const savedSelectionRef = useRef<{ from: number; to: number } | null>(null)
 
   const addImage = useCallback(() => {
     if (url) {
@@ -199,6 +213,35 @@ function ImagePopover({ editor, onImageUpload }: { editor: Editor; onImageUpload
       setIsOpen(false)
     }
   }, [editor, url])
+
+  // Handle media library upload - passes insertion callback
+  const handleMediaLibraryUpload = useCallback(() => {
+    // Store the current selection/cursor position before modal opens
+    const { from, to } = editor.state.selection
+    savedSelectionRef.current = { from, to }
+
+    if (onContentImageUpload) {
+      // Pass a callback that will insert the image into editor at saved cursor position
+      onContentImageUpload((src: string, alt?: string) => {
+        // Restore selection and insert image at saved position
+        if (savedSelectionRef.current) {
+          editor
+            .chain()
+            .focus()
+            .setTextSelection(savedSelectionRef.current)
+            .setImage({ src, alt })
+            .run()
+          savedSelectionRef.current = null
+        } else {
+          editor.chain().focus().setImage({ src, alt }).run()
+        }
+      })
+    } else if (onImageUpload) {
+      // Fallback to legacy behavior
+      onImageUpload()
+    }
+    setIsOpen(false)
+  }, [editor, onContentImageUpload, onImageUpload])
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -233,15 +276,12 @@ function ImagePopover({ editor, onImageUpload }: { editor: Editor; onImageUpload
             <Button type="button" size="sm" onClick={addImage}>
               Add Image
             </Button>
-            {onImageUpload && (
+            {(onContentImageUpload || onImageUpload) && (
               <Button
                 type="button"
                 size="sm"
                 variant="outline"
-                onClick={() => {
-                  setIsOpen(false)
-                  onImageUpload()
-                }}
+                onClick={handleMediaLibraryUpload}
               >
                 Upload
               </Button>
@@ -253,8 +293,68 @@ function ImagePopover({ editor, onImageUpload }: { editor: Editor; onImageUpload
   )
 }
 
+// Gallery Button Component
+function GalleryButton({
+  editor,
+  onGalleryImageSelect
+}: {
+  editor: Editor
+  onGalleryImageSelect?: (onImagesSelected: (images: Array<{src: string, alt?: string}>) => void) => void
+}) {
+  const handleClick = useCallback(() => {
+    if (onGalleryImageSelect) {
+      onGalleryImageSelect((selectedImages) => {
+        if (selectedImages.length > 0) {
+          // Insert gallery with selected images
+          editor.chain().focus().setImageGallery({
+            images: selectedImages.map(img => ({
+              src: img.src,
+              alt: img.alt || '',
+              caption: ''
+            })),
+            layout: 'carousel',
+            columns: 3
+          }).run()
+        }
+      })
+    }
+  }, [editor, onGalleryImageSelect])
+
+  return (
+    <TooltipProvider delayDuration={300}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+            onClick={handleClick}
+            disabled={!onGalleryImageSelect}
+          >
+            <Images className="h-4 w-4" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="bottom" className="text-xs">
+          Insert Image Gallery
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
+}
+
 // Main Toolbar Component
-function EditorToolbar({ editor, onImageUpload }: { editor: Editor; onImageUpload?: () => void }) {
+function EditorToolbar({
+  editor,
+  onImageUpload,
+  onContentImageUpload,
+  onGalleryImageSelect
+}: {
+  editor: Editor
+  onImageUpload?: () => void
+  onContentImageUpload?: (insertCallback: (src: string, alt?: string) => void) => void
+  onGalleryImageSelect?: (onImagesSelected: (images: Array<{src: string, alt?: string}>) => void) => void
+}) {
   if (!editor) return null
 
   return (
@@ -412,9 +512,10 @@ function EditorToolbar({ editor, onImageUpload }: { editor: Editor; onImageUploa
 
       <ToolbarDivider />
 
-      {/* Link & Image */}
+      {/* Link & Image & Gallery */}
       <LinkPopover editor={editor} />
-      <ImagePopover editor={editor} onImageUpload={onImageUpload} />
+      <ImagePopover editor={editor} onImageUpload={onImageUpload} onContentImageUpload={onContentImageUpload} />
+      <GalleryButton editor={editor} onGalleryImageSelect={onGalleryImageSelect} />
 
       <ToolbarDivider />
 
@@ -441,6 +542,8 @@ export function RichTextEditor({
   placeholder = 'Start writing your content...',
   className,
   onImageUpload,
+  onContentImageUpload,
+  onGalleryImageSelect,
 }: RichTextEditorProps) {
   // Parse initial content
   const initialContent = (() => {
@@ -452,6 +555,10 @@ export function RichTextEditor({
       return { type: 'doc', content: [] }
     }
   })()
+
+  // Store the gallery callback in a ref so it can be accessed by the extension
+  const galleryCallbackRef = useRef<((onImagesSelected: (images: GalleryImage[]) => void) => void) | undefined>(undefined)
+  galleryCallbackRef.current = onGalleryImageSelect
 
   const editor = useEditor({
     extensions: [
@@ -468,9 +575,29 @@ export function RichTextEditor({
         },
       }),
       Image.configure({
+        inline: false,
+        allowBase64: true,
         HTMLAttributes: {
-          class: 'max-w-full h-auto rounded-lg my-4',
+          class: 'max-w-full h-auto rounded-lg my-4 cursor-move',
+          draggable: 'true',
         },
+      }),
+      ImageGallery.extend({
+        addStorage() {
+          return {
+            onAddImages: (callback: (images: GalleryImage[]) => void) => {
+              if (galleryCallbackRef.current) {
+                galleryCallbackRef.current((selectedImages) => {
+                  callback(selectedImages.map(img => ({
+                    src: img.src,
+                    alt: img.alt,
+                    caption: ''
+                  })))
+                })
+              }
+            }
+          }
+        }
       }),
       Placeholder.configure({
         placeholder,
@@ -534,7 +661,12 @@ export function RichTextEditor({
 
   return (
     <div className={cn('border rounded-lg overflow-hidden bg-background', className)}>
-      <EditorToolbar editor={editor} onImageUpload={onImageUpload} />
+      <EditorToolbar
+        editor={editor}
+        onImageUpload={onImageUpload}
+        onContentImageUpload={onContentImageUpload}
+        onGalleryImageSelect={onGalleryImageSelect}
+      />
       <EditorContent editor={editor} />
     </div>
   )

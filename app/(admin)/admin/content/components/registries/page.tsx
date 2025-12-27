@@ -10,8 +10,6 @@ import { ResponsivePageHeader } from '@/components/ui/responsive-page-header'
 import { RegistriesTable } from './registries-table'
 import { Plus, Store } from 'lucide-react'
 
-export const dynamic = 'force-dynamic'
-
 export default async function RegistriesPage() {
   const { registries, error } = await getRegistries()
 

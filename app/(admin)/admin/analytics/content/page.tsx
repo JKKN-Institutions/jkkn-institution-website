@@ -1,5 +1,3 @@
-'use client'
-
 import { Suspense } from 'react'
 import { ContentPerformanceChart, ContentStatsCards } from '@/components/analytics/charts/content-performance-chart'
 import { TopPagesTable, TopPagesTableSkeleton } from '@/components/analytics/tables/top-pages-table'

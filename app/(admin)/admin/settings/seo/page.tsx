@@ -3,8 +3,6 @@ import { getSettings } from '@/app/actions/settings'
 import { SEOSettingsForm } from '@/components/admin/settings/seo-settings-form'
 import { Skeleton } from '@/components/ui/skeleton'
 
-export const dynamic = 'force-dynamic'
-
 export const metadata = {
   title: 'SEO Settings | Admin',
   description: 'Configure SEO and analytics settings',

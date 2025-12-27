@@ -3,8 +3,6 @@ import { getFooterSettings } from '@/app/actions/cms/footer'
 import { FooterSettingsForm } from '@/components/admin/settings/footer-settings-form'
 import { Skeleton } from '@/components/ui/skeleton'
 
-export const dynamic = 'force-dynamic'
-
 export const metadata = {
   title: 'Footer Settings | Admin',
   description: 'Manage footer content, links, and contact information',

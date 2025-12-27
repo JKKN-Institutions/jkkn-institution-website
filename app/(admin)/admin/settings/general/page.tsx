@@ -3,8 +3,6 @@ import { getSettings } from '@/app/actions/settings'
 import { GeneralSettingsForm } from '@/components/admin/settings/general-settings-form'
 import { Skeleton } from '@/components/ui/skeleton'
 
-export const dynamic = 'force-dynamic'
-
 export const metadata = {
   title: 'General Settings | Admin',
   description: 'Manage general site settings',

@@ -480,6 +480,11 @@ export const FAQSectionPropsSchema = z.object({
   // Styling
   backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
   showAnimations: z.boolean().default(true),
+
+  // Typography Colors
+  titleColor: z.string().optional(),
+  subtitleColor: z.string().optional(),
+  accentColor: z.string().optional(),
 })
 export type FAQSectionProps = z.infer<typeof FAQSectionPropsSchema> & BaseBlockProps
 
@@ -847,6 +852,11 @@ export const AccreditationsSectionPropsSchema = z.object({
   titleAccentWord: z.string().optional().default('Approvals'),
   subtitle: z.string().default('Recognized for Excellence by India\'s Premier Regulatory Bodies'),
   description: z.string().default('JKKN Institutions proudly holds approvals and accreditations from all major national regulatory bodies, ensuring our Learners receive education that meets the highest standards of quality, compliance, and industry relevance.'),
+
+  // Typography Colors
+  titleColor: z.string().optional(),
+  subtitleColor: z.string().optional(),
+  accentColor: z.string().default('#D4AF37'), // Gold
 
   // Accreditation Cards (8 cards)
   accreditationCards: z.array(AccreditationCardSchema).default([

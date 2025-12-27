@@ -30,6 +30,9 @@ export default function FAQSectionBlock({
   ctaEmail = 'info@jkkn.ac.in',
   backgroundColor = 'gradient-dark',
   showAnimations = true,
+  titleColor,
+  subtitleColor,
+  accentColor,
   isEditing = false,
 }: FAQSectionProps) {
   const [isVisible, setIsVisible] = useState(!showAnimations || isEditing)
@@ -140,20 +143,23 @@ export default function FAQSectionBlock({
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           )}
         >
-          <h2 className={cn(
-            'font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase',
-            isDark ? 'text-white' : 'text-gray-900'
-          )}>
+          <h2
+            className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase"
+            style={{ color: titleColor || (isDark ? '#ffffff' : '#1f2937') }}
+          >
             {titleParts.part1}{' '}
-            <span className={isDark ? "text-gold-italic" : "text-green-accent"}>
+            <span
+              className="italic"
+              style={{ color: accentColor || (isDark ? '#D4AF37' : '#0b6d41') }}
+            >
               {titleParts.part2}
             </span>
           </h2>
           {subtitle && (
-            <p className={cn(
-              'text-base sm:text-lg md:text-xl max-w-3xl mx-auto',
-              isDark ? 'text-white/70' : 'text-gray-600'
-            )}>
+            <p
+              className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto"
+              style={{ color: subtitleColor || (isDark ? 'rgba(255,255,255,0.7)' : '#4b5563') }}
+            >
               {subtitle}
             </p>
           )}

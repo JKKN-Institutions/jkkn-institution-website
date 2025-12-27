@@ -744,6 +744,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       badge: 'FAQ',
       title: 'Frequently Asked Questions',
       subtitle: 'Everything you need to know about JKKN Institutions',
+      titleColor: '',
+      subtitleColor: '',
+      accentColor: '#D4AF37',
       faqs: [],
       showCTA: true,
       ctaTitle: 'Still have questions?',
@@ -759,7 +762,10 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     editableProps: [
       { name: 'badge', type: 'string', label: 'Badge Text', description: 'Small badge above title' },
       { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'titleColor', type: 'color', label: 'Title Color', description: 'Leave empty for auto' },
+      { name: 'accentColor', type: 'color', label: 'Accent Word Color', description: 'Color for last word' },
       { name: 'subtitle', type: 'string', label: 'Subtitle' },
+      { name: 'subtitleColor', type: 'color', label: 'Subtitle Color', description: 'Leave empty for auto' },
       {
         name: 'faqs',
         type: 'array',
@@ -822,6 +828,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       titleAccentWord: 'Approvals',
       subtitle: "Recognized for Excellence by India's Premier Regulatory Bodies",
       description: 'JKKN Institutions proudly holds approvals and accreditations from all major national regulatory bodies, ensuring our Learners receive education that meets the highest standards of quality, compliance, and industry relevance.',
+      titleColor: '',
+      subtitleColor: '',
+      accentColor: '#D4AF37',
       accreditationCards: [],
       trustBadges: [],
       showAccreditationCards: true,
@@ -843,8 +852,11 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       // Section Header
       { name: 'badge', type: 'string', label: 'Badge Text', description: 'Small badge above title' },
       { name: 'title', type: 'string', label: 'Section Title', required: true },
+      { name: 'titleColor', type: 'color', label: 'Title Color', description: 'Leave empty for auto (white on dark, dark on light)' },
       { name: 'titleAccentWord', type: 'string', label: 'Title Accent Word', description: 'Word to highlight in gold/italic' },
+      { name: 'accentColor', type: 'color', label: 'Accent Word Color', description: 'Color for the highlighted accent word' },
       { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
+      { name: 'subtitleColor', type: 'color', label: 'Subtitle Color', description: 'Leave empty for auto' },
       { name: 'description', type: 'string', label: 'Description Paragraph', multiline: true },
       // Accreditation Cards Array
       {
@@ -1317,8 +1329,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     propsSchema: z.object({
       headerPart1: z.string().default('About'),
       headerPart2: z.string().default('JKKN Institution'),
-      headerPart1Color: z.string().default('#000000'),
-      headerPart2Color: z.string().default('#0b6d41'),
+      titleColor: z.string().optional(),
+      subtitleColor: z.string().optional(),
+      accentColor: z.string().optional(),
       subtitle: z.string().optional(),
       sectionTitle: z.string().default('Building Excellence Since 1998'),
       paragraph1: z.string().default(''),
@@ -1331,7 +1344,6 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       backgroundColor: z.string().default('#ffffff'),
       backgroundStyle: z.enum(['solid', 'gradient-green', 'gradient-dark']).default('solid'),
       badgeColor: z.string().default('#0b6d41'),
-      accentColor: z.string().default('#ffde59'),
       textColor: z.enum(['dark', 'light']).default('dark'),
       showDecorative: z.boolean().default(true),
       layout: z.enum(['default', 'reversed']).default('default'),
@@ -1340,8 +1352,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     defaultProps: {
       headerPart1: 'About',
       headerPart2: 'JKKN Institution',
-      headerPart1Color: '#000000',
-      headerPart2Color: '#0b6d41',
+      titleColor: '',
+      subtitleColor: '',
+      accentColor: '#D4AF37',
       subtitle: 'A legacy of excellence in education, shaping futures and transforming lives',
       sectionTitle: 'Building Excellence Since 1998',
       paragraph1: 'JKKN Institution stands as a pioneering educational institution committed to providing world-class education and holistic development. With a rich legacy spanning over two decades, we have consistently delivered excellence in academics, research, and character building.',
@@ -1354,7 +1367,6 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       backgroundColor: '#ffffff',
       backgroundStyle: 'solid',
       badgeColor: '#0b6d41',
-      accentColor: '#ffde59',
       textColor: 'dark',
       showDecorative: true,
       layout: 'default',
@@ -1367,9 +1379,10 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       // Header
       { name: 'headerPart1', type: 'string', label: 'Header Part 1', required: true, description: 'First part of the header' },
       { name: 'headerPart2', type: 'string', label: 'Header Part 2', required: true, description: 'Second part (colored)' },
-      { name: 'headerPart1Color', type: 'color', label: 'Header Part 1 Color' },
-      { name: 'headerPart2Color', type: 'color', label: 'Header Part 2 Color' },
+      { name: 'titleColor', type: 'color', label: 'Title Color', description: 'Leave empty for auto' },
+      { name: 'accentColor', type: 'color', label: 'Accent Word Color', description: 'Color for Part 2' },
       { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
+      { name: 'subtitleColor', type: 'color', label: 'Subtitle Color', description: 'Leave empty for auto' },
       // Content
       { name: 'sectionTitle', type: 'string', label: 'Section Title', required: true },
       { name: 'paragraph1', type: 'string', label: 'Paragraph 1', multiline: true, required: true },
@@ -1501,9 +1514,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     propsSchema: z.object({
       headerPart1: z.string().default('Our'),
       headerPart2: z.string().default('Strength'),
-      headerPart1Color: z.string().default('#ffffff'),
-      headerPart2Color: z.string().default('#ffde59'),
-      headerPart2Italic: z.boolean().default(true),
+      titleColor: z.string().optional(),
+      subtitleColor: z.string().optional(),
+      accentColor: z.string().optional(),
       subtitle: z.string().default('Numbers that speak volumes about our commitment to excellence'),
       stats: z.array(z.object({
         value: z.string(),
@@ -1525,9 +1538,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     defaultProps: {
       headerPart1: 'Our',
       headerPart2: 'Strength',
-      headerPart1Color: '#ffffff',
-      headerPart2Color: '#ffde59',
-      headerPart2Italic: true,
+      titleColor: '',
+      subtitleColor: '',
+      accentColor: '#D4AF37',
       subtitle: 'Numbers that speak volumes about our commitment to excellence',
       stats: [
         { value: '25', label: 'Years of Excellence' },
@@ -1555,10 +1568,10 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     editableProps: [
       { name: 'headerPart1', type: 'string', label: 'Header Part 1' },
       { name: 'headerPart2', type: 'string', label: 'Header Part 2' },
-      { name: 'headerPart1Color', type: 'color', label: 'Header Part 1 Color' },
-      { name: 'headerPart2Color', type: 'color', label: 'Header Part 2 Color' },
-      { name: 'headerPart2Italic', type: 'boolean', label: 'Italic Header Part 2' },
+      { name: 'titleColor', type: 'color', label: 'Title Color', description: 'Leave empty for auto' },
+      { name: 'accentColor', type: 'color', label: 'Accent Word Color', description: 'Color for Part 2' },
       { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
+      { name: 'subtitleColor', type: 'color', label: 'Subtitle Color', description: 'Leave empty for auto' },
       {
         name: 'stats',
         type: 'array',

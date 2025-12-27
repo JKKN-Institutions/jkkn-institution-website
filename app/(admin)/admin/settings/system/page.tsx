@@ -3,8 +3,6 @@ import { getSettings } from '@/app/actions/settings'
 import { SystemSettingsForm } from '@/components/admin/settings/system-settings-form'
 import { Skeleton } from '@/components/ui/skeleton'
 
-export const dynamic = 'force-dynamic'
-
 export const metadata = {
   title: 'System Settings | Admin',
   description: 'Configure system and security settings',

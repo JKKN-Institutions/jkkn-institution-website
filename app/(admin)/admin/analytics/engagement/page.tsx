@@ -1,5 +1,3 @@
-'use client'
-
 import { Suspense } from 'react'
 import { ActivityHeatmap, ActivityHeatmapSkeleton } from '@/components/analytics/charts/activity-heatmap'
 import { KPICards, KPICardsSkeleton } from '@/components/analytics/charts/kpi-cards'

@@ -138,10 +138,9 @@ export function SiteHeader({
       >
         <div className="container mx-auto px-4 lg:px-6">
           <div className={cn(
-            'flex items-center h-16 sm:h-20',
+            'flex items-center h-16 sm:h-20 lg:h-24', // Fixed height prevents CLS
             // Mobile: center logo, Desktop: space-between for logo + nav
-            'justify-center lg:justify-between',
-            hasSecondRow ? 'lg:h-24' : 'lg:h-20'
+            'justify-center lg:justify-between'
           )}>
             {/* Logo - Centered on mobile, left-aligned on desktop */}
             <Link href="/" className={cn(
@@ -515,11 +514,9 @@ export function SiteHeader({
       </div>
 
       {/* Spacer for fixed header - only needed on live site, not in preview */}
+      {/* Fixed height prevents CLS from dynamic height changes */}
       {!isPreview && (
-        <div className={cn(
-          'h-16 sm:h-20',
-          hasSecondRow ? 'lg:h-24' : 'lg:h-20'
-        )} />
+        <div className="h-16 sm:h-20 lg:h-24" />
       )}
     </>
   )
