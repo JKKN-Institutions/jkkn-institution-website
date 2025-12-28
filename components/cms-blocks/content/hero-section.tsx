@@ -5,6 +5,7 @@ import type { HeroSectionProps } from '@/lib/cms/registry-types'
 import { useEffect, useState, useRef } from 'react'
 import { ChevronDown, ArrowRight, Award, TrendingUp, Users, Calendar } from 'lucide-react'
 import Image from 'next/image'
+import { useSectionTypography } from '@/lib/cms/hooks/use-section-typography'
 
 /**
  * Converts legacy enum font sizes to pixel values
@@ -89,6 +90,18 @@ export default function HeroSection({
   const [isLoaded, setIsLoaded] = useState(false)
   const [scrollY, setScrollY] = useState(0)
   const heroRef = useRef<HTMLElement>(null)
+
+  // Get page-level typography with block overrides
+  const { title: titleTypo, subtitle: subtitleTypo } = useSectionTypography({
+    titleColor,
+    titleFontSize,
+    titleFontWeight,
+    titleFontStyle,
+    subtitleColor,
+    subtitleFontSize: typeof subtitleFontSize === 'number' ? undefined : subtitleFontSize,
+    subtitleFontWeight,
+    subtitleFontStyle,
+  })
 
   useEffect(() => {
     setIsLoaded(true)
@@ -227,13 +240,12 @@ export default function HeroSection({
         <h1
           className={cn(
             'tracking-wide transition-all duration-1000 delay-200',
-            fontSizeClasses[titleFontSize] || 'text-5xl',
-            fontWeightClasses[titleFontWeight] || 'font-bold',
-            titleFontStyle === 'italic' && 'italic',
+            titleTypo.className,
             isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}
           style={{
-            color: titleColor,
+            ...titleTypo.style,
+            color: titleTypo.style.color || titleColor || '#ffffff',
             textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
           }}
         >
@@ -246,13 +258,14 @@ export default function HeroSection({
             className={cn(
               'mt-4 max-w-2xl transition-all duration-1000 delay-300',
               alignment === 'center' && 'mx-auto',
-              fontWeightClasses[subtitleFontWeight] || 'font-normal',
-              subtitleFontStyle === 'italic' && 'italic',
+              subtitleTypo.className,
               isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             )}
             style={{
-              color: subtitleColor,
-              fontSize: getFontSize(subtitleFontSize)
+              ...subtitleTypo.style,
+              color: subtitleTypo.style.color || subtitleColor || '#e5e5e5',
+              // Support legacy numeric pixel values for subtitleFontSize
+              ...(typeof subtitleFontSize === 'number' ? { fontSize: `${subtitleFontSize}px` } : {})
             }}
           >
             {subtitle}

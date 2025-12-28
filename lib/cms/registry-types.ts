@@ -853,6 +853,11 @@ export const AccreditationsSectionPropsSchema = z.object({
   subtitle: z.string().default('Recognized for Excellence by India\'s Premier Regulatory Bodies'),
   description: z.string().default('JKKN Institutions proudly holds approvals and accreditations from all major national regulatory bodies, ensuring our Learners receive education that meets the highest standards of quality, compliance, and industry relevance.'),
 
+  // Header Typography
+  headerFontFamily: z.string().optional().describe('Font family for header'),
+  headerFontSize: z.enum(['3xl', '4xl', '5xl', '6xl']).default('5xl').describe('Font size for header'),
+  headerFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold', 'extrabold']).default('bold').describe('Font weight for header'),
+
   // Typography Colors
   titleColor: z.string().optional(),
   subtitleColor: z.string().optional(),
@@ -1066,6 +1071,7 @@ export const WhyChooseJKKNPropsSchema = z.object({
   badgeFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('semibold'),
 
   // === TITLE TYPOGRAPHY ===
+  titleFontFamily: z.string().optional().describe('Font family for title'),
   titleColor: z.string().default('#171717'),
   titleFontSize: z.enum(['2xl', '3xl', '4xl', '5xl', '6xl']).default('5xl'),
   titleFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold', 'extrabold']).default('bold'),

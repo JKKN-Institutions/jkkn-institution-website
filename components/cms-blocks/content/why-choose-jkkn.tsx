@@ -12,6 +12,7 @@ import {
   Check,
   Sparkles,
 } from 'lucide-react'
+import { useSectionTypography } from '@/lib/cms/hooks/use-section-typography'
 
 /**
  * WhyChooseJKKN CMS Block Component
@@ -22,6 +23,46 @@ import {
  * - Additional USPs as compact list
  * - Complete font color, size, weight editing for all text elements
  */
+
+/**
+ * Normalizes a hex color value to ensure it's valid
+ * Handles 3, 4, 6, and 8 digit hex formats
+ * Keeps 8-digit format for alpha colors
+ */
+function normalizeColor(color: string | undefined, fallback: string): string {
+  if (!color || typeof color !== 'string') return fallback
+
+  const trimmed = color.trim().toLowerCase()
+  if (!trimmed.startsWith('#')) return fallback
+
+  const hex = trimmed.slice(1)
+
+  // Validate hex characters
+  if (!/^[0-9a-f]+$/.test(hex)) return fallback
+
+  // Handle different valid formats
+  if (hex.length === 3) {
+    // 3-digit shorthand (#RGB -> #RRGGBB)
+    return '#' + hex.split('').map(c => c + c).join('')
+  } else if (hex.length === 4) {
+    // 4-digit shorthand with alpha - expand to 8-digit
+    return '#' + hex.split('').map(c => c + c).join('')
+  } else if (hex.length === 6) {
+    // Valid 6-digit format
+    return '#' + hex
+  } else if (hex.length === 8) {
+    // Valid 8-digit format with alpha - keep as is
+    return '#' + hex
+  } else if (hex.length < 6) {
+    // Incomplete - pad with zeros to 6 characters
+    return '#' + hex.padEnd(6, '0')
+  } else if (hex.length === 7) {
+    // 7 characters - trim to 6 (incomplete alpha)
+    return '#' + hex.slice(0, 6)
+  }
+
+  return fallback
+}
 
 // Font size mapping (responsive Tailwind classes)
 const fontSizeClasses: Record<string, string> = {
@@ -69,6 +110,7 @@ export interface WhyChooseJKKNProps {
   badgeFontWeight?: string
 
   // Title Typography
+  titleFontFamily?: string
   titleColor?: string
   titleFontSize?: string
   titleFontWeight?: string
@@ -171,7 +213,7 @@ function useInView(threshold = 0.2) {
   return { ref, isInView }
 }
 
-// USP Card Component
+// USP Card Component - Horizontal layout with icon left, title right
 function USPCardComponent({
   card,
   index,
@@ -180,7 +222,6 @@ function USPCardComponent({
   cardTitleFontSize,
   cardTitleFontWeight,
   cardStatColor,
-  cardStatFontSize,
   cardStatFontWeight,
 }: {
   card: USPCard
@@ -198,20 +239,22 @@ function USPCardComponent({
   return (
     <div
       className={cn(
-        'group relative rounded-2xl p-6',
+        'group relative rounded-2xl p-5',
         'bg-white/70 backdrop-blur-md',
-        'shadow-[0_8px_32px_rgba(11,109,65,0.12)]',
-        'hover:shadow-[0_16px_48px_rgba(11,109,65,0.18)] hover:-translate-y-2',
+        'flex items-center gap-4',
+        'shadow-[0_4px_20px_rgba(0,0,0,0.08),0_8px_40px_rgba(11,109,65,0.15)]',
+        'hover:shadow-[0_8px_30px_rgba(0,0,0,0.12),0_16px_60px_rgba(11,109,65,0.2)]',
+        'hover:-translate-y-1',
         'border border-white/50',
         'transition-all duration-500 ease-out cursor-default',
         isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       )}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
-      {/* Icon Container */}
+      {/* Icon Container - Left side */}
       <div
         className={cn(
-          'w-14 h-14 rounded-xl flex items-center justify-center mb-4',
+          'w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center',
           'bg-primary/10',
           'group-hover:bg-primary',
           'transition-all duration-300'
@@ -219,47 +262,43 @@ function USPCardComponent({
       >
         <IconComponent
           className={cn(
-            'w-7 h-7 text-primary',
+            'w-6 h-6 text-primary',
             'group-hover:text-white',
             'transition-colors duration-300'
           )}
         />
       </div>
 
-      {/* Stat (if exists) */}
-      {card.stat && (
-        <div
+      {/* Text Content - Right side */}
+      <div className="flex-1 min-w-0">
+        <h3
           className={cn(
-            'mb-1',
-            fontSizeClasses[cardStatFontSize || '3xl'],
-            fontWeightClasses[cardStatFontWeight || 'bold']
+            'leading-tight',
+            fontSizeClasses[cardTitleFontSize || 'md'],
+            fontWeightClasses[cardTitleFontWeight || 'semibold']
           )}
-          style={{ color: cardStatColor || '#0b6d41' }}
+          style={{ color: normalizeColor(cardTitleColor, '#1f2937') }}
         >
-          {card.stat}
-        </div>
-      )}
-
-      {/* Title */}
-      <h3
-        className={cn(
-          'leading-tight',
-          fontSizeClasses[cardTitleFontSize || 'md'],
-          fontWeightClasses[cardTitleFontWeight || 'semibold']
-        )}
-        style={{ color: cardTitleColor || '#1f2937' }}
-      >
-        {card.title}
-      </h3>
+          {card.stat && (
+            <span
+              className={fontWeightClasses[cardStatFontWeight || 'bold']}
+              style={{ color: normalizeColor(cardStatColor, '#0b6d41') }}
+            >
+              {card.stat}{' '}
+            </span>
+          )}
+          {card.title}
+        </h3>
+      </div>
 
       {/* Decorative corner on hover */}
       <div
         className={cn(
-          'absolute top-0 right-0 w-16 h-16 overflow-hidden rounded-tr-2xl',
+          'absolute top-0 right-0 w-12 h-12 overflow-hidden rounded-tr-2xl',
           'opacity-0 group-hover:opacity-100 transition-opacity duration-300'
         )}
       >
-        <div className="absolute -top-8 -right-8 w-16 h-16 rotate-45 bg-secondary/20" />
+        <div className="absolute -top-6 -right-6 w-12 h-12 rotate-45 bg-secondary/20" />
       </div>
     </div>
   )
@@ -283,6 +322,7 @@ export default function WhyChooseJKKN({
   badgeFontWeight = 'semibold',
 
   // Title Typography
+  titleFontFamily,
   titleColor = '#171717',
   titleFontSize = '5xl',
   titleFontWeight = 'bold',
@@ -319,6 +359,14 @@ export default function WhyChooseJKKN({
   const sectionRef = useInView(0.1)
   const cardsRef = useInView(0.2)
   const listRef = useInView(0.2)
+
+  // Get page-level typography with block overrides
+  const { title: titleTypo, subtitle: subtitleTypo, badge: badgeTypo } = useSectionTypography({
+    titleColor,
+    subtitleColor,
+    badgeColor,
+    badgeBgColor,
+  })
 
   // Empty state for editing
   if (!uspCards?.length && !additionalUsps?.length && isEditing) {
@@ -358,10 +406,13 @@ export default function WhyChooseJKKN({
           <span
             className={cn(
               'inline-block px-4 py-1.5 rounded-full mb-4',
-              fontSizeClasses[badgeFontSize],
-              fontWeightClasses[badgeFontWeight]
+              badgeTypo.className || fontSizeClasses[badgeFontSize],
+              !badgeTypo.className && fontWeightClasses[badgeFontWeight]
             )}
-            style={{ color: badgeColor, backgroundColor: badgeBgColor }}
+            style={{
+              color: badgeTypo.style.color || normalizeColor(badgeColor, '#0b6d41'),
+              backgroundColor: badgeTypo.backgroundColor || normalizeColor(badgeBgColor, '#0b6d411a')
+            }}
           >
             {badgeText}
           </span>
@@ -370,10 +421,14 @@ export default function WhyChooseJKKN({
           <h2
             className={cn(
               'mb-3',
-              fontSizeClasses[titleFontSize],
-              fontWeightClasses[titleFontWeight]
+              (!titleFontFamily || titleFontFamily === 'Default (Serif)') && 'font-serif-heading',
+              titleTypo.className || fontSizeClasses[titleFontSize],
+              !titleTypo.className && fontWeightClasses[titleFontWeight]
             )}
-            style={{ color: titleColor }}
+            style={{
+              color: titleTypo.style.color || normalizeColor(titleColor, '#171717'),
+              fontFamily: (titleFontFamily && titleFontFamily !== 'Default (Serif)') ? titleFontFamily : undefined,
+            }}
           >
             {title}
           </h2>
@@ -382,10 +437,10 @@ export default function WhyChooseJKKN({
           <p
             className={cn(
               'mb-4',
-              fontSizeClasses[subtitleFontSize],
-              fontWeightClasses[subtitleFontWeight]
+              subtitleTypo.className || fontSizeClasses[subtitleFontSize],
+              !subtitleTypo.className && fontWeightClasses[subtitleFontWeight]
             )}
-            style={{ color: subtitleColor }}
+            style={{ color: subtitleTypo.style.color || normalizeColor(subtitleColor, '#0b6d41') }}
           >
             {subtitle}
           </p>
@@ -396,7 +451,7 @@ export default function WhyChooseJKKN({
               fontSizeClasses[taglineFontSize],
               fontWeightClasses[taglineFontWeight]
             )}
-            style={{ color: taglineColor }}
+            style={{ color: normalizeColor(taglineColor, '#525252') }}
           >
             {tagline}
           </p>
@@ -428,7 +483,10 @@ export default function WhyChooseJKKN({
           <div
             ref={listRef.ref}
             className={cn(
-              'bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8',
+              'bg-white/70 backdrop-blur-md rounded-2xl p-6 md:p-8',
+              'shadow-[0_4px_20px_rgba(0,0,0,0.08),0_8px_40px_rgba(11,109,65,0.15)]',
+              'hover:shadow-[0_8px_30px_rgba(0,0,0,0.12),0_16px_60px_rgba(11,109,65,0.2)]',
+              'border border-white/50',
               'transition-all duration-700 delay-300',
               listRef.isInView || isEditing
                 ? 'opacity-100 translate-y-0'
@@ -441,7 +499,7 @@ export default function WhyChooseJKKN({
                 fontSizeClasses[additionalUspsHeadingFontSize],
                 fontWeightClasses[additionalUspsHeadingFontWeight]
               )}
-              style={{ color: additionalUspsHeadingColor }}
+              style={{ color: normalizeColor(additionalUspsHeadingColor, '#1f2937') }}
             >
               {additionalUspsHeading}
             </h3>
@@ -463,7 +521,7 @@ export default function WhyChooseJKKN({
                       fontSizeClasses[additionalUspsTextFontSize],
                       fontWeightClasses[additionalUspsTextFontWeight]
                     )}
-                    style={{ color: additionalUspsTextColor }}
+                    style={{ color: normalizeColor(additionalUspsTextColor, '#374151') }}
                   >
                     {usp}
                   </span>

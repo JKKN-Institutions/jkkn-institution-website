@@ -25,6 +25,11 @@ export const StatsCounterPropsSchema = z.object({
   headerPart2: z.string().default('Strength').describe('Second part of header (gold italic)'),
   subtitle: z.string().default('Numbers that speak volumes about our commitment to excellence').describe('Subtitle below header'),
 
+  // Header Typography
+  headerFontFamily: z.string().optional().describe('Font family for header'),
+  headerFontSize: z.enum(['3xl', '4xl', '5xl', '6xl']).default('5xl').describe('Font size for header'),
+  headerFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold', 'extrabold']).default('bold').describe('Font weight for header'),
+
   // Stats
   stats: z.array(StatItemSchema).default([]).describe('List of statistics'),
 
@@ -63,6 +68,9 @@ export function StatsCounter({
   headerPart1 = 'Our',
   headerPart2 = 'Strength',
   subtitle = 'Numbers that speak volumes about our commitment to excellence',
+  headerFontFamily,
+  headerFontSize = '5xl',
+  headerFontWeight = 'bold',
   stats = [],
   tagline,
   columns = '6',
@@ -117,12 +125,29 @@ export function StatsCounter({
         {(headerPart1 || headerPart2) && (
           <div className="text-center mb-10 md:mb-14">
             <h2
-              className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase"
-              style={{ color: titleColor || (isDark ? '#ffffff' : '#1f2937') }}
+              className={cn(
+                "tracking-tight mb-4 uppercase",
+                (!headerFontFamily || headerFontFamily === 'Default (Serif)') && "font-serif-heading",
+                // Font size classes
+                headerFontSize === '3xl' && "text-2xl sm:text-3xl md:text-3xl",
+                headerFontSize === '4xl' && "text-2xl sm:text-3xl md:text-4xl",
+                headerFontSize === '5xl' && "text-3xl sm:text-4xl md:text-5xl",
+                headerFontSize === '6xl' && "text-4xl sm:text-5xl md:text-6xl",
+                // Font weight classes
+                headerFontWeight === 'normal' && "font-normal",
+                headerFontWeight === 'medium' && "font-medium",
+                headerFontWeight === 'semibold' && "font-semibold",
+                headerFontWeight === 'bold' && "font-bold",
+                headerFontWeight === 'extrabold' && "font-extrabold",
+              )}
+              style={{
+                color: titleColor || (isDark ? '#ffffff' : '#1f2937'),
+                fontFamily: (headerFontFamily && headerFontFamily !== 'Default (Serif)') ? headerFontFamily : undefined,
+              }}
             >
               {headerPart1}{' '}
               <span
-                className="italic"
+                className={cn((!headerFontFamily || headerFontFamily === 'Default (Serif)') && "italic")}
                 style={{ color: accentColor || (isDark ? '#D4AF37' : '#0b6d41') }}
               >
                 {headerPart2}
@@ -248,7 +273,7 @@ function StatCard({
     <div
       ref={ref}
       className={cn(
-        'rounded-xl p-6 sm:p-8 text-center transition-all duration-300 hover:scale-105',
+        'rounded-xl p-4 sm:p-5 text-center transition-all duration-300 hover:scale-105',
         isDark ? 'glass-card-dark' : 'glass-card'
       )}
     >

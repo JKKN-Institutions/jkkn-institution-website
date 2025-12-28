@@ -858,6 +858,10 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
       { name: 'subtitleColor', type: 'color', label: 'Subtitle Color', description: 'Leave empty for auto' },
       { name: 'description', type: 'string', label: 'Description Paragraph', multiline: true },
+      // Header Typography
+      { name: 'headerFontFamily', type: 'enum', label: 'Header Font', options: ['Default (Serif)', 'Poppins', 'Inter', 'Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Playfair Display', 'Georgia'], description: 'Select font family' },
+      { name: 'headerFontSize', type: 'enum', label: 'Header Size', options: ['3xl', '4xl', '5xl', '6xl'] },
+      { name: 'headerFontWeight', type: 'enum', label: 'Header Weight', options: ['normal', 'medium', 'semibold', 'bold', 'extrabold'] },
       // Accreditation Cards Array
       {
         name: 'accreditationCards',
@@ -1045,6 +1049,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'badgeFontWeight', type: 'enum', label: 'Badge Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
 
       // === TITLE TYPOGRAPHY ===
+      { name: 'titleFontFamily', type: 'enum', label: 'Title Font', options: ['Default (Serif)', 'Poppins', 'Inter', 'Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Playfair Display', 'Georgia'], description: 'Select font family' },
       { name: 'titleColor', type: 'color', label: 'Title Color' },
       { name: 'titleFontSize', type: 'enum', label: 'Title Font Size', options: ['2xl', '3xl', '4xl', '5xl', '6xl'] },
       { name: 'titleFontWeight', type: 'enum', label: 'Title Font Weight', options: ['normal', 'medium', 'semibold', 'bold', 'extrabold'] },
@@ -1328,7 +1333,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     component: AboutSection,
     propsSchema: z.object({
       headerPart1: z.string().default('About'),
+      headerPart1Font: z.string().optional(),
       headerPart2: z.string().default('JKKN Institution'),
+      headerPart2Font: z.string().optional(),
       titleColor: z.string().optional(),
       subtitleColor: z.string().optional(),
       accentColor: z.string().optional(),
@@ -1351,7 +1358,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     }),
     defaultProps: {
       headerPart1: 'About',
+      headerPart1Font: '',
       headerPart2: 'JKKN Institution',
+      headerPart2Font: '',
       titleColor: '',
       subtitleColor: '',
       accentColor: '#D4AF37',
@@ -1378,7 +1387,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     editableProps: [
       // Header
       { name: 'headerPart1', type: 'string', label: 'Header Part 1', required: true, description: 'First part of the header' },
+      { name: 'headerPart1Font', type: 'enum', label: 'Header Part 1 Font', options: ['Default (Serif)', 'Poppins', 'Inter', 'Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Playfair Display', 'Georgia'], description: 'Select font family' },
       { name: 'headerPart2', type: 'string', label: 'Header Part 2', required: true, description: 'Second part (colored)' },
+      { name: 'headerPart2Font', type: 'enum', label: 'Header Part 2 Font', options: ['Default (Serif)', 'Poppins', 'Inter', 'Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Playfair Display', 'Georgia'], description: 'Select font family' },
       { name: 'titleColor', type: 'color', label: 'Title Color', description: 'Leave empty for auto' },
       { name: 'accentColor', type: 'color', label: 'Accent Word Color', description: 'Color for Part 2' },
       { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
@@ -1397,7 +1408,6 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'backgroundColor', type: 'color', label: 'Background Color', description: 'Only used when Background Style is "solid"' },
       { name: 'backgroundStyle', type: 'enum', label: 'Background Style', options: ['solid', 'gradient-green', 'gradient-dark'], description: 'Choose background style' },
       { name: 'badgeColor', type: 'color', label: 'Badge Color' },
-      { name: 'accentColor', type: 'color', label: 'Accent Color', description: 'Color for underlines and highlights (yellow recommended)' },
       { name: 'textColor', type: 'enum', label: 'Text Color', options: ['dark', 'light'], description: 'Use "light" for gradient backgrounds' },
       { name: 'showDecorative', type: 'boolean', label: 'Show Decorative Element' },
       { name: 'layout', type: 'enum', label: 'Layout', options: ['default', 'reversed'], description: 'Image on right (default) or left (reversed)' },
@@ -1468,6 +1478,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       // Header
       { name: 'headerPart1', type: 'string', label: 'Header Part 1', required: true, description: 'First part of header' },
       { name: 'headerPart2', type: 'string', label: 'Header Part 2', required: true, description: 'Second part (colored)' },
+      { name: 'headerFontFamily', type: 'enum', label: 'Header Font', options: ['Default (Serif)', 'Poppins', 'Inter', 'Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Playfair Display', 'Georgia'], description: 'Select font family' },
+      { name: 'headerFontSize', type: 'enum', label: 'Header Size', options: ['3xl', '4xl', '5xl', '6xl'] },
+      { name: 'headerFontWeight', type: 'enum', label: 'Header Weight', options: ['normal', 'medium', 'semibold', 'bold', 'extrabold'] },
       { name: 'headerPart1Color', type: 'color', label: 'Header Part 1 Color' },
       { name: 'headerPart2Color', type: 'color', label: 'Header Part 2 Color' },
       { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
@@ -1568,6 +1581,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     editableProps: [
       { name: 'headerPart1', type: 'string', label: 'Header Part 1' },
       { name: 'headerPart2', type: 'string', label: 'Header Part 2' },
+      { name: 'headerFontFamily', type: 'enum', label: 'Header Font', options: ['Default (Serif)', 'Poppins', 'Inter', 'Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Playfair Display', 'Georgia'], description: 'Select font family' },
+      { name: 'headerFontSize', type: 'enum', label: 'Header Size', options: ['3xl', '4xl', '5xl', '6xl'] },
+      { name: 'headerFontWeight', type: 'enum', label: 'Header Weight', options: ['normal', 'medium', 'semibold', 'bold', 'extrabold'] },
       { name: 'titleColor', type: 'color', label: 'Title Color', description: 'Leave empty for auto' },
       { name: 'accentColor', type: 'color', label: 'Accent Word Color', description: 'Color for Part 2' },
       { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
@@ -2628,6 +2644,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     editableProps: [
       { name: 'headerPart1', type: 'string', label: 'Header Part 1' },
       { name: 'headerPart2', type: 'string', label: 'Header Part 2' },
+      { name: 'headerFontFamily', type: 'enum', label: 'Header Font', options: ['Default (Serif)', 'Poppins', 'Inter', 'Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Playfair Display', 'Georgia'], description: 'Select font family' },
+      { name: 'headerFontSize', type: 'enum', label: 'Header Size', options: ['3xl', '4xl', '5xl', '6xl'] },
+      { name: 'headerFontWeight', type: 'enum', label: 'Header Weight', options: ['normal', 'medium', 'semibold', 'bold', 'extrabold'] },
       { name: 'headerPart1Color', type: 'color', label: 'Header Part 1 Color' },
       { name: 'headerPart2Color', type: 'color', label: 'Header Part 2 Color' },
       { name: 'headerPart2Italic', type: 'boolean', label: 'Italic Header Part 2' },

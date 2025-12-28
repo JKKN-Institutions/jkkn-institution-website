@@ -25,8 +25,8 @@ export default async function PublicLayout({
       {/* Site Header with CMS Navigation and Logo Settings - Fixed glassmorphic */}
       <SiteHeader navigation={navigation} logoSizes={logoSizes} />
 
-      {/* Main Content - Add bottom padding for mobile navbar */}
-      <main className="flex-1 overflow-x-hidden pb-20 lg:pb-0">{children}</main>
+      {/* Main Content */}
+      <main className="flex-1 overflow-x-hidden">{children}</main>
 
       {/* Site Footer with CMS Settings */}
       <SiteFooter settings={footerSettings} />

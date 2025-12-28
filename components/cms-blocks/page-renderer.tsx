@@ -7,6 +7,10 @@ import { cn } from '@/lib/utils'
 import { applyBlockStyles, type BlockStyles } from '@/components/page-builder/utils/style-applicator'
 import { AnimationWrapper } from '@/components/cms-blocks/animations/animation-wrapper'
 import type { BlockAnimation } from '@/lib/cms/registry-types'
+import { PageTypographyProvider } from '@/lib/cms/page-typography-context'
+import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
+import { DEFAULT_FONT_FAMILY } from '@/lib/cms/page-typography-types'
+import { DynamicFontLoader } from '@/components/cms-blocks/fonts/dynamic-font-loader'
 
 interface BlockData {
   id: string
@@ -22,6 +26,8 @@ interface BlockData {
 
 interface PageRendererProps {
   blocks: BlockData[]
+  /** Page-level typography settings from cms_pages.metadata.typography */
+  pageTypography?: PageTypographySettings
 }
 
 function BlockSkeleton() {
@@ -188,15 +194,22 @@ function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?:
   )
 }
 
-export function PageRenderer({ blocks }: PageRendererProps) {
+export function PageRenderer({ blocks, pageTypography }: PageRendererProps) {
   // Filter to only visible blocks
   const visibleBlocks = blocks.filter((block) => block.is_visible)
 
+  // Get font family with fallback to default
+  const fontFamily = pageTypography?.fontFamily || DEFAULT_FONT_FAMILY
+
   if (visibleBlocks.length === 0) {
     return (
-      <div className="min-h-[50vh] flex items-center justify-center">
-        <p className="text-muted-foreground">This page has no content yet.</p>
-      </div>
+      <DynamicFontLoader fontFamily={fontFamily}>
+        <PageTypographyProvider typography={pageTypography}>
+          <div className="min-h-[50vh] flex items-center justify-center">
+            <p className="text-muted-foreground">This page has no content yet.</p>
+          </div>
+        </PageTypographyProvider>
+      </DynamicFontLoader>
     )
   }
 
@@ -204,10 +217,14 @@ export function PageRenderer({ blocks }: PageRendererProps) {
   const blockTree = buildBlockTree(visibleBlocks)
 
   return (
-    <div className="page-content">
-      {blockTree.map((block) => (
-        <RenderBlock key={block.id} block={block} />
-      ))}
-    </div>
+    <DynamicFontLoader fontFamily={fontFamily}>
+      <PageTypographyProvider typography={pageTypography}>
+        <div className="page-content">
+          {blockTree.map((block) => (
+            <RenderBlock key={block.id} block={block} />
+          ))}
+        </div>
+      </PageTypographyProvider>
+    </DynamicFontLoader>
   )
 }

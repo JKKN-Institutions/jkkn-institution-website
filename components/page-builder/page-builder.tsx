@@ -20,10 +20,12 @@ import { PropsPanel } from './properties/props-panel'
 import { SeoPanel } from './panels/seo-panel'
 import { FabPanel, type FabConfig } from './panels/fab-panel'
 import { FooterPanel } from './panels/footer-panel'
+import { PageTypographyPanel } from './panels/page-typography-panel'
 import type { FooterSettings } from '@/app/actions/cms/footer'
 import { TopToolbar } from './toolbar/top-toolbar'
 import { NavigatorPanel } from './elementor/navigator-panel'
-import { updatePageContent, updatePageSeo, updatePageFab } from '@/app/actions/cms/pages'
+import { updatePageContent, updatePageSeo, updatePageFab, updatePageTypography } from '@/app/actions/cms/pages'
+import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { updateFooterSettings } from '@/app/actions/settings'
 import { toast } from 'sonner'
 import type { BlockData } from '@/lib/cms/registry-types'
@@ -31,7 +33,7 @@ import { blocksToPageBlocks, type PageBlock } from '@/lib/cms/registry-types'
 import { cn } from '@/lib/utils'
 import { getComponentEntry, supportsChildren } from '@/lib/cms/component-registry'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Settings, Search, MessageCircle, Component, Settings2, FileText } from 'lucide-react'
+import { Settings, Search, MessageCircle, Component, Settings2, FileText, Type, PanelRightClose, PanelRightOpen } from 'lucide-react'
 import type { SeoData } from '@/lib/utils/seo-analyzer'
 import type { LayoutPreset } from '@/lib/cms/layout-presets'
 import { OfflineBanner } from '@/lib/hooks/use-network-status'
@@ -68,6 +70,7 @@ interface PageBuilderProps {
   initialSeoData?: SeoMetadata | null
   initialFabConfig?: Partial<FabConfig> | null
   initialFooterSettings?: FooterSettings | null
+  initialTypography?: Partial<PageTypographySettings> | null
 }
 
 // Drag overlay content component
@@ -89,12 +92,14 @@ function PageBuilderContent({
   initialSeoData,
   initialFabConfig,
   initialFooterSettings,
+  initialTypography,
 }: {
   pageId: string
   pageSlug: string
   initialSeoData?: SeoMetadata | null
   initialFabConfig?: Partial<FabConfig> | null
   initialFooterSettings?: FooterSettings | null
+  initialTypography?: Partial<PageTypographySettings> | null
 }) {
   // Stable ID for DndContext to prevent hydration mismatches
   const dndContextId = useId()
@@ -128,10 +133,11 @@ function PageBuilderContent({
   const { blocks, isDirty, isSaving, isPreviewMode, device } = state
 
   // Right panel tab state
-  const [rightPanelTab, setRightPanelTab] = useState<'properties' | 'seo' | 'fab' | 'footer'>('properties')
+  const [rightPanelTab, setRightPanelTab] = useState<'properties' | 'seo' | 'fab' | 'footer' | 'typography'>('properties')
   const [isSavingSeo, setIsSavingSeo] = useState(false)
   const [isSavingFab, setIsSavingFab] = useState(false)
   const [isSavingFooter, setIsSavingFooter] = useState(false)
+  const [isSavingTypography, setIsSavingTypography] = useState(false)
   const [footerSettings, setFooterSettings] = useState<FooterSettings | null>(initialFooterSettings || null)
   const [isNavigatorOpen, setIsNavigatorOpen] = useState(false)
   const [autoSaveFailCount, setAutoSaveFailCount] = useState(0)
@@ -434,6 +440,23 @@ function PageBuilderContent({
       toast.error('An error occurred while saving FAB settings')
     } finally {
       setIsSavingFab(false)
+    }
+  }, [pageId])
+
+  // Typography save handler
+  const handleSaveTypography = useCallback(async (typography: PageTypographySettings) => {
+    setIsSavingTypography(true)
+    try {
+      const result = await updatePageTypography(pageId, typography)
+      if (result.success) {
+        toast.success('Typography settings saved')
+      } else {
+        toast.error(result.message || 'Failed to save typography settings')
+      }
+    } catch {
+      toast.error('An error occurred while saving typography settings')
+    } finally {
+      setIsSavingTypography(false)
     }
   }, [pageId])
 
@@ -771,24 +794,37 @@ function PageBuilderContent({
             >
               <Tabs
                 value={rightPanelTab}
-                onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab' | 'footer')}
+                onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab' | 'footer' | 'typography')}
                 className="flex flex-col h-full min-h-0"
               >
-                <div className="border-b border-border px-2 pt-2 flex-shrink-0">
-                  <TabsList className="grid grid-cols-4 w-full">
-                    <TabsTrigger value="properties" className="flex items-center gap-1 text-xs px-1.5">
+                <div className="border-b border-border px-2 pt-2 flex-shrink-0 flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7 flex-shrink-0 hover:bg-primary/10"
+                    onClick={() => setRightPanelCollapsed(true)}
+                    title="Collapse panel (Ctrl+])"
+                  >
+                    <PanelRightOpen className="size-4" />
+                  </Button>
+                  <TabsList className="grid grid-cols-5 flex-1">
+                    <TabsTrigger value="properties" className="flex items-center gap-1 text-xs px-1">
                       <Settings className="h-3.5 w-3.5" />
                       Props
                     </TabsTrigger>
-                    <TabsTrigger value="seo" className="flex items-center gap-1 text-xs px-1.5">
+                    <TabsTrigger value="typography" className="flex items-center gap-1 text-xs px-1">
+                      <Type className="h-3.5 w-3.5" />
+                      Typo
+                    </TabsTrigger>
+                    <TabsTrigger value="seo" className="flex items-center gap-1 text-xs px-1">
                       <Search className="h-3.5 w-3.5" />
                       SEO
                     </TabsTrigger>
-                    <TabsTrigger value="fab" className="flex items-center gap-1 text-xs px-1.5">
+                    <TabsTrigger value="fab" className="flex items-center gap-1 text-xs px-1">
                       <MessageCircle className="h-3.5 w-3.5" />
                       FAB
                     </TabsTrigger>
-                    <TabsTrigger value="footer" className="flex items-center gap-1 text-xs px-1.5">
+                    <TabsTrigger value="footer" className="flex items-center gap-1 text-xs px-1">
                       <FileText className="h-3.5 w-3.5" />
                       Footer
                     </TabsTrigger>
@@ -796,6 +832,14 @@ function PageBuilderContent({
                 </div>
                 <TabsContent value="properties" className="flex-1 m-0 overflow-y-auto min-h-0">
                   <PropsPanel />
+                </TabsContent>
+                <TabsContent value="typography" className="flex-1 m-0 overflow-y-auto min-h-0">
+                  <PageTypographyPanel
+                    pageId={pageId}
+                    initialTypography={initialTypography}
+                    onSave={handleSaveTypography}
+                    isSaving={isSavingTypography}
+                  />
                 </TabsContent>
                 <TabsContent value="seo" className="flex-1 m-0 overflow-y-auto min-h-0">
                   <SeoPanel
@@ -833,31 +877,43 @@ function PageBuilderContent({
               <SheetContent side="right" className="w-full sm:w-[380px] p-0 lg:hidden">
                 <Tabs
                   value={rightPanelTab}
-                  onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab' | 'footer')}
+                  onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab' | 'footer' | 'typography')}
                   className="flex flex-col h-full min-h-0"
                 >
                   <div className="border-b border-border px-2 pt-2 flex-shrink-0">
-                    <TabsList className="grid grid-cols-4 w-full">
-                      <TabsTrigger value="properties" className="flex items-center gap-1 text-xs px-1">
-                        <Settings className="h-3.5 w-3.5" />
+                    <TabsList className="grid grid-cols-5 w-full">
+                      <TabsTrigger value="properties" className="flex items-center gap-1 text-xs px-0.5">
+                        <Settings className="h-3 w-3" />
                         Props
                       </TabsTrigger>
-                      <TabsTrigger value="seo" className="flex items-center gap-1 text-xs px-1">
-                        <Search className="h-3.5 w-3.5" />
+                      <TabsTrigger value="typography" className="flex items-center gap-1 text-xs px-0.5">
+                        <Type className="h-3 w-3" />
+                        Typo
+                      </TabsTrigger>
+                      <TabsTrigger value="seo" className="flex items-center gap-1 text-xs px-0.5">
+                        <Search className="h-3 w-3" />
                         SEO
                       </TabsTrigger>
-                      <TabsTrigger value="fab" className="flex items-center gap-1 text-xs px-1">
-                        <MessageCircle className="h-3.5 w-3.5" />
+                      <TabsTrigger value="fab" className="flex items-center gap-1 text-xs px-0.5">
+                        <MessageCircle className="h-3 w-3" />
                         FAB
                       </TabsTrigger>
-                      <TabsTrigger value="footer" className="flex items-center gap-1 text-xs px-1">
-                        <FileText className="h-3.5 w-3.5" />
-                        Footer
+                      <TabsTrigger value="footer" className="flex items-center gap-1 text-xs px-0.5">
+                        <FileText className="h-3 w-3" />
+                        Foot
                       </TabsTrigger>
                     </TabsList>
                   </div>
                   <TabsContent value="properties" className="flex-1 m-0 overflow-y-auto min-h-0">
                     <PropsPanel />
+                  </TabsContent>
+                  <TabsContent value="typography" className="flex-1 m-0 overflow-y-auto min-h-0">
+                    <PageTypographyPanel
+                      pageId={pageId}
+                      initialTypography={initialTypography}
+                      onSave={handleSaveTypography}
+                      isSaving={isSavingTypography}
+                    />
                   </TabsContent>
                   <TabsContent value="seo" className="flex-1 m-0 overflow-y-auto min-h-0">
                     <SeoPanel
@@ -926,6 +982,7 @@ export function PageBuilder({
   initialSeoData,
   initialFabConfig,
   initialFooterSettings,
+  initialTypography,
 }: PageBuilderProps) {
   const initialPage = {
     id: pageId,
@@ -942,6 +999,7 @@ export function PageBuilder({
         initialSeoData={initialSeoData}
         initialFabConfig={initialFabConfig}
         initialFooterSettings={initialFooterSettings}
+        initialTypography={initialTypography}
       />
     </PageBuilderProvider>
   )

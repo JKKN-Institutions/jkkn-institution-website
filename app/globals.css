@@ -1,4 +1,5 @@
 /* Poppins font is loaded via Next.js font optimization in layout.tsx */
+/* Additional fonts are loaded dynamically via DynamicFontLoader when needed */
 
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -59,6 +60,15 @@
 
 :root {
   --radius: 0.625rem;
+
+  /* Font Family Stacks - Used by page-level typography settings */
+  --font-stack-poppins: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-stack-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-stack-roboto: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+  --font-stack-montserrat: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  --font-stack-open-sans: 'Open Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-stack-lato: 'Lato', ui-sans-serif, system-ui, sans-serif;
+  --font-stack-playfair: 'Playfair Display', ui-serif, Georgia, serif;
 
   /* JKKN Brand Colors */
   --brand-primary: #0b6d41;
@@ -339,6 +349,33 @@
     pointer-events: none;
   }
 
+  /* Glassmorphism Card - Light variant */
+  .glass-card {
+    @apply rounded-xl;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Glassmorphism Card - Dark variant (for green backgrounds) */
+  .glass-card-dark {
+    @apply rounded-xl;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Glassmorphism hover states */
+  .glass-card:hover,
+  .glass-card-dark:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
   /* Hover glow effect */
   .hover-glow {
     @apply transition-all duration-300;
@@ -497,10 +534,10 @@
     @apply mt-4 text-base sm:text-lg opacity-80 max-w-2xl mx-auto;
   }
 
-  /* Stats number display - responsive to prevent overflow on mobile */
+  /* Stats number display - compact responsive sizing */
   .stat-number {
     font-family: var(--font-poppins), 'Poppins', sans-serif;
-    @apply text-2xl min-[400px]:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold;
+    @apply text-xl min-[400px]:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold;
   }
 
   .stat-label {
@@ -599,6 +636,23 @@
 }
 
 @layer utilities {
+  /* Page font wrapper - applies font family to all children */
+  .page-font-wrapper {
+    /* Font family is set inline via style prop */
+    /* All children inherit the font by default */
+  }
+
+  .page-font-wrapper * {
+    font-family: inherit;
+  }
+
+  /* Preserve monospace for code elements */
+  .page-font-wrapper code,
+  .page-font-wrapper pre,
+  .page-font-wrapper kbd {
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  }
+
   /* Text balance for better readability */
   .text-balance {
     text-wrap: balance;

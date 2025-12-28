@@ -32,6 +32,11 @@ export const InstitutionsGridPropsSchema = z.object({
   headerPart2Color: z.string().default('#0b6d41').describe('Color for second part of header'),
   subtitle: z.string().optional().describe('Subtitle below header'),
 
+  // Header Typography
+  headerFontFamily: z.string().optional().describe('Font family for header'),
+  headerFontSize: z.enum(['3xl', '4xl', '5xl', '6xl']).default('5xl').describe('Font size for header'),
+  headerFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold', 'extrabold']).default('bold').describe('Font weight for header'),
+
   // Institutions
   institutions: z.array(InstitutionItemSchema).default([]).describe('List of institutions'),
 
@@ -91,6 +96,9 @@ export function InstitutionsGrid({
   headerPart1Color = '#0b6d41',
   headerPart2Color = '#0b6d41',
   subtitle,
+  headerFontFamily,
+  headerFontSize = '5xl',
+  headerFontWeight = 'bold',
   institutions = [],
   columns = '3',
   gap = 'md',
@@ -163,7 +171,24 @@ export function InstitutionsGrid({
             <span>Our Institutions</span>
           </div>
 
-          <h2 className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase">
+          <h2
+            className={cn(
+              "tracking-tight mb-4 uppercase",
+              (!headerFontFamily || headerFontFamily === 'Default (Serif)') && "font-serif-heading",
+              // Font size classes
+              headerFontSize === '3xl' && "text-2xl sm:text-3xl md:text-3xl",
+              headerFontSize === '4xl' && "text-2xl sm:text-3xl md:text-4xl",
+              headerFontSize === '5xl' && "text-3xl sm:text-4xl md:text-5xl",
+              headerFontSize === '6xl' && "text-4xl sm:text-5xl md:text-6xl",
+              // Font weight classes
+              headerFontWeight === 'normal' && "font-normal",
+              headerFontWeight === 'medium' && "font-medium",
+              headerFontWeight === 'semibold' && "font-semibold",
+              headerFontWeight === 'bold' && "font-bold",
+              headerFontWeight === 'extrabold' && "font-extrabold",
+            )}
+            style={{ fontFamily: (headerFontFamily && headerFontFamily !== 'Default (Serif)') ? headerFontFamily : undefined }}
+          >
             <span style={{ color: headerPart1Color }}>{headerPart1}</span>{' '}
             <span style={{ color: headerPart2Color }}>{headerPart2}</span>
           </h2>

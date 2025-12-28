@@ -2112,3 +2112,116 @@ export async function getPageFab(pageId: string) {
 
   return data
 }
+
+/**
+ * Update page typography settings (stored in metadata.typography)
+ */
+export async function updatePageTypography(
+  pageId: string,
+  typography: {
+    title?: {
+      fontSize?: string
+      fontWeight?: string
+      fontStyle?: string
+      color?: string
+    }
+    subtitle?: {
+      fontSize?: string
+      fontWeight?: string
+      fontStyle?: string
+      color?: string
+    }
+    badge?: {
+      fontSize?: string
+      fontWeight?: string
+      fontStyle?: string
+      color?: string
+      backgroundColor?: string
+    }
+  }
+): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'cms:pages:edit')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to edit page typography' }
+  }
+
+  // Get current page metadata
+  const { data: page, error: fetchError } = await supabase
+    .from('cms_pages')
+    .select('metadata')
+    .eq('id', pageId)
+    .single()
+
+  if (fetchError) {
+    console.error('Error fetching page:', fetchError)
+    return { success: false, message: 'Failed to fetch page' }
+  }
+
+  // Merge typography into existing metadata
+  const currentMetadata = (page?.metadata as Record<string, unknown>) || {}
+  const updatedMetadata = {
+    ...currentMetadata,
+    typography,
+  }
+
+  // Update page metadata
+  const { error } = await supabase
+    .from('cms_pages')
+    .update({
+      metadata: updatedMetadata,
+      updated_by: user.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', pageId)
+
+  if (error) {
+    console.error('Error updating typography:', error)
+    return { success: false, message: 'Failed to update typography settings' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'edit_typography',
+    module: 'cms',
+    resourceType: 'page',
+    resourceId: pageId,
+    metadata: { typography },
+  })
+
+  revalidatePath(`/admin/content/pages/${pageId}`)
+
+  return { success: true, message: 'Typography settings saved' }
+}
+
+/**
+ * Get page typography settings from metadata
+ */
+export async function getPageTypography(pageId: string) {
+  const supabase = await createServerSupabaseClient()
+
+  const { data, error } = await supabase
+    .from('cms_pages')
+    .select('metadata')
+    .eq('id', pageId)
+    .single()
+
+  if (error && error.code !== 'PGRST116') {
+    console.error('Error fetching page metadata:', error)
+    return null
+  }
+
+  const metadata = data?.metadata as Record<string, unknown> | null
+  return metadata?.typography || null
+}

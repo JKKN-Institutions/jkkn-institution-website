@@ -5,7 +5,7 @@ import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import Image from 'next/image'
 import { useRef, useState, useEffect, useCallback } from 'react'
-import { Handshake, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Handshake, ChevronLeft, ChevronRight, MoveHorizontal } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
 
 /**
@@ -47,6 +47,7 @@ export const PartnersLogosPropsSchema = z.object({
   // Autoplay
   autoplay: z.boolean().default(true).describe('Enable autoplay'),
   autoplaySpeed: z.number().default(3000).describe('Autoplay speed in ms'),
+  mobileAutoplaySpeed: z.number().default(4000).describe('Autoplay speed on mobile in ms'),
 
   // Mobile settings
   enableSwipe: z.boolean().default(true).describe('Enable touch swipe on mobile'),
@@ -109,6 +110,7 @@ export function PartnersLogos({
   grayscale = false,
   autoplay = true,
   autoplaySpeed = 3000,
+  mobileAutoplaySpeed = 4000,
   enableSwipe = true,
   showNavigationDots = true,
   showNavigationArrows = true,
@@ -118,14 +120,38 @@ export function PartnersLogos({
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isPaused, setIsPaused] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [touchStart, setTouchStart] = useState(0)
-  const [touchEnd, setTouchEnd] = useState(0)
-  // Mouse drag state
+  // Touch/drag state for smooth scrolling
   const [isDragging, setIsDragging] = useState(false)
   const [dragStartX, setDragStartX] = useState(0)
   const [dragScrollLeft, setDragScrollLeft] = useState(0)
+  // Mobile detection for responsive autoplay
+  const [isMobile, setIsMobile] = useState(false)
+  // Swipe hint visibility
+  const [showSwipeHint, setShowSwipeHint] = useState(true)
+  // Velocity tracking for momentum scrolling
+  const velocityRef = useRef(0)
+  const lastMoveTimeRef = useRef(0)
+  const lastMoveXRef = useRef(0)
   const headerRef = useInView()
   const contentRef = useInView()
+
+  // Detect mobile for responsive autoplay speed
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Auto-hide swipe hint after 3 seconds
+  useEffect(() => {
+    if (!isMobile) return
+    const timer = setTimeout(() => setShowSwipeHint(false), 3000)
+    return () => clearTimeout(timer)
+  }, [isMobile])
+
+  // Use mobile speed on smaller screens
+  const currentAutoplaySpeed = isMobile ? mobileAutoplaySpeed : autoplaySpeed
 
   const isDark = variant === 'modern-dark'
   const isModern = variant !== 'classic'
@@ -166,13 +192,21 @@ export function PartnersLogos({
   }, [getCardsPerView])
 
   // Total pages for navigation dots
-  const totalPages = Math.ceil(displayPartners.length / cardsPerView)
+  // On mobile, always show 1 card at a time
+  const effectiveCardsPerView = isMobile ? 1 : cardsPerView
+  const totalPages = Math.ceil(displayPartners.length / effectiveCardsPerView)
+
+  // Get card width based on device (defined early for use in navigation)
+  const getCardWidth = useCallback(() => {
+    if (typeof window === 'undefined') return 190
+    return isMobile ? window.innerWidth - 64 : 190 // Full width minus padding on mobile
+  }, [isMobile])
 
   // Scroll to specific index
   const scrollToIndex = useCallback((index: number) => {
     if (!scrollRef.current) return
 
-    const cardWidth = 190 // Card width + gap
+    const cardWidth = getCardWidth() + 24 // Card width + gap
     const scrollPosition = index * cardWidth
 
     scrollRef.current.scrollTo({
@@ -181,58 +215,108 @@ export function PartnersLogos({
     })
 
     setCurrentIndex(index)
-  }, [])
+  }, [getCardWidth])
 
-  // Navigate to next/prev
+  // Navigate to next/prev (1 card at a time on mobile)
   const navigateNext = useCallback(() => {
-    const nextIndex = (currentIndex + cardsPerView) % displayPartners.length
-    scrollToIndex(nextIndex)
-  }, [currentIndex, cardsPerView, displayPartners.length, scrollToIndex])
+    const step = isMobile ? 1 : cardsPerView
+    const nextIndex = currentIndex + step
+    if (nextIndex >= displayPartners.length) {
+      scrollToIndex(0) // Loop back to start
+    } else {
+      scrollToIndex(nextIndex)
+    }
+  }, [currentIndex, cardsPerView, displayPartners.length, scrollToIndex, isMobile])
 
   const navigatePrev = useCallback(() => {
-    const prevIndex = currentIndex - cardsPerView
-    const newIndex = prevIndex < 0 ? displayPartners.length - cardsPerView : prevIndex
-    scrollToIndex(newIndex)
-  }, [currentIndex, cardsPerView, displayPartners.length, scrollToIndex])
-
-  // Touch handlers for swipe support
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (!enableSwipe) return
-    setTouchStart(e.targetTouches[0].clientX)
-    setIsPaused(true)
-  }
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!enableSwipe) return
-    setTouchEnd(e.targetTouches[0].clientX)
-  }
-
-  const handleTouchEnd = () => {
-    if (!enableSwipe) return
-
-    const swipeThreshold = 50
-    const swipeDistance = touchStart - touchEnd
-
-    if (Math.abs(swipeDistance) > swipeThreshold) {
-      if (swipeDistance > 0) {
-        // Swiped left - go to next
-        navigateNext()
-      } else {
-        // Swiped right - go to previous
-        navigatePrev()
-      }
+    const step = isMobile ? 1 : cardsPerView
+    const prevIndex = currentIndex - step
+    if (prevIndex < 0) {
+      scrollToIndex(displayPartners.length - 1) // Loop to end
+    } else {
+      scrollToIndex(prevIndex)
     }
+  }, [currentIndex, cardsPerView, displayPartners.length, scrollToIndex, isMobile])
 
+  // Touch handlers for smooth real-time scrolling with momentum
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (!enableSwipe || !scrollRef.current) return
+    setIsDragging(true)
+    setShowSwipeHint(false) // Hide swipe hint on first interaction
+    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    setDragStartX(x)
+    setDragScrollLeft(scrollRef.current.scrollLeft)
+    setIsPaused(true)
+    // Reset velocity tracking
+    velocityRef.current = 0
+    lastMoveTimeRef.current = Date.now()
+    lastMoveXRef.current = x
+  }, [enableSwipe])
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isDragging || !scrollRef.current) return
+    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const walk = (x - dragStartX) * 1.5 // 1.5x multiplier for natural feel
+    scrollRef.current.scrollLeft = dragScrollLeft - walk
+
+    // Calculate velocity for momentum
+    const currentTime = Date.now()
+    const timeDelta = currentTime - lastMoveTimeRef.current
+    if (timeDelta > 0) {
+      velocityRef.current = (x - lastMoveXRef.current) / timeDelta
+    }
+    lastMoveTimeRef.current = currentTime
+    lastMoveXRef.current = x
+  }, [isDragging, dragStartX, dragScrollLeft])
+
+  const handleTouchEnd = useCallback(() => {
+    setIsDragging(false)
     setIsPaused(false)
-  }
 
-  // Mouse drag handlers for desktop
+    if (!scrollRef.current) return
+
+    const cardWidth = getCardWidth() + 24 // Card width + gap
+
+    // Apply momentum if velocity is significant
+    if (Math.abs(velocityRef.current) > 0.3) {
+      const momentum = velocityRef.current * 120
+      const currentScroll = scrollRef.current.scrollLeft
+      const targetScroll = currentScroll - momentum
+      const nearestIndex = Math.round(targetScroll / cardWidth)
+      const clampedIndex = Math.max(0, Math.min(nearestIndex, displayPartners.length - 1))
+
+      scrollRef.current.scrollTo({
+        left: clampedIndex * cardWidth,
+        behavior: 'smooth'
+      })
+      setCurrentIndex(clampedIndex)
+    } else {
+      // Snap to nearest card
+      const scrollLeft = scrollRef.current.scrollLeft
+      const newIndex = Math.round(scrollLeft / cardWidth)
+      const clampedIndex = Math.max(0, Math.min(newIndex, displayPartners.length - 1))
+
+      scrollRef.current.scrollTo({
+        left: clampedIndex * cardWidth,
+        behavior: 'smooth'
+      })
+      setCurrentIndex(clampedIndex)
+    }
+  }, [getCardWidth, displayPartners.length])
+
+  // Mouse drag handlers for desktop with velocity tracking
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!scrollRef.current) return
     setIsDragging(true)
-    setDragStartX(e.pageX - scrollRef.current.offsetLeft)
+    setShowSwipeHint(false)
+    const x = e.pageX - scrollRef.current.offsetLeft
+    setDragStartX(x)
     setDragScrollLeft(scrollRef.current.scrollLeft)
     setIsPaused(true)
+    // Reset velocity tracking
+    velocityRef.current = 0
+    lastMoveTimeRef.current = Date.now()
+    lastMoveXRef.current = x
   }
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -241,43 +325,87 @@ export function PartnersLogos({
     const x = e.pageX - scrollRef.current.offsetLeft
     const walk = (x - dragStartX) * 1.5
     scrollRef.current.scrollLeft = dragScrollLeft - walk
+
+    // Calculate velocity for momentum
+    const currentTime = Date.now()
+    const timeDelta = currentTime - lastMoveTimeRef.current
+    if (timeDelta > 0) {
+      velocityRef.current = (x - lastMoveXRef.current) / timeDelta
+    }
+    lastMoveTimeRef.current = currentTime
+    lastMoveXRef.current = x
   }
 
   const handleMouseUp = () => {
+    if (!scrollRef.current) {
+      setIsDragging(false)
+      setIsPaused(false)
+      return
+    }
+
+    const cardWidth = getCardWidth() + 24
+
+    // Apply momentum if velocity is significant
+    if (Math.abs(velocityRef.current) > 0.3) {
+      const momentum = velocityRef.current * 120
+      const currentScroll = scrollRef.current.scrollLeft
+      const targetScroll = currentScroll - momentum
+      const nearestIndex = Math.round(targetScroll / cardWidth)
+      const clampedIndex = Math.max(0, Math.min(nearestIndex, displayPartners.length - 1))
+
+      scrollRef.current.scrollTo({
+        left: clampedIndex * cardWidth,
+        behavior: 'smooth'
+      })
+      setCurrentIndex(clampedIndex)
+    } else {
+      // Snap to nearest card
+      const scrollLeft = scrollRef.current.scrollLeft
+      const newIndex = Math.round(scrollLeft / cardWidth)
+      const clampedIndex = Math.max(0, Math.min(newIndex, displayPartners.length - 1))
+
+      scrollRef.current.scrollTo({
+        left: clampedIndex * cardWidth,
+        behavior: 'smooth'
+      })
+      setCurrentIndex(clampedIndex)
+    }
+
     setIsDragging(false)
     setIsPaused(false)
   }
 
   const handleMouseLeave = () => {
     if (isDragging) {
-      setIsDragging(false)
+      handleMouseUp()
     }
     setIsPaused(false)
   }
 
-  // Autoplay carousel
+  // Autoplay carousel with responsive speed
   useEffect(() => {
     if (layout !== 'carousel' || isEditing || isPaused || !autoplay) return
 
     const interval = setInterval(() => {
       navigateNext()
-    }, autoplaySpeed)
+    }, currentAutoplaySpeed)
 
     return () => clearInterval(interval)
-  }, [layout, isEditing, isPaused, autoplaySpeed, autoplay, navigateNext])
+  }, [layout, isEditing, isPaused, currentAutoplaySpeed, autoplay, navigateNext])
 
   // Update current index based on scroll position
   const handleScroll = useCallback(() => {
     if (!scrollRef.current) return
 
-    const cardWidth = 190
+    const cardWidth = getCardWidth() + 24 // Card width + gap
     const scrollLeft = scrollRef.current.scrollLeft
     const newIndex = Math.round(scrollLeft / cardWidth)
+    const clampedIndex = Math.max(0, Math.min(newIndex, displayPartners.length - 1))
 
-    if (newIndex !== currentIndex) {
-      setCurrentIndex(newIndex)
+    if (clampedIndex !== currentIndex) {
+      setCurrentIndex(clampedIndex)
     }
-  }, [currentIndex])
+  }, [currentIndex, getCardWidth, displayPartners.length])
 
   // Debounced scroll handler
   useEffect(() => {
@@ -362,7 +490,7 @@ export function PartnersLogos({
         >
           {layout === 'carousel' ? (
             <div className="relative">
-              {/* Navigation Arrows */}
+              {/* Navigation Arrows - Visible on all screens */}
               {showNavigationArrows && displayPartners.length > cardsPerView && (
                 <>
                   <button
@@ -370,35 +498,43 @@ export function PartnersLogos({
                     onMouseEnter={() => setIsPaused(true)}
                     onMouseLeave={() => setIsPaused(false)}
                     className={cn(
-                      "absolute left-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110",
-                      isDark ? "bg-white/10 backdrop-blur-sm text-white hover:bg-white/20" : "bg-white/90 backdrop-blur-sm text-gray-700 hover:bg-white",
-                      "hidden md:flex"
+                      "absolute z-20 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 active:scale-95",
+                      // Mobile: smaller, positioned at bottom
+                      "w-8 h-8 -left-1 top-1/2 -translate-y-1/2",
+                      // Desktop: larger
+                      "md:w-10 md:h-10 md:left-0",
+                      isDark ? "bg-white/10 backdrop-blur-sm text-white hover:bg-white/20" : "bg-white/90 backdrop-blur-sm text-gray-700 hover:bg-white"
                     )}
                     aria-label="Previous partners"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
                   </button>
                   <button
                     onClick={navigateNext}
                     onMouseEnter={() => setIsPaused(true)}
                     onMouseLeave={() => setIsPaused(false)}
                     className={cn(
-                      "absolute right-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110",
-                      isDark ? "bg-white/10 backdrop-blur-sm text-white hover:bg-white/20" : "bg-white/90 backdrop-blur-sm text-gray-700 hover:bg-white",
-                      "hidden md:flex"
+                      "absolute z-20 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 active:scale-95",
+                      // Mobile: smaller, positioned at bottom
+                      "w-8 h-8 -right-1 top-1/2 -translate-y-1/2",
+                      // Desktop: larger
+                      "md:w-10 md:h-10 md:right-0",
+                      isDark ? "bg-white/10 backdrop-blur-sm text-white hover:bg-white/20" : "bg-white/90 backdrop-blur-sm text-gray-700 hover:bg-white"
                     )}
                     aria-label="Next partners"
                   >
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
                   </button>
                 </>
               )}
 
-              {/* Carousel Container */}
+              {/* Carousel Container - Enhanced for mobile single-focus */}
               <div
                 ref={scrollRef}
                 className={cn(
-                  "flex gap-6 overflow-x-auto pb-4 justify-start md:justify-center",
+                  "flex gap-6 overflow-x-auto pb-4",
+                  // Mobile: center content, Desktop: center if few items
+                  isMobile ? "px-8" : "justify-center",
                   "scrollbar-hide",
                   "scroll-smooth",
                   // CSS scroll snap for better mobile UX
@@ -412,6 +548,10 @@ export function PartnersLogos({
                   // GPU acceleration
                   willChange: 'scroll-position',
                   WebkitOverflowScrolling: 'touch',
+                  // Enhanced mobile snap behavior
+                  scrollSnapStop: 'always',
+                  overscrollBehaviorX: 'contain',
+                  touchAction: 'pan-x',
                 }}
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
@@ -430,32 +570,81 @@ export function PartnersLogos({
                     grayscale={grayscale}
                     isEditing={isEditing}
                     index={index}
-                    className="flex-shrink-0 w-[170px] h-[110px] snap-center"
+                    isMobile={isMobile}
+                    className={cn(
+                      "flex-shrink-0 snap-center",
+                      // Mobile: full width card, Desktop: fixed size
+                      isMobile ? "w-[calc(100vw-64px)] h-[140px]" : "w-[170px] h-[110px]"
+                    )}
                   />
                 ))}
               </div>
 
+              {/* Swipe Hint - Mobile only */}
+              {showSwipeHint && isMobile && displayPartners.length > 1 && (
+                <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-2 text-sm text-gray-500 animate-pulse pointer-events-none">
+                  <MoveHorizontal className="w-4 h-4" />
+                  <span>Swipe to see more</span>
+                </div>
+              )}
+
+              {/* Progress Indicator - Mobile only */}
+              {isMobile && displayPartners.length > 1 && (
+                <div className="flex items-center justify-center gap-1.5 mt-4 text-sm">
+                  <span className="font-semibold text-brand-primary">
+                    {currentIndex + 1}
+                  </span>
+                  <span className="text-gray-400">of</span>
+                  <span className="text-gray-600">{displayPartners.length}</span>
+                </div>
+              )}
+
               {/* Navigation Dots */}
               {showNavigationDots && totalPages > 1 && (
-                <div className="flex items-center justify-center gap-2 mt-6">
-                  {Array.from({ length: totalPages }).map((_, index) => {
-                    const dotIndex = index * cardsPerView
-                    const isActive = currentIndex >= dotIndex && currentIndex < dotIndex + cardsPerView
+                <div className={cn(
+                  "flex items-center justify-center gap-2",
+                  isMobile ? "mt-3" : "mt-6"
+                )}>
+                  {isMobile ? (
+                    // Mobile: One dot per card
+                    displayPartners.map((_, index) => {
+                      const isActive = currentIndex === index
 
-                    return (
-                      <button
-                        key={index}
-                        onClick={() => scrollToIndex(dotIndex)}
-                        className={cn(
-                          "transition-all duration-300 rounded-full",
-                          isActive
-                            ? "w-8 h-2 bg-brand-primary"
-                            : "w-2 h-2 bg-gray-300 hover:bg-gray-400"
-                        )}
-                        aria-label={`Go to page ${index + 1}`}
-                      />
-                    )
-                  })}
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => scrollToIndex(index)}
+                          className={cn(
+                            "transition-all duration-300 rounded-full",
+                            isActive
+                              ? "w-6 h-2 bg-brand-primary scale-110"
+                              : "w-2 h-2 bg-gray-300 hover:bg-gray-400"
+                          )}
+                          aria-label={`Go to logo ${index + 1}`}
+                        />
+                      )
+                    })
+                  ) : (
+                    // Desktop: Page-based dots
+                    Array.from({ length: totalPages }).map((_, index) => {
+                      const dotIndex = index * effectiveCardsPerView
+                      const isActive = currentIndex >= dotIndex && currentIndex < dotIndex + effectiveCardsPerView
+
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => scrollToIndex(dotIndex)}
+                          className={cn(
+                            "transition-all duration-300 rounded-full",
+                            isActive
+                              ? "w-8 h-2 bg-brand-primary"
+                              : "w-2 h-2 bg-gray-300 hover:bg-gray-400"
+                          )}
+                          aria-label={`Go to page ${index + 1}`}
+                        />
+                      )
+                    })
+                  )}
                 </div>
               )}
             </div>
@@ -500,6 +689,7 @@ function PartnerCard({
   isEditing,
   className,
   index,
+  isMobile = false,
 }: {
   partner: PartnerItem
   cardStyle: 'glassmorphic' | 'bordered' | 'minimal'
@@ -508,6 +698,7 @@ function PartnerCard({
   isEditing?: boolean
   className?: string
   index: number
+  isMobile?: boolean
 }) {
   const [isHovered, setIsHovered] = useState(false)
 
@@ -538,16 +729,17 @@ function PartnerCard({
         style={{ backgroundColor: '#ffde59' }}
       />
 
-      <div className="relative z-10">
+      <div className="relative z-10 flex flex-col items-center justify-center">
         {partner.logo ? (
           <Image
             src={partner.logo}
             alt={partner.name}
-            width={120}
-            height={60}
-            sizes="120px"
+            width={isMobile ? 180 : 120}
+            height={isMobile ? 90 : 60}
+            sizes={isMobile ? "180px" : "120px"}
             className={cn(
-              'object-contain max-h-16 transition-all duration-300',
+              'object-contain transition-all duration-300',
+              isMobile ? 'max-h-20' : 'max-h-16',
               grayscale && 'grayscale group-hover:grayscale-0',
               'group-hover:scale-110'
             )}
@@ -557,7 +749,8 @@ function PartnerCard({
           <div className="text-center">
             <div
               className={cn(
-                "w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center transition-all duration-300",
+                "rounded-full mx-auto mb-2 flex items-center justify-center transition-all duration-300",
+                isMobile ? "w-16 h-16" : "w-12 h-12",
                 isHovered ? "scale-110" : "scale-100"
               )}
               style={{
@@ -566,7 +759,8 @@ function PartnerCard({
             >
               <span
                 className={cn(
-                  "text-lg font-bold transition-colors duration-300",
+                  "font-bold transition-colors duration-300",
+                  isMobile ? "text-2xl" : "text-lg",
                   isDark ? "text-white" : isHovered ? "text-gold" : "text-gray-400"
                 )}
               >
@@ -574,7 +768,8 @@ function PartnerCard({
               </span>
             </div>
             <span className={cn(
-              "text-xs line-clamp-1 transition-colors",
+              "line-clamp-1 transition-colors",
+              isMobile ? "text-sm" : "text-xs",
               isDark ? "text-white/60 group-hover:text-white" : "text-gray-500 group-hover:text-gray-700"
             )}>
               {partner.name}
@@ -598,7 +793,7 @@ function PartnerCard({
 }
 
 /**
- * Marquee Animation for Logos - Optimized
+ * Marquee Animation for Logos - Optimized with Touch Support
  */
 function MarqueeLogos({
   partners,
@@ -613,37 +808,115 @@ function MarqueeLogos({
   grayscale: boolean
   isEditing?: boolean
 }) {
-  // Duplicate partners for seamless loop
-  const duplicatedPartners = [...partners, ...partners]
+  const [isPaused, setIsPaused] = useState(false)
+
+  const handleTouchStart = () => {
+    setIsPaused(true)
+  }
+
+  const handleTouchEnd = () => {
+    // Resume animation after 2 seconds
+    setTimeout(() => setIsPaused(false), 2000)
+  }
 
   return (
-    <div className="overflow-hidden">
+    <div
+      className="relative overflow-hidden"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Marquee Track */}
       <div
-        className={cn(
-          'flex gap-6',
-          !isEditing && 'animate-marquee'
-        )}
+        className="flex w-max py-4 overflow-x-auto scrollbar-hide touch-pan-x"
         style={{
-          animation: isEditing ? 'none' : 'marquee 30s linear infinite',
-          // GPU acceleration
-          willChange: isEditing ? 'auto' : 'transform',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          WebkitOverflowScrolling: 'touch',
+          animation: isPaused || isEditing ? 'none' : 'marquee-partners 18s linear infinite',
+          willChange: isPaused || isEditing ? 'auto' : 'transform',
         }}
       >
-        {duplicatedPartners.map((partner, index) => (
-          <PartnerCard
-            key={index}
-            partner={partner}
-            cardStyle={cardStyle}
-            isDark={isDark}
-            grayscale={grayscale}
-            isEditing={isEditing}
-            index={index % partners.length}
-            className="flex-shrink-0 w-[160px] h-[100px]"
-          />
+        {/* First set */}
+        {partners.map((partner, index) => (
+          <div
+            key={`partner-1-${index}`}
+            className={cn(
+              'flex-shrink-0 w-[90px] sm:w-[120px] md:w-[150px] h-[70px] sm:h-[85px] md:h-[100px] mx-1.5 sm:mx-2 md:mx-2.5 rounded-lg md:rounded-xl',
+              'transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95',
+              cardStyle === 'glassmorphic' && isDark && 'bg-white/10 backdrop-blur-sm border border-white/20',
+              cardStyle === 'glassmorphic' && !isDark && 'bg-white/80 backdrop-blur-sm shadow-md border border-gray-100',
+              cardStyle === 'bordered' && 'bg-white border border-gray-200 hover:border-gold shadow-sm',
+              cardStyle === 'minimal' && 'bg-white shadow-sm',
+            )}
+          >
+            <div className="w-full h-full flex items-center justify-center p-2">
+              {partner.logo ? (
+                <Image
+                  src={partner.logo}
+                  alt={partner.name}
+                  width={100}
+                  height={60}
+                  className={cn(
+                    'object-contain max-h-[50px] sm:max-h-[60px] md:max-h-[70px] w-auto',
+                    grayscale && 'grayscale hover:grayscale-0'
+                  )}
+                  loading="lazy"
+                />
+              ) : (
+                <span className={cn(
+                  'text-[8px] sm:text-[9px] md:text-xs font-bold text-center leading-tight',
+                  isDark ? 'text-white' : 'text-gray-700'
+                )}>
+                  {partner.name}
+                </span>
+              )}
+            </div>
+          </div>
+        ))}
+        {/* Duplicate set for seamless loop */}
+        {partners.map((partner, index) => (
+          <div
+            key={`partner-2-${index}`}
+            className={cn(
+              'flex-shrink-0 w-[90px] sm:w-[120px] md:w-[150px] h-[70px] sm:h-[85px] md:h-[100px] mx-1.5 sm:mx-2 md:mx-2.5 rounded-lg md:rounded-xl',
+              'transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95',
+              cardStyle === 'glassmorphic' && isDark && 'bg-white/10 backdrop-blur-sm border border-white/20',
+              cardStyle === 'glassmorphic' && !isDark && 'bg-white/80 backdrop-blur-sm shadow-md border border-gray-100',
+              cardStyle === 'bordered' && 'bg-white border border-gray-200 hover:border-gold shadow-sm',
+              cardStyle === 'minimal' && 'bg-white shadow-sm',
+            )}
+          >
+            <div className="w-full h-full flex items-center justify-center p-2">
+              {partner.logo ? (
+                <Image
+                  src={partner.logo}
+                  alt={partner.name}
+                  width={100}
+                  height={60}
+                  className={cn(
+                    'object-contain max-h-[50px] sm:max-h-[60px] md:max-h-[70px] w-auto',
+                    grayscale && 'grayscale hover:grayscale-0'
+                  )}
+                  loading="lazy"
+                />
+              ) : (
+                <span className={cn(
+                  'text-[8px] sm:text-[9px] md:text-xs font-bold text-center leading-tight',
+                  isDark ? 'text-white' : 'text-gray-700'
+                )}>
+                  {partner.name}
+                </span>
+              )}
+            </div>
+          </div>
         ))}
       </div>
+
+      {/* CSS Animation Keyframes */}
       <style jsx>{`
-        @keyframes marquee {
+        @keyframes marquee-partners {
           0% {
             transform: translateX(0);
           }

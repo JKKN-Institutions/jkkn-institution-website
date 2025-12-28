@@ -28,6 +28,7 @@ import type {
   TrustRecognitionBadge,
 } from '@/lib/cms/registry-types'
 import { DecorativePatterns, CurveDivider } from '../shared/decorative-patterns'
+import { useSectionTypography } from '@/lib/cms/hooks/use-section-typography'
 
 // Icon mapping for Lucide icons
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -91,6 +92,13 @@ function SectionHeader({
   titleColor,
   subtitleColor,
   accentColor,
+  headerFontFamily,
+  headerFontSize = '5xl',
+  headerFontWeight = 'bold',
+  titleTypoClassName,
+  subtitleTypoClassName,
+  titleFontFamily,
+  subtitleFontFamily,
 }: {
   badge: string
   title: string
@@ -103,6 +111,13 @@ function SectionHeader({
   titleColor?: string
   subtitleColor?: string
   accentColor?: string
+  headerFontFamily?: string
+  headerFontSize?: '3xl' | '4xl' | '5xl' | '6xl'
+  headerFontWeight?: 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold'
+  titleTypoClassName?: string
+  subtitleTypoClassName?: string
+  titleFontFamily?: string
+  subtitleFontFamily?: string
 }) {
   // Parse title for accent word styling
   const titleParts = useMemo(() => {
@@ -143,12 +158,31 @@ function SectionHeader({
 
       {/* Title with accent word */}
       <h2
-        className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4"
-        style={{ color: titleColor || (isDark ? '#ffffff' : '#1f2937') }}
+        className={cn(
+          "tracking-tight mb-4 uppercase font-serif-heading",
+          // Use page typography className if provided, otherwise use local font size/weight
+          titleTypoClassName || cn(
+            // Font size classes
+            headerFontSize === '3xl' && "text-2xl sm:text-3xl md:text-3xl",
+            headerFontSize === '4xl' && "text-2xl sm:text-3xl md:text-4xl",
+            headerFontSize === '5xl' && "text-3xl sm:text-4xl md:text-5xl",
+            headerFontSize === '6xl' && "text-4xl sm:text-5xl md:text-6xl",
+            // Font weight classes
+            headerFontWeight === 'normal' && "font-normal",
+            headerFontWeight === 'medium' && "font-medium",
+            headerFontWeight === 'semibold' && "font-semibold",
+            headerFontWeight === 'bold' && "font-bold",
+            headerFontWeight === 'extrabold' && "font-extrabold",
+          ),
+        )}
+        style={{
+          color: titleColor || (isDark ? '#ffffff' : '#1f2937'),
+          fontFamily: "'Poppins', sans-serif",
+        }}
       >
         {titleParts.before}
         {titleParts.accent && (
-          <span className="italic" style={{ color: accentColor || '#D4AF37' }}> {titleParts.accent}</span>
+          <span style={{ color: accentColor || '#D4AF37' }}> {titleParts.accent}</span>
         )}
         {titleParts.after}
       </h2>
@@ -156,8 +190,11 @@ function SectionHeader({
       {/* Subtitle */}
       {subtitle && (
         <p
-          className="text-lg sm:text-xl mb-4"
-          style={{ color: subtitleColor || (isDark ? 'rgba(255,255,255,0.8)' : '#4b5563') }}
+          className={cn(subtitleTypoClassName || "text-lg sm:text-xl", "mb-4")}
+          style={{
+            color: subtitleColor || (isDark ? 'rgba(255,255,255,0.8)' : '#4b5563'),
+            fontFamily: subtitleFontFamily,
+          }}
         >
           {subtitle}
         </p>
@@ -434,16 +471,30 @@ export default function AccreditationsSection({
   titleColor,
   subtitleColor,
   accentColor,
+  headerFontFamily,
+  headerFontSize = '5xl',
+  headerFontWeight = 'bold',
 }: AccreditationsSectionProps) {
   const [isVisible, setIsVisible] = useState(!showAnimations || isEditing)
   const sectionRef = useRef<HTMLElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isPaused, setIsPaused] = useState(false)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const autoplaySpeed = 4000 // Same as Latest Buzz for consistency
+
+  // Get page-level typography with block overrides
+  const { title: titleTypo, subtitle: subtitleTypo, badge: badgeTypo } = useSectionTypography({
+    titleColor,
+    subtitleColor,
+  })
 
   // Drag state for carousel
   const [isDragging, setIsDragging] = useState(false)
   const [dragStartX, setDragStartX] = useState(0)
   const [dragScrollLeft, setDragScrollLeft] = useState(0)
+
+  // Card dimensions for calculations
+  const cardWidth = 180 // Card width + gap
 
   // Mouse drag handlers
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
@@ -458,43 +509,106 @@ export default function AccreditationsSection({
     if (!isDragging || !scrollRef.current) return
     e.preventDefault()
     const x = e.pageX - scrollRef.current.offsetLeft
-    const walk = (x - dragStartX) * 1.5
+    const walk = (x - dragStartX) * 1.5 // 1.5x multiplier for natural feel
     scrollRef.current.scrollLeft = dragScrollLeft - walk
   }, [isDragging, dragStartX, dragScrollLeft])
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false)
     setIsPaused(false)
-  }, [])
+    // Update current index based on scroll position
+    if (scrollRef.current) {
+      const newIndex = Math.round(scrollRef.current.scrollLeft / cardWidth)
+      setCurrentIndex(newIndex)
+    }
+  }, [cardWidth])
 
-  // Touch handlers
+  // Touch handlers for smooth real-time scrolling
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (!scrollRef.current) return
     setIsDragging(true)
     setDragStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
     setDragScrollLeft(scrollRef.current.scrollLeft)
+    setIsPaused(true)
   }, [])
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isDragging || !scrollRef.current) return
     const x = e.touches[0].pageX - scrollRef.current.offsetLeft
-    const walk = (x - dragStartX) * 1.5
+    const walk = (x - dragStartX) * 1.5 // 1.5x multiplier for natural feel
     scrollRef.current.scrollLeft = dragScrollLeft - walk
   }, [isDragging, dragStartX, dragScrollLeft])
 
   const handleTouchEnd = useCallback(() => {
     setIsDragging(false)
-  }, [])
+    setIsPaused(false)
+    // Update current index based on scroll position for dots
+    if (scrollRef.current) {
+      const newIndex = Math.round(scrollRef.current.scrollLeft / cardWidth)
+      setCurrentIndex(newIndex)
+    }
+  }, [cardWidth])
 
-  // Navigation
-  const scrollTo = useCallback((direction: 'left' | 'right') => {
+  // Navigation functions
+  const navigateNext = useCallback(() => {
     if (!scrollRef.current) return
-    const scrollAmount = 180
-    scrollRef.current.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth'
-    })
-  }, [])
+    scrollRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' })
+  }, [cardWidth])
+
+  const navigatePrev = useCallback(() => {
+    if (!scrollRef.current) return
+    scrollRef.current.scrollBy({ left: -cardWidth, behavior: 'smooth' })
+  }, [cardWidth])
+
+  const scrollToIndex = useCallback((index: number) => {
+    if (!scrollRef.current) return
+    scrollRef.current.scrollTo({ left: index * cardWidth, behavior: 'smooth' })
+    setCurrentIndex(index)
+  }, [cardWidth])
+
+  // Autoplay for slider layout
+  useEffect(() => {
+    if (cardLayout !== 'slider' || isEditing || isPaused) return
+
+    const interval = setInterval(() => {
+      if (scrollRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
+
+        if (scrollLeft + clientWidth >= scrollWidth - 10) {
+          // Reset to beginning
+          scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' })
+          setCurrentIndex(0)
+        } else {
+          scrollRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' })
+        }
+      }
+    }, autoplaySpeed)
+
+    return () => clearInterval(interval)
+  }, [cardLayout, isEditing, isPaused, autoplaySpeed, cardWidth])
+
+  // Update current index on scroll
+  useEffect(() => {
+    const scrollContainer = scrollRef.current
+    if (!scrollContainer) return
+
+    let timeoutId: NodeJS.Timeout
+    const handleScroll = () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => {
+        const newIndex = Math.round(scrollContainer.scrollLeft / cardWidth)
+        if (newIndex !== currentIndex) {
+          setCurrentIndex(newIndex)
+        }
+      }, 100)
+    }
+
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      scrollContainer.removeEventListener('scroll', handleScroll)
+      clearTimeout(timeoutId)
+    }
+  }, [currentIndex, cardWidth])
 
   // Sort cards and badges by order
   const sortedCards = useMemo(
@@ -576,96 +690,91 @@ export default function AccreditationsSection({
           isDark={isDark}
           isVisible={isVisible}
           showAnimations={showAnimations}
-          titleColor={titleColor}
-          subtitleColor={subtitleColor}
+          titleColor={titleTypo.style.color as string | undefined || titleColor}
+          subtitleColor={subtitleTypo.style.color as string | undefined || subtitleColor}
           accentColor={accentColor}
+          headerFontFamily={headerFontFamily}
+          headerFontSize={headerFontSize}
+          headerFontWeight={headerFontWeight}
+          titleTypoClassName={titleTypo.className}
+          subtitleTypoClassName={subtitleTypo.className}
+          titleFontFamily={titleTypo.style.fontFamily as string | undefined}
+          subtitleFontFamily={subtitleTypo.style.fontFamily as string | undefined}
         />
 
-        {/* Accreditation Cards - Auto-scroll Marquee Layout */}
+        {/* Accreditation Cards - Infinite Loop Marquee (Mobile + Desktop) */}
         {showAccreditationCards && sortedCards.length > 0 && cardLayout === 'slider' && (
           <div
             className="relative mb-12 lg:mb-16 overflow-hidden"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
+            onTouchStart={() => setIsPaused(true)}
+            onTouchEnd={() => {
+              // Resume animation after a short delay when touch ends
+              setTimeout(() => setIsPaused(false), 2000)
+            }}
           >
-            {/* Gradient Overlays for fade effect */}
-            <div className={cn(
-              'absolute left-0 top-0 bottom-0 w-20 z-10 pointer-events-none',
-              isDark
-                ? 'bg-gradient-to-r from-[#0b6d41] to-transparent'
-                : 'bg-gradient-to-r from-white to-transparent'
-            )} />
-            <div className={cn(
-              'absolute right-0 top-0 bottom-0 w-20 z-10 pointer-events-none',
-              isDark
-                ? 'bg-gradient-to-l from-[#0b6d41] to-transparent'
-                : 'bg-gradient-to-l from-white to-transparent'
-            )} />
-
-            {/* Auto-scrolling Marquee */}
+            {/* Marquee Track */}
             <div
-              className={cn(
-                'flex gap-4 py-4',
-                isPaused ? '' : 'animate-marquee-slow'
-              )}
+              className="flex w-max py-4"
               style={{
-                animationPlayState: isPaused ? 'paused' : 'running',
+                animation: isPaused ? 'none' : 'marquee-accreditations 18s linear infinite',
               }}
             >
               {/* First set of cards */}
               {sortedCards.map((card, index) => (
                 <div
-                  key={`logo-1-${index}`}
+                  key={`card-1-${index}`}
                   className={cn(
-                    'flex-shrink-0 w-[140px] sm:w-[160px] h-[100px] sm:h-[110px] p-4 rounded-xl flex flex-col items-center justify-center gap-2',
+                    'flex-shrink-0 w-[90px] sm:w-[120px] md:w-[150px] h-[80px] sm:h-[90px] md:h-[105px] p-2 sm:p-2.5 md:p-3.5 rounded-lg md:rounded-xl flex flex-col items-center justify-center gap-1 md:gap-2 mx-1.5 sm:mx-2 md:mx-2.5',
                     'transition-all duration-300',
-                    'hover:scale-105 hover:-translate-y-1',
+                    'hover:scale-105 hover:-translate-y-1 active:scale-95',
                     isDark
                       ? 'bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/15'
                       : 'bg-white shadow-md border border-primary/10 hover:shadow-lg hover:border-primary/30'
                   )}
                 >
                   <div className={cn(
-                    'w-12 h-12 rounded-xl flex items-center justify-center',
+                    'w-7 h-7 sm:w-8 sm:h-8 md:w-11 md:h-11 rounded-lg flex items-center justify-center',
                     isDark ? 'bg-gold/20 text-gold' : 'bg-primary/10 text-primary'
                   )}>
                     {(() => {
                       const IconComp = getIconComponent(card.icon)
-                      return <IconComp className="w-6 h-6" strokeWidth={1.5} />
+                      return <IconComp className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" strokeWidth={1.5} />
                     })()}
                   </div>
                   <span className={cn(
-                    'text-xs sm:text-sm font-bold text-center line-clamp-1',
+                    'text-[8px] sm:text-[9px] md:text-xs font-bold text-center leading-tight',
                     isDark ? 'text-white' : 'text-primary'
                   )}>
                     {card.name}
                   </span>
                 </div>
               ))}
-              {/* Duplicate for seamless loop */}
+              {/* Duplicate set for seamless loop */}
               {sortedCards.map((card, index) => (
                 <div
-                  key={`logo-2-${index}`}
+                  key={`card-2-${index}`}
                   className={cn(
-                    'flex-shrink-0 w-[140px] sm:w-[160px] h-[100px] sm:h-[110px] p-4 rounded-xl flex flex-col items-center justify-center gap-2',
+                    'flex-shrink-0 w-[90px] sm:w-[120px] md:w-[150px] h-[80px] sm:h-[90px] md:h-[105px] p-2 sm:p-2.5 md:p-3.5 rounded-lg md:rounded-xl flex flex-col items-center justify-center gap-1 md:gap-2 mx-1.5 sm:mx-2 md:mx-2.5',
                     'transition-all duration-300',
-                    'hover:scale-105 hover:-translate-y-1',
+                    'hover:scale-105 hover:-translate-y-1 active:scale-95',
                     isDark
                       ? 'bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/15'
                       : 'bg-white shadow-md border border-primary/10 hover:shadow-lg hover:border-primary/30'
                   )}
                 >
                   <div className={cn(
-                    'w-12 h-12 rounded-xl flex items-center justify-center',
+                    'w-7 h-7 sm:w-8 sm:h-8 md:w-11 md:h-11 rounded-lg flex items-center justify-center',
                     isDark ? 'bg-gold/20 text-gold' : 'bg-primary/10 text-primary'
                   )}>
                     {(() => {
                       const IconComp = getIconComponent(card.icon)
-                      return <IconComp className="w-6 h-6" strokeWidth={1.5} />
+                      return <IconComp className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" strokeWidth={1.5} />
                     })()}
                   </div>
                   <span className={cn(
-                    'text-xs sm:text-sm font-bold text-center line-clamp-1',
+                    'text-[8px] sm:text-[9px] md:text-xs font-bold text-center leading-tight',
                     isDark ? 'text-white' : 'text-primary'
                   )}>
                     {card.name}
@@ -674,14 +783,15 @@ export default function AccreditationsSection({
               ))}
             </div>
 
-            {/* CSS Animation */}
+            {/* CSS Animation Keyframes */}
             <style jsx>{`
-              @keyframes marquee-slow {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(-50%); }
-              }
-              .animate-marquee-slow {
-                animation: marquee-slow 30s linear infinite;
+              @keyframes marquee-accreditations {
+                0% {
+                  transform: translateX(0);
+                }
+                100% {
+                  transform: translateX(-50%);
+                }
               }
             `}</style>
           </div>

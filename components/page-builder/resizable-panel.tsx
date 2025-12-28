@@ -33,7 +33,13 @@ export function ResizablePanel({
 }: ResizablePanelProps) {
   const [width, setWidth] = useState(defaultWidth)
   const [isResizing, setIsResizing] = useState(false)
+  const [hasMounted, setHasMounted] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
+
+  // Mark as mounted after first render to avoid hydration mismatch
+  useEffect(() => {
+    setHasMounted(true)
+  }, [])
 
   // Load saved width from localStorage on mount
   useEffect(() => {
@@ -99,24 +105,27 @@ export function ResizablePanel({
     }
   }, [isResizing, handleMouseMove, handleMouseUp])
 
+  // Use non-collapsed state on server to avoid hydration mismatch
+  // The collapsed state from localStorage will be applied after mount
+  const isCollapsed = hasMounted ? collapsed : false
+
   // Get toggle button icon based on side and collapsed state
+  // When collapsed: show "close" icon (panel with arrow pointing inward = click to expand)
+  // When expanded: show "open" icon (panel with arrow pointing outward = click to collapse)
   const getToggleIcon = () => {
     if (side === 'left') {
-      return collapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />
+      return isCollapsed ? <PanelLeftClose className="size-4" /> : <PanelLeftOpen className="size-4" />
     }
-    return collapsed ? <PanelRightOpen className="h-4 w-4" /> : <PanelRightClose className="h-4 w-4" />
+    return isCollapsed ? <PanelRightClose className="size-4" /> : <PanelRightOpen className="size-4" />
   }
 
   // Get tooltip text
   const getTooltipText = () => {
-    if (side === 'left') {
-      return collapsed ? 'Expand panel' : 'Collapse panel'
-    }
-    return collapsed ? 'Expand panel' : 'Collapse panel'
+    return isCollapsed ? 'Expand panel' : 'Collapse panel'
   }
 
   // Actual width to use
-  const actualWidth = collapsed ? collapsedWidth : width
+  const actualWidth = isCollapsed ? collapsedWidth : width
 
   return (
     <TooltipProvider>
@@ -124,7 +133,7 @@ export function ResizablePanel({
         ref={panelRef}
         className={cn(
           'relative flex flex-col transition-[width,min-width,max-width] duration-200 ease-in-out',
-          collapsed && 'overflow-hidden',
+          isCollapsed && 'overflow-hidden',
           className
         )}
         style={{
@@ -134,7 +143,7 @@ export function ResizablePanel({
         }}
       >
         {/* Collapsed state - show only toggle button */}
-        {collapsed ? (
+        {isCollapsed ? (
           <div className="flex flex-col h-full items-center justify-start pt-3 bg-card">
             <Tooltip>
               <TooltipTrigger asChild>
@@ -154,12 +163,11 @@ export function ResizablePanel({
           </div>
         ) : (
           <>
-            {/* Toggle button in expanded state */}
-            {onToggle && (
-              <div className={cn(
-                'absolute top-2 z-50',
-                side === 'left' ? 'right-2' : 'left-2'
-              )}>
+            {children}
+
+            {/* Toggle button in expanded state - only show for left panel to avoid tab overlap */}
+            {onToggle && side === 'left' && (
+              <div className="absolute top-2 right-2 z-40">
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
@@ -171,14 +179,12 @@ export function ResizablePanel({
                       {getToggleIcon()}
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent side={side === 'left' ? 'right' : 'left'}>
+                  <TooltipContent side="right">
                     {getTooltipText()}
                   </TooltipContent>
                 </Tooltip>
               </div>
             )}
-
-            {children}
 
             {/* Resize Handle */}
             <div

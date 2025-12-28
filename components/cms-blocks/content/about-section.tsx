@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, GraduationCap } from 'lucide-react'
 import { DecorativePatterns, GoldRing, CurveDivider } from '../shared/decorative-patterns'
+import { useSectionTypography } from '@/lib/cms/hooks/use-section-typography'
 
 /**
  * AboutSection props schema
@@ -76,6 +77,10 @@ export const AboutSectionPropsSchema = z.object({
   titleColor: z.string().optional().describe('Main title color'),
   subtitleColor: z.string().optional().describe('Subtitle color'),
   accentColor: z.string().optional().describe('Accent word color'),
+
+  // Typography Fonts
+  headerPart1Font: z.string().optional().describe('Font family for header part 1'),
+  headerPart2Font: z.string().optional().describe('Font family for header part 2'),
 })
 
 export type AboutSectionProps = z.infer<typeof AboutSectionPropsSchema> & BaseBlockProps
@@ -162,6 +167,8 @@ export function AboutSection({
   titleColor,
   subtitleColor,
   accentColor,
+  headerPart1Font,
+  headerPart2Font,
   className,
   isEditing,
 }: AboutSectionProps) {
@@ -171,6 +178,12 @@ export function AboutSection({
   const statsRef = useInView()
   const storyRef = useInView()
   const milestonesRef = useInView()
+
+  // Get page-level typography with block overrides
+  const { title: titleTypo, subtitle: subtitleTypo, badge: badgeTypo } = useSectionTypography({
+    titleColor,
+    subtitleColor,
+  })
 
   const isDark = variant === 'modern-dark'
   const isModern = variant !== 'classic'
@@ -217,17 +230,36 @@ The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 19
               headerRef.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             )}
           >
-            <span className="badge-gold mb-6 inline-block">{badge}</span>
+            <span
+            className={cn("badge-gold mb-6 inline-block", badgeTypo.className)}
+            style={badgeTypo.style}
+          >
+            {badge}
+          </span>
 
             {/* Header */}
             <h2
-              className="font-serif-heading text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-4 uppercase"
-              style={{ color: titleColor || (isDark ? '#ffffff' : '#1f2937') }}
+              className={cn(
+                "tracking-tight mb-4 uppercase",
+                titleTypo.className,
+                !headerPart1Font && !headerPart2Font && "font-serif-heading"
+              )}
             >
-              {headerPart1}{' '}
               <span
-                className="italic"
-                style={{ color: accentColor || (isDark ? '#D4AF37' : '#0b6d41') }}
+                style={{
+                  color: titleTypo.style.color || (isDark ? '#ffffff' : '#1f2937'),
+                  fontFamily: headerPart1Font || undefined,
+                }}
+              >
+                {headerPart1}
+              </span>{' '}
+              <span
+                className={cn(!headerPart2Font && "italic")}
+                style={{
+                  color: accentColor || (isDark ? '#D4AF37' : '#0b6d41'),
+                  fontFamily: headerPart2Font || undefined,
+                  fontStyle: headerPart2Font ? 'normal' : 'italic',
+                }}
               >
                 {headerPart2}
               </span>
@@ -235,8 +267,10 @@ The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 19
 
             {subtitle && (
               <p
-                className="text-lg md:text-xl max-w-2xl mx-auto"
-                style={{ color: subtitleColor || (isDark ? 'rgba(255,255,255,0.7)' : '#4b5563') }}
+                className={cn("max-w-2xl mx-auto", subtitleTypo.className)}
+                style={{
+                  color: subtitleTypo.style.color || (isDark ? 'rgba(255,255,255,0.7)' : '#4b5563'),
+                }}
               >
                 {subtitle}
               </p>

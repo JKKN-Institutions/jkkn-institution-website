@@ -371,11 +371,63 @@ function EnumField({ config, value, onChange }: FieldProps) {
 }
 
 /**
+ * Validates and normalizes a hex color value
+ * Ensures the color is in proper 6-digit format (#RRGGBB)
+ */
+function normalizeHexColor(color: string): string {
+  if (!color || typeof color !== 'string') return '#000000'
+
+  // Remove any whitespace and ensure lowercase
+  color = color.trim().toLowerCase()
+
+  // Add # if missing
+  if (!color.startsWith('#')) {
+    color = '#' + color
+  }
+
+  // Remove the # for processing
+  const hex = color.slice(1)
+
+  // Handle different formats
+  if (hex.length === 3) {
+    // 3-digit shorthand (#RGB -> #RRGGBB)
+    return '#' + hex.split('').map(c => c + c).join('')
+  } else if (hex.length === 4) {
+    // 4-digit shorthand with alpha (#RGBA -> #RRGGBB, ignore alpha)
+    // Extract just the RGB portion and expand
+    return '#' + hex.slice(0, 3).split('').map(c => c + c).join('')
+  } else if (hex.length === 6) {
+    // Already 6 digits, valid format
+    return '#' + hex
+  } else if (hex.length === 8) {
+    // 8-digit with alpha (#RRGGBBAA -> #RRGGBB)
+    return '#' + hex.slice(0, 6)
+  }
+
+  // For invalid lengths, pad with zeros or truncate to 6 chars
+  if (hex.length < 6) {
+    return '#' + hex.padEnd(6, '0')
+  }
+  return '#' + hex.slice(0, 6)
+}
+
+/**
+ * Checks if a string is a valid hex color
+ */
+function isValidHexColor(color: string): boolean {
+  if (!color || typeof color !== 'string') return false
+  const hex = color.startsWith('#') ? color.slice(1) : color
+  return /^[0-9a-fA-F]{3,8}$/.test(hex)
+}
+
+/**
  * Enhanced Color Field with Brand Color Swatches
  * Shows brand colors organized by category for quick selection
  */
 function ColorField({ config, value, onChange }: FieldProps) {
-  const colorValue = (value as string) || '#000000'
+  const rawValue = (value as string) || ''
+  const colorValue = rawValue ? normalizeHexColor(rawValue) : '#000000'
+  const hasInvalidInput = rawValue && rawValue !== colorValue && rawValue.length > 0
 
   // Group brand colors by category
   const primaryColors = BRAND_COLORS.filter(c => c.category === 'primary')
@@ -489,13 +541,34 @@ function ColorField({ config, value, onChange }: FieldProps) {
             style={{ backgroundColor: colorValue }}
           />
         </div>
-        <Input
-          type="text"
-          value={colorValue}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="#000000"
-          className="flex-1 bg-background/50 border-border/50 font-mono text-sm"
-        />
+        <div className="flex-1 space-y-1">
+          <Input
+            type="text"
+            value={rawValue || colorValue}
+            onChange={(e) => {
+              const val = e.target.value
+              // Auto-normalize when input loses focus, but keep raw value while typing
+              onChange(val)
+            }}
+            onBlur={(e) => {
+              // Normalize on blur to clean up incomplete values
+              const val = e.target.value
+              if (val && val !== normalizeHexColor(val)) {
+                onChange(normalizeHexColor(val))
+              }
+            }}
+            placeholder="#000000"
+            className={cn(
+              "bg-background/50 border-border/50 font-mono text-sm",
+              hasInvalidInput && "border-yellow-500 focus-visible:ring-yellow-500"
+            )}
+          />
+          {hasInvalidInput && (
+            <p className="text-[10px] text-yellow-600">
+              Incomplete color. Will normalize to: {colorValue}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   )

@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
 import { getPublishedLifeAtJKKNItems, type LifeAtJKKNItem } from '@/app/actions/cms/life-at-jkkn'
+import { useSectionTypography } from '@/lib/cms/hooks/use-section-typography'
 
 /**
  * Life item schema
@@ -39,6 +40,11 @@ export const LifeAtJKKNPropsSchema = z.object({
   headerPart1Color: z.string().default('#0b6d41').describe('Color for first part of header'),
   headerPart2Color: z.string().default('#0b6d41').describe('Color for second part of header'),
   subtitle: z.string().optional().describe('Subtitle below header'),
+
+  // Header Typography
+  headerFontFamily: z.string().optional().describe('Font family for header'),
+  headerFontSize: z.enum(['3xl', '4xl', '5xl', '6xl']).default('5xl').describe('Font size for header'),
+  headerFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold', 'extrabold']).default('bold').describe('Font weight for header'),
 
   // Life items
   items: z.array(LifeItemSchema).default([]).describe('List of campus life items'),
@@ -111,6 +117,9 @@ export function LifeAtJKKN({
   headerPart1Color = '#0b6d41',
   headerPart2Color = '#0b6d41',
   subtitle,
+  headerFontFamily,
+  headerFontSize = '5xl',
+  headerFontWeight = 'bold',
   items = [],
   layout = 'masonry',
   columns = '3',
@@ -134,6 +143,12 @@ export function LifeAtJKKN({
   const [isLoading, setIsLoading] = useState(false)
   const headerRef = useInView()
   const contentRef = useInView()
+
+  // Get page-level typography with block overrides
+  const { title: titleTypo, subtitle: subtitleTypo, badge: badgeTypo } = useSectionTypography({
+    titleColor: headerPart1Color,
+    subtitleColor: undefined,
+  })
 
   // Fetch items from database when no items provided and not editing
   useEffect(() => {
@@ -286,14 +301,35 @@ export function LifeAtJKKN({
             <span>Campus Experience</span>
           </div>
 
-          <h2 className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase">
-            <span style={{ color: headerPart1Color }}>{headerPart1}</span>{' '}
+          <h2
+            className={cn(
+              "tracking-tight mb-4 uppercase",
+              (!headerFontFamily || headerFontFamily === 'Default (Serif)') && "font-serif-heading",
+              // Use page typography className if available
+              titleTypo.className || cn(
+                // Font size classes
+                headerFontSize === '3xl' && "text-2xl sm:text-3xl md:text-3xl",
+                headerFontSize === '4xl' && "text-2xl sm:text-3xl md:text-4xl",
+                headerFontSize === '5xl' && "text-3xl sm:text-4xl md:text-5xl",
+                headerFontSize === '6xl' && "text-4xl sm:text-5xl md:text-6xl",
+                // Font weight classes
+                headerFontWeight === 'normal' && "font-normal",
+                headerFontWeight === 'medium' && "font-medium",
+                headerFontWeight === 'semibold' && "font-semibold",
+                headerFontWeight === 'bold' && "font-bold",
+                headerFontWeight === 'extrabold' && "font-extrabold",
+              ),
+            )}
+            style={{ fontFamily: (headerFontFamily && headerFontFamily !== 'Default (Serif)') ? headerFontFamily : undefined }}
+          >
+            <span style={{ color: titleTypo.style.color || headerPart1Color }}>{headerPart1}</span>{' '}
             <span style={{ color: headerPart2Color }}>{headerPart2}</span>
           </h2>
 
           {subtitle && (
             <p className={cn(
-              "text-lg md:text-xl max-w-3xl mx-auto",
+              "max-w-3xl mx-auto",
+              subtitleTypo.className || "text-lg md:text-xl",
               isDark ? "text-white/70" : "text-gray-600"
             )}>
               {subtitle}

@@ -2,21 +2,10 @@
 
 import { useEffect, useRef, useState, useMemo } from 'react'
 import { cn } from '@/lib/utils'
-import { Plus, Minus, HelpCircle, MessageCircle } from 'lucide-react'
+import { Plus, Minus } from 'lucide-react'
 import type { FAQSectionProps, FAQItem } from '@/lib/cms/registry-types'
 import { DecorativePatterns, CurveDivider } from '../shared/decorative-patterns'
-
-// Category configuration with labels
-const CATEGORIES = [
-  { key: 'general', label: 'General' },
-  { key: 'admissions', label: 'Admissions' },
-  { key: 'academics', label: 'Academics' },
-  { key: 'facilities', label: 'Facilities' },
-  { key: 'placements', label: 'Placements' },
-  { key: 'fees', label: 'Fees & Scholarships' },
-] as const
-
-type CategoryKey = (typeof CATEGORIES)[number]['key']
+import { useSectionTypography } from '@/lib/cms/hooks/use-section-typography'
 
 export default function FAQSectionBlock({
   badge = 'FAQ',
@@ -36,9 +25,14 @@ export default function FAQSectionBlock({
   isEditing = false,
 }: FAQSectionProps) {
   const [isVisible, setIsVisible] = useState(!showAnimations || isEditing)
-  const [activeCategory, setActiveCategory] = useState<CategoryKey>('general')
   const [openItem, setOpenItem] = useState<number | null>(null)
   const sectionRef = useRef<HTMLElement>(null)
+
+  // Get page-level typography with block overrides
+  const { title: titleTypo, subtitle: subtitleTypo } = useSectionTypography({
+    titleColor,
+    subtitleColor,
+  })
 
   // Parse title into headerPart1 and headerPart2 for gold italic effect
   const titleParts = useMemo(() => {
@@ -75,32 +69,6 @@ export default function FAQSectionBlock({
 
     return () => observer.disconnect()
   }, [showAnimations, isEditing])
-
-  // Filter FAQs by category
-  const filteredFaqs = useMemo(() => {
-    return faqs.filter((faq) => (faq.category || 'general') === activeCategory)
-  }, [faqs, activeCategory])
-
-  // Get categories that have FAQs
-  const availableCategories = useMemo(() => {
-    const categorySet = new Set(faqs.map((faq) => faq.category || 'general'))
-    return CATEGORIES.filter((cat) => categorySet.has(cat.key))
-  }, [faqs])
-
-  // Reset open item when category changes
-  useEffect(() => {
-    setOpenItem(null)
-  }, [activeCategory])
-
-  // Auto-select first available category
-  useEffect(() => {
-    if (availableCategories.length > 0 && !availableCategories.find((c) => c.key === activeCategory)) {
-      setActiveCategory(availableCategories[0].key)
-    }
-  }, [availableCategories, activeCategory])
-
-  // Get category label
-  const activeCategoryLabel = CATEGORIES.find((c) => c.key === activeCategory)?.label || 'General'
 
   const isDark = backgroundColor !== 'gradient-light'
 
@@ -144,12 +112,17 @@ export default function FAQSectionBlock({
           )}
         >
           <h2
-            className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase"
-            style={{ color: titleColor || (isDark ? '#ffffff' : '#1f2937') }}
+            className={cn(
+              "font-serif-heading tracking-tight mb-4 uppercase",
+              titleTypo.className
+            )}
+            style={{
+              color: isDark ? '#ffffff' : (titleTypo.style.color || '#1f2937'),
+              fontFamily: "'Poppins', sans-serif",
+            }}
           >
             {titleParts.part1}{' '}
             <span
-              className="italic"
               style={{ color: accentColor || (isDark ? '#D4AF37' : '#0b6d41') }}
             >
               {titleParts.part2}
@@ -157,120 +130,53 @@ export default function FAQSectionBlock({
           </h2>
           {subtitle && (
             <p
-              className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto"
-              style={{ color: subtitleColor || (isDark ? 'rgba(255,255,255,0.7)' : '#4b5563') }}
+              className={cn("max-w-3xl mx-auto", subtitleTypo.className)}
+              style={{
+                color: isDark ? 'rgba(255,255,255,0.7)' : (subtitleTypo.style.color || '#4b5563'),
+                fontFamily: subtitleTypo.style.fontFamily,
+              }}
             >
               {subtitle}
             </p>
           )}
         </div>
 
-        {/* Two Column Layout with Glassmorphism */}
+        {/* FAQ Content with Glassmorphism */}
         <div
           className={cn(
-            'max-w-6xl mx-auto',
+            'max-w-4xl mx-auto',
             showAnimations && 'transition-all duration-700 delay-200',
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           )}
         >
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
-            {/* Left Sidebar - Categories with Glassmorphism */}
-            <nav className="lg:w-56 flex-shrink-0">
-              <div className={cn(
-                'rounded-2xl p-4 lg:p-5',
-                isDark
-                  ? 'bg-white/5 backdrop-blur-md border border-white/10'
-                  : 'bg-white/80 backdrop-blur-md border border-gray-200 shadow-lg'
-              )}>
-                {/* Category Header */}
-                <div className="flex items-center gap-2 mb-4 pb-3 border-b border-white/10">
-                  <HelpCircle className={cn(
-                    'w-5 h-5',
-                    isDark ? 'text-gold' : 'text-primary'
-                  )} />
-                  <span className={cn(
-                    'text-sm font-semibold uppercase tracking-wider',
-                    isDark ? 'text-white/80' : 'text-gray-700'
-                  )}>
-                    Categories
-                  </span>
-                </div>
+          <div className={cn(
+            'rounded-2xl p-5 lg:p-8',
+            isDark
+              ? 'bg-white/5 backdrop-blur-md border border-white/10'
+              : 'bg-white/80 backdrop-blur-md border border-gray-200 shadow-lg'
+          )}>
+            {/* FAQ Items */}
+            <div className="space-y-0">
+              {faqs.map((faq, index) => (
+                <FAQAccordionItem
+                  key={index}
+                  faq={faq}
+                  index={index}
+                  isOpen={openItem === index}
+                  onToggle={() => setOpenItem(openItem === index ? null : index)}
+                  isDark={isDark}
+                  isLast={index === faqs.length - 1}
+                />
+              ))}
 
-                <ul className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 -mx-1 px-1 lg:mx-0 lg:px-0">
-                  {availableCategories.map((category) => (
-                    <li key={category.key}>
-                      <button
-                        onClick={() => setActiveCategory(category.key)}
-                        className={cn(
-                          'whitespace-nowrap lg:whitespace-normal text-left w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300',
-                          activeCategory === category.key
-                            ? isDark
-                              ? 'bg-gold text-gray-900 shadow-lg shadow-gold/20'
-                              : 'bg-primary text-white shadow-lg shadow-primary/20'
-                            : isDark
-                            ? 'text-white/70 hover:text-white hover:bg-white/10'
-                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                        )}
-                      >
-                        {category.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </nav>
-
-            {/* Right Content - FAQ Accordion with Glassmorphism */}
-            <div className="flex-1 min-w-0">
-              <div className={cn(
-                'rounded-2xl p-5 lg:p-8',
-                isDark
-                  ? 'bg-white/5 backdrop-blur-md border border-white/10'
-                  : 'bg-white/80 backdrop-blur-md border border-gray-200 shadow-lg'
-              )}>
-                {/* Category Header */}
-                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
-                  <div className={cn(
-                    'p-2.5 rounded-xl',
-                    isDark ? 'bg-gold/20' : 'bg-primary/10'
-                  )}>
-                    <MessageCircle className={cn(
-                      'w-5 h-5',
-                      isDark ? 'text-gold' : 'text-primary'
-                    )} />
-                  </div>
-                  <h3 className={cn(
-                    'text-xl font-serif-heading font-semibold',
-                    isDark ? 'text-white' : 'text-gray-900'
-                  )}>
-                    {activeCategoryLabel} <span className={isDark ? 'text-gold' : 'text-primary'}>Questions</span>
-                  </h3>
-                </div>
-
-                {/* FAQ Items */}
-                <div className="space-y-0">
-                  {filteredFaqs.map((faq, index) => (
-                    <FAQAccordionItem
-                      key={`${activeCategory}-${index}`}
-                      faq={faq}
-                      index={index}
-                      isOpen={openItem === index}
-                      onToggle={() => setOpenItem(openItem === index ? null : index)}
-                      isDark={isDark}
-                      isLast={index === filteredFaqs.length - 1}
-                    />
-                  ))}
-
-                  {filteredFaqs.length === 0 && (
-                    <p className={cn(
-                      'text-center py-8',
-                      isDark ? 'text-white/50' : 'text-gray-400'
-                    )}>
-                      No questions in this category yet.
-                    </p>
-                  )}
-                </div>
-              </div>
+              {faqs.length === 0 && (
+                <p className={cn(
+                  'text-center py-8',
+                  isDark ? 'text-white/50' : 'text-gray-400'
+                )}>
+                  No questions added yet.
+                </p>
+              )}
             </div>
           </div>
         </div>

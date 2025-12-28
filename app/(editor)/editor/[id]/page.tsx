@@ -4,6 +4,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { getPageById, getPageSeo, getPageFab } from '@/app/actions/cms/pages'
 import { getFooterSettings } from '@/app/actions/cms/footer'
 import { PageBuilder } from '@/components/page-builder'
+import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 
 interface EditorPageProps {
   params: Promise<{
@@ -111,6 +112,9 @@ export default async function StandaloneEditorPage({ params }: EditorPageProps) 
       }
     : null
 
+  // Extract typography from page metadata
+  const initialTypography = (page.metadata as Record<string, unknown> | null)?.typography as Partial<PageTypographySettings> | undefined
+
   return (
     <PageBuilder
       pageId={page.id}
@@ -121,6 +125,7 @@ export default async function StandaloneEditorPage({ params }: EditorPageProps) 
       initialSeoData={initialSeoData}
       initialFabConfig={initialFabConfig}
       initialFooterSettings={footerSettings}
+      initialTypography={initialTypography}
     />
   )
 }
