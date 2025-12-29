@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 import type { BlockAnimation } from '@/lib/cms/registry-types'
 import { getAnimationClasses } from '@/lib/cms/animation-utils'
+import { observeElement } from '@/lib/utils/shared-intersection-observer'
 
 interface AnimationWrapperProps {
   /** Animation configuration */
@@ -62,32 +63,24 @@ export function AnimationWrapper({
       return
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true)
+    // Use shared observer for better INP performance
+    return observeElement(
+      elementRef.current,
+      (entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
 
-            // If not repeating, disconnect after first trigger
-            if (!animationResult.repeatsOnScroll) {
-              setHasAnimated(true)
-              observer.disconnect()
-            }
-          } else if (animationResult.repeatsOnScroll && hasAnimated) {
-            // Reset for repeat animations
-            setIsVisible(false)
+          // If not repeating, mark as animated
+          if (!animationResult.repeatsOnScroll) {
+            setHasAnimated(true)
           }
-        })
+        } else if (animationResult.repeatsOnScroll && hasAnimated) {
+          // Reset for repeat animations
+          setIsVisible(false)
+        }
       },
-      {
-        threshold,
-        rootMargin,
-      }
+      { threshold, rootMargin }
     )
-
-    observer.observe(elementRef.current)
-
-    return () => observer.disconnect()
   }, [useObserver, threshold, rootMargin, animationResult.repeatsOnScroll, hasAnimated, animation?.animateOnScroll])
 
   // In editor mode, show content without animations for easier editing
@@ -122,6 +115,7 @@ export function AnimationWrapper({
     <div
       ref={elementRef}
       className={wrapperClasses}
+      style={{ contain: 'layout' }} // Isolate layout from animations to reduce CLS
     >
       {children}
     </div>
@@ -153,29 +147,24 @@ export function useScrollAnimation(
       return
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true)
-            if (!animationResult.repeatsOnScroll) {
-              setHasAnimated(true)
-              observer.disconnect()
-            }
-          } else if (animationResult.repeatsOnScroll && hasAnimated) {
-            setIsVisible(false)
+    // Use shared observer for better INP performance
+    return observeElement(
+      elementRef.current,
+      (entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+          if (!animationResult.repeatsOnScroll) {
+            setHasAnimated(true)
           }
-        })
+        } else if (animationResult.repeatsOnScroll && hasAnimated) {
+          setIsVisible(false)
+        }
       },
       {
         threshold: options?.threshold ?? 0.1,
         rootMargin: options?.rootMargin ?? '0px 0px -50px 0px',
       }
     )
-
-    observer.observe(elementRef.current)
-
-    return () => observer.disconnect()
   }, [shouldObserve, options?.threshold, options?.rootMargin, animationResult.repeatsOnScroll, hasAnimated, animation?.animateOnScroll])
 
   return {

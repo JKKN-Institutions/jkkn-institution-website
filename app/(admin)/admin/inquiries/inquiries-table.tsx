@@ -31,7 +31,9 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { InquiryDetailModal } from './inquiry-detail-modal'
-import { Search, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Search, ChevronLeft, ChevronRight, Download, FileSpreadsheet } from 'lucide-react'
+import { generateCSV, downloadCSV, formatDateTimeForCSV } from '@/lib/utils/csv-export'
+import { toast } from 'sonner'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export interface AdmissionInquiry {
@@ -76,7 +78,61 @@ export function InquiriesTable() {
   const [globalFilter, setGlobalFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [selectedInquiry, setSelectedInquiry] = useState<AdmissionInquiry | null>(null)
+  const [exporting, setExporting] = useState(false)
   const supabase = createClient()
+
+  // Export to Excel/CSV function
+  const handleExportToExcel = () => {
+    if (data.length === 0) {
+      toast.error('No data to export', {
+        description: 'There are no inquiries matching the current filter.',
+      })
+      return
+    }
+
+    setExporting(true)
+    try {
+      const columns: Array<{ key: string; header: string; accessor?: (row: Record<string, unknown>) => unknown }> = [
+        { key: 'reference_number', header: 'Reference Number' },
+        { key: 'full_name', header: 'Full Name' },
+        { key: 'mobile_number', header: 'Mobile Number' },
+        { key: 'email', header: 'Email' },
+        { key: 'district_city', header: 'District/City' },
+        { key: 'college_name', header: 'College Name' },
+        { key: 'course_interested', header: 'Course Interested' },
+        { key: 'current_qualification', header: 'Current Qualification' },
+        { key: 'preferred_contact_time', header: 'Preferred Contact Time' },
+        { key: 'status', header: 'Status' },
+        {
+          key: 'created_at',
+          header: 'Submitted Date',
+          accessor: (row) => formatDateTimeForCSV(row.created_at as string)
+        },
+        { key: 'reply_message', header: 'Admin Notes' },
+        {
+          key: 'replied_at',
+          header: 'Notes Added Date',
+          accessor: (row) => formatDateTimeForCSV(row.replied_at as string | null)
+        },
+      ]
+
+      const csvContent = generateCSV(data as unknown as Record<string, unknown>[], columns)
+      const timestamp = new Date().toISOString().split('T')[0]
+      const statusSuffix = statusFilter !== 'all' ? `-${statusFilter}` : ''
+      downloadCSV(csvContent, `admission-inquiries${statusSuffix}-${timestamp}`)
+
+      toast.success('Export successful', {
+        description: `${data.length} inquiries exported to Excel/CSV file.`,
+      })
+    } catch (error) {
+      console.error('Export error:', error)
+      toast.error('Export failed', {
+        description: 'An error occurred while exporting data.',
+      })
+    } finally {
+      setExporting(false)
+    }
+  }
 
   // Fetch inquiries
   useEffect(() => {
@@ -270,6 +326,24 @@ export function InquiriesTable() {
             <SelectItem value="closed">Closed</SelectItem>
           </SelectContent>
         </Select>
+        <Button
+          variant="outline"
+          onClick={handleExportToExcel}
+          disabled={exporting || data.length === 0}
+          className="gap-2"
+        >
+          {exporting ? (
+            <>
+              <Download className="h-4 w-4 animate-spin" />
+              Exporting...
+            </>
+          ) : (
+            <>
+              <FileSpreadsheet className="h-4 w-4" />
+              Export to Excel
+            </>
+          )}
+        </Button>
       </div>
 
       {/* Table */}

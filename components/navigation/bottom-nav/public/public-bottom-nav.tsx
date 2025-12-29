@@ -218,7 +218,6 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
               label="More"
               isActive={isMoreMenuOpen}
               hasSubmenu={true}
-              badgeCount={moreMenuGroups.length}
               onClick={handleMoreClick}
             />
           )}

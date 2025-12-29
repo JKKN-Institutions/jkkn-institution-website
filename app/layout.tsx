@@ -79,6 +79,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Preconnect to image CDN for faster LCP */}
+        <link rel="preconnect" href="https://pmqodbfhsejbvfbmsfeq.supabase.co" />
+        <link rel="dns-prefetch" href="https://pmqodbfhsejbvfbmsfeq.supabase.co" />
+        {/* Preconnect to Google Fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body
         className={`${poppins.variable} antialiased`}
         suppressHydrationWarning

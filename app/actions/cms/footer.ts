@@ -168,8 +168,8 @@ function getDefaultFooterSettings(): FooterSettings {
       youtube: 'https://youtube.com/@JKKNINSTITUTIONS'
     },
     map: {
-      embedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3914.2834563159936!2d77.58373!3d11.26611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba96d9e6b5f2e5d%3A0x4c4d5c5e2c7d3d5d!2sJKKN%20Educational%20Institutions!5e0!3m2!1sen!2sin!4v1703500000000!5m2!1sen!2sin',
-      linkUrl: 'https://www.google.com/maps/place/JKKN+Educational+Institutions/@11.26611,77.58373,17z'
+      embedUrl: 'https://www.google.com/maps?q=JKKN+Educational+Institutions,Komarapalayam,Tamil+Nadu,India&output=embed',
+      linkUrl: 'https://www.google.com/maps/search/JKKN+Educational+Institutions,Komarapalayam,Tamil+Nadu'
     }
   }
 }

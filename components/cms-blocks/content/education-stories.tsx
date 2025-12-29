@@ -8,8 +8,6 @@ import Link from 'next/link'
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { GraduationCap, ChevronLeft, ChevronRight, Play, Pause, X } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { getInstagramThumbnails } from '@/app/actions/cms/instagram'
 
 /**
@@ -183,29 +181,17 @@ export function EducationStories({
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
 
-  // Modal state for Instagram reels
-  const [selectedStory, setSelectedStory] = useState<StoryItem | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
   // Instagram thumbnails state
   const [instagramThumbnails, setInstagramThumbnails] = useState<Record<string, string | null>>({})
-
-  // Handle story click - open modal if Instagram URL exists
-  const handleStoryClick = useCallback((story: StoryItem) => {
-    if (story.instagramUrl) {
-      setSelectedStory(story)
-      setIsModalOpen(true)
-    }
-  }, [])
 
   const isDark = variant === 'modern-dark'
   const isModern = variant !== 'classic'
 
-  // Height configurations for reels - taller mobile stories format
+  // Height configurations for reels - proper 9:16 aspect ratio on mobile
   const heightConfig = {
-    short: 'h-[260px] sm:h-[280px]',
-    medium: 'h-[300px] sm:h-[320px]',
-    tall: 'h-[340px] sm:h-[360px]',
+    short: 'h-[380px] sm:h-[320px]',
+    medium: 'h-[450px] sm:h-[380px]',
+    tall: 'h-[520px] sm:h-[420px]',
   }
 
   // Default stories for demo - 5 cards
@@ -405,7 +391,8 @@ export function EducationStories({
             <div
               ref={scrollRef}
               className={cn(
-                'flex gap-3 sm:gap-4 overflow-x-auto py-2 snap-x snap-mandatory px-1',
+                'flex gap-4 sm:gap-5 overflow-x-auto py-4 snap-x snap-mandatory',
+                'px-[calc(50vw-140px)] sm:px-4', // Center first card on mobile
                 'cursor-grab active:cursor-grabbing select-none',
                 '[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'
               )}
@@ -442,7 +429,6 @@ export function EducationStories({
                     mutedAutoplay={mutedAutoplay}
                     showVolumeControl={showVolumeControl}
                     glassBlur={glassBlur}
-                    onStoryClick={handleStoryClick}
                     instagramThumbnail={igThumbnail}
                   />
                 )
@@ -489,61 +475,6 @@ export function EducationStories({
         </div>
       </div>
 
-      {/* Instagram Reel Modal */}
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-lg w-[95vw] p-0 bg-black border-none rounded-2xl overflow-hidden">
-          <VisuallyHidden>
-            <DialogTitle>{selectedStory?.name || 'Instagram Reel'}</DialogTitle>
-          </VisuallyHidden>
-
-          {/* Close Button */}
-          <button
-            onClick={() => setIsModalOpen(false)}
-            className="absolute top-3 right-3 z-50 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 transition-colors"
-            aria-label="Close"
-          >
-            <X className="w-5 h-5" />
-          </button>
-
-          {/* Instagram Embed */}
-          {selectedStory?.instagramUrl && (
-            <div className="relative w-full" style={{ aspectRatio: '9/16', maxHeight: '80vh' }}>
-              <iframe
-                src={`https://www.instagram.com/reel/${extractInstagramId(selectedStory.instagramUrl)}/embed/`}
-                className="absolute inset-0 w-full h-full border-0"
-                scrolling="no"
-                allow="autoplay; encrypted-media"
-                title={`Instagram Reel: ${selectedStory.name}`}
-              />
-            </div>
-          )}
-
-          {/* Story Info */}
-          {selectedStory && (
-            <div className="p-4 bg-gradient-to-t from-black to-black/80">
-              <div className="flex items-center gap-3">
-                {selectedStory.image && (
-                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 flex-shrink-0">
-                    <Image
-                      src={selectedStory.image}
-                      alt={selectedStory.name}
-                      width={40}
-                      height={40}
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                )}
-                <div>
-                  <p className="text-white font-semibold">{selectedStory.name}</p>
-                  {selectedStory.role && (
-                    <p className="text-white/60 text-sm">{selectedStory.role}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </section>
   )
 }
@@ -571,9 +502,8 @@ function ReelCard({
   index,
   autoplaySpeed = 3000,
   mutedAutoplay = true,
-  showVolumeControl = true,
+  showVolumeControl = false,
   glassBlur = 'md',
-  onStoryClick,
   instagramThumbnail,
 }: {
   story: StoryItem
@@ -588,19 +518,22 @@ function ReelCard({
   mutedAutoplay?: boolean
   showVolumeControl?: boolean
   glassBlur?: 'sm' | 'md' | 'lg'
-  onStoryClick?: (story: StoryItem) => void
   instagramThumbnail?: string | null
 }) {
   const [isHovered, setIsHovered] = useState(false)
 
-  // Use Instagram thumbnail if available, otherwise fall back to story.image
+  // Get Instagram URL
+  const instagramUrl = story.instagramUrl || (story.link?.includes('instagram.com') ? story.link : null)
+  const instagramId = instagramUrl ? extractInstagramId(instagramUrl) : null
+
+  // Use story image if available
   const displayImage = instagramThumbnail || story.image
 
   const content = (
     <div
       className={cn(
-        'relative flex-shrink-0 rounded-xl overflow-hidden snap-start',
-        'w-[calc(100vw-3rem)] sm:w-[200px]', // Full width on mobile, wider on desktop
+        'relative flex-shrink-0 rounded-2xl overflow-hidden snap-start',
+        'w-[250px] sm:w-[200px] md:w-[220px]', // Reels width (9:16 ratio)
         'transition-all duration-500 group',
         height,
         isActive && !isEditing && 'scale-[1.02] shadow-2xl',
@@ -608,146 +541,178 @@ function ReelCard({
         'cursor-pointer'
       )}
       style={{
-        boxShadow: isActive ? '0 10px 30px rgba(0,0,0,0.2)' : '0 4px 15px rgba(0,0,0,0.1)',
+        boxShadow: isActive ? '0 10px 40px rgba(0,0,0,0.3)' : '0 4px 20px rgba(0,0,0,0.15)',
+        aspectRatio: '9/16',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Background Image - Uses Instagram thumbnail if available */}
-      <div className="absolute inset-0">
-        {displayImage ? (
-          <Image
-            src={displayImage}
-            alt={story.name}
-            fill
-            sizes="170px"
-            className={cn(
-              'object-cover transition-transform duration-700',
-              isHovered && 'scale-110'
-            )}
-          />
-        ) : (
-          <div
-            className="w-full h-full flex items-center justify-center"
-            style={{ background: 'linear-gradient(180deg, #0b6d41 0%, #032816 100%)' }}
-          >
-            <span className="text-4xl font-bold text-white/80">
-              {story.name.charAt(0)}
-            </span>
-          </div>
-        )}
-      </div>
-
-      {/* Gold Ring Border on Active/New */}
-      {(story.isNew || isActive) && (
-        <div
-          className="absolute inset-0 rounded-xl pointer-events-none"
-          style={{
-            border: '2px solid #ffde59',
-            boxShadow: 'inset 0 0 15px rgba(255, 222, 89, 0.15)',
-          }}
-        />
-      )}
-
-      {/* Gradient Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-transparent" />
-
-      {/* Play Button Overlay for Instagram Reels */}
-      {(story.instagramUrl || (story.link && story.link.includes('instagram.com'))) && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className={cn(
-            'w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center transition-all duration-300',
-            isHovered ? 'scale-110 bg-white/30' : 'scale-100'
-          )}>
-            <Play className="w-7 h-7 text-white fill-white ml-1" />
-          </div>
-        </div>
-      )}
-
-      {/* New Badge */}
-      {story.isNew && (
-        <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-[#ffde59] rounded-full">
-          <span className="text-[8px] font-bold text-gray-900 uppercase tracking-wide">New</span>
-        </div>
-      )}
-
-      {/* Instagram Indicator - Shows when story links to Instagram */}
-      {(story.instagramUrl || (story.link && story.link.includes('instagram.com'))) && (
-        <div className="absolute top-2 right-2 w-7 h-7 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 flex items-center justify-center shadow-lg">
-          <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-          </svg>
-        </div>
-      )}
-
-      {/* Play/Pause Indicator - Hidden when Instagram link present */}
-      <div className={cn(
-        'absolute top-2 right-2 w-6 h-6 rounded-full flex items-center justify-center',
-        'bg-white/20 backdrop-blur-sm transition-all duration-300',
-        isHovered && !(story.instagramUrl || (story.link && story.link.includes('instagram.com'))) ? 'opacity-100 scale-100' : 'opacity-0 scale-75',
-        (story.instagramUrl || (story.link && story.link.includes('instagram.com'))) && 'hidden' // Hide when Instagram icon is shown
-      )}>
-        {isPaused ? (
-          <Pause className="w-3 h-3 text-white" />
-        ) : (
-          <Play className="w-3 h-3 text-white fill-white" />
-        )}
-      </div>
-
-      {/* Glassmorphic Content Overlay - Bottom */}
-      {showName && (
-        <GlassmorphicOverlay position="bottom" blur={glassBlur}>
-          <div className="p-2.5">
-            {/* Profile Info */}
-            <div className="flex items-center gap-1.5">
-              <div className="w-6 h-6 rounded-full overflow-hidden border border-white/50 flex-shrink-0 relative">
-                {displayImage ? (
-                  <Image
-                    src={displayImage}
-                    alt={story.name}
-                    width={24}
-                    height={24}
-                    className="object-cover w-full h-full"
-                  />
-                ) : (
-                  <div
-                    className="w-full h-full flex items-center justify-center text-[10px] font-bold text-white"
-                    style={{ background: 'linear-gradient(135deg, #0b6d41 0%, #064d2e 100%)' }}
-                  >
-                    {story.name.charAt(0)}
-                  </div>
-                )}
-                {/* Gold ring for new/active */}
-                {story.isNew && (
-                  <div className="absolute inset-0 rounded-full border-2 border-[#ffde59]" />
-                )}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-white font-semibold text-xs truncate leading-tight">
-                  {story.name}
-                </p>
-                {story.role && (
-                  <p className="text-white/70 text-[10px] truncate leading-tight">
-                    {story.role}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-        </GlassmorphicOverlay>
-      )}
-
-      {/* Progress Bar (when active and playing) */}
-      {isActive && !isPaused && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-white/20">
-          <div
-            className="h-full bg-[#ffde59]"
+      {/* Instagram Reel - Video plays in card, UI hidden */}
+      {instagramId ? (
+        <div className="absolute inset-0 bg-black overflow-hidden">
+          {/* Reel embed - clip top (profile) and bottom (icons/links) */}
+          <iframe
+            src={`https://www.instagram.com/reel/${instagramId}/embed/`}
+            className="absolute border-0 pointer-events-auto"
+            scrolling="no"
+            allow="autoplay; encrypted-media"
+            title={`Instagram Reel: ${story.name}`}
             style={{
-              animation: `progress ${autoplaySpeed}ms linear infinite`
+              top: '-65px',
+              left: '-1px',
+              right: '-1px',
+              width: 'calc(100% + 2px)',
+              height: 'calc(100% + 200px)',
             }}
           />
+          {/* Glassmorphic Profile Header at TOP */}
+          {showName && (
+            <GlassmorphicOverlay position="top" blur={glassBlur}>
+              <div className="p-2.5">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-6 h-6 rounded-full overflow-hidden border border-white/50 flex-shrink-0 relative">
+                    {(instagramThumbnail || story.image) ? (
+                      <Image
+                        src={instagramThumbnail || story.image}
+                        alt={story.name}
+                        width={24}
+                        height={24}
+                        className="object-cover w-full h-full"
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full flex items-center justify-center text-[10px] font-bold text-white"
+                        style={{ background: 'linear-gradient(135deg, #0b6d41 0%, #064d2e 100%)' }}
+                      >
+                        {story.name.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-white font-semibold text-xs truncate leading-tight">
+                      {story.name}
+                    </p>
+                    {story.role && (
+                      <p className="text-white/70 text-[10px] truncate leading-tight">
+                        {story.role}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </GlassmorphicOverlay>
+          )}
+          {/* Bottom overlay to hide Instagram UI with gradient */}
+          <div className="absolute bottom-0 left-0 right-0 h-[140px] bg-gradient-to-t from-black via-black/95 to-transparent z-10 pointer-events-none" />
         </div>
+      ) : (
+        <>
+          {/* Background Image - For non-Instagram stories */}
+          <div className="absolute inset-0">
+            {displayImage ? (
+              <Image
+                src={displayImage}
+                alt={story.name}
+                fill
+                sizes="(max-width: 640px) 250px, 220px"
+                className={cn(
+                  'object-cover transition-transform duration-700',
+                  isHovered && 'scale-110'
+                )}
+                priority={index < 3}
+              />
+            ) : (
+              <div
+                className="w-full h-full flex flex-col items-center justify-center p-4 text-center"
+                style={{ background: 'linear-gradient(180deg, #0b6d41 0%, #032816 100%)' }}
+              >
+                {/* JKKN Logo placeholder */}
+                <div className="w-14 h-14 mb-3 flex items-center justify-center bg-white/10 rounded-full">
+                  <GraduationCap className="w-7 h-7 text-white/80" />
+                </div>
+                {/* Story title preview */}
+                <p className="text-white/90 text-sm font-semibold line-clamp-3 px-2 leading-tight">
+                  {story.name}
+                </p>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
+      {/* Overlay elements - only show for non-Instagram stories */}
+      {!instagramId && (
+        <>
+          {/* Gold Ring Border on Active/New */}
+          {(story.isNew || isActive) && (
+            <div
+              className="absolute inset-0 rounded-xl pointer-events-none"
+              style={{
+                border: '2px solid #ffde59',
+                boxShadow: 'inset 0 0 15px rgba(255, 222, 89, 0.15)',
+              }}
+            />
+          )}
+
+          {/* Gradient Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-transparent" />
+
+          {/* Glassmorphic Content Overlay - Bottom */}
+          {showName && (
+            <GlassmorphicOverlay position="bottom" blur={glassBlur}>
+              <div className="p-2.5">
+                {/* Profile Info */}
+                <div className="flex items-center gap-1.5">
+                  <div className="w-6 h-6 rounded-full overflow-hidden border border-white/50 flex-shrink-0 relative">
+                    {displayImage ? (
+                      <Image
+                        src={displayImage}
+                        alt={story.name}
+                        width={24}
+                        height={24}
+                        className="object-cover w-full h-full"
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full flex items-center justify-center text-[10px] font-bold text-white"
+                        style={{ background: 'linear-gradient(135deg, #0b6d41 0%, #064d2e 100%)' }}
+                      >
+                        {story.name.charAt(0)}
+                      </div>
+                    )}
+                    {/* Gold ring for new/active */}
+                    {story.isNew && (
+                      <div className="absolute inset-0 rounded-full border-2 border-[#ffde59]" />
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-white font-semibold text-xs truncate leading-tight">
+                      {story.name}
+                    </p>
+                    {story.role && (
+                      <p className="text-white/70 text-[10px] truncate leading-tight">
+                        {story.role}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </GlassmorphicOverlay>
+          )}
+
+          {/* Progress Bar (when active and carousel playing) */}
+          {isActive && !isPaused && (
+            <div className="absolute top-0 left-0 right-0 h-1 bg-white/20">
+              <div
+                className="h-full bg-[#ffde59]"
+                style={{
+                  animation: `progress ${autoplaySpeed}ms linear infinite`
+                }}
+              />
+            </div>
+          )}
+        </>
       )}
 
       <style jsx>{`
@@ -759,31 +724,9 @@ function ReelCard({
     </div>
   )
 
-  // Check if this story should open Instagram modal
-  // Support both instagramUrl field and Instagram URLs in the link field
-  const isInstagramStory = story.instagramUrl || (story.link && story.link.includes('instagram.com'))
-  const effectiveInstagramUrl = story.instagramUrl || (story.link && story.link.includes('instagram.com') ? story.link : undefined)
-
-  // Create a modified story for the click handler with the effective Instagram URL
-  const storyForClick = effectiveInstagramUrl
-    ? { ...story, instagramUrl: effectiveInstagramUrl }
-    : story
-
-  // If Instagram URL exists, clicking opens modal (handled by parent)
-  if (isInstagramStory && onStoryClick && !isEditing) {
-    return (
-      <button
-        type="button"
-        onClick={() => onStoryClick(storyForClick)}
-        className="flex-shrink-0 text-left"
-      >
-        {content}
-      </button>
-    )
-  }
-
-  // If regular link exists (no Instagram), use Link component
-  if (story.link && !isEditing) {
+  // For Instagram stories, the card itself handles click (in-card playback)
+  // For regular links, use Link component
+  if (story.link && !instagramId && !isEditing) {
     const isExternal = story.link.startsWith('http')
     return (
       <Link

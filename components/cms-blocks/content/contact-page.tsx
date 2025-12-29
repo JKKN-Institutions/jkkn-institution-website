@@ -11,6 +11,11 @@ interface ContactCard {
   link?: string
 }
 
+interface OfficeHoursItem {
+  day: string
+  hours: string
+}
+
 interface ContactPageProps {
   // Hero Section
   showHeader?: boolean
@@ -29,6 +34,11 @@ interface ContactPageProps {
   admissionSubtitle?: string
   admissionButtonText?: string
   admissionButtonLink?: string
+
+  // Office Hours
+  showOfficeHours?: boolean
+  officeHoursTitle?: string
+  officeHours?: OfficeHoursItem[]
 
   // Map Section
   showMap?: boolean
@@ -64,6 +74,12 @@ const defaultContactCards: ContactCard[] = [
   },
 ]
 
+const defaultOfficeHours: OfficeHoursItem[] = [
+  { day: 'Monday - Friday', hours: '9:00 AM - 5:00 PM' },
+  { day: 'Saturday', hours: '9:00 AM - 1:00 PM' },
+  { day: 'Sunday', hours: 'Closed' },
+]
+
 const iconMap = {
   phone: Phone,
   email: Mail,
@@ -85,8 +101,11 @@ export default function ContactPage({
   admissionSubtitle = 'Ready to join JKKN? Start your application process today.',
   admissionButtonText = 'Apply Now',
   admissionButtonLink = '/admissions',
+  showOfficeHours = true,
+  officeHoursTitle = 'Office Hours',
+  officeHours = defaultOfficeHours,
   showMap = true,
-  mapEmbedUrl = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.123456789!2d77.444444!3d11.444444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sJKKN%20Educational%20Institutions!5e0!3m2!1sen!2sin!4v1234567890',
+  mapEmbedUrl = 'https://www.google.com/maps?q=JKKN+Educational+Institutions,Komarapalayam,Tamil+Nadu,India&output=embed',
   variant = 'modern-light',
   cardStyle = 'glass',
   showDecorations = true,
@@ -325,36 +344,32 @@ export default function ContactPage({
                   </a>
                 </div>
 
-                {/* Additional Info Card */}
-                <div
-                  className={cn(
-                    'rounded-xl p-6 mt-4',
-                    getCardStyles()
-                  )}
-                >
-                  <h4
+                {/* Additional Info Card - Office Hours */}
+                {showOfficeHours && (
+                  <div
                     className={cn(
-                      'font-semibold mb-3',
-                      isDark ? 'text-white' : 'text-gray-900'
+                      'rounded-xl p-6 mt-4',
+                      getCardStyles()
                     )}
                   >
-                    Office Hours
-                  </h4>
-                  <div className={cn('space-y-2', isDark ? 'text-gray-300' : 'text-gray-600')}>
-                    <p className="flex justify-between">
-                      <span>Monday - Friday</span>
-                      <span className="font-medium">9:00 AM - 5:00 PM</span>
-                    </p>
-                    <p className="flex justify-between">
-                      <span>Saturday</span>
-                      <span className="font-medium">9:00 AM - 1:00 PM</span>
-                    </p>
-                    <p className="flex justify-between">
-                      <span>Sunday</span>
-                      <span className="font-medium">Closed</span>
-                    </p>
+                    <h4
+                      className={cn(
+                        'font-semibold mb-3',
+                        isDark ? 'text-white' : 'text-gray-900'
+                      )}
+                    >
+                      {officeHoursTitle}
+                    </h4>
+                    <div className={cn('space-y-2', isDark ? 'text-gray-300' : 'text-gray-600')}>
+                      {officeHours.map((item, index) => (
+                        <p key={index} className="flex justify-between">
+                          <span>{item.day}</span>
+                          <span className="font-medium">{item.hours}</span>
+                        </p>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
           </div>

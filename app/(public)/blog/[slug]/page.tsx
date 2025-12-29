@@ -473,13 +473,32 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
             </div>
 
-            {/* Comments Section */}
-            <Suspense fallback={<div className="mt-12 h-16 bg-gray-100 rounded-2xl animate-pulse" />}>
+            {/* Comments Section - CLS-optimized fallback with reserved space */}
+            <Suspense fallback={
+              <div className="mt-12 space-y-4">
+                <div className="h-10 w-48 bg-gray-100 rounded-lg animate-pulse" />
+                <div className="h-32 bg-gray-100 rounded-2xl animate-pulse" />
+                <div className="h-24 bg-gray-100 rounded-lg animate-pulse" />
+              </div>
+            }>
               <CommentsWrapper postId={post.id} allowComments={post.allow_comments || false} />
             </Suspense>
 
-            {/* Related Posts */}
-            <Suspense fallback={<div className="mt-12 h-48 bg-gray-100 rounded-lg animate-pulse" />}>
+            {/* Related Posts - CLS-optimized fallback with grid skeleton */}
+            <Suspense fallback={
+              <div className="mt-12 space-y-6">
+                <div className="h-8 w-48 bg-gray-100 rounded animate-pulse" />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="space-y-3">
+                      <div className="aspect-video bg-gray-100 rounded-2xl animate-pulse" />
+                      <div className="h-6 bg-gray-100 rounded animate-pulse" />
+                      <div className="h-4 w-3/4 bg-gray-100 rounded animate-pulse" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            }>
               <RelatedPosts postId={post.id} />
             </Suspense>
           </div>

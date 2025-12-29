@@ -95,7 +95,6 @@ export default function HeroSection({
   isEditing,
 }: HeroSectionProps) {
   const [isLoaded, setIsLoaded] = useState(false)
-  const [scrollY, setScrollY] = useState(0)
   const heroRef = useRef<HTMLElement>(null)
 
   // Get page-level typography with block overrides
@@ -110,15 +109,25 @@ export default function HeroSection({
     subtitleFontStyle,
   })
 
+  // Use CSS custom property for parallax to avoid React re-renders (better INP)
   useEffect(() => {
     setIsLoaded(true)
 
+    let ticking = false
+
     const handleScroll = () => {
-      if (heroRef.current) {
-        const rect = heroRef.current.getBoundingClientRect()
-        if (rect.bottom > 0) {
-          setScrollY(window.scrollY * 0.3)
-        }
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (heroRef.current) {
+            const rect = heroRef.current.getBoundingClientRect()
+            if (rect.bottom > 0) {
+              // Use CSS custom property instead of state to avoid re-renders
+              heroRef.current.style.setProperty('--scroll-y', `${window.scrollY * 0.3}px`)
+            }
+          }
+          ticking = false
+        })
+        ticking = true
       }
     }
 
@@ -167,21 +176,36 @@ export default function HeroSection({
       )}
       style={{ minHeight }}
     >
-      {/* Parallax Background */}
-      <div
-        className="absolute inset-0 transition-transform duration-100"
-        style={{
-          backgroundImage:
-            backgroundType === 'image' && backgroundImage
-              ? `url(${backgroundImage})`
-              : backgroundType === 'gradient'
-                ? backgroundGradient
-                : undefined,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          transform: `translateY(${scrollY}px) scale(1.1)`,
-        }}
-      />
+      {/* Parallax Background - Uses Next.js Image for LCP optimization */}
+      {backgroundType === 'image' && backgroundImage && (
+        <div
+          className="absolute inset-0 overflow-hidden"
+          style={{
+            transform: 'translateY(var(--scroll-y, 0px)) scale(1.1)',
+          }}
+        >
+          <Image
+            src={backgroundImage}
+            alt={backgroundImageAlt || 'Hero background'}
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
+            quality={85}
+          />
+        </div>
+      )}
+
+      {/* Gradient Background */}
+      {backgroundType === 'gradient' && backgroundGradient && (
+        <div
+          className="absolute inset-0"
+          style={{
+            background: backgroundGradient,
+            transform: 'translateY(var(--scroll-y, 0px)) scale(1.1)',
+          }}
+        />
+      )}
 
       {/* Video Background */}
       {backgroundType === 'video' && backgroundVideo && (
@@ -215,7 +239,7 @@ export default function HeroSection({
           <div
             className={cn(
               "mb-6 transition-all duration-1000",
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"
+              isLoaded ? "opacity-100" : "opacity-0"
             )}
           >
             {logoImage ? (
@@ -256,7 +280,7 @@ export default function HeroSection({
           className={cn(
             'tracking-wide transition-all duration-1000 delay-200',
             titleTypo.className,
-            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            isLoaded ? "opacity-100" : "opacity-0"
           )}
           style={{
             ...titleTypo.style,
@@ -274,7 +298,7 @@ export default function HeroSection({
               'mt-4 max-w-2xl transition-all duration-1000 delay-300',
               alignment === 'center' && 'mx-auto',
               subtitleTypo.className,
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              isLoaded ? "opacity-100" : "opacity-0"
             )}
             style={{
               ...subtitleTypo.style,
@@ -292,7 +316,7 @@ export default function HeroSection({
           <div
             className={cn(
               "mt-6 mb-2 transition-all duration-1000 delay-350",
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              isLoaded ? "opacity-100" : "opacity-0"
             )}
           >
             <div className="inline-block bg-white rounded-xl p-3 sm:p-4 shadow-2xl">
@@ -313,7 +337,7 @@ export default function HeroSection({
             className={cn(
               'mt-4 flex flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-4xl transition-all duration-1000 delay-400',
               alignment === 'center' && 'mx-auto',
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              isLoaded ? "opacity-100" : "opacity-0"
             )}
           >
             {trustBadges.map((badge, index) => {
@@ -365,7 +389,7 @@ export default function HeroSection({
             className={cn(
               'mt-6 flex flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-4xl transition-all duration-1000 delay-400',
               alignment === 'center' && 'mx-auto',
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              isLoaded ? "opacity-100" : "opacity-0"
             )}
           >
             {trustBadges.map((badge, index) => {
@@ -423,7 +447,7 @@ export default function HeroSection({
             className={cn(
               'mt-4 mb-6 flex flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-4xl transition-all duration-1000 delay-300',
               alignment === 'center' && 'mx-auto',
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              isLoaded ? "opacity-100" : "opacity-0"
             )}
           >
             {trustBadges.map((badge, index) => {
@@ -479,28 +503,39 @@ export default function HeroSection({
             alignment === 'center' && 'justify-center',
             alignment === 'left' && 'justify-start',
             alignment === 'right' && 'justify-end',
-            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            isLoaded ? "opacity-100" : "opacity-0"
           )}
         >
-          {buttons.map((btn, index) => (
-            <a
-              key={index}
-              href={btn.link}
-              target={'openInNewTab' in btn && btn.openInNewTab ? '_blank' : undefined}
-              rel={'openInNewTab' in btn && btn.openInNewTab ? 'noopener noreferrer' : undefined}
-              className={cn(
-                'group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base lg:text-lg font-bold transition-all duration-300',
-                btn.variant === 'primary' && 'bg-secondary text-gray-900 hover:bg-yellow-400 hover:shadow-2xl hover:scale-105 min-w-0 sm:min-w-[280px]',
-                btn.variant === 'secondary' && 'bg-primary text-white border-2 border-white/20 hover:bg-primary/90 hover:shadow-2xl hover:scale-105 min-w-0 sm:min-w-[200px]',
-                btn.variant === 'outline' && 'border-2 border-white text-white hover:bg-white hover:text-primary hover:scale-105'
-              )}
-            >
-              {btn.label}
-              {btn.variant === 'outline' && (
-                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-              )}
-            </a>
-          ))}
+          {buttons.map((btn, index) => {
+            const isAnchorLink = btn.link?.startsWith('#')
+            return (
+              <a
+                key={index}
+                href={btn.link}
+                target={'openInNewTab' in btn && btn.openInNewTab ? '_blank' : undefined}
+                rel={'openInNewTab' in btn && btn.openInNewTab ? 'noopener noreferrer' : undefined}
+                onClick={isAnchorLink ? (e) => {
+                  e.preventDefault()
+                  const targetId = btn.link?.slice(1)
+                  const targetElement = document.getElementById(targetId || '')
+                  if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  }
+                } : undefined}
+                className={cn(
+                  'group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base lg:text-lg font-bold transition-all duration-300',
+                  btn.variant === 'primary' && 'bg-secondary text-gray-900 hover:bg-yellow-400 hover:shadow-2xl hover:scale-105 min-w-0 sm:min-w-[280px]',
+                  btn.variant === 'secondary' && 'bg-primary text-white border-2 border-white/20 hover:bg-primary/90 hover:shadow-2xl hover:scale-105 min-w-0 sm:min-w-[200px]',
+                  btn.variant === 'outline' && 'border-2 border-white text-white hover:bg-white hover:text-primary hover:scale-105'
+                )}
+              >
+                {btn.label}
+                {btn.variant === 'outline' && (
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                )}
+              </a>
+            )
+          })}
         </div>
       </div>
 

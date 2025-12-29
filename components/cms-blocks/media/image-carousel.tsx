@@ -1,8 +1,12 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
 import type { ImageCarouselProps } from '@/lib/cms/registry-types'
+
+// Base64 blur placeholder
+const blurDataURL = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYwMCIgaGVpZ2h0PSI5MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2U1ZTdlYiIvPjwvc3ZnPg=='
 
 export default function ImageCarousel({
   images = [],
@@ -24,11 +28,24 @@ export default function ImageCarousel({
     setActiveIndex(prev => (prev === 0 ? images.length - 1 : prev - 1))
   }, [images.length])
 
+  // Use RAF-based timing for smoother performance (better INP)
   useEffect(() => {
     if (!autoplay || isPaused || images.length <= 1) return
 
-    const timer = setInterval(goToNext, interval)
-    return () => clearInterval(timer)
+    let rafId: number
+    let lastTime = 0
+
+    const animate = (currentTime: number) => {
+      if (lastTime === 0) lastTime = currentTime
+      if (currentTime - lastTime >= interval) {
+        goToNext()
+        lastTime = currentTime
+      }
+      rafId = requestAnimationFrame(animate)
+    }
+
+    rafId = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(rafId)
   }, [autoplay, interval, isPaused, goToNext, images.length])
 
   if (images.length === 0 && isEditing) {
@@ -77,10 +94,15 @@ export default function ImageCarousel({
               index === activeIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
             )}
           >
-            <img
+            <Image
               src={image.src}
               alt={image.alt || ''}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority={index === 0}
+              placeholder="blur"
+              blurDataURL={blurDataURL}
             />
             {image.caption && (
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-6">

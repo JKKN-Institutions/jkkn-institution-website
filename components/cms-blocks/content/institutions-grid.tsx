@@ -6,7 +6,7 @@ import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
-import { ChevronRight, ExternalLink, GraduationCap, Building2 } from 'lucide-react'
+import { ExternalLink, GraduationCap, Building2 } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
 
 /**
@@ -353,16 +353,16 @@ function InstitutionCard({
               isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
-            <span className="text-white font-bold text-lg line-clamp-2">
+            <span className="text-white font-bold text-base md:text-lg line-clamp-3 md:line-clamp-2">
               {institution.name}
             </span>
           </div>
         )}
       </div>
 
-      {/* Card Content */}
+      {/* Card Content - Minimal */}
       <div className={cn(
-        "relative p-5 flex-grow flex flex-col",
+        "relative p-3",
         isDark && cardStyle === 'glassmorphic' ? 'bg-transparent' : 'bg-white'
       )}>
         {/* Gold accent line on hover */}
@@ -375,28 +375,11 @@ function InstitutionCard({
         />
 
         <h3 className={cn(
-          "text-base md:text-lg font-bold transition-colors duration-300 text-center line-clamp-2 min-h-[3rem] mt-2",
+          "text-sm md:text-base lg:text-lg font-bold transition-colors duration-300 text-center line-clamp-3 md:line-clamp-2 pt-1",
           isDark && cardStyle === 'glassmorphic' ? 'text-white' : 'text-brand-primary'
         )}>
           {institution.name}
         </h3>
-
-        {institution.description && (
-          <p className={cn(
-            "text-sm mt-2 line-clamp-2 text-center flex-grow",
-            isDark && cardStyle === 'glassmorphic' ? 'text-white/60' : 'text-gray-500'
-          )}>
-            {institution.description}
-          </p>
-        )}
-
-        {/* View More Link */}
-        {institution.link && (
-          <div className="mt-4 flex items-center justify-center text-sm font-semibold text-gold">
-            <span>Learn More</span>
-            <ChevronRight className="h-4 w-4 ml-1 transition-transform duration-300 group-hover:translate-x-1" />
-          </div>
-        )}
       </div>
 
       {/* Bottom Accent Gradient */}

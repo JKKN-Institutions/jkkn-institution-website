@@ -2,7 +2,11 @@
 
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
 import type { ImageGalleryProps } from '@/lib/cms/registry-types'
+
+// Base64 blur placeholder
+const blurDataURL = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTVlN2ViIi8+PC9zdmc+'
 
 export default function ImageGallery({
   images = [],
@@ -90,10 +94,15 @@ export default function ImageGallery({
                 lightbox && 'cursor-pointer'
               )}
             >
-              <img
+              <Image
                 src={image.src}
                 alt={image.alt || ''}
-                className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                fill
+                className="object-cover transition-transform group-hover:scale-105"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                loading={index < 6 ? 'eager' : 'lazy'}
+                placeholder="blur"
+                blurDataURL={blurDataURL}
               />
               {image.caption && (
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -133,12 +142,19 @@ export default function ImageGallery({
             </svg>
           </button>
           {images[activeIndex]?.src && (
-            <img
-              src={images[activeIndex].src}
-              alt={images[activeIndex]?.alt || ''}
-              className="max-h-[90vh] max-w-[90vw] object-contain"
+            <div
+              className="relative max-h-[90vh] max-w-[90vw] w-full h-full"
               onClick={(e) => e.stopPropagation()}
-            />
+            >
+              <Image
+                src={images[activeIndex].src}
+                alt={images[activeIndex]?.alt || ''}
+                fill
+                className="object-contain"
+                sizes="90vw"
+                priority
+              />
+            </div>
           )}
           <button
             type="button"

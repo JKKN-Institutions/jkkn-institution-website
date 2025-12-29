@@ -270,36 +270,21 @@ export function JKKN100CentenarySection({
         />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Badge & Tagline */}
+          {/* Badge/Title - No icon, no tagline */}
           <div
-            className={cn('text-center mb-6 md:mb-8', animateClass(0))}
+            className={cn('text-center mb-4 md:mb-6', animateClass(0))}
             style={{ transitionDelay: '0ms' }}
           >
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 mb-2">
-              <Landmark className="w-4 h-4" style={{ color: goldColor }} />
-              <span
-                className={cn(
-                  'text-xl sm:text-2xl md:text-3xl tracking-tight',
-                  fontWeightClasses[badgeFontWeight],
-                  fontStyleClasses[badgeFontStyle]
-                )}
-                style={{ color: badgeColor }}
-              >
-                {badge}
-              </span>
-            </div>
-            {/* Tagline */}
-            <p
+            <span
               className={cn(
-                'text-xs sm:text-sm tracking-[0.3em] uppercase',
-                fontWeightClasses[taglineFontWeight],
-                fontStyleClasses[taglineFontStyle]
+                'text-xl sm:text-2xl md:text-3xl tracking-tight',
+                fontWeightClasses[badgeFontWeight],
+                fontStyleClasses[badgeFontStyle]
               )}
-              style={{ color: taglineColor }}
+              style={{ color: badgeColor }}
             >
-              {tagline}
-            </p>
+              {badge}
+            </span>
           </div>
 
           {/* Main Content Card */}
@@ -318,49 +303,75 @@ export function JKKN100CentenarySection({
             {/* Top accent bar */}
             <div className="h-1.5" style={{ background: `linear-gradient(90deg, ${accentColor}, ${goldColor}, ${accentColor})` }} />
 
-            <div className="p-5 sm:p-6 md:p-8 bg-white">
+            <div className="p-4 sm:p-5 md:p-6 bg-white">
               {/* Two Column Layout */}
-              <div className="flex flex-col md:flex-row items-center gap-5 md:gap-8">
-                {/* Left - Founder Photo */}
+              <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                {/* Left - Founder Photo with Elegant Circular Frame */}
                 <div
-                  className={cn('flex-shrink-0', animateClass(200))}
+                  className={cn('flex-shrink-0 flex flex-col items-center', animateClass(200))}
                   style={{ transitionDelay: '200ms' }}
                 >
-                  <div
-                    className="relative p-1 rounded-xl"
-                    style={{
-                      background: `linear-gradient(135deg, ${goldColor}, ${goldColor}80, ${goldColor})`,
-                      boxShadow: `0 8px 30px ${goldColor}30`,
-                    }}
-                  >
-                    <div className="w-36 h-44 sm:w-40 sm:h-52 md:w-48 md:h-60 rounded-lg overflow-hidden bg-gray-100 relative">
-                      {founderImage ? (
-                        <Image
-                          src={founderImage}
-                          alt={founderImageAlt}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 640px) 144px, (max-width: 768px) 160px, 192px"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100">
-                          <Landmark className="w-16 h-16 text-gray-300 mb-2" />
-                          {isEditing && (
-                            <p className="text-xs text-gray-400 px-4 text-center">Upload founder photo</p>
+                  {/* Circular Photo Frame */}
+                  <div className="relative">
+                    {/* Outer decorative ring */}
+                    <div
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        background: `linear-gradient(135deg, ${goldColor}, ${accentColor}, ${goldColor})`,
+                        padding: '3px',
+                      }}
+                    />
+                    {/* Main circular frame with double border effect */}
+                    <div
+                      className="relative rounded-full overflow-hidden"
+                      style={{
+                        padding: '4px',
+                        background: `linear-gradient(145deg, ${goldColor}90, ${goldColor}40, ${goldColor}90)`,
+                        boxShadow: `0 8px 32px ${goldColor}30, inset 0 2px 4px rgba(255,255,255,0.3)`,
+                      }}
+                    >
+                      <div
+                        className="rounded-full overflow-hidden"
+                        style={{
+                          border: '2px solid white',
+                          boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.1)',
+                        }}
+                      >
+                        <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-gray-100 relative">
+                          {founderImage ? (
+                            <Image
+                              src={founderImage}
+                              alt={founderImageAlt}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 640px) 112px, (max-width: 768px) 128px, 160px"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100">
+                              <Landmark className="w-10 h-10 text-gray-300 mb-1" />
+                              {isEditing && (
+                                <p className="text-[10px] text-gray-400 px-2 text-center">Upload photo</p>
+                              )}
+                            </div>
                           )}
                         </div>
-                      )}
+                      </div>
                     </div>
                   </div>
-                  {/* Founder name below photo */}
-                  <div className="text-center mt-4">
+                  {/* Founder name below photo with elegant styling */}
+                  <div className="text-center mt-3">
                     <p
-                      className={cn('text-sm', fontWeightClasses[founderNameFontWeight])}
+                      className={cn('text-xs sm:text-sm leading-tight', fontWeightClasses[founderNameFontWeight])}
                       style={{ color: founderNameColor }}
                     >
                       {founderName}
                     </p>
-                    <p className="text-xs text-gray-500 mt-0.5">{founderYears}</p>
+                    <p
+                      className="text-[10px] sm:text-xs mt-1 font-medium"
+                      style={{ color: goldColor }}
+                    >
+                      {founderYears}
+                    </p>
                   </div>
                 </div>
 
@@ -368,13 +379,13 @@ export function JKKN100CentenarySection({
                 <div className="flex-1 text-center md:text-left">
                   {/* Quote */}
                   <div
-                    className={cn('mb-4', animateClass(300))}
+                    className={cn('mb-3', animateClass(300))}
                     style={{ transitionDelay: '300ms' }}
                   >
-                    <Sparkles className="w-5 h-5 mb-2 mx-auto md:mx-0" style={{ color: goldColor }} />
+                    <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 mb-1.5 mx-auto md:mx-0" style={{ color: goldColor }} />
                     <blockquote
                       className={cn(
-                        'text-lg sm:text-xl md:text-2xl font-serif leading-relaxed',
+                        'text-base sm:text-lg md:text-xl font-serif leading-snug',
                         fontWeightClasses[quoteFontWeight],
                         fontStyleClasses[quoteFontStyle]
                       )}
@@ -386,37 +397,37 @@ export function JKKN100CentenarySection({
 
                   {/* Divider */}
                   <div
-                    className={cn('w-16 h-0.5 mx-auto md:mx-0 mb-4', animateClass(400))}
+                    className={cn('w-12 h-0.5 mx-auto md:mx-0 mb-3', animateClass(400))}
                     style={{ backgroundColor: goldColor, transitionDelay: '400ms' }}
                   />
 
                   {/* Timeline */}
                   <div
-                    className={cn('mb-5', animateClass(500))}
+                    className={cn('mb-3 sm:mb-4', animateClass(500))}
                     style={{ transitionDelay: '500ms' }}
                   >
-                    <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
+                    <div className="flex items-center justify-center md:justify-start gap-2 sm:gap-3 mb-1">
                       <span
-                        className={cn('text-sm', fontWeightClasses[timelineFontWeight])}
+                        className={cn('text-xs sm:text-sm', fontWeightClasses[timelineFontWeight])}
                         style={{ color: timelineColor }}
                       >
                         {timelineStart}
                       </span>
-                      <span className="w-8 h-px" style={{ backgroundColor: goldColor }} />
+                      <span className="w-6 sm:w-8 h-px" style={{ backgroundColor: goldColor }} />
                       <span
-                        className={cn('text-sm', fontWeightClasses[timelineFontWeight])}
+                        className={cn('text-xs sm:text-sm', fontWeightClasses[timelineFontWeight])}
                         style={{ color: timelineColor }}
                       >
                         {timelineEnd}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600">{timelineSubtitle}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">{timelineSubtitle}</p>
                   </div>
 
-                  {/* CTA Buttons */}
+                  {/* CTA Buttons - Always same row */}
                   <div
                     className={cn(
-                      'flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3',
+                      'flex flex-row items-center justify-center md:justify-start gap-2',
                       animateClass(600)
                     )}
                     style={{ transitionDelay: '600ms' }}
@@ -424,19 +435,19 @@ export function JKKN100CentenarySection({
                     {/* Primary CTA - Watch Tribute Video */}
                     <button
                       onClick={() => setIsVideoModalOpen(true)}
-                      className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-sm text-white transition-all duration-300 hover:scale-105"
+                      className="group inline-flex items-center gap-1 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full font-semibold text-[11px] sm:text-xs text-white transition-all duration-300 hover:scale-105"
                       style={{
                         backgroundColor: accentColor,
-                        boxShadow: `0 4px 14px ${accentColor}40`,
+                        boxShadow: `0 2px 10px ${accentColor}30`,
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.boxShadow = `0 6px 20px ${accentColor}50`
-                      }}
-                      onMouseLeave={(e) => {
                         e.currentTarget.style.boxShadow = `0 4px 14px ${accentColor}40`
                       }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.boxShadow = `0 2px 10px ${accentColor}30`
+                      }}
                     >
-                      <Play className="w-4 h-4" />
+                      <Play className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                       <span>{primaryCtaLabel}</span>
                     </button>
 
@@ -445,7 +456,7 @@ export function JKKN100CentenarySection({
                       href={heritageUrl}
                       target={openHeritageInNewTab ? '_blank' : undefined}
                       rel={openHeritageInNewTab ? 'noopener noreferrer' : undefined}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 hover:scale-105 border-2"
+                      className="inline-flex items-center gap-1 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full font-semibold text-[11px] sm:text-xs transition-all duration-300 hover:scale-105 border"
                       style={{
                         borderColor: accentColor,
                         color: accentColor,
@@ -458,7 +469,7 @@ export function JKKN100CentenarySection({
                       }}
                     >
                       <span>{secondaryCtaLabel}</span>
-                      {openHeritageInNewTab && <ExternalLink className="w-4 h-4" />}
+                      {openHeritageInNewTab && <ExternalLink className="w-3 h-3" />}
                     </a>
                   </div>
                 </div>

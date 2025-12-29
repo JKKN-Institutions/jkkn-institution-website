@@ -1,7 +1,11 @@
 'use client'
 
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
 import type { ImageBlockProps } from '@/lib/cms/registry-types'
+
+// Base64 blur placeholder for perceived performance
+const blurDataURL = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTVlN2ViIi8+PC9zdmc+'
 
 export default function ImageBlock({
   src = '',
@@ -59,19 +63,36 @@ export default function ImageBlock({
 
   if (!src) return null
 
-  const imageElement = (
-    <img
+  // Determine if image uses fill layout (no explicit dimensions)
+  const useFillLayout = !width && !height
+
+  const imageElement = useFillLayout ? (
+    <div className={cn('relative w-full', alignmentClasses[alignment])} style={{ aspectRatio: '16/9' }}>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        className={cn('rounded-lg', objectFitClasses[objectFit])}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+        placeholder="blur"
+        blurDataURL={blurDataURL}
+      />
+    </div>
+  ) : (
+    <Image
       src={src}
       alt={alt}
-      width={width}
-      height={height}
+      width={width || 800}
+      height={height || 600}
       className={cn(
         'rounded-lg block',
-        width ? '' : 'w-full',
         objectFitClasses[objectFit],
         alignmentClasses[alignment]
       )}
       style={{ maxWidth: width, maxHeight: height }}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+      placeholder="blur"
+      blurDataURL={blurDataURL}
     />
   )
 

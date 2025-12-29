@@ -169,7 +169,7 @@ function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?:
       <ResponsiveContainer>
         <BlockWrapper>
           <Suspense fallback={<BlockSkeleton />}>
-            <Component {...block.props} id={block.id}>
+            <Component {...block.props} id={block.props?.id || block.id}>
               {block.children
                 .filter((child) => child.is_visible)
                 .map((child) => (
@@ -187,7 +187,7 @@ function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?:
     <ResponsiveContainer>
       <BlockWrapper>
         <Suspense fallback={<BlockSkeleton />}>
-          <Component {...block.props} id={block.id} />
+          <Component {...block.props} id={block.props?.id || block.id} />
         </Suspense>
       </BlockWrapper>
     </ResponsiveContainer>
