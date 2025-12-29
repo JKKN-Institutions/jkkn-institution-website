@@ -536,8 +536,9 @@
 
   /* Stats number display - compact responsive sizing */
   .stat-number {
-    font-family: var(--font-poppins), 'Poppins', sans-serif;
+    font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, sans-serif;
     @apply text-xl min-[400px]:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold;
+    font-variant-numeric: tabular-nums;
   }
 
   .stat-label {

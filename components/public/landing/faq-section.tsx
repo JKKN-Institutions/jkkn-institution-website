@@ -14,12 +14,12 @@ const faqs = [
   {
     question: 'What is JKKN Institutions?',
     answer:
-      'JKKN Institutions (JKKN) is a premier educational group in Komarapalayam, Tamil Nadu, comprising 7 colleges and 4 schools. Established in 1952, JKKN offers 50+ programs in dental, pharmacy, engineering, nursing, allied and arts with 92%+ placement success.',
+      'JKKN Institutions (JKKN) is a premier educational group in Komarapalayam, Tamil Nadu, comprising 11 institutions (7 colleges and 4 schools). Established in 1952, JKKN offers 50+ programs in dental, pharmacy, engineering, nursing, allied and arts with 92%+ placement success.',
   },
   {
     question: 'Why is JKKN the best college in Erode region?',
     answer:
-      "JKKN is recognized as Erode's best college due to 74+ years of excellence, NAAC accreditation, 92%+ placement rate, and 50,000+ successful alumni. Top recruiters include Foxconn, Apex Pharma, Apotex, Cipla and Bosch making it the preferred choice for career-focused Learners.",
+      "JKKN is recognized as Erode's best college due to 73+ years of excellence, NAAC A accreditation, 92%+ placement rate, and 50,000+ successful alumni. Top recruiters include Foxconn, Apex Pharma, Apotex, Cipla and Bosch making it the preferred choice for career-focused Learners.",
   },
   {
     question: 'Who founded JKKN Institutions?',
@@ -29,7 +29,7 @@ const faqs = [
   {
     question: 'How many colleges are under JKKN?',
     answer:
-      'JKKN comprises 11 institutions: Dental College, Pharmacy College, Engineering College, Allied Health Sciences, Arts & Science College (Autonomous), Education College, Nursing College, Matriculation School, Nattraja Vidhyalya, Elementary School and Girls Higher Secondary School —all located on one integrated residential campus in Komarapalayam.',
+      'JKKN comprises 11 institutions: Dental College, Pharmacy College, Engineering College, Allied Health Sciences, Arts & Science College (Autonomous), Education College, Sresakthimayeil Institute Of Nursing And Research, Matriculation School, Nattraja Vidhyalya, Elementary School and Girls Higher Secondary School — all located on one integrated residential campus in Komarapalayam.',
   },
   {
     question: 'What courses does JKKN offer?',
@@ -42,9 +42,9 @@ const faqs = [
       'JKKN colleges are affiliated with Tamil Nadu Dr. M.G.R. Medical University (Dental/Nursing/Pharmacy), Anna University Chennai (Engineering), and Periyar University Salem (Arts & Science). All programs are approved by AICTE, DCI, PCI, INC, and NAAC.',
   },
   {
-    question: 'How do I apply for JKKN admission 2026-27?',
+    question: 'How do I apply for JKKN admission 2025-26?',
     answer:
-      "Apply online at jkkn.in/admission-form for 2026-27 admissions. Submit required documents, complete fee payment, and attend counseling if applicable. For Dental/Nursing, NEET scores are required; for Engineering, TNEA counseling applies. Early bird discounts available for early applicants.",
+      "Apply online at jkkn.in/admission-form for 2025-26 admissions. Submit required documents, complete fee payment, and attend counseling if applicable. For Dental/Nursing, NEET scores are required; for Engineering, TNEA counseling applies. Early bird discounts available for early applicants.",
   },
   {
     question: 'What is the BDS admission process at JKKN Dental College?',
@@ -59,7 +59,7 @@ const faqs = [
   {
     question: "What is JKKN's placement rate?",
     answer:
-      'JKKN maintains an impressive 90%+ placement rate across institutions. The Dental College achieved 92% placements in 2024. The dedicated Placement Cell organizes campus drives, skill development programs, and mock interviews to enhance Learner employability.',
+      'JKKN maintains an impressive 92%+ placement rate across institutions. The Dental College achieved 92% placements in 2024. The dedicated Placement Cell organizes campus drives, skill development programs, and mock interviews to enhance Learner employability.',
   },
   {
     question: 'How do I reach JKKN from Erode?',
@@ -69,7 +69,7 @@ const faqs = [
   {
     question: "What is JKKN's address?",
     answer:
-      'JKKN Institutions, Natarajapuram, NH-544 (Salem-Coimbatore Highway), Komarapalayam, Namakkal District, Tamil Nadu - 638183. Contact: 9345855001 | Email: info@jkkn.ac.in. Located on the main highway for easy accessibility.',
+      'JKKN Institutions, Natarajapuram, NH-544 (Salem-Coimbatore Highway), Komarapalayam, Namakkal District, Tamil Nadu - 638183. Contact: +91 93458 55001 | Email: info@jkkn.ac.in. Located on the main highway for easy accessibility.',
   },
   {
     question: 'Which areas does JKKN serve?',
@@ -183,10 +183,10 @@ export function FAQSection() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="tel:+914222661100"
+                href="tel:+919345855001"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold text-gray-900 bg-secondary hover:bg-yellow-400 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
               >
-                Call +91 422 266 1100
+                Call +91 93458 55001
               </a>
               <a
                 href="mailto:info@jkkn.ac.in"

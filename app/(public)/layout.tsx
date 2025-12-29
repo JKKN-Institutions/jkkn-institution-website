@@ -6,6 +6,7 @@ import { getPublicNavigation } from '@/app/actions/cms/navigation'
 import { getGlobalFabConfig } from '@/app/actions/cms/fab'
 import { getLogoSizes } from '@/app/actions/cms/appearance'
 import { getFooterSettings } from '@/app/actions/cms/footer'
+import { PublicThemeProvider } from '@/components/providers/public-theme-provider'
 
 export default async function PublicLayout({
   children
@@ -21,21 +22,23 @@ export default async function PublicLayout({
   ])
 
   return (
-    <div className='min-h-screen bg-cream flex flex-col relative'>
-      {/* Site Header with CMS Navigation and Logo Settings - Fixed glassmorphic */}
-      <SiteHeader navigation={navigation} logoSizes={logoSizes} />
+    <PublicThemeProvider>
+      <div className='min-h-screen bg-cream flex flex-col relative'>
+        {/* Site Header with CMS Navigation and Logo Settings - Fixed glassmorphic */}
+        <SiteHeader navigation={navigation} logoSizes={logoSizes} />
 
-      {/* Main Content */}
-      <main className="flex-1 overflow-x-hidden">{children}</main>
+        {/* Main Content */}
+        <main className="flex-1 overflow-x-hidden">{children}</main>
 
-      {/* Site Footer with CMS Settings */}
-      <SiteFooter settings={footerSettings} />
+        {/* Site Footer with CMS Settings */}
+        <SiteFooter settings={footerSettings} />
 
-      {/* Dynamic Contact FAB - Toggle at Bottom, Options fly to Top Right */}
-      <FloatingActionButton config={fabConfig} />
+        {/* Dynamic Contact FAB - Toggle at Bottom, Options fly to Top Right */}
+        <FloatingActionButton config={fabConfig} />
 
-      {/* Mobile Bottom Navbar */}
-      <PublicBottomNav navigation={navigation} />
-    </div>
+        {/* Mobile Bottom Navbar */}
+        <PublicBottomNav navigation={navigation} />
+      </div>
+    </PublicThemeProvider>
   );
 }

@@ -81,8 +81,8 @@ export const INSTITUTIONS = [
   },
   {
     id: 'jkkn-college-nursing',
-    name: 'JKKN College of Nursing',
-    shortName: 'JKKN CN',
+    name: 'Sresakthimayeil Institute Of Nursing And Research',
+    shortName: 'SINR',
     departments: [
       'Medical Surgical Nursing',
       'Community Health Nursing',
@@ -105,8 +105,8 @@ export const INSTITUTIONS = [
   },
   {
     id: 'jkkn-school-nursing',
-    name: 'JKKN School of Nursing',
-    shortName: 'JKKN SN',
+    name: 'Sresakthimayeil School Of Nursing',
+    shortName: 'SSN',
     departments: [
       'General Nursing and Midwifery',
       'Auxiliary Nurse Midwife',

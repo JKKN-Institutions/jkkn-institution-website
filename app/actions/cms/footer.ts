@@ -139,7 +139,7 @@ export async function getFooterSettings(): Promise<FooterSettings> {
 function getDefaultFooterSettings(): FooterSettings {
   return {
     tagline: 'Excellence in Education',
-    description: 'JKKN Group of Institutions is committed to providing quality education across various disciplines. With a legacy of over 39 years, we empower students to achieve their dreams through innovation and excellence.',
+    description: 'JKKN Group of Institutions is committed to providing quality education across various disciplines. With a legacy of over 73 years since 1952, we empower Learners to achieve their dreams through innovation and excellence.',
     institutions: [],
     programs: [],
     resources: [],
@@ -161,11 +161,11 @@ function getDefaultFooterSettings(): FooterSettings {
       country: 'India'
     },
     socialLinks: {
-      facebook: 'https://facebook.com/jkkn',
-      twitter: 'https://twitter.com/jkkn',
-      instagram: 'https://instagram.com/jkkn',
-      linkedin: 'https://linkedin.com/company/jkkn',
-      youtube: 'https://youtube.com/jkkn'
+      facebook: 'https://facebook.com/myjkkn',
+      twitter: 'https://x.com/jkkninstitution',
+      instagram: 'https://instagram.com/jkkninstitutions',
+      linkedin: 'https://linkedin.com/school/jkkninstitutions/',
+      youtube: 'https://youtube.com/@JKKNINSTITUTIONS'
     },
     map: {
       embedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3914.2834563159936!2d77.58373!3d11.26611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba96d9e6b5f2e5d%3A0x4c4d5c5e2c7d3d5d!2sJKKN%20Educational%20Institutions!5e0!3m2!1sen!2sin!4v1703500000000!5m2!1sen!2sin',

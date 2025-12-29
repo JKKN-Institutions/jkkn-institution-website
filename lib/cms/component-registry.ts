@@ -393,6 +393,9 @@ const NewsTicker = lazy(() => import('@/components/cms-blocks/content/news-ticke
 // About section
 const AboutSection = lazy(() => import('@/components/cms-blocks/content/about-section'))
 
+// JKKN100 Centenary Celebration Section
+const JKKN100CentenarySection = lazy(() => import('@/components/cms-blocks/content/jkkn100-centenary-section'))
+
 // Google Drive video embed
 const GoogleDriveVideo = lazy(() => import('@/components/cms-blocks/media/google-drive-video'))
 
@@ -527,6 +530,8 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       subtitle: '',
       logoImage: '',
       logoImageAlt: '',
+      logoPosition: 'top',
+      logoSize: 'md',
       showAiBadge: true,
       titleColor: '#ffffff',
       titleFontSize: '6xl',
@@ -539,6 +544,10 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       showTrustBadges: false,
       trustBadgesStyle: 'glass',
       trustBadgesPosition: 'below-subtitle',
+      trustBadge1Text: 'NAAC Accredited',
+      trustBadge2Text: '95%+ Placements',
+      trustBadge3Text: '100+ Top Recruiters',
+      trustBadge4Text: '39 Years of Excellence',
       backgroundType: 'gradient',
       backgroundGradient: 'linear-gradient(135deg, #0b6d41, #085032)', // JKKN Green gradient
       backgroundImageAlt: '',
@@ -558,6 +567,8 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       // Logo settings
       { name: 'logoImage', type: 'image', label: 'Logo Image', description: 'Upload a custom logo to display above the title' },
       { name: 'logoImageAlt', type: 'string', label: 'Logo Image Alt Text', required: true, description: 'Alt text for accessibility (required)' },
+      { name: 'logoPosition', type: 'enum', label: 'Logo Position', options: ['top', 'between-subtitle-button'], description: 'Where to display the logo' },
+      { name: 'logoSize', type: 'enum', label: 'Logo Size', options: ['sm', 'md', 'lg', 'xl'], description: 'Size of the logo' },
       { name: 'showAiBadge', type: 'boolean', label: 'Show AI Badge', description: 'Show the default "India\'s First AI Empowered College" badge when no logo is uploaded' },
       // Title settings
       { name: 'title', type: 'string', label: 'Title', required: true },
@@ -574,7 +585,11 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       // Trust Badges settings
       { name: 'showTrustBadges', type: 'boolean', label: 'Show Trust Badges', description: 'Display trust badges (NAAC, Placements, etc.) in the hero section' },
       { name: 'trustBadgesStyle', type: 'enum', label: 'Trust Badges Style', options: ['glass', 'solid', 'outline'], description: 'Visual style of trust badges' },
-      { name: 'trustBadgesPosition', type: 'enum', label: 'Trust Badges Position', options: ['below-subtitle', 'below-title'], description: 'Where to display trust badges' },
+      { name: 'trustBadgesPosition', type: 'enum', label: 'Trust Badges Position', options: ['below-subtitle', 'below-title', 'below-logo'], description: 'Where to display trust badges' },
+      { name: 'trustBadge1Text', type: 'string', label: 'Trust Badge 1 Text', description: 'Text for first trust badge' },
+      { name: 'trustBadge2Text', type: 'string', label: 'Trust Badge 2 Text', description: 'Text for second trust badge' },
+      { name: 'trustBadge3Text', type: 'string', label: 'Trust Badge 3 Text', description: 'Text for third trust badge' },
+      { name: 'trustBadge4Text', type: 'string', label: 'Trust Badge 4 Text', description: 'Text for fourth trust badge' },
       // CTA Buttons
       {
         name: 'ctaButtons',
@@ -993,7 +1008,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     defaultProps: {
       // Content
       title: 'Why Choose JKKN?',
-      subtitle: '74+ Years of Transforming Lives Through Progressive Education',
+      subtitle: '73+ Years of Transforming Lives Through Progressive Education',
       tagline: 'Where Legacy Meets Innovation | Excellence Without Elitism',
       badgeText: 'Why Choose Us',
       additionalUspsHeading: 'And Much More...',
@@ -1038,7 +1053,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       // === CONTENT ===
       { name: 'badgeText', type: 'string', label: 'Badge Text', placeholder: 'Why Choose Us' },
       { name: 'title', type: 'string', label: 'Section Title', required: true, placeholder: 'Why Choose JKKN?' },
-      { name: 'subtitle', type: 'string', label: 'Subtitle', placeholder: '74+ Years of Transforming Lives...' },
+      { name: 'subtitle', type: 'string', label: 'Subtitle', placeholder: '73+ Years of Transforming Lives...' },
       { name: 'tagline', type: 'string', label: 'Tagline', placeholder: 'Where Legacy Meets Innovation...' },
       { name: 'additionalUspsHeading', type: 'string', label: 'Additional USPs Heading', placeholder: 'And Much More...' },
 
@@ -1415,6 +1430,146 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     ],
   },
 
+  JKKN100CentenarySection: {
+    name: 'JKKN100CentenarySection',
+    displayName: '#JKKN100 Centenary',
+    category: 'content',
+    description: 'Elegant two-column section celebrating JKKN 100th anniversary with gold-framed founder photo, quote, and call-to-action buttons',
+    icon: 'Award',
+    previewImage: '/cms-previews/JKKN100CentenarySection.png',
+    component: JKKN100CentenarySection,
+    propsSchema: z.object({
+      badge: z.string().default('#JKKN100'),
+      tagline: z.string().default('CELEBRATING A CENTURY OF EXCELLENCE'),
+      founderImage: z.string().optional(),
+      founderImageAlt: z.string().default('Kodai Vallal Shri. J.K.K. Nataraja Chettiar'),
+      founderName: z.string().default('Kodai Vallal Shri. J.K.K. Nataraja Chettiar'),
+      founderYears: z.string().default('1895 - 1995'),
+      quote: z.string().default('Education is the foundation of a prosperous society'),
+      timelineStart: z.string().default('November 2025'),
+      timelineEnd: z.string().default('November 2026'),
+      timelineSubtitle: z.string().default('Honoring 100 Years of Our Founder\'s Birth'),
+      // CTA Buttons
+      primaryCtaLabel: z.string().default('Watch Tribute Video'),
+      tributeVideoUrl: z.string().default(''),
+      secondaryCtaLabel: z.string().default('Our Heritage'),
+      heritageUrl: z.string().default('/about/heritage'),
+      openHeritageInNewTab: z.boolean().default(false),
+      // Typography - Badge
+      badgeFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold', 'extrabold']).default('bold'),
+      badgeFontStyle: z.enum(['normal', 'italic']).default('normal'),
+      badgeColor: z.string().default('#0b6d41'),
+      // Typography - Tagline
+      taglineFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('medium'),
+      taglineFontStyle: z.enum(['normal', 'italic']).default('normal'),
+      taglineColor: z.string().default('#d4af37'),
+      // Typography - Quote
+      quoteFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('normal'),
+      quoteFontStyle: z.enum(['normal', 'italic']).default('italic'),
+      quoteColor: z.string().default('#1a1a1a'),
+      // Typography - Founder Name
+      founderNameFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('semibold'),
+      founderNameColor: z.string().default('#1f2937'),
+      // Typography - Timeline
+      timelineFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('semibold'),
+      timelineColor: z.string().default('#0b6d41'),
+      // Styling
+      backgroundColor: z.string().default('#ffffff'),
+      accentColor: z.string().default('#0b6d41'),
+      goldColor: z.string().default('#d4af37'),
+      showAnimations: z.boolean().default(true),
+      paddingY: z.enum(['sm', 'md', 'lg', 'xl']).default('lg'),
+    }),
+    defaultProps: {
+      badge: '#JKKN100',
+      tagline: 'CELEBRATING A CENTURY OF EXCELLENCE',
+      founderImage: '',
+      founderImageAlt: 'Kodai Vallal Shri. J.K.K. Nataraja Chettiar',
+      founderName: 'Kodai Vallal Shri. J.K.K. Nataraja Chettiar',
+      founderYears: '1895 - 1995',
+      quote: 'Education is the foundation of a prosperous society',
+      timelineStart: 'November 2025',
+      timelineEnd: 'November 2026',
+      timelineSubtitle: 'Honoring 100 Years of Our Founder\'s Birth',
+      // CTA Buttons
+      primaryCtaLabel: 'Watch Tribute Video',
+      tributeVideoUrl: '',
+      secondaryCtaLabel: 'Our Heritage',
+      heritageUrl: '/about/heritage',
+      openHeritageInNewTab: false,
+      // Typography - Badge
+      badgeFontWeight: 'bold',
+      badgeFontStyle: 'normal',
+      badgeColor: '#0b6d41',
+      // Typography - Tagline
+      taglineFontWeight: 'medium',
+      taglineFontStyle: 'normal',
+      taglineColor: '#d4af37',
+      // Typography - Quote
+      quoteFontWeight: 'normal',
+      quoteFontStyle: 'italic',
+      quoteColor: '#1a1a1a',
+      // Typography - Founder Name
+      founderNameFontWeight: 'semibold',
+      founderNameColor: '#1f2937',
+      // Typography - Timeline
+      timelineFontWeight: 'semibold',
+      timelineColor: '#0b6d41',
+      // Styling
+      backgroundColor: '#ffffff',
+      accentColor: '#0b6d41',
+      goldColor: '#d4af37',
+      showAnimations: true,
+      paddingY: 'lg',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['jkkn100', 'centenary', 'celebration', 'founder', 'tribute', 'anniversary', 'heritage', '100', 'hundred', 'nataraja', 'chettiar'],
+    editableProps: [
+      // Content
+      { name: 'badge', type: 'string', label: 'Badge Text', description: 'Main badge (e.g., #JKKN100)' },
+      { name: 'tagline', type: 'string', label: 'Tagline', description: 'Tagline below badge' },
+      { name: 'founderImage', type: 'image', label: 'Founder Photo', description: 'Upload founder photograph' },
+      { name: 'founderImageAlt', type: 'string', label: 'Photo Alt Text', required: true },
+      { name: 'founderName', type: 'string', label: 'Founder Name' },
+      { name: 'founderYears', type: 'string', label: 'Founder Years', description: 'e.g., 1895 - 1995' },
+      { name: 'quote', type: 'string', label: 'Quote', multiline: true },
+      { name: 'timelineStart', type: 'string', label: 'Timeline Start', description: 'e.g., November 2025' },
+      { name: 'timelineEnd', type: 'string', label: 'Timeline End', description: 'e.g., November 2026' },
+      { name: 'timelineSubtitle', type: 'string', label: 'Timeline Subtitle' },
+      // CTA Buttons
+      { name: 'primaryCtaLabel', type: 'string', label: 'Video Button Label' },
+      { name: 'tributeVideoUrl', type: 'string', label: 'Tribute Video URL', description: 'YouTube or Vimeo URL' },
+      { name: 'secondaryCtaLabel', type: 'string', label: 'Heritage Button Label' },
+      { name: 'heritageUrl', type: 'string', label: 'Heritage Page URL', description: 'Link to heritage page' },
+      { name: 'openHeritageInNewTab', type: 'boolean', label: 'Open Heritage in New Tab' },
+      // Badge Typography
+      { name: 'badgeFontWeight', type: 'enum', label: 'Badge Font Weight', options: ['normal', 'medium', 'semibold', 'bold', 'extrabold'] },
+      { name: 'badgeFontStyle', type: 'enum', label: 'Badge Font Style', options: ['normal', 'italic'] },
+      { name: 'badgeColor', type: 'color', label: 'Badge Color' },
+      // Tagline Typography
+      { name: 'taglineFontWeight', type: 'enum', label: 'Tagline Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
+      { name: 'taglineFontStyle', type: 'enum', label: 'Tagline Font Style', options: ['normal', 'italic'] },
+      { name: 'taglineColor', type: 'color', label: 'Tagline Color' },
+      // Quote Typography
+      { name: 'quoteFontWeight', type: 'enum', label: 'Quote Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
+      { name: 'quoteFontStyle', type: 'enum', label: 'Quote Font Style', options: ['normal', 'italic'] },
+      { name: 'quoteColor', type: 'color', label: 'Quote Color' },
+      // Founder Typography
+      { name: 'founderNameFontWeight', type: 'enum', label: 'Founder Name Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
+      { name: 'founderNameColor', type: 'color', label: 'Founder Name Color' },
+      // Timeline Typography
+      { name: 'timelineFontWeight', type: 'enum', label: 'Timeline Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
+      { name: 'timelineColor', type: 'color', label: 'Timeline Color' },
+      // Styling
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color', description: 'Button & accent color' },
+      { name: 'goldColor', type: 'color', label: 'Gold Color', description: 'Gold accent for frame' },
+      { name: 'showAnimations', type: 'boolean', label: 'Enable Animations' },
+      { name: 'paddingY', type: 'enum', label: 'Vertical Padding', options: ['sm', 'md', 'lg', 'xl'] },
+    ],
+  },
+
   InstitutionsGrid: {
     name: 'InstitutionsGrid',
     displayName: 'Institutions Grid',
@@ -1457,7 +1612,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         { name: 'JKKN College of Pharmacy', image: '', link: '/institutions/pharmacy', description: 'Leading pharmaceutical education' },
         { name: 'JKKN Dental College & Hospital', image: '', link: '/institutions/dental', description: 'Premier dental education' },
         { name: 'JKKN College of Arts & Science', image: '', link: '/institutions/arts-science', description: 'Arts and sciences education' },
-        { name: 'JKKN College of Nursing', image: '', link: '/institutions/nursing', description: 'Compassionate nursing care' },
+        { name: 'Sresakthimayeil Institute Of Nursing And Research', image: '', link: '/institutions/nursing', description: 'Compassionate nursing care' },
         { name: 'JKKN College of Allied Health Sciences', image: '', link: '/institutions/allied-health', description: 'Healthcare professionals' },
       ],
       columns: '3',
@@ -3379,7 +3534,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         { id: 'pharmacy', name: 'JKKN College of Pharmacy', courses: ['B.Pharm', 'M.Pharm', 'Pharm.D', 'D.Pharm'] },
         { id: 'engineering', name: 'JKKN College of Engineering & Technology', courses: ['B.E. CSE', 'B.E. ECE', 'B.E. EEE', 'B.E. Mechanical', 'M.E.', 'MBA'] },
         { id: 'arts', name: 'JKKN College of Arts & Science', courses: ['B.Sc', 'M.Sc', 'BBA', 'BCA', 'B.Com', 'BA'] },
-        { id: 'nursing', name: 'JKKN College of Nursing', courses: ['B.Sc Nursing', 'M.Sc Nursing', 'GNM', 'ANM'] },
+        { id: 'nursing', name: 'Sresakthimayeil Institute Of Nursing And Research', courses: ['B.Sc Nursing', 'M.Sc Nursing', 'GNM', 'ANM'] },
         { id: 'allied', name: 'JKKN College of Allied Health Sciences', courses: ['BPT', 'BMLT', 'B.Sc Radiology', 'B.Sc Cardiac Technology'] },
         { id: 'education', name: 'JKKN College of Education', courses: ['B.Ed', 'M.Ed', 'D.El.Ed'] },
         { id: 'school', name: 'JKKN Matriculation Higher Secondary School', courses: ['Pre-KG to 12th Standard'] },

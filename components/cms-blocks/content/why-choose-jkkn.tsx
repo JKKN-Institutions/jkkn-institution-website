@@ -168,10 +168,10 @@ function getIconComponent(iconType: USPCard['icon']) {
 
 // Default USP Cards
 const defaultUspCards: USPCard[] = [
-  { icon: 'heritage', title: 'Years of Educational Legacy', stat: '74+' },
-  { icon: 'career', title: 'Placement Success Rate', stat: '95%' },
-  { icon: 'excellence', title: 'NAAC A+ Accredited Quality' },
-  { icon: 'expertise', title: 'Expert Learning Facilitators', stat: '500+' },
+  { icon: 'heritage', title: 'Years of Educational Legacy', stat: '73+' },
+  { icon: 'career', title: 'Placement Success Rate', stat: '92%+' },
+  { icon: 'excellence', title: 'NAAC A Accredited Quality' },
+  { icon: 'expertise', title: 'Expert Learning Facilitators', stat: '400+' },
   { icon: 'facilities', title: 'State-of-the-Art Infrastructure' },
   { icon: 'value', title: 'Affordable & Accessible Education' },
 ]
@@ -308,7 +308,7 @@ function USPCardComponent({
 export default function WhyChooseJKKN({
   // Content
   title = 'Why Choose JKKN?',
-  subtitle = '74+ Years of Transforming Lives Through Progressive Education',
+  subtitle = '73+ Years of Transforming Lives Through Progressive Education',
   tagline = 'Where Legacy Meets Innovation | Excellence Without Elitism',
   badgeText = 'Why Choose Us',
   additionalUspsHeading = 'And Much More...',

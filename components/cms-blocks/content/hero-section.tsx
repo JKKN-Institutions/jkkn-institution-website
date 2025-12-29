@@ -59,6 +59,8 @@ export default function HeroSection({
   logoImage,
   logoImageAlt = '',
   showAiBadge = true,
+  logoPosition = 'top', // 'top', 'between-subtitle-button'
+  logoSize = 'md', // 'sm', 'md', 'lg', 'xl'
   // Title styling props
   titleColor = '#ffffff',
   titleFontSize = '6xl',
@@ -72,7 +74,12 @@ export default function HeroSection({
   // Trust Badges props
   showTrustBadges = false,
   trustBadgesStyle = 'glass', // 'glass', 'solid', 'outline'
-  trustBadgesPosition = 'below-subtitle', // 'below-subtitle', 'below-title'
+  trustBadgesPosition = 'below-subtitle', // 'below-subtitle', 'below-title', 'below-logo'
+  // Editable Trust Badge texts
+  trustBadge1Text = 'NAAC Accredited',
+  trustBadge2Text = '92%+ Placements',
+  trustBadge3Text = '100+ Top Recruiters',
+  trustBadge4Text = '73+ Years of Excellence',
   // Background props
   backgroundType = 'image',
   backgroundImage,
@@ -134,13 +141,21 @@ export default function HeroSection({
 
   const buttons = ctaButtons.length > 0 ? ctaButtons : defaultButtons
 
-  // Trust badges data
+  // Trust badges data - using editable props
   const trustBadges = [
-    { icon: Award, text: "NAAC Accredited" },
-    { icon: TrendingUp, text: "95%+ Placements" },
-    { icon: Users, text: "100+ Top Recruiters" },
-    { icon: Calendar, text: "39 Years of Excellence" }
-  ]
+    { icon: Award, text: trustBadge1Text },
+    { icon: TrendingUp, text: trustBadge2Text },
+    { icon: Users, text: trustBadge3Text },
+    { icon: Calendar, text: trustBadge4Text }
+  ].filter(badge => badge.text) // Only show badges with text
+
+  // Logo size classes
+  const logoSizeClasses = {
+    sm: 'h-16 sm:h-20',
+    md: 'h-20 sm:h-24 md:h-28',
+    lg: 'h-24 sm:h-28 md:h-32',
+    xl: 'h-28 sm:h-32 md:h-40',
+  }
 
   return (
     <section
@@ -195,8 +210,8 @@ export default function HeroSection({
 
       {/* Main Content */}
       <div className="container relative z-10 mx-auto px-4 py-16 flex flex-col items-center">
-        {/* Logo Badge - Custom logo or default AI badge (hidden when trust badges are shown) */}
-        {(logoImage || (showAiBadge && !showTrustBadges)) && (
+        {/* Logo Badge - Custom logo or default AI badge at TOP position */}
+        {logoPosition === 'top' && (logoImage || (showAiBadge && !showTrustBadges)) && (
           <div
             className={cn(
               "mb-6 transition-all duration-1000",
@@ -209,9 +224,9 @@ export default function HeroSection({
                 <Image
                   src={logoImage}
                   alt={logoImageAlt || 'Logo'}
-                  width={120}
-                  height={120}
-                  className="w-auto h-20 sm:h-24 md:h-28 object-contain"
+                  width={160}
+                  height={160}
+                  className={cn("w-auto object-contain", logoSizeClasses[logoSize as keyof typeof logoSizeClasses] || logoSizeClasses.md)}
                 />
               </div>
             ) : (
@@ -270,6 +285,78 @@ export default function HeroSection({
           >
             {subtitle}
           </p>
+        )}
+
+        {/* Logo Badge - Between subtitle and button position */}
+        {logoPosition === 'between-subtitle-button' && logoImage && (
+          <div
+            className={cn(
+              "mt-6 mb-2 transition-all duration-1000 delay-350",
+              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            )}
+          >
+            <div className="inline-block bg-white rounded-xl p-3 sm:p-4 shadow-2xl">
+              <Image
+                src={logoImage}
+                alt={logoImageAlt || 'Logo'}
+                width={160}
+                height={160}
+                className={cn("w-auto object-contain", logoSizeClasses[logoSize as keyof typeof logoSizeClasses] || logoSizeClasses.md)}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Trust Badges - Below Logo Position */}
+        {showTrustBadges && trustBadgesPosition === 'below-logo' && logoPosition === 'between-subtitle-button' && (
+          <div
+            className={cn(
+              'mt-4 flex flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-4xl transition-all duration-1000 delay-400',
+              alignment === 'center' && 'mx-auto',
+              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            )}
+          >
+            {trustBadges.map((badge, index) => {
+              const Icon = badge.icon
+              if (trustBadgesStyle === 'glass') {
+                return (
+                  <div
+                    key={index}
+                    className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-white/90 backdrop-blur-md border border-white/40 shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-white/95"
+                  >
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+                    <span className="text-sm sm:text-base font-bold text-gray-900 whitespace-nowrap">
+                      {badge.text}
+                    </span>
+                  </div>
+                )
+              }
+              if (trustBadgesStyle === 'solid') {
+                return (
+                  <div
+                    key={index}
+                    className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-secondary text-gray-900 shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-yellow-400"
+                  >
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+                    <span className="text-sm sm:text-base font-bold whitespace-nowrap">
+                      {badge.text}
+                    </span>
+                  </div>
+                )
+              }
+              return (
+                <div
+                  key={index}
+                  className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-transparent border-2 border-white/90 text-white shadow-lg transition-all duration-300 hover:bg-white/10 hover:scale-105"
+                >
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                  <span className="text-sm sm:text-base font-bold whitespace-nowrap">
+                    {badge.text}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
         )}
 
         {/* Trust Badges - Configurable Position */}

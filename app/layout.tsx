@@ -14,7 +14,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: 'JKKN Group of Institutions',
   description:
-    'JKKN Group of Institutions - A leading educational institution in Tamil Nadu offering undergraduate, postgraduate, and research programs in Engineering, Medical Sciences, Management, and Arts & Science since 1975.',
+    'JKKN Group of Institutions - A leading educational institution in Tamil Nadu offering undergraduate, postgraduate, and research programs in Engineering, Medical Sciences, Management, and Arts & Science since 1952.',
   keywords: [
     'JKKN',
     'JKKN Institution',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     'Medical College Namakkal',
     'Best College Komarapalayam',
     'Higher Education India',
-    'NAAC A+ College',
+    'NAAC A College',
   ],
   authors: [{ name: 'JKKN Group of Institutions' }],
   creator: 'JKKN Group of Institutions',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     siteName: 'JKKN Group of Institutions',
     title: 'JKKN Group of Institutions',
     description:
-      'A leading educational institution in Tamil Nadu offering quality education since 1975. NAAC A+ accredited with 50,000+ alumni worldwide.',
+      'A leading educational institution in Tamil Nadu offering quality education since 1952. NAAC A accredited with 50,000+ alumni worldwide.',
     images: [
       {
         url: '/og-image.png',
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'JKKN Group of Institutions',
     description:
-      'A leading educational institution in Tamil Nadu offering quality education since 1975.',
+      'A leading educational institution in Tamil Nadu offering quality education since 1952.',
     images: ['/og-image.png'],
   },
   robots: {

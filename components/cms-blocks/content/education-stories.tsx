@@ -6,9 +6,11 @@ import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRef, useState, useEffect, useCallback } from 'react'
-import { GraduationCap, ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX } from 'lucide-react'
+import { GraduationCap, ChevronLeft, ChevronRight, Play, Pause, X } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
-import { getInstagramEmbedUrl } from '@/lib/utils/instagram'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { getInstagramThumbnails } from '@/app/actions/cms/instagram'
 
 /**
  * Story item schema
@@ -107,54 +109,6 @@ function AnimatedGradientBackground({
 }
 
 /**
- * Instagram Reel Embed Component
- * Embeds Instagram Reels with IntersectionObserver for autoplay control
- */
-function InstagramReelEmbed({
-  url,
-  isActive,
-  mutedAutoplay,
-}: {
-  url: string
-  isActive: boolean
-  mutedAutoplay: boolean
-}) {
-  const iframeRef = useRef<HTMLIFrameElement>(null)
-  const [isInView, setIsInView] = useState(false)
-
-  // IntersectionObserver for viewport detection
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsInView(entry.isIntersecting)
-      },
-      { threshold: 0.5 }
-    )
-
-    if (iframeRef.current?.parentElement) {
-      observer.observe(iframeRef.current.parentElement)
-    }
-
-    return () => observer.disconnect()
-  }, [])
-
-  const embedUrl = getInstagramEmbedUrl(url, mutedAutoplay && isInView && isActive)
-
-  return (
-    <iframe
-      ref={iframeRef}
-      src={embedUrl}
-      className="absolute inset-0 w-full h-full"
-      frameBorder="0"
-      scrolling="no"
-      allowTransparency
-      allow="autoplay; encrypted-media"
-      title="Instagram Reel"
-    />
-  )
-}
-
-/**
  * Glassmorphic Overlay Component
  * Creates a frosted glass effect overlay for UI elements
  */
@@ -229,6 +183,21 @@ export function EducationStories({
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
 
+  // Modal state for Instagram reels
+  const [selectedStory, setSelectedStory] = useState<StoryItem | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  // Instagram thumbnails state
+  const [instagramThumbnails, setInstagramThumbnails] = useState<Record<string, string | null>>({})
+
+  // Handle story click - open modal if Instagram URL exists
+  const handleStoryClick = useCallback((story: StoryItem) => {
+    if (story.instagramUrl) {
+      setSelectedStory(story)
+      setIsModalOpen(true)
+    }
+  }, [])
+
   const isDark = variant === 'modern-dark'
   const isModern = variant !== 'classic'
 
@@ -248,38 +217,58 @@ export function EducationStories({
     { name: 'Karthik M', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=600&fit=crop', role: 'Arts & Science', isNew: false },
   ]
 
-  // Limit to exactly 5 stories
+  // Use all stories (no limit)
   const allStories = stories.length > 0 ? stories : defaultStories
-  const displayStories = allStories.slice(0, 5)
+  const displayStories = allStories
 
-  // Check scroll position
+  // Fetch Instagram thumbnails for stories with Instagram URLs
+  useEffect(() => {
+    const instagramUrls = displayStories
+      .map((story) => story.instagramUrl || (story.link?.includes('instagram.com') ? story.link : null))
+      .filter((url): url is string => !!url)
+
+    if (instagramUrls.length === 0) return
+
+    getInstagramThumbnails(instagramUrls)
+      .then((thumbnails) => {
+        setInstagramThumbnails(thumbnails)
+      })
+      .catch((error) => {
+        console.error('Failed to fetch Instagram thumbnails:', error)
+      })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(stories)])
+
+  // Check scroll position and update active index
   const updateScrollButtons = useCallback(() => {
     if (scrollRef.current) {
       const { scrollLeft: sl, scrollWidth, clientWidth } = scrollRef.current
       setCanScrollLeft(sl > 10)
       setCanScrollRight(sl + clientWidth < scrollWidth - 10)
-    }
-  }, [])
 
-  // Autoplay - only on mobile (1 card at a time), disabled on desktop where all cards visible
+      // Update active index based on scroll position
+      const cardWidth = 216 // 200px card + 16px gap
+      const newIndex = Math.round(sl / cardWidth)
+      setActiveIndex(Math.min(newIndex, displayStories.length - 1))
+    }
+  }, [displayStories.length])
+
+  // Autoplay - scrolls one card at a time, loops back to start
   useEffect(() => {
     if (!autoplay || isEditing || isPaused || isDragging) return
 
     const interval = setInterval(() => {
       if (scrollRef.current) {
-        const isMobile = window.innerWidth < 640
-
-        // On desktop, all 6 cards are visible - no autoplay needed
-        if (!isMobile) return
-
         const { scrollLeft: sl, scrollWidth, clientWidth } = scrollRef.current
-        const cardWidth = clientWidth + 12 // Full card width + gap on mobile
+        // Fixed card width for consistent scrolling (matches card width + gap)
+        const cardWidth = 216 // 200px card + 16px gap
 
-        // Loop back to start after last card
+        // Loop back to start after reaching end
         if (sl + clientWidth >= scrollWidth - 10) {
           scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' })
           setActiveIndex(0)
         } else {
+          // Scroll exactly one card
           scrollRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' })
           setActiveIndex(prev => Math.min(prev + 1, displayStories.length - 1))
         }
@@ -301,12 +290,12 @@ export function EducationStories({
     }
   }, [displayStories, updateScrollButtons])
 
-  // Manual scroll with buttons
+  // Manual scroll with buttons - scroll by one card
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const scrollAmount = 350 // Two cards
+      const cardWidth = 216 // 200px card + 16px gap
       scrollRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        left: direction === 'left' ? -cardWidth : cardWidth,
         behavior: 'smooth',
       })
     }
@@ -397,13 +386,12 @@ export function EducationStories({
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={handleMouseLeave}
         >
-          {/* Scroll Left Button - mobile only */}
+          {/* Scroll Left Button */}
           <button
             onClick={() => scroll('left')}
             className={cn(
-              'absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center',
+              'absolute left-0 sm:left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center',
               'transition-all duration-300 hover:scale-110 shadow-lg',
-              'sm:hidden', // Hide on desktop - all cards visible
               isDark ? 'bg-white/20 backdrop-blur-sm text-white hover:bg-white/30' : 'bg-white text-brand-primary hover:bg-gray-50',
               canScrollLeft ? 'opacity-0 group-hover:opacity-100' : 'opacity-0 pointer-events-none'
             )}
@@ -412,12 +400,12 @@ export function EducationStories({
             <ChevronLeft className="w-5 h-5" />
           </button>
 
-          {/* Reels Container - all 5 cards visible on desktop */}
-          <div className="max-w-[1150px] mx-auto">
+          {/* Reels Container - scrollable carousel */}
+          <div className="w-full">
             <div
               ref={scrollRef}
               className={cn(
-                'flex gap-3 sm:gap-4 overflow-x-auto py-2 snap-x snap-mandatory sm:justify-center',
+                'flex gap-3 sm:gap-4 overflow-x-auto py-2 snap-x snap-mandatory px-1',
                 'cursor-grab active:cursor-grabbing select-none',
                 '[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'
               )}
@@ -433,33 +421,41 @@ export function EducationStories({
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              {displayStories.map((story, index) => (
-              <ReelCard
-                key={index}
-                story={story}
-                height={heightConfig[cardHeight]}
-                showName={showNames}
-                isDark={isDark}
-                isActive={index === activeIndex}
-                isPaused={isPaused}
-                isEditing={isEditing}
-                index={index}
-                autoplaySpeed={autoplaySpeed}
-                mutedAutoplay={mutedAutoplay}
-                showVolumeControl={showVolumeControl}
-                glassBlur={glassBlur}
-                />
-              ))}
+              {displayStories.map((story, index) => {
+                // Get Instagram URL (from instagramUrl field or link field)
+                const igUrl = story.instagramUrl || (story.link?.includes('instagram.com') ? story.link : null)
+                // Get fetched thumbnail for this story's Instagram URL
+                const igThumbnail = igUrl ? instagramThumbnails[igUrl] : null
+
+                return (
+                  <ReelCard
+                    key={index}
+                    story={story}
+                    height={heightConfig[cardHeight]}
+                    showName={showNames}
+                    isDark={isDark}
+                    isActive={index === activeIndex}
+                    isPaused={isPaused}
+                    isEditing={isEditing}
+                    index={index}
+                    autoplaySpeed={autoplaySpeed}
+                    mutedAutoplay={mutedAutoplay}
+                    showVolumeControl={showVolumeControl}
+                    glassBlur={glassBlur}
+                    onStoryClick={handleStoryClick}
+                    instagramThumbnail={igThumbnail}
+                  />
+                )
+              })}
             </div>
           </div>
 
-          {/* Scroll Right Button - mobile only */}
+          {/* Scroll Right Button */}
           <button
             onClick={() => scroll('right')}
             className={cn(
-              'absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center',
+              'absolute right-0 sm:right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center',
               'transition-all duration-300 hover:scale-110 shadow-lg',
-              'sm:hidden', // Hide on desktop - all cards visible
               isDark ? 'bg-white/20 backdrop-blur-sm text-white hover:bg-white/30' : 'bg-white text-brand-primary hover:bg-gray-50',
               canScrollRight ? 'opacity-0 group-hover:opacity-100' : 'opacity-0 pointer-events-none'
             )}
@@ -469,15 +465,14 @@ export function EducationStories({
           </button>
         </div>
 
-        {/* Progress Dots - mobile only */}
-        <div className="flex sm:hidden justify-center gap-1.5 mt-6">
+        {/* Progress Dots - all screens */}
+        <div className="flex justify-center gap-1.5 mt-6">
           {displayStories.map((_, index) => (
             <button
               key={index}
               onClick={() => {
                 if (scrollRef.current) {
-                  const isMobile = window.innerWidth < 640
-                  const cardWidth = isMobile ? scrollRef.current.clientWidth + 12 : 181
+                  const cardWidth = 216 // 200px card + 16px gap
                   scrollRef.current.scrollTo({ left: cardWidth * index, behavior: 'smooth' })
                   setActiveIndex(index)
                 }
@@ -493,8 +488,73 @@ export function EducationStories({
           ))}
         </div>
       </div>
+
+      {/* Instagram Reel Modal */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="max-w-lg w-[95vw] p-0 bg-black border-none rounded-2xl overflow-hidden">
+          <VisuallyHidden>
+            <DialogTitle>{selectedStory?.name || 'Instagram Reel'}</DialogTitle>
+          </VisuallyHidden>
+
+          {/* Close Button */}
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="absolute top-3 right-3 z-50 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+            aria-label="Close"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          {/* Instagram Embed */}
+          {selectedStory?.instagramUrl && (
+            <div className="relative w-full" style={{ aspectRatio: '9/16', maxHeight: '80vh' }}>
+              <iframe
+                src={`https://www.instagram.com/reel/${extractInstagramId(selectedStory.instagramUrl)}/embed/`}
+                className="absolute inset-0 w-full h-full border-0"
+                scrolling="no"
+                allow="autoplay; encrypted-media"
+                title={`Instagram Reel: ${selectedStory.name}`}
+              />
+            </div>
+          )}
+
+          {/* Story Info */}
+          {selectedStory && (
+            <div className="p-4 bg-gradient-to-t from-black to-black/80">
+              <div className="flex items-center gap-3">
+                {selectedStory.image && (
+                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 flex-shrink-0">
+                    <Image
+                      src={selectedStory.image}
+                      alt={selectedStory.name}
+                      width={40}
+                      height={40}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                )}
+                <div>
+                  <p className="text-white font-semibold">{selectedStory.name}</p>
+                  {selectedStory.role && (
+                    <p className="text-white/60 text-sm">{selectedStory.role}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   )
+}
+
+/**
+ * Extract Instagram ID from URL
+ */
+function extractInstagramId(url: string): string | null {
+  if (!url) return null
+  const match = url.match(/instagram\.com\/(p|reel|reels)\/([A-Za-z0-9_-]+)/)
+  return match ? match[2] : null
 }
 
 /**
@@ -513,6 +573,8 @@ function ReelCard({
   mutedAutoplay = true,
   showVolumeControl = true,
   glassBlur = 'md',
+  onStoryClick,
+  instagramThumbnail,
 }: {
   story: StoryItem
   height: string
@@ -526,9 +588,13 @@ function ReelCard({
   mutedAutoplay?: boolean
   showVolumeControl?: boolean
   glassBlur?: 'sm' | 'md' | 'lg'
+  onStoryClick?: (story: StoryItem) => void
+  instagramThumbnail?: string | null
 }) {
   const [isHovered, setIsHovered] = useState(false)
-  const [isMuted, setIsMuted] = useState(mutedAutoplay)
+
+  // Use Instagram thumbnail if available, otherwise fall back to story.image
+  const displayImage = instagramThumbnail || story.image
 
   const content = (
     <div
@@ -547,17 +613,11 @@ function ReelCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Background Image/Video/Instagram */}
+      {/* Background Image - Uses Instagram thumbnail if available */}
       <div className="absolute inset-0">
-        {story.instagramUrl ? (
-          <InstagramReelEmbed
-            url={story.instagramUrl}
-            isActive={isActive}
-            mutedAutoplay={mutedAutoplay}
-          />
-        ) : story.image ? (
+        {displayImage ? (
           <Image
-            src={story.image}
+            src={displayImage}
             alt={story.name}
             fill
             sizes="170px"
@@ -593,6 +653,18 @@ function ReelCard({
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-transparent" />
 
+      {/* Play Button Overlay for Instagram Reels */}
+      {(story.instagramUrl || (story.link && story.link.includes('instagram.com'))) && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className={cn(
+            'w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center transition-all duration-300',
+            isHovered ? 'scale-110 bg-white/30' : 'scale-100'
+          )}>
+            <Play className="w-7 h-7 text-white fill-white ml-1" />
+          </div>
+        </div>
+      )}
+
       {/* New Badge */}
       {story.isNew && (
         <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-[#ffde59] rounded-full">
@@ -600,31 +672,21 @@ function ReelCard({
         </div>
       )}
 
-      {/* Glassmorphic Volume Control - Top Right */}
-      {showVolumeControl && story.instagramUrl && (
-        <GlassmorphicOverlay position="top" blur={glassBlur}>
-          <div className="p-2 flex justify-end">
-            <button
-              onClick={() => setIsMuted(!isMuted)}
-              className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors"
-              aria-label={isMuted ? 'Unmute video' : 'Mute video'}
-            >
-              {isMuted ? (
-                <VolumeX className="w-4 h-4 text-white" />
-              ) : (
-                <Volume2 className="w-4 h-4 text-white" />
-              )}
-            </button>
-          </div>
-        </GlassmorphicOverlay>
+      {/* Instagram Indicator - Shows when story links to Instagram */}
+      {(story.instagramUrl || (story.link && story.link.includes('instagram.com'))) && (
+        <div className="absolute top-2 right-2 w-7 h-7 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 flex items-center justify-center shadow-lg">
+          <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </div>
       )}
 
-      {/* Play/Pause Indicator */}
+      {/* Play/Pause Indicator - Hidden when Instagram link present */}
       <div className={cn(
         'absolute top-2 right-2 w-6 h-6 rounded-full flex items-center justify-center',
         'bg-white/20 backdrop-blur-sm transition-all duration-300',
-        isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-75',
-        story.instagramUrl && showVolumeControl && 'hidden' // Hide when volume control is shown
+        isHovered && !(story.instagramUrl || (story.link && story.link.includes('instagram.com'))) ? 'opacity-100 scale-100' : 'opacity-0 scale-75',
+        (story.instagramUrl || (story.link && story.link.includes('instagram.com'))) && 'hidden' // Hide when Instagram icon is shown
       )}>
         {isPaused ? (
           <Pause className="w-3 h-3 text-white" />
@@ -640,9 +702,9 @@ function ReelCard({
             {/* Profile Info */}
             <div className="flex items-center gap-1.5">
               <div className="w-6 h-6 rounded-full overflow-hidden border border-white/50 flex-shrink-0 relative">
-                {story.image ? (
+                {displayImage ? (
                   <Image
-                    src={story.image}
+                    src={displayImage}
                     alt={story.name}
                     width={24}
                     height={24}
@@ -697,9 +759,39 @@ function ReelCard({
     </div>
   )
 
-  if (story.link && !isEditing) {
+  // Check if this story should open Instagram modal
+  // Support both instagramUrl field and Instagram URLs in the link field
+  const isInstagramStory = story.instagramUrl || (story.link && story.link.includes('instagram.com'))
+  const effectiveInstagramUrl = story.instagramUrl || (story.link && story.link.includes('instagram.com') ? story.link : undefined)
+
+  // Create a modified story for the click handler with the effective Instagram URL
+  const storyForClick = effectiveInstagramUrl
+    ? { ...story, instagramUrl: effectiveInstagramUrl }
+    : story
+
+  // If Instagram URL exists, clicking opens modal (handled by parent)
+  if (isInstagramStory && onStoryClick && !isEditing) {
     return (
-      <Link href={story.link} className="flex-shrink-0">
+      <button
+        type="button"
+        onClick={() => onStoryClick(storyForClick)}
+        className="flex-shrink-0 text-left"
+      >
+        {content}
+      </button>
+    )
+  }
+
+  // If regular link exists (no Instagram), use Link component
+  if (story.link && !isEditing) {
+    const isExternal = story.link.startsWith('http')
+    return (
+      <Link
+        href={story.link}
+        className="flex-shrink-0"
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noopener noreferrer' : undefined}
+      >
         {content}
       </Link>
     )

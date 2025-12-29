@@ -336,6 +336,8 @@ export const HeroSectionPropsSchema = z.object({
   // Logo settings
   logoImage: z.string().optional(),
   logoImageAlt: z.string().default(''),
+  logoPosition: z.enum(['top', 'between-subtitle-button']).default('top'),
+  logoSize: z.enum(['sm', 'md', 'lg', 'xl']).default('md'),
   showAiBadge: z.boolean().default(true),
   // Title styling
   titleColor: z.string().default('#ffffff'),
@@ -350,7 +352,11 @@ export const HeroSectionPropsSchema = z.object({
   // Trust Badges settings
   showTrustBadges: z.boolean().default(false),
   trustBadgesStyle: z.enum(['glass', 'solid', 'outline']).default('glass'),
-  trustBadgesPosition: z.enum(['below-subtitle', 'below-title']).default('below-subtitle'),
+  trustBadgesPosition: z.enum(['below-subtitle', 'below-title', 'below-logo']).default('below-subtitle'),
+  trustBadge1Text: z.string().default('NAAC Accredited'),
+  trustBadge2Text: z.string().default('95%+ Placements'),
+  trustBadge3Text: z.string().default('100+ Top Recruiters'),
+  trustBadge4Text: z.string().default('39 Years of Excellence'),
   // Background settings
   backgroundType: z.enum(['image', 'video', 'gradient']).default('image'),
   backgroundImage: z.string().optional(),
@@ -904,7 +910,7 @@ export const AccreditationsSectionPropsSchema = z.object({
     {
       icon: 'CheckCircle',
       name: 'INC Approved',
-      description: 'Indian Nursing Council approval for all Nursing programs at Sresakthimayeil Institute of Nursing and Research.',
+      description: 'Indian Nursing Council approval for all Nursing programs at Sresakthimayeil Institute Of Nursing And Research.',
       order: 7,
     },
     {
@@ -1055,7 +1061,7 @@ export type USPCard = z.infer<typeof USPCardSchema>
 export const WhyChooseJKKNPropsSchema = z.object({
   // === CONTENT FIELDS ===
   title: z.string().default('Why Choose JKKN?'),
-  subtitle: z.string().default('74+ Years of Transforming Lives Through Progressive Education'),
+  subtitle: z.string().default('73+ Years of Transforming Lives Through Progressive Education'),
   tagline: z.string().default('Where Legacy Meets Innovation | Excellence Without Elitism'),
   badgeText: z.string().default('Why Choose Us'),
   additionalUspsHeading: z.string().default('And Much More...'),

@@ -374,7 +374,7 @@ interface AccreditationLogoItem {
 
 // Default accreditation logos (using icon-based cards since we don't have actual logo URLs)
 const DEFAULT_ACCREDITATION_LOGOS: AccreditationLogoItem[] = [
-  { name: 'NAAC A+', icon: 'Trophy' },
+  { name: 'NAAC A', icon: 'Trophy' },
   { name: 'AICTE', icon: 'Award' },
   { name: 'UGC', icon: 'CheckCircle' },
   { name: 'NBA', icon: 'Shield' },

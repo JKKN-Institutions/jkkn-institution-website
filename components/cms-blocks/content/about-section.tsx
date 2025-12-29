@@ -18,13 +18,13 @@ export const AboutSectionPropsSchema = z.object({
   layoutMode: z.enum(['two-column', 'founder-centered']).default('two-column').describe('Layout mode'),
 
   // Header
-  badge: z.string().default('Since 1969').describe('Badge text at top'),
+  badge: z.string().default('Since 1952').describe('Badge text at top'),
   headerPart1: z.string().default('About').describe('First part of header'),
   headerPart2: z.string().default('JKKN Institution').describe('Second part (gold italic)'),
   subtitle: z.string().optional().describe('Subtitle below the header'),
 
   // Two-column layout content (previous design)
-  sectionTitle: z.string().default('Building Excellence Since 1969').describe('Section title'),
+  sectionTitle: z.string().default('Building Excellence Since 1952').describe('Section title'),
   paragraph1: z.string().default('').describe('First paragraph'),
   paragraph2: z.string().optional().describe('Second paragraph'),
 
@@ -49,8 +49,8 @@ export const AboutSectionPropsSchema = z.object({
     value: z.string().describe('Stat value (e.g., "1,969")'),
     label: z.string().describe('Stat label (e.g., "Year Established")'),
   })).default([
-    { value: '1969', label: 'Year Established' },
-    { value: '10+', label: 'Institutions' },
+    { value: '1952', label: 'Year Established' },
+    { value: '11', label: 'Institutions' },
     { value: '50,000+', label: 'Alumni' },
     { value: '5,000+', label: 'Current Students' },
   ]).describe('Statistics to display'),
@@ -128,12 +128,12 @@ function useInView(threshold = 0.1) {
  */
 export function AboutSection({
   layoutMode = 'two-column',
-  badge = 'Since 1969',
+  badge = 'Since 1952',
   headerPart1 = 'About',
   headerPart2 = 'JKKN Institution',
   subtitle,
   // Two-column props
-  sectionTitle = 'Building Excellence Since 1969',
+  sectionTitle = 'Building Excellence Since 1952',
   paragraph1 = '',
   paragraph2,
   image,
@@ -151,8 +151,8 @@ export function AboutSection({
   // Common props
   showStats = false,
   stats = [
-    { value: '1969', label: 'Year Established' },
-    { value: '10+', label: 'Institutions' },
+    { value: '1952', label: 'Year Established' },
+    { value: '11', label: 'Institutions' },
     { value: '50,000+', label: 'Alumni' },
     { value: '5,000+', label: 'Current Students' },
   ],
@@ -191,7 +191,7 @@ export function AboutSection({
   const isTwoColumn = layoutMode === 'two-column'
 
   // Default content
-  const defaultParagraph1 = `The J.K.K. Rangammal Charitable Trust was founded with a vision to provide quality education and empower communities. Since our establishment in 1969, we have been committed to building excellence in education across multiple disciplines.`
+  const defaultParagraph1 = `The J.K.K. Rangammal Charitable Trust was founded with a vision to provide quality education and empower communities. Since our establishment in 1952, we have been committed to building excellence in education across multiple disciplines.`
 
   const defaultParagraph2 = `Today, our institutions span across medical, engineering, arts, and sciences, nurturing over 50,000 alumni who have made their mark across the globe. We continue to uphold our founder's vision of accessible, quality education.`
 

@@ -53,7 +53,7 @@ interface CmsPage {
   id: string
   title: string
   slug: string
-  status: 'draft' | 'published' | 'archived' | 'scheduled'
+  status: 'draft' | 'pending_review' | 'approved' | 'published' | 'archived' | 'scheduled'
   scheduled_publish_at?: string | null
 }
 

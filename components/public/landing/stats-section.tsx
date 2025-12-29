@@ -13,10 +13,10 @@ import {
 const stats = [
   {
     icon: Trophy,
-    value: 74,
+    value: 73,
     suffix: '+',
     label: 'Years of Excellence',
-    description: 'Educational legacy since 1951',
+    description: 'Educational legacy since 1952',
     useSteppedAnimation: false,
   },
   {
@@ -29,8 +29,8 @@ const stats = [
   },
   {
     icon: TrendingUp,
-    value: 95,
-    suffix: '%',
+    value: 92,
+    suffix: '%+',
     label: 'Placement Rate',
     description: 'Career success stories',
     useSteppedAnimation: false,

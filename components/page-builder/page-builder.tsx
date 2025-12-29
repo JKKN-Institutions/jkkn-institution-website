@@ -65,7 +65,7 @@ interface PageBuilderProps {
   pageId: string
   pageTitle: string
   pageSlug: string
-  pageStatus: 'draft' | 'published' | 'archived' | 'scheduled'
+  pageStatus: 'draft' | 'pending_review' | 'approved' | 'published' | 'archived' | 'scheduled'
   initialBlocks: BlockData[]
   initialSeoData?: SeoMetadata | null
   initialFabConfig?: Partial<FabConfig> | null

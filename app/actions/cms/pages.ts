@@ -30,7 +30,7 @@ const CreatePageSchema = z.object({
   description: z.string().optional(),
   parent_id: z.string().uuid().nullable().optional(),
   template_id: z.string().uuid().nullable().optional(),
-  status: z.enum(['draft', 'published', 'archived', 'scheduled']).default('draft'),
+  status: z.enum(['draft', 'pending_review', 'approved', 'published', 'archived', 'scheduled']).default('draft'),
   visibility: z.enum(['public', 'private', 'password_protected']).default('public'),
   featured_image: z.string().url().nullable().optional(),
   sort_order: z.coerce.number().min(1).optional(),
@@ -69,7 +69,7 @@ export type FormState = {
   data?: unknown
 }
 
-export type PageStatus = 'draft' | 'published' | 'archived' | 'scheduled'
+export type PageStatus = 'draft' | 'pending_review' | 'approved' | 'published' | 'archived' | 'scheduled'
 export type PageVisibility = 'public' | 'private' | 'password_protected'
 
 export interface PageWithBlocks {
@@ -2224,4 +2224,499 @@ export async function getPageTypography(pageId: string) {
 
   const metadata = data?.metadata as Record<string, unknown> | null
   return metadata?.typography || null
+}
+
+// ============================================
+// APPROVAL WORKFLOW FUNCTIONS
+// ============================================
+
+export type PageReviewAction = 'submitted' | 'approved' | 'rejected' | 'revision_requested'
+
+/**
+ * Submit a page for review (for users without publish permission)
+ */
+export async function submitPageForReview(pageId: string): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check edit permission (not publish - that's for approvers)
+  const hasEditPermission = await checkPermission(user.id, 'cms:pages:edit')
+  if (!hasEditPermission) {
+    return { success: false, message: 'You do not have permission to edit pages' }
+  }
+
+  // Get current page status
+  const { data: page, error: fetchError } = await supabase
+    .from('cms_pages')
+    .select('title, slug, status')
+    .eq('id', pageId)
+    .single()
+
+  if (fetchError || !page) {
+    return { success: false, message: 'Page not found' }
+  }
+
+  // Only draft pages can be submitted for review
+  if (page.status !== 'draft') {
+    return { success: false, message: 'Only draft pages can be submitted for review' }
+  }
+
+  // Update page status to pending_review
+  const { error } = await supabase
+    .from('cms_pages')
+    .update({
+      status: 'pending_review',
+      submitted_for_review_at: new Date().toISOString(),
+      submitted_by: user.id,
+      updated_by: user.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', pageId)
+
+  if (error) {
+    console.error('Error submitting page for review:', error)
+    return { success: false, message: 'Failed to submit page for review' }
+  }
+
+  // Create review history entry
+  await supabase.from('cms_page_reviews').insert({
+    page_id: pageId,
+    action: 'submitted',
+    from_status: 'draft',
+    to_status: 'pending_review',
+    reviewed_by: user.id,
+  })
+
+  // Notify users with approve permission (super_admin and admin)
+  const { data: approvers } = await supabase
+    .from('user_roles')
+    .select('user_id, roles!inner(name)')
+    .in('roles.name', ['super_admin', 'admin'])
+
+  if (approvers) {
+    for (const approver of approvers) {
+      if (approver.user_id !== user.id) {
+        await NotificationHelpers.contentNeedsReview(
+          approver.user_id,
+          page.title,
+          pageId
+        )
+      }
+    }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'submit_for_review',
+    module: 'cms',
+    resourceType: 'page',
+    resourceId: pageId,
+    metadata: { title: page.title, slug: page.slug },
+  })
+
+  revalidatePath('/admin/content/pages')
+  revalidatePath(`/admin/content/pages/${pageId}`)
+
+  return { success: true, message: 'Page submitted for review' }
+}
+
+/**
+ * Approve a page and optionally publish it
+ */
+export async function approvePage(
+  pageId: string,
+  options?: { notes?: string; publishImmediately?: boolean }
+): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check approve permission
+  const hasApprovePermission = await checkPermission(user.id, 'content:pages:approve')
+  if (!hasApprovePermission) {
+    return { success: false, message: 'You do not have permission to approve pages' }
+  }
+
+  // Get current page
+  const { data: page, error: fetchError } = await supabase
+    .from('cms_pages')
+    .select('title, slug, status, submitted_by')
+    .eq('id', pageId)
+    .single()
+
+  if (fetchError || !page) {
+    return { success: false, message: 'Page not found' }
+  }
+
+  // Only pending_review pages can be approved
+  if (page.status !== 'pending_review') {
+    return { success: false, message: 'Only pages pending review can be approved' }
+  }
+
+  const newStatus = options?.publishImmediately ? 'published' : 'approved'
+  const publishedAt = options?.publishImmediately ? new Date().toISOString() : null
+
+  // Update page status
+  const { error } = await supabase
+    .from('cms_pages')
+    .update({
+      status: newStatus,
+      reviewed_by: user.id,
+      reviewed_at: new Date().toISOString(),
+      review_notes: options?.notes || null,
+      published_at: publishedAt,
+      updated_by: user.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', pageId)
+
+  if (error) {
+    console.error('Error approving page:', error)
+    return { success: false, message: 'Failed to approve page' }
+  }
+
+  // Create review history entry
+  await supabase.from('cms_page_reviews').insert({
+    page_id: pageId,
+    action: 'approved',
+    from_status: 'pending_review',
+    to_status: newStatus,
+    notes: options?.notes,
+    reviewed_by: user.id,
+  })
+
+  // Notify the submitter
+  if (page.submitted_by && page.submitted_by !== user.id) {
+    await NotificationHelpers.contentPublished(
+      page.submitted_by,
+      `Your page "${page.title}" has been approved${options?.publishImmediately ? ' and published' : ''}`,
+      `/admin/content/pages/${pageId}`
+    )
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: options?.publishImmediately ? 'approve_and_publish' : 'approve',
+    module: 'cms',
+    resourceType: 'page',
+    resourceId: pageId,
+    metadata: { title: page.title, notes: options?.notes },
+  })
+
+  revalidatePath('/admin/content/pages')
+  revalidatePath(`/admin/content/pages/${pageId}`)
+  if (options?.publishImmediately) {
+    revalidatePath(`/${page.slug}`)
+    revalidatePath('/', 'layout')
+  }
+
+  return {
+    success: true,
+    message: options?.publishImmediately
+      ? 'Page approved and published'
+      : 'Page approved. It can now be published.',
+  }
+}
+
+/**
+ * Reject a page review
+ */
+export async function rejectPage(pageId: string, notes: string): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check approve permission
+  const hasApprovePermission = await checkPermission(user.id, 'content:pages:approve')
+  if (!hasApprovePermission) {
+    return { success: false, message: 'You do not have permission to reject pages' }
+  }
+
+  if (!notes || notes.trim().length === 0) {
+    return { success: false, message: 'Please provide a reason for rejection' }
+  }
+
+  // Get current page
+  const { data: page, error: fetchError } = await supabase
+    .from('cms_pages')
+    .select('title, slug, status, submitted_by')
+    .eq('id', pageId)
+    .single()
+
+  if (fetchError || !page) {
+    return { success: false, message: 'Page not found' }
+  }
+
+  if (page.status !== 'pending_review') {
+    return { success: false, message: 'Only pages pending review can be rejected' }
+  }
+
+  // Update page status back to draft
+  const { error } = await supabase
+    .from('cms_pages')
+    .update({
+      status: 'draft',
+      reviewed_by: user.id,
+      reviewed_at: new Date().toISOString(),
+      review_notes: notes,
+      submitted_for_review_at: null,
+      submitted_by: null,
+      updated_by: user.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', pageId)
+
+  if (error) {
+    console.error('Error rejecting page:', error)
+    return { success: false, message: 'Failed to reject page' }
+  }
+
+  // Create review history entry
+  await supabase.from('cms_page_reviews').insert({
+    page_id: pageId,
+    action: 'rejected',
+    from_status: 'pending_review',
+    to_status: 'draft',
+    notes,
+    reviewed_by: user.id,
+  })
+
+  // Notify the submitter
+  if (page.submitted_by && page.submitted_by !== user.id) {
+    await NotificationHelpers.contentPublished(
+      page.submitted_by,
+      `Your page "${page.title}" was not approved. Reason: ${notes}`,
+      `/admin/content/pages/${pageId}`
+    )
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'reject',
+    module: 'cms',
+    resourceType: 'page',
+    resourceId: pageId,
+    metadata: { title: page.title, notes },
+  })
+
+  revalidatePath('/admin/content/pages')
+  revalidatePath(`/admin/content/pages/${pageId}`)
+
+  return { success: true, message: 'Page rejected. The author has been notified.' }
+}
+
+/**
+ * Request revision on a page (similar to reject but with different messaging)
+ */
+export async function requestPageRevision(pageId: string, notes: string): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check approve permission
+  const hasApprovePermission = await checkPermission(user.id, 'content:pages:approve')
+  if (!hasApprovePermission) {
+    return { success: false, message: 'You do not have permission to request revisions' }
+  }
+
+  if (!notes || notes.trim().length === 0) {
+    return { success: false, message: 'Please provide revision instructions' }
+  }
+
+  // Get current page
+  const { data: page, error: fetchError } = await supabase
+    .from('cms_pages')
+    .select('title, slug, status, submitted_by')
+    .eq('id', pageId)
+    .single()
+
+  if (fetchError || !page) {
+    return { success: false, message: 'Page not found' }
+  }
+
+  if (page.status !== 'pending_review') {
+    return { success: false, message: 'Only pages pending review can have revisions requested' }
+  }
+
+  // Update page status back to draft
+  const { error } = await supabase
+    .from('cms_pages')
+    .update({
+      status: 'draft',
+      reviewed_by: user.id,
+      reviewed_at: new Date().toISOString(),
+      review_notes: notes,
+      submitted_for_review_at: null,
+      submitted_by: null,
+      updated_by: user.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', pageId)
+
+  if (error) {
+    console.error('Error requesting revision:', error)
+    return { success: false, message: 'Failed to request revision' }
+  }
+
+  // Create review history entry
+  await supabase.from('cms_page_reviews').insert({
+    page_id: pageId,
+    action: 'revision_requested',
+    from_status: 'pending_review',
+    to_status: 'draft',
+    notes,
+    reviewed_by: user.id,
+  })
+
+  // Notify the submitter
+  if (page.submitted_by && page.submitted_by !== user.id) {
+    await NotificationHelpers.contentPublished(
+      page.submitted_by,
+      `Revision requested for "${page.title}": ${notes}`,
+      `/admin/content/pages/${pageId}/edit`
+    )
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'request_revision',
+    module: 'cms',
+    resourceType: 'page',
+    resourceId: pageId,
+    metadata: { title: page.title, notes },
+  })
+
+  revalidatePath('/admin/content/pages')
+  revalidatePath(`/admin/content/pages/${pageId}`)
+
+  return { success: true, message: 'Revision requested. The author has been notified.' }
+}
+
+/**
+ * Get all pages pending review (for approval queue)
+ */
+export async function getPendingReviews(options?: {
+  page?: number
+  limit?: number
+}) {
+  const supabase = await createServerSupabaseClient()
+  const { page = 1, limit = 20 } = options || {}
+
+  // Get current user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { pages: [], total: 0, page: 1, limit: 20, totalPages: 0 }
+  }
+
+  // Check if user can approve
+  const hasApprovePermission = await checkPermission(user.id, 'content:pages:approve')
+  if (!hasApprovePermission) {
+    return { pages: [], total: 0, page: 1, limit: 20, totalPages: 0 }
+  }
+
+  // Get total count
+  const { count } = await supabase
+    .from('cms_pages')
+    .select('id', { count: 'exact', head: true })
+    .eq('status', 'pending_review')
+
+  const total = count || 0
+  const from = (page - 1) * limit
+  const to = from + limit - 1
+
+  // Get pending pages with submitter info
+  const { data, error } = await supabase
+    .from('cms_pages')
+    .select(`
+      id,
+      title,
+      slug,
+      status,
+      submitted_for_review_at,
+      submitted_by,
+      created_at,
+      updated_at,
+      profiles:submitted_by (
+        full_name,
+        email
+      )
+    `)
+    .eq('status', 'pending_review')
+    .order('submitted_for_review_at', { ascending: true })
+    .range(from, to)
+
+  if (error) {
+    console.error('Error fetching pending reviews:', error)
+    return { pages: [], total: 0, page, limit, totalPages: 0 }
+  }
+
+  return {
+    pages: data || [],
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
+  }
+}
+
+/**
+ * Get review history for a page
+ */
+export async function getPageReviewHistory(pageId: string) {
+  const supabase = await createServerSupabaseClient()
+
+  const { data, error } = await supabase
+    .from('cms_page_reviews')
+    .select(`
+      id,
+      action,
+      from_status,
+      to_status,
+      notes,
+      created_at,
+      profiles:reviewed_by (
+        full_name,
+        email
+      )
+    `)
+    .eq('page_id', pageId)
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('Error fetching review history:', error)
+    return []
+  }
+
+  return data || []
 }

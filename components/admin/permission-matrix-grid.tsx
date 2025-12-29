@@ -96,9 +96,9 @@ const getRoleColor = (roleName: string) => {
   switch (roleName) {
     case 'super_admin':
       return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300'
-    case 'director':
+    case 'admin':
       return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
-    case 'chair':
+    case 'editor':
       return 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300'
     case 'member':
       return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'

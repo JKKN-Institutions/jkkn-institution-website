@@ -212,7 +212,7 @@ export function LifeAtJKKN({
       icon: 'Music',
     },
     {
-      title: 'Student Clubs',
+      title: 'Learner Clubs',
       category: 'Community',
       description: 'Join various clubs - from coding to photography, there\'s something for everyone.',
       icon: 'Users',

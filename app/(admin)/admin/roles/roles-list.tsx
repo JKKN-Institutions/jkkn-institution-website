@@ -41,9 +41,9 @@ const getRoleColor = (roleName: string) => {
   switch (roleName) {
     case 'super_admin':
       return 'from-primary to-primary/90'
-    case 'director':
+    case 'admin':
       return 'from-primary/90 to-primary/80'
-    case 'chair':
+    case 'editor':
       return 'from-primary/85 to-primary/75'
     case 'member':
       return 'from-primary/80 to-primary/70'

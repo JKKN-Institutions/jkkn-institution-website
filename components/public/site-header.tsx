@@ -60,21 +60,21 @@ const fallbackNavigation: NavItem[] = [
 ]
 
 const socialLinks = [
-  { icon: Facebook, href: 'https://facebook.com/jkkn', label: 'Facebook' },
-  { icon: Twitter, href: 'https://twitter.com/jkkn', label: 'Twitter' },
-  { icon: Instagram, href: 'https://instagram.com/jkkn', label: 'Instagram' },
-  { icon: Linkedin, href: 'https://linkedin.com/company/jkkn', label: 'LinkedIn' },
-  { icon: Youtube, href: 'https://youtube.com/jkkn', label: 'YouTube' },
+  { icon: Facebook, href: 'https://facebook.com/myjkkn', label: 'Facebook' },
+  { icon: Twitter, href: 'https://x.com/jkkninstitution', label: 'X' },
+  { icon: Instagram, href: 'https://instagram.com/jkkninstitutions', label: 'Instagram' },
+  { icon: Linkedin, href: 'https://linkedin.com/school/jkkninstitutions/', label: 'LinkedIn' },
+  { icon: Youtube, href: 'https://youtube.com/@JKKNINSTITUTIONS', label: 'YouTube' },
 ]
 
 export function SiteHeader({
   navigation,
   isPreview = false,
   logoSizes = {
-    mobile: 64,
-    tablet: 80,
-    desktop: 80,
-    desktopLarge: 96
+    mobile: 80,
+    tablet: 100,
+    desktop: 110,
+    desktopLarge: 130
   }
 }: SiteHeaderProps) {
   const pathname = usePathname()
@@ -138,7 +138,7 @@ export function SiteHeader({
       >
         <div className="container mx-auto px-4 lg:px-6">
           <div className={cn(
-            'flex items-center h-16 sm:h-20 lg:h-24', // Fixed height prevents CLS
+            'flex items-center h-20 sm:h-24 lg:h-28', // Fixed height prevents CLS
             // Mobile: center logo, Desktop: space-between for logo + nav
             'justify-center lg:justify-between'
           )}>
@@ -151,8 +151,8 @@ export function SiteHeader({
               <div
                 className="relative transition-transform duration-300 group-hover:scale-105"
                 style={{
-                  width: `clamp(${logoSizes.mobile}px, 10vw, ${hasSecondRow ? logoSizes.desktopLarge : logoSizes.desktop}px)`,
-                  height: `clamp(${logoSizes.mobile}px, 10vw, ${hasSecondRow ? logoSizes.desktopLarge : logoSizes.desktop}px)`,
+                  width: `clamp(${logoSizes.mobile}px, 12vw, ${hasSecondRow ? logoSizes.desktopLarge : logoSizes.desktop}px)`,
+                  height: `clamp(${logoSizes.mobile}px, 12vw, ${hasSecondRow ? logoSizes.desktopLarge : logoSizes.desktop}px)`,
                 }}
               >
                 <Image
@@ -479,11 +479,11 @@ export function SiteHeader({
             <div className="px-4 py-4 border-t border-gray-200 bg-white/50">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Contact Us</p>
               <div className="space-y-3">
-                <a href="tel:+914222661100" className="flex items-center gap-3 text-sm text-gray-700 hover:text-primary transition-colors">
+                <a href="tel:+919345855001" className="flex items-center gap-3 text-sm text-gray-700 hover:text-primary transition-colors">
                   <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
                     <Phone className="h-4 w-4 text-primary" />
                   </div>
-                  +91 422 266 1100
+                  +91 93458 55001
                 </a>
                 <a href="mailto:info@jkkn.ac.in" className="flex items-center gap-3 text-sm text-gray-700 hover:text-primary transition-colors">
                   <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">

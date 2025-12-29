@@ -4,6 +4,15 @@ const nextConfig: NextConfig = {
   // Cache Components is available but requires all data fetches to use
   // Suspense boundaries or "use cache" directive. Enable when ready:
   // cacheComponents: true,
+  async redirects() {
+    return [
+      {
+        source: '/more/careers',
+        destination: '/careers',
+        permanent: true,
+      },
+    ]
+  },
   images: {
     remotePatterns: [
       {
@@ -41,6 +50,17 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'jkkn-dental-college.vercel.app',
+      },
+      // Instagram CDN domains for thumbnails
+      {
+        protocol: 'https',
+        hostname: '*.cdninstagram.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.fbcdn.net',
+        pathname: '/**',
       },
     ],
   },
