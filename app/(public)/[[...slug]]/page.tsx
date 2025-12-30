@@ -7,7 +7,10 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { LandingPage } from '@/components/public/landing-page'
 import { PasswordProtectedPage, PrivatePageGate } from '@/components/public/password-protected-page'
 import { OrganizationSchema } from '@/components/seo/organization-schema'
+import { CourseCatalogSchema } from '@/components/seo/course-catalog-schema'
+import { WebsiteSchema } from '@/components/seo/website-schema'
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
+import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from '@/lib/seo'
 
 interface PageProps {
   params: Promise<{ slug?: string[] }>
@@ -17,6 +20,11 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
   const slugPath = slug?.join('/') ?? ''
+  const path = slugPath ? `/${slugPath}` : '/'
+
+  // Generate breadcrumb schema for this page
+  const breadcrumbs = getBreadcrumbsForPath(path)
+  const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbs)
 
   // Fetch page for both homepage and other pages
   const page = await getPageBySlug(slugPath)
@@ -32,6 +40,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           title: 'JKKN Institution | Excellence in Education',
           description: 'Discover world-class education at JKKN Institution. Where tradition meets innovation.',
           type: 'website',
+        },
+        other: {
+          'script:ld+json:breadcrumb': serializeSchema(breadcrumbSchema),
         },
       }
     }
@@ -70,6 +81,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     // Robots directive
     robots: seo?.robots_directive || undefined,
+
+    // Structured data (BreadcrumbList JSON-LD)
+    other: {
+      'script:ld+json:breadcrumb': serializeSchema(breadcrumbSchema),
+    },
   }
 }
 
@@ -114,7 +130,9 @@ export default async function DynamicPage({ params }: PageProps) {
     if (result.status === 'not_found') {
       return (
         <>
+          <WebsiteSchema />
           <OrganizationSchema />
+          <CourseCatalogSchema />
           <Suspense fallback={<LandingPageSkeleton />}>
             <LandingPage />
           </Suspense>
@@ -134,7 +152,9 @@ export default async function DynamicPage({ params }: PageProps) {
     if (!result.page) {
       return (
         <>
+          <WebsiteSchema />
           <OrganizationSchema />
+          <CourseCatalogSchema />
           <Suspense fallback={<LandingPageSkeleton />}>
             <LandingPage />
           </Suspense>
@@ -158,7 +178,9 @@ export default async function DynamicPage({ params }: PageProps) {
 
     return (
       <>
+        <WebsiteSchema />
         <OrganizationSchema />
+        <CourseCatalogSchema />
         <article>
           <Suspense fallback={<BlocksSkeleton />}>
             <PageRenderer blocks={blocks} pageTypography={pageTypography} />
@@ -204,11 +226,17 @@ export default async function DynamicPage({ params }: PageProps) {
   // Extract typography settings from page metadata
   const pageTypography = (page.metadata as Record<string, unknown> | null)?.typography as PageTypographySettings | undefined
 
+  // Check if this is the courses-offered page for schema inclusion
+  const isCoursesPage = slugPath === 'courses-offered'
+
   return (
-    <article>
-      <Suspense fallback={<BlocksSkeleton />}>
-        <PageRenderer blocks={blocks} pageTypography={pageTypography} />
-      </Suspense>
-    </article>
+    <>
+      {isCoursesPage && <CourseCatalogSchema />}
+      <article>
+        <Suspense fallback={<BlocksSkeleton />}>
+          <PageRenderer blocks={blocks} pageTypography={pageTypography} />
+        </Suspense>
+      </article>
+    </>
   )
 }

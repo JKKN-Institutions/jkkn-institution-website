@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getCareerJobBySlug } from '@/app/actions/cms/careers'
+import { JobPostingSchema } from '@/components/seo/job-posting-schema'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -215,6 +216,9 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
 
   return (
     <div className="min-h-screen bg-cream">
+      {/* JobPosting Schema for Google Jobs */}
+      <JobPostingSchema job={job} />
+
       {/* Hero Section */}
       <section className="relative py-12 md:py-16 bg-gradient-to-br from-primary/5 to-primary/10">
         <div className="container mx-auto px-4">

@@ -30,15 +30,25 @@ import {
   GraduationCap,
   Filter
 } from 'lucide-react'
+import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Careers | JKKN Institution',
-  description: 'Join our team! Explore current job openings and career opportunities at JKKN Institution.',
-  openGraph: {
-    title: 'Careers at JKKN Institution',
+// Generate metadata with breadcrumb schema
+export async function generateMetadata(): Promise<Metadata> {
+  const breadcrumbs = getBreadcrumbsForPath('/careers')
+  const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbs)
+
+  return {
+    title: 'Careers | JKKN Institution',
     description: 'Join our team! Explore current job openings and career opportunities at JKKN Institution.',
-    type: 'website',
-  },
+    openGraph: {
+      title: 'Careers at JKKN Institution',
+      description: 'Join our team! Explore current job openings and career opportunities at JKKN Institution.',
+      type: 'website',
+    },
+    other: {
+      'script:ld+json:breadcrumb': serializeSchema(breadcrumbSchema),
+    },
+  }
 }
 
 interface CareersPageProps {

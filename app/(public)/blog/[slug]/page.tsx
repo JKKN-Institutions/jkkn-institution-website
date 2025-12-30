@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getBlogPostBySlug, getRelatedBlogPosts } from '@/app/actions/cms/blog'
 import { getPostComments } from '@/app/actions/cms/blog-comments'
+import { ArticleSchema } from '@/components/seo/article-schema'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
@@ -327,6 +328,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
+      {/* Article Schema for Rich Snippets */}
+      <ArticleSchema post={post} />
 
       {/* Hero Section */}
       <section className="relative py-12 md:py-16 z-10">

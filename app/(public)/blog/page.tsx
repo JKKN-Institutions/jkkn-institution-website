@@ -10,15 +10,25 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Calendar, Clock, User, ChevronLeft, ChevronRight, Search, Tag, Folder } from 'lucide-react'
+import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Blog | JKKN Institution',
-  description: 'Read the latest news, insights, and updates from JKKN Institution.',
-  openGraph: {
+// Generate metadata with breadcrumb schema
+export async function generateMetadata(): Promise<Metadata> {
+  const breadcrumbs = getBreadcrumbsForPath('/blog')
+  const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbs)
+
+  return {
     title: 'Blog | JKKN Institution',
     description: 'Read the latest news, insights, and updates from JKKN Institution.',
-    type: 'website',
-  },
+    openGraph: {
+      title: 'Blog | JKKN Institution',
+      description: 'Read the latest news, insights, and updates from JKKN Institution.',
+      type: 'website',
+    },
+    other: {
+      'script:ld+json:breadcrumb': serializeSchema(breadcrumbSchema),
+    },
+  }
 }
 
 interface BlogPageProps {

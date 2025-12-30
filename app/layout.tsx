@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { WebVitalsReporter } from "@/components/performance/web-vitals-reporter";
+import { generateOrganizationSchema, serializeSchema } from "@/lib/seo";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -86,6 +87,13 @@ export default function RootLayout({
         {/* Preconnect to Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Organization Schema (JSON-LD) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeSchema(generateOrganizationSchema()),
+          }}
+        />
       </head>
       <body
         className={`${poppins.variable} antialiased`}
