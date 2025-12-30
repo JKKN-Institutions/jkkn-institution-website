@@ -171,24 +171,7 @@ export function InstitutionsGrid({
             <span>Our Institutions</span>
           </div>
 
-          <h2
-            className={cn(
-              "tracking-tight mb-4 uppercase",
-              (!headerFontFamily || headerFontFamily === 'Default (Serif)') && "font-serif-heading",
-              // Font size classes
-              headerFontSize === '3xl' && "text-2xl sm:text-3xl md:text-3xl",
-              headerFontSize === '4xl' && "text-2xl sm:text-3xl md:text-4xl",
-              headerFontSize === '5xl' && "text-3xl sm:text-4xl md:text-5xl",
-              headerFontSize === '6xl' && "text-4xl sm:text-5xl md:text-6xl",
-              // Font weight classes
-              headerFontWeight === 'normal' && "font-normal",
-              headerFontWeight === 'medium' && "font-medium",
-              headerFontWeight === 'semibold' && "font-semibold",
-              headerFontWeight === 'bold' && "font-bold",
-              headerFontWeight === 'extrabold' && "font-extrabold",
-            )}
-            style={{ fontFamily: (headerFontFamily && headerFontFamily !== 'Default (Serif)') ? headerFontFamily : undefined }}
-          >
+          <h2 className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase">
             <span style={{ color: headerPart1Color }}>{headerPart1}</span>{' '}
             <span style={{ color: headerPart2Color }}>{headerPart2}</span>
           </h2>

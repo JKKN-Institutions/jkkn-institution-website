@@ -240,8 +240,7 @@ The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 19
             {/* Header */}
             <h2
               className={cn(
-                "tracking-tight mb-4 uppercase",
-                titleTypo.className,
+                "text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase",
                 !headerPart1Font && !headerPart2Font && "font-serif-heading"
               )}
             >
@@ -267,10 +266,7 @@ The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 19
 
             {subtitle && (
               <p
-                className={cn("max-w-2xl mx-auto", subtitleTypo.className)}
-                style={{
-                  color: subtitleTypo.style.color || (isDark ? 'rgba(255,255,255,0.7)' : '#4b5563'),
-                }}
+                className={cn("text-lg md:text-xl max-w-2xl mx-auto", isDark ? "text-white/70" : "text-gray-600")}
               >
                 {subtitle}
               </p>

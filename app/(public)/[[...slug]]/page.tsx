@@ -6,6 +6,7 @@ import { PageRenderer } from '@/components/cms-blocks/page-renderer'
 import { Skeleton } from '@/components/ui/skeleton'
 import { LandingPage } from '@/components/public/landing-page'
 import { PasswordProtectedPage, PrivatePageGate } from '@/components/public/password-protected-page'
+import { OrganizationSchema } from '@/components/seo/organization-schema'
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 
 interface PageProps {
@@ -112,9 +113,12 @@ export default async function DynamicPage({ params }: PageProps) {
     // If no CMS homepage exists, show the beautiful landing page
     if (result.status === 'not_found') {
       return (
-        <Suspense fallback={<LandingPageSkeleton />}>
-          <LandingPage />
-        </Suspense>
+        <>
+          <OrganizationSchema />
+          <Suspense fallback={<LandingPageSkeleton />}>
+            <LandingPage />
+          </Suspense>
+        </>
       )
     }
 
@@ -129,9 +133,12 @@ export default async function DynamicPage({ params }: PageProps) {
 
     if (!result.page) {
       return (
-        <Suspense fallback={<LandingPageSkeleton />}>
-          <LandingPage />
-        </Suspense>
+        <>
+          <OrganizationSchema />
+          <Suspense fallback={<LandingPageSkeleton />}>
+            <LandingPage />
+          </Suspense>
+        </>
       )
     }
 
@@ -150,11 +157,14 @@ export default async function DynamicPage({ params }: PageProps) {
     const pageTypography = (page.metadata as Record<string, unknown> | null)?.typography as PageTypographySettings | undefined
 
     return (
-      <article>
-        <Suspense fallback={<BlocksSkeleton />}>
-          <PageRenderer blocks={blocks} pageTypography={pageTypography} />
-        </Suspense>
-      </article>
+      <>
+        <OrganizationSchema />
+        <article>
+          <Suspense fallback={<BlocksSkeleton />}>
+            <PageRenderer blocks={blocks} pageTypography={pageTypography} />
+          </Suspense>
+        </article>
+      </>
     )
   }
 
