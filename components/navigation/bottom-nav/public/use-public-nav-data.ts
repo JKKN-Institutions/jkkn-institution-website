@@ -16,6 +16,17 @@ export interface CmsNavItem {
   children?: CmsNavItem[];
 }
 
+// Mobile-friendly label mappings (shorter labels for bottom nav)
+const MOBILE_LABEL_MAP: Record<string, string> = {
+  'OUR COLLEGES': 'Colleges',
+  'OUR SCHOOLS': 'Schools',
+};
+
+// Get mobile-friendly label
+function getMobileLabel(label: string): string {
+  return MOBILE_LABEL_MAP[label] || label;
+}
+
 interface UsePublicNavDataProps {
   cmsNavigation?: CmsNavItem[];
 }
@@ -28,12 +39,12 @@ function transformCmsToBottomNav(cmsNav: CmsNavItem[], pathname: string): NavMen
 
     return {
       href: item.href,
-      label: item.label,
+      label: getMobileLabel(item.label),
       icon,
       active: isActive,
       submenus: (item.children || []).map((child) => ({
         href: child.href,
-        label: child.label,
+        label: getMobileLabel(child.label),
         icon: mapCmsIconToLucide(child.label, child.href),
         active: pathname === child.href
       }))

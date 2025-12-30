@@ -297,17 +297,17 @@ The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 19
                     {sectionTitle}
                   </h3>
 
-                  {/* Render paragraphs - support line-by-line bullet points */}
+                  {/* Render paragraphs - support line-by-line display */}
                   {displayParagraph1 && (
                     displayParagraph1.includes('\n') ? (
-                      <ul className={cn(
-                        'space-y-2 mb-4 list-disc list-inside',
+                      <div className={cn(
+                        'space-y-2 mb-4',
                         isDark ? 'text-white/80' : 'text-gray-600'
                       )}>
                         {displayParagraph1.split('\n').filter(Boolean).map((line, index) => (
-                          <li key={index} className="leading-relaxed">{line.trim()}</li>
+                          <p key={index} className="leading-relaxed">{line.trim()}</p>
                         ))}
-                      </ul>
+                      </div>
                     ) : (
                       <p className={cn(
                         'leading-relaxed mb-4',
@@ -320,14 +320,14 @@ The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 19
 
                   {displayParagraph2 && (
                     displayParagraph2.includes('\n') ? (
-                      <ul className={cn(
-                        'space-y-2 list-disc list-inside',
+                      <div className={cn(
+                        'space-y-2',
                         isDark ? 'text-white/80' : 'text-gray-600'
                       )}>
                         {displayParagraph2.split('\n').filter(Boolean).map((line, index) => (
-                          <li key={index} className="leading-relaxed">{line.trim()}</li>
+                          <p key={index} className="leading-relaxed">{line.trim()}</p>
                         ))}
-                      </ul>
+                      </div>
                     ) : (
                       <p className={cn(
                         'leading-relaxed',
