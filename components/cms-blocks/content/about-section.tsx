@@ -240,7 +240,7 @@ The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 19
             {/* Header */}
             <h2
               className={cn(
-                "text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase",
+                "text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4",
                 !headerPart1Font && !headerPart2Font && "font-serif-heading"
               )}
             >
@@ -297,19 +297,46 @@ The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 19
                     {sectionTitle}
                   </h3>
 
-                  <p className={cn(
-                    'leading-relaxed mb-4',
-                    isDark ? 'text-white/80' : 'text-gray-600'
-                  )}>
-                    {displayParagraph1}
-                  </p>
+                  {/* Render paragraphs - support line-by-line bullet points */}
+                  {displayParagraph1 && (
+                    displayParagraph1.includes('\n') ? (
+                      <ul className={cn(
+                        'space-y-2 mb-4 list-disc list-inside',
+                        isDark ? 'text-white/80' : 'text-gray-600'
+                      )}>
+                        {displayParagraph1.split('\n').filter(Boolean).map((line, index) => (
+                          <li key={index} className="leading-relaxed">{line.trim()}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className={cn(
+                        'leading-relaxed mb-4',
+                        isDark ? 'text-white/80' : 'text-gray-600'
+                      )}>
+                        {displayParagraph1}
+                      </p>
+                    )
+                  )}
 
-                  <p className={cn(
-                    'leading-relaxed',
-                    isDark ? 'text-white/80' : 'text-gray-600'
-                  )}>
-                    {displayParagraph2}
-                  </p>
+                  {displayParagraph2 && (
+                    displayParagraph2.includes('\n') ? (
+                      <ul className={cn(
+                        'space-y-2 list-disc list-inside',
+                        isDark ? 'text-white/80' : 'text-gray-600'
+                      )}>
+                        {displayParagraph2.split('\n').filter(Boolean).map((line, index) => (
+                          <li key={index} className="leading-relaxed">{line.trim()}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className={cn(
+                        'leading-relaxed',
+                        isDark ? 'text-white/80' : 'text-gray-600'
+                      )}>
+                        {displayParagraph2}
+                      </p>
+                    )
+                  )}
 
                   {/* Learn More Link */}
                   <div className="mt-8">

@@ -39,7 +39,12 @@ import {
   Minus,
   Pilcrow,
   RemoveFormatting,
+  Trash2,
+  ArrowUp,
+  ArrowDown,
+  Replace,
 } from 'lucide-react'
+// Note: Using custom floating menu instead of BubbleMenu for better control
 import {
   Popover,
   PopoverContent,
@@ -343,6 +348,299 @@ function GalleryButton({
   )
 }
 
+// Image Floating Toolbar - appears when image is selected
+function ImageFloatingToolbar({
+  editor,
+  onReplaceImage,
+}: {
+  editor: Editor
+  onReplaceImage?: (insertCallback: (src: string, alt?: string) => void) => void
+}) {
+  const [isImageSelected, setIsImageSelected] = useState(false)
+  const [toolbarPosition, setToolbarPosition] = useState({ top: 0, left: 0 })
+  const toolbarRef = useRef<HTMLDivElement>(null)
+
+  // Check if image is selected and update toolbar position
+  useEffect(() => {
+    const checkImageSelection = () => {
+      const { state } = editor
+      const { selection } = state
+      const node = state.doc.nodeAt(selection.from)
+
+      if (node?.type.name === 'image') {
+        setIsImageSelected(true)
+
+        // Get image element position
+        const { view } = editor
+        const domNode = view.nodeDOM(selection.from)
+        if (domNode instanceof HTMLElement) {
+          const rect = domNode.getBoundingClientRect()
+          const editorRect = view.dom.getBoundingClientRect()
+          setToolbarPosition({
+            top: rect.top - editorRect.top - 45,
+            left: rect.left - editorRect.left + rect.width / 2,
+          })
+        }
+      } else {
+        setIsImageSelected(false)
+      }
+    }
+
+    editor.on('selectionUpdate', checkImageSelection)
+    editor.on('transaction', checkImageSelection)
+
+    return () => {
+      editor.off('selectionUpdate', checkImageSelection)
+      editor.off('transaction', checkImageSelection)
+    }
+  }, [editor])
+
+  const deleteImage = useCallback(() => {
+    editor.chain().focus().deleteSelection().run()
+  }, [editor])
+
+  const moveImageUp = useCallback(() => {
+    const { state } = editor
+    const { selection } = state
+    const pos = selection.from
+
+    if (pos > 1) {
+      const resolvedPos = state.doc.resolve(pos)
+      const nodeBefore = resolvedPos.nodeBefore
+
+      if (nodeBefore) {
+        const node = state.doc.nodeAt(pos)
+        if (node) {
+          editor.chain()
+            .focus()
+            .deleteSelection()
+            .setTextSelection(pos - nodeBefore.nodeSize)
+            .insertContent({ type: 'image', attrs: node.attrs })
+            .run()
+        }
+      }
+    }
+  }, [editor])
+
+  const moveImageDown = useCallback(() => {
+    const { state } = editor
+    const { selection } = state
+    const pos = selection.from
+
+    const resolvedPos = state.doc.resolve(pos)
+    const nodeAfter = resolvedPos.nodeAfter
+
+    if (nodeAfter) {
+      const nextNode = state.doc.nodeAt(pos + nodeAfter.nodeSize)
+      if (nextNode) {
+        const currentNode = state.doc.nodeAt(pos)
+        if (currentNode) {
+          editor.chain()
+            .focus()
+            .deleteSelection()
+            .setTextSelection(pos + nextNode.nodeSize)
+            .insertContent({ type: 'image', attrs: currentNode.attrs })
+            .run()
+        }
+      }
+    }
+  }, [editor])
+
+  const replaceImage = useCallback(() => {
+    if (onReplaceImage) {
+      onReplaceImage((src: string, alt?: string) => {
+        editor.chain().focus().setImage({ src, alt }).run()
+      })
+    }
+  }, [editor, onReplaceImage])
+
+  const setImageAlign = useCallback((align: 'left' | 'center' | 'right') => {
+    const { state } = editor
+    const { selection } = state
+    const node = state.doc.nodeAt(selection.from)
+
+    if (node && node.type.name === 'image') {
+      const attrs = { ...node.attrs }
+      let className = 'max-w-full h-auto rounded-lg my-4'
+      if (align === 'center') {
+        className += ' mx-auto block'
+      } else if (align === 'right') {
+        className += ' ml-auto block'
+      } else {
+        className += ' mr-auto block'
+      }
+
+      editor.chain()
+        .focus()
+        .updateAttributes('image', {
+          ...attrs,
+          class: className,
+          'data-align': align
+        })
+        .run()
+    }
+  }, [editor])
+
+  if (!isImageSelected) return null
+
+  return (
+    <div
+      ref={toolbarRef}
+      className="absolute z-50 flex items-center gap-1 p-1.5 bg-background border rounded-lg shadow-lg transform -translate-x-1/2"
+      style={{
+        top: `${toolbarPosition.top}px`,
+        left: `${toolbarPosition.left}px`,
+      }}
+    >
+      {/* Replace Image */}
+      {onReplaceImage && (
+        <>
+          <TooltipProvider delayDuration={300}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 w-7 p-0"
+                  onClick={replaceImage}
+                >
+                  <Replace className="h-3.5 w-3.5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="top" className="text-xs">
+                Replace
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <div className="w-px h-5 bg-border" />
+        </>
+      )}
+
+      {/* Alignment */}
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-7 w-7 p-0"
+              onClick={() => setImageAlign('left')}
+            >
+              <AlignLeft className="h-3.5 w-3.5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="text-xs">
+            Left
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-7 w-7 p-0"
+              onClick={() => setImageAlign('center')}
+            >
+              <AlignCenter className="h-3.5 w-3.5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="text-xs">
+            Center
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-7 w-7 p-0"
+              onClick={() => setImageAlign('right')}
+            >
+              <AlignRight className="h-3.5 w-3.5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="text-xs">
+            Right
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <div className="w-px h-5 bg-border" />
+
+      {/* Move Up/Down */}
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-7 w-7 p-0"
+              onClick={moveImageUp}
+            >
+              <ArrowUp className="h-3.5 w-3.5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="text-xs">
+            Move Up
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-7 w-7 p-0"
+              onClick={moveImageDown}
+            >
+              <ArrowDown className="h-3.5 w-3.5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="text-xs">
+            Move Down
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <div className="w-px h-5 bg-border" />
+
+      {/* Delete */}
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-7 w-7 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+              onClick={deleteImage}
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="text-xs">
+            Delete
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
+  )
+}
+
 // Main Toolbar Component
 function EditorToolbar({
   editor,
@@ -358,7 +656,7 @@ function EditorToolbar({
   if (!editor) return null
 
   return (
-    <div className="flex flex-wrap items-center gap-0.5 p-2 border-b bg-muted/30">
+    <div className="flex flex-wrap items-center gap-0.5 p-2 border-b bg-muted/30 sticky top-0 z-10">
       {/* Undo/Redo */}
       <ToolbarButton
         onClick={() => editor.chain().focus().undo().run()}
@@ -613,6 +911,19 @@ export function RichTextEditor({
     ],
     content: initialContent,
     editorProps: {
+      // Handle quote characters that may be blocked on Windows due to IME/dead key handling
+      handleKeyDown: (view, event) => {
+        // Explicitly handle single and double quote characters
+        if (event.key === "'" || event.key === '"') {
+          // Manually insert the character to bypass any IME/composition blocking
+          const { state, dispatch } = view
+          const { tr } = state
+          tr.insertText(event.key)
+          dispatch(tr)
+          return true // Mark as handled
+        }
+        return false // Let other handlers process other keys
+      },
       attributes: {
         class: cn(
           'prose prose-sm sm:prose-base max-w-none focus:outline-none min-h-[300px] px-4 py-3',
@@ -652,22 +963,26 @@ export function RichTextEditor({
 
   if (!editor) {
     return (
-      <div className={cn('border rounded-lg overflow-hidden bg-background', className)}>
-        <div className="h-12 bg-muted/30 border-b animate-pulse" />
-        <div className="h-[300px] animate-pulse bg-muted/10" />
+      <div className={cn('border rounded-lg overflow-hidden bg-background flex flex-col', className)}>
+        <div className="h-12 bg-muted/30 border-b animate-pulse sticky top-0 z-10" />
+        <div className="h-[500px] animate-pulse bg-muted/10 overflow-y-auto" />
       </div>
     )
   }
 
   return (
-    <div className={cn('border rounded-lg overflow-hidden bg-background', className)}>
+    <div className={cn('border rounded-lg overflow-hidden bg-background flex flex-col', className)}>
       <EditorToolbar
         editor={editor}
         onImageUpload={onImageUpload}
         onContentImageUpload={onContentImageUpload}
         onGalleryImageSelect={onGalleryImageSelect}
       />
-      <EditorContent editor={editor} />
+      <div className="overflow-y-auto max-h-[500px] flex-1 relative">
+        <EditorContent editor={editor} />
+        {/* Image editing floating toolbar - shows when image is selected */}
+        <ImageFloatingToolbar editor={editor} onReplaceImage={onContentImageUpload} />
+      </div>
     </div>
   )
 }

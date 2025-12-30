@@ -84,7 +84,7 @@ export const JKKN100CentenarySectionPropsSchema = z.object({
   // CTA Buttons - Simplified
   primaryCtaLabel: z.string().default('Watch Tribute Video'),
   tributeVideoUrl: z.string().default(''),
-  secondaryCtaLabel: z.string().default('Our Heritage'),
+  secondaryCtaLabel: z.string().default('Our Activities'),
   heritageUrl: z.string().default('/about/heritage'),
   openHeritageInNewTab: z.boolean().default(false),
 
@@ -189,7 +189,7 @@ export function JKKN100CentenarySection({
   // CTA Props
   primaryCtaLabel = 'Watch Tribute Video',
   tributeVideoUrl = '',
-  secondaryCtaLabel = 'Our Heritage',
+  secondaryCtaLabel = 'Our Activities',
   heritageUrl = '/about/heritage',
   openHeritageInNewTab = false,
   // Typography - Badge
@@ -277,7 +277,7 @@ export function JKKN100CentenarySection({
           >
             <span
               className={cn(
-                'text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight',
+                'text-3xl sm:text-4xl md:text-5xl tracking-tight',
                 fontWeightClasses[badgeFontWeight],
                 fontStyleClasses[badgeFontStyle]
               )}

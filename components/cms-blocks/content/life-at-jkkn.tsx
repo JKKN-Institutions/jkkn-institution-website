@@ -301,7 +301,7 @@ export function LifeAtJKKN({
             <span>Campus Experience</span>
           </div>
 
-          <h2 className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 uppercase">
+          <h2 className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
             <span style={{ color: headerPart1Color }}>{headerPart1}</span>{' '}
             <span style={{ color: headerPart2Color }}>{headerPart2}</span>
           </h2>

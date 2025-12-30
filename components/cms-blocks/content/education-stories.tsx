@@ -359,7 +359,7 @@ export function EducationStories({
             >
               <GraduationCap className={cn('w-5 h-5', isDark ? 'text-white' : 'text-brand-primary')} />
             </div>
-            <h2 className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight uppercase">
+            <h2 className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
               <span style={{ color: headerPart1Color }}>{headerPart1}</span>{' '}
               <span style={{ color: headerPart2Color }}>{headerPart2}</span>
             </h2>

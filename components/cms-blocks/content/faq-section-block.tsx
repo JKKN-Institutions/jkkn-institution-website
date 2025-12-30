@@ -113,7 +113,7 @@ export default function FAQSectionBlock({
         >
           <h2
             className={cn(
-              "font-serif-heading tracking-tight mb-4 uppercase",
+              "font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4",
               titleTypo.className
             )}
             style={{

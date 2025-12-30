@@ -141,6 +141,9 @@ export interface WhyChooseJKKNProps {
   additionalUspsTextFontSize?: string
   additionalUspsTextFontWeight?: string
 
+  // Additional USPs Visibility
+  showAdditionalUsps?: boolean
+
   // System
   isEditing?: boolean
   primaryColor?: string
@@ -353,6 +356,9 @@ export default function WhyChooseJKKN({
   additionalUspsTextFontSize = 'sm',
   additionalUspsTextFontWeight = 'normal',
 
+  // Additional USPs Visibility (hidden by default)
+  showAdditionalUsps = false,
+
   // System
   isEditing = false,
 }: WhyChooseJKKNProps) {
@@ -460,7 +466,10 @@ export default function WhyChooseJKKN({
         {/* USP Cards Grid */}
         <div
           ref={cardsRef.ref}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16"
+          className={cn(
+            "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6",
+            showAdditionalUsps ? "mb-12 md:mb-16" : "mb-0"
+          )}
         >
           {uspCards.map((card, index) => (
             <USPCardComponent
@@ -478,8 +487,8 @@ export default function WhyChooseJKKN({
           ))}
         </div>
 
-        {/* Additional USPs - Compact List */}
-        {additionalUsps && additionalUsps.length > 0 && (
+        {/* Additional USPs - Compact List (hidden by default, toggle via showAdditionalUsps) */}
+        {showAdditionalUsps && additionalUsps && additionalUsps.length > 0 && (
           <div
             ref={listRef.ref}
             className={cn(

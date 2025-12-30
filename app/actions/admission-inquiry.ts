@@ -1,6 +1,6 @@
 'use server'
 
-import { createServerSupabaseClient } from '@/lib/supabase/server'
+import { createServerSupabaseClient, createAdminSupabaseClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { headers } from 'next/headers'
 import { revalidatePath } from 'next/cache'
@@ -127,7 +127,8 @@ export async function submitAdmissionInquiry(
   formData: FormData
 ): Promise<AdmissionInquiryFormState> {
   try {
-    const supabase = await createServerSupabaseClient()
+    // Use admin client to bypass RLS for public form submissions
+    const adminClient = await createAdminSupabaseClient()
     const headersList = await headers()
 
     // Parse form data
@@ -164,7 +165,7 @@ export async function submitAdmissionInquiry(
 
     // Rate limiting - max 3 submissions per hour per IP
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()
-    const { count } = await supabase
+    const { count } = await adminClient
       .from('admission_inquiries')
       .select('*', { count: 'exact', head: true })
       .eq('ip_address', ipAddress)
@@ -177,8 +178,30 @@ export async function submitAdmissionInquiry(
       }
     }
 
-    // Insert admission inquiry
-    const { data: result, error } = await supabase
+    // Generate reference number before inserting
+    const yearPart = new Date().getFullYear().toString()
+
+    // Get next sequence number for this year
+    const { data: seqData } = await adminClient
+      .from('admission_inquiries')
+      .select('reference_number')
+      .like('reference_number', `JKKN-ADM-${yearPart}-%`)
+      .order('reference_number', { ascending: false })
+      .limit(1)
+      .single()
+
+    let sequenceNum = 1
+    if (seqData?.reference_number) {
+      const match = seqData.reference_number.match(/JKKN-ADM-\d{4}-(\d+)/)
+      if (match) {
+        sequenceNum = parseInt(match[1], 10) + 1
+      }
+    }
+
+    const referenceNumber = `JKKN-ADM-${yearPart}-${sequenceNum.toString().padStart(5, '0')}`
+
+    // Insert admission inquiry with generated reference number
+    const { error } = await adminClient
       .from('admission_inquiries')
       .insert({
         full_name: data.fullName,
@@ -194,9 +217,8 @@ export async function submitAdmissionInquiry(
         user_agent: userAgent.substring(0, 500),
         source: 'admission_inquiry_form',
         referrer: referrer.substring(0, 500),
+        reference_number: referenceNumber,
       })
-      .select('reference_number')
-      .single()
 
     if (error) {
       console.error('Error submitting admission inquiry:', error)
@@ -212,7 +234,7 @@ export async function submitAdmissionInquiry(
     return {
       success: true,
       message: 'Your inquiry has been submitted successfully!',
-      referenceNumber: result.reference_number,
+      referenceNumber,
     }
   } catch (error) {
     console.error('Error in submitAdmissionInquiry:', error)

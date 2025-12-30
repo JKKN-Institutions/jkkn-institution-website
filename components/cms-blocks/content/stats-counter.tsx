@@ -126,7 +126,7 @@ export function StatsCounter({
           <div className="text-center mb-10 md:mb-14">
             <h2
               className={cn(
-                "tracking-tight mb-4 uppercase",
+                "tracking-tight mb-4",
                 (!headerFontFamily || headerFontFamily === 'Default (Serif)') && "font-serif-heading",
                 // Font size classes
                 headerFontSize === '3xl' && "text-2xl sm:text-3xl md:text-3xl",

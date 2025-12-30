@@ -159,7 +159,7 @@ function SectionHeader({
       {/* Title with accent word */}
       <h2
         className={cn(
-          "tracking-tight mb-4 uppercase font-serif-heading",
+          "tracking-tight mb-4 font-serif-heading",
           // Use page typography className if provided, otherwise use local font size/weight
           titleTypoClassName || cn(
             // Font size classes
