@@ -124,7 +124,7 @@ export async function getUserDashboardPreferences(): Promise<{
   const preferences = (data || []).map((pref) => ({
     id: pref.id,
     widget_id: pref.widget_id,
-    widget_key: (pref.dashboard_widgets as { widget_key: string }).widget_key,
+    widget_key: (pref.dashboard_widgets as { widget_key: string }[])[0]?.widget_key,
     position: pref.position as DashboardLayoutItem,
     config: pref.config as Record<string, unknown> | null,
     is_visible: pref.is_visible,

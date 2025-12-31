@@ -7,7 +7,7 @@ import { ContentMetricsWidget } from '@/components/dashboard/widgets/content-met
 import { RecentActivityWidget } from '@/components/dashboard/widgets/recent-activity-widget'
 import { QuickActionsWidget } from '@/components/dashboard/widgets/quick-actions-widget'
 import { SystemHealthWidget } from '@/components/dashboard/widgets/system-health-widget'
-import { NotificationsWidget } from '@/components/dashboard/widgets/notifications-widget'
+import { NotificationsCenterWidget } from '@/components/dashboard/widgets/notifications-widget'
 import { WelcomeBannerWidget } from '@/components/dashboard/widgets/welcome-banner-widget'
 
 // Map widget keys to their React components
@@ -17,7 +17,7 @@ export const WIDGET_COMPONENTS: Record<string, ComponentType<WidgetProps>> = {
   recent_activity: RecentActivityWidget,
   quick_actions_general: QuickActionsWidget,
   system_health: SystemHealthWidget,
-  notifications_center: NotificationsWidget,
+  notifications_center: NotificationsCenterWidget,
   welcome_banner: WelcomeBannerWidget,
 }
 

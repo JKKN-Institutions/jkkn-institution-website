@@ -1,7 +1,10 @@
 'use client'
 
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import GridLayout, { WidthProvider, Responsive } from 'react-grid-layout'
+/* eslint-disable @typescript-eslint/no-require-imports */
+const ReactGridLayout = require('react-grid-layout')
+const WidthProvider = ReactGridLayout.WidthProvider
+const Responsive = ReactGridLayout.Responsive
 import { GripVertical, X, Settings2, Plus, RotateCcw, Lock, Unlock } from 'lucide-react'
 
 // Define layout item type for react-grid-layout
