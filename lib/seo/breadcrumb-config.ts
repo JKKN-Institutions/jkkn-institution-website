@@ -145,6 +145,12 @@ export const BREADCRUMB_CONFIG: BreadcrumbConfig = {
     { name: 'Home', url: '/' },
     { name: 'Our Schools', url: '/our-schools' },
   ],
+
+  // Events
+  '/events': [
+    { name: 'Home', url: '/' },
+    { name: 'Events', url: '/events' },
+  ],
 }
 
 /**

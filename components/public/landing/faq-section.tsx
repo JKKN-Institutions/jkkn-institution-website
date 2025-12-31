@@ -19,7 +19,7 @@ const faqs = [
   {
     question: 'Why is JKKN the best college in Erode region?',
     answer:
-      "JKKN is recognized as Erode's best college due to 73+ years of excellence, NAAC A accreditation, 92%+ placement rate, and 50,000+ successful alumni. Top recruiters include Foxconn, Apex Pharma, Apotex, Cipla and Bosch making it the preferred choice for career-focused Learners.",
+      "JKKN is recognized as Erode's best college due to 74+ years of excellence, NAAC A accreditation, 92%+ placement rate, and 50,000+ successful alumni. Top recruiters include Foxconn, Apex Pharma, Apotex, Cipla and Bosch making it the preferred choice for career-focused Learners.",
   },
   {
     question: 'Who founded JKKN Institutions?',
@@ -42,9 +42,9 @@ const faqs = [
       'JKKN colleges are affiliated with Tamil Nadu Dr. M.G.R. Medical University (Dental/Nursing/Pharmacy), Anna University Chennai (Engineering), and Periyar University Salem (Arts & Science). All programs are approved by AICTE, DCI, PCI, INC, and NAAC.',
   },
   {
-    question: 'How do I apply for JKKN admission 2025-26?',
+    question: 'How do I apply for JKKN admission 2026-27?',
     answer:
-      "Apply online at jkkn.in/admission-form for 2025-26 admissions. Submit required documents, complete fee payment, and attend counseling if applicable. For Dental/Nursing, NEET scores are required; for Engineering, TNEA counseling applies. Early bird discounts available for early applicants.",
+      "Apply online at jkkn.in/admission-form for 2026-27 admissions. Submit required documents, complete fee payment, and attend counseling if applicable. For Dental/Nursing, NEET scores are required; for Engineering, TNEA counseling applies. Early bird discounts available for early applicants.",
   },
   {
     question: 'What is the BDS admission process at JKKN Dental College?',

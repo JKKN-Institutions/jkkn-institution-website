@@ -309,7 +309,7 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
                   <span className="text-xs text-amber-600 hidden sm:inline">• Unsaved changes</span>
                 )}
               </div>
-              <span className="text-xs text-muted-foreground truncate">
+              <span className="text-xs text-muted-foreground truncate hidden sm:block">
                 /{page?.slug || ''}
               </span>
             </div>
@@ -377,8 +377,8 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
 
           <div className="hidden sm:block h-6 w-px bg-border" />
 
-          {/* Device preview */}
-          <div className="flex items-center bg-muted rounded-lg p-1">
+          {/* Device preview - hidden on mobile, available in hamburger menu */}
+          <div className="hidden sm:flex items-center bg-muted rounded-lg p-1">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -494,8 +494,8 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
                     variant="outline"
                     className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400"
                   >
-                    <Clock className="h-4 w-4 mr-2" />
-                    Scheduled
+                    <Clock className="h-4 w-4 sm:mr-2" />
+                    <span className="hidden sm:inline">Scheduled</span>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -530,8 +530,8 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
               disabled
               className="bg-green-600 hover:bg-green-700"
             >
-              <Send className="h-4 w-4 mr-2" />
-              Published
+              <Send className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Published</span>
             </Button>
           ) : (
             // Show publish dropdown for draft/archived pages
@@ -543,12 +543,12 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
                   className="bg-primary hover:bg-primary/90"
                 >
                   {isPublishing ? (
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    <Loader2 className="h-4 w-4 sm:mr-2 animate-spin" />
                   ) : (
-                    <Send className="h-4 w-4 mr-2" />
+                    <Send className="h-4 w-4 sm:mr-2" />
                   )}
-                  Publish
-                  <ChevronDown className="h-4 w-4 ml-2" />
+                  <span className="hidden sm:inline">Publish</span>
+                  <ChevronDown className="h-4 w-4 ml-1 sm:ml-2 hidden sm:inline" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -587,6 +587,23 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
                   {isNavigatorOpen ? 'Hide' : 'Show'} Navigator
                 </DropdownMenuItem>
               )}
+              <DropdownMenuSeparator />
+              {/* Device Preview - mobile only */}
+              <DropdownMenuItem onClick={() => setDevice('desktop')}>
+                <Monitor className="mr-2 h-4 w-4" />
+                Desktop View
+                {device === 'desktop' && <Check className="ml-auto h-4 w-4" />}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setDevice('tablet')}>
+                <Tablet className="mr-2 h-4 w-4" />
+                Tablet View
+                {device === 'tablet' && <Check className="ml-auto h-4 w-4" />}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setDevice('mobile')}>
+                <Smartphone className="mr-2 h-4 w-4" />
+                Mobile View
+                {device === 'mobile' && <Check className="ml-auto h-4 w-4" />}
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               {/* Preview */}
               <DropdownMenuItem onClick={() => setPreviewMode(!isPreviewMode)}>

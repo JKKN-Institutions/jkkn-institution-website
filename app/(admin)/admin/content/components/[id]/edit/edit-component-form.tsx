@@ -29,7 +29,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Switch } from '@/components/ui/switch'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { CodeEditor } from '@/components/cms/code-editor'
+import { CodeEditor } from '@/components/cms/code-editor-lazy'
 import {
   Loader2,
   Save,

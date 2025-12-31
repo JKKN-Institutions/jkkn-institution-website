@@ -251,7 +251,7 @@ export function AdminSidebar({
           <button
             onClick={() => toggleExpand(item.href)}
             className={cn(
-              'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200',
+              'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200',
               active
                 ? 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary backdrop-blur-sm'
                 : 'text-foreground/70 hover:bg-primary/5 hover:text-foreground dark:hover:bg-primary/10'
@@ -335,17 +335,11 @@ export function AdminSidebar({
 
   const SidebarContent = () => (
     <>
-      {/* Logo with Premium Glass Effect */}
+      {/* JKKN Admin Header */}
       <div className="p-5 border-b border-sidebar-border/50">
         <Link href="/admin" className="flex items-center gap-3 group">
-          <div className="relative">
-            <div className="absolute inset-0 brand-gradient rounded-xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
-            <div className="relative w-11 h-11 brand-gradient rounded-xl flex items-center justify-center shadow-brand group-hover:shadow-lg transition-all duration-300 group-hover:scale-105">
-              <span className="text-white font-bold text-lg">JK</span>
-            </div>
-          </div>
           <div>
-            <span className="text-lg font-semibold text-foreground tracking-tight">JKKN Admin</span>
+            <span className="text-xl font-bold text-foreground tracking-tight">JKKN Admin</span>
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               <span>Institution Portal</span>
@@ -354,16 +348,70 @@ export function AdminSidebar({
         </Link>
       </div>
 
-      {/* Navigation Section with Glass Effect */}
-      <nav className="flex-1 p-4 space-y-1 overflow-y-auto overflow-x-hidden">
-        <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 mb-4">
-          <Layers className="h-3 w-3" />
-          <span>Main Menu</span>
+      {/* Navigation Section with Grouped Menus */}
+      <nav className="flex-1 p-4 space-y-6 overflow-y-auto overflow-x-hidden">
+        {/* Overview Section */}
+        <div>
+          <div className="text-xs font-bold text-foreground uppercase tracking-wider px-3 mb-3">
+            Overview
+          </div>
+          <div className="space-y-1">
+            {filteredNavItems.filter(item => item.href === '/admin' || item.href === '/admin/analytics').map((item) => (
+              <NavLink key={item.href} item={item} />
+            ))}
+          </div>
         </div>
-        <div className="space-y-1">
-          {filteredNavItems.map((item) => (
-            <NavLink key={item.href} item={item} />
-          ))}
+
+        {/* Access Management Section */}
+        <div>
+          <div className="text-xs font-bold text-foreground uppercase tracking-wider px-3 mb-3">
+            Access Management
+          </div>
+          <div className="space-y-1">
+            {filteredNavItems.filter(item => item.href === '/admin/users' || item.href === '/admin/roles').map((item) => (
+              <NavLink key={item.href} item={item} />
+            ))}
+          </div>
+        </div>
+
+        {/* Activities Section */}
+        <div>
+          <div className="text-xs font-bold text-foreground uppercase tracking-wider px-3 mb-3">
+            Activities
+          </div>
+          <div className="space-y-1">
+            {filteredNavItems.filter(item => item.href === '/admin/activity').map((item) => (
+              <NavLink key={item.href} item={item} />
+            ))}
+          </div>
+        </div>
+
+        {/* Content Management Section */}
+        <div>
+          <div className="text-xs font-bold text-foreground uppercase tracking-wider px-3 mb-3">
+            Content Management
+          </div>
+          <div className="space-y-1">
+            {filteredNavItems.filter(item =>
+              item.href === '/admin/content' ||
+              item.href === '/admin/content/blog' ||
+              item.href === '/admin/content/careers'
+            ).map((item) => (
+              <NavLink key={item.href} item={item} />
+            ))}
+          </div>
+        </div>
+
+        {/* System Section */}
+        <div>
+          <div className="text-xs font-bold text-foreground uppercase tracking-wider px-3 mb-3">
+            System
+          </div>
+          <div className="space-y-1">
+            {filteredNavItems.filter(item => item.href === '/admin/settings').map((item) => (
+              <NavLink key={item.href} item={item} />
+            ))}
+          </div>
         </div>
       </nav>
 

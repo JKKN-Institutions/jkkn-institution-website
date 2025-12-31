@@ -490,7 +490,7 @@ function MobileSidebar({
           <button
             onClick={() => toggleExpand(module.id)}
             className={cn(
-              'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200',
+              'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200',
               isActive
                 ? 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary'
                 : 'text-foreground/70 hover:bg-primary/5 hover:text-foreground dark:hover:bg-primary/10'

@@ -1,65 +1,32 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Users, UserCheck, MessageSquare, Eye, TrendingUp, TrendingDown } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
+import { Users, UserCheck, MessageSquare, FileText, ArrowUpRight, ArrowDownRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
+import { getDashboardStats } from '@/app/actions/dashboard-stats'
 
 interface Stats {
   totalUsers: number
   activeUsers: number
   pendingInquiries: number
-  pageViews: number
+  totalPages: number
   totalUsersChange: number
   activeUsersChange: number
   pendingInquiriesChange: number
-  pageViewsChange: number
+  totalPagesChange: number
 }
 
 export function DashboardStatsCards() {
   const [stats, setStats] = useState<Stats | null>(null)
   const [loading, setLoading] = useState(true)
-  const supabase = createClient()
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        // Get total users
-        const { count: totalUsers } = await supabase
-          .from('profiles')
-          .select('*', { count: 'exact', head: true })
-
-        // Get users created in last 30 days
-        const thirtyDaysAgo = new Date()
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-
-        // Get users who have logged in recently (active users)
-        const { count: activeUsers } = await supabase
-          .from('user_activity_logs')
-          .select('user_id', { count: 'exact', head: true })
-          .eq('action', 'login')
-          .gte('created_at', thirtyDaysAgo.toISOString())
-
-        // Get pending inquiries count (new status)
-        const { count: pendingInquiries } = await supabase
-          .from('contact_submissions')
-          .select('*', { count: 'exact', head: true })
-          .eq('status', 'new')
-
-        // Get page views (simulate for now)
-        const pageViews = 2540
-
-        setStats({
-          totalUsers: totalUsers || 0,
-          activeUsers: activeUsers || 0,
-          pendingInquiries: pendingInquiries || 0,
-          pageViews,
-          totalUsersChange: 12,
-          activeUsersChange: 5,
-          pendingInquiriesChange: -2,
-          pageViewsChange: 18,
-        })
+        // Use Server Action which bypasses RLS for accurate counts
+        const data = await getDashboardStats()
+        setStats(data)
       } catch (error) {
         console.error('Error fetching stats:', error)
       } finally {
@@ -76,28 +43,40 @@ export function DashboardStatsCards() {
       value: stats?.totalUsers || 0,
       icon: Users,
       change: stats?.totalUsersChange || 0,
-      bgColor: 'bg-blue-500',
+      color: '#0b6d41',
+      glassClasses: 'bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl border border-white/60 dark:border-zinc-800 shadow-sm hover:border-[#0b6d41]/30',
+      iconBg: 'bg-[#0b6d41]/10 text-[#0b6d41]',
+      changeColor: 'text-[#0b6d41]',
     },
     {
-      label: 'Active Users',
+      label: 'Active Users (30d)',
       value: stats?.activeUsers || 0,
       icon: UserCheck,
       change: stats?.activeUsersChange || 0,
-      bgColor: 'bg-yellow-500',
+      color: '#bfa100',
+      glassClasses: 'bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl border border-white/60 dark:border-zinc-800 shadow-sm hover:border-[#bfa100]/30',
+      iconBg: 'bg-[#ffde59]/20 text-[#bfa100]',
+      changeColor: 'text-[#bfa100]',
     },
     {
       label: 'Pending Inquiries',
       value: stats?.pendingInquiries || 0,
       icon: MessageSquare,
       change: stats?.pendingInquiriesChange || 0,
-      bgColor: 'bg-purple-500',
+      color: '#0f8f56',
+      glassClasses: 'bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl border border-white/60 dark:border-zinc-800 shadow-sm hover:border-[#0f8f56]/30',
+      iconBg: 'bg-[#0f8f56]/10 text-[#0f8f56]',
+      changeColor: 'text-[#0f8f56]',
     },
     {
-      label: 'Page Views',
-      value: stats?.pageViews || 0,
-      icon: Eye,
-      change: stats?.pageViewsChange || 0,
-      bgColor: 'bg-green-500',
+      label: 'Total Pages',
+      value: stats?.totalPages || 0,
+      icon: FileText,
+      change: stats?.totalPagesChange || 0,
+      color: '#085032',
+      glassClasses: 'bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl border border-white/60 dark:border-zinc-800 shadow-sm hover:border-[#085032]/30',
+      iconBg: 'bg-[#085032]/10 text-[#085032]',
+      changeColor: 'text-[#085032]',
     },
   ]
 
@@ -105,15 +84,15 @@ export function DashboardStatsCards() {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="p-5 rounded-xl bg-card border border-border min-w-0">
-            <div className="flex items-center justify-between">
+          <div key={i} className="p-6 rounded-2xl bg-white/50 border border-gray-100 h-[140px] flex flex-col justify-between">
+            <div className="flex justify-between items-start">
               <div className="space-y-2">
-                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-24" />
                 <Skeleton className="h-8 w-16" />
-                <Skeleton className="h-3 w-24" />
               </div>
-              <Skeleton className="w-12 h-12 rounded-full" />
+              <Skeleton className="w-10 h-10 rounded-full" />
             </div>
+            <Skeleton className="w-16 h-6 rounded-full" />
           </div>
         ))}
       </div>
@@ -126,43 +105,43 @@ export function DashboardStatsCards() {
         <div
           key={item.label}
           className={cn(
-            'relative flex items-center justify-between p-5 rounded-xl transition-all duration-300 min-w-0',
-            'bg-card border border-border',
-            'hover:shadow-lg hover:-translate-y-0.5'
+            'relative overflow-hidden rounded-2xl transition-all duration-300',
+            'hover:shadow-lg hover:-translate-y-0.5 group',
+            item.glassClasses
           )}
         >
-          {/* Left side - Stats */}
-          <div className="flex flex-col">
-            <p className="text-sm font-medium text-muted-foreground mb-1">
-              {item.label}
-            </p>
-            <p className="text-3xl font-bold text-foreground tabular-nums">
-              {item.value.toLocaleString()}
-            </p>
-            <div className="flex items-center gap-1.5 mt-2">
-              {item.change >= 0 ? (
-                <TrendingUp className="h-3.5 w-3.5 text-green-500" />
-              ) : (
-                <TrendingDown className="h-3.5 w-3.5 text-red-500" />
-              )}
-              <span className={cn(
-                'text-xs font-medium',
-                item.change >= 0 ? 'text-green-500' : 'text-red-500'
+          <div className="p-6">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  {item.label}
+                </p>
+                <h3 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 tabular-nums">
+                  {item.value.toLocaleString()}
+                </h3>
+              </div>
+              <div className={cn(
+                "p-2.5 rounded-xl shadow-sm",
+                item.iconBg
               )}>
-                {item.change >= 0 ? '+' : ''}{item.change}%
-              </span>
-              <span className="text-xs text-muted-foreground">
-                from last week
-              </span>
+                <item.icon className="w-5 h-5" />
+              </div>
             </div>
-          </div>
 
-          {/* Right side - Icon */}
-          <div className={cn(
-            'flex items-center justify-center w-12 h-12 rounded-full',
-            item.bgColor
-          )}>
-            <item.icon className="h-6 w-6 text-white" />
+            <div className="flex items-center gap-2">
+              <div className={cn(
+                "flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full bg-white/80 dark:bg-black/20 border border-gray-100 dark:border-white/5",
+                item.change >= 0 ? "text-emerald-600" : "text-rose-600"
+              )}>
+                {item.change >= 0 ? (
+                  <ArrowUpRight className="w-3 h-3" />
+                ) : (
+                  <ArrowDownRight className="w-3 h-3" />
+                )}
+                <span>{Math.abs(Math.round(item.change))}%</span>
+              </div>
+              <span className="text-xs text-gray-500 dark:text-gray-400">vs last month</span>
+            </div>
           </div>
         </div>
       ))}

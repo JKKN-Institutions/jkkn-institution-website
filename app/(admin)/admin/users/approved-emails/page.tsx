@@ -58,31 +58,33 @@ export default async function ApprovedEmailsPage({
       <div className="glass-card rounded-2xl p-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
         <div className="relative">
-          <div className="flex items-center gap-4 mb-4">
-            <Button variant="ghost" size="icon" asChild className="hover:bg-primary/5">
-              <Link href="/admin/users">
-                <ArrowLeft className="h-4 w-4" />
-              </Link>
-            </Button>
-            <div className="p-3 rounded-xl bg-blue-100 dark:bg-blue-900/30">
-              <Mail className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-semibold text-foreground">Approved Emails</h1>
-                <span className="badge-brand">
-                  <Sparkles className="h-3 w-3 mr-1" />
-                  Whitelist
-                </span>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <Button variant="ghost" size="icon" asChild className="hover:bg-primary/5 shrink-0">
+                <Link href="/admin/users">
+                  <ArrowLeft className="h-4 w-4" />
+                </Link>
+              </Button>
+              <div className="p-2.5 sm:p-3 rounded-xl bg-blue-100 dark:bg-blue-900/30 shrink-0">
+                <Mail className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600 dark:text-blue-400" />
               </div>
-              <p className="text-muted-foreground mt-1">
-                Manage email addresses approved for user registration
-              </p>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h1 className="text-xl sm:text-2xl font-semibold text-foreground truncate">Approved Emails</h1>
+                  <span className="badge-brand hidden sm:inline-flex">
+                    <Sparkles className="h-3 w-3 mr-1" />
+                    Whitelist
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground mt-0.5 line-clamp-1">
+                  Manage approved email addresses
+                </p>
+              </div>
             </div>
-            <Button asChild className="gap-2">
+            <Button asChild className="gap-2 w-full sm:w-auto shrink-0">
               <Link href="/admin/users/new">
                 <Plus className="h-4 w-4" />
-                Add Email
+                <span>Add Email</span>
               </Link>
             </Button>
           </div>

@@ -50,7 +50,7 @@ import { toast } from 'sonner'
 import Image from 'next/image'
 import { MediaPickerModal } from '@/components/cms/media-picker-modal'
 import type { MediaItem } from '@/app/actions/cms/media'
-import { RichTextEditor } from '@/components/ui/rich-text-editor'
+import { RichTextEditor } from '@/components/ui/rich-text-editor-lazy'
 
 interface BlogPostFormProps {
   post?: BlogPostWithRelations

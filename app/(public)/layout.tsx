@@ -2,11 +2,13 @@ import { SiteHeader } from '@/components/public/site-header'
 import { SiteFooter } from '@/components/public/site-footer'
 import { FloatingActionButton } from '@/components/public/floating-action-button'
 import { PublicBottomNav } from '@/components/navigation/bottom-nav/public/public-bottom-nav'
+import { PageTracker } from '@/components/analytics/page-tracker'
 import { getPublicNavigation } from '@/app/actions/cms/navigation'
 import { getGlobalFabConfig } from '@/app/actions/cms/fab'
 import { getLogoSizes } from '@/app/actions/cms/appearance'
 import { getFooterSettings } from '@/app/actions/cms/footer'
 import { PublicThemeProvider } from '@/components/providers/public-theme-provider'
+import { EventsCalendarSchema } from '@/components/seo/events-calendar-schema'
 
 export default async function PublicLayout({
   children
@@ -23,12 +25,18 @@ export default async function PublicLayout({
 
   return (
     <PublicThemeProvider>
+      {/* SEO Schema - Events Calendar 2025-26 */}
+      <EventsCalendarSchema />
+
       <div className='min-h-screen bg-cream flex flex-col relative'>
         {/* Site Header with CMS Navigation and Logo Settings - Fixed glassmorphic */}
         <SiteHeader navigation={navigation} logoSizes={logoSizes} />
 
         {/* Main Content */}
         <main className="flex-1 overflow-x-hidden">{children}</main>
+
+        {/* Analytics Page Tracker */}
+        <PageTracker />
 
         {/* Site Footer with CMS Settings */}
         <SiteFooter settings={footerSettings} />

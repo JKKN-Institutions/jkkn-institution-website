@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import type { BeforeAfterSliderProps } from '@/lib/cms/registry-types'
 
@@ -89,26 +90,37 @@ export default function BeforeAfterSlider({
       onTouchEnd={handleMouseUp}
       onTouchMove={handleTouchMove}
     >
-      {/* After Image (background) */}
-      <img
+      {/* After Image (background) - Optimized with Next.js Image */}
+      <Image
         src={afterImage}
         alt={afterImageAlt || afterLabel}
-        className="absolute inset-0 w-full h-full object-cover"
+        fill
+        className="object-cover"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+        quality={80}
         draggable={false}
       />
 
-      {/* Before Image (clipped) */}
+      {/* Before Image (clipped) - Optimized with Next.js Image */}
       <div
         className="absolute inset-0 overflow-hidden"
         style={{ width: `${position}%` }}
       >
-        <img
-          src={beforeImage}
-          alt={beforeImageAlt || beforeLabel}
-          className="absolute inset-0 w-full h-full object-cover"
+        <div
+          className="absolute inset-0"
           style={{ width: `${100 / (position / 100)}%` }}
-          draggable={false}
-        />
+        >
+          <Image
+            src={beforeImage}
+            alt={beforeImageAlt || beforeLabel}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+            quality={80}
+            priority
+            draggable={false}
+          />
+        </div>
       </div>
 
       {/* Slider handle */}

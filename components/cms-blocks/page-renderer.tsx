@@ -11,6 +11,7 @@ import { PageTypographyProvider } from '@/lib/cms/page-typography-context'
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { DEFAULT_FONT_FAMILY } from '@/lib/cms/page-typography-types'
 import { DynamicFontLoader } from '@/components/cms-blocks/fonts/dynamic-font-loader'
+import { BlockErrorBoundary } from '@/components/ui/block-error-boundary'
 
 interface BlockData {
   id: string
@@ -168,15 +169,17 @@ function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?:
     return (
       <ResponsiveContainer>
         <BlockWrapper>
-          <Suspense fallback={<BlockSkeleton />}>
-            <Component {...block.props} id={typeof block.props?.id === 'string' ? block.props.id : block.id}>
-              {block.children
-                .filter((child) => child.is_visible)
-                .map((child) => (
-                  <RenderBlock key={child.id} block={child} isNested={true} />
-                ))}
-            </Component>
-          </Suspense>
+          <BlockErrorBoundary componentName={block.component_name}>
+            <Suspense fallback={<BlockSkeleton />}>
+              <Component {...block.props} id={typeof block.props?.id === 'string' ? block.props.id : block.id}>
+                {block.children
+                  .filter((child) => child.is_visible)
+                  .map((child) => (
+                    <RenderBlock key={child.id} block={child} isNested={true} />
+                  ))}
+              </Component>
+            </Suspense>
+          </BlockErrorBoundary>
         </BlockWrapper>
       </ResponsiveContainer>
     )
@@ -186,9 +189,11 @@ function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?:
   return (
     <ResponsiveContainer>
       <BlockWrapper>
-        <Suspense fallback={<BlockSkeleton />}>
-          <Component {...block.props} id={typeof block.props?.id === 'string' ? block.props.id : block.id} />
-        </Suspense>
+        <BlockErrorBoundary componentName={block.component_name}>
+          <Suspense fallback={<BlockSkeleton />}>
+            <Component {...block.props} id={typeof block.props?.id === 'string' ? block.props.id : block.id} />
+          </Suspense>
+        </BlockErrorBoundary>
       </BlockWrapper>
     </ResponsiveContainer>
   )

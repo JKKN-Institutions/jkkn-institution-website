@@ -192,3 +192,34 @@ export interface ExportButtonProps {
   isExporting?: boolean
   disabled?: boolean
 }
+
+// ============================================
+// Visitor Analytics Types (Public Website)
+// ============================================
+
+export interface PageViewStats {
+  viewDate: string
+  totalViews: number
+  uniqueVisitors: number
+}
+
+export interface TopPublicPage {
+  pagePath: string
+  pageTitle: string | null
+  viewCount: number
+  uniqueVisitors: number
+}
+
+export interface TrafficSource {
+  referrerDomain: string
+  visitCount: number
+  percentage: number
+}
+
+export interface VisitorOverview {
+  totalPageviews: number
+  uniqueVisitors: number
+  avgViewsPerDay: number
+  topPage: string | null
+  topReferrer: string | null
+}

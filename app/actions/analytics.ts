@@ -594,3 +594,152 @@ export async function getAvailableModules(): Promise<string[]> {
   const modules = [...new Set((data || []).map((row) => row.module))].filter(Boolean)
   return modules.sort()
 }
+
+// ============================================
+// Visitor Analytics Actions (Public Website)
+// ============================================
+
+/**
+ * Get pageview statistics for date range
+ */
+export async function getPageViewStats(
+  params: DateRangeParams
+): Promise<import('@/lib/analytics/types').PageViewStats[]> {
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) throw new Error('Unauthorized')
+  await requireAnalyticsPermission(user.id)
+
+  const validation = DateRangeSchema.parse(params)
+
+  const { data, error } = await supabase.rpc('get_pageview_stats', {
+    p_start_date: validation.from,
+    p_end_date: validation.to
+  })
+
+  if (error) {
+    console.error('getPageViewStats error:', error)
+    throw new Error('Failed to fetch pageview stats')
+  }
+
+  return (data || []).map((row: {
+    view_date: string
+    total_views: number
+    unique_visitors: number
+  }) => ({
+    viewDate: row.view_date,
+    totalViews: Number(row.total_views),
+    uniqueVisitors: Number(row.unique_visitors)
+  }))
+}
+
+/**
+ * Get top public pages by view count
+ */
+export async function getTopPublicPages(
+  params: DateRangeParams,
+  limit: number = 10
+): Promise<import('@/lib/analytics/types').TopPublicPage[]> {
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) throw new Error('Unauthorized')
+  await requireAnalyticsPermission(user.id)
+
+  const validation = DateRangeSchema.parse(params)
+
+  const { data, error } = await supabase.rpc('get_top_public_pages', {
+    p_start_date: validation.from,
+    p_end_date: validation.to,
+    p_limit: limit
+  })
+
+  if (error) {
+    console.error('getTopPublicPages error:', error)
+    throw new Error('Failed to fetch top pages')
+  }
+
+  return (data || []).map((row: {
+    page_path: string
+    page_title: string | null
+    view_count: number
+    unique_visitors: number
+  }) => ({
+    pagePath: row.page_path,
+    pageTitle: row.page_title,
+    viewCount: Number(row.view_count),
+    uniqueVisitors: Number(row.unique_visitors)
+  }))
+}
+
+/**
+ * Get traffic sources (referrers)
+ */
+export async function getTrafficSources(
+  params: DateRangeParams,
+  limit: number = 10
+): Promise<import('@/lib/analytics/types').TrafficSource[]> {
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) throw new Error('Unauthorized')
+  await requireAnalyticsPermission(user.id)
+
+  const validation = DateRangeSchema.parse(params)
+
+  const { data, error } = await supabase.rpc('get_traffic_sources', {
+    p_start_date: validation.from,
+    p_end_date: validation.to,
+    p_limit: limit
+  })
+
+  if (error) {
+    console.error('getTrafficSources error:', error)
+    throw new Error('Failed to fetch traffic sources')
+  }
+
+  return (data || []).map((row: {
+    referrer_domain: string
+    visit_count: number
+    percentage: number
+  }) => ({
+    referrerDomain: row.referrer_domain,
+    visitCount: Number(row.visit_count),
+    percentage: Number(row.percentage)
+  }))
+}
+
+/**
+ * Get visitor overview stats
+ */
+export async function getVisitorOverview(
+  params: DateRangeParams
+): Promise<import('@/lib/analytics/types').VisitorOverview> {
+  const supabase = await createServerSupabaseClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) throw new Error('Unauthorized')
+  await requireAnalyticsPermission(user.id)
+
+  const validation = DateRangeSchema.parse(params)
+
+  const { data, error } = await supabase.rpc('get_visitor_overview', {
+    p_start_date: validation.from,
+    p_end_date: validation.to
+  })
+
+  if (error) {
+    console.error('getVisitorOverview error:', error)
+    throw new Error('Failed to fetch visitor overview')
+  }
+
+  const row = data?.[0] || {}
+  return {
+    totalPageviews: Number(row.total_pageviews) || 0,
+    uniqueVisitors: Number(row.unique_visitors) || 0,
+    avgViewsPerDay: Number(row.avg_views_per_day) || 0,
+    topPage: row.top_page || null,
+    topReferrer: row.top_referrer || null
+  }
+}

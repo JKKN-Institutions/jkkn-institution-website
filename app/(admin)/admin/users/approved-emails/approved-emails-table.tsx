@@ -38,8 +38,9 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Search, X, MoreHorizontal, Mail, CheckCircle, XCircle, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
-import { ColumnDef } from '@tanstack/react-table'
+import { ColumnDef, VisibilityState } from '@tanstack/react-table'
 import { formatDistanceToNow } from 'date-fns'
+import { useIsMobile } from '@/lib/hooks/use-mobile'
 
 interface ApprovedEmail {
   id: string
@@ -81,6 +82,9 @@ export function ApprovedEmailsTable({
   const [statusValue, setStatusValue] = useState(initialStatusFilter)
   const [page, setPage] = useState(initialPage)
   const [limit, setLimit] = useState(initialLimit)
+
+  // Mobile detection for responsive columns
+  const isMobile = useIsMobile()
 
   // Dialog states
   const [revokeDialogOpen, setRevokeDialogOpen] = useState(false)
@@ -222,6 +226,15 @@ export function ApprovedEmailsTable({
   }
 
   const hasFilters = searchValue || statusValue
+
+  // Responsive column visibility - hide extra columns on mobile
+  const columnVisibility: VisibilityState = isMobile
+    ? {
+        added_by_profile: false,
+        added_at: false,
+        notes: false,
+      }
+    : {}
 
   // Column definitions
   const columns: ColumnDef<ApprovedEmail>[] = [
@@ -390,6 +403,7 @@ export function ApprovedEmailsTable({
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         isLoading={isLoading || isPending}
+        columnVisibility={columnVisibility}
       />
 
       {/* Revoke Dialog */}

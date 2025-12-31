@@ -155,34 +155,29 @@ async function checkUserPermission(
   userId: string,
   permission: string
 ): Promise<boolean> {
-  // Get all permissions for this user's roles
-  const { data: userRoles } = await supabase
+  // OPTIMIZED: Fetch permissions in a single query using nested joins
+  // user_roles -> roles -> role_permissions
+  const { data: userPermissions } = await supabase
     .from('user_roles')
-    .select('role_id')
-    .eq('user_id', userId)
+    .select('roles!inner(role_permissions!inner(permission))')
+    .eq('user_id', userId) as unknown as {
+      data: { roles: { role_permissions: { permission: string }[] } }[] | null
+    }
 
-  if (!userRoles || userRoles.length === 0) return false
+  if (!userPermissions || userPermissions.length === 0) return false
 
-  const roleIds = userRoles.map((ur) => ur.role_id)
-
-  // Get permissions for these roles
-  const { data: permissions } = await supabase
-    .from('role_permissions')
-    .select('permission')
-    .in('role_id', roleIds)
-
-  if (!permissions || permissions.length === 0) return false
-
-  // Check for matching permission
-  const userPermissions = permissions.map((p) => p.permission)
+  // Flatten structure: entries -> roles -> role_permissions(array) -> permission
+  const permissions = userPermissions.flatMap(ur =>
+    ur.roles?.role_permissions?.map(rp => rp.permission) || []
+  )
 
   // Check exact match
-  if (userPermissions.includes(permission)) return true
+  if (permissions.includes(permission)) return true
 
   // Check wildcard permissions
   const [module, resource, action] = permission.split(':')
 
-  for (const userPerm of userPermissions) {
+  for (const userPerm of permissions) {
     const [permModule, permResource, permAction] = userPerm.split(':')
 
     // Full wildcard

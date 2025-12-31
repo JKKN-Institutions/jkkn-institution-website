@@ -55,8 +55,13 @@ export function RecentUsersSection() {
   }
 
   return (
-    <div className="bg-card border border-border rounded-xl p-5">
-      <h2 className="text-lg font-semibold text-foreground mb-4">Recent Users</h2>
+    <div className="bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl border border-white/40 dark:border-white/10 rounded-2xl p-6 shadow-sm h-full">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Recent Users</h2>
+        <span className="text-xs font-medium px-2 py-1 rounded-full bg-primary/10 text-primary">
+          Latest 5
+        </span>
+      </div>
 
       {loading ? (
         <div className="space-y-4">
@@ -72,39 +77,40 @@ export function RecentUsersSection() {
           ))}
         </div>
       ) : users.length > 0 ? (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {users.map((user) => (
             <div
               key={user.id}
-              className="flex items-center gap-3 p-2 -mx-2 rounded-lg hover:bg-muted/50 transition-colors"
+              className="flex items-center gap-4 p-3 rounded-xl bg-white/40 dark:bg-white/5 border border-transparent hover:border-primary/20 hover:bg-white/60 dark:hover:bg-white/10 transition-all duration-200 group"
             >
-              <Avatar className="w-10 h-10">
+              <Avatar className="w-10 h-10 ring-2 ring-white dark:ring-zinc-800 shadow-sm">
                 <AvatarImage src={user.avatar_url || undefined} alt={user.full_name || user.email} />
-                <AvatarFallback className="bg-primary/10 text-primary text-sm font-medium">
+                <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/10 text-primary text-sm font-bold">
                   {getInitials(user.full_name, user.email)}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">
+                <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate group-hover:text-primary transition-colors">
                   {user.full_name || 'Unnamed User'}
                 </p>
-                <p className="text-xs text-muted-foreground truncate">
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                   {user.email}
                 </p>
               </div>
-              <span className="text-xs text-muted-foreground whitespace-nowrap" suppressHydrationWarning>
+              <span className="text-xs font-medium text-gray-400 whitespace-nowrap bg-white/50 dark:bg-black/20 px-2 py-1 rounded-md" suppressHydrationWarning>
                 {formatDistanceToNow(new Date(user.created_at), { addSuffix: true })}
               </span>
             </div>
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-8 text-center">
-          <div className="p-3 rounded-full bg-muted mb-3">
-            <Users className="h-6 w-6 text-muted-foreground" />
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="p-4 rounded-full bg-primary/5 mb-4">
+            <Users className="h-8 w-8 text-primary/40" />
           </div>
-          <p className="text-sm text-muted-foreground">
-            User list will appear here once database is set up
+          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">No users found</p>
+          <p className="text-xs text-gray-500 mt-1 max-w-[200px]">
+            New registrations will appear here instantly.
           </p>
         </div>
       )}

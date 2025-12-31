@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
+import Image from 'next/image'
 import type { LogoCloudProps } from '@/lib/cms/registry-types'
 
 export default function LogoCloud({
@@ -42,14 +43,17 @@ export default function LogoCloud({
             }}
           >
             {filteredLogos.map((logo, index) => (
-              <div key={index} className="flex justify-center">
-                <img
+              <div key={index} className="flex justify-center items-center h-12">
+                <Image
                   src={logo.src}
                   alt={logo.alt || ''}
+                  width={120}
+                  height={48}
                   className={cn(
-                    'max-h-12 w-auto mx-auto object-contain transition-all',
+                    'max-h-12 w-auto object-contain transition-all',
                     grayscale && 'grayscale opacity-60 hover:grayscale-0 hover:opacity-100'
                   )}
+                  loading="lazy"
                 />
               </div>
             ))}
@@ -79,35 +83,41 @@ export default function LogoCloud({
             animation: isPaused || isEditing ? 'none' : 'marquee-logocloud 20s linear infinite',
           }}
         >
-          {/* First set */}
+          {/* First set - Optimized with Next.js Image */}
           {filteredLogos.map((logo, index) => (
             <div
               key={`logo-1-${index}`}
               className="flex-shrink-0 w-[80px] sm:w-[100px] md:w-[120px] h-[50px] sm:h-[60px] md:h-[70px] mx-2 sm:mx-3 md:mx-4 flex items-center justify-center"
             >
-              <img
+              <Image
                 src={logo.src}
                 alt={logo.alt || ''}
+                width={120}
+                height={60}
                 className={cn(
                   'max-h-[40px] sm:max-h-[50px] md:max-h-[60px] w-auto object-contain transition-all',
                   grayscale && 'grayscale opacity-60 hover:grayscale-0 hover:opacity-100'
                 )}
+                loading={index < 6 ? 'eager' : 'lazy'}
               />
             </div>
           ))}
-          {/* Duplicate set for seamless loop */}
+          {/* Duplicate set for seamless loop - Lazy loaded */}
           {filteredLogos.map((logo, index) => (
             <div
               key={`logo-2-${index}`}
               className="flex-shrink-0 w-[80px] sm:w-[100px] md:w-[120px] h-[50px] sm:h-[60px] md:h-[70px] mx-2 sm:mx-3 md:mx-4 flex items-center justify-center"
             >
-              <img
+              <Image
                 src={logo.src}
                 alt={logo.alt || ''}
+                width={120}
+                height={60}
                 className={cn(
                   'max-h-[40px] sm:max-h-[50px] md:max-h-[60px] w-auto object-contain transition-all',
                   grayscale && 'grayscale opacity-60 hover:grayscale-0 hover:opacity-100'
                 )}
+                loading="lazy"
               />
             </div>
           ))}

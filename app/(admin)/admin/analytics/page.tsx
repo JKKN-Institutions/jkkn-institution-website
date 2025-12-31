@@ -74,7 +74,19 @@ export default function AnalyticsOverviewPage() {
       {/* Quick Links */}
       <div className="glass-card rounded-xl p-6">
         <h3 className="text-lg font-medium mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Link
+            href="/admin/analytics/visitors"
+            className="flex items-center gap-3 p-4 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 transition-colors group"
+          >
+            <div className="p-2 rounded-lg bg-cyan-500/20">
+              <ArrowRight className="h-4 w-4 text-cyan-600" />
+            </div>
+            <div>
+              <p className="font-medium text-sm">Website Visitors</p>
+              <p className="text-xs text-muted-foreground">Page views, traffic sources</p>
+            </div>
+          </Link>
           <Link
             href="/admin/analytics/users"
             className="flex items-center gap-3 p-4 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 transition-colors group"

@@ -99,10 +99,13 @@ export default async function AdminDashboard() {
         </Alert>
       )}
 
+      {/* Welcome Banner */}
+      <WelcomeBanner name={userData.profile?.full_name} />
+
       {/* Dashboard Header */}
       <div>
         <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
-        <p className="text-muted-foreground">Welcome to your admin dashboard</p>
+        <p className="text-muted-foreground">Overview of system performance and activity</p>
       </div>
 
       {/* Stats Cards Row */}
@@ -120,9 +123,6 @@ export default async function AdminDashboard() {
           <RecentActivitySection />
         </div>
       </div>
-
-      {/* Welcome Banner */}
-      <WelcomeBanner />
     </div>
   )
 }
