@@ -115,7 +115,7 @@ export function UserGrowthChart({ className }: UserGrowthChartProps) {
             <Line
               type="monotone"
               dataKey="newUsers"
-              stroke="hsl(var(--chart-1))"
+              stroke="var(--chart-1)"
               strokeWidth={2}
               dot={{ r: 3 }}
               activeDot={{ r: 5 }}
@@ -123,7 +123,7 @@ export function UserGrowthChart({ className }: UserGrowthChartProps) {
             <Line
               type="monotone"
               dataKey="activeUsers"
-              stroke="hsl(var(--chart-2))"
+              stroke="var(--chart-2)"
               strokeWidth={2}
               dot={{ r: 3 }}
               activeDot={{ r: 5 }}
@@ -131,7 +131,7 @@ export function UserGrowthChart({ className }: UserGrowthChartProps) {
             <Line
               type="monotone"
               dataKey="cumulativeTotal"
-              stroke="hsl(var(--chart-3))"
+              stroke="var(--chart-3)"
               strokeWidth={2}
               strokeDasharray="5 5"
               dot={false}

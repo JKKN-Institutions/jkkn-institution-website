@@ -331,45 +331,45 @@ export function MediaLibrary({ initialMedia, folders, stats, folderStats, select
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="p-4 rounded-lg border border-border bg-card">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-blue-500/10">
+            <div className="p-2 rounded-lg bg-blue-500/10 flex-shrink-0">
               <ImageIcon className="h-5 w-5 text-blue-500" />
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Images</p>
-              <p className="font-semibold">{stats.byType['image']?.count || 0}</p>
+            <div className="min-w-0">
+              <p className="text-sm text-muted-foreground truncate">Images</p>
+              <p className="font-semibold truncate">{stats.byType['image']?.count || 0}</p>
             </div>
           </div>
         </div>
         <div className="p-4 rounded-lg border border-border bg-card">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-purple-500/10">
+            <div className="p-2 rounded-lg bg-purple-500/10 flex-shrink-0">
               <FileVideo className="h-5 w-5 text-purple-500" />
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Videos</p>
-              <p className="font-semibold">{stats.byType['video']?.count || 0}</p>
+            <div className="min-w-0">
+              <p className="text-sm text-muted-foreground truncate">Videos</p>
+              <p className="font-semibold truncate">{stats.byType['video']?.count || 0}</p>
             </div>
           </div>
         </div>
         <div className="p-4 rounded-lg border border-border bg-card">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-green-500/10">
+            <div className="p-2 rounded-lg bg-green-500/10 flex-shrink-0">
               <File className="h-5 w-5 text-green-500" />
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Documents</p>
-              <p className="font-semibold">{stats.byType['document']?.count || 0}</p>
+            <div className="min-w-0">
+              <p className="text-sm text-muted-foreground truncate">Documents</p>
+              <p className="font-semibold truncate">{stats.byType['document']?.count || 0}</p>
             </div>
           </div>
         </div>
         <div className="p-4 rounded-lg border border-border bg-card">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-amber-500/10">
+            <div className="p-2 rounded-lg bg-amber-500/10 flex-shrink-0">
               <HardDrive className="h-5 w-5 text-amber-500" />
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Storage Used</p>
-              <p className="font-semibold">{formatBytes(stats.totalSize)}</p>
+            <div className="min-w-0">
+              <p className="text-sm text-muted-foreground truncate">Storage Used</p>
+              <p className="font-semibold truncate">{formatBytes(stats.totalSize)}</p>
             </div>
           </div>
         </div>

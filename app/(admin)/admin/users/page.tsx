@@ -1,10 +1,10 @@
 import { Suspense } from 'react'
 import { UsersTable } from './users-table'
-import { Users as UsersIcon, UserCheck, UserX, Clock, RefreshCw } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Users as UsersIcon, UserCheck, UserX, Clock } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { AddUserModal } from './add-user-modal'
+import { RefreshButton } from './refresh-button'
 
 interface UsersPageProps {
   searchParams: Promise<{
@@ -54,13 +54,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
           <p className="text-muted-foreground">Manage user accounts, roles, and permissions</p>
         </div>
         <div className="flex items-center gap-3">
-          <Button
-            variant="outline"
-            className="gap-2"
-          >
-            <RefreshCw className="h-4 w-4" />
-            Refresh
-          </Button>
+          <RefreshButton />
           <AddUserModal />
         </div>
       </div>

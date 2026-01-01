@@ -15,16 +15,16 @@ import { getRoleDistribution } from '@/app/actions/analytics'
 import { exportAnalyticsAsCSV, roleDistributionColumns } from '@/lib/analytics/export-utils'
 import type { RoleDistributionData } from '@/lib/analytics/types'
 
-// Chart colors
+// Chart colors - using CSS variables directly (hex format)
 const COLORS = [
-  'hsl(var(--chart-1))',
-  'hsl(var(--chart-2))',
-  'hsl(var(--chart-3))',
-  'hsl(var(--chart-4))',
-  'hsl(var(--chart-5))',
-  'hsl(142, 76%, 36%)', // Green
-  'hsl(262, 83%, 58%)', // Purple
-  'hsl(25, 95%, 53%)'   // Orange
+  'var(--chart-1)',
+  'var(--chart-2)',
+  'var(--chart-3)',
+  'var(--chart-4)',
+  'var(--chart-5)',
+  '#22c55e', // Green fallback
+  '#8b5cf6', // Purple fallback
+  '#f97316'  // Orange fallback
 ]
 
 interface RoleDistributionChartProps {

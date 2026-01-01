@@ -142,10 +142,10 @@ export const ADMIN_PRIMARY_ITEMS: NavMenuItemConfig[] = [
         label: 'Blog',
         icon: PenLine,
         items: [
-          { href: '/admin/blog/posts', label: 'Posts', icon: PenLine },
-          { href: '/admin/blog/categories', label: 'Categories', icon: FolderOpen },
-          { href: '/admin/blog/tags', label: 'Tags', icon: Tags },
-          { href: '/admin/blog/comments', label: 'Comments', icon: MessageSquare }
+          { href: '/admin/content/blog', label: 'Posts', icon: PenLine },
+          { href: '/admin/content/blog/categories', label: 'Categories', icon: FolderOpen },
+          { href: '/admin/content/blog/tags', label: 'Tags', icon: Tags },
+          { href: '/admin/content/blog/comments', label: 'Comments', icon: MessageSquare }
         ]
       },
       {
@@ -153,10 +153,9 @@ export const ADMIN_PRIMARY_ITEMS: NavMenuItemConfig[] = [
         label: 'Careers',
         icon: Briefcase,
         items: [
-          { href: '/admin/careers/jobs', label: 'Jobs', icon: Briefcase },
-          { href: '/admin/careers/departments', label: 'Departments', icon: Building2 },
-          { href: '/admin/careers/applications', label: 'Applications', icon: UserCheck },
-          { href: '/admin/careers/emails', label: 'Email Templates', icon: Mail }
+          { href: '/admin/content/careers', label: 'Jobs', icon: Briefcase },
+          { href: '/admin/content/careers/departments', label: 'Departments', icon: Building2 },
+          { href: '/admin/content/careers/applications', label: 'Applications', icon: UserCheck }
         ]
       }
     ]

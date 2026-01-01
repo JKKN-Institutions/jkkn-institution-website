@@ -16,15 +16,16 @@ import { getTrafficSources } from '@/app/actions/analytics'
 import { dateRangeToParams } from '@/lib/analytics/date-presets'
 import type { TrafficSource } from '@/lib/analytics/types'
 
+// Chart colors - using CSS variables directly (hex format)
 const COLORS = [
-  'hsl(var(--chart-1))',
-  'hsl(var(--chart-2))',
-  'hsl(var(--chart-3))',
-  'hsl(var(--chart-4))',
-  'hsl(var(--chart-5))',
-  'hsl(210, 40%, 60%)',
-  'hsl(180, 40%, 50%)',
-  'hsl(340, 50%, 55%)'
+  'var(--chart-1)',
+  'var(--chart-2)',
+  'var(--chart-3)',
+  'var(--chart-4)',
+  'var(--chart-5)',
+  '#6b8ab8', // Blue-gray fallback
+  '#4db6ac', // Teal fallback
+  '#e57373'  // Red fallback
 ]
 
 interface TrafficSourcesChartProps {

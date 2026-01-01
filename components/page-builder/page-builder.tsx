@@ -40,7 +40,7 @@ import { OfflineBanner } from '@/lib/hooks/use-network-status'
 import { SiteHeader } from '@/components/public/site-header'
 import { SiteFooter } from '@/components/public/site-footer'
 import { ResizablePanel } from './resizable-panel'
-import { Sheet, SheetContent } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 
 // Auto-save debounce delay in milliseconds
@@ -146,28 +146,32 @@ function PageBuilderContent({
   const [mobileLeftPanel, setMobileLeftPanel] = useState(false)
   const [mobileRightPanel, setMobileRightPanel] = useState(false)
 
-  // Panel collapse state (desktop)
-  const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('editor-left-panel-collapsed') === 'true'
-    }
-    return false
-  })
-  const [rightPanelCollapsed, setRightPanelCollapsed] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('editor-right-panel-collapsed') === 'true'
-    }
-    return false
-  })
+  // Panel collapse state (desktop) - hydration-safe pattern
+  const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false)
+  const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false)
+  const [panelStateInitialized, setPanelStateInitialized] = useState(false)
 
-  // Persist panel collapse state
+  // Load panel state from localStorage on mount (client-side only)
   useEffect(() => {
-    localStorage.setItem('editor-left-panel-collapsed', String(leftPanelCollapsed))
-  }, [leftPanelCollapsed])
+    const leftValue = localStorage.getItem('editor-left-panel-collapsed') === 'true'
+    const rightValue = localStorage.getItem('editor-right-panel-collapsed') === 'true'
+    setLeftPanelCollapsed(leftValue)
+    setRightPanelCollapsed(rightValue)
+    setPanelStateInitialized(true)
+  }, [])
+
+  // Persist panel collapse state (only after initial load to avoid overwriting)
+  useEffect(() => {
+    if (panelStateInitialized) {
+      localStorage.setItem('editor-left-panel-collapsed', String(leftPanelCollapsed))
+    }
+  }, [leftPanelCollapsed, panelStateInitialized])
 
   useEffect(() => {
-    localStorage.setItem('editor-right-panel-collapsed', String(rightPanelCollapsed))
-  }, [rightPanelCollapsed])
+    if (panelStateInitialized) {
+      localStorage.setItem('editor-right-panel-collapsed', String(rightPanelCollapsed))
+    }
+  }, [rightPanelCollapsed, panelStateInitialized])
 
   // Drag state
   const [activeId, setActiveId] = useState<string | null>(null)
@@ -702,7 +706,7 @@ function PageBuilderContent({
         {/* Mobile FAB buttons - only visible on mobile/tablet */}
         {!isPreviewMode && (
           <>
-            <div className="fixed bottom-6 left-6 z-50 flex gap-3 lg:hidden">
+            <div className="fixed bottom-6 pb-[env(safe-area-inset-bottom)] left-6 z-50 flex gap-3 lg:hidden">
               <Button
                 size="icon"
                 className="h-12 w-12 rounded-full shadow-lg"
@@ -714,7 +718,7 @@ function PageBuilderContent({
               </Button>
             </div>
 
-            <div className="fixed bottom-6 right-6 z-50 flex gap-3 lg:hidden">
+            <div className="fixed bottom-6 pb-[env(safe-area-inset-bottom)] right-6 z-50 flex gap-3 lg:hidden">
               <Button
                 size="icon"
                 className="h-12 w-12 rounded-full shadow-lg"
@@ -750,6 +754,7 @@ function PageBuilderContent({
           {!isPreviewMode && (
             <Sheet open={mobileLeftPanel} onOpenChange={setMobileLeftPanel}>
               <SheetContent side="left" className="w-[280px] p-0 lg:hidden">
+                <SheetTitle className="sr-only">Component Palette</SheetTitle>
                 <ComponentPalette />
               </SheetContent>
             </Sheet>
@@ -875,6 +880,7 @@ function PageBuilderContent({
           {!isPreviewMode && (
             <Sheet open={mobileRightPanel} onOpenChange={setMobileRightPanel}>
               <SheetContent side="right" className="w-full sm:w-[380px] p-0 lg:hidden">
+                <SheetTitle className="sr-only">Page Settings</SheetTitle>
                 <Tabs
                   value={rightPanelTab}
                   onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab' | 'footer' | 'typography')}

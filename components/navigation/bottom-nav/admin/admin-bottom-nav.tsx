@@ -45,6 +45,10 @@ export function AdminBottomNav({ userPermissions }: AdminBottomNavProps) {
   // Get navigation data with active states
   const { primaryItems, moreMenuGroups } = useAdminNavData({ userPermissions });
 
+  // Hide on page editor routes for full-screen editing experience
+  // NOTE: This check must come AFTER all hooks to follow Rules of Hooks
+  const isPageEditorRoute = /^\/admin\/content\/pages\/[^/]+\/edit$/.test(pathname);
+
   // Find the currently active primary item based on pathname
   const currentActiveItem = useMemo(() => {
     // First check primary items
@@ -273,6 +277,11 @@ export function AdminBottomNav({ userPermissions }: AdminBottomNavProps) {
 
   // Wait for hydration
   if (!hasHydrated) {
+    return null;
+  }
+
+  // Hide on page editor routes for full-screen editing experience
+  if (isPageEditorRoute) {
     return null;
   }
 
