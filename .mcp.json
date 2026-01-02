@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "supabase": {
+    "Main Supabase Project": {
       "command": "cmd",
       "args": [
         "/c",
@@ -8,6 +8,19 @@
         "-y",
         "@supabase/mcp-server-supabase@latest",
         "--project-ref=pmqodbfhsejbvfbmsfeq"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "sbp_47018305daf9755154b028eb0e599cbb8097c0c8"
+      }
+    },
+    "Dental College Supabase Project": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--project-ref=wnmyvbnqldukeknnmnpl"
       ],
       "env": {
         "SUPABASE_ACCESS_TOKEN": "sbp_47018305daf9755154b028eb0e599cbb8097c0c8"

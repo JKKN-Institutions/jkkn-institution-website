@@ -92,7 +92,17 @@
       "Bash(git push:*)",
       "mcp__chrome-devtools__fill_form",
       "Bash(git -C \"C:\\\\Users\\\\Admin\\\\Documents\\\\GitHub\\\\jkkn-institution-website\" diff --stat)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(grep:*)",
+      "Skill(skill-creator)",
+      "mcp__Dental_College_Supabase_Project__list_tables",
+      "mcp__Dental_College_Supabase_Project__list_migrations",
+      "mcp__Dental_College_Supabase_Project__apply_migration",
+      "mcp__Dental_College_Supabase_Project__execute_sql",
+      "mcp__Dental_College_Supabase_Project__get_advisors",
+      "mcp__Main_Supabase_Project__list_tables",
+      "mcp__Main_Supabase_Project__execute_sql",
+      "mcp__Main_Supabase_Project__list_migrations"
     ],
     "deny": [],
     "ask": [],

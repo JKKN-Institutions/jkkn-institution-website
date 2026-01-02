@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { WebVitalsReporter } from "@/components/performance/web-vitals-reporter";
 import { generateOrganizationSchema, serializeSchema } from "@/lib/seo";
+import { generateSiteMetadata } from "@/lib/seo/site-metadata";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -12,66 +13,67 @@ const poppins = Poppins({
   weight: ["400", "600", "700"],
 });
 
-export const metadata: Metadata = {
-  title: 'JKKN Group of Institutions',
-  description:
-    'JKKN Group of Institutions - A leading educational institution in Tamil Nadu offering undergraduate, postgraduate, and research programs in Engineering, Medical Sciences, Management, and Arts & Science since 1952.',
-  keywords: [
-    'JKKN',
-    'JKKN Institution',
-    'JKKN College',
-    'Engineering College Tamil Nadu',
-    'Medical College Namakkal',
-    'Best College Komarapalayam',
-    'Higher Education India',
-    'NAAC A College',
-  ],
-  authors: [{ name: 'JKKN Group of Institutions' }],
-  creator: 'JKKN Group of Institutions',
-  publisher: 'JKKN Group of Institutions',
-  metadataBase: new URL('https://jkkn.ac.in'),
-  alternates: {
-    canonical: '/',
-  },
-  openGraph: {
-    type: 'website',
-    locale: 'en_IN',
-    url: 'https://jkkn.ac.in',
-    siteName: 'JKKN Group of Institutions',
-    title: 'JKKN Group of Institutions',
-    description:
-      'A leading educational institution in Tamil Nadu offering quality education since 1952. NAAC A accredited with 50,000+ alumni worldwide.',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'JKKN Group of Institutions',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'JKKN Group of Institutions',
-    description:
-      'A leading educational institution in Tamil Nadu offering quality education since 1952.',
-    images: ['/og-image.png'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+/**
+ * Dynamic metadata generation for multi-tenant SEO
+ *
+ * This function reads SEO settings from:
+ * 1. Institution's Supabase database (settings table)
+ * 2. Environment variables (NEXT_PUBLIC_INSTITUTION_NAME, etc.)
+ *
+ * Each Vercel deployment connects to its own Supabase project,
+ * so each institution gets its own SEO configuration automatically.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  // Get institution-specific metadata from database/environment
+  const siteMetadata = await generateSiteMetadata()
+
+  // Get site URL from environment (institution-specific)
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://jkkn.ac.in'
+
+  return {
+    // Base metadata from site settings
+    ...siteMetadata,
+
+    // Enhanced robots configuration
+    robots: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
-  },
-  verification: {
-    google: 'your-google-verification-code',
-  },
-};
+
+    // Alternates (canonical URL is institution-specific)
+    alternates: {
+      canonical: '/',
+    },
+
+    // OpenGraph enhancements
+    openGraph: {
+      ...siteMetadata.openGraph,
+      locale: 'en_IN',
+      url: siteUrl,
+      images: siteMetadata.openGraph?.images || [
+        {
+          url: '/og-image.png',
+          width: 1200,
+          height: 630,
+          alt: siteMetadata.title?.toString() || 'JKKN Institution',
+        },
+      ],
+    },
+
+    // Twitter enhancements
+    twitter: {
+      ...siteMetadata.twitter,
+      images: siteMetadata.twitter?.images || ['/og-image.png'],
+    },
+  }
+}
 
 export default function RootLayout({
   children,

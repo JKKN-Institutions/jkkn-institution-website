@@ -1,0 +1,107 @@
+# Migration Sync Workflow
+#
+# Automatically applies database migrations to all institution Supabase projects
+# when changes are detected in the supabase/migrations/ directory.
+
+name: Sync Migrations
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'supabase/migrations/**'
+
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      institution:
+        description: 'Specific institution to sync (leave empty for all)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run mode (preview only)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  sync-migrations:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create institutions environment file
+        env:
+          # Main Institution
+          SUPABASE_MAIN_URL: ${{ secrets.SUPABASE_MAIN_URL }}
+          SUPABASE_MAIN_SERVICE_KEY: ${{ secrets.SUPABASE_MAIN_SERVICE_KEY }}
+          # Arts & Science
+          SUPABASE_ARTS_URL: ${{ secrets.SUPABASE_ARTS_URL }}
+          SUPABASE_ARTS_SERVICE_KEY: ${{ secrets.SUPABASE_ARTS_SERVICE_KEY }}
+          # Engineering
+          SUPABASE_ENGINEERING_URL: ${{ secrets.SUPABASE_ENGINEERING_URL }}
+          SUPABASE_ENGINEERING_SERVICE_KEY: ${{ secrets.SUPABASE_ENGINEERING_SERVICE_KEY }}
+          # Dental
+          SUPABASE_DENTAL_URL: ${{ secrets.SUPABASE_DENTAL_URL }}
+          SUPABASE_DENTAL_SERVICE_KEY: ${{ secrets.SUPABASE_DENTAL_SERVICE_KEY }}
+          # Pharmacy
+          SUPABASE_PHARMACY_URL: ${{ secrets.SUPABASE_PHARMACY_URL }}
+          SUPABASE_PHARMACY_SERVICE_KEY: ${{ secrets.SUPABASE_PHARMACY_SERVICE_KEY }}
+          # Nursing
+          SUPABASE_NURSING_URL: ${{ secrets.SUPABASE_NURSING_URL }}
+          SUPABASE_NURSING_SERVICE_KEY: ${{ secrets.SUPABASE_NURSING_SERVICE_KEY }}
+        run: |
+          cat > .env.institutions << EOF
+          SUPABASE_MAIN_URL=$SUPABASE_MAIN_URL
+          SUPABASE_MAIN_SERVICE_KEY=$SUPABASE_MAIN_SERVICE_KEY
+          SUPABASE_ARTS_URL=$SUPABASE_ARTS_URL
+          SUPABASE_ARTS_SERVICE_KEY=$SUPABASE_ARTS_SERVICE_KEY
+          SUPABASE_ENGINEERING_URL=$SUPABASE_ENGINEERING_URL
+          SUPABASE_ENGINEERING_SERVICE_KEY=$SUPABASE_ENGINEERING_SERVICE_KEY
+          SUPABASE_DENTAL_URL=$SUPABASE_DENTAL_URL
+          SUPABASE_DENTAL_SERVICE_KEY=$SUPABASE_DENTAL_SERVICE_KEY
+          SUPABASE_PHARMACY_URL=$SUPABASE_PHARMACY_URL
+          SUPABASE_PHARMACY_SERVICE_KEY=$SUPABASE_PHARMACY_SERVICE_KEY
+          SUPABASE_NURSING_URL=$SUPABASE_NURSING_URL
+          SUPABASE_NURSING_SERVICE_KEY=$SUPABASE_NURSING_SERVICE_KEY
+          EOF
+
+      - name: Sync migrations
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.institution }}" ]; then
+            ARGS="$ARGS --institution=${{ github.event.inputs.institution }}"
+          fi
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          npx tsx scripts/sync-migrations.ts $ARGS --verbose
+
+      - name: Cleanup
+        if: always()
+        run: rm -f .env.institutions
+
+  # Notify on failure
+  notify-failure:
+    needs: sync-migrations
+    runs-on: ubuntu-latest
+    if: failure()
+
+    steps:
+      - name: Send failure notification
+        run: |
+          echo "Migration sync failed. Check the workflow logs."
+          # Add your notification logic here (Slack, Discord, Email, etc.)
