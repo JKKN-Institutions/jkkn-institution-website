@@ -195,11 +195,99 @@ npm run db:migrate -- --institution=dental
 ### Development
 
 ```bash
-npm run dev          # Start development server at http://localhost:3000
+npm run dev          # Start development server (uses current .env.local)
+npm run dev:main     # Switch to Main Institution + start dev server
+npm run dev:dental   # Switch to Dental College + start dev server
 npm run build        # Production build (runs TypeScript compiler + Next.js build)
 npm run start        # Start production server
 npm run lint         # Run ESLint
 ```
+
+### 🔄 Local Development: Institution Switcher
+
+Since this is a multi-tenant architecture with separate Supabase projects per institution, you need to specify **which institution's database** to use during local development.
+
+#### Quick Start
+
+```bash
+# Develop with Main Institution database
+npm run dev:main
+
+# Develop with Dental College database
+npm run dev:dental
+
+# Just switch (without starting dev server)
+npm run switch main
+npm run switch dental
+
+# List all available institutions
+npm run switch --list
+```
+
+#### How It Works
+
+1. **`scripts/switch-institution.ts`** - Contains institution configurations (URLs, keys, features)
+2. Running `npm run dev:main` or `npm run dev:dental`:
+   - Executes the switcher script
+   - Generates `.env.local` with the selected institution's credentials
+   - Starts the Next.js dev server
+3. The app connects to the selected institution's Supabase project
+
+#### Institution Registry
+
+| Command | Institution | Supabase Project |
+|---------|-------------|------------------|
+| `npm run dev:main` | JKKN Institutions (Main) | `pmqodbfhsejbvfbmsfeq` |
+| `npm run dev:dental` | JKKN Dental College | `wnmyvbnqldukeknnmnpl` |
+
+#### Adding Service Role Keys (For Admin Operations)
+
+The switcher includes anon keys by default. For full admin access (user management, etc.), create service key files:
+
+```bash
+# Create .env.main.servicekey with the service role key
+echo "eyJhbGci..." > .env.main.servicekey
+
+# Create .env.dental.servicekey
+echo "eyJhbGci..." > .env.dental.servicekey
+```
+
+The switcher will automatically use these when switching institutions.
+
+#### Adding More Institutions
+
+1. Edit `scripts/switch-institution.ts`
+2. Add new institution to the `INSTITUTIONS` object:
+   ```typescript
+   'arts-science': {
+     id: 'arts-science',
+     name: 'JKKN College of Arts and Science',
+     supabaseUrl: 'https://YOUR_PROJECT.supabase.co',
+     supabaseAnonKey: 'YOUR_ANON_KEY',
+     siteUrl: 'http://localhost:3000',
+     features: 'blog,careers,faculty-directory,course-catalog',
+   },
+   ```
+3. Add npm script to `package.json`:
+   ```json
+   "dev:arts": "npx tsx scripts/switch-institution.ts arts-science && next dev"
+   ```
+
+#### Key Files
+
+| File | Purpose |
+|------|---------|
+| `scripts/switch-institution.ts` | Institution switcher script |
+| `.env.local` | Auto-generated environment (git-ignored) |
+| `.env.main.servicekey` | Main institution service key (git-ignored) |
+| `.env.dental.servicekey` | Dental institution service key (git-ignored) |
+
+#### Important Notes
+
+- `.env.local` is auto-generated - don't edit manually
+- All `.env*` files are git-ignored for security
+- Service keys are optional but needed for admin operations
+- The dev server uses port 3000 by default (or next available)
 
 ### Database (Supabase MCP)
 
