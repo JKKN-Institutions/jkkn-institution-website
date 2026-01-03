@@ -9,6 +9,7 @@ import { PasswordProtectedPage, PrivatePageGate } from '@/components/public/pass
 import { OrganizationSchema } from '@/components/seo/organization-schema'
 import { CourseCatalogSchema } from '@/components/seo/course-catalog-schema'
 import { WebsiteSchema } from '@/components/seo/website-schema'
+import { FAQSchema } from '@/components/seo/faq-schema'
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from '@/lib/seo'
 
@@ -133,6 +134,7 @@ export default async function DynamicPage({ params }: PageProps) {
           <WebsiteSchema />
           <OrganizationSchema />
           <CourseCatalogSchema />
+          <FAQSchema />
           <Suspense fallback={<LandingPageSkeleton />}>
             <LandingPage />
           </Suspense>
@@ -155,6 +157,7 @@ export default async function DynamicPage({ params }: PageProps) {
           <WebsiteSchema />
           <OrganizationSchema />
           <CourseCatalogSchema />
+          <FAQSchema />
           <Suspense fallback={<LandingPageSkeleton />}>
             <LandingPage />
           </Suspense>
@@ -181,6 +184,7 @@ export default async function DynamicPage({ params }: PageProps) {
         <WebsiteSchema />
         <OrganizationSchema />
         <CourseCatalogSchema />
+        <FAQSchema />
         <article>
           <Suspense fallback={<BlocksSkeleton />}>
             <PageRenderer blocks={blocks} pageTypography={pageTypography} />

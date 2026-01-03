@@ -3,6 +3,8 @@ import { SiteFooter } from '@/components/public/site-footer'
 import { FloatingActionButton } from '@/components/public/floating-action-button'
 import { PublicBottomNav } from '@/components/navigation/bottom-nav/public/public-bottom-nav'
 import { PageTracker } from '@/components/analytics/page-tracker'
+import { MetaPixel } from '@/components/analytics/meta-pixel'
+import { GoogleAnalytics } from '@/components/analytics/google-analytics'
 import { getPublicNavigation } from '@/app/actions/cms/navigation'
 import { getGlobalFabConfig } from '@/app/actions/cms/fab'
 import { getLogoSizes } from '@/app/actions/cms/appearance'
@@ -37,6 +39,12 @@ export default async function PublicLayout({
 
         {/* Analytics Page Tracker */}
         <PageTracker />
+
+        {/* Meta Pixel for Facebook Ads */}
+        <MetaPixel />
+
+        {/* Google Analytics 4 */}
+        <GoogleAnalytics />
 
         {/* Site Footer with CMS Settings */}
         <SiteFooter settings={footerSettings} />

@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import Image from 'next/image'
-import { Search, Loader2, Check, X, Type, Image as ImageIcon, LayoutGrid, Database, Puzzle, Component, ChevronRight } from 'lucide-react'
+import { Search, Loader2, Check, X, Type, Image as ImageIcon, LayoutGrid, Database, Puzzle, Component, ChevronRight, GraduationCap } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -91,6 +91,12 @@ const CATEGORY_CONFIG: Record<BrowseCategory, {
     icon: Component,
     description: 'UI primitives from shadcn',
     color: 'bg-indigo-500/10 text-indigo-600 border-indigo-200'
+  },
+  admissions: {
+    label: 'Admissions',
+    icon: GraduationCap,
+    description: 'Admission process and program components',
+    color: 'bg-teal-500/10 text-teal-600 border-teal-200'
   },
 }
 
@@ -382,7 +388,7 @@ export function BrowseComponentsModal({
             <ScrollArea className="flex-1">
               <div className="p-3 space-y-1">
                 {/* Main categories */}
-                {(['all', 'content', 'media', 'layout', 'data'] as BrowseCategory[]).map((category) => {
+                {(['all', 'content', 'media', 'layout', 'data', 'admissions'] as BrowseCategory[]).map((category) => {
                   const config = CATEGORY_CONFIG[category]
                   const Icon = config.icon
                   const isActive = selectedCategory === category

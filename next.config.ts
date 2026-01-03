@@ -6,9 +6,64 @@ const nextConfig: NextConfig = {
   // cacheComponents: true,
   async redirects() {
     return [
+      // Existing redirect
       {
         source: '/more/careers',
         destination: '/careers',
+        permanent: true,
+      },
+
+      // === Legacy Content URLs → Homepage ===
+      {
+        source: '/the-rise-of-artificial-intelligence-in-healthcare',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/latest-news',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/design-thinking',
+        destination: '/',
+        permanent: true,
+      },
+
+      // === About Section Restructuring ===
+      {
+        source: '/about-the-institutions',
+        destination: '/about/our-institutions',
+        permanent: true,
+      },
+      {
+        source: '/about-the-trust',
+        destination: '/about/our-trust',
+        permanent: true,
+      },
+
+      // === Web Stories (WordPress Legacy) ===
+      {
+        source: '/web-stories/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/index.php/web-stories/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/index.php/:path*',
+        destination: '/',
+        permanent: true,
+      },
+
+      // === Spam/Malformed URLs → Homepage ===
+      // Note: Some URLs with special characters are handled by the catch-all route
+      {
+        source: '/Accept-Language',
+        destination: '/',
         permanent: true,
       },
     ]

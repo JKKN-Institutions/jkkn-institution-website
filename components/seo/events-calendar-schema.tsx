@@ -30,7 +30,7 @@ export function EventsCalendarSchema() {
         "@type": "ItemList",
         "@id": "https://jkkn.ac.in/#events-calendar",
         "name": "JKKN Institutions Events Calendar 2025-26",
-        "description": "Comprehensive calendar of academic events, admission drives, placement activities, and #JKKN100 centenary celebrations at J.K.K. Nattraja Educational Institutions, Komarapalayam - Best College in Erode, Tamil Nadu",
+        "description": "Comprehensive calendar of academic events, admission drives, placement activities, and #JKKN100 centenary celebrations at JKKN Institutions, Komarapalayam - Best College in Erode, Tamil Nadu",
         "numberOfItems": 12,
         "itemListOrder": "https://schema.org/ItemListOrderAscending",
         "itemListElement": [
@@ -341,20 +341,101 @@ export function EventsCalendarSchema() {
           {
             "@type": "Event",
             "name": "Campus Tour - Dental College & Hospital",
+            "description": "Guided tour of JKKN Dental College facilities including the 300-bed dental hospital, clinics, and laboratories.",
             "startDate": "2026-01-15T10:00:00+05:30",
-            "duration": "PT1H"
+            "endDate": "2026-01-15T11:00:00+05:30",
+            "duration": "PT1H",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "location": {
+              "@type": "Place",
+              "name": "JKKN Dental College & Hospital",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
+                "addressLocality": "Komarapalayam",
+                "addressRegion": "Tamil Nadu",
+                "postalCode": "638183",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "11.445400813968119",
+                "longitude": "77.73060452273064"
+              }
+            },
+            "organizer": {
+              "@type": "EducationalOrganization",
+              "name": "JKKN Institutions",
+              "url": "https://jkkn.ac.in/"
+            },
+            "isAccessibleForFree": true
           },
           {
             "@type": "Event",
             "name": "One-on-One Counseling Sessions",
+            "description": "Personal admission counseling sessions with faculty members to discuss course options, career paths, and admission requirements.",
             "startDate": "2026-01-15T11:00:00+05:30",
-            "duration": "PT4H"
+            "endDate": "2026-01-15T15:00:00+05:30",
+            "duration": "PT4H",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "location": {
+              "@type": "Place",
+              "name": "JKKN Institutions Admission Center",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
+                "addressLocality": "Komarapalayam",
+                "addressRegion": "Tamil Nadu",
+                "postalCode": "638183",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "11.445400813968119",
+                "longitude": "77.73060452273064"
+              }
+            },
+            "organizer": {
+              "@type": "EducationalOrganization",
+              "name": "JKKN Institutions",
+              "url": "https://jkkn.ac.in/"
+            },
+            "isAccessibleForFree": true
           },
           {
             "@type": "Event",
             "name": "Scholarship Information Session",
+            "description": "Detailed presentation on available scholarships, financial aid options, and application procedures for deserving students.",
             "startDate": "2026-01-15T14:00:00+05:30",
-            "duration": "PT1H"
+            "endDate": "2026-01-15T15:00:00+05:30",
+            "duration": "PT1H",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "location": {
+              "@type": "Place",
+              "name": "JKKN Institutions Main Auditorium",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
+                "addressLocality": "Komarapalayam",
+                "addressRegion": "Tamil Nadu",
+                "postalCode": "638183",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "11.445400813968119",
+                "longitude": "77.73060452273064"
+              }
+            },
+            "organizer": {
+              "@type": "EducationalOrganization",
+              "name": "JKKN Institutions",
+              "url": "https://jkkn.ac.in/"
+            },
+            "isAccessibleForFree": true
           }
         ],
         "potentialAction": {
@@ -401,7 +482,7 @@ export function EventsCalendarSchema() {
           "name": "JKKN Placement & Training Center",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Natarajapuram, NH-544",
+            "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
             "addressLocality": "Komarapalayam",
             "addressRegion": "Tamil Nadu",
             "postalCode": "638183",
@@ -507,7 +588,7 @@ export function EventsCalendarSchema() {
           ],
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Natarajapuram, NH-544",
+            "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
             "addressLocality": "Komarapalayam",
             "addressRegion": "Tamil Nadu",
             "postalCode": "638183",
@@ -600,7 +681,7 @@ export function EventsCalendarSchema() {
           "description": "Multi-sport complex with synthetic track, indoor and outdoor facilities",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Natarajapuram, NH-544",
+            "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
             "addressLocality": "Komarapalayam",
             "addressRegion": "Tamil Nadu",
             "postalCode": "638183",
@@ -688,7 +769,7 @@ export function EventsCalendarSchema() {
             "name": "JKKN College of Pharmacy Conference Hall",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "Natarajapuram, NH-544",
+              "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
               "addressLocality": "Komarapalayam",
               "addressRegion": "Tamil Nadu",
               "postalCode": "638183",
@@ -791,7 +872,7 @@ export function EventsCalendarSchema() {
           "Engineering Innovation Summit",
           "JKKN Project Exhibition"
         ],
-        "description": "Annual technical festival organized by JKKN College of Engineering and Technology featuring innovative project exhibitions, hackathons, coding competitions, robotics challenges, paper presentations, and industry expert talks. Theme: 'Engineering Tomorrow: AI, IoT & Sustainable Solutions'. Open to engineering Learners from colleges across Tamil Nadu. Cash prizes worth Rs.5 lakhs and industry internship opportunities.",
+        "description": "Annual technical festival organized by JKKN College of Engineering and Technology featuring innovative project exhibitions, hackathons, coding competitions, robotics challenges, paper presentations, and industry expert talks. Theme: 'Engineering Tomorrow: AI, IoT & Sustainable Solutions'. Open to engineering Learners from colleges across Tamil Nadu. Cash prizes worth \u20b95 lakhs and industry internship opportunities.",
         "url": "https://jkkn.ac.in/events/techfest-2026",
         "image": "https://jkkn.ac.in/images/events/techfest-2026-banner.jpg",
         "startDate": "2026-02-20T09:00:00+05:30",
@@ -803,7 +884,7 @@ export function EventsCalendarSchema() {
           "name": "JKKN College of Engineering and Technology",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Natarajapuram, NH-544",
+            "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
             "addressLocality": "Komarapalayam",
             "addressRegion": "Tamil Nadu",
             "postalCode": "638183",
@@ -867,18 +948,95 @@ export function EventsCalendarSchema() {
           {
             "@type": "Event",
             "name": "24-Hour Hackathon",
+            "description": "Intensive 24-hour coding competition to solve real-world problems using technology.",
             "startDate": "2026-02-20T18:00:00+05:30",
-            "endDate": "2026-02-21T18:00:00+05:30"
+            "endDate": "2026-02-21T18:00:00+05:30",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "location": {
+              "@type": "Place",
+              "name": "JKKN College of Engineering - Computer Lab Block",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
+                "addressLocality": "Komarapalayam",
+                "addressRegion": "Tamil Nadu",
+                "postalCode": "638183",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "11.445400813968119",
+                "longitude": "77.73060452273064"
+              }
+            },
+            "organizer": {
+              "@type": "EducationalOrganization",
+              "name": "JKKN College of Engineering and Technology",
+              "url": "https://engg.jkkn.ac.in/"
+            }
           },
           {
             "@type": "Event",
             "name": "Robotics Challenge",
-            "startDate": "2026-02-21T10:00:00+05:30"
+            "description": "Robotics competition featuring autonomous robots competing in various tasks and challenges.",
+            "startDate": "2026-02-21T10:00:00+05:30",
+            "endDate": "2026-02-21T17:00:00+05:30",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "location": {
+              "@type": "Place",
+              "name": "JKKN College of Engineering - Robotics Arena",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
+                "addressLocality": "Komarapalayam",
+                "addressRegion": "Tamil Nadu",
+                "postalCode": "638183",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "11.445400813968119",
+                "longitude": "77.73060452273064"
+              }
+            },
+            "organizer": {
+              "@type": "EducationalOrganization",
+              "name": "JKKN College of Engineering and Technology",
+              "url": "https://engg.jkkn.ac.in/"
+            }
           },
           {
             "@type": "Event",
             "name": "Project Expo & Judging",
-            "startDate": "2026-02-22T09:00:00+05:30"
+            "description": "Exhibition and evaluation of innovative student projects across various engineering disciplines.",
+            "startDate": "2026-02-22T09:00:00+05:30",
+            "endDate": "2026-02-22T17:00:00+05:30",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "location": {
+              "@type": "Place",
+              "name": "JKKN College of Engineering - Main Hall",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
+                "addressLocality": "Komarapalayam",
+                "addressRegion": "Tamil Nadu",
+                "postalCode": "638183",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "11.445400813968119",
+                "longitude": "77.73060452273064"
+              }
+            },
+            "organizer": {
+              "@type": "EducationalOrganization",
+              "name": "JKKN College of Engineering and Technology",
+              "url": "https://engg.jkkn.ac.in/"
+            }
           }
         ]
       },
@@ -906,7 +1064,7 @@ export function EventsCalendarSchema() {
           "name": "JKKN Institutions Main Auditorium",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Natarajapuram, NH-544",
+            "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
             "addressLocality": "Komarapalayam",
             "addressRegion": "Tamil Nadu",
             "postalCode": "638183",
@@ -976,7 +1134,7 @@ export function EventsCalendarSchema() {
             "name": "JKKN Convocation Ground",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "Natarajapuram, NH-544",
+              "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
               "addressLocality": "Komarapalayam",
               "addressRegion": "Tamil Nadu",
               "postalCode": "638183",
@@ -1038,7 +1196,7 @@ export function EventsCalendarSchema() {
           "name": "Sresakthimayeil Institute of Nursing and Research",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Natarajapuram, NH-544",
+            "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
             "addressLocality": "Komarapalayam",
             "addressRegion": "Tamil Nadu",
             "postalCode": "638183",
@@ -1102,7 +1260,7 @@ export function EventsCalendarSchema() {
           "name": "JKKN Open Air Amphitheatre & Campus Grounds",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Natarajapuram, NH-544",
+            "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
             "addressLocality": "Komarapalayam",
             "addressRegion": "Tamil Nadu",
             "postalCode": "638183",
@@ -1138,17 +1296,95 @@ export function EventsCalendarSchema() {
           {
             "@type": "Event",
             "name": "Classical Dance Competition",
-            "startDate": "2026-02-27T18:00:00+05:30"
+            "description": "Inter-college classical dance competition featuring Bharatanatyam, Kuchipudi, and other traditional dance forms.",
+            "startDate": "2026-02-27T18:00:00+05:30",
+            "endDate": "2026-02-27T21:00:00+05:30",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "location": {
+              "@type": "Place",
+              "name": "JKKN Open Air Amphitheatre",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
+                "addressLocality": "Komarapalayam",
+                "addressRegion": "Tamil Nadu",
+                "postalCode": "638183",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "11.445400813968119",
+                "longitude": "77.73060452273064"
+              }
+            },
+            "organizer": {
+              "@type": "EducationalOrganization",
+              "name": "JKKN Institutions",
+              "url": "https://jkkn.ac.in/"
+            }
           },
           {
             "@type": "Event",
             "name": "Battle of Bands",
-            "startDate": "2026-02-28T19:00:00+05:30"
+            "description": "Inter-college music band competition showcasing contemporary and fusion music talents.",
+            "startDate": "2026-02-28T19:00:00+05:30",
+            "endDate": "2026-02-28T22:00:00+05:30",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "location": {
+              "@type": "Place",
+              "name": "JKKN Open Air Amphitheatre",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
+                "addressLocality": "Komarapalayam",
+                "addressRegion": "Tamil Nadu",
+                "postalCode": "638183",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "11.445400813968119",
+                "longitude": "77.73060452273064"
+              }
+            },
+            "organizer": {
+              "@type": "EducationalOrganization",
+              "name": "JKKN Institutions",
+              "url": "https://jkkn.ac.in/"
+            }
           },
           {
             "@type": "Event",
             "name": "Fashion Show - Ethnic Fusion",
-            "startDate": "2026-03-01T19:00:00+05:30"
+            "description": "Grand fashion show featuring ethnic and fusion designs created and modeled by JKKN students.",
+            "startDate": "2026-03-01T19:00:00+05:30",
+            "endDate": "2026-03-01T21:00:00+05:30",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "location": {
+              "@type": "Place",
+              "name": "JKKN Open Air Amphitheatre",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
+                "addressLocality": "Komarapalayam",
+                "addressRegion": "Tamil Nadu",
+                "postalCode": "638183",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "11.445400813968119",
+                "longitude": "77.73060452273064"
+              }
+            },
+            "organizer": {
+              "@type": "EducationalOrganization",
+              "name": "JKKN Institutions",
+              "url": "https://jkkn.ac.in/"
+            }
           }
         ]
       },
@@ -1177,7 +1413,7 @@ export function EventsCalendarSchema() {
             "name": "JKKN Institutions Main Campus",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "Natarajapuram, NH-544",
+              "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
               "addressLocality": "Komarapalayam",
               "addressRegion": "Tamil Nadu",
               "postalCode": "638183",
@@ -1247,7 +1483,7 @@ export function EventsCalendarSchema() {
           "name": "JKKN Institutions Campus",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Natarajapuram, NH-544",
+            "streetAddress": "Natarajapuram, NH-544 (Salem-Coimbatore Highway)",
             "addressLocality": "Komarapalayam",
             "addressRegion": "Tamil Nadu",
             "postalCode": "638183",

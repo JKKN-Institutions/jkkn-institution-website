@@ -282,7 +282,7 @@ function StatCard({
         isDark ? 'text-white' : 'text-brand-primary'
       )}>
         {displayValue}
-        {!displayValue.includes('%') && !displayValue.includes('+') && '+'}
+        {!String(displayValue).includes('%') && !String(displayValue).includes('+') && '+'}
       </div>
       <div className={cn(
         'stat-label',

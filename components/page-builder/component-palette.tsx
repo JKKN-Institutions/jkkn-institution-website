@@ -26,6 +26,7 @@ const CATEGORY_ICONS: Record<ComponentCategory, keyof typeof LucideIcons> = {
   data: 'Database',
   custom: 'Sparkles',
   shadcn: 'Component',
+  admissions: 'GraduationCap',
 }
 
 const CATEGORY_COLORS: Record<ComponentCategory, string> = {
@@ -35,6 +36,7 @@ const CATEGORY_COLORS: Record<ComponentCategory, string> = {
   data: 'text-orange-500 bg-orange-100 dark:bg-orange-900/30',
   custom: 'text-pink-500 bg-pink-100 dark:bg-pink-900/30',
   shadcn: 'text-cyan-500 bg-cyan-100 dark:bg-cyan-900/30',
+  admissions: 'text-emerald-500 bg-emerald-100 dark:bg-emerald-900/30',
 }
 
 export function ComponentPalette({ className }: ComponentPaletteProps) {
