@@ -2,6 +2,7 @@
  * Robots.txt Generator
  * Dynamic robots.txt using Next.js MetadataRoute API
  * Strategy: ALLOW ALL AI BOTS (Maximum Visibility)
+ * Updated: January 2026
  */
 
 import { MetadataRoute } from 'next'
@@ -18,6 +19,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         allow: [
           '/',
+          '/wp-content/uploads/',
           '/assets/',
           '/images/',
           '/css/',
@@ -27,26 +29,60 @@ export default function robots(): MetadataRoute.Robots {
           '/documents/',
         ],
         disallow: [
-          '/admin/',
-          '/auth/',
-          '/api/',
-          '/_next/',
-          '/private/',
-          '/careers/apply/',
+          // WordPress Blocks
+          '/wp-admin/',
+          '/wp-includes/',
+          '/wp-content/plugins/',
+          '/wp-content/cache/',
+          '/wp-json/',
+          '/xmlrpc.php',
+          '/readme.html',
+          '/license.txt',
+          // Next.js Build Artifacts
+          '/_next/static/chunks/',
+          '/_next/static/css/',
+          '/_next/static/media/',
+          '/_next/static/webpack/',
+          '/_next/data/',
+          '/_next/image',
+          // Admin & Private Areas
           '/cgi-bin/',
+          '/private/',
+          '/admin/',
+          '/login/',
+          '/dashboard/',
+          '/backend/',
+          // Search & Query Parameters
           '/search/',
+          '/*?s=',
+          '/*?p=',
+          '/*?q=',
+          '/*?search=',
+          '/*?replytocom',
+          '/*?utm_*',
+          '/*?fbclid=',
+          '/*?gclid=',
+          '/*?ref=',
+          // Development & Staging
           '/test/',
           '/staging/',
           '/dev/',
           '/temp/',
           '/backup/',
+          '/.env',
+          '/.git/',
+          '/node_modules/',
         ],
       },
 
       // =================================================================
       // GOOGLE SEARCH
       // =================================================================
-      { userAgent: 'Googlebot', allow: '/' },
+      {
+        userAgent: 'Googlebot',
+        allow: '/',
+        disallow: ['/_next/static/chunks/', '/_next/static/css/', '/_next/static/media/', '/_next/data/'],
+      },
       { userAgent: 'Googlebot-Image', allow: '/' },
       { userAgent: 'Googlebot-News', allow: '/' },
       { userAgent: 'Googlebot-Video', allow: '/' },
@@ -58,7 +94,11 @@ export default function robots(): MetadataRoute.Robots {
       // =================================================================
       // BING / MICROSOFT SEARCH
       // =================================================================
-      { userAgent: 'Bingbot', allow: '/' },
+      {
+        userAgent: 'Bingbot',
+        allow: '/',
+        disallow: ['/_next/static/chunks/', '/_next/static/css/', '/_next/static/media/'],
+      },
       { userAgent: 'BingPreview', allow: '/' },
       { userAgent: 'MSNBot', allow: '/' },
 
@@ -75,14 +115,14 @@ export default function robots(): MetadataRoute.Robots {
       // =================================================================
       // OPENAI (ChatGPT, GPT-4, GPT-5)
       // =================================================================
-      { userAgent: 'GPTBot', allow: '/' },
+      { userAgent: 'GPTBot', allow: '/', disallow: '/_next/static/' },
       { userAgent: 'OAI-SearchBot', allow: '/' },
       { userAgent: 'ChatGPT-User', allow: '/' },
 
       // =================================================================
       // ANTHROPIC (Claude AI)
       // =================================================================
-      { userAgent: 'ClaudeBot', allow: '/' },
+      { userAgent: 'ClaudeBot', allow: '/', disallow: '/_next/static/' },
       { userAgent: 'Claude-Web', allow: '/' },
       { userAgent: 'anthropic-ai', allow: '/' },
       { userAgent: 'Claude-SearchBot', allow: '/' },
@@ -90,7 +130,7 @@ export default function robots(): MetadataRoute.Robots {
       // =================================================================
       // GOOGLE AI (Gemini, Bard)
       // =================================================================
-      { userAgent: 'Google-Extended', allow: '/' },
+      { userAgent: 'Google-Extended', allow: '/', disallow: '/_next/static/' },
       { userAgent: 'GoogleOther', allow: '/' },
       { userAgent: 'Google-CloudVertexBot', allow: '/' },
       { userAgent: 'NotebookLM', allow: '/' },
@@ -100,7 +140,7 @@ export default function robots(): MetadataRoute.Robots {
       // =================================================================
       // PERPLEXITY AI
       // =================================================================
-      { userAgent: 'PerplexityBot', allow: '/' },
+      { userAgent: 'PerplexityBot', allow: '/', disallow: '/_next/static/' },
       { userAgent: 'Perplexity-User', allow: '/' },
 
       // =================================================================
@@ -190,15 +230,15 @@ export default function robots(): MetadataRoute.Robots {
       // =================================================================
       // SEO TOOLS (RATE LIMITED)
       // =================================================================
-      { userAgent: 'SemrushBot', allow: '/', crawlDelay: 10 },
-      { userAgent: 'AhrefsBot', allow: '/', crawlDelay: 10 },
-      { userAgent: 'MJ12bot', allow: '/', crawlDelay: 10 },
-      { userAgent: 'dotbot', allow: '/', crawlDelay: 10 },
-      { userAgent: 'rogerbot', allow: '/', crawlDelay: 10 },
-      { userAgent: 'BLEXBot', allow: '/', crawlDelay: 10 },
-      { userAgent: 'DataForSeoBot', allow: '/', crawlDelay: 10 },
-      { userAgent: 'SEOkicks', allow: '/', crawlDelay: 10 },
-      { userAgent: 'serpstatbot', allow: '/', crawlDelay: 10 },
+      { userAgent: 'SemrushBot', crawlDelay: 5 },
+      { userAgent: 'AhrefsBot', crawlDelay: 5 },
+      { userAgent: 'MJ12bot', crawlDelay: 5 },
+      { userAgent: 'dotbot', crawlDelay: 5 },
+      { userAgent: 'rogerbot', crawlDelay: 5 },
+      { userAgent: 'BLEXBot', crawlDelay: 5 },
+      { userAgent: 'DataForSeoBot', crawlDelay: 5 },
+      { userAgent: 'SEOkicks', crawlDelay: 5 },
+      { userAgent: 'serpstatbot', crawlDelay: 5 },
 
       // =================================================================
       // BLOCKED BOTS (MALICIOUS/SCRAPERS)
@@ -228,7 +268,12 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: 'Vampire', disallow: '/' },
       { userAgent: 'NICErsPRO', disallow: '/' },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    sitemap: [
+      `${SITE_URL}/sitemap.xml`,
+      `${SITE_URL}/sitemap_index.xml`,
+      `${SITE_URL}/page-sitemap.xml`,
+      `${SITE_URL}/post-sitemap.xml`,
+    ],
     host: SITE_URL,
   }
 }

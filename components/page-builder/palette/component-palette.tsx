@@ -34,6 +34,7 @@ import {
   Puzzle,
   Library,
   Component,
+  GraduationCap,
 } from 'lucide-react'
 import { BrowseComponentsModal } from '@/components/page-builder/modals/browse-components-modal'
 import * as LucideIcons from 'lucide-react'
@@ -186,6 +187,7 @@ const categoryIcons: Record<ComponentCategory, React.ComponentType<{ className?:
   data: Database,
   custom: Puzzle,
   shadcn: Component,
+  admissions: GraduationCap,
 }
 
 const categoryLabels: Record<ComponentCategory, string> = {
@@ -195,6 +197,7 @@ const categoryLabels: Record<ComponentCategory, string> = {
   data: 'Data',
   custom: 'Custom',
   shadcn: 'shadcn/ui',
+  admissions: 'Admissions',
 }
 
 // Local interface for palette display (subset of full CustomComponentData)

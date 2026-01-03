@@ -4,7 +4,7 @@ import type { ComponentType, ReactNode } from 'react'
 /**
  * Component categories for the page builder
  */
-export type ComponentCategory = 'content' | 'media' | 'layout' | 'data' | 'shadcn' | 'custom'
+export type ComponentCategory = 'content' | 'media' | 'layout' | 'data' | 'shadcn' | 'custom' | 'admissions'
 
 /**
  * Base props that all CMS block components receive
@@ -1114,6 +1114,536 @@ export const WhyChooseJKKNPropsSchema = z.object({
   primaryColor: z.string().default('#0b6d41'),
 })
 export type WhyChooseJKKNProps = z.infer<typeof WhyChooseJKKNPropsSchema> & BaseBlockProps
+
+// ==========================================
+// Admissions Components Schemas
+// ==========================================
+
+// --- CollegesGrid ---
+export const CollegeItemSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  headerColor: z.string().default('#0b6d41'),
+  link: z.string().optional(),
+  logo: z.string().optional(),
+})
+export type CollegeItem = z.infer<typeof CollegeItemSchema>
+
+export const CollegesGridPropsSchema = z.object({
+  // Header
+  badge: z.string().default('OUR COLLEGES'),
+  title: z.string().default('Our 7 Colleges'),
+  titleAccentWord: z.string().optional().default('Colleges'),
+  subtitle: z.string().default('Choose from 7 Premier Institutions Offering 50+ Programs'),
+
+  // Colleges data
+  colleges: z.array(CollegeItemSchema).default([
+    { name: 'JKKN Dental College & Hospital', description: 'Premier dental education with 500-bed teaching hospital', headerColor: '#0b6d41', link: '/colleges/dental' },
+    { name: 'JKKN College of Pharmacy', description: 'B.Pharm, M.Pharm & Pharm.D programs with PCI approval', headerColor: '#1e3a8a', link: '/colleges/pharmacy' },
+    { name: 'JKKN College of Engineering', description: 'AICTE approved programs in emerging technologies', headerColor: '#7c2d12', link: '/colleges/engineering' },
+    { name: 'Sresakthimayeil Institute of Nursing', description: 'INC approved nursing programs with clinical training', headerColor: '#0f766e', link: '/colleges/nursing' },
+    { name: 'JKKN College of Arts & Science', description: 'UG & PG programs in arts, science & commerce', headerColor: '#6b21a8', link: '/colleges/arts-science' },
+    { name: 'JKKN College of Allied Health Sciences', description: 'Specialized healthcare professional programs', headerColor: '#b91c1c', link: '/colleges/allied-health' },
+    { name: 'JKKN Educational Institutions', description: 'CBSE & State Board schools with holistic development', headerColor: '#0369a1', link: '/schools' },
+  ]),
+
+  // Layout
+  columns: z.enum(['2', '3', '4']).default('3'),
+
+  // Styling
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  showAnimations: z.boolean().default(true),
+
+  // Typography
+  titleColor: z.string().optional(),
+  subtitleColor: z.string().optional(),
+  accentColor: z.string().default('#D4AF37'),
+})
+export type CollegesGridProps = z.infer<typeof CollegesGridPropsSchema> & BaseBlockProps
+
+// --- AdmissionProcessTimeline ---
+export const AdmissionStepSchema = z.object({
+  number: z.number(),
+  title: z.string(),
+  description: z.string(),
+  icon: z.string().default('ClipboardCheck'),
+})
+export type AdmissionStep = z.infer<typeof AdmissionStepSchema>
+
+export const AdmissionProcessTimelinePropsSchema = z.object({
+  // Header
+  badge: z.string().default('HOW TO APPLY'),
+  title: z.string().default('Admission Process'),
+  titleAccentWord: z.string().optional().default('Process'),
+  subtitle: z.string().default('Your journey to JKKN in 5 simple steps'),
+
+  // Steps
+  steps: z.array(AdmissionStepSchema).default([
+    { number: 1, title: 'Choose Your Program', description: 'Explore 50+ programs across 7 colleges', icon: 'Search' },
+    { number: 2, title: 'Apply Online', description: 'Fill the application form with required documents', icon: 'FileText' },
+    { number: 3, title: 'Document Verification', description: 'Submit originals for verification', icon: 'ClipboardCheck' },
+    { number: 4, title: 'Counselling', description: 'Attend counselling session for seat allotment', icon: 'Users' },
+    { number: 5, title: 'Admission Confirmation', description: 'Pay fees and confirm your admission', icon: 'CheckCircle' },
+  ]),
+
+  // Layout
+  orientation: z.enum(['horizontal', 'vertical', 'auto']).default('auto'),
+
+  // Styling
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  stepColor: z.string().default('#0b6d41'),
+  activeColor: z.string().default('#D4AF37'),
+  completedColor: z.string().default('#22c55e'),
+  showAnimations: z.boolean().default(true),
+
+  // Typography
+  titleColor: z.string().optional(),
+  subtitleColor: z.string().optional(),
+  accentColor: z.string().default('#D4AF37'),
+})
+export type AdmissionProcessTimelineProps = z.infer<typeof AdmissionProcessTimelinePropsSchema> & BaseBlockProps
+
+// --- AdmissionDatesTable ---
+export const AdmissionDateItemSchema = z.object({
+  event: z.string(),
+  date: z.string(),
+  status: z.enum(['upcoming', 'open', 'closed', 'extended']).default('upcoming'),
+  notes: z.string().optional(),
+})
+export type AdmissionDateItem = z.infer<typeof AdmissionDateItemSchema>
+
+export const AdmissionDatesTablePropsSchema = z.object({
+  // Header
+  badge: z.string().default('IMPORTANT DATES'),
+  title: z.string().default('Admission Calendar 2025-26'),
+  titleAccentWord: z.string().optional().default('Calendar'),
+  subtitle: z.string().default('Mark your calendar with these important admission dates'),
+
+  // Dates
+  dates: z.array(AdmissionDateItemSchema).default([
+    { event: 'Application Opens', date: 'January 15, 2025', status: 'open' },
+    { event: 'Early Bird Deadline', date: 'February 28, 2025', status: 'upcoming' },
+    { event: 'Regular Application Deadline', date: 'April 30, 2025', status: 'upcoming' },
+    { event: 'Document Submission', date: 'May 15, 2025', status: 'upcoming' },
+    { event: 'Counselling Phase 1', date: 'June 1-15, 2025', status: 'upcoming' },
+    { event: 'Counselling Phase 2', date: 'June 20-30, 2025', status: 'upcoming' },
+    { event: 'Classes Commence', date: 'July 15, 2025', status: 'upcoming' },
+  ]),
+
+  // Styling
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  showAnimations: z.boolean().default(true),
+  alternatingRows: z.boolean().default(true),
+
+  // Typography
+  titleColor: z.string().optional(),
+  subtitleColor: z.string().optional(),
+  accentColor: z.string().default('#D4AF37'),
+})
+export type AdmissionDatesTableProps = z.infer<typeof AdmissionDatesTablePropsSchema> & BaseBlockProps
+
+// --- EligibilityCriteriaTable ---
+export const EligibilityCriteriaItemSchema = z.object({
+  program: z.string(),
+  qualification: z.string(),
+  ageLimit: z.string(),
+  otherRequirements: z.string().optional(),
+  category: z.enum(['medical', 'nursing', 'pharmacy', 'engineering', 'arts-science', 'education']).default('arts-science'),
+  details: z.string().optional(),
+})
+export type EligibilityCriteriaItem = z.infer<typeof EligibilityCriteriaItemSchema>
+
+export const EligibilityCriteriaTablePropsSchema = z.object({
+  // Header
+  badge: z.string().default('ELIGIBILITY'),
+  title: z.string().default('Eligibility Criteria'),
+  titleAccentWord: z.string().optional().default('Criteria'),
+  subtitle: z.string().default('Check if you meet the requirements for your chosen program'),
+
+  // Criteria
+  criteria: z.array(EligibilityCriteriaItemSchema).default([
+    { program: 'BDS', qualification: '10+2 with PCB (50%)', ageLimit: '17-25 years', category: 'medical', otherRequirements: 'NEET Qualified' },
+    { program: 'MDS', qualification: 'BDS from recognized university', ageLimit: 'No limit', category: 'medical', otherRequirements: 'NEET-MDS Qualified' },
+    { program: 'B.Pharm', qualification: '10+2 with PCM/PCB (45%)', ageLimit: '17-25 years', category: 'pharmacy' },
+    { program: 'Pharm.D', qualification: '10+2 with PCB (50%)', ageLimit: '17-25 years', category: 'pharmacy' },
+    { program: 'B.Sc Nursing', qualification: '10+2 with PCB (45%)', ageLimit: '17-35 years', category: 'nursing' },
+    { program: 'GNM', qualification: '10+2 with Science (40%)', ageLimit: '17-35 years', category: 'nursing' },
+    { program: 'B.E/B.Tech', qualification: '10+2 with PCM (50%)', ageLimit: '17-25 years', category: 'engineering' },
+    { program: 'B.Sc/B.Com/BA', qualification: '10+2 Pass (45%)', ageLimit: 'No limit', category: 'arts-science' },
+  ]),
+
+  // Layout
+  groupByCategory: z.boolean().default(false),
+  expandableRows: z.boolean().default(false),
+
+  // Styling
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  showAnimations: z.boolean().default(true),
+
+  // Typography
+  titleColor: z.string().optional(),
+  subtitleColor: z.string().optional(),
+  accentColor: z.string().default('#D4AF37'),
+})
+export type EligibilityCriteriaTableProps = z.infer<typeof EligibilityCriteriaTablePropsSchema> & BaseBlockProps
+
+// --- FeeStructureTable ---
+export const FeeStructureItemSchema = z.object({
+  program: z.string(),
+  tuitionFee: z.number(),
+  hostelFee: z.number().optional(),
+  otherFees: z.number().optional(),
+  total: z.number(),
+  notes: z.string().optional(),
+  category: z.enum(['medical', 'nursing', 'pharmacy', 'engineering', 'arts-science', 'education']).default('arts-science'),
+})
+export type FeeStructureItem = z.infer<typeof FeeStructureItemSchema>
+
+export const FeeStructureTablePropsSchema = z.object({
+  // Header
+  badge: z.string().default('FEE STRUCTURE'),
+  title: z.string().default('Fee Structure Overview'),
+  titleAccentWord: z.string().optional().default('Structure'),
+  subtitle: z.string().default('Transparent and affordable fee structure for all programs'),
+
+  // Fees
+  fees: z.array(FeeStructureItemSchema).default([
+    { program: 'BDS', tuitionFee: 500000, hostelFee: 75000, total: 575000, category: 'medical' },
+    { program: 'B.Pharm', tuitionFee: 85000, hostelFee: 60000, total: 145000, category: 'pharmacy' },
+    { program: 'B.Sc Nursing', tuitionFee: 75000, hostelFee: 55000, total: 130000, category: 'nursing' },
+    { program: 'B.E/B.Tech', tuitionFee: 95000, hostelFee: 60000, total: 155000, category: 'engineering' },
+    { program: 'B.Sc/B.Com/BA', tuitionFee: 35000, hostelFee: 50000, total: 85000, category: 'arts-science' },
+  ]),
+
+  // Currency
+  currencySymbol: z.string().default('₹'),
+  currencyLocale: z.string().default('en-IN'),
+
+  // Layout
+  showHostelFee: z.boolean().default(true),
+  showOtherFees: z.boolean().default(false),
+  groupByCategory: z.boolean().default(false),
+
+  // Footer
+  footerNotes: z.array(z.string()).default([
+    '* Fees are subject to revision as per university/regulatory norms',
+    '* Hostel fees are optional and include mess charges',
+    '* Scholarships and fee concessions available for eligible students',
+  ]),
+
+  // Styling
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  showAnimations: z.boolean().default(true),
+
+  // Typography
+  titleColor: z.string().optional(),
+  subtitleColor: z.string().optional(),
+  accentColor: z.string().default('#D4AF37'),
+})
+export type FeeStructureTableProps = z.infer<typeof FeeStructureTablePropsSchema> & BaseBlockProps
+
+// --- ScholarshipsSection ---
+export const ScholarshipItemSchema = z.object({
+  icon: z.string().default('Award'),
+  title: z.string(),
+  description: z.string(),
+  eligibility: z.array(z.string()).default([]),
+  type: z.enum(['merit', 'government', 'need-based', 'sports-cultural']).default('merit'),
+})
+export type ScholarshipItem = z.infer<typeof ScholarshipItemSchema>
+
+export const ScholarshipsSectionPropsSchema = z.object({
+  // Header
+  badge: z.string().default('SCHOLARSHIPS'),
+  title: z.string().default('Scholarships & Financial Aid'),
+  titleAccentWord: z.string().optional().default('Financial Aid'),
+  subtitle: z.string().default('We believe financial constraints should never limit your dreams'),
+
+  // Scholarships
+  scholarships: z.array(ScholarshipItemSchema).default([
+    {
+      icon: 'Trophy',
+      title: 'Merit Scholarships',
+      description: 'Up to 100% tuition fee waiver for academic excellence',
+      eligibility: ['90%+ in qualifying exam', 'Rank holders in entrance exams', 'Academic toppers in JKKN'],
+      type: 'merit',
+    },
+    {
+      icon: 'Building2',
+      title: 'Government Scholarships',
+      description: 'State and central government scholarship schemes',
+      eligibility: ['SC/ST/OBC/MBC categories', 'EWS category students', 'Minority community students'],
+      type: 'government',
+    },
+    {
+      icon: 'Heart',
+      title: 'Need-Based Aid',
+      description: 'Financial support for economically disadvantaged students',
+      eligibility: ['Family income below threshold', 'Single parent families', 'Orphan students'],
+      type: 'need-based',
+    },
+    {
+      icon: 'Medal',
+      title: 'Sports & Cultural',
+      description: 'Special quota for sports and cultural achievers',
+      eligibility: ['State/National level players', 'Cultural competition winners', 'Outstanding performers'],
+      type: 'sports-cultural',
+    },
+  ]),
+
+  // CTA
+  showCTA: z.boolean().default(true),
+  ctaText: z.string().default('Apply for Scholarship'),
+  ctaLink: z.string().default('/scholarships/apply'),
+
+  // Layout
+  columns: z.enum(['2', '4']).default('4'),
+
+  // Styling
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  showAnimations: z.boolean().default(true),
+
+  // Typography
+  titleColor: z.string().optional(),
+  subtitleColor: z.string().optional(),
+  accentColor: z.string().default('#D4AF37'),
+})
+export type ScholarshipsSectionProps = z.infer<typeof ScholarshipsSectionPropsSchema> & BaseBlockProps
+
+// --- DocumentsChecklist ---
+export const DocumentItemSchema = z.object({
+  text: z.string(),
+  required: z.boolean().default(true),
+})
+export type DocumentItem = z.infer<typeof DocumentItemSchema>
+
+export const DocumentsChecklistPropsSchema = z.object({
+  // Header
+  badge: z.string().default('DOCUMENTS'),
+  title: z.string().default('Documents Required'),
+  titleAccentWord: z.string().optional().default('Documents'),
+  subtitle: z.string().default('Keep these documents ready for a smooth admission process'),
+
+  // Left column
+  leftColumnTitle: z.string().default('For All Programs'),
+  leftColumnDocuments: z.array(DocumentItemSchema).default([
+    { text: '10th Mark Sheet & Certificate (Original + 2 copies)', required: true },
+    { text: '12th Mark Sheet & Certificate (Original + 2 copies)', required: true },
+    { text: 'Transfer Certificate from last institution', required: true },
+    { text: 'Migration Certificate (if applicable)', required: false },
+    { text: 'Community Certificate (for quota)', required: false },
+    { text: 'Aadhar Card (Original + 2 copies)', required: true },
+    { text: 'Passport Size Photos (10 nos)', required: true },
+  ]),
+
+  // Right column
+  rightColumnTitle: z.string().default('Additional Documents'),
+  rightColumnDocuments: z.array(DocumentItemSchema).default([
+    { text: 'NEET Score Card (Medical/Dental/Pharmacy)', required: false },
+    { text: 'Entrance Exam Admit Card', required: false },
+    { text: 'Income Certificate (for scholarship)', required: false },
+    { text: 'Caste Certificate (if applicable)', required: false },
+    { text: 'Sports/Cultural Achievement Certificates', required: false },
+    { text: 'Gap Certificate (if gap in education)', required: false },
+    { text: 'Medical Fitness Certificate', required: true },
+  ]),
+
+  // CTA
+  showCTA: z.boolean().default(true),
+  ctaText: z.string().default('Download Complete Checklist'),
+  ctaLink: z.string().default('/downloads/admission-checklist.pdf'),
+
+  // Styling
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  showAnimations: z.boolean().default(true),
+  checkIcon: z.enum(['check', 'checkbox', 'circle-check']).default('checkbox'),
+
+  // Typography
+  titleColor: z.string().optional(),
+  subtitleColor: z.string().optional(),
+  accentColor: z.string().default('#D4AF37'),
+})
+export type DocumentsChecklistProps = z.infer<typeof DocumentsChecklistPropsSchema> & BaseBlockProps
+
+// --- WhyChooseSection ---
+export const WhyChooseFeatureSchema = z.object({
+  icon: z.string().default('Star'),
+  title: z.string(),
+  description: z.string(),
+})
+export type WhyChooseFeature = z.infer<typeof WhyChooseFeatureSchema>
+
+export const WhyChooseSectionPropsSchema = z.object({
+  // Header
+  badge: z.string().default('WHY CHOOSE JKKN?'),
+  title: z.string().default('Why Choose JKKN?'),
+  titleAccentWord: z.string().optional().default('JKKN'),
+  subtitle: z.string().default('Discover what makes J.K.K. Nattraja Educational Institutions the preferred choice for thousands of Learners every year.'),
+
+  // Features
+  features: z.array(WhyChooseFeatureSchema).default([
+    { icon: 'Building2', title: '70+ Years of Legacy', description: 'Established by visionary founder J.K.K. Nataraja Chettiar, JKKN has transformed lives through accessible, progressive education for over seven decades.' },
+    { icon: 'GraduationCap', title: '7 Specialized Colleges', description: 'From Dental Sciences to Engineering, Pharmacy to Nursing — choose from diverse disciplines under one trusted institution.' },
+    { icon: 'Users', title: 'Learner-Centered Approach', description: 'At JKKN, you\'re an active Learner shaping your future. Our Learning Facilitators guide, mentor, and empower you.' },
+    { icon: 'Factory', title: 'Industry-Ready Programs', description: 'Our curriculum integrates theory with practice. State-of-the-art Learning Labs and industry partnerships make graduates career-ready.' },
+    { icon: 'Briefcase', title: 'Strong Placement Record', description: '500+ recruiting companies, competitive salary packages, and dedicated placement support ensure seamless transition from campus to career.' },
+    { icon: 'Star', title: 'Holistic Development', description: 'Beyond academics, JKKN nurtures well-rounded individuals through sports, cultural activities, community service, and leadership opportunities.' },
+  ]),
+
+  // Layout
+  columns: z.enum(['2', '3']).default('3'),
+
+  // Styling
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-light'),
+  showAnimations: z.boolean().default(true),
+
+  // Typography
+  titleColor: z.string().optional(),
+  subtitleColor: z.string().optional(),
+  accentColor: z.string().default('#D4AF37'),
+})
+export type WhyChooseSectionProps = z.infer<typeof WhyChooseSectionPropsSchema> & BaseBlockProps
+
+// --- CampusFeaturesGrid ---
+export const CampusFeatureItemSchema = z.object({
+  emoji: z.string().default('🏠'),
+  title: z.string(),
+  description: z.string(),
+})
+export type CampusFeatureItem = z.infer<typeof CampusFeatureItemSchema>
+
+export const CampusFeaturesGridPropsSchema = z.object({
+  // Header
+  badge: z.string().default('CAMPUS LIFE'),
+  title: z.string().default('Campus Life at JKKN'),
+  titleAccentWord: z.string().optional().default('Campus Life'),
+  subtitle: z.string().default('Beyond academics — experience a vibrant campus life with world-class facilities.'),
+
+  // Features
+  features: z.array(CampusFeatureItemSchema).default([
+    { emoji: '🏠', title: 'Hostels', description: 'Separate boys & girls hostels with 24/7 security, Wi-Fi, and home-like comfort.' },
+    { emoji: '🍽️', title: 'Dining', description: 'Hygienic, nutritious meals. Veg & non-veg options at central canteen.' },
+    { emoji: '📚', title: 'Libraries', description: '50,000+ books, journals, digital resources across all campuses.' },
+    { emoji: '🔬', title: 'Learning Labs', description: 'State-of-the-art labs, simulation centers, and research facilities.' },
+    { emoji: '🏃', title: 'Sports', description: 'Cricket, basketball, volleyball, indoor games, and fitness center.' },
+    { emoji: '🏥', title: 'Healthcare', description: 'On-campus health center and attached hospital facilities.' },
+    { emoji: '🚌', title: 'Transport', description: 'College buses covering Namakkal, Salem, Erode & surrounding areas.' },
+    { emoji: '🛡️', title: 'Security', description: '24/7 CCTV surveillance, security personnel, strict visitor management.' },
+  ]),
+
+  // Layout
+  columns: z.enum(['2', '4']).default('4'),
+
+  // Styling
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-light'),
+  showAnimations: z.boolean().default(true),
+
+  // Typography
+  titleColor: z.string().optional(),
+  subtitleColor: z.string().optional(),
+  accentColor: z.string().default('#D4AF37'),
+})
+export type CampusFeaturesGridProps = z.infer<typeof CampusFeaturesGridPropsSchema> & BaseBlockProps
+
+// --- PlacementsHighlights ---
+export const PlacementStatItemSchema = z.object({
+  value: z.string(),
+  label: z.string(),
+  prefix: z.string().optional(),
+  suffix: z.string().optional(),
+})
+export type PlacementStatItem = z.infer<typeof PlacementStatItemSchema>
+
+export const PlacementsHighlightsPropsSchema = z.object({
+  // Header
+  badge: z.string().default('PLACEMENTS'),
+  title: z.string().default('Placement Highlights'),
+  titleAccentWord: z.string().optional().default('Placement'),
+  subtitle: z.string().default('From campus to career — JKKN Learners are recruited by top companies across industries.'),
+
+  // Stats
+  stats: z.array(PlacementStatItemSchema).default([
+    { value: '500', suffix: '+', label: 'Recruiting Companies' },
+    { value: '95', suffix: '%', label: 'Placement Rate' },
+    { value: '8.5', prefix: '₹', suffix: ' LPA', label: 'Highest Package' },
+    { value: '3.5', prefix: '₹', suffix: ' LPA', label: 'Average Package' },
+  ]),
+
+  // Recruiters
+  recruitersText: z.string().default('Top Recruiters: Apollo Hospitals • Infosys • TCS • Wipro • HCL • Dr. Reddy\'s • Cipla • Sun Pharma • L&T • Ashok Leyland • Cognizant • Tech Mahindra • and 500+ more'),
+
+  // CTA
+  showCTA: z.boolean().default(true),
+  ctaText: z.string().default('View Complete Placement Records'),
+  ctaLink: z.string().default('/placements/'),
+
+  // Styling
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-light'),
+  showAnimations: z.boolean().default(true),
+
+  // Typography
+  titleColor: z.string().optional(),
+  subtitleColor: z.string().optional(),
+  accentColor: z.string().default('#D4AF37'),
+})
+export type PlacementsHighlightsProps = z.infer<typeof PlacementsHighlightsPropsSchema> & BaseBlockProps
+
+// --- AdmissionHero ---
+export const AdmissionHeroBadgeSchema = z.object({
+  text: z.string().default('Celebrating #JKKN100 — Founder\'s Centenary Year'),
+  emoji: z.string().optional().default('🎉'),
+})
+
+export const AdmissionHeroCTAButtonSchema = z.object({
+  label: z.string(),
+  link: z.string(),
+  variant: z.enum(['primary', 'secondary', 'outline']).default('primary'),
+  isExternal: z.boolean().optional().default(false),
+  icon: z.enum(['arrow', 'download', 'external', 'none']).optional().default('arrow'),
+})
+
+export const AdmissionHeroTrustBadgeSchema = z.object({
+  icon: z.string().optional().default('check'),
+  label: z.string(),
+})
+
+export const AdmissionHeroPropsSchema = z.object({
+  // Badge
+  badge: AdmissionHeroBadgeSchema.default({
+    text: 'Celebrating #JKKN100 — Founder\'s Centenary Year',
+    emoji: '🎉',
+  }),
+
+  // Content
+  title: z.string().default('Admissions 2025-26'),
+  titleAccentWord: z.string().optional().default('2025-26'),
+  subtitle: z.string().default('Begin your transformative learning journey at J.K.K. Nattraja Educational Institutions — where 5000+ Learners discover their potential across 7 specialized colleges.'),
+
+  // CTAs
+  ctaButtons: z.array(AdmissionHeroCTAButtonSchema).default([
+    { label: 'Apply Now', link: 'https://apply.jkkn.ac.in', variant: 'primary' as const, isExternal: true, icon: 'external' as const },
+    { label: 'Explore Colleges', link: '#colleges', variant: 'secondary' as const, isExternal: false, icon: 'arrow' as const },
+    { label: 'Download Prospectus', link: '/prospectus.pdf', variant: 'outline' as const, isExternal: false, icon: 'download' as const },
+  ]),
+
+  // Trust badges
+  trustBadges: z.array(AdmissionHeroTrustBadgeSchema).default([
+    { icon: 'check', label: 'NAAC Accredited' },
+    { icon: 'check', label: 'AICTE Approved' },
+    { icon: 'check', label: 'UGC Recognized' },
+    { icon: 'check', label: 'NBA Accredited' },
+  ]),
+
+  // Styling
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  showAnimations: z.boolean().default(true),
+
+  // Typography
+  titleColor: z.string().optional(),
+  subtitleColor: z.string().optional(),
+  accentColor: z.string().default('#D4AF37'),
+})
+export type AdmissionHeroProps = z.infer<typeof AdmissionHeroPropsSchema> & BaseBlockProps
 
 // ==========================================
 // Utility Functions for Type Conversion
