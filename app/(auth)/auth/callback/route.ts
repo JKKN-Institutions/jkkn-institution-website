@@ -17,13 +17,14 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Get user session
+    // SECURITY: Use getUser() instead of getSession() to verify token with Supabase Auth server
+    // getSession() reads from cookies directly and may not be authentic
     const {
-      data: { session },
-    } = await supabase.auth.getSession()
+      data: { user },
+    } = await supabase.auth.getUser()
 
-    if (session) {
-      const email = session.user.email
+    if (user) {
+      const email = user.email
 
       // 1. Check if user email is from @jkkn.ac.in domain
       if (!email?.endsWith('@jkkn.ac.in')) {
@@ -62,7 +63,7 @@ export async function GET(request: NextRequest) {
       await supabase
         .from('profiles')
         .update({ last_login_at: new Date().toISOString() })
-        .eq('id', session.user.id)
+        .eq('id', user.id)
     }
   }
 
