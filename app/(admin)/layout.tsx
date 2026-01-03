@@ -68,17 +68,19 @@ export default async function AdminLayout({
 }) {
   const supabase = await createServerSupabaseClient()
 
+  // SECURITY: Use getUser() instead of getSession() to verify token with Supabase Auth server
+  // getSession() reads from cookies directly and may not be authentic
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    data: { user },
+  } = await supabase.auth.getUser()
 
   // Redirect to login if not authenticated
-  if (!session) {
+  if (!user) {
     redirect('/auth/login')
   }
 
   // Check if user email is from @jkkn.ac.in domain
-  const email = session.user.email
+  const email = user.email
   if (!email?.endsWith('@jkkn.ac.in')) {
     // Sign out and redirect
     await supabase.auth.signOut()
@@ -86,7 +88,7 @@ export default async function AdminLayout({
   }
 
   // Get user data including permissions
-  const userData = await getUserData(session.user.id)
+  const userData = await getUserData(user.id)
 
   // Pass initial user data to client - this gets cached and won't re-fetch on navigation
   const initialUserData = {
@@ -98,7 +100,7 @@ export default async function AdminLayout({
 
   return (
     <AdminThemeProvider>
-      <AdminLayoutClient userId={session.user.id} initialUserData={initialUserData}>
+      <AdminLayoutClient userId={user.id} initialUserData={initialUserData}>
         <div className="admin-layout flex h-screen w-full max-w-full overflow-hidden bg-slate-50/50 dark:bg-slate-950/50 backdrop-blur-[2px]">
           {/* Decorative gradient background - Modern Glassmorphism (reduced blur for INP) */}
           <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">

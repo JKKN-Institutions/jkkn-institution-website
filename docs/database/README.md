@@ -13,7 +13,10 @@ docs/database/
 │   ├── 02-rls-policies.sql  # 126+ policies
 │   ├── 03-triggers.sql      # 41 triggers
 │   └── 04-foreign-keys.sql  # 48 foreign keys
-└── dental-college/          # Dental College Supabase
+├── dental-college/          # Dental College Supabase
+│   ├── README.md
+│   └── SYNC-LOG.md          # Migration/fix history
+└── pharmacy-supabase/       # Pharmacy College Supabase
     ├── README.md
     └── SYNC-LOG.md          # Migration/fix history
 ```
@@ -24,9 +27,9 @@ docs/database/
 |-------------|-----------|--------|
 | **Main (Reference)** | `pmqodbfhsejbvfbmsfeq` | Source of Truth |
 | Dental College | `wnmyvbnqldukeknnmnpl` | Syncing |
+| Pharmacy College | `rwskookarbolpmtolqkd` | Syncing |
 | Arts & Science | TBD | Not Started |
 | Engineering | TBD | Not Started |
-| Pharmacy | TBD | Not Started |
 | Nursing | TBD | Not Started |
 
 ## Workflow
@@ -55,6 +58,7 @@ docs/database/
 | `main-supabase/03-triggers.sql` | All triggers |
 | `main-supabase/04-foreign-keys.sql` | All foreign key relationships |
 | `dental-college/SYNC-LOG.md` | Dental College migration history |
+| `pharmacy-supabase/SYNC-LOG.md` | Pharmacy College migration history |
 
 ## Critical Functions
 

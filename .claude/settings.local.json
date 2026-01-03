@@ -105,7 +105,16 @@
       "mcp__Main_Supabase_Project__list_migrations",
       "mcp__Dental_College_Supabase_Project__get_project_url",
       "mcp__Main_Supabase_Project__get_project_url",
-      "Bash(npm run dev:main:*)"
+      "Bash(npm run dev:main:*)",
+      "mcp__Pharmacy_College_Supabase_Project__execute_sql",
+      "mcp__Pharmacy_College_Supabase_Project__apply_migration",
+      "Skill(multi-institution-manager)",
+      "mcp__Pharmacy_College_Supabase_Project__list_tables",
+      "mcp__Pharmacy_College_Supabase_Project__list_migrations",
+      "mcp__Pharmacy_College_Supabase_Project__apply_migration",
+      "mcp__Pharmacy_College_Supabase_Project__execute_sql",
+      "Bash(npm run dev:pharmacy:*)",
+      "mcp__Pharmacy_College_Supabase_Project__get_advisors"
     ],
     "deny": [],
     "ask": [],

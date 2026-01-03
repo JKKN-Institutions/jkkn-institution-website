@@ -83,9 +83,9 @@ This is a **Single Repository, Multiple Deployments (SRMD)** architecture servin
 |-------------|-----|--------|----------|
 | Main (Umbrella) | `main` | jkkn.ac.in | pmqodbfhsejbvfbmsfeq |
 | Arts & Science | `arts-science` | arts.jkkn.ac.in | TBD |
-| Engineering | `engineering` | engg.jkkn.ac.in | TBD |
+| Engineering | `engineering` | engg.jkkn.ac.in | kyvfkyjmdbtyimtedkie |
 | Dental | `dental` | dental.jkkn.ac.in | wnmyvbnqldukeknnmnpl |
-| Pharmacy | `pharmacy` | pharmacy.jkkn.ac.in | TBD |
+| Pharmacy | `pharmacy` | pharmacy.jkkn.ac.in | rwskookarbolpmtolqkd |
 | Nursing | `nursing` | nursing.jkkn.ac.in | TBD |
 
 ### Key Principles

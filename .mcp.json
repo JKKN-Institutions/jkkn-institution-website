@@ -26,6 +26,32 @@
         "SUPABASE_ACCESS_TOKEN": "sbp_47018305daf9755154b028eb0e599cbb8097c0c8"
       }
     },
+    "Pharmacy College Supabase Project": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--project-ref=rwskookarbolpmtolqkd"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "sbp_47018305daf9755154b028eb0e599cbb8097c0c8"
+      }
+    },
+    "Engineering College Supabase Project": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--project-ref=kyvfkyjmdbtyimtedkie"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "sbp_47018305daf9755154b028eb0e599cbb8097c0c8"
+      }
+    },
     "sequential-thinking": {
       "command": "cmd",
       "args": [

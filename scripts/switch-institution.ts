@@ -45,10 +45,27 @@ const INSTITUTIONS: Record<string, InstitutionEnv> = {
     features: 'blog,careers,page-builder,analytics,faculty-directory,course-catalog,admissions,testimonials',
     mediaBucket: 'media',
   },
+  pharmacy: {
+    id: 'pharmacy',
+    name: 'JKKN College of Pharmacy',
+    supabaseUrl: 'https://rwskookarbolpmtolqkd.supabase.co',
+    supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3c2tvb2thcmJvbHBtdG9scWtkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0MjcwODQsImV4cCI6MjA4MzAwMzA4NH0.Coj77n6921HQcVVyaowug8vmf6Ju2DcM_fCnzaD1Hdc',
+    siteUrl: 'http://localhost:3000',
+    features: 'blog,careers,page-builder,analytics,comments,newsletter,events,gallery,testimonials,admissions,faculty-directory,course-catalog,research-publications,alumni-network,student-portal,placements',
+    mediaBucket: 'media',
+  },
+  engineering: {
+    id: 'engineering',
+    name: 'JKKN College of Engineering and Technology',
+    supabaseUrl: 'https://kyvfkyjmdbtyimtedkie.supabase.co',
+    supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5dmZreWptZGJ0eWltdGVka2llIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0NDAxMDQsImV4cCI6MjA4MzAxNjEwNH0.fByamPzYE1G5S1FAXZK1HobVM40zh9Y8N9QlCUNM-6I',
+    siteUrl: 'http://localhost:3000',
+    features: 'blog,careers,page-builder,analytics,faculty-directory,course-catalog,admissions,research-publications,placements',
+    mediaBucket: 'media',
+  },
   // Add more institutions as needed:
   // 'arts-science': { ... },
   // 'engineering': { ... },
-  // 'pharmacy': { ... },
   // 'nursing': { ... },
 }
 
