@@ -107,9 +107,12 @@
       "mcp__Main_Supabase_Project__get_project_url",
       "Bash(npm run dev:main:*)",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       "mcp__Pharmacy_College_Supabase_Project__execute_sql",
       "mcp__Pharmacy_College_Supabase_Project__apply_migration"
 =======
+=======
+>>>>>>> Stashed changes
       "Skill(multi-institution-manager)",
       "mcp__Pharmacy_College_Supabase_Project__list_tables",
       "mcp__Pharmacy_College_Supabase_Project__list_migrations",
@@ -117,6 +120,9 @@
       "mcp__Pharmacy_College_Supabase_Project__execute_sql",
       "Bash(npm run dev:pharmacy:*)",
       "mcp__Pharmacy_College_Supabase_Project__get_advisors"
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     ],
     "deny": [],
