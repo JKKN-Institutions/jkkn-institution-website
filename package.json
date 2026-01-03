@@ -6,6 +6,7 @@
     "dev": "next dev",
     "dev:main": "npx tsx scripts/switch-institution.ts main && next dev",
     "dev:dental": "npx tsx scripts/switch-institution.ts dental && next dev",
+    "dev:pharmacy": "npx tsx scripts/switch-institution.ts pharmacy && next dev",
     "switch": "npx tsx scripts/switch-institution.ts",
     "build": "next build",
     "start": "next start",

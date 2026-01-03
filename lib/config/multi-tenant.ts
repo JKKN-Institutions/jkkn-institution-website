@@ -128,15 +128,16 @@ export const INSTITUTION_REGISTRY: InstitutionConfig[] = [
     domain: 'pharmacy.jkkn.ac.in',
     type: 'college',
     theme: {
-      primaryColor: '#7c2d12',    // Brown/Orange
-      secondaryColor: '#ea580c',
-      accentColor: '#22c55e',
+      primaryColor: '#166534',    // Forest green
+      secondaryColor: '#22c55e',  // Bright green
+      accentColor: '#fbbf24',     // Amber
     },
     features: [
-      'blog', 'careers', 'page-builder', 'analytics',
-      'faculty-directory', 'course-catalog', 'admissions',
-      'research-publications',
+      'blog', 'careers', 'page-builder', 'analytics', 'comments', 'newsletter',
+      'events', 'gallery', 'testimonials', 'admissions', 'faculty-directory',
+      'course-catalog', 'research-publications', 'alumni-network', 'student-portal', 'placements',
     ],
+    supabaseProjectRef: 'rwskookarbolpmtolqkd',
   },
   {
     id: 'dental',

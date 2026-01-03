@@ -45,10 +45,17 @@ const INSTITUTIONS: Record<string, InstitutionEnv> = {
     features: 'blog,careers,page-builder,analytics,faculty-directory,course-catalog,admissions,testimonials',
     mediaBucket: 'media',
   },
+  pharmacy: {
+    id: 'pharmacy',
+    name: 'JKKN College of Pharmacy',
+    supabaseUrl: 'https://rwskookarbolpmtolqkd.supabase.co',
+    supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3c2tvb2thcmJvbHBtdG9scWtkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0MjcwODQsImV4cCI6MjA4MzAwMzA4NH0.Coj77n6921HQcVVyaowug8vmf6Ju2DcM_fCnzaD1Hdc',
+    siteUrl: 'http://localhost:3000',
+    features: 'blog,careers,page-builder,analytics,comments,newsletter,events,gallery,testimonials,admissions,faculty-directory,course-catalog,research-publications,alumni-network,student-portal,placements',
+  },
   // Add more institutions as needed:
   // 'arts-science': { ... },
   // 'engineering': { ... },
-  // 'pharmacy': { ... },
   // 'nursing': { ... },
 }
 
