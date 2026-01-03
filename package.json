@@ -14,7 +14,10 @@
     "test:report": "playwright show-report test-results/html-report",
     "test:chromium": "playwright test --project=chromium",
     "test:mobile": "playwright test --project='Mobile Chrome' --project='Mobile Safari'",
-    "generate:previews": "tsx scripts/generate-component-previews.ts"
+    "generate:previews": "tsx scripts/generate-component-previews.ts",
+    "db:migrate:all": "tsx scripts/sync-migrations.ts",
+    "db:migrate:dry": "tsx scripts/sync-migrations.ts --dry-run",
+    "db:migrate": "tsx scripts/sync-migrations.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.0",
@@ -107,6 +110,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^17.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
     "tailwindcss": "^4",

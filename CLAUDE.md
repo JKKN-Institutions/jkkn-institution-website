@@ -28,6 +28,154 @@ JKKN Institution Website is a comprehensive web application built with **Next.js
 
 **Current Status:** Early development stage with production-ready database schema and basic Next.js bootstrap.
 
+---
+
+## 🏛️ Multi-Institution Architecture
+
+This is a **Single Repository, Multiple Deployments (SRMD)** architecture serving 6 JKKN institutions from one codebase.
+
+### Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    ONE GitHub Repository                         │
+│                 (jkkn-institution-website)                       │
+│                                                                  │
+│   Code changes here → ALL 6 institution sites update            │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        ▼                     ▼                     ▼
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│ Vercel: Main  │     │ Vercel: Dental│     │ Vercel: Arts  │  ... (6 total)
+│ jkkn.ac.in    │     │ dental.jkkn.  │     │ arts.jkkn.    │
+│               │     │   ac.in       │     │   ac.in       │
+│ ENV:          │     │ ENV:          │     │ ENV:          │
+│ INSTITUTION_ID│     │ INSTITUTION_ID│     │ INSTITUTION_ID│
+│ = main        │     │ = dental      │     │ = arts-science│
+└───────┬───────┘     └───────┬───────┘     └───────┬───────┘
+        │                     │                     │
+        ▼                     ▼                     ▼
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│ Supabase:     │     │ Supabase:     │     │ Supabase:     │
+│ Main Project  │     │ Dental Project│     │ Arts Project  │
+│ (separate DB) │     │ (separate DB) │     │ (separate DB) │
+└───────────────┘     └───────────────┘     └───────────────┘
+```
+
+### Institutions
+
+| Institution | ID | Domain | Supabase |
+|-------------|-----|--------|----------|
+| Main (Umbrella) | `main` | jkkn.ac.in | pmqodbfhsejbvfbmsfeq |
+| Arts & Science | `arts-science` | arts.jkkn.ac.in | TBD |
+| Engineering | `engineering` | engg.jkkn.ac.in | TBD |
+| Dental | `dental` | dental.jkkn.ac.in | TBD |
+| Pharmacy | `pharmacy` | pharmacy.jkkn.ac.in | TBD |
+| Nursing | `nursing` | nursing.jkkn.ac.in | TBD |
+
+### Key Principles
+
+1. **Single Source of Truth**: ONE codebase, ALL institutions use it
+2. **Configuration over Code**: Differences handled via environment variables
+3. **Data Isolation**: Each institution has its own Supabase project (complete isolation)
+4. **Automatic Sync**: Push once → all 6 sites update automatically
+
+### Environment Variables (Per Vercel Project)
+
+```env
+# Institution Identity
+NEXT_PUBLIC_INSTITUTION_ID=dental
+NEXT_PUBLIC_INSTITUTION_NAME="JKKN Dental College"
+NEXT_PUBLIC_SITE_URL=https://dental.jkkn.ac.in
+
+# Supabase (Institution-specific)
+NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGc...
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...
+
+# Feature Flags
+NEXT_PUBLIC_FEATURES=blog,careers,page-builder,analytics
+```
+
+### Feature Flags System
+
+Control features per institution via `NEXT_PUBLIC_FEATURES`:
+
+```typescript
+// lib/config/multi-tenant.ts
+import { hasFeature } from '@/lib/config/multi-tenant'
+
+if (hasFeature('blog')) {
+  // Show blog features
+}
+
+// React hook
+import { useHasFeature, FeatureGate } from '@/lib/hooks/use-institution'
+
+// Component-based
+<FeatureGate feature="blog">
+  <BlogSection />
+</FeatureGate>
+```
+
+### SEO Handling
+
+SEO is **database-driven**, not code-driven:
+
+1. **Per-Page SEO**: `cms_seo_metadata` table (each institution's Supabase)
+2. **Site-Wide SEO**: `settings` table with `category='seo'`
+3. **Fallback**: Environment variables (institution name, URL)
+
+Each institution has unique SEO because each has its own database.
+
+### Migration Sync
+
+Sync database migrations across all institution Supabase projects:
+
+```bash
+# Apply to all institutions
+npm run db:migrate:all
+
+# Dry run (preview)
+npm run db:migrate:dry
+
+# Specific institution
+npm run db:migrate -- --institution=dental
+```
+
+**GitHub Actions**: Migrations auto-sync when `supabase/migrations/` changes.
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `lib/config/multi-tenant.ts` | Institution config, feature flags |
+| `lib/hooks/use-institution.ts` | React hooks for client components |
+| `lib/seo/site-metadata.ts` | Dynamic SEO from database |
+| `scripts/sync-migrations.ts` | Migration sync utility |
+| `.github/workflows/sync-migrations.yml` | Auto-sync on push |
+| `docs/MULTI-INSTITUTION-ARCHITECTURE.md` | Full architecture docs |
+| `docs/MULTI-TENANT-SEO.md` | SEO architecture docs |
+
+### Adding a New Institution
+
+1. Create Supabase project
+2. Create Vercel project (same repo, different env vars)
+3. Add environment variables
+4. Configure custom domain
+5. Run `npm run db:migrate -- --institution=new-id`
+
+### Important Rules
+
+- **NEVER** clone this repo for new institutions
+- **NEVER** hardcode institution-specific content in code
+- **ALWAYS** use environment variables for institution differences
+- **ALWAYS** store content in Supabase (CMS), not in code
+- **ALWAYS** use feature flags for institution-specific features
+
+---
+
 ## Essential Commands
 
 ### Development
