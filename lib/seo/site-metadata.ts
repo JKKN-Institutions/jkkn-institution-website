@@ -15,7 +15,7 @@
  */
 
 import { Metadata } from 'next'
-import { createServerSupabaseClient } from '@/lib/supabase/server'
+import { createPublicSupabaseClient } from '@/lib/supabase/server'
 
 // =============================================================================
 // TYPES
@@ -130,7 +130,8 @@ export async function getSiteSEOSettings(): Promise<SiteSEOSettings> {
   const defaults = getDefaultSEOSettings()
 
   try {
-    const supabase = await createServerSupabaseClient()
+    // Use cookie-less client to allow static rendering of routes
+    const supabase = createPublicSupabaseClient()
 
     // Fetch all relevant settings
     const { data: settings } = await supabase

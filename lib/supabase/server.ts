@@ -1,7 +1,29 @@
 import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { validateServiceRoleKey, validateSupabaseEnv } from '@/lib/utils/env-validator'
 import { logError } from '@/lib/utils/error-logger'
+
+/**
+ * Create a Supabase client WITHOUT cookies for public data fetching.
+ *
+ * Use this for:
+ * - SEO settings fetching (in generateMetadata)
+ * - Any public data that doesn't require authentication
+ *
+ * This allows routes to be statically rendered at build time.
+ * The regular createServerSupabaseClient() uses cookies() which
+ * triggers dynamic rendering in Next.js.
+ *
+ * IMPORTANT: Only use this for publicly accessible data.
+ * For authenticated operations, use createServerSupabaseClient().
+ */
+export function createPublicSupabaseClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+}
 
 export async function createServerSupabaseClient() {
   const cookieStore = await cookies()
