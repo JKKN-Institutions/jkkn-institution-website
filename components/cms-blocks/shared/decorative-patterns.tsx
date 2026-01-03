@@ -42,7 +42,7 @@ export function DecorativeCircle({
         'absolute rounded-full pointer-events-none',
         sizeMap[size],
         positionMap[position],
-        animate && 'animate-float-slow',
+        animate && 'motion-safe:animate-float-slow',
         className
       )}
       style={{
@@ -95,7 +95,7 @@ export function DecorativePatterns({
       <div className={cn('absolute inset-0 overflow-hidden pointer-events-none', className)} aria-hidden="true">
         {/* Large circle top-right */}
         <div
-          className="absolute -top-48 -right-48 w-96 h-96 md:w-[600px] md:h-[600px] rounded-full animate-float-slow"
+          className="absolute -top-48 -right-48 w-96 h-96 md:w-[600px] md:h-[600px] rounded-full motion-safe:animate-float-slow"
           style={{ background: `radial-gradient(circle, ${baseColor}0.08) 0%, transparent 70%)` }}
         />
         {/* Medium circle bottom-left */}
@@ -105,7 +105,7 @@ export function DecorativePatterns({
         />
         {/* Small circle center-right */}
         <div
-          className="absolute top-1/3 -right-16 w-32 h-32 md:w-48 md:h-48 rounded-full animate-float"
+          className="absolute top-1/3 -right-16 w-32 h-32 md:w-48 md:h-48 rounded-full motion-safe:animate-float"
           style={{ background: `radial-gradient(circle, ${baseColor}0.05) 0%, transparent 70%)` }}
         />
         {/* Extra circle top-left */}
@@ -115,7 +115,7 @@ export function DecorativePatterns({
         />
         {/* Bottom center */}
         <div
-          className="absolute bottom-1/4 left-1/4 w-24 h-24 md:w-32 md:h-32 rounded-full animate-float-slow"
+          className="absolute bottom-1/4 left-1/4 w-24 h-24 md:w-32 md:h-32 rounded-full motion-safe:animate-float-slow"
           style={{ background: `radial-gradient(circle, ${baseColor}0.03) 0%, transparent 70%)` }}
         />
       </div>
@@ -127,11 +127,11 @@ export function DecorativePatterns({
       <div className={cn('absolute inset-0 overflow-hidden pointer-events-none', className)} aria-hidden="true">
         {/* Multiple small circles scattered */}
         <div
-          className="absolute top-[10%] left-[5%] w-16 h-16 md:w-24 md:h-24 rounded-full animate-float"
+          className="absolute top-[10%] left-[5%] w-16 h-16 md:w-24 md:h-24 rounded-full motion-safe:animate-float"
           style={{ background: `radial-gradient(circle, ${baseColor}0.1) 0%, transparent 70%)` }}
         />
         <div
-          className="absolute top-[20%] right-[10%] w-20 h-20 md:w-32 md:h-32 rounded-full animate-float-slow"
+          className="absolute top-[20%] right-[10%] w-20 h-20 md:w-32 md:h-32 rounded-full motion-safe:animate-float-slow"
           style={{ background: `radial-gradient(circle, ${baseColor}0.08) 0%, transparent 70%)` }}
         />
         <div
@@ -139,11 +139,11 @@ export function DecorativePatterns({
           style={{ background: `radial-gradient(circle, ${baseColor}0.06) 0%, transparent 70%)` }}
         />
         <div
-          className="absolute top-[70%] right-[15%] w-24 h-24 md:w-36 md:h-36 rounded-full animate-float"
+          className="absolute top-[70%] right-[15%] w-24 h-24 md:w-36 md:h-36 rounded-full motion-safe:animate-float"
           style={{ background: `radial-gradient(circle, ${baseColor}0.07) 0%, transparent 70%)` }}
         />
         <div
-          className="absolute bottom-[15%] left-[20%] w-16 h-16 md:w-28 md:h-28 rounded-full animate-float-slow"
+          className="absolute bottom-[15%] left-[20%] w-16 h-16 md:w-28 md:h-28 rounded-full motion-safe:animate-float-slow"
           style={{ background: `radial-gradient(circle, ${baseColor}0.05) 0%, transparent 70%)` }}
         />
       </div>
@@ -165,7 +165,7 @@ export function DecorativePatterns({
       />
       {/* Small circle center-right */}
       <div
-        className="absolute top-1/2 -right-12 w-24 h-24 md:w-40 md:h-40 rounded-full animate-float-slow"
+        className="absolute top-1/2 -right-12 w-24 h-24 md:w-40 md:h-40 rounded-full motion-safe:animate-float-slow"
         style={{ background: `radial-gradient(circle, ${baseColor}0.04) 0%, transparent 70%)` }}
       />
     </div>

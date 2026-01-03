@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { logActivity } from '@/lib/utils/activity-logger'
 import { checkPermission } from '../permissions'
+import { getMediaBucket } from '@/lib/config/multi-tenant'
 
 // Validation schemas
 const UploadMediaSchema = z.object({
@@ -398,7 +399,7 @@ export async function deleteMedia(mediaId: string): Promise<FormState> {
 
   // Delete from storage
   const { error: storageError } = await supabase.storage
-    .from('cms-media')
+    .from(getMediaBucket())
     .remove([media.file_path])
 
   if (storageError) {
@@ -458,7 +459,7 @@ export async function deleteMediaBatch(mediaIds: string[]): Promise<FormState> {
   if (mediaItems && mediaItems.length > 0) {
     // Delete from storage
     const filePaths = mediaItems.map((m) => m.file_path)
-    await supabase.storage.from('cms-media').remove(filePaths)
+    await supabase.storage.from(getMediaBucket()).remove(filePaths)
   }
 
   // Delete database records

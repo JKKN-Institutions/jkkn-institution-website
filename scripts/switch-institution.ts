@@ -23,6 +23,7 @@ interface InstitutionEnv {
   supabaseAnonKey: string
   siteUrl: string
   features: string
+  mediaBucket: string
 }
 
 const INSTITUTIONS: Record<string, InstitutionEnv> = {
@@ -33,6 +34,7 @@ const INSTITUTIONS: Record<string, InstitutionEnv> = {
     supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtcW9kYmZoc2VqYnZmYm1zZmVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM3NTAzMDcsImV4cCI6MjA3OTMyNjMwN30.v2DXQ-0Aa1UTotrzWguqWRYR7Eh8mkXcwCYxBjgiFmI',
     siteUrl: 'http://localhost:3000',
     features: 'blog,careers,page-builder,analytics,events,gallery,testimonials,newsletter',
+    mediaBucket: 'cms-media',
   },
   dental: {
     id: 'dental',
@@ -41,6 +43,7 @@ const INSTITUTIONS: Record<string, InstitutionEnv> = {
     supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndubXl2Ym5xbGR1a2Vrbm5tbnBsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNDQxNTMsImV4cCI6MjA4MjkyMDE1M30.A5YnEqrUdtu7fOpxgHGzMghr1grIxhDqCF4Q_2BwZhQ',
     siteUrl: 'http://localhost:3000',
     features: 'blog,careers,page-builder,analytics,faculty-directory,course-catalog,admissions,testimonials',
+    mediaBucket: 'media',
   },
   // Add more institutions as needed:
   // 'arts-science': { ... },
@@ -75,6 +78,11 @@ SUPABASE_SERVICE_ROLE_KEY=${serviceRoleKey || 'YOUR_SERVICE_ROLE_KEY_HERE'}
 # FEATURE FLAGS
 # =============================================================================
 NEXT_PUBLIC_FEATURES=${inst.features}
+
+# =============================================================================
+# STORAGE CONFIGURATION
+# =============================================================================
+NEXT_PUBLIC_MEDIA_BUCKET=${inst.mediaBucket}
 
 # =============================================================================
 # DEBUG (Development only)

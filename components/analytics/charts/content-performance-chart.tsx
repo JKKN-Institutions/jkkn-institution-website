@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import {
   BarChart,
   Bar,
@@ -14,7 +14,9 @@ import {
   Cell,
   Legend
 } from 'recharts'
+import { AlertCircle, RefreshCw } from 'lucide-react'
 import { AnalyticsCard, ChartGrid } from '../analytics-card'
+import { Button } from '@/components/ui/button'
 import { useDateRange } from '../date-range-selector'
 import { getTopPages, getContentStats } from '@/app/actions/analytics'
 import { dateRangeToParams } from '@/lib/analytics/date-presets'
@@ -36,28 +38,32 @@ export function ContentPerformanceChart({ className }: ContentPerformanceChartPr
   const [topPages, setTopPages] = useState<TopPageData[]>([])
   const [contentStats, setContentStats] = useState<ContentStats | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const dateRange = useDateRange()
 
-  useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true)
-      try {
-        const params = dateRangeToParams(dateRange)
-        const [pagesResult, statsResult] = await Promise.all([
-          getTopPages(10),
-          getContentStats(params)
-        ])
-        setTopPages(pagesResult)
-        setContentStats(statsResult)
-      } catch (error) {
-        console.error('Failed to fetch content data:', error)
-      } finally {
-        setIsLoading(false)
-      }
+  const fetchData = useCallback(async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const params = dateRangeToParams(dateRange)
+      const [pagesResult, statsResult] = await Promise.all([
+        getTopPages(10),
+        getContentStats(params)
+      ])
+      setTopPages(pagesResult)
+      setContentStats(statsResult)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to fetch content data'
+      setError(message)
+      console.error('ContentPerformanceChart error:', err)
+    } finally {
+      setIsLoading(false)
     }
-
-    fetchData()
   }, [dateRange])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
 
   const handleExportCSV = () => {
     exportAnalyticsAsCSV(topPages, topPagesColumns, 'top-pages')
@@ -79,6 +85,28 @@ export function ContentPerformanceChart({ className }: ContentPerformanceChartPr
     { name: 'Archived', value: contentStats.archivedPages, fill: STATUS_COLORS.archived },
     { name: 'Scheduled', value: contentStats.scheduledPages, fill: STATUS_COLORS.scheduled }
   ].filter(item => item.value > 0) : []
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="rounded-xl border border-destructive/50 bg-destructive/10 p-6">
+        <div className="flex items-center gap-2 text-destructive">
+          <AlertCircle className="h-5 w-5" />
+          <span className="font-medium">Failed to load content performance data</span>
+        </div>
+        <p className="mt-2 text-sm text-muted-foreground">{error}</p>
+        <Button
+          variant="outline"
+          size="sm"
+          className="mt-3 gap-2"
+          onClick={fetchData}
+        >
+          <RefreshCw className="h-4 w-4" />
+          Retry
+        </Button>
+      </div>
+    )
+  }
 
   return (
     <ChartGrid columns={2} className={className}>
@@ -208,24 +236,49 @@ interface ContentStatsCardsProps {
 export function ContentStatsCards({ className }: ContentStatsCardsProps) {
   const [stats, setStats] = useState<ContentStats | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const dateRange = useDateRange()
 
-  useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true)
-      try {
-        const params = dateRangeToParams(dateRange)
-        const result = await getContentStats(params)
-        setStats(result)
-      } catch (error) {
-        console.error('Failed to fetch content stats:', error)
-      } finally {
-        setIsLoading(false)
-      }
+  const fetchData = useCallback(async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const params = dateRangeToParams(dateRange)
+      const result = await getContentStats(params)
+      setStats(result)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to fetch content stats'
+      setError(message)
+      console.error('ContentStatsCards error:', err)
+    } finally {
+      setIsLoading(false)
     }
-
-    fetchData()
   }, [dateRange])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  if (error) {
+    return (
+      <div className={`rounded-xl border border-destructive/50 bg-destructive/10 p-6 ${className}`}>
+        <div className="flex items-center gap-2 text-destructive">
+          <AlertCircle className="h-5 w-5" />
+          <span className="font-medium">Failed to load content stats</span>
+        </div>
+        <p className="mt-2 text-sm text-muted-foreground">{error}</p>
+        <Button
+          variant="outline"
+          size="sm"
+          className="mt-3 gap-2"
+          onClick={fetchData}
+        >
+          <RefreshCw className="h-4 w-4" />
+          Retry
+        </Button>
+      </div>
+    )
+  }
 
   if (isLoading || !stats) {
     return null

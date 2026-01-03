@@ -100,16 +100,16 @@ export default async function AdminLayout({
     <AdminThemeProvider>
       <AdminLayoutClient userId={session.user.id} initialUserData={initialUserData}>
         <div className="admin-layout flex h-screen w-full max-w-full overflow-hidden bg-slate-50/50 dark:bg-slate-950/50 backdrop-blur-[2px]">
-          {/* Decorative gradient background - Modern Glassmorphism */}
+          {/* Decorative gradient background - Modern Glassmorphism (reduced blur for INP) */}
           <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
             {/* Top right primary glow */}
-            <div className="absolute -top-[20%] -right-[10%] w-[70%] h-[70%] rounded-full bg-gradient-to-b from-primary/10 to-primary/5 blur-[100px]" />
+            <div className="absolute -top-[20%] -right-[10%] w-[70%] h-[70%] rounded-full bg-gradient-to-b from-primary/10 to-primary/5 blur-3xl" />
 
             {/* Bottom left secondary glow */}
-            <div className="absolute -bottom-[20%] -left-[10%] w-[60%] h-[60%] rounded-full bg-gradient-to-t from-secondary/10 to-secondary/5 blur-[100px]" />
+            <div className="absolute -bottom-[20%] -left-[10%] w-[60%] h-[60%] rounded-full bg-gradient-to-t from-secondary/10 to-secondary/5 blur-3xl" />
 
             {/* Center subtle accent */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50%] h-[50%] rounded-full bg-accent/5 blur-[120px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50%] h-[50%] rounded-full bg-accent/5 blur-3xl" />
 
             {/* Mesh pattern overlay for texture */}
             <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03]"

@@ -228,6 +228,22 @@ export function isMainInstitution(): boolean {
 }
 
 // =============================================================================
+// STORAGE CONFIGURATION
+// =============================================================================
+
+/**
+ * Get the storage bucket name for media files.
+ * Each institution can have its own bucket name configured via environment variable.
+ *
+ * @example
+ * - Main Institution: 'cms-media'
+ * - Dental College: 'media'
+ */
+export function getMediaBucket(): string {
+  return process.env.NEXT_PUBLIC_MEDIA_BUCKET || 'cms-media'
+}
+
+// =============================================================================
 // FEATURE FLAGS
 // =============================================================================
 

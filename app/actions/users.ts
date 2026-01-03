@@ -633,13 +633,27 @@ export async function createUser(data: {
   // Approved Emails & Activity
   // ===========================
 
-  // Also add to approved_emails for future Google OAuth login
-  await supabase.from('approved_emails').insert({
-    email,
-    notes: `Created by admin: ${user.email}`,
-    added_by: user.id,
-    status: 'active',
-  })
+  // Add to approved_emails for future Google OAuth login (use upsert to handle duplicates)
+  const { error: approvedEmailError } = await supabase
+    .from('approved_emails')
+    .upsert(
+      {
+        email,
+        notes: `Created by admin: ${user.email}`,
+        added_by: user.id,
+        status: 'active',
+      },
+      {
+        onConflict: 'email',
+        ignoreDuplicates: false, // Update if exists
+      }
+    )
+
+  if (approvedEmailError) {
+    console.error('Error adding to approved_emails:', approvedEmailError)
+    // Don't fail the entire operation, just log the error
+    // The user is already created, this is a secondary operation
+  }
 
   // Log activity
   await logActivity({
@@ -652,6 +666,7 @@ export async function createUser(data: {
   })
 
   revalidatePath('/admin/users')
+  revalidatePath('/admin/users/approved-emails')
 
   return { success: true, message: 'User created successfully' }
 }

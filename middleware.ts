@@ -37,30 +37,32 @@ const guestAllowedRoutes = new Set(['/admin', '/admin/dashboard', '/auth/access-
 export async function middleware(request: NextRequest) {
   const { supabase, response } = createMiddlewareClient(request)
 
-  // Refresh session if expired
+  // IMPORTANT: Use getUser() instead of getSession() to properly refresh the session
+  // getUser() verifies the token with Supabase Auth and refreshes expired tokens
+  // This ensures Server Actions can read the user from cookies
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    data: { user },
+  } = await supabase.auth.getUser()
 
   const pathname = request.nextUrl.pathname
   const isAuthPage = pathname.startsWith('/auth')
   const isAdminPage = pathname.startsWith('/admin')
 
   // If user is not authenticated and trying to access admin pages, redirect to auth
-  if (!session && isAdminPage) {
+  if (!user && isAdminPage) {
     const redirectUrl = new URL('/auth/login', request.url)
     redirectUrl.searchParams.set('redirectTo', pathname)
     return NextResponse.redirect(redirectUrl)
   }
 
   // If user is authenticated and trying to access auth pages, redirect to admin
-  if (session && isAuthPage && pathname !== '/auth/callback') {
+  if (user && isAuthPage && pathname !== '/auth/callback') {
     return NextResponse.redirect(new URL('/admin', request.url))
   }
 
   // Check if user email is from @jkkn.ac.in domain for admin access
-  if (session && isAdminPage) {
-    const email = session.user.email
+  if (user && isAdminPage) {
+    const email = user.email
     if (!email?.endsWith('@jkkn.ac.in')) {
       // Redirect unauthorized users to a forbidden page or logout
       await supabase.auth.signOut()
@@ -73,7 +75,7 @@ export async function middleware(request: NextRequest) {
     const { data: userRoles } = await supabase
       .from('user_roles')
       .select('roles(name)')
-      .eq('user_id', session.user.id)
+      .eq('user_id', user.id)
 
     type RoleRelation = { name: string } | { name: string }[] | null
     const getRoleName = (roles: RoleRelation): string | undefined => {
@@ -94,7 +96,7 @@ export async function middleware(request: NextRequest) {
 
     // Log warning if multiple roles detected (excluding super admin case)
     if (roles.length > 1) {
-      console.warn(`User ${session.user.id} has multiple roles:`, roles)
+      console.warn(`User ${user.id} has multiple roles:`, roles)
     }
 
     // Guest user protection - use Set for O(1) lookup
@@ -113,7 +115,7 @@ export async function middleware(request: NextRequest) {
       if (requiredPermission) {
         const hasPermission = await checkUserPermission(
           supabase,
-          session.user.id,
+          user.id,
           requiredPermission
         )
 

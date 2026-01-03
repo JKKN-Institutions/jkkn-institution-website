@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import {
   Users,
   Activity,
@@ -8,11 +8,14 @@ import {
   MessageSquare,
   TrendingUp,
   TrendingDown,
-  Minus
+  Minus,
+  AlertCircle,
+  RefreshCw
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { StatsGrid } from '../analytics-card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Button } from '@/components/ui/button'
 import { useDateRange } from '../date-range-selector'
 import { getKPIData } from '@/app/actions/analytics'
 import { dateRangeToParams, formatAnalyticsNumber, calculatePercentageChange } from '@/lib/analytics/date-presets'
@@ -39,24 +42,28 @@ const COLOR_MAP: Record<string, string> = {
 export function KPICards({ className }: KPICardsProps) {
   const [data, setData] = useState<KPIData[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const dateRange = useDateRange()
 
-  useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true)
-      try {
-        const params = dateRangeToParams(dateRange)
-        const result = await getKPIData(params)
-        setData(result)
-      } catch (error) {
-        console.error('Failed to fetch KPI data:', error)
-      } finally {
-        setIsLoading(false)
-      }
+  const fetchData = useCallback(async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const params = dateRangeToParams(dateRange)
+      const result = await getKPIData(params)
+      setData(result)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to fetch KPI data'
+      setError(message)
+      console.error('KPICards error:', err)
+    } finally {
+      setIsLoading(false)
     }
-
-    fetchData()
   }, [dateRange])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
 
   if (isLoading) {
     return (
@@ -65,6 +72,27 @@ export function KPICards({ className }: KPICardsProps) {
           <KPICardSkeleton key={i} />
         ))}
       </StatsGrid>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className={cn("rounded-xl border border-destructive/50 bg-destructive/10 p-6", className)}>
+        <div className="flex items-center gap-2 text-destructive">
+          <AlertCircle className="h-5 w-5" />
+          <span className="font-medium">Failed to load KPI data</span>
+        </div>
+        <p className="mt-2 text-sm text-muted-foreground">{error}</p>
+        <Button
+          variant="outline"
+          size="sm"
+          className="mt-3 gap-2"
+          onClick={fetchData}
+        >
+          <RefreshCw className="h-4 w-4" />
+          Retry
+        </Button>
+      </div>
     )
   }
 

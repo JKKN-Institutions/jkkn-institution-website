@@ -25,9 +25,9 @@ export function WelcomeBanner({ name }: WelcomeBannerProps) {
       {/* Glassmorphism Overlay - Gradient Mesh */}
       <div className="absolute inset-0 z-10 bg-gradient-to-r from-white/95 via-white/80 to-transparent dark:from-zinc-900/95 dark:via-zinc-900/70" />
 
-      {/* Decorative Blur Circles */}
-      <div className="absolute top-0 left-0 z-10 w-64 h-64 bg-primary/20 rounded-full blur-[100px]" />
-      <div className="absolute bottom-0 right-[20%] z-10 w-64 h-64 bg-secondary/20 rounded-full blur-[100px]" />
+      {/* Decorative Blur Circles - Reduced blur for better INP */}
+      <div className="absolute top-0 left-0 z-10 w-64 h-64 bg-primary/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-[20%] z-10 w-64 h-64 bg-secondary/20 rounded-full blur-3xl" />
 
       {/* Content Container */}
       <div className="relative z-20 w-full p-8 md:p-10">
@@ -37,7 +37,7 @@ export function WelcomeBanner({ name }: WelcomeBannerProps) {
           <div
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md w-fit animate-in fade-in slide-in-from-left-4 duration-500 delay-150"
           >
-            <Sparkles className="h-3.5 w-3.5 text-primary animate-pulse" />
+            <Sparkles className="h-3.5 w-3.5 text-primary motion-safe:animate-pulse" />
             <span className="text-xs font-semibold text-primary uppercase tracking-wider">
               Admin Dashboard
             </span>

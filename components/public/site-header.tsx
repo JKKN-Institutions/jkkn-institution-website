@@ -55,6 +55,7 @@ const fallbackNavigation: NavItem[] = [
       { id: 'events', label: 'Events', href: '/events' },
       { id: 'gallery', label: 'Gallery', href: '/gallery' },
       { id: 'news', label: 'News & Updates', href: '/news' },
+      { id: 'terms', label: 'Terms & Conditions', href: '/terms-and-conditions' },
     ],
   },
 ]
@@ -516,7 +517,7 @@ export function SiteHeader({
       {/* Spacer for fixed header - only needed on live site, not in preview */}
       {/* Fixed height prevents CLS from dynamic height changes */}
       {!isPreview && (
-        <div className="h-16 sm:h-20 lg:h-24" />
+        <div className="h-20 sm:h-24 lg:h-28" />
       )}
     </>
   )

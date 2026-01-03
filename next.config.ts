@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Cache Components is available but requires all data fetches to use
-  // Suspense boundaries or "use cache" directive. Enable when ready:
+  // Cache Components requires all data fetches to use Suspense boundaries
+  // Enable when the codebase is fully migrated to this pattern:
   // cacheComponents: true,
   async redirects() {
     return [
@@ -63,6 +63,53 @@ const nextConfig: NextConfig = {
       // Note: Some URLs with special characters are handled by the catch-all route
       {
         source: '/Accept-Language',
+        destination: '/',
+        permanent: true,
+      },
+
+      // === Legacy WordPress Pagination ===
+      // These URLs were indexed from the old WordPress site
+      {
+        source: '/page/:number(\\d+)',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/page/:number(\\d+)/',
+        destination: '/',
+        permanent: true,
+      },
+
+      // === Specific Legacy Content ===
+      {
+        source: '/lamp-lighting-ceremony',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/lamp-lighting-ceremony/',
+        destination: '/',
+        permanent: true,
+      },
+
+      // === Spam URLs (WordPress hack remnants) ===
+      {
+        source: '/20bet-review-2025-bonus-promo-code-by-bet-experts-30-2',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/20bet-review-2025-bonus-promo-code-by-bet-experts-30-2/',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/20bet-review-2025-bonus-promo-code-by-bet-experts-30-3',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/20bet-review-2025-bonus-promo-code-by-bet-experts-30-3/',
         destination: '/',
         permanent: true,
       },

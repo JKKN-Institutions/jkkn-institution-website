@@ -93,12 +93,20 @@ export default function HeroSection({
   useEffect(() => {
     setIsLoaded(true)
 
+    // Throttle scroll handler with RAF for better INP
+    let ticking = false
     const handleScroll = () => {
-      if (heroRef.current) {
-        const rect = heroRef.current.getBoundingClientRect()
-        if (rect.bottom > 0) {
-          setScrollY(window.scrollY * 0.3)
-        }
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (heroRef.current) {
+            const rect = heroRef.current.getBoundingClientRect()
+            if (rect.bottom > 0) {
+              setScrollY(window.scrollY * 0.3)
+            }
+          }
+          ticking = false
+        })
+        ticking = true
       }
     }
 
@@ -186,8 +194,8 @@ export default function HeroSection({
         {(logoImage || (showAiBadge && !showTrustBadges)) && (
           <div
             className={cn(
-              "mb-6 transition-all duration-1000",
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"
+              "mb-6 transition-opacity duration-1000 will-change-opacity",
+              isLoaded ? "opacity-100" : "opacity-0"
             )}
           >
             {logoImage ? (
@@ -226,11 +234,11 @@ export default function HeroSection({
         {/* Animated Title */}
         <h1
           className={cn(
-            'tracking-wide transition-all duration-1000 delay-200',
+            'tracking-wide transition-opacity duration-1000 delay-200 will-change-opacity',
             fontSizeClasses[titleFontSize] || 'text-5xl',
             fontWeightClasses[titleFontWeight] || 'font-bold',
             titleFontStyle === 'italic' && 'italic',
-            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            isLoaded ? "opacity-100" : "opacity-0"
           )}
           style={{
             color: titleColor,
@@ -244,11 +252,11 @@ export default function HeroSection({
         {subtitle && (
           <p
             className={cn(
-              'mt-4 max-w-2xl transition-all duration-1000 delay-300',
+              'mt-4 max-w-2xl transition-opacity duration-1000 delay-300 will-change-opacity',
               alignment === 'center' && 'mx-auto',
               fontWeightClasses[subtitleFontWeight] || 'font-normal',
               subtitleFontStyle === 'italic' && 'italic',
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              isLoaded ? "opacity-100" : "opacity-0"
             )}
             style={{
               color: subtitleColor,
@@ -263,9 +271,9 @@ export default function HeroSection({
         {showTrustBadges && trustBadgesPosition === 'below-subtitle' && subtitle && (
           <div
             className={cn(
-              'mt-6 flex flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-4xl transition-all duration-1000 delay-400',
+              'mt-6 flex flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-4xl transition-opacity duration-1000 delay-400 will-change-opacity',
               alignment === 'center' && 'mx-auto',
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              isLoaded ? "opacity-100" : "opacity-0"
             )}
           >
             {trustBadges.map((badge, index) => {
@@ -321,9 +329,9 @@ export default function HeroSection({
         {showTrustBadges && trustBadgesPosition === 'below-title' && (
           <div
             className={cn(
-              'mt-4 mb-6 flex flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-4xl transition-all duration-1000 delay-300',
+              'mt-4 mb-6 flex flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-4xl transition-opacity duration-1000 delay-300 will-change-opacity',
               alignment === 'center' && 'mx-auto',
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              isLoaded ? "opacity-100" : "opacity-0"
             )}
           >
             {trustBadges.map((badge, index) => {
@@ -375,11 +383,11 @@ export default function HeroSection({
         {/* CTA Buttons - Updated Styling */}
         <div
           className={cn(
-            "mt-8 flex flex-col sm:flex-row flex-wrap gap-4 transition-all duration-1000 delay-500",
+            "mt-8 flex flex-col sm:flex-row flex-wrap gap-4 transition-opacity duration-1000 delay-500 will-change-opacity",
             alignment === 'center' && 'justify-center',
             alignment === 'left' && 'justify-start',
             alignment === 'right' && 'justify-end',
-            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            isLoaded ? "opacity-100" : "opacity-0"
           )}
         >
           {buttons.map((btn, index) => (
@@ -407,13 +415,13 @@ export default function HeroSection({
       {/* Scroll Indicator */}
       <div
         className={cn(
-          "absolute bottom-8 left-1/2 -translate-x-1/2 transition-all duration-1000 delay-700",
-          isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          "absolute bottom-8 left-1/2 -translate-x-1/2 transition-opacity duration-1000 delay-700 will-change-opacity",
+          isLoaded ? "opacity-100" : "opacity-0"
         )}
       >
         <div className="flex flex-col items-center gap-2 text-white/60">
           <span className="text-xs uppercase tracking-widest">Scroll</span>
-          <ChevronDown className="w-5 h-5 animate-bounce" />
+          <ChevronDown className="w-5 h-5 motion-safe:animate-bounce" />
         </div>
       </div>
 

@@ -81,7 +81,7 @@ export default function FAQAccordion({
                   <span>{item.question}</span>
                   <svg
                     className={cn(
-                      'w-5 h-5 transition-transform',
+                      'w-5 h-5 transition-transform duration-200',
                       isExpanded && 'rotate-180'
                     )}
                     fill="none"
@@ -91,11 +91,17 @@ export default function FAQAccordion({
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                {isExpanded && (
-                  <div className="p-4 pt-0 text-muted-foreground">
-                    {item.answer}
+                {/* CSS Grid animation to prevent CLS */}
+                <div
+                  className="grid transition-[grid-template-rows] duration-200 ease-out"
+                  style={{ gridTemplateRows: isExpanded ? '1fr' : '0fr' }}
+                >
+                  <div className="overflow-hidden">
+                    <div className="p-4 pt-0 text-muted-foreground">
+                      {item.answer}
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             )
           })}

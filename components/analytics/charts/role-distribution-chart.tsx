@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import {
   PieChart,
   Pie,
@@ -9,8 +9,10 @@ import {
   Tooltip,
   Legend
 } from 'recharts'
+import { AlertCircle, RefreshCw } from 'lucide-react'
 import { AnalyticsCard } from '../analytics-card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Button } from '@/components/ui/button'
 import { getRoleDistribution } from '@/app/actions/analytics'
 import { exportAnalyticsAsCSV, roleDistributionColumns } from '@/lib/analytics/export-utils'
 import type { RoleDistributionData } from '@/lib/analytics/types'
@@ -38,25 +40,51 @@ export function RoleDistributionChart({
 }: RoleDistributionChartProps) {
   const [data, setData] = useState<RoleDistributionData[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const fetchData = useCallback(async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const result = await getRoleDistribution()
+      setData(result)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to fetch role distribution'
+      setError(message)
+      console.error('RoleDistributionChart error:', err)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
 
   useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true)
-      try {
-        const result = await getRoleDistribution()
-        setData(result)
-      } catch (error) {
-        console.error('Failed to fetch role distribution:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
     fetchData()
-  }, [])
+  }, [fetchData])
 
   const handleExportCSV = () => {
     exportAnalyticsAsCSV(data, roleDistributionColumns, 'role-distribution')
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="rounded-xl border border-destructive/50 bg-destructive/10 p-6">
+        <div className="flex items-center gap-2 text-destructive">
+          <AlertCircle className="h-5 w-5" />
+          <span className="font-medium">Failed to load role distribution</span>
+        </div>
+        <p className="mt-2 text-sm text-muted-foreground">{error}</p>
+        <Button
+          variant="outline"
+          size="sm"
+          className="mt-3 gap-2"
+          onClick={fetchData}
+        >
+          <RefreshCw className="h-4 w-4" />
+          Retry
+        </Button>
+      </div>
+    )
   }
 
   // Format data for chart

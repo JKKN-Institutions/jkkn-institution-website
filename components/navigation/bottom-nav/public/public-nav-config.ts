@@ -12,6 +12,8 @@ import {
   ClipboardList,
   FileCheck,
   FileEdit,
+  Scale,
+  Shield,
   type LucideIcon
 } from 'lucide-react';
 import type { NavMenuItem, NavMenuGroup, NavSubmenuItem } from '../core/types';
@@ -103,6 +105,24 @@ export const PUBLIC_FALLBACK_MORE_MENU_GROUPS: NavMenuGroupConfig[] = [
         href: '/gallery',
         label: 'Gallery',
         icon: Image,
+        submenus: []
+      }
+    ]
+  },
+  {
+    groupLabel: 'Legal',
+    icon: Scale,
+    menus: [
+      {
+        href: '/terms-and-conditions',
+        label: 'Terms & Conditions',
+        icon: Scale,
+        submenus: []
+      },
+      {
+        href: '/privacy-policy',
+        label: 'Privacy Policy',
+        icon: Shield,
         submenus: []
       }
     ]

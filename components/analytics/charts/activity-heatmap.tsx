@@ -1,9 +1,11 @@
 'use client'
 
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useCallback } from 'react'
 import { format, parseISO, startOfWeek, eachDayOfInterval, getDay } from 'date-fns'
+import { AlertCircle, RefreshCw } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { AnalyticsCard } from '../analytics-card'
+import { Button } from '@/components/ui/button'
 import { useDateRange } from '../date-range-selector'
 import { getActivityHeatmapData, getAvailableModules } from '@/app/actions/analytics'
 import { dateRangeToParams } from '@/lib/analytics/date-presets'
@@ -35,6 +37,7 @@ export function ActivityHeatmap({ className }: ActivityHeatmapProps) {
   const [modules, setModules] = useState<string[]>([])
   const [selectedModule, setSelectedModule] = useState<string>('all')
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const dateRange = useDateRange()
 
   useEffect(() => {
@@ -49,25 +52,28 @@ export function ActivityHeatmap({ className }: ActivityHeatmapProps) {
     fetchModules()
   }, [])
 
-  useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true)
-      try {
-        const params = {
-          ...dateRangeToParams(dateRange),
-          module: selectedModule === 'all' ? undefined : selectedModule
-        }
-        const result = await getActivityHeatmapData(params)
-        setData(result)
-      } catch (error) {
-        console.error('Failed to fetch heatmap data:', error)
-      } finally {
-        setIsLoading(false)
+  const fetchData = useCallback(async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const params = {
+        ...dateRangeToParams(dateRange),
+        module: selectedModule === 'all' ? undefined : selectedModule
       }
+      const result = await getActivityHeatmapData(params)
+      setData(result)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to fetch heatmap data'
+      setError(message)
+      console.error('ActivityHeatmap error:', err)
+    } finally {
+      setIsLoading(false)
     }
-
-    fetchData()
   }, [dateRange, selectedModule])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
 
   const handleExportCSV = () => {
     exportAnalyticsAsCSV(data, activityHeatmapColumns, 'activity-heatmap')
@@ -107,6 +113,28 @@ export function ActivityHeatmap({ className }: ActivityHeatmapProps) {
       days
     }))
   }, [dateRange])
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="rounded-xl border border-destructive/50 bg-destructive/10 p-6">
+        <div className="flex items-center gap-2 text-destructive">
+          <AlertCircle className="h-5 w-5" />
+          <span className="font-medium">Failed to load activity heatmap</span>
+        </div>
+        <p className="mt-2 text-sm text-muted-foreground">{error}</p>
+        <Button
+          variant="outline"
+          size="sm"
+          className="mt-3 gap-2"
+          onClick={fetchData}
+        >
+          <RefreshCw className="h-4 w-4" />
+          Retry
+        </Button>
+      </div>
+    )
+  }
 
   return (
     <AnalyticsCard

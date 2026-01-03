@@ -350,21 +350,23 @@
   }
 
   /* Glassmorphism Card - Light variant */
+  /* Reduced blur from 12px to 8px for better INP performance */
   .glass-card {
     @apply rounded-xl;
     background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
   }
 
   /* Glassmorphism Card - Dark variant (for green backgrounds) */
+  /* Reduced blur from 10px to 6px for better INP performance */
   .glass-card-dark {
     @apply rounded-xl;
     background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }

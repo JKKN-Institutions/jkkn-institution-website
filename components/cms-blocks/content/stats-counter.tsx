@@ -277,10 +277,17 @@ function StatCard({
         isDark ? 'glass-card-dark' : 'glass-card'
       )}
     >
-      <div className={cn(
-        'stat-number mb-2',
-        isDark ? 'text-white' : 'text-brand-primary'
-      )}>
+      <div
+        className={cn(
+          'stat-number mb-2',
+          isDark ? 'text-white' : 'text-brand-primary'
+        )}
+        style={{
+          fontVariantNumeric: 'tabular-nums',
+          minWidth: '120px',
+          display: 'inline-block',
+        }}
+      >
         {displayValue}
         {!String(displayValue).includes('%') && !String(displayValue).includes('+') && '+'}
       </div>

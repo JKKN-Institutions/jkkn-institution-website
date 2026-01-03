@@ -27,6 +27,7 @@ import {
 import { cn, formatBytes } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import { uploadMediaBatch } from '@/app/actions/cms/media'
+import { getMediaBucket } from '@/lib/config/multi-tenant'
 import { toast } from 'sonner'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -158,7 +159,7 @@ export function MediaUploader({ folders, onSuccess }: MediaUploaderProps) {
 
         // Upload to Supabase Storage
         const { data, error } = await supabase.storage
-          .from('cms-media')
+          .from(getMediaBucket())
           .upload(filePath, uploadFile.file, {
             cacheControl: '3600',
             upsert: false,
@@ -174,7 +175,7 @@ export function MediaUploader({ folders, onSuccess }: MediaUploaderProps) {
         // Get public URL
         const {
           data: { publicUrl },
-        } = supabase.storage.from('cms-media').getPublicUrl(data.path)
+        } = supabase.storage.from(getMediaBucket()).getPublicUrl(data.path)
 
         // Get image dimensions if applicable
         let width: number | undefined
