@@ -19,53 +19,22 @@ function getRoleData(roles: RoleRelation): RoleData | undefined {
 async function getUserData(userId: string) {
   const supabase = await createServerSupabaseClient()
 
-  // Debug: Check auth state on server
-  const { data: { user: authUser } } = await supabase.auth.getUser()
-  console.log('[getUserData] Auth user from getUser():', authUser?.id, authUser?.email)
-  console.log('[getUserData] Passed userId param:', userId)
-  console.log('[getUserData] IDs match:', authUser?.id === userId)
-
   // Get user profile
-  const { data: profile, error: profileError } = await supabase
+  const { data: profile } = await supabase
     .from('profiles')
     .select('full_name, email')
     .eq('id', userId)
     .single()
 
-  if (profileError) {
-    console.error('[getUserData] Profile fetch error:', profileError)
-  }
-
-  // Debug: Test simple query first (without nested select)
-  const { data: simpleRoles, error: simpleError } = await supabase
+  // Get user roles
+  const { data: userRoles } = await supabase
     .from('user_roles')
-    .select('*')
+    .select('roles(id, name, display_name)')
     .eq('user_id', userId)
-
-  console.log('[getUserData] Simple user_roles query:', JSON.stringify(simpleRoles))
-  if (simpleError) {
-    console.error('[getUserData] Simple query error:', simpleError)
-  }
-
-  // Get user roles with nested select
-  const { data: userRoles, error: rolesError } = await supabase
-    .from('user_roles')
-    .select('role_id, roles(id, name, display_name)')
-    .eq('user_id', userId)
-
-  // Debug logging for role fetching
-  console.log('[getUserData] User ID:', userId)
-  console.log('[getUserData] User roles query result:', JSON.stringify(userRoles))
-  if (rolesError) {
-    console.error('[getUserData] Roles fetch error:', rolesError)
-  }
 
   const roles = userRoles?.map((ur) => getRoleData(ur.roles as RoleRelation)).filter(Boolean) as RoleData[] || []
   const roleNames = roles.map((r) => r?.name).filter(Boolean)
   const isSuperAdmin = roleNames.includes('super_admin')
-
-  console.log('[getUserData] Parsed roles:', JSON.stringify(roles))
-  console.log('[getUserData] Is super admin:', isSuperAdmin)
 
   // Get permissions
   let permissions: string[] = []

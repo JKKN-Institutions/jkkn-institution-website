@@ -103,7 +103,9 @@
       "mcp__Main_Supabase_Project__list_tables",
       "mcp__Main_Supabase_Project__execute_sql",
       "mcp__Main_Supabase_Project__list_migrations",
-      "mcp__Dental_College_Supabase_Project__get_project_url"
+      "mcp__Dental_College_Supabase_Project__get_project_url",
+      "mcp__Main_Supabase_Project__get_project_url",
+      "Bash(npm run dev:main:*)"
     ],
     "deny": [],
     "ask": [],

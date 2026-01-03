@@ -18,6 +18,20 @@ See the **"⚠️ MANDATORY: Claude Skills Usage"** section below for complete d
 
 ---
 
+## 🗄️ CRITICAL: Database Documentation Requirement
+
+**BEFORE executing ANY Supabase migration or database change, you MUST:**
+
+1. ✅ **Document the SQL code FIRST** in `docs/database/main-supabase/`
+2. ✅ **Update the appropriate documentation file** based on change type
+3. ✅ **ONLY THEN execute the migration** via MCP tools
+
+**This is COMPULSORY and NON-NEGOTIABLE for ALL database operations.**
+
+See the **"📋 Mandatory Database Documentation Workflow"** section below for complete details.
+
+---
+
 ## Project Overview
 
 JKKN Institution Website is a comprehensive web application built with **Next.js 16** and **Supabase** for managing institutional operations. The project consists of:
@@ -70,7 +84,7 @@ This is a **Single Repository, Multiple Deployments (SRMD)** architecture servin
 | Main (Umbrella) | `main` | jkkn.ac.in | pmqodbfhsejbvfbmsfeq |
 | Arts & Science | `arts-science` | arts.jkkn.ac.in | TBD |
 | Engineering | `engineering` | engg.jkkn.ac.in | TBD |
-| Dental | `dental` | dental.jkkn.ac.in | TBD |
+| Dental | `dental` | dental.jkkn.ac.in | wnmyvbnqldukeknnmnpl |
 | Pharmacy | `pharmacy` | pharmacy.jkkn.ac.in | TBD |
 | Nursing | `nursing` | nursing.jkkn.ac.in | TBD |
 
@@ -811,6 +825,187 @@ export const dynamic = 'force-dynamic' // May be outdated
     - Check RLS policies protect data
 
 **⚠️ CRITICAL:** Steps 1 (Load Skills) cannot be skipped. Implementing without skills will result in non-compliant code that must be rewritten.
+
+---
+
+## 📋 Mandatory Database Documentation Workflow
+
+**This workflow is COMPULSORY and must be followed for ALL database operations. No exceptions.**
+
+### Documentation Folder Structure
+
+```
+docs/database/
+├── main-supabase/           # Main Supabase project (pmqodbfhsejbvfbmsfeq)
+│   ├── README.md            # Documentation guide
+│   ├── 01-functions.sql     # All PostgreSQL functions
+│   ├── 02-rls-policies.sql  # All RLS policies
+│   ├── 03-triggers.sql      # All triggers
+│   ├── 04-foreign-keys.sql  # All foreign key relationships
+│   └── 05-migrations/       # Migration history (optional)
+├── dental-supabase/         # Dental College project (wnmyvbnqldukeknnmnpl)
+│   └── [same structure]
+└── [other-institution]/     # Future institution projects
+    └── [same structure]
+```
+
+### File Mapping: What Goes Where
+
+| Change Type | Documentation File | Example |
+|-------------|-------------------|---------|
+| New function | `01-functions.sql` | `is_super_admin()`, `get_dashboard_stats()` |
+| New RLS policy | `02-rls-policies.sql` | User roles SELECT policy |
+| New trigger | `03-triggers.sql` | `handle_new_user()` trigger |
+| New foreign key | `04-foreign-keys.sql` | `user_roles.user_id → auth.users.id` |
+| New table | All files as needed | Create table + RLS + triggers |
+| Schema modification | Relevant file(s) | Update affected documentation |
+
+### Step-by-Step Workflow
+
+**BEFORE executing ANY database migration, follow these steps IN ORDER:**
+
+#### Step 1: Document First (MANDATORY)
+
+```
+1. Open the appropriate documentation file in `docs/database/main-supabase/`
+2. Add the SQL code with proper comments
+3. Include metadata: purpose, dependencies, security implications
+4. Save the documentation file
+```
+
+#### Step 2: Execute Migration
+
+```
+1. ONLY AFTER documentation is complete
+2. Use `mcp__Main_Supabase_Project__apply_migration` for Main Supabase
+3. Use `mcp__Dental_College_Supabase_Project__apply_migration` for Dental College
+4. Verify migration was successful
+```
+
+#### Step 3: Sync to Other Institutions (If Applicable)
+
+```
+1. After Main Supabase migration succeeds
+2. Apply same migration to other institution databases
+3. Document any institution-specific variations
+```
+
+### Documentation Format
+
+When adding SQL to documentation files, use this format:
+
+```sql
+-- ============================================
+-- Function/Policy/Trigger Name
+-- ============================================
+-- Purpose: [Brief description]
+-- Created: [Date]
+-- Modified: [Date if updated]
+-- Dependencies: [List any dependencies]
+-- Used by: [List tables/functions that use this]
+-- Security: [SECURITY DEFINER / INVOKER if applicable]
+-- ============================================
+
+[SQL CODE HERE]
+
+-- End of [Name]
+-- ============================================
+```
+
+### Example Workflow
+
+**Scenario:** Adding a new function `get_user_permissions()`
+
+**Step 1: Document in `docs/database/main-supabase/01-functions.sql`**
+
+```sql
+-- ============================================
+-- get_user_permissions
+-- ============================================
+-- Purpose: Returns all permissions for a given user
+-- Created: 2026-01-03
+-- Dependencies: user_roles, role_permissions, roles tables
+-- Used by: Permission checking in admin panel
+-- Security: SECURITY DEFINER (bypasses RLS)
+-- ============================================
+
+CREATE OR REPLACE FUNCTION public.get_user_permissions(user_uuid UUID)
+RETURNS TABLE (permission TEXT)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  RETURN QUERY
+  SELECT DISTINCT rp.permission
+  FROM user_roles ur
+  JOIN roles r ON ur.role_id = r.id
+  JOIN role_permissions rp ON r.id = rp.role_id
+  WHERE ur.user_id = user_uuid;
+END;
+$$;
+
+-- End of get_user_permissions
+-- ============================================
+```
+
+**Step 2: Execute Migration**
+
+```typescript
+mcp__Main_Supabase_Project__apply_migration({
+  name: "add_get_user_permissions_function",
+  query: "[SQL from documentation]"
+})
+```
+
+**Step 3: Sync to Dental College**
+
+```typescript
+mcp__Dental_College_Supabase_Project__apply_migration({
+  name: "add_get_user_permissions_function",
+  query: "[Same SQL]"
+})
+```
+
+### Multi-Institution Sync Protocol
+
+When syncing changes across institutions:
+
+1. **Document in Main first** → `docs/database/main-supabase/`
+2. **Apply to Main Supabase** → Verify success
+3. **Apply to each institution** → Use their specific MCP tool
+4. **Document any variations** → If an institution needs different SQL
+
+### Supabase Project References
+
+| Institution | Project ID | MCP Tool Prefix |
+|-------------|------------|-----------------|
+| Main | `pmqodbfhsejbvfbmsfeq` | `mcp__Main_Supabase_Project__` |
+| Dental College | `wnmyvbnqldukeknnmnpl` | `mcp__Dental_College_Supabase_Project__` |
+
+### Consequences of NOT Following This Workflow
+
+- ❌ Database changes become undocumented and untraceable
+- ❌ Multi-institution sync becomes error-prone
+- ❌ Debugging RLS/permission issues becomes extremely difficult
+- ❌ Future developers cannot understand database structure
+- ❌ Schema drift between institutions goes undetected
+- ❌ Recovery from database issues becomes nearly impossible
+
+### Quick Reference Checklist
+
+Before ANY database operation:
+
+- [ ] Have I documented the SQL in `docs/database/[project]/`?
+- [ ] Is the documentation properly formatted with comments?
+- [ ] Have I specified dependencies and security implications?
+- [ ] Am I using the correct MCP tool for the target Supabase project?
+- [ ] Do I need to sync this change to other institutions?
+- [ ] Have I verified the migration succeeded?
+
+**Remember: DOCUMENT FIRST, EXECUTE SECOND. This is NON-NEGOTIABLE.**
+
+---
 
 ## Common Patterns Reference
 

@@ -70,7 +70,7 @@ export default async function NewPagePage() {
   ])
 
   return (
-    <div className="container mx-auto py-6 max-w-2xl">
+    <div className="container mx-auto py-6 max-w-5xl">
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 rounded-xl bg-primary/10">
