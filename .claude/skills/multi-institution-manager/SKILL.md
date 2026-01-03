@@ -33,9 +33,9 @@ This skill provides comprehensive guidance for managing the JKKN multi-instituti
 |-------------|---------------------|-----------------|
 | **Main** | `pmqodbfhsejbvfbmsfeq` | `mcp__Main_Supabase_Project__` |
 | **Dental College** | `wnmyvbnqldukeknnmnpl` | `mcp__Dental_College_Supabase_Project__` |
+| **Pharmacy College** | `rwskookarbolpmtolqkd` | `mcp__Pharmacy_College_Supabase_Project__` |
+| **Engineering College** | `kyvfkyjmdbtyimtedkie` | `mcp__Engineering_College_Supabase_Project__` |
 | Arts & Science | TBD | TBD |
-| Engineering | TBD | TBD |
-| Pharmacy | TBD | TBD |
 | Nursing | TBD | TBD |
 
 ### Available MCP Tools Per Institution
@@ -354,9 +354,9 @@ For admin operations requiring service role key:
 |----|------|--------|------------------|---------------|
 | `main` | JKKN Institutions | jkkn.ac.in | pmqodbfhsejbvfbmsfeq | Yes |
 | `dental` | JKKN Dental College | dental.jkkn.ac.in | wnmyvbnqldukeknnmnpl | Yes |
+| `pharmacy` | JKKN Pharmacy | pharmacy.jkkn.ac.in | rwskookarbolpmtolqkd | Yes |
+| `engineering` | JKKN Engineering | engg.jkkn.ac.in | kyvfkyjmdbtyimtedkie | Yes |
 | `arts-science` | JKKN Arts & Science | arts.jkkn.ac.in | TBD | No |
-| `engineering` | JKKN Engineering | engg.jkkn.ac.in | TBD | No |
-| `pharmacy` | JKKN Pharmacy | pharmacy.jkkn.ac.in | TBD | No |
 | `nursing` | JKKN Nursing | nursing.jkkn.ac.in | TBD | No |
 
 ---
