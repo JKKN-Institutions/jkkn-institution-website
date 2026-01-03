@@ -1,8 +1,9 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 
-export default function AccessDeniedPage() {
+function AccessDeniedContent() {
   const searchParams = useSearchParams()
   const reason = searchParams.get('reason')
 
@@ -95,5 +96,13 @@ export default function AccessDeniedPage() {
         </a>
       </div>
     </div>
+  )
+}
+
+export default function AccessDeniedPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-[60vh]">Loading...</div>}>
+      <AccessDeniedContent />
+    </Suspense>
   )
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
@@ -7,7 +8,7 @@ import { motion } from 'framer-motion'
 import { Loader2, AlertCircle, Shield } from 'lucide-react'
 import Image from 'next/image'
 
-export default function LoginPage() {
+function LoginContent() {
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') || '/admin'
   const error = searchParams.get('error')
@@ -153,5 +154,13 @@ export default function LoginPage() {
       </motion.div>
 
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center"><Loader2 className="w-6 h-6 animate-spin text-gray-400" /></div>}>
+      <LoginContent />
+    </Suspense>
   )
 }
