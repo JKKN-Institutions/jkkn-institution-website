@@ -148,7 +148,7 @@ export function CTASection() {
                       Natarajapuram, NH-544<br />
                       (Salem To Coimbatore National Highway),<br />
                       Kumarapalayam (TK), Namakkal (DT).<br />
-                      Tamil Nadu. 638183.
+                      Tamil Nadu - 638183
                     </p>
                   </div>
                 </div>

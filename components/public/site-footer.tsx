@@ -116,14 +116,14 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                       {settings.address.line1}<br />
                       {settings.address.line2 && <>{settings.address.line2}<br /></>}
                       {settings.address.city}<br />
-                      {settings.address.state}. {settings.address.pincode}.
+                      {settings.address.state} - {settings.address.pincode}
                     </>
                   ) : (
                     <>
                       Natarajapuram, NH-544<br />
                       (Salem To Coimbatore National Highway),<br />
                       Kumarapalayam (TK), Namakkal (DT).<br />
-                      Tamil Nadu. 638183.
+                      Tamil Nadu - 638183
                     </>
                   )}
                 </span>
