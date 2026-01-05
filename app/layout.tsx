@@ -5,6 +5,7 @@ import { Providers } from "./providers";
 import { WebVitalsReporter } from "@/components/performance/web-vitals-reporter";
 import { generateOrganizationSchema, serializeSchema } from "@/lib/seo";
 import { generateSiteMetadata } from "@/lib/seo/site-metadata";
+import { VideoSchema } from "@/components/seo/video-schema";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -101,6 +102,8 @@ export default function RootLayout({
             __html: serializeSchema(generateOrganizationSchema()),
           }}
         />
+        {/* Video Schema (JSON-LD) - Campus Overview */}
+        <VideoSchema />
       </head>
       <body
         className={`${poppins.variable} antialiased`}

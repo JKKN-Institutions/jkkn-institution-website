@@ -73,7 +73,7 @@ export default function WhyChooseSection({
   subtitle = 'Discover what makes J.K.K. Nattraja Educational Institutions the preferred choice for thousands of Learners every year.',
   features = [],
   columns = '3',
-  backgroundColor = 'gradient-light',
+  backgroundColor = 'white-professional',
   showAnimations = true,
   titleColor,
   subtitleColor,
@@ -124,7 +124,7 @@ export default function WhyChooseSection({
       className={cn('relative py-16 md:py-24 overflow-hidden', backgroundStyles[backgroundColor], className)}
     >
       {/* Decorative Patterns */}
-      <DecorativePatterns variant="scattered" color={isDark ? 'white' : 'green'} />
+      <DecorativePatterns variant="scattered" color={isDark ? 'white' : 'blue'} />
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -154,7 +154,7 @@ export default function WhyChooseSection({
           {/* Title */}
           <h2
             className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4"
-            style={{ color: titleColor || (isDark ? '#ffffff' : '#1f2937') }}
+            style={{ color: titleColor || (isDark ? '#ffffff' : '#0b6d41') }}
           >
             {titleParts.before}
             {titleParts.accent && (
@@ -212,7 +212,7 @@ export default function WhyChooseSection({
                     'bg-gradient-to-br shadow-lg'
                   )}
                   style={{
-                    background: `linear-gradient(135deg, ${accentColor}, ${isDark ? '#0b6d41' : '#1e3a5f'})`,
+                    background: `linear-gradient(135deg, ${accentColor}, ${isDark ? '#1e293b' : '#0b6d41'})`,
                   }}
                 >
                   <Icon className="w-7 h-7 md:w-8 md:h-8 text-white" />

@@ -55,12 +55,12 @@ function useInView(threshold = 0.1) {
   return { ref, isInView }
 }
 
-// Scholarship type colors
+// Scholarship type colors - using brand colors only
 const scholarshipTypeColors = {
-  merit: { bg: 'bg-amber-500/20', border: 'border-amber-400/30', icon: '#f59e0b' },
-  government: { bg: 'bg-blue-500/20', border: 'border-blue-400/30', icon: '#3b82f6' },
-  'need-based': { bg: 'bg-rose-500/20', border: 'border-rose-400/30', icon: '#f43f5e' },
-  'sports-cultural': { bg: 'bg-emerald-500/20', border: 'border-emerald-400/30', icon: '#10b981' },
+  merit: { bg: 'bg-gold/20', border: 'border-gold/30', icon: '#D4AF37' },
+  government: { bg: 'bg-brand-primary/20', border: 'border-brand-primary/30', icon: '#0b6d41' },
+  'need-based': { bg: 'bg-gold/15', border: 'border-gold/25', icon: '#D4AF37' },
+  'sports-cultural': { bg: 'bg-brand-primary/15', border: 'border-brand-primary/25', icon: '#0b6d41' },
 }
 
 export default function ScholarshipsSection({
@@ -138,7 +138,7 @@ export default function ScholarshipsSection({
           {/* Badge */}
           {badge && (
             <div className="flex justify-center mb-4">
-              <span className={glassStyles.sectionBadge}>
+              <span className={isDark ? glassStyles.sectionBadge : glassStyles.sectionBadgeLight}>
                 {badge}
               </span>
             </div>
@@ -147,7 +147,7 @@ export default function ScholarshipsSection({
           {/* Title */}
           <h2
             className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4"
-            style={{ color: titleColor || (isDark ? '#ffffff' : '#1f2937') }}
+            style={{ color: titleColor || (isDark ? '#ffffff' : '#0b6d41') }}
           >
             {titleParts.before}
             {titleParts.accent && (
@@ -272,7 +272,7 @@ export default function ScholarshipsSection({
               )}
               style={{
                 backgroundColor: accentColor,
-                color: '#1f2937',
+                color: '#ffffff',
               }}
             >
               {ctaText}

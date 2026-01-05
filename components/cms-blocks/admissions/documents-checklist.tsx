@@ -53,7 +53,7 @@ function CheckIcon({
   switch (type) {
     case 'check':
       return checked ? (
-        <CheckSquare {...iconProps} className={cn(iconProps.className, 'text-green-400')} />
+        <CheckSquare {...iconProps} className={cn(iconProps.className, 'text-brand-primary')} />
       ) : (
         <Square {...iconProps} className={cn(iconProps.className, 'text-white/40')} />
       )
@@ -63,14 +63,14 @@ function CheckIcon({
           {...iconProps}
           className={cn(
             iconProps.className,
-            checked ? 'text-green-400' : 'text-white/40'
+            checked ? 'text-brand-primary' : 'text-white/40'
           )}
         />
       )
     case 'checkbox':
     default:
       return checked ? (
-        <CheckSquare {...iconProps} className={cn(iconProps.className, 'text-green-400')} />
+        <CheckSquare {...iconProps} className={cn(iconProps.className, 'text-brand-primary')} />
       ) : (
         <Square {...iconProps} className={cn(iconProps.className, 'text-white/40')} />
       )
@@ -149,7 +149,7 @@ export default function DocumentsChecklist({
           {/* Badge */}
           {badge && (
             <div className="flex justify-center mb-4">
-              <span className={glassStyles.sectionBadge}>
+              <span className={isDark ? glassStyles.sectionBadge : glassStyles.sectionBadgeLight}>
                 {badge}
               </span>
             </div>
@@ -158,7 +158,7 @@ export default function DocumentsChecklist({
           {/* Title */}
           <h2
             className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4"
-            style={{ color: titleColor || (isDark ? '#ffffff' : '#1f2937') }}
+            style={{ color: titleColor || (isDark ? '#ffffff' : '#0b6d41') }}
           >
             {titleParts.before}
             {titleParts.accent && (
@@ -229,7 +229,7 @@ export default function DocumentsChecklist({
                     >
                       {doc.text}
                       {doc.required && (
-                        <span className="text-red-400 ml-1">*</span>
+                        <span className="text-gold ml-1">*</span>
                       )}
                     </span>
                   </li>
@@ -276,7 +276,7 @@ export default function DocumentsChecklist({
                     >
                       {doc.text}
                       {doc.required && (
-                        <span className="text-red-400 ml-1">*</span>
+                        <span className="text-gold ml-1">*</span>
                       )}
                     </span>
                   </li>
@@ -293,7 +293,7 @@ export default function DocumentsChecklist({
             )}
           >
             <div className="flex items-center gap-2">
-              <CheckSquare className="w-4 h-4 text-green-400" />
+              <CheckSquare className="w-4 h-4 text-brand-primary" />
               <span>Required Document</span>
             </div>
             <div className="flex items-center gap-2">
@@ -301,7 +301,7 @@ export default function DocumentsChecklist({
               <span>If Applicable</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-red-400">*</span>
+              <span className="text-gold">*</span>
               <span>Mandatory</span>
             </div>
           </div>

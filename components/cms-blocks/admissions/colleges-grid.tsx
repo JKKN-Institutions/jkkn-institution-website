@@ -42,7 +42,7 @@ export default function CollegesGrid({
   subtitle = 'Choose from 7 Premier Institutions Offering 50+ Programs',
   colleges = [],
   columns = '3',
-  backgroundColor = 'gradient-dark',
+  backgroundColor = 'white-professional',
   showAnimations = true,
   titleColor,
   subtitleColor,
@@ -87,7 +87,7 @@ export default function CollegesGrid({
       className={cn('relative py-16 md:py-24 overflow-hidden', backgroundStyles[backgroundColor], className)}
     >
       {/* Decorative Patterns */}
-      <DecorativePatterns variant="default" color={isDark ? 'white' : 'green'} />
+      <DecorativePatterns variant="default" color={isDark ? 'white' : 'blue'} />
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -101,7 +101,7 @@ export default function CollegesGrid({
           {/* Badge */}
           {badge && (
             <div className="flex justify-center mb-4">
-              <span className={glassStyles.sectionBadge}>
+              <span className={isDark ? glassStyles.sectionBadge : glassStyles.sectionBadgeLight}>
                 {badge}
               </span>
             </div>
@@ -110,7 +110,7 @@ export default function CollegesGrid({
           {/* Title */}
           <h2
             className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4"
-            style={{ color: titleColor || (isDark ? '#ffffff' : '#1f2937') }}
+            style={{ color: titleColor || (isDark ? '#ffffff' : '#0b6d41') }}
           >
             {titleParts.before}
             {titleParts.accent && (
@@ -141,8 +141,8 @@ export default function CollegesGrid({
               className={cn(
                 // Glassmorphism card
                 'group relative overflow-hidden rounded-2xl',
-                glassStyles.card,
-                glassStyles.cardHover,
+                isDark ? glassStyles.card : glassStyles.cardLight,
+                isDark ? glassStyles.cardHover : 'hover:shadow-xl hover:scale-[1.02] transition-all duration-300',
                 showAnimations && 'transition-all duration-700',
                 showAnimations && gridRef.isInView
                   ? 'opacity-100 translate-y-0'

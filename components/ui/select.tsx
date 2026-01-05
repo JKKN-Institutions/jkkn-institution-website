@@ -6,10 +6,31 @@ import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+// Hook to check if component is mounted (client-side)
+function useIsMounted() {
+  const [mounted, setMounted] = React.useState(false)
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+  return mounted
+}
+
 function Select({
+  children,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Root>) {
-  return <SelectPrimitive.Root data-slot="select" {...props} />
+  const mounted = useIsMounted()
+
+  // During SSR, render nothing - the SelectTrigger will handle the placeholder
+  if (!mounted) {
+    return <div data-slot="select" data-loading="true" />
+  }
+
+  return (
+    <SelectPrimitive.Root data-slot="select" {...props}>
+      {children}
+    </SelectPrimitive.Root>
+  )
 }
 
 function SelectGroup({

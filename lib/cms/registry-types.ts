@@ -484,7 +484,7 @@ export const FAQSectionPropsSchema = z.object({
   ctaEmail: z.string().default('info@jkkn.ac.in'),
 
   // Styling
-  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent']).default('gradient-dark'),
   showAnimations: z.boolean().default(true),
 
   // Typography Colors
@@ -965,7 +965,7 @@ export const AccreditationsSectionPropsSchema = z.object({
   badgeLayout: z.enum(['row', 'grid']).default('row'),
 
   // Styling
-  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent']).default('gradient-dark'),
   glassmorphismVariant: z.enum(['dark', 'light', 'dark-elegant']).default('dark'),
   cardStyle: z.enum(['glass', 'solid', 'gradient']).default('glass'),
 
@@ -1151,7 +1151,7 @@ export const CollegesGridPropsSchema = z.object({
   columns: z.enum(['2', '3', '4']).default('3'),
 
   // Styling
-  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent']).default('gradient-dark'),
   showAnimations: z.boolean().default(true),
 
   // Typography
@@ -1190,7 +1190,7 @@ export const AdmissionProcessTimelinePropsSchema = z.object({
   orientation: z.enum(['horizontal', 'vertical', 'auto']).default('auto'),
 
   // Styling
-  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent']).default('gradient-dark'),
   stepColor: z.string().default('#0b6d41'),
   activeColor: z.string().default('#D4AF37'),
   completedColor: z.string().default('#22c55e'),
@@ -1231,7 +1231,7 @@ export const AdmissionDatesTablePropsSchema = z.object({
   ]),
 
   // Styling
-  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent']).default('gradient-dark'),
   showAnimations: z.boolean().default(true),
   alternatingRows: z.boolean().default(true),
 
@@ -1277,7 +1277,7 @@ export const EligibilityCriteriaTablePropsSchema = z.object({
   expandableRows: z.boolean().default(false),
 
   // Styling
-  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent']).default('gradient-dark'),
   showAnimations: z.boolean().default(true),
 
   // Typography
@@ -1332,7 +1332,7 @@ export const FeeStructureTablePropsSchema = z.object({
   ]),
 
   // Styling
-  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent']).default('gradient-dark'),
   showAnimations: z.boolean().default(true),
 
   // Typography
@@ -1400,7 +1400,7 @@ export const ScholarshipsSectionPropsSchema = z.object({
   columns: z.enum(['2', '4']).default('4'),
 
   // Styling
-  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent']).default('gradient-dark'),
   showAnimations: z.boolean().default(true),
 
   // Typography
@@ -1454,7 +1454,7 @@ export const DocumentsChecklistPropsSchema = z.object({
   ctaLink: z.string().default('/downloads/admission-checklist.pdf'),
 
   // Styling
-  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent']).default('gradient-dark'),
   showAnimations: z.boolean().default(true),
   checkIcon: z.enum(['check', 'checkbox', 'circle-check']).default('checkbox'),
 
@@ -1494,7 +1494,7 @@ export const WhyChooseSectionPropsSchema = z.object({
   columns: z.enum(['2', '3']).default('3'),
 
   // Styling
-  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-light'),
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent']).default('gradient-light'),
   showAnimations: z.boolean().default(true),
 
   // Typography
@@ -1535,7 +1535,7 @@ export const CampusFeaturesGridPropsSchema = z.object({
   columns: z.enum(['2', '4']).default('4'),
 
   // Styling
-  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-light'),
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent']).default('gradient-light'),
   showAnimations: z.boolean().default(true),
 
   // Typography
@@ -1578,7 +1578,7 @@ export const PlacementsHighlightsPropsSchema = z.object({
   ctaLink: z.string().default('/placements/'),
 
   // Styling
-  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-light'),
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent']).default('gradient-light'),
   showAnimations: z.boolean().default(true),
 
   // Typography
@@ -1635,7 +1635,7 @@ export const AdmissionHeroPropsSchema = z.object({
   ]),
 
   // Styling
-  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'solid', 'transparent']).default('gradient-dark'),
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent']).default('gradient-dark'),
   showAnimations: z.boolean().default(true),
 
   // Typography

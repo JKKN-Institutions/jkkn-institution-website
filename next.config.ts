@@ -92,6 +92,54 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
+      // === Legacy Buzz/Events/News URLs → Homepage ===
+      // These URLs were previously indexed but content has been removed
+      {
+        source: '/buzz/campus-drive',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/buzz/industry-immersion',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/buzz/placement-celebration',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/events/internship',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/events/mental-health',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/events/pongal-2025',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/news/hackathon',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/news/naac',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/news/research-lab',
+        destination: '/',
+        permanent: true,
+      },
+
       // === Spam URLs (WordPress hack remnants) ===
       {
         source: '/20bet-review-2025-bonus-promo-code-by-bet-experts-30-2',

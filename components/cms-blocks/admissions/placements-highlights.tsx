@@ -179,7 +179,7 @@ export default function PlacementsHighlights({
           {/* Title */}
           <h2
             className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4"
-            style={{ color: titleColor || (isDark ? '#ffffff' : '#1f2937') }}
+            style={{ color: titleColor || (isDark ? '#ffffff' : '#0b6d41') }}
           >
             {titleParts.before}
             {titleParts.accent && (

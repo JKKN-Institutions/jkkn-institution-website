@@ -104,9 +104,9 @@ export const JKKN100CentenarySectionPropsSchema = z.object({
   quoteColor: z.string().default('#1a1a1a'),
 
   // Typography - Founder Name
-  founderNameFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('semibold'),
+  founderNameFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('bold'),
   founderNameColor: z.string().default('#1f2937'),
-  founderNameFontSize: z.number().default(14),
+  founderNameFontSize: z.number().default(18),
 
   // Typography - Timeline
   timelineFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('semibold'),
@@ -122,6 +122,14 @@ export const JKKN100CentenarySectionPropsSchema = z.object({
 
   // Sizing
   paddingY: z.enum(['sm', 'md', 'lg', 'xl']).default('lg'),
+
+  // Field Typography (from editor panel)
+  _fieldTypography: z.record(z.string(), z.object({
+    fontFamily: z.string().optional(),
+    fontSize: z.number().optional(),
+    fontWeight: z.string().optional(),
+    color: z.string().optional(),
+  })).optional(),
 })
 
 export type JKKN100CentenarySectionProps = z.infer<typeof JKKN100CentenarySectionPropsSchema> & BaseBlockProps
@@ -218,6 +226,7 @@ export function JKKN100CentenarySection({
   goldColor = '#d4af37',
   showAnimations = true,
   paddingY = 'lg',
+  _fieldTypography,
   className,
   isEditing,
 }: JKKN100CentenarySectionProps) {
@@ -253,6 +262,17 @@ export function JKKN100CentenarySection({
           sectionRef.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
         )
       : ''
+
+  // Get typography styles for a specific field (from editor panel)
+  const getFieldTypography = (fieldKey: string) => {
+    const typo = _fieldTypography?.[fieldKey]
+    return {
+      fontSize: typo?.fontSize ? `${typo.fontSize}px` : undefined,
+      fontWeight: typo?.fontWeight || undefined,
+      fontFamily: typo?.fontFamily && typo.fontFamily !== 'inherit' ? typo.fontFamily : undefined,
+      color: typo?.color || undefined,
+    }
+  }
 
   return (
     <>
@@ -364,7 +384,12 @@ export function JKKN100CentenarySection({
                   <div className="text-center mt-3">
                     <p
                       className={cn('leading-tight', fontWeightClasses[founderNameFontWeight])}
-                      style={{ color: founderNameColor, fontSize: `${founderNameFontSize}px` }}
+                      style={{
+                        color: getFieldTypography('founderName').color || founderNameColor,
+                        fontSize: getFieldTypography('founderName').fontSize || `${founderNameFontSize}px`,
+                        fontWeight: getFieldTypography('founderName').fontWeight || undefined,
+                        fontFamily: getFieldTypography('founderName').fontFamily || undefined,
+                      }}
                     >
                       {founderName}
                     </p>

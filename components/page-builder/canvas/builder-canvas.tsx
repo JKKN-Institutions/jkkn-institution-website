@@ -31,6 +31,7 @@ import {
   type BlockStyles,
   type BlockMotion,
 } from '../utils/style-applicator'
+import { LivePreviewRenderer } from '../preview/live-preview-renderer'
 
 interface SortableBlockProps {
   block: BlockData
@@ -429,11 +430,22 @@ export function BuilderCanvas() {
     )
   }
 
+  // In preview mode, use LivePreviewRenderer for WYSIWYG experience
+  // This renders blocks exactly as they appear on the live site
+  if (isPreviewMode) {
+    return (
+      <div className="min-h-full">
+        <LivePreviewRenderer blocks={blocks} />
+      </div>
+    )
+  }
+
+  // Edit mode - use BlockTree with builder chrome (selection, drag/drop, etc.)
   return (
     <div
       className={cn(
         'min-h-full',
-        !isPreviewMode && 'p-4'
+        'p-4'
       )}
       onClick={handleCanvasClick}
     >
@@ -452,22 +464,20 @@ export function BuilderCanvas() {
       />
 
       {/* Drop zone at the end */}
-      {!isPreviewMode && (
-        <div
-          ref={setDropZoneRef}
-          className={cn(
-            "mt-4 p-8 border-2 border-dashed rounded-lg text-center transition-colors",
-            isOver
-              ? "border-primary bg-primary/10"
-              : "border-border/50 hover:border-primary/50"
-          )}
-          onClick={() => addBlock('Heading')}
-        >
-          <p className="text-sm text-muted-foreground">
-            {isOver ? 'Drop here to add component' : 'Drag components here or click to add a new block'}
-          </p>
-        </div>
-      )}
+      <div
+        ref={setDropZoneRef}
+        className={cn(
+          "mt-4 p-8 border-2 border-dashed rounded-lg text-center transition-colors",
+          isOver
+            ? "border-primary bg-primary/10"
+            : "border-border/50 hover:border-primary/50"
+        )}
+        onClick={() => addBlock('Heading')}
+      >
+        <p className="text-sm text-muted-foreground">
+          {isOver ? 'Drop here to add component' : 'Drag components here or click to add a new block'}
+        </p>
+      </div>
     </div>
   )
 }

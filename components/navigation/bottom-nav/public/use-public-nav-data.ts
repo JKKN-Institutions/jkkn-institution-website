@@ -18,6 +18,7 @@ export interface CmsNavItem {
 
 // Mobile-friendly label mappings (shorter labels for bottom nav)
 const MOBILE_LABEL_MAP: Record<string, string> = {
+  'ABOUT': 'About',
   'OUR COLLEGES': 'Colleges',
   'OUR SCHOOLS': 'Schools',
 };

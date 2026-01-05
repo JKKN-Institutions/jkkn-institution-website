@@ -6,7 +6,7 @@
 export const glassStyles = {
   // Card styles
   card: 'bg-white/10 backdrop-blur-[12px] border border-white/20 rounded-2xl shadow-lg',
-  cardLight: 'bg-white/80 backdrop-blur-[12px] border border-gray-200/50 rounded-2xl shadow-lg',
+  cardLight: 'bg-white/80 backdrop-blur-[12px] border border-brand-primary/20 rounded-2xl shadow-lg',
   cardHover: 'hover:bg-white/15 hover:border-white/30 hover:shadow-xl transition-all duration-300',
 
   // Table styles
@@ -20,8 +20,10 @@ export const glassStyles = {
   badge: 'bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5',
   badgeGold: 'bg-gold/20 text-gold border border-gold/30',
 
-  // Section badge
+  // Section badge (for dark backgrounds)
   sectionBadge: 'inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-gold/20 text-gold border border-gold/30',
+  // Section badge for light backgrounds
+  sectionBadgeLight: 'inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-brand-primary/10 text-brand-primary border border-brand-primary/20',
 
   // Input/Form styles
   input: 'bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg focus:bg-white/15 focus:border-white/30 transition-all duration-200',
@@ -32,28 +34,28 @@ export const glassStyles = {
  */
 export const statusColors = {
   upcoming: {
-    bg: 'bg-blue-500/20',
-    text: 'text-blue-300',
-    border: 'border-blue-400/30',
-    dot: 'bg-blue-400',
+    bg: 'bg-brand-primary/15',
+    text: 'text-brand-primary',
+    border: 'border-brand-primary/30',
+    dot: 'bg-brand-primary',
   },
   open: {
-    bg: 'bg-green-500/20',
-    text: 'text-green-300',
-    border: 'border-green-400/30',
-    dot: 'bg-green-400',
+    bg: 'bg-gold/20',
+    text: 'text-gold',
+    border: 'border-gold/30',
+    dot: 'bg-gold',
   },
   closed: {
-    bg: 'bg-red-500/20',
-    text: 'text-red-300',
-    border: 'border-red-400/30',
-    dot: 'bg-red-400',
+    bg: 'bg-brand-primary/10',
+    text: 'text-brand-primary/60',
+    border: 'border-brand-primary/20',
+    dot: 'bg-brand-primary/50',
   },
   extended: {
-    bg: 'bg-yellow-500/20',
-    text: 'text-yellow-300',
-    border: 'border-yellow-400/30',
-    dot: 'bg-yellow-400',
+    bg: 'bg-gold/15',
+    text: 'text-gold',
+    border: 'border-gold/25',
+    dot: 'bg-gold/80',
   },
 } as const
 
@@ -63,34 +65,35 @@ export type StatusType = keyof typeof statusColors
  * College header colors for the CollegesGrid component
  */
 export const collegeColors = {
-  dental: '#0b6d41',     // JKKN Green
-  pharmacy: '#1e3a8a',   // Navy Blue
-  engineering: '#7c2d12', // Burgundy
-  nursing: '#0f766e',    // Teal
-  artsScience: '#6b21a8', // Purple
-  alliedHealth: '#b91c1c', // Crimson
-  education: '#0369a1',  // Sky Blue
+  dental: '#0b6d41',     // Brand Green
+  pharmacy: '#0b6d41',   // Brand Green
+  engineering: '#0b6d41', // Brand Green
+  nursing: '#0b6d41',    // Brand Green
+  artsScience: '#0b6d41', // Brand Green
+  alliedHealth: '#0b6d41', // Brand Green
+  education: '#0b6d41',  // Brand Green
 } as const
 
 /**
  * Default college colors array
  */
 export const defaultCollegeColors = [
-  '#0b6d41', // JKKN Green
-  '#1e3a8a', // Navy Blue
-  '#7c2d12', // Burgundy
-  '#0f766e', // Teal
-  '#6b21a8', // Purple
-  '#b91c1c', // Crimson
-  '#0369a1', // Sky Blue
+  '#0b6d41', // Brand Green
+  '#0b6d41', // Brand Green
+  '#0b6d41', // Brand Green
+  '#0b6d41', // Brand Green
+  '#0b6d41', // Brand Green
+  '#0b6d41', // Brand Green
+  '#0b6d41', // Brand Green
 ] as const
 
 /**
  * Background gradient classes
  */
 export const backgroundStyles = {
-  'gradient-dark': 'bg-gradient-to-br from-brand-primary via-brand-primary-dark to-brand-primary-darker',
-  'gradient-light': 'bg-gradient-to-br from-brand-cream via-white to-brand-cream',
+  'gradient-dark': 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900',
+  'gradient-light': 'bg-gradient-to-br from-brand-primary/5 via-white to-brand-primary/5',
+  'white-professional': 'bg-gradient-to-br from-white via-slate-50/50 to-white',
   'solid': 'bg-white',
   'transparent': 'bg-transparent',
 } as const
@@ -125,12 +128,12 @@ export const scholarshipIcons = {
  * Program category colors for eligibility table
  */
 export const programCategoryColors = {
-  medical: { bg: 'bg-red-500/20', text: 'text-red-300', border: 'border-red-400/30' },
-  nursing: { bg: 'bg-pink-500/20', text: 'text-pink-300', border: 'border-pink-400/30' },
-  pharmacy: { bg: 'bg-blue-500/20', text: 'text-blue-300', border: 'border-blue-400/30' },
-  engineering: { bg: 'bg-orange-500/20', text: 'text-orange-300', border: 'border-orange-400/30' },
-  'arts-science': { bg: 'bg-purple-500/20', text: 'text-purple-300', border: 'border-purple-400/30' },
-  education: { bg: 'bg-teal-500/20', text: 'text-teal-300', border: 'border-teal-400/30' },
+  medical: { bg: 'bg-brand-primary/20', text: 'text-brand-primary', border: 'border-brand-primary/30' },
+  nursing: { bg: 'bg-gold/20', text: 'text-gold', border: 'border-gold/30' },
+  pharmacy: { bg: 'bg-brand-primary/15', text: 'text-brand-primary', border: 'border-brand-primary/25' },
+  engineering: { bg: 'bg-gold/15', text: 'text-gold', border: 'border-gold/25' },
+  'arts-science': { bg: 'bg-brand-primary/10', text: 'text-brand-primary', border: 'border-brand-primary/20' },
+  education: { bg: 'bg-gold/10', text: 'text-gold', border: 'border-gold/20' },
 } as const
 
 export type ProgramCategory = keyof typeof programCategoryColors

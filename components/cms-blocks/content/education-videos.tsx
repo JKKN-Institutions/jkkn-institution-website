@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import Image from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Play, Video, Loader2 } from 'lucide-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { getActiveEducationVideos, type EducationVideo } from '@/app/actions/videos'
@@ -28,11 +28,26 @@ export type VideoItem = z.infer<typeof VideoItemSchema>
  * EducationVideos props schema - Light theme matching pharmacy.jkkn.ac.in
  */
 export const EducationVideosPropsSchema = z.object({
-  // Header configuration
-  headerText: z.string().default('EDUCATION VIDEO').describe('Section header text'),
-  headerTextColor: z.string().default('#0b6d41').describe('Header text color (green)'),
-  headerUnderlineColor: z.string().default('#dc2626').describe('Header underline color (red)'),
+  // Section Header visibility
   showHeader: z.boolean().default(true).describe('Show/hide section header'),
+
+  // Label/Badge configuration
+  showLabel: z.boolean().default(true).describe('Show label badge above title'),
+  labelText: z.string().default('VIDEO GALLERY').describe('Label badge text'),
+  labelColor: z.string().default('#D4AF37').describe('Label text color (gold)'),
+  labelBgColor: z.string().default('rgba(212,175,55,0.2)').describe('Label background color'),
+
+  // Title configuration
+  title: z.string().default('Education Videos').describe('Section title'),
+  titleAccentWord: z.string().optional().describe('Word to highlight in accent color'),
+  titleAccentColor: z.string().default('#D4AF37').describe('Accent word color (gold)'),
+  titleColor: z.string().default('#0b6d41').describe('Title text color (green)'),
+  titleFontSize: z.enum(['3xl', '4xl', '5xl']).default('5xl').describe('Title font size'),
+
+  // Tagline configuration
+  showTagline: z.boolean().default(true).describe('Show tagline below title'),
+  tagline: z.string().default('Explore our collection of educational content').describe('Tagline text'),
+  taglineColor: z.string().default('#6b7280').describe('Tagline text color'),
 
   // Currently Playing section
   currentlyPlayingText: z.string().default('Currently Playing').describe('Currently playing label'),
@@ -83,19 +98,42 @@ function transformToVideoItems(videos: EducationVideo[]): VideoItem[] {
  * - Responsive: stacks vertically on mobile
  * - Fetches videos from database automatically
  */
+// Font size mapping for title
+const titleFontSizeMap = {
+  '3xl': 'text-2xl sm:text-3xl md:text-3xl',
+  '4xl': 'text-2xl sm:text-3xl md:text-4xl',
+  '5xl': 'text-3xl sm:text-4xl md:text-5xl',
+}
+
 export function EducationVideos({
-  headerText = 'EDUCATION VIDEO',
-  headerTextColor = '#0b6d41',
-  headerUnderlineColor = '#dc2626',
   showHeader = true,
+  // Label/Badge
+  showLabel = true,
+  labelText = 'VIDEO GALLERY',
+  labelColor = '#D4AF37',
+  labelBgColor = 'rgba(212,175,55,0.2)',
+  // Title
+  title = 'Education Videos',
+  titleAccentWord,
+  titleAccentColor = '#D4AF37',
+  titleColor = '#0b6d41',
+  titleFontSize = '5xl',
+  // Tagline
+  showTagline = true,
+  tagline = 'Explore our collection of educational content',
+  taglineColor = '#6b7280',
+  // Currently Playing section
   currentlyPlayingText = 'Currently Playing',
   currentlyPlayingBgColor = '#0b6d41',
+  // Player settings
   showLogoOverlay = true,
   logoText = 'JKKN',
   showTitleOverlay = true,
+  // Playlist settings
   showDuration = true,
   showActiveIndicator = true,
   activeIndicatorColor = '#0b6d41',
+  // Styling
   backgroundColor = '#ffffff',
   playlistBgColor = '#f5f5f5',
   className,
@@ -104,6 +142,19 @@ export function EducationVideos({
   const [activeVideoIndex, setActiveVideoIndex] = useState(0)
   const [videos, setVideos] = useState<VideoItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
+
+  // Parse title for accent word styling
+  const titleParts = useMemo(() => {
+    if (!titleAccentWord || !title.includes(titleAccentWord)) {
+      return { before: title, accent: '', after: '' }
+    }
+    const parts = title.split(titleAccentWord)
+    return {
+      before: parts[0] || '',
+      accent: titleAccentWord,
+      after: parts[1] || '',
+    }
+  }, [title, titleAccentWord])
 
   // Fetch videos from database on mount
   useEffect(() => {
@@ -122,26 +173,59 @@ export function EducationVideos({
 
   const activeVideo = videos[activeVideoIndex]
 
+  // Reusable Section Header component
+  const SectionHeader = () => (
+    <div className="py-8 md:py-12 px-4" style={{ backgroundColor }}>
+      <div className="max-w-4xl mx-auto text-center">
+        {/* Label/Badge */}
+        {showLabel && labelText && (
+          <div className="flex justify-center mb-4">
+            <span
+              className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase"
+              style={{
+                backgroundColor: labelBgColor,
+                color: labelColor,
+                border: `1px solid ${labelColor}30`,
+              }}
+            >
+              {labelText}
+            </span>
+          </div>
+        )}
+
+        {/* Title with accent word */}
+        <h2
+          className={cn(
+            titleFontSizeMap[titleFontSize],
+            'font-bold tracking-tight mb-4'
+          )}
+          style={{ color: titleColor }}
+        >
+          {titleParts.before}
+          {titleParts.accent && (
+            <span style={{ color: titleAccentColor }}>{titleParts.accent}</span>
+          )}
+          {titleParts.after}
+        </h2>
+
+        {/* Tagline */}
+        {showTagline && tagline && (
+          <p
+            className="text-lg md:text-xl max-w-3xl mx-auto"
+            style={{ color: taglineColor }}
+          >
+            {tagline}
+          </p>
+        )}
+      </div>
+    </div>
+  )
+
   // Show loading state
   if (isLoading && !isEditing) {
     return (
       <section className={cn('w-full', className)} style={{ backgroundColor }}>
-        {showHeader && (
-          <div className="py-6 px-4" style={{ backgroundColor }}>
-            <div className="max-w-7xl mx-auto">
-              <h2
-                className="text-2xl md:text-3xl font-bold uppercase tracking-wide"
-                style={{ color: headerTextColor }}
-              >
-                {headerText}
-              </h2>
-              <div
-                className="w-16 h-1 mt-2"
-                style={{ backgroundColor: headerUnderlineColor }}
-              />
-            </div>
-          </div>
-        )}
+        {showHeader && <SectionHeader />}
         <div className="flex items-center justify-center py-20">
           <Loader2 className="w-8 h-8 animate-spin text-[#0b6d41]" />
         </div>
@@ -158,22 +242,7 @@ export function EducationVideos({
   if (videos.length === 0 && isEditing) {
     return (
       <section className={cn('w-full', className)} style={{ backgroundColor }}>
-        {showHeader && (
-          <div className="py-6 px-4" style={{ backgroundColor }}>
-            <div className="max-w-7xl mx-auto">
-              <h2
-                className="text-2xl md:text-3xl font-bold uppercase tracking-wide"
-                style={{ color: headerTextColor }}
-              >
-                {headerText}
-              </h2>
-              <div
-                className="w-16 h-1 mt-2"
-                style={{ backgroundColor: headerUnderlineColor }}
-              />
-            </div>
-          </div>
-        )}
+        {showHeader && <SectionHeader />}
         <div className="flex flex-col items-center justify-center py-16 px-4">
           <Video className="w-16 h-16 text-gray-400 mb-4" />
           <p className="text-lg font-medium text-gray-900">No videos added yet</p>
@@ -185,26 +254,12 @@ export function EducationVideos({
 
   return (
     <section className={cn('w-full', className)} style={{ backgroundColor }}>
-      {/* Section Header - Green text with red underline */}
-      {showHeader && (
-        <div className="py-6 px-4" style={{ backgroundColor }}>
-          <div className="max-w-7xl mx-auto">
-            <h2
-              className="text-2xl md:text-3xl font-bold uppercase tracking-wide"
-              style={{ color: headerTextColor }}
-            >
-              {headerText}
-            </h2>
-            <div
-              className="w-16 h-1 mt-2"
-              style={{ backgroundColor: headerUnderlineColor }}
-            />
-          </div>
-        </div>
-      )}
+      {/* Section Header - Label, Title with accent, Tagline */}
+      {showHeader && <SectionHeader />}
 
       {/* Video Player Layout - 70% player | 30% playlist */}
-      <div className="flex flex-col lg:flex-row">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex flex-col lg:flex-row">
         {/* Main Video Player - Left Side (70%) */}
         <div className="w-full lg:w-[70%] bg-black relative">
           {/* Title Bar Overlay - Top */}
@@ -261,13 +316,13 @@ export function EducationVideos({
 
         {/* Playlist Sidebar - Right Side (30%) */}
         <div
-          className="w-full lg:w-[30%] flex flex-col max-h-[400px] lg:max-h-none"
+          className="w-full lg:w-[30%] flex flex-col max-h-none lg:max-h-[500px]"
           style={{ backgroundColor: playlistBgColor }}
         >
-          {/* Currently Playing Header - Green */}
+          {/* Currently Playing Header - Green (Hidden on mobile) */}
           {activeVideo && (
             <div
-              className="p-4 flex items-center justify-between relative overflow-hidden"
+              className="hidden lg:flex p-4 items-center justify-between relative overflow-hidden"
               style={{ backgroundColor: currentlyPlayingBgColor }}
             >
               <div className="flex-1 min-w-0 relative z-10">
@@ -286,29 +341,29 @@ export function EducationVideos({
             </div>
           )}
 
-          {/* Video List */}
-          <ScrollArea className="flex-1">
-            <div className="divide-y divide-gray-200">
+          {/* Video List - Horizontal on mobile, Vertical on desktop */}
+          <div className="flex-1 overflow-x-auto lg:overflow-x-visible overflow-y-visible lg:overflow-y-auto">
+            <div className="flex flex-row lg:flex-col gap-2 p-2 lg:p-0 lg:gap-0 lg:divide-y lg:divide-gray-200 min-w-max lg:min-w-0">
               {videos.map((video, index) => (
                 <button
                   key={video.id || index}
                   onClick={() => !isEditing && setActiveVideoIndex(index)}
                   className={cn(
-                    'w-full flex items-start gap-3 p-3 text-left transition-all duration-200',
+                    'flex-shrink-0 w-28 lg:w-full flex flex-col lg:flex-row items-start gap-1 lg:gap-3 p-1 lg:p-3 text-left transition-all duration-200 rounded-lg lg:rounded-none',
                     'hover:bg-gray-100',
-                    index === activeVideoIndex && 'bg-gray-200'
+                    index === activeVideoIndex && 'bg-gray-200 ring-2 ring-[#0b6d41] lg:ring-0'
                   )}
                 >
-                  {/* Active indicator bar */}
+                  {/* Active indicator bar - Desktop only */}
                   {showActiveIndicator && index === activeVideoIndex && (
                     <div
-                      className="flex-shrink-0 w-1 self-stretch rounded-full"
+                      className="hidden lg:block flex-shrink-0 w-1 self-stretch rounded-full"
                       style={{ backgroundColor: activeIndicatorColor }}
                     />
                   )}
 
                   {/* Thumbnail */}
-                  <div className="relative w-28 h-16 rounded overflow-hidden flex-shrink-0 bg-gray-300">
+                  <div className="relative w-full lg:w-28 aspect-video lg:h-16 rounded overflow-hidden flex-shrink-0 bg-gray-300">
                     {video.thumbnail_url ? (
                       <Image
                         src={video.thumbnail_url}
@@ -323,8 +378,8 @@ export function EducationVideos({
                     )}
                   </div>
 
-                  {/* Video Info */}
-                  <div className="flex-1 min-w-0">
+                  {/* Video Info - Hidden on mobile for compact cards */}
+                  <div className="hidden lg:block flex-1 min-w-0">
                     <h5
                       className={cn(
                         'text-sm font-semibold line-clamp-2 leading-tight uppercase text-gray-900',
@@ -340,7 +395,8 @@ export function EducationVideos({
                 </button>
               ))}
             </div>
-          </ScrollArea>
+          </div>
+        </div>
         </div>
       </div>
     </section>

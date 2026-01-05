@@ -109,7 +109,7 @@ export default function AdmissionHero({
     { icon: 'check', label: 'UGC Recognized' },
     { icon: 'check', label: 'NBA Accredited' },
   ],
-  backgroundColor = 'gradient-dark',
+  backgroundColor = 'gradient-light',
   showAnimations = true,
   titleColor,
   subtitleColor,
@@ -146,16 +146,15 @@ export default function AdmissionHero({
         )
       case 'secondary':
         return cn(
-          'bg-white/10 backdrop-blur-sm',
-          'border-2 border-white/30',
-          'text-white hover:bg-white/20',
-          'hover:border-white/50'
+          isDark ? 'bg-white/10 border-white/30 text-white' : 'bg-white/80 border-gray-200 text-gray-900',
+          'backdrop-blur-sm border-2',
+          'hover:bg-white/20 hover:border-white/50'
         )
       case 'outline':
         return cn(
           'bg-transparent',
-          'border-2 border-white/50',
-          'text-white hover:bg-white/10',
+          isDark ? 'border-white/50 text-white hover:bg-white/10' : 'border-gray-300 text-gray-700 hover:bg-gray-50',
+          'border-2',
           'hover:border-white'
         )
       default:
@@ -174,7 +173,7 @@ export default function AdmissionHero({
       )}
     >
       {/* Decorative Patterns */}
-      <DecorativePatterns variant="scattered" color={isDark ? 'white' : 'green'} />
+      <DecorativePatterns variant="scattered" color={isDark ? 'white' : 'blue'} />
 
       {/* Gradient overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 pointer-events-none" />
@@ -311,7 +310,7 @@ export default function AdmissionHero({
                     transitionDelay: showAnimations ? `${(index + 3) * 100}ms` : '0ms',
                   }}
                 >
-                  <span className="text-green-400 flex-shrink-0">
+                  <span className="text-brand-primary flex-shrink-0">
                     <Check className="w-4 h-4" />
                   </span>
                   <span className="text-sm font-medium whitespace-nowrap">

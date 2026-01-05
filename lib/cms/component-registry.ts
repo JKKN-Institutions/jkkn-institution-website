@@ -2817,11 +2817,23 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     previewImage: '/cms-previews/EducationVideos.png',
     component: EducationVideos,
     propsSchema: z.object({
-      // Header configuration
-      headerText: z.string().default('EDUCATION VIDEO'),
-      headerTextColor: z.string().default('#0b6d41'),
-      headerUnderlineColor: z.string().default('#dc2626'),
+      // Section Header visibility
       showHeader: z.boolean().default(true),
+      // Label/Badge configuration
+      showLabel: z.boolean().default(true),
+      labelText: z.string().default('VIDEO GALLERY'),
+      labelColor: z.string().default('#D4AF37'),
+      labelBgColor: z.string().default('rgba(212,175,55,0.2)'),
+      // Title configuration
+      title: z.string().default('Education Videos'),
+      titleAccentWord: z.string().optional(),
+      titleAccentColor: z.string().default('#D4AF37'),
+      titleColor: z.string().default('#0b6d41'),
+      titleFontSize: z.enum(['3xl', '4xl', '5xl']).default('5xl'),
+      // Tagline configuration
+      showTagline: z.boolean().default(true),
+      tagline: z.string().default('Explore our collection of educational content'),
+      taglineColor: z.string().default('#6b7280'),
       // Currently Playing section
       currentlyPlayingText: z.string().default('Currently Playing'),
       currentlyPlayingBgColor: z.string().default('#0b6d41'),
@@ -2838,18 +2850,34 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       playlistBgColor: z.string().default('#f5f5f5'),
     }),
     defaultProps: {
-      headerText: 'EDUCATION VIDEO',
-      headerTextColor: '#0b6d41',
-      headerUnderlineColor: '#dc2626',
       showHeader: true,
+      // Label/Badge
+      showLabel: true,
+      labelText: 'VIDEO GALLERY',
+      labelColor: '#D4AF37',
+      labelBgColor: 'rgba(212,175,55,0.2)',
+      // Title
+      title: 'Education Videos',
+      titleAccentWord: 'Videos',
+      titleAccentColor: '#D4AF37',
+      titleColor: '#0b6d41',
+      titleFontSize: '5xl',
+      // Tagline
+      showTagline: true,
+      tagline: 'Explore our collection of educational content',
+      taglineColor: '#6b7280',
+      // Currently Playing
       currentlyPlayingText: 'Currently Playing',
       currentlyPlayingBgColor: '#0b6d41',
+      // Player
       showLogoOverlay: true,
       logoText: 'JKKN',
       showTitleOverlay: true,
+      // Playlist
       showDuration: true,
       showActiveIndicator: true,
       activeIndicatorColor: '#0b6d41',
+      // Styling
       backgroundColor: '#ffffff',
       playlistBgColor: '#f5f5f5',
     },
@@ -2857,18 +2885,35 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     isFullWidth: true,
     keywords: ['videos', 'youtube', 'education', 'player', 'playlist', 'media', 'pharmacy'],
     editableProps: [
-      { name: 'headerText', type: 'string', label: 'Header Text' },
-      { name: 'headerTextColor', type: 'color', label: 'Header Color' },
-      { name: 'headerUnderlineColor', type: 'color', label: 'Underline Color' },
-      { name: 'showHeader', type: 'boolean', label: 'Show Header' },
+      // Section Header
+      { name: 'showHeader', type: 'boolean', label: 'Show Section Header' },
+      // Label/Badge
+      { name: 'showLabel', type: 'boolean', label: 'Show Label Badge' },
+      { name: 'labelText', type: 'string', label: 'Label Text' },
+      { name: 'labelColor', type: 'color', label: 'Label Color' },
+      { name: 'labelBgColor', type: 'color', label: 'Label Background' },
+      // Title
+      { name: 'title', type: 'string', label: 'Title' },
+      { name: 'titleAccentWord', type: 'string', label: 'Accent Word (highlighted)' },
+      { name: 'titleColor', type: 'color', label: 'Title Color' },
+      { name: 'titleAccentColor', type: 'color', label: 'Accent Color' },
+      { name: 'titleFontSize', type: 'enum', label: 'Title Size', options: ['3xl', '4xl', '5xl'] },
+      // Tagline
+      { name: 'showTagline', type: 'boolean', label: 'Show Tagline' },
+      { name: 'tagline', type: 'string', label: 'Tagline' },
+      { name: 'taglineColor', type: 'color', label: 'Tagline Color' },
+      // Currently Playing
       { name: 'currentlyPlayingText', type: 'string', label: 'Currently Playing Label' },
       { name: 'currentlyPlayingBgColor', type: 'color', label: 'Currently Playing Background' },
+      // Player settings
       { name: 'showLogoOverlay', type: 'boolean', label: 'Show Logo on Player' },
       { name: 'logoText', type: 'string', label: 'Logo Text' },
       { name: 'showTitleOverlay', type: 'boolean', label: 'Show Title Overlay' },
+      // Playlist settings
       { name: 'showDuration', type: 'boolean', label: 'Show Duration' },
       { name: 'showActiveIndicator', type: 'boolean', label: 'Show Active Indicator' },
       { name: 'activeIndicatorColor', type: 'color', label: 'Active Indicator Color' },
+      // Styling
       { name: 'backgroundColor', type: 'color', label: 'Background Color' },
       { name: 'playlistBgColor', type: 'color', label: 'Playlist Background' },
     ],

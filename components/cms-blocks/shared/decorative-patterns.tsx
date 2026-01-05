@@ -58,7 +58,7 @@ export function DecorativeCircle({
  */
 interface DecorativePatternsProps {
   variant?: 'default' | 'dense' | 'minimal' | 'scattered'
-  color?: 'white' | 'gold' | 'green'
+  color?: 'white' | 'gold' | 'green' | 'blue'
   className?: string
 }
 
@@ -71,6 +71,7 @@ export function DecorativePatterns({
     white: 'rgba(255, 255, 255,',
     gold: 'rgba(255, 222, 89,',
     green: 'rgba(11, 109, 65,',
+    blue: 'rgba(23, 115, 235,',
   }
 
   const baseColor = colorMap[color]
