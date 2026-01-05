@@ -72,6 +72,11 @@ export async function generateMetadata(): Promise<Metadata> {
       ...siteMetadata.twitter,
       images: siteMetadata.twitter?.images || ['/og-image.png'],
     },
+
+    // Google Search Console verification
+    verification: {
+      google: 'y27BHDBypTLPOsApWrsud0u-UDAAT62rIvfM46VcID8',
+    },
   }
 }
 
