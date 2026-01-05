@@ -25,6 +25,7 @@ import { cn } from '@/lib/utils'
 import { getComponentEntry } from '@/lib/cms/component-registry'
 import { Button } from '@/components/ui/button'
 import { OfflineBanner } from '@/lib/hooks/use-network-status'
+import { StatusBar } from './status-bar'
 import {
   Save,
   Undo2,
@@ -603,6 +604,9 @@ function TemplateBuilderContent({
             </div>
           )}
         </div>
+
+        {/* Bottom Status Bar - hidden in preview mode */}
+        {!isPreviewMode && <StatusBar />}
       </div>
 
       {/* Drag Overlay */}

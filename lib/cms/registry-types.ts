@@ -362,6 +362,7 @@ export const HeroSectionPropsSchema = z.object({
   backgroundImage: z.string().optional(),
   backgroundImageAlt: z.string().default(''),
   backgroundVideo: z.string().optional(),
+  videoPosterImage: z.string().optional(), // Poster image for video LCP optimization
   backgroundGradient: z.string().optional(),
   ctaButtons: z.array(CTAButtonSchema).default([]),
   alignment: AlignmentSchema.default('center'),

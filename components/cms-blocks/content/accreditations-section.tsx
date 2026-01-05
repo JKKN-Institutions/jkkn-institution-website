@@ -714,11 +714,14 @@ export default function AccreditationsSection({
               setTimeout(() => setIsPaused(false), 2000)
             }}
           >
-            {/* Marquee Track */}
+            {/* Marquee Track - GPU-accelerated for CLS optimization */}
             <div
               className="flex w-max py-4"
               style={{
                 animation: isPaused ? 'none' : 'marquee-accreditations 18s linear infinite',
+                willChange: isPaused ? 'auto' : 'transform',
+                transform: 'translateZ(0)', // Force GPU compositing layer
+                backfaceVisibility: 'hidden', // Prevent flickering
               }}
             >
               {/* First set of cards */}
@@ -783,14 +786,14 @@ export default function AccreditationsSection({
               ))}
             </div>
 
-            {/* CSS Animation Keyframes */}
+            {/* CSS Animation Keyframes - GPU-accelerated with translate3d */}
             <style jsx>{`
               @keyframes marquee-accreditations {
                 0% {
-                  transform: translateX(0);
+                  transform: translate3d(0, 0, 0);
                 }
                 100% {
-                  transform: translateX(-50%);
+                  transform: translate3d(-50%, 0, 0);
                 }
               }
             `}</style>

@@ -53,6 +53,9 @@ import {
   Check,
   X,
   Menu,
+  Plus,
+  Minus,
+  AlertTriangle,
 } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
@@ -84,6 +87,8 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
     canUndo,
     canRedo,
     setDevice,
+    setZoom,
+    zoom,
     setPreviewMode,
     resetBlocks,
     setPage,
@@ -120,6 +125,29 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
       titleInputRef.current.select()
     }
   }, [isEditingTitle])
+
+  // Listen for custom events from empty canvas
+  useEffect(() => {
+    const handleOpenTemplates = () => {
+      setIsTemplateBrowserOpen(true)
+    }
+
+    const handleFocusPalette = () => {
+      // Focus the component palette search input
+      const paletteSearch = document.querySelector('[data-palette-search]') as HTMLInputElement
+      if (paletteSearch) {
+        paletteSearch.focus()
+      }
+    }
+
+    window.addEventListener('page-builder:open-templates', handleOpenTemplates)
+    window.addEventListener('page-builder:focus-palette', handleFocusPalette)
+
+    return () => {
+      window.removeEventListener('page-builder:open-templates', handleOpenTemplates)
+      window.removeEventListener('page-builder:focus-palette', handleFocusPalette)
+    }
+  }, [])
 
   const handleTitleSave = async () => {
     if (!page || !editedTitle.trim()) {
@@ -306,7 +334,13 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
                   </Tooltip>
                 )}
                 {isDirty && !isEditingTitle && (
-                  <span className="text-xs text-amber-600 hidden sm:inline">• Unsaved changes</span>
+                  <Badge
+                    variant="outline"
+                    className="hidden sm:inline-flex bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800"
+                  >
+                    <AlertTriangle className="w-3 h-3 mr-1" />
+                    Unsaved
+                  </Badge>
                 )}
               </div>
               <span className="text-xs text-muted-foreground truncate hidden sm:block">
@@ -419,6 +453,43 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Mobile view</TooltipContent>
+            </Tooltip>
+          </div>
+
+          <div className="hidden sm:block h-6 w-px bg-border" />
+
+          {/* Zoom Controls */}
+          <div className="hidden sm:flex items-center gap-1">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-7 w-7"
+                  onClick={() => setZoom(zoom - 25)}
+                  disabled={zoom <= 25}
+                >
+                  <Minus className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Zoom out</TooltipContent>
+            </Tooltip>
+            <span className="text-xs text-muted-foreground w-10 text-center tabular-nums">
+              {zoom}%
+            </span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-7 w-7"
+                  onClick={() => setZoom(zoom + 25)}
+                  disabled={zoom >= 200}
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Zoom in</TooltipContent>
             </Tooltip>
           </div>
         </div>

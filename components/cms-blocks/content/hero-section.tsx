@@ -78,6 +78,7 @@ export default function HeroSection({
   backgroundImageAlt = '',
   backgroundGradient,
   backgroundVideo,
+  videoPosterImage,
   ctaButtons = [],
   alignment = 'center',
   overlay = true,
@@ -163,13 +164,15 @@ export default function HeroSection({
         }}
       />
 
-      {/* Video Background */}
+      {/* Video Background - Optimized for LCP */}
       {backgroundType === 'video' && backgroundVideo && (
         <video
           autoPlay
           muted
           loop
           playsInline
+          preload="metadata"
+          poster={videoPosterImage}
           className="absolute inset-0 w-full h-full object-cover"
           style={{ transform: 'scale(1.1)' }}
         >

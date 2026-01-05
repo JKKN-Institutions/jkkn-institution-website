@@ -5,6 +5,8 @@ import {
   useContext,
   useReducer,
   useCallback,
+  useEffect,
+  useState,
   type ReactNode,
   type Dispatch,
 } from 'react'
@@ -63,12 +65,14 @@ interface PageBuilderState {
   blocks: BlockData[]
   selectedBlockId: string | null
   device: 'desktop' | 'tablet' | 'mobile'
+  zoom: number
   history: BlockData[][]
   historyIndex: number
   isDirty: boolean
   isSaving: boolean
   isPreviewMode: boolean
   clipboard: BlockData | null
+  lastSavedAt: Date | null
 }
 
 // Action types
@@ -92,6 +96,7 @@ type PageBuilderAction =
   | { type: 'UNDO' }
   | { type: 'REDO' }
   | { type: 'SET_DEVICE'; payload: 'desktop' | 'tablet' | 'mobile' }
+  | { type: 'SET_ZOOM'; payload: number }
   | { type: 'SET_PREVIEW_MODE'; payload: boolean }
   | { type: 'MARK_DIRTY' }
   | { type: 'MARK_SAVED' }
@@ -103,12 +108,14 @@ const initialState: PageBuilderState = {
   blocks: [],
   selectedBlockId: null,
   device: 'desktop',
+  zoom: 100,
   history: [],
   historyIndex: -1,
   isDirty: false,
   isSaving: false,
   isPreviewMode: false,
   clipboard: null,
+  lastSavedAt: null,
 }
 
 // Max history entries
@@ -583,6 +590,12 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
         device: action.payload,
       }
 
+    case 'SET_ZOOM':
+      return {
+        ...state,
+        zoom: Math.max(25, Math.min(200, action.payload)),
+      }
+
     case 'SET_PREVIEW_MODE':
       return {
         ...state,
@@ -600,6 +613,7 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
       return {
         ...state,
         isDirty: false,
+        lastSavedAt: new Date(),
       }
 
     case 'SET_SAVING':
@@ -638,6 +652,7 @@ interface PageBuilderContextValue {
   undo: () => void
   redo: () => void
   setDevice: (device: 'desktop' | 'tablet' | 'mobile') => void
+  setZoom: (zoom: number) => void
   setPreviewMode: (isPreview: boolean) => void
   markSaved: () => void
   setSaving: (isSaving: boolean) => void
@@ -646,6 +661,8 @@ interface PageBuilderContextValue {
   canRedo: boolean
   hasClipboard: boolean
   selectedBlock: BlockData | null
+  zoom: number
+  lastSavedAt: Date | null
   // Helper functions for nested blocks
   getChildBlocks: (parentId: string | null) => BlockData[]
   getRootBlocks: () => BlockData[]
@@ -675,6 +692,26 @@ export function PageBuilderProvider({
     history: [validatedBlocks],
     historyIndex: 0,
   })
+
+  // Load zoom from localStorage on mount (client-side only)
+  useEffect(() => {
+    const savedZoom = localStorage.getItem('editor-zoom')
+    if (savedZoom) {
+      const zoom = parseInt(savedZoom, 10)
+      if (!isNaN(zoom) && zoom >= 25 && zoom <= 200) {
+        dispatch({ type: 'SET_ZOOM', payload: zoom })
+      }
+    }
+  }, [])
+
+  // Persist zoom to localStorage when it changes
+  useEffect(() => {
+    if (state.zoom !== 100) {
+      localStorage.setItem('editor-zoom', String(state.zoom))
+    } else {
+      localStorage.removeItem('editor-zoom')
+    }
+  }, [state.zoom])
 
   // Convenience actions
   const setPage = useCallback((page: CmsPage) => {
@@ -757,6 +794,10 @@ export function PageBuilderProvider({
     dispatch({ type: 'SET_DEVICE', payload: device })
   }, [])
 
+  const setZoom = useCallback((zoom: number) => {
+    dispatch({ type: 'SET_ZOOM', payload: zoom })
+  }, [])
+
   const setPreviewMode = useCallback((isPreview: boolean) => {
     dispatch({ type: 'SET_PREVIEW_MODE', payload: isPreview })
   }, [])
@@ -811,6 +852,7 @@ export function PageBuilderProvider({
     undo,
     redo,
     setDevice,
+    setZoom,
     setPreviewMode,
     markSaved,
     setSaving,
@@ -818,6 +860,8 @@ export function PageBuilderProvider({
     canRedo,
     hasClipboard,
     selectedBlock,
+    zoom: state.zoom,
+    lastSavedAt: state.lastSavedAt,
     getChildBlocks,
     getRootBlocks,
   }

@@ -42,6 +42,7 @@ import { SiteFooter } from '@/components/public/site-footer'
 import { ResizablePanel } from './resizable-panel'
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
+import { StatusBar } from './status-bar'
 
 // Auto-save debounce delay in milliseconds
 const AUTO_SAVE_DELAY = 3000
@@ -952,6 +953,9 @@ function PageBuilderContent({
             </Sheet>
           )}
         </div>
+
+        {/* Bottom Status Bar - hidden in preview mode and on mobile */}
+        {!isPreviewMode && <StatusBar />}
       </div>
 
       {/* Drag Overlay */}

@@ -834,7 +834,7 @@ function MarqueeLogos({
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Marquee Track */}
+      {/* Marquee Track - GPU-accelerated for CLS optimization */}
       <div
         className="flex w-max py-4 overflow-x-auto scrollbar-hide touch-pan-x"
         style={{
@@ -843,6 +843,8 @@ function MarqueeLogos({
           WebkitOverflowScrolling: 'touch',
           animation: isPaused || isEditing ? 'none' : 'marquee-partners 18s linear infinite',
           willChange: isPaused || isEditing ? 'auto' : 'transform',
+          transform: 'translateZ(0)', // Force GPU compositing layer
+          backfaceVisibility: 'hidden', // Prevent flickering
         }}
       >
         {/* First set */}
@@ -921,14 +923,14 @@ function MarqueeLogos({
         ))}
       </div>
 
-      {/* CSS Animation Keyframes */}
+      {/* CSS Animation Keyframes - GPU-accelerated with translate3d */}
       <style jsx>{`
         @keyframes marquee-partners {
           0% {
-            transform: translateX(0);
+            transform: translate3d(0, 0, 0);
           }
           100% {
-            transform: translateX(-50%);
+            transform: translate3d(-50%, 0, 0);
           }
         }
       `}</style>

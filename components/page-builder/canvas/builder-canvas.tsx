@@ -349,9 +349,20 @@ export function BuilderCanvas() {
     moveBlock,
     updateBlockVisibility,
     getRootBlocks,
+    zoom,
   } = usePageBuilder()
 
   const { blocks, selectedBlockId, isPreviewMode } = state
+
+  // Calculate zoom transform style
+  const zoomStyle: CSSProperties = zoom !== 100
+    ? {
+        transform: `scale(${zoom / 100})`,
+        transformOrigin: 'top center',
+        width: `${10000 / zoom}%`,
+        marginLeft: `${(100 - (10000 / zoom)) / 2}%`,
+      }
+    : {}
 
   // Make canvas a drop target for palette items
   const { setNodeRef: setDropZoneRef, isOver } = useDroppable({
@@ -424,9 +435,26 @@ export function BuilderCanvas() {
 
   const rootBlocks = getRootBlocks()
 
+  // Callbacks for empty canvas quick actions
+  const handleBrowseTemplates = useCallback(() => {
+    // Dispatch custom event that top-toolbar listens for
+    window.dispatchEvent(new CustomEvent('page-builder:open-templates'))
+  }, [])
+
+  const handleBrowseBlocks = useCallback(() => {
+    // Dispatch custom event to focus the component palette
+    window.dispatchEvent(new CustomEvent('page-builder:focus-palette'))
+  }, [])
+
   if (rootBlocks.length === 0 && !isPreviewMode) {
     return (
-      <EmptyCanvas onAddBlock={(name) => addBlock(name)} />
+      <div style={zoomStyle}>
+        <EmptyCanvas
+          onAddBlock={(name) => addBlock(name)}
+          onBrowseTemplates={handleBrowseTemplates}
+          onBrowseBlocks={handleBrowseBlocks}
+        />
+      </div>
     )
   }
 
@@ -434,7 +462,7 @@ export function BuilderCanvas() {
   // This renders blocks exactly as they appear on the live site
   if (isPreviewMode) {
     return (
-      <div className="min-h-full">
+      <div className="min-h-full" style={zoomStyle}>
         <LivePreviewRenderer blocks={blocks} />
       </div>
     )
@@ -447,6 +475,7 @@ export function BuilderCanvas() {
         'min-h-full',
         'p-4'
       )}
+      style={zoomStyle}
       onClick={handleCanvasClick}
     >
       <BlockTree

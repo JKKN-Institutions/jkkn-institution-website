@@ -35,6 +35,8 @@ import {
   Library,
   Component,
   GraduationCap,
+  List,
+  Grid3X3,
 } from 'lucide-react'
 import { BrowseComponentsModal } from '@/components/page-builder/modals/browse-components-modal'
 import * as LucideIcons from 'lucide-react'
@@ -180,6 +182,48 @@ function PaletteItem({ name, displayName, description, icon, previewImage }: Pal
   return createDraggableContent(false)
 }
 
+// Grid variant of PaletteItem for compact view
+function PaletteItemGrid({ name, displayName, icon }: PaletteItemProps) {
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: `palette-${name}`,
+    data: {
+      type: 'palette-item',
+      componentName: name,
+    },
+  })
+
+  const style = transform
+    ? {
+        transform: CSS.Translate.toString(transform),
+        zIndex: isDragging ? 1000 : undefined,
+      }
+    : undefined
+
+  const iconName = icon as keyof typeof LucideIcons
+  const IconComponent = (LucideIcons[iconName] as LucideIcon) || Type
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+      className={cn(
+        'group flex flex-col items-center justify-center gap-1.5 p-3 rounded-lg border border-border bg-card',
+        'hover:border-primary/50 hover:bg-accent cursor-grab transition-all',
+        isDragging && 'opacity-50 shadow-lg ring-2 ring-primary'
+      )}
+    >
+      <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-muted group-hover:bg-primary/10 transition-colors">
+        <IconComponent className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+      </div>
+      <p className="font-medium text-xs text-foreground text-center line-clamp-2 leading-tight">
+        {displayName}
+      </p>
+    </div>
+  )
+}
+
 const categoryIcons: Record<ComponentCategory, React.ComponentType<{ className?: string }>> = {
   content: Type,
   media: ImageIcon,
@@ -225,6 +269,19 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
   const [customComponents, setCustomComponents] = useState<CustomComponentPaletteData[]>([])
   const [isLoadingCustom, setIsLoadingCustom] = useState(true)
   const [browseModalOpen, setBrowseModalOpen] = useState(false)
+
+  // View mode state with localStorage persistence
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>(() => {
+    if (typeof window !== 'undefined') {
+      return (localStorage.getItem('palette-view') as 'list' | 'grid') || 'list'
+    }
+    return 'list'
+  })
+
+  // Persist view mode to localStorage
+  useEffect(() => {
+    localStorage.setItem('palette-view', viewMode)
+  }, [viewMode])
 
   // Fetch custom components from database and register them
   useEffect(() => {
@@ -355,7 +412,38 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
 
       {/* Header - desktop and mobile */}
       <div className="p-3 sm:p-4 border-b border-border lg:border-t-0 flex-shrink-0">
-        <h2 className="font-semibold text-foreground mb-3 hidden lg:block">Components</h2>
+        <div className="flex items-center justify-between mb-3 hidden lg:flex">
+          <h2 className="font-semibold text-foreground">Components</h2>
+          {/* View mode toggle */}
+          <div className="flex gap-0.5 border rounded-lg p-0.5 bg-muted/50">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={viewMode === 'list' ? 'secondary' : 'ghost'}
+                  size="icon"
+                  className="h-6 w-6"
+                  onClick={() => setViewMode('list')}
+                >
+                  <List className="h-3.5 w-3.5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">List view</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={viewMode === 'grid' ? 'secondary' : 'ghost'}
+                  size="icon"
+                  className="h-6 w-6"
+                  onClick={() => setViewMode('grid')}
+                >
+                  <Grid3X3 className="h-3.5 w-3.5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">Grid view</TooltipContent>
+            </Tooltip>
+          </div>
+        </div>
 
         {/* Search */}
         <div className="relative">
@@ -365,6 +453,7 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9 bg-background/50 border-border/50 h-9"
+            data-palette-search
           />
         </div>
       </div>
@@ -412,11 +501,25 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
           <div className="p-3 w-full overflow-hidden">
             {searchQuery ? (
               // Search results
-              <div className="space-y-2 w-full">
+              <div className={cn(
+                "w-full",
+                viewMode === 'grid' ? 'grid grid-cols-2 gap-2' : 'space-y-2'
+              )}>
                 {filteredComponents.length === 0 ? (
-                  <p className="text-sm text-muted-foreground text-center py-8">
+                  <p className="text-sm text-muted-foreground text-center py-8 col-span-2">
                     No components found for "{searchQuery}"
                   </p>
+                ) : viewMode === 'grid' ? (
+                  filteredComponents.map((comp) => (
+                    <PaletteItemGrid
+                      key={comp.name}
+                      name={comp.name}
+                      displayName={comp.displayName}
+                      description={comp.description}
+                      icon={comp.icon}
+                      previewImage={comp.previewImage}
+                    />
+                  ))
                 ) : (
                   filteredComponents.map((comp) => (
                     <PaletteItem
@@ -453,17 +556,33 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
                         )}
                       </div>
                       {components.length > 0 ? (
-                        <div className="space-y-2 w-full">
-                          {components.map((comp) => (
-                            <PaletteItem
-                              key={comp.name}
-                              name={comp.name}
-                              displayName={comp.displayName}
-                              description={comp.description}
-                              icon={comp.icon}
-                              previewImage={comp.previewImage}
-                            />
-                          ))}
+                        <div className={cn(
+                          "w-full",
+                          viewMode === 'grid' ? 'grid grid-cols-2 gap-2' : 'space-y-2'
+                        )}>
+                          {viewMode === 'grid' ? (
+                            components.map((comp) => (
+                              <PaletteItemGrid
+                                key={comp.name}
+                                name={comp.name}
+                                displayName={comp.displayName}
+                                description={comp.description}
+                                icon={comp.icon}
+                                previewImage={comp.previewImage}
+                              />
+                            ))
+                          ) : (
+                            components.map((comp) => (
+                              <PaletteItem
+                                key={comp.name}
+                                name={comp.name}
+                                displayName={comp.displayName}
+                                description={comp.description}
+                                icon={comp.icon}
+                                previewImage={comp.previewImage}
+                              />
+                            ))
+                          )}
                         </div>
                       ) : category === 'custom' ? (
                         <div className="text-center py-4 border border-dashed rounded-lg">
@@ -485,17 +604,36 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
               </div>
             ) : (
               // Single category
-              <TabsContent value={activeCategory} className="mt-0 space-y-2 w-full">
-                {filteredComponents.map((comp) => (
-                  <PaletteItem
-                    key={comp.name}
-                    name={comp.name}
-                    displayName={comp.displayName}
-                    description={comp.description}
-                    icon={comp.icon}
-                    previewImage={comp.previewImage}
-                  />
-                ))}
+              <TabsContent
+                value={activeCategory}
+                className={cn(
+                  "mt-0 w-full",
+                  viewMode === 'grid' ? 'grid grid-cols-2 gap-2' : 'space-y-2'
+                )}
+              >
+                {viewMode === 'grid' ? (
+                  filteredComponents.map((comp) => (
+                    <PaletteItemGrid
+                      key={comp.name}
+                      name={comp.name}
+                      displayName={comp.displayName}
+                      description={comp.description}
+                      icon={comp.icon}
+                      previewImage={comp.previewImage}
+                    />
+                  ))
+                ) : (
+                  filteredComponents.map((comp) => (
+                    <PaletteItem
+                      key={comp.name}
+                      name={comp.name}
+                      displayName={comp.displayName}
+                      description={comp.description}
+                      icon={comp.icon}
+                      previewImage={comp.previewImage}
+                    />
+                  ))
+                )}
               </TabsContent>
             )}
           </div>
