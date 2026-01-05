@@ -128,12 +128,19 @@ export function PartnersLogos({
   const [isMobile, setIsMobile] = useState(false)
   // Swipe hint visibility
   const [showSwipeHint, setShowSwipeHint] = useState(true)
+  // Track if component has mounted (for hydration-safe rendering)
+  const [hasMounted, setHasMounted] = useState(false)
   // Velocity tracking for momentum scrolling
   const velocityRef = useRef(0)
   const lastMoveTimeRef = useRef(0)
   const lastMoveXRef = useRef(0)
   const headerRef = useInView()
   const contentRef = useInView()
+
+  // Mark component as mounted for hydration-safe rendering
+  useEffect(() => {
+    setHasMounted(true)
+  }, [])
 
   // Detect mobile for responsive autoplay speed
   useEffect(() => {
@@ -580,16 +587,16 @@ export function PartnersLogos({
                 ))}
               </div>
 
-              {/* Swipe Hint - Mobile only */}
-              {showSwipeHint && isMobile && displayPartners.length > 1 && (
+              {/* Swipe Hint - Mobile only (render after mount to avoid hydration mismatch) */}
+              {hasMounted && showSwipeHint && isMobile && displayPartners.length > 1 && (
                 <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-2 text-sm text-gray-500 animate-pulse pointer-events-none">
                   <MoveHorizontal className="w-4 h-4" />
                   <span>Swipe to see more</span>
                 </div>
               )}
 
-              {/* Progress Indicator - Mobile only */}
-              {isMobile && displayPartners.length > 1 && (
+              {/* Progress Indicator - Mobile only (render after mount to avoid hydration mismatch) */}
+              {hasMounted && isMobile && displayPartners.length > 1 && (
                 <div className="flex items-center justify-center gap-1.5 mt-4 text-sm">
                   <span className="font-semibold text-brand-primary">
                     {currentIndex + 1}
@@ -599,8 +606,8 @@ export function PartnersLogos({
                 </div>
               )}
 
-              {/* Navigation Dots */}
-              {showNavigationDots && totalPages > 1 && (
+              {/* Navigation Dots (render after mount to avoid hydration mismatch) */}
+              {hasMounted && showNavigationDots && totalPages > 1 && (
                 <div className={cn(
                   "flex items-center justify-center gap-2",
                   isMobile ? "mt-3" : "mt-6"

@@ -40,6 +40,10 @@ import {
   Unlink2,
 } from 'lucide-react'
 
+// Re-export GlassmorphismControls for use in Style tab
+export { GlassmorphismControls } from './glassmorphism-controls'
+export type { GlassSettings } from '@/lib/cms/styling-types'
+
 // Typography Controls
 interface TypographyControlsProps {
   typography?: {

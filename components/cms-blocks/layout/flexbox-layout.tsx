@@ -87,7 +87,9 @@ export default function FlexboxLayout({
             <p className="text-muted-foreground text-sm text-center">Item 2</p>
           </div>
         </>
-      ) : null}
+      ) : (
+        <div className="min-h-[20px]" />
+      )}
     </div>
   )
 }

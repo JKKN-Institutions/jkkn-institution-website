@@ -98,7 +98,9 @@ export default function GridLayout({
             </div>
           ))}
         </>
-      ) : null}
+      ) : (
+        <div className="min-h-[20px]" />
+      )}
     </div>
   )
 }

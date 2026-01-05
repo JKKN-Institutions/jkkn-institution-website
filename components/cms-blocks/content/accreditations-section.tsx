@@ -726,7 +726,7 @@ export default function AccreditationsSection({
                 <div
                   key={`card-1-${index}`}
                   className={cn(
-                    'flex-shrink-0 w-[90px] sm:w-[120px] md:w-[150px] h-[80px] sm:h-[90px] md:h-[105px] p-2 sm:p-2.5 md:p-3.5 rounded-lg md:rounded-xl flex flex-col items-center justify-center gap-1 md:gap-2 mx-1.5 sm:mx-2 md:mx-2.5',
+                    'flex-shrink-0 w-[110px] sm:w-[120px] md:w-[150px] h-[95px] sm:h-[100px] md:h-[110px] p-2.5 sm:p-3 md:p-3.5 rounded-lg md:rounded-xl flex flex-col items-center justify-center gap-1.5 md:gap-2 mx-1.5 sm:mx-2 md:mx-2.5',
                     'transition-all duration-300',
                     'hover:scale-105 hover:-translate-y-1 active:scale-95',
                     isDark
@@ -735,16 +735,16 @@ export default function AccreditationsSection({
                   )}
                 >
                   <div className={cn(
-                    'w-7 h-7 sm:w-8 sm:h-8 md:w-11 md:h-11 rounded-lg flex items-center justify-center',
+                    'w-10 h-10 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center',
                     isDark ? 'bg-gold/20 text-gold' : 'bg-primary/10 text-primary'
                   )}>
                     {(() => {
                       const IconComp = getIconComponent(card.icon)
-                      return <IconComp className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" strokeWidth={1.5} />
+                      return <IconComp className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6" strokeWidth={1.5} />
                     })()}
                   </div>
                   <span className={cn(
-                    'text-[8px] sm:text-[9px] md:text-xs font-bold text-center leading-tight',
+                    'text-[11px] sm:text-xs md:text-sm font-bold text-center leading-tight',
                     isDark ? 'text-white' : 'text-primary'
                   )}>
                     {card.name}
@@ -756,7 +756,7 @@ export default function AccreditationsSection({
                 <div
                   key={`card-2-${index}`}
                   className={cn(
-                    'flex-shrink-0 w-[90px] sm:w-[120px] md:w-[150px] h-[80px] sm:h-[90px] md:h-[105px] p-2 sm:p-2.5 md:p-3.5 rounded-lg md:rounded-xl flex flex-col items-center justify-center gap-1 md:gap-2 mx-1.5 sm:mx-2 md:mx-2.5',
+                    'flex-shrink-0 w-[110px] sm:w-[120px] md:w-[150px] h-[95px] sm:h-[100px] md:h-[110px] p-2.5 sm:p-3 md:p-3.5 rounded-lg md:rounded-xl flex flex-col items-center justify-center gap-1.5 md:gap-2 mx-1.5 sm:mx-2 md:mx-2.5',
                     'transition-all duration-300',
                     'hover:scale-105 hover:-translate-y-1 active:scale-95',
                     isDark
@@ -765,16 +765,16 @@ export default function AccreditationsSection({
                   )}
                 >
                   <div className={cn(
-                    'w-7 h-7 sm:w-8 sm:h-8 md:w-11 md:h-11 rounded-lg flex items-center justify-center',
+                    'w-10 h-10 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center',
                     isDark ? 'bg-gold/20 text-gold' : 'bg-primary/10 text-primary'
                   )}>
                     {(() => {
                       const IconComp = getIconComponent(card.icon)
-                      return <IconComp className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" strokeWidth={1.5} />
+                      return <IconComp className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6" strokeWidth={1.5} />
                     })()}
                   </div>
                   <span className={cn(
-                    'text-[8px] sm:text-[9px] md:text-xs font-bold text-center leading-tight',
+                    'text-[11px] sm:text-xs md:text-sm font-bold text-center leading-tight',
                     isDark ? 'text-white' : 'text-primary'
                   )}>
                     {card.name}

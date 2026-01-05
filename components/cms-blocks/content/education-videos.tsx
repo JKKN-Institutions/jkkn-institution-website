@@ -25,17 +25,32 @@ export const VideoItemSchema = z.object({
 export type VideoItem = z.infer<typeof VideoItemSchema>
 
 /**
- * EducationVideos props schema - matching CMS registry
+ * EducationVideos props schema - Light theme matching pharmacy.jkkn.ac.in
  */
 export const EducationVideosPropsSchema = z.object({
-  // CMS Header Props
-  headerPart1: z.string().default('Education').describe('Header part 1'),
-  headerPart2: z.string().default('Videos').describe('Header part 2'),
-  headerPart1Color: z.string().default('#ffde59').describe('Header part 1 color'),
-  headerPart2Color: z.string().default('#ffde59').describe('Header part 2 color'),
-  subtitle: z.string().optional().describe('Subtitle text'),
-  variant: z.enum(['modern-dark', 'modern-light']).default('modern-dark').describe('Style variant'),
-  showDecorations: z.boolean().default(true).describe('Show decorative elements'),
+  // Header configuration
+  headerText: z.string().default('EDUCATION VIDEO').describe('Section header text'),
+  headerTextColor: z.string().default('#0b6d41').describe('Header text color (green)'),
+  headerUnderlineColor: z.string().default('#dc2626').describe('Header underline color (red)'),
+  showHeader: z.boolean().default(true).describe('Show/hide section header'),
+
+  // Currently Playing section
+  currentlyPlayingText: z.string().default('Currently Playing').describe('Currently playing label'),
+  currentlyPlayingBgColor: z.string().default('#0b6d41').describe('Currently playing header background'),
+
+  // Player settings
+  showLogoOverlay: z.boolean().default(true).describe('Show JKKN logo on video player'),
+  logoText: z.string().default('JKKN').describe('Logo text displayed on player'),
+  showTitleOverlay: z.boolean().default(true).describe('Show video title overlay on player'),
+
+  // Playlist settings
+  showDuration: z.boolean().default(true).describe('Show video duration'),
+  showActiveIndicator: z.boolean().default(true).describe('Show green bar on active video'),
+  activeIndicatorColor: z.string().default('#0b6d41').describe('Active video indicator color'),
+
+  // Styling
+  backgroundColor: z.string().default('#ffffff').describe('Section background color'),
+  playlistBgColor: z.string().default('#f5f5f5').describe('Playlist sidebar background'),
 })
 
 export type EducationVideosProps = z.infer<typeof EducationVideosPropsSchema> & BaseBlockProps
@@ -56,24 +71,33 @@ function transformToVideoItems(videos: EducationVideo[]): VideoItem[] {
 }
 
 /**
- * EducationVideos Component - jkkn.ac.in Style
+ * EducationVideos Component - pharmacy.jkkn.ac.in Style (Light Theme)
  *
  * Full-width video player with playlist sidebar:
+ * - Simple green header with red underline
  * - Large inline YouTube embed player on left (70%)
- * - Playlist sidebar on right (30%)
- * - "Currently Playing" indicator with green header
+ * - Playlist sidebar on right (30%) with light background
+ * - Green "Currently Playing" header with play icon
  * - Click video in playlist to play inline
+ * - Green indicator bar on active video
  * - Responsive: stacks vertically on mobile
  * - Fetches videos from database automatically
  */
 export function EducationVideos({
-  headerPart1 = 'Education',
-  headerPart2 = 'Videos',
-  headerPart1Color = '#ffde59',
-  headerPart2Color = '#ffde59',
-  subtitle,
-  variant = 'modern-dark',
-  showDecorations = true,
+  headerText = 'EDUCATION VIDEO',
+  headerTextColor = '#0b6d41',
+  headerUnderlineColor = '#dc2626',
+  showHeader = true,
+  currentlyPlayingText = 'Currently Playing',
+  currentlyPlayingBgColor = '#0b6d41',
+  showLogoOverlay = true,
+  logoText = 'JKKN',
+  showTitleOverlay = true,
+  showDuration = true,
+  showActiveIndicator = true,
+  activeIndicatorColor = '#0b6d41',
+  backgroundColor = '#ffffff',
+  playlistBgColor = '#f5f5f5',
   className,
   isEditing,
 }: EducationVideosProps) {
@@ -96,116 +120,129 @@ export function EducationVideos({
     fetchVideos()
   }, [])
 
-  // Use database videos only - no demo videos to avoid YouTube blocking issues
-  const displayVideos = videos
-  const activeVideo = displayVideos[activeVideoIndex]
-
-  // Style variants
-  const isDark = variant === 'modern-dark'
-  const bgColor = isDark ? 'bg-[#1a1a1a]' : 'bg-[#f5f5f5]'
-  const headerBg = isDark ? 'bg-[#0d0d0d]' : 'bg-brand-primary'
-  const textColor = isDark ? 'text-white' : 'text-gray-900'
-  const mutedColor = isDark ? 'text-gray-400' : 'text-gray-500'
-  const playlistBg = isDark ? 'bg-[#2a2a2a]' : 'bg-[#f0f0f0]'
-  const dividerColor = isDark ? 'divide-gray-700' : 'divide-gray-200'
-  const hoverBg = isDark ? 'hover:bg-[#333]' : 'hover:bg-gray-100'
-  const activeBg = isDark ? 'bg-[#333]' : 'bg-gray-200'
+  const activeVideo = videos[activeVideoIndex]
 
   // Show loading state
   if (isLoading && !isEditing) {
     return (
-      <section className={cn('w-full', bgColor, className)}>
-        <div className={cn(headerBg, 'py-6 px-4')}>
-          <div className="max-w-7xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold">
-              <span style={{ color: headerPart1Color }}>{headerPart1}</span>{' '}
-              <span style={{ color: headerPart2Color }}>{headerPart2}</span>
-            </h2>
+      <section className={cn('w-full', className)} style={{ backgroundColor }}>
+        {showHeader && (
+          <div className="py-6 px-4" style={{ backgroundColor }}>
+            <div className="max-w-7xl mx-auto">
+              <h2
+                className="text-2xl md:text-3xl font-bold uppercase tracking-wide"
+                style={{ color: headerTextColor }}
+              >
+                {headerText}
+              </h2>
+              <div
+                className="w-16 h-1 mt-2"
+                style={{ backgroundColor: headerUnderlineColor }}
+              />
+            </div>
           </div>
-        </div>
+        )}
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="w-8 h-8 animate-spin text-brand-primary" />
+          <Loader2 className="w-8 h-8 animate-spin text-[#0b6d41]" />
         </div>
       </section>
     )
   }
 
   // Hide section if no videos (in production, not editing)
-  if (displayVideos.length === 0 && !isEditing) {
+  if (videos.length === 0 && !isEditing) {
     return null
   }
 
   // Show placeholder in editing mode when no videos
-  if (displayVideos.length === 0 && isEditing) {
+  if (videos.length === 0 && isEditing) {
     return (
-      <section className={cn('w-full', bgColor, className)}>
-        <div className={cn(headerBg, 'py-6 px-4')}>
-          <div className="max-w-7xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold">
-              <span style={{ color: headerPart1Color }}>{headerPart1}</span>{' '}
-              <span style={{ color: headerPart2Color }}>{headerPart2}</span>
-            </h2>
+      <section className={cn('w-full', className)} style={{ backgroundColor }}>
+        {showHeader && (
+          <div className="py-6 px-4" style={{ backgroundColor }}>
+            <div className="max-w-7xl mx-auto">
+              <h2
+                className="text-2xl md:text-3xl font-bold uppercase tracking-wide"
+                style={{ color: headerTextColor }}
+              >
+                {headerText}
+              </h2>
+              <div
+                className="w-16 h-1 mt-2"
+                style={{ backgroundColor: headerUnderlineColor }}
+              />
+            </div>
           </div>
-        </div>
+        )}
         <div className="flex flex-col items-center justify-center py-16 px-4">
           <Video className="w-16 h-16 text-gray-400 mb-4" />
-          <p className={cn('text-lg font-medium', textColor)}>No videos added yet</p>
-          <p className={mutedColor}>Add videos from the Admin → Videos panel</p>
+          <p className="text-lg font-medium text-gray-900">No videos added yet</p>
+          <p className="text-gray-500">Add videos from the Admin &rarr; Videos panel</p>
         </div>
       </section>
     )
   }
 
   return (
-    <section className={cn('w-full', bgColor, className)}>
-      {/* Header Section */}
-      <div className={cn(headerBg, 'py-6 px-4')}>
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold">
-            <span style={{ color: headerPart1Color }}>{headerPart1}</span>{' '}
-            <span style={{ color: headerPart2Color }}>{headerPart2}</span>
-          </h2>
-          {subtitle && (
-            <p className={cn('mt-2 text-lg', isDark ? 'text-gray-300' : 'text-gray-600')}>
-              {subtitle}
-            </p>
-          )}
+    <section className={cn('w-full', className)} style={{ backgroundColor }}>
+      {/* Section Header - Green text with red underline */}
+      {showHeader && (
+        <div className="py-6 px-4" style={{ backgroundColor }}>
+          <div className="max-w-7xl mx-auto">
+            <h2
+              className="text-2xl md:text-3xl font-bold uppercase tracking-wide"
+              style={{ color: headerTextColor }}
+            >
+              {headerText}
+            </h2>
+            <div
+              className="w-16 h-1 mt-2"
+              style={{ backgroundColor: headerUnderlineColor }}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Video Player Layout - Matching jkkn.ac.in exactly */}
+      {/* Video Player Layout - 70% player | 30% playlist */}
       <div className="flex flex-col lg:flex-row">
         {/* Main Video Player - Left Side (70%) */}
-        <div className="lg:w-[70%] bg-black relative">
-          {/* Video Title Bar - Top overlay */}
-          <div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-black/90 via-black/60 to-transparent">
-            <div className="flex items-center gap-3 p-3">
+        <div className="w-full lg:w-[70%] bg-black relative">
+          {/* Title Bar Overlay - Top */}
+          {showTitleOverlay && activeVideo && (
+            <div className="absolute top-0 left-0 right-0 z-10 bg-black/80 py-2 px-4 flex items-center gap-3">
               {/* JKKN Logo */}
-              <div className="w-12 h-12 rounded bg-white flex items-center justify-center flex-shrink-0 shadow-lg">
-                <span className="text-brand-primary font-bold text-xs leading-tight text-center">JKKN</span>
-              </div>
+              {showLogoOverlay && (
+                <div className="w-10 h-10 bg-white rounded flex items-center justify-center flex-shrink-0 shadow-md">
+                  <span className="text-[#0b6d41] font-bold text-xs leading-tight text-center">
+                    {logoText}
+                  </span>
+                </div>
+              )}
               {/* Video Title */}
-              <h3 className="text-white font-medium text-sm md:text-base line-clamp-1 flex-1">
-                {activeVideo?.title}
+              <h3 className="text-white text-sm md:text-base font-medium line-clamp-1 flex-1">
+                {activeVideo.title}
               </h3>
-              {/* Watch Later & Share buttons (visual only) */}
+              {/* Watch Later & Share buttons */}
               <div className="hidden md:flex items-center gap-4 text-white/80">
                 <button className="flex flex-col items-center gap-1 hover:text-white transition-colors">
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <circle cx="12" cy="12" r="10" strokeWidth="2"/>
-                    <path strokeWidth="2" d="M12 6v6l4 2"/>
+                    <circle cx="12" cy="12" r="10" strokeWidth="2" />
+                    <path strokeWidth="2" d="M12 6v6l4 2" />
                   </svg>
                   <span className="text-xs">Watch Later</span>
                 </button>
                 <button className="flex flex-col items-center gap-1 hover:text-white transition-colors">
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+                    <path
+                      strokeWidth="2"
+                      d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"
+                    />
                   </svg>
                   <span className="text-xs">Share</span>
                 </button>
               </div>
             </div>
-          </div>
+          )}
 
           {/* YouTube Embed */}
           <div className="aspect-video">
@@ -220,62 +257,54 @@ export function EducationVideos({
               />
             )}
           </div>
-
-          {/* Bottom overlay with MORE VIDEOS and JKKN logo */}
-          {showDecorations && (
-            <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent p-4 pointer-events-none">
-              <div className="flex items-end justify-between">
-                <span className="text-white/70 text-sm font-medium">MORE VIDEOS</span>
-                <div className="w-16 h-12 bg-white/90 rounded flex items-center justify-center">
-                  <span className="text-brand-primary font-bold text-xs">JKKN</span>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Playlist Sidebar - Right Side (30%) */}
-        <div className={cn('lg:w-[30%] flex flex-col max-h-[500px] lg:max-h-none', playlistBg)}>
+        <div
+          className="w-full lg:w-[30%] flex flex-col max-h-[400px] lg:max-h-none"
+          style={{ backgroundColor: playlistBgColor }}
+        >
           {/* Currently Playing Header - Green */}
-          <div className="bg-brand-primary p-4 flex items-center gap-3 relative overflow-hidden">
-            {/* Play icon circle */}
-            {showDecorations && (
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-24 h-24 rounded-full border-4 border-white/20 flex items-center justify-center -mr-8">
-                <Play className="w-8 h-8 text-white/40 ml-2" fill="currentColor" />
-              </div>
-            )}
-
-            <div className="flex-1 min-w-0 relative z-10">
-              <p className="text-white/90 text-xs font-medium uppercase tracking-wider mb-1">
-                Currently Playing
-              </p>
-              <h4 className="text-white font-bold text-sm line-clamp-2 uppercase">
-                {activeVideo?.title}
-              </h4>
-              {activeVideo?.duration && (
-                <p className="text-white/70 text-xs mt-1 font-mono">
-                  {activeVideo.duration}
+          {activeVideo && (
+            <div
+              className="p-4 flex items-center justify-between relative overflow-hidden"
+              style={{ backgroundColor: currentlyPlayingBgColor }}
+            >
+              <div className="flex-1 min-w-0 relative z-10">
+                <p className="text-white/80 text-xs font-medium uppercase tracking-wider mb-1">
+                  {currentlyPlayingText}
                 </p>
-              )}
+                <h4 className="text-white font-bold text-sm line-clamp-2 uppercase">
+                  {activeVideo.title}
+                </h4>
+              </div>
+
+              {/* Play icon circle on right */}
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-20 h-20 rounded-full border-4 border-white/20 flex items-center justify-center -mr-6">
+                <Play className="w-6 h-6 text-white/40 ml-1" fill="currentColor" />
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Video List */}
           <ScrollArea className="flex-1">
-            <div className={cn('divide-y', dividerColor)}>
-              {displayVideos.map((video, index) => (
+            <div className="divide-y divide-gray-200">
+              {videos.map((video, index) => (
                 <button
                   key={video.id || index}
                   onClick={() => !isEditing && setActiveVideoIndex(index)}
                   className={cn(
-                    "w-full flex items-start gap-3 p-3 text-left transition-all duration-200",
-                    hoverBg,
-                    index === activeVideoIndex && activeBg
+                    'w-full flex items-start gap-3 p-3 text-left transition-all duration-200',
+                    'hover:bg-gray-100',
+                    index === activeVideoIndex && 'bg-gray-200'
                   )}
                 >
-                  {/* Play indicator for active item */}
-                  {index === activeVideoIndex && (
-                    <div className="flex-shrink-0 w-2 self-stretch bg-brand-primary rounded-full" />
+                  {/* Active indicator bar */}
+                  {showActiveIndicator && index === activeVideoIndex && (
+                    <div
+                      className="flex-shrink-0 w-1 self-stretch rounded-full"
+                      style={{ backgroundColor: activeIndicatorColor }}
+                    />
                   )}
 
                   {/* Thumbnail */}
@@ -289,24 +318,23 @@ export function EducationVideos({
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gray-400">
-                        <Video className="w-6 h-6 text-white/50" />
+                        <Video className="w-5 h-5 text-white/50" />
                       </div>
                     )}
                   </div>
 
                   {/* Video Info */}
                   <div className="flex-1 min-w-0">
-                    <h5 className={cn(
-                      "text-sm font-semibold line-clamp-2 leading-tight uppercase",
-                      textColor,
-                      index === activeVideoIndex && "text-brand-primary"
-                    )}>
+                    <h5
+                      className={cn(
+                        'text-sm font-semibold line-clamp-2 leading-tight uppercase text-gray-900',
+                        index === activeVideoIndex && 'text-[#0b6d41]'
+                      )}
+                    >
                       {video.title}
                     </h5>
-                    {video.duration && (
-                      <p className={cn('text-xs mt-1 font-mono', mutedColor)}>
-                        {video.duration}
-                      </p>
+                    {showDuration && video.duration && (
+                      <p className="text-xs mt-1 font-mono text-gray-500">{video.duration}</p>
                     )}
                   </div>
                 </button>

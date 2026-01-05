@@ -128,6 +128,21 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'wnmyvbnqldukeknnmnpl.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'rwskookarbolpmtolqkd.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'kyvfkyjmdbtyimtedkie.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'images.unsplash.com',
       },
       {
@@ -166,6 +181,17 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: '*.fbcdn.net',
+        pathname: '/**',
+      },
+      // YouTube thumbnails
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+        pathname: '/vi/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com',
         pathname: '/**',
       },
     ],

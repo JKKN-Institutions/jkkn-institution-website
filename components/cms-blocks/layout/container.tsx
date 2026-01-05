@@ -43,7 +43,9 @@ export default function Container({
             Drop blocks here or click to configure container
           </p>
         </div>
-      ) : null}
+      ) : (
+        <div className="min-h-[20px]" />
+      )}
     </div>
   )
 }

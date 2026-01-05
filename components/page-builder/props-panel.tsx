@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
-import { X, Settings2 } from 'lucide-react'
+import { X, Settings2, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -20,6 +20,8 @@ import { Separator } from '@/components/ui/separator'
 import { getComponentEntry } from '@/lib/cms/component-registry'
 import type { EditableProp } from '@/lib/cms/registry-types'
 import { usePageBuilder } from './page-builder-context'
+import { GlassmorphismControls } from './elementor/glassmorphism-controls'
+import type { GlassSettings } from '@/lib/cms/styling-types'
 
 interface PropsPanelProps {
   className?: string
@@ -251,6 +253,25 @@ export function PropsPanel({ className }: PropsPanelProps) {
               Edit the component props directly in the code.
             </div>
           )}
+
+          <Separator />
+
+          {/* Glass Effects Section */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-medium text-foreground flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-primary" />
+              Glass Effects
+            </h4>
+            <GlassmorphismControls
+              glass={(selectedBlock.props._styles as { _glass?: Partial<GlassSettings> } | undefined)?._glass}
+              onChange={(glass) => {
+                handlePropChange('_styles', {
+                  ...((selectedBlock.props._styles as Record<string, unknown>) || {}),
+                  _glass: glass,
+                })
+              }}
+            />
+          </div>
 
           <Separator />
 

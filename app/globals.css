@@ -7,6 +7,9 @@
 /* Page Builder Animations */
 @import "../styles/animations.css";
 
+/* Glassmorphism Utilities */
+@import "../styles/glass.css";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -636,6 +639,175 @@
     background: var(--brand-cream);
     clip-path: ellipse(60% 100% at 50% 0%);
   }
+
+  /* ===== LEADERSHIP PROFILE PAGE STYLES ===== */
+
+  /* Hero section with image background */
+  .leadership-hero {
+    @apply relative min-h-[60vh] md:min-h-[70vh] overflow-hidden;
+    @apply flex items-center justify-center;
+  }
+
+  .leadership-hero-overlay {
+    @apply absolute inset-0;
+    background: linear-gradient(
+      to bottom,
+      rgba(3, 40, 22, 0.85) 0%,
+      rgba(11, 109, 65, 0.75) 50%,
+      rgba(3, 40, 22, 0.9) 100%
+    );
+  }
+
+  /* Glass profile card for hero section */
+  .leadership-card-glass {
+    @apply relative rounded-3xl p-8 md:p-12;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .leadership-card-glass:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Profile photo with animated gold ring */
+  .leadership-photo-ring {
+    @apply relative inline-block rounded-full p-1.5;
+    background: linear-gradient(135deg,
+      var(--brand-secondary) 0%,
+      var(--brand-gold) 50%,
+      var(--brand-secondary) 100%
+    );
+    box-shadow: 0 0 30px rgba(245, 197, 24, 0.4);
+  }
+
+  .leadership-photo-ring::before {
+    content: '';
+    @apply absolute inset-0 rounded-full;
+    background: linear-gradient(135deg,
+      var(--brand-secondary) 0%,
+      transparent 50%,
+      var(--brand-secondary) 100%
+    );
+    opacity: 0.5;
+    animation: rotate-glow 8s linear infinite;
+  }
+
+  @keyframes rotate-glow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Profile photo styles */
+  .leadership-photo {
+    @apply w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56;
+    @apply rounded-full object-cover;
+    @apply border-4 transition-transform duration-500;
+    border-color: var(--brand-primary);
+  }
+
+  .leadership-photo:hover {
+    @apply scale-105;
+  }
+
+  /* Name typography */
+  .leadership-name {
+    @apply text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Qualification text */
+  .leadership-qualification {
+    @apply text-lg sm:text-xl font-medium;
+    color: var(--brand-secondary);
+  }
+
+  /* Title badge */
+  .leadership-title-badge {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-full;
+    @apply text-sm font-semibold uppercase tracking-wider;
+    background: rgba(255, 222, 89, 0.15);
+    color: var(--brand-secondary);
+    border: 1px solid rgba(255, 222, 89, 0.3);
+  }
+
+  /* Message section */
+  .leadership-message-section {
+    @apply py-16 md:py-20;
+    background: var(--brand-cream);
+  }
+
+  /* Message card with gold border accent */
+  .leadership-message-card {
+    @apply bg-white rounded-3xl p-8 md:p-12;
+    box-shadow: 0 4px 24px rgba(11, 109, 65, 0.08);
+    border-left: 4px solid var(--brand-secondary);
+  }
+
+  /* Message title */
+  .leadership-message-title {
+    @apply text-2xl md:text-3xl font-bold text-center mb-8;
+    color: var(--brand-primary);
+  }
+
+  /* Message text with drop-cap */
+  .leadership-message-text {
+    @apply text-base sm:text-lg leading-relaxed;
+    color: #374151;
+    text-align: justify;
+  }
+
+  .leadership-message-text.with-drop-cap::first-letter {
+    @apply float-left text-6xl font-bold mr-3 mt-2 leading-none;
+    color: var(--brand-primary);
+  }
+
+  /* Decorative quote marks */
+  .leadership-quote-icon {
+    @apply text-6xl leading-none;
+    color: rgba(255, 222, 89, 0.3);
+    font-family: Georgia, serif;
+  }
+
+  /* Wave divider between sections */
+  .leadership-wave-divider {
+    @apply absolute bottom-0 left-0 right-0;
+    height: 80px;
+    background: var(--brand-cream);
+    clip-path: ellipse(70% 100% at 50% 100%);
+  }
+
+  /* Floating decorative shapes */
+  .leadership-decoration-circle {
+    @apply absolute rounded-full pointer-events-none;
+    background: rgba(255, 222, 89, 0.1);
+    animation: float-slow 12s ease-in-out infinite;
+  }
+
+  /* Role-specific accent colors */
+  .leadership-role-principal {
+    --leadership-accent: var(--brand-secondary);
+  }
+
+  .leadership-role-vice-principal {
+    --leadership-accent: #60a5fa;
+  }
+
+  .leadership-role-hod {
+    --leadership-accent: #34d399;
+  }
+
+  .leadership-role-management {
+    --leadership-accent: var(--brand-gold);
+  }
+
+  .leadership-role-director {
+    --leadership-accent: #f472b6;
+  }
 }
 
 @layer utilities {
@@ -756,10 +928,10 @@
     flex-direction: column;
   }
 
-  /* Add gap only between non-full-width sections */
+  /* Add compact gap between non-full-width sections */
   .page-content > .page-content-container {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 
   .page-content > .page-content-container:first-child {
@@ -772,15 +944,15 @@
 
   @media (min-width: 640px) {
     .page-content > .page-content-container {
-      margin-top: 2.5rem;
-      margin-bottom: 2.5rem;
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
     }
   }
 
   @media (min-width: 1024px) {
     .page-content > .page-content-container {
-      margin-top: 3rem;
-      margin-bottom: 3rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
     }
   }
 

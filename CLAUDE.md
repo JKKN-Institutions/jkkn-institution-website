@@ -198,6 +198,10 @@ npm run db:migrate -- --institution=dental
 npm run dev          # Start development server (uses current .env.local)
 npm run dev:main     # Switch to Main Institution + start dev server
 npm run dev:dental   # Switch to Dental College + start dev server
+npm run dev:arts-science   # Switch to Dental College + start dev server
+npm run dev:engineering   # Switch to Dental College + start dev server
+npm run dev:pharmacy   # Switch to Dental College + start dev server
+npm run dev:nursing   # Switch to Dental College + start dev server
 npm run build        # Production build (runs TypeScript compiler + Next.js build)
 npm run start        # Start production server
 npm run lint         # Run ESLint

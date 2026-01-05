@@ -30,7 +30,12 @@ export default function TextEditor({
     >
       {content ? (
         <div
-          className="prose prose-slate dark:prose-invert"
+          className={cn(
+            // Base prose styling with enhanced typography
+            'prose prose-slate dark:prose-invert prose-lg max-w-none',
+            // Better text colors and spacing
+            'text-gray-700 leading-relaxed'
+          )}
           dangerouslySetInnerHTML={{ __html: content }}
         />
       ) : isEditing ? (

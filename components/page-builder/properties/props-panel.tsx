@@ -14,7 +14,9 @@ import {
   BorderControls,
   BackgroundControls,
   ShadowControls,
+  GlassmorphismControls,
 } from '../elementor/style-controls'
+import type { GlassSettings } from '@/lib/cms/styling-types'
 import { MotionControls, type MotionSettings } from '../elementor/motion-controls'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -69,6 +71,7 @@ interface BlockStyles {
   shadow?: {
     boxShadow?: string
   }
+  glass?: GlassSettings
 }
 
 export function PropsPanel() {
@@ -304,6 +307,17 @@ export function PropsPanel() {
                 shadow={styles.shadow}
                 onChange={(shadow) => updateStyles('shadow', shadow)}
               />
+              {/* Glass Effects Section */}
+              <div className="p-3 space-y-2">
+                <div className="flex items-center gap-2 mb-2">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  <span className="font-medium text-sm">Glass Effects</span>
+                </div>
+                <GlassmorphismControls
+                  glass={styles.glass}
+                  onChange={(glass) => updateStyles('glass', glass)}
+                />
+              </div>
             </div>
           </div>
         </TabsContent>

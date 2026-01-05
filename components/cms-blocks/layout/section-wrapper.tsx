@@ -48,7 +48,7 @@ export default function SectionWrapper({
       <div
         className={cn(
           'relative z-10',
-          !fullWidth && 'container mx-auto px-4'
+          fullWidth ? 'w-full' : 'container mx-auto px-4'
         )}
       >
         {hasChildren ? (
@@ -59,7 +59,9 @@ export default function SectionWrapper({
               Drop blocks here to build this section
             </p>
           </div>
-        ) : null}
+        ) : (
+          <div className="min-h-[20px]" />
+        )}
       </div>
     </section>
   )

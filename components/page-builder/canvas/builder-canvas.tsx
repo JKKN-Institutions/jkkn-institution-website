@@ -303,7 +303,7 @@ function BlockTree({
               depth={depth}
             >
               {isContainer && (
-                <div className="min-h-[60px]">
+                <>
                   {childBlocks.length > 0 ? (
                     <BlockTree
                       blocks={blocks}
@@ -319,13 +319,14 @@ function BlockTree({
                       onAddToContainer={onAddToContainer}
                       depth={depth + 1}
                     />
-                  ) : null}
-                  <ContainerDropZone
-                    containerId={block.id}
-                    isPreviewMode={isPreviewMode}
-                    onAddBlock={(name) => onAddToContainer(name, block.id)}
-                  />
-                </div>
+                  ) : (
+                    <ContainerDropZone
+                      containerId={block.id}
+                      isPreviewMode={isPreviewMode}
+                      onAddBlock={(name) => onAddToContainer(name, block.id)}
+                    />
+                  )}
+                </>
               )}
             </SortableBlock>
           )

@@ -5,10 +5,11 @@ import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { Calendar, Newspaper, ChevronRight, ArrowRight, Loader2 } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
 import { getBlogPostsByCategory } from '@/app/actions/cms/homepage-blog'
+import { HomeCarousel, HomeCarouselItem } from '@/components/ui/home-carousel'
 
 /**
  * News item schema
@@ -127,11 +128,6 @@ export function CollegeNews({
   className,
   isEditing,
 }: CollegeNewsProps) {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const [isPaused, setIsPaused] = useState(false)
-  const [isDragging, setIsDragging] = useState(false)
-  const [startX, setStartX] = useState(0)
-  const [scrollLeft, setScrollLeft] = useState(0)
   const [dynamicNews, setDynamicNews] = useState<NewsItem[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const headerRef = useInView()
@@ -185,45 +181,6 @@ export function CollegeNews({
     : newsItems.length > 0
       ? newsItems
       : defaultNews
-
-  // Autoplay carousel
-  useEffect(() => {
-    if (layout !== 'carousel' || isEditing || isPaused || !autoplay) return
-
-    const interval = setInterval(() => {
-      if (scrollRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
-        const cardWidth = 340
-
-        if (scrollLeft + clientWidth >= scrollWidth - 10) {
-          scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' })
-        } else {
-          scrollRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' })
-        }
-      }
-    }, autoplaySpeed)
-
-    return () => clearInterval(interval)
-  }, [layout, isEditing, isPaused, autoplaySpeed, autoplay])
-
-  // Touch handlers for mobile swipe
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (!scrollRef.current) return
-    setIsDragging(true)
-    setStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
-    setScrollLeft(scrollRef.current.scrollLeft)
-  }
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || !scrollRef.current) return
-    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
-    const walk = (x - startX) * 1.5
-    scrollRef.current.scrollLeft = scrollLeft - walk
-  }
-
-  const handleTouchEnd = () => {
-    setIsDragging(false)
-  }
 
   const columnClasses = {
     '2': 'grid-cols-1 sm:grid-cols-2',
@@ -288,24 +245,18 @@ export function CollegeNews({
           )}
         >
           {layout === 'carousel' ? (
-            <div
-              className="relative"
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
-            >
-              {/* Carousel - max 3 cards visible on desktop */}
-              <div className="max-w-[1008px] mx-auto">
-                <div
-                  ref={scrollRef}
-                  className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
-                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                  onTouchStart={handleTouchStart}
-                  onTouchMove={handleTouchMove}
-                  onTouchEnd={handleTouchEnd}
-                >
-                  {displayNews.map((news, index) => (
+            <div className="relative max-w-6xl mx-auto">
+              <HomeCarousel
+                autoplay={autoplay && !isEditing}
+                autoplaySpeed={autoplaySpeed}
+                loop={true}
+                pauseOnHover={true}
+                isDark={isDark}
+                showDots={true}
+              >
+                {displayNews.map((news, index) => (
+                  <HomeCarouselItem key={index}>
                     <NewsCard
-                      key={index}
                       news={news}
                       cardStyle={cardStyle}
                       isDark={isDark}
@@ -313,30 +264,10 @@ export function CollegeNews({
                       isEditing={isEditing}
                       index={index}
                       isInView={contentRef.isInView}
-                      className="snap-start flex-shrink-0 w-[calc(100vw-2rem)] sm:w-[320px]"
                     />
-                  ))}
-                </div>
-              </div>
-
-              {/* Carousel Indicators */}
-              <div className="flex justify-center gap-2 mt-6">
-                {displayNews.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      if (scrollRef.current) {
-                        scrollRef.current.scrollTo({ left: index * 340, behavior: 'smooth' })
-                      }
-                    }}
-                    className={cn(
-                      "w-2 h-2 rounded-full transition-all duration-300",
-                      isDark ? "bg-white/30 hover:bg-white/60" : "bg-gray-300 hover:bg-gray-400"
-                    )}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
+                  </HomeCarouselItem>
                 ))}
-              </div>
+              </HomeCarousel>
             </div>
           ) : layout === 'featured' ? (
             // Featured layout: 1 large + 3 small

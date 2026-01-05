@@ -1,6 +1,6 @@
 'use client'
 
-import { type ReactNode } from 'react'
+import { type ReactNode, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -21,6 +21,8 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { BlockData } from '@/lib/cms/registry-types'
+import type { GlassSettings } from '@/lib/cms/styling-types'
+import { BLUR_VALUES, TINT_COLORS, GLOW_BLUR_VALUES } from '@/lib/cms/styling-types'
 
 interface BlockWrapperProps {
   block: BlockData
@@ -62,6 +64,57 @@ export function BlockWrapper({
   depth = 0,
 }: BlockWrapperProps) {
   const isHidden = !block.is_visible
+
+  // Compute glass effect styles based on block settings
+  const glassStyles = useMemo(() => {
+    const blockStylesData = (block.props as Record<string, unknown>)?._styles as { glass?: GlassSettings } | undefined
+    const glassSettings = blockStylesData?.glass
+
+    if (!glassSettings?.enabled) return {}
+
+    const baseRgba = glassSettings.variant === 'dark'
+      ? '0, 0, 0'
+      : '255, 255, 255'
+
+    // Get tint color for background overlay
+    const tintColor = glassSettings.colorTint !== 'none'
+      ? TINT_COLORS[glassSettings.colorTint]
+      : null
+
+    // Build background with optional tint
+    let background: string
+    if (tintColor) {
+      // Convert hex to RGB for tint
+      const hex = tintColor.replace('#', '')
+      const r = parseInt(hex.substring(0, 2), 16)
+      const g = parseInt(hex.substring(2, 4), 16)
+      const b = parseInt(hex.substring(4, 6), 16)
+      background = `linear-gradient(135deg, rgba(${baseRgba}, ${glassSettings.backgroundOpacity / 100}), rgba(${r}, ${g}, ${b}, ${glassSettings.tintOpacity / 100}))`
+    } else {
+      background = `rgba(${baseRgba}, ${glassSettings.backgroundOpacity / 100})`
+    }
+
+    const styles: React.CSSProperties = {
+      backdropFilter: `blur(${BLUR_VALUES[glassSettings.blurLevel]}px)`,
+      WebkitBackdropFilter: `blur(${BLUR_VALUES[glassSettings.blurLevel]}px)`,
+      background,
+    }
+
+    // Add border if enabled
+    if (glassSettings.borderEnabled) {
+      const borderRgba = glassSettings.variant === 'dark' ? '0, 0, 0' : '255, 255, 255'
+      styles.border = `1px solid rgba(${borderRgba}, ${glassSettings.borderOpacity / 100})`
+    }
+
+    // Add glow if enabled
+    if (glassSettings.glowEnabled && glassSettings.glowColor) {
+      const glowColor = glassSettings.glowColor
+      const glowBlur = GLOW_BLUR_VALUES[glassSettings.glowIntensity]
+      styles.boxShadow = `0 0 ${glowBlur}px ${glowColor}66`
+    }
+
+    return styles
+  }, [block.props])
 
   if (isPreviewMode) {
     // In preview mode, just render the component without wrapper UI
@@ -201,8 +254,10 @@ export function BlockWrapper({
       <div
         className={cn(
           'relative transition-all',
-          !isSelected && 'hover:outline hover:outline-2 hover:outline-dashed hover:outline-border'
+          !isSelected && 'hover:outline hover:outline-2 hover:outline-dashed hover:outline-border',
+          Object.keys(glassStyles).length > 0 && 'rounded-lg overflow-hidden'
         )}
+        style={glassStyles}
       >
         {children}
       </div>

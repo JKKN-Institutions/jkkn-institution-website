@@ -12,6 +12,44 @@ import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { DEFAULT_FONT_FAMILY } from '@/lib/cms/page-typography-types'
 import { DynamicFontLoader } from '@/components/cms-blocks/fonts/dynamic-font-loader'
 import { BlockErrorBoundary } from '@/components/ui/block-error-boundary'
+import { enhanceBlock, GLASS_PRESETS, type EnhancedBlock } from '@/lib/cms/design-enhancer'
+
+/**
+ * Auto-styling configuration for different block types
+ * These apply professional glassmorphism styling automatically
+ */
+const AUTO_STYLE_CONFIG = {
+  // Text content blocks get glass containers
+  textBlocks: ['TextEditor', 'RichText', 'Paragraph', 'Quote', 'Blockquote'],
+  // Image blocks get rounded corners and shadows
+  imageBlocks: ['ImageBlock', 'Image'],
+  // Profile/bio sections (image + heading + text pattern)
+  profileBlocks: ['ProfileCard', 'TeamMember', 'AuthorCard'],
+  // Heading blocks get proper spacing
+  headingBlocks: ['Heading', 'SectionTitle', 'PageTitle'],
+}
+
+/**
+ * Get auto-styling classes for a block based on its type
+ */
+function getAutoStyleClasses(componentName: string, isNested: boolean): string {
+  // Text content blocks - clean styling without glass effects
+  if (AUTO_STYLE_CONFIG.textBlocks.includes(componentName)) {
+    return '' // No glass container - clean text on background
+  }
+
+  // Image blocks get professional styling (keep shadow and hover)
+  if (AUTO_STYLE_CONFIG.imageBlocks.includes(componentName)) {
+    return '' // Let ImageBlock handle its own styling
+  }
+
+  // Heading blocks - minimal spacing
+  if (AUTO_STYLE_CONFIG.headingBlocks.includes(componentName)) {
+    return '' // Let Heading component handle its own styling
+  }
+
+  return ''
+}
 
 interface BlockData {
   id: string
@@ -106,24 +144,47 @@ function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?:
     return <BlockError componentName={block.component_name} />
   }
 
+  // Get auto-styling classes based on block type
+  const autoStyleClasses = getAutoStyleClasses(block.component_name, isNested)
+
+  // Get enhancement from design enhancer (convert snake_case to camelCase for PageBlock interface)
+  const enhancement = enhanceBlock({
+    id: block.id,
+    componentName: block.component_name,
+    props: block.props,
+    sortOrder: block.sort_order,
+    parentBlockId: block.parent_block_id,
+    isVisible: block.is_visible,
+    customClasses: block.custom_classes,
+    customCss: block.custom_css,
+  })
+
   // Check for AI enhancement background gradient
-  const backgroundGradient = block.props._backgroundGradient as string | undefined
+  const backgroundGradient = block.props._backgroundGradient as string | undefined || enhancement.backgroundGradient
 
   // Get block styles (margin, padding, etc.) from props
   const blockStyles = block.props._styles as BlockStyles | undefined
   const appliedStyles = applyBlockStyles(blockStyles)
 
-  // Get animation settings from props
+  // Get animation settings from props only (don't auto-apply animations to avoid visibility issues)
   const animationSettings = block.props._animation as BlockAnimation | undefined
 
   // Check if this component is full-width (should not be wrapped in container)
   const isFullWidth = isFullWidthComponent(block.component_name)
 
-  // Wrapper for custom classes, CSS, and animations
+  // Wrapper for custom classes, CSS, animations, and auto-styling
   const BlockWrapper = ({ children }: { children: React.ReactNode }) => {
+    // Combine all classes: custom classes + enhancement wrapper + auto-styling
+    const combinedClasses = cn(
+      'relative',
+      block.custom_classes,
+      enhancement.wrapperClassName,
+      autoStyleClasses
+    )
+
     const content = (
       <div
-        className={cn('relative', block.custom_classes)}
+        className={combinedClasses}
         style={appliedStyles}
       >
         {/* Background gradient overlay for AI enhancements */}
@@ -133,7 +194,7 @@ function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?:
         {block.custom_css && (
           <style dangerouslySetInnerHTML={{ __html: `[data-block-id="${block.id}"] { ${block.custom_css} }` }} />
         )}
-        <div data-block-id={block.id} className="relative">
+        <div data-block-id={block.id} className={cn('relative', enhancement.innerClassName)}>
           {children}
         </div>
       </div>

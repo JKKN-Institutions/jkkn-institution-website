@@ -67,33 +67,57 @@ export default function ImageBlock({
   const useFillLayout = !width && !height
 
   const imageElement = useFillLayout ? (
-    <div className={cn('relative w-full', alignmentClasses[alignment])} style={{ aspectRatio: '16/9' }}>
+    <div
+      className={cn(
+        'relative w-full overflow-hidden',
+        // Professional styling
+        'rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.12)]',
+        'border border-white/20',
+        // Hover effects
+        'transition-all duration-500 hover:shadow-[0_12px_40px_rgba(0,0,0,0.18)] hover:scale-[1.01]',
+        alignmentClasses[alignment]
+      )}
+      style={{ aspectRatio: '16/9' }}
+    >
       <Image
         src={src}
         alt={alt}
         fill
-        className={cn('rounded-lg', objectFitClasses[objectFit])}
+        unoptimized={isEditing}
+        className={cn('rounded-2xl', objectFitClasses[objectFit])}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
         placeholder="blur"
         blurDataURL={blurDataURL}
       />
     </div>
   ) : (
-    <Image
-      src={src}
-      alt={alt}
-      width={width || 800}
-      height={height || 600}
+    <div
       className={cn(
-        'rounded-lg block',
-        objectFitClasses[objectFit],
+        'relative overflow-hidden block w-fit',
+        // Professional styling
+        'rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.12)]',
+        'border border-white/20',
+        // Hover effects
+        'transition-all duration-500 hover:shadow-[0_12px_40px_rgba(0,0,0,0.18)] hover:scale-[1.01]',
         alignmentClasses[alignment]
       )}
-      style={{ maxWidth: width, maxHeight: height }}
-      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
-      placeholder="blur"
-      blurDataURL={blurDataURL}
-    />
+    >
+      <Image
+        src={src}
+        alt={alt}
+        width={width || 800}
+        height={height || 600}
+        unoptimized={isEditing}
+        className={cn(
+          'rounded-2xl block',
+          objectFitClasses[objectFit]
+        )}
+        style={{ maxWidth: width, maxHeight: height }}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+        placeholder="blur"
+        blurDataURL={blurDataURL}
+      />
+    </div>
   )
 
   const wrappedImage = link ? (
