@@ -1,11 +1,26 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 import { usePageBuilder } from '../page-builder-provider'
 import { DynamicForm } from './dynamic-form'
 import { getComponentEntry } from '@/lib/cms/component-registry'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Settings, Info, Paintbrush, FileText, Code, Sparkles, Eye, EyeOff } from 'lucide-react'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
+import {
+  Settings,
+  Info,
+  FileText,
+  Type,
+  Palette,
+  Move,
+  Sparkles,
+  Eye,
+  EyeOff,
+} from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import {
@@ -21,6 +36,32 @@ import { MotionControls, type MotionSettings } from '../elementor/motion-control
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
+
+// AccordionSection helper component for consistent styling
+interface AccordionSectionProps {
+  value: string
+  icon: LucideIcon
+  title: string
+  children: React.ReactNode
+}
+
+function AccordionSection({ value, icon: Icon, title, children }: AccordionSectionProps) {
+  return (
+    <AccordionItem value={value} className="border-b border-border/50 last:border-b-0">
+      <AccordionTrigger className="px-4 py-3.5 hover:no-underline hover:bg-accent/50 transition-all duration-200 [&[data-state=open]]:bg-accent/30 group">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center h-7 w-7 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
+            <Icon className="h-4 w-4 text-primary" />
+          </div>
+          <span className="font-medium text-sm text-foreground">{title}</span>
+        </div>
+      </AccordionTrigger>
+      <AccordionContent className="px-4 pb-4 pt-3 bg-muted/10">
+        {children}
+      </AccordionContent>
+    </AccordionItem>
+  )
+}
 
 // Style data structure matching the StyleControls components
 interface BlockStyles {
@@ -76,7 +117,6 @@ interface BlockStyles {
 
 export function PropsPanel() {
   const { selectedBlock, updateBlock, updateBlockFull, updateBlockVisibility } = usePageBuilder()
-  const [activeTab, setActiveTab] = useState<'content' | 'style' | 'motion' | 'advanced'>('content')
 
   // Parse styles from the block's custom props or use defaults
   const getBlockStyles = useCallback((): BlockStyles => {
@@ -243,101 +283,84 @@ export function PropsPanel() {
         </div>
       </div>
 
-      {/* Tabs for Content / Style / Motion / Advanced */}
-      <Tabs
-        value={activeTab}
-        onValueChange={(v) => setActiveTab(v as typeof activeTab)}
-        className="flex flex-col flex-1 min-h-0"
-      >
-        <div className="border-b border-border px-2">
-          <TabsList className="grid grid-cols-4 w-full h-9">
-            <TabsTrigger value="content" className="flex items-center gap-1 text-xs px-2">
-              <FileText className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Content</span>
-            </TabsTrigger>
-            <TabsTrigger value="style" className="flex items-center gap-1 text-xs px-2">
-              <Paintbrush className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Style</span>
-            </TabsTrigger>
-            <TabsTrigger value="motion" className="flex items-center gap-1 text-xs px-2">
-              <Sparkles className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Motion</span>
-            </TabsTrigger>
-            <TabsTrigger value="advanced" className="flex items-center gap-1 text-xs px-2">
-              <Code className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Adv</span>
-            </TabsTrigger>
-          </TabsList>
-        </div>
+      {/* Accordion Sections - Elementor Style */}
+      <div className="flex-1 overflow-auto">
+        <Accordion
+          type="multiple"
+          defaultValue={["content"]}
+          className="w-full"
+        >
+          {/* Content Section */}
+          <AccordionSection value="content" icon={FileText} title="Content">
+            <DynamicForm
+              componentEntry={entry}
+              values={selectedBlock.props}
+              onChange={handlePropsChange}
+            />
+          </AccordionSection>
 
-        {/* Content Tab */}
-        <TabsContent value="content" className="flex-1 m-0 min-h-0">
-          <div className="h-full overflow-auto">
-            <div className="p-4 min-w-max">
-              <DynamicForm
-                componentEntry={entry}
-                values={selectedBlock.props}
-                onChange={handlePropsChange}
-              />
-            </div>
-          </div>
-        </TabsContent>
+          {/* Typography Section */}
+          <AccordionSection value="typography" icon={Type} title="Typography">
+            <TypographyControls
+              typography={styles.typography}
+              onChange={(typography) => updateStyles('typography', typography)}
+            />
+          </AccordionSection>
 
-        {/* Style Tab */}
-        <TabsContent value="style" className="flex-1 m-0 min-h-0">
-          <div className="h-full overflow-auto">
-            <div className="p-2 space-y-1 min-w-max">
-              <TypographyControls
-                typography={styles.typography}
-                onChange={(typography) => updateStyles('typography', typography)}
-              />
-              <SpacingControls
-                spacing={styles.spacing}
-                onChange={(spacing) => updateStyles('spacing', spacing)}
-              />
-              <BorderControls
-                border={styles.border}
-                onChange={(border) => updateStyles('border', border)}
-              />
-              <BackgroundControls
-                background={styles.background}
-                onChange={(background) => updateStyles('background', background)}
-              />
-              <ShadowControls
-                shadow={styles.shadow}
-                onChange={(shadow) => updateStyles('shadow', shadow)}
-              />
-              {/* Glass Effects Section */}
-              <div className="p-3 space-y-2">
-                <div className="flex items-center gap-2 mb-2">
-                  <Sparkles className="h-4 w-4 text-primary" />
-                  <span className="font-medium text-sm">Glass Effects</span>
-                </div>
+          {/* Colors Section */}
+          <AccordionSection value="colors" icon={Palette} title="Colors">
+            <BackgroundControls
+              background={styles.background}
+              onChange={(background) => updateStyles('background', background)}
+            />
+          </AccordionSection>
+
+          {/* Spacing Section */}
+          <AccordionSection value="spacing" icon={Move} title="Spacing">
+            <SpacingControls
+              spacing={styles.spacing}
+              onChange={(spacing) => updateStyles('spacing', spacing)}
+            />
+          </AccordionSection>
+
+          {/* Animation Section */}
+          <AccordionSection value="animation" icon={Sparkles} title="Animation">
+            <MotionControls
+              motion={motion}
+              onChange={updateMotion}
+            />
+          </AccordionSection>
+
+          {/* Advanced Section */}
+          <AccordionSection value="advanced" icon={Settings} title="Advanced">
+            <div className="space-y-6">
+              {/* Border Controls */}
+              <div className="space-y-3">
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Border</Label>
+                <BorderControls
+                  border={styles.border}
+                  onChange={(border) => updateStyles('border', border)}
+                />
+              </div>
+
+              {/* Shadow Controls */}
+              <div className="space-y-3">
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Shadow</Label>
+                <ShadowControls
+                  shadow={styles.shadow}
+                  onChange={(shadow) => updateStyles('shadow', shadow)}
+                />
+              </div>
+
+              {/* Glass Effects */}
+              <div className="space-y-3">
+                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Glass Effects</Label>
                 <GlassmorphismControls
                   glass={styles.glass}
                   onChange={(glass) => updateStyles('glass', glass)}
                 />
               </div>
-            </div>
-          </div>
-        </TabsContent>
 
-        {/* Motion Tab */}
-        <TabsContent value="motion" className="flex-1 m-0 min-h-0">
-          <div className="h-full overflow-auto">
-            <div className="p-2 min-w-max">
-              <MotionControls
-                motion={motion}
-                onChange={updateMotion}
-              />
-            </div>
-          </div>
-        </TabsContent>
-
-        {/* Advanced Tab */}
-        <TabsContent value="advanced" className="flex-1 m-0 min-h-0">
-          <div className="h-full overflow-auto">
-            <div className="p-4 space-y-6 min-w-max">
               {/* Custom Classes */}
               <div className="space-y-2">
                 <Label className="text-sm font-medium">Custom CSS Classes</Label>
@@ -377,9 +400,9 @@ export function PropsPanel() {
                 </code>
               </div>
             </div>
-          </div>
-        </TabsContent>
-      </Tabs>
+          </AccordionSection>
+        </Accordion>
+      </div>
 
       {/* Info Footer */}
       <div className="p-4 border-t border-border bg-muted/30">
