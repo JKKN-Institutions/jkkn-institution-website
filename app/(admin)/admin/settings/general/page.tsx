@@ -3,7 +3,8 @@ import { getSettings } from '@/app/actions/settings'
 import { GeneralSettingsForm } from '@/components/admin/settings/general-settings-form'
 import { Skeleton } from '@/components/ui/skeleton'
 
-// cacheComponents handles dynamic rendering automatically
+// Force dynamic rendering - uses cookies for auth
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'General Settings | Admin',
