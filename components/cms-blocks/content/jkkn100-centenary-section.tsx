@@ -106,6 +106,7 @@ export const JKKN100CentenarySectionPropsSchema = z.object({
   // Typography - Founder Name
   founderNameFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('semibold'),
   founderNameColor: z.string().default('#1f2937'),
+  founderNameFontSize: z.number().default(14),
 
   // Typography - Timeline
   timelineFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('semibold'),
@@ -207,6 +208,7 @@ export function JKKN100CentenarySection({
   // Typography - Founder Name
   founderNameFontWeight = 'semibold',
   founderNameColor = '#1f2937',
+  founderNameFontSize = 14,
   // Typography - Timeline
   timelineFontWeight = 'semibold',
   timelineColor = '#0b6d41',
@@ -361,8 +363,8 @@ export function JKKN100CentenarySection({
                   {/* Founder name below photo with elegant styling */}
                   <div className="text-center mt-3">
                     <p
-                      className={cn('text-xs sm:text-sm leading-tight', fontWeightClasses[founderNameFontWeight])}
-                      style={{ color: founderNameColor }}
+                      className={cn('leading-tight', fontWeightClasses[founderNameFontWeight])}
+                      style={{ color: founderNameColor, fontSize: `${founderNameFontSize}px` }}
                     >
                       {founderName}
                     </p>

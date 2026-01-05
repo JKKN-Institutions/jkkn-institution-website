@@ -2251,6 +2251,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       // Founder Typography
       { name: 'founderNameFontWeight', type: 'enum', label: 'Founder Name Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
       { name: 'founderNameColor', type: 'color', label: 'Founder Name Color' },
+      { name: 'founderNameFontSize', type: 'number', label: 'Founder Name Font Size' },
       // Timeline Typography
       { name: 'timelineFontWeight', type: 'enum', label: 'Timeline Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
       { name: 'timelineColor', type: 'color', label: 'Timeline Color' },
