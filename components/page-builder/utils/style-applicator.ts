@@ -12,11 +12,13 @@ export interface BlockTypography {
   fontSize?: string
   fontWeight?: string
   fontFamily?: string
+  fontStyle?: 'normal' | 'italic'
   textAlign?: 'left' | 'center' | 'right' | 'justify'
   color?: string
   lineHeight?: string
   letterSpacing?: string
   textTransform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize'
+  textDecoration?: 'none' | 'underline' | 'overline' | 'line-through'
 }
 
 export interface BlockSpacing {
@@ -140,6 +142,8 @@ export function applyBlockStyles(styles?: BlockStyles): CSSProperties {
     if (typography.lineHeight) cssProperties.lineHeight = typography.lineHeight
     if (typography.letterSpacing) cssProperties.letterSpacing = typography.letterSpacing
     if (typography.textTransform) cssProperties.textTransform = typography.textTransform
+    if (typography.textDecoration) cssProperties.textDecoration = typography.textDecoration
+    if (typography.fontStyle) cssProperties.fontStyle = typography.fontStyle
   }
 
   // Spacing - convert numeric values to pixels

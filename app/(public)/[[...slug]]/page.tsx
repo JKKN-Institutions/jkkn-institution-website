@@ -58,8 +58,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   // Build comprehensive metadata from SEO fields with proper fallback chain
   return {
-    // Basic meta tags
-    title: seo?.meta_title || page.title,
+    // Basic meta tags - use absolute to bypass the template suffix
+    title: {
+      absolute: seo?.meta_title || page.title
+    },
     description: seo?.meta_description || page.description || undefined,
     keywords: seo?.meta_keywords || undefined,
 

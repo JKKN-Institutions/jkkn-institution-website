@@ -172,6 +172,7 @@ function SortableBlock({
         <div
           className={cn('relative', block.custom_classes)}
           style={finalStyles}
+          data-page-builder-block
           onMouseEnter={() => hoverTransform && setIsHovered(true)}
           onMouseLeave={() => hoverTransform && setIsHovered(false)}
           {...motionDataAttrs}

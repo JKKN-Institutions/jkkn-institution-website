@@ -828,6 +828,44 @@
     font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   }
 
+  /* ===== PAGE BUILDER TYPOGRAPHY INHERITANCE ===== */
+  /* Force typography styles to cascade to child components */
+  /* This ensures styles set in the Style tab propagate to component text */
+  [data-page-builder-block] * {
+    font-size: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    text-decoration: inherit;
+    font-style: inherit;
+    text-align: inherit;
+    color: inherit;
+  }
+
+  /* Preserve specific component styling when needed */
+  [data-page-builder-block] code,
+  [data-page-builder-block] pre,
+  [data-page-builder-block] kbd {
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  }
+
+  /* Allow explicit overrides via important Tailwind classes */
+  [data-page-builder-block] .text-xs { font-size: 0.75rem !important; }
+  [data-page-builder-block] .text-sm { font-size: 0.875rem !important; }
+  [data-page-builder-block] .text-base { font-size: 1rem !important; }
+  [data-page-builder-block] .text-lg { font-size: 1.125rem !important; }
+  [data-page-builder-block] .text-xl { font-size: 1.25rem !important; }
+  [data-page-builder-block] .text-2xl { font-size: 1.5rem !important; }
+  [data-page-builder-block] .text-3xl { font-size: 1.875rem !important; }
+  [data-page-builder-block] .text-4xl { font-size: 2.25rem !important; }
+  [data-page-builder-block] .text-5xl { font-size: 3rem !important; }
+  [data-page-builder-block] .font-normal { font-weight: 400 !important; }
+  [data-page-builder-block] .font-medium { font-weight: 500 !important; }
+  [data-page-builder-block] .font-semibold { font-weight: 600 !important; }
+  [data-page-builder-block] .font-bold { font-weight: 700 !important; }
+
   /* Text balance for better readability */
   .text-balance {
     text-wrap: balance;

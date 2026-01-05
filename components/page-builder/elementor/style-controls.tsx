@@ -55,6 +55,8 @@ interface TypographyControlsProps {
     letterSpacing?: string | number
     textTransform?: string
     textDecoration?: string
+    textAlign?: string
+    color?: string
   }
   onChange: (typography: TypographyControlsProps['typography']) => void
 }
@@ -225,6 +227,108 @@ export function TypographyControls({ typography = {}, onChange }: TypographyCont
               </SelectContent>
             </Select>
           </div>
+        </div>
+
+        {/* Text Alignment */}
+        <div className="space-y-2">
+          <Label className="text-xs text-muted-foreground">Alignment</Label>
+          <div className="flex gap-1">
+            {[
+              { value: 'left', icon: AlignLeft },
+              { value: 'center', icon: AlignCenter },
+              { value: 'right', icon: AlignRight },
+              { value: 'justify', icon: AlignJustify },
+            ].map(({ value, icon: Icon }) => (
+              <Button
+                key={value}
+                type="button"
+                variant={typography.textAlign === value ? 'default' : 'outline'}
+                size="sm"
+                className="h-8 w-8 p-0"
+                onClick={() => updateTypography('textAlign', value)}
+              >
+                <Icon className="h-4 w-4" />
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        {/* Text Color */}
+        <div className="space-y-2">
+          <Label className="text-xs text-muted-foreground">Text Color</Label>
+          <div className="flex items-center gap-2">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="h-8 w-8 p-0 border-2"
+                  style={{ backgroundColor: typography.color || 'transparent' }}
+                >
+                  <span className="sr-only">Pick color</span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-3" align="start">
+                <div className="space-y-3">
+                  <div className="grid grid-cols-8 gap-1">
+                    {[
+                      '#000000', '#374151', '#6B7280', '#9CA3AF',
+                      '#DC2626', '#EA580C', '#D97706', '#CA8A04',
+                      '#65A30D', '#16A34A', '#059669', '#0D9488',
+                      '#0891B2', '#0284C7', '#2563EB', '#4F46E5',
+                      '#7C3AED', '#9333EA', '#C026D3', '#DB2777',
+                      '#FFFFFF', '#F3F4F6', '#E5E7EB', '#D1D5DB',
+                    ].map((color) => (
+                      <button
+                        key={color}
+                        className={cn(
+                          'h-6 w-6 rounded border border-border',
+                          typography.color === color && 'ring-2 ring-primary ring-offset-1'
+                        )}
+                        style={{ backgroundColor: color }}
+                        onClick={() => updateTypography('color', color)}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="text"
+                      value={typography.color || ''}
+                      onChange={(e) => updateTypography('color', e.target.value)}
+                      placeholder="#000000"
+                      className="h-8 text-xs font-mono"
+                    />
+                    <input
+                      type="color"
+                      value={typography.color || '#000000'}
+                      onChange={(e) => updateTypography('color', e.target.value)}
+                      className="h-8 w-8 cursor-pointer rounded border border-border"
+                    />
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+            <Input
+              type="text"
+              value={typography.color || ''}
+              onChange={(e) => updateTypography('color', e.target.value)}
+              placeholder="#000000"
+              className="h-8 text-xs font-mono flex-1"
+            />
+          </div>
+        </div>
+
+        {/* Font Style (Italic) */}
+        <div className="space-y-2">
+          <Label className="text-xs text-muted-foreground">Style</Label>
+          <Button
+            type="button"
+            variant={typography.fontStyle === 'italic' ? 'default' : 'outline'}
+            size="sm"
+            className="h-8 px-3 italic"
+            onClick={() => updateTypography('fontStyle', typography.fontStyle === 'italic' ? 'normal' : 'italic')}
+          >
+            Italic
+          </Button>
         </div>
       </CollapsibleContent>
     </Collapsible>
