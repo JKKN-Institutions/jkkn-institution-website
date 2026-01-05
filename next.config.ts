@@ -139,6 +139,11 @@ const nextConfig: NextConfig = {
         destination: '/',
         permanent: true,
       },
+      {
+        source: '/llms.txt',
+        destination: '/',
+        permanent: true,
+      },
 
       // === Spam URLs (WordPress hack remnants) ===
       {
