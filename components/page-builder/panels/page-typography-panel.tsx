@@ -256,8 +256,8 @@ export function PageTypographyPanel({
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Type className="h-5 w-5 text-primary" />
-            <h2 className="font-semibold text-foreground">Typography</h2>
+            <Type className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+            <h2 className="text-sm sm:text-base font-semibold text-foreground">Typography</h2>
           </div>
           <div className="flex items-center gap-2">
             <Button

@@ -250,8 +250,8 @@ export function SeoPanel({
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Search className="h-5 w-5 text-primary" />
-            <h2 className="font-semibold text-foreground">SEO Settings</h2>
+            <Search className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+            <h2 className="text-sm sm:text-base font-semibold text-foreground">SEO Settings</h2>
           </div>
           <Button
             size="sm"

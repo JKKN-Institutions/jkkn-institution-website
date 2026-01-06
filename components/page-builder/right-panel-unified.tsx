@@ -150,10 +150,10 @@ export function UnifiedRightPanel({
         )}
       </div>
 
-      <ScrollArea className="flex-1">
+      <ScrollArea className="flex-1 overflow-y-auto">
         {isComponentMode && selectedBlock ? (
           // COMPONENT MODE
-          <div className="p-5 space-y-5">
+          <div className="p-5 space-y-5 pb-20">
             <Accordion
               type="multiple"
               value={expandedSections}
@@ -296,7 +296,7 @@ export function UnifiedRightPanel({
           </div>
         ) : (
           // PAGE MODE
-          <div className="p-5 space-y-5">
+          <div className="p-5 space-y-5 pb-20">
             <Accordion
               type="multiple"
               defaultValue={['seo']}
@@ -313,17 +313,19 @@ export function UnifiedRightPanel({
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="p-0">
-                  <SeoPanel
-                    pageId={pageId}
-                    pageSlug={pageSlug}
-                    initialSeoData={initialSeoData}
-                    onSave={async (data) => {
-                      if (onSeoUpdate) {
-                        await Promise.resolve(onSeoUpdate(data))
-                      }
-                    }}
-                    isSaving={isSavingSeo}
-                  />
+                  <div className="max-h-[600px] overflow-y-auto">
+                    <SeoPanel
+                      pageId={pageId}
+                      pageSlug={pageSlug}
+                      initialSeoData={initialSeoData}
+                      onSave={async (data) => {
+                        if (onSeoUpdate) {
+                          await Promise.resolve(onSeoUpdate(data))
+                        }
+                      }}
+                      isSaving={isSavingSeo}
+                    />
+                  </div>
                 </AccordionContent>
               </AccordionItem>
 
@@ -338,16 +340,18 @@ export function UnifiedRightPanel({
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="p-0">
-                  <FabPanel
-                    pageId={pageId}
-                    initialConfig={initialFabConfig}
-                    onSave={async (config) => {
-                      if (onFabUpdate) {
-                        await Promise.resolve(onFabUpdate(config))
-                      }
-                    }}
-                    isSaving={isSavingFab}
-                  />
+                  <div className="max-h-[600px] overflow-y-auto">
+                    <FabPanel
+                      pageId={pageId}
+                      initialConfig={initialFabConfig}
+                      onSave={async (config) => {
+                        if (onFabUpdate) {
+                          await Promise.resolve(onFabUpdate(config))
+                        }
+                      }}
+                      isSaving={isSavingFab}
+                    />
+                  </div>
                 </AccordionContent>
               </AccordionItem>
 
@@ -362,16 +366,18 @@ export function UnifiedRightPanel({
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="p-0">
-                  <PageTypographyPanel
-                    pageId={pageId}
-                    initialTypography={initialTypography}
-                    onSave={async (typography) => {
-                      if (onTypographyUpdate) {
-                        await Promise.resolve(onTypographyUpdate(typography))
-                      }
-                    }}
-                    isSaving={isSavingTypography}
-                  />
+                  <div className="max-h-[600px] overflow-y-auto">
+                    <PageTypographyPanel
+                      pageId={pageId}
+                      initialTypography={initialTypography}
+                      onSave={async (typography) => {
+                        if (onTypographyUpdate) {
+                          await Promise.resolve(onTypographyUpdate(typography))
+                        }
+                      }}
+                      isSaving={isSavingTypography}
+                    />
+                  </div>
                 </AccordionContent>
               </AccordionItem>
 
@@ -386,17 +392,19 @@ export function UnifiedRightPanel({
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="p-0">
-                  {initialFooterSettings && (
-                    <FooterPanel
-                      initialSettings={initialFooterSettings}
-                      onSave={async (settings) => {
-                        if (onFooterUpdate) {
-                          await Promise.resolve(onFooterUpdate(settings))
-                        }
-                      }}
-                      isSaving={isSavingFooter}
-                    />
-                  )}
+                  <div className="max-h-[600px] overflow-y-auto">
+                    {initialFooterSettings && (
+                      <FooterPanel
+                        initialSettings={initialFooterSettings}
+                        onSave={async (settings) => {
+                          if (onFooterUpdate) {
+                            await Promise.resolve(onFooterUpdate(settings))
+                          }
+                        }}
+                        isSaving={isSavingFooter}
+                      />
+                    )}
+                  </div>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
