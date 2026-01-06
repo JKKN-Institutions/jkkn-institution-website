@@ -228,9 +228,9 @@ export function AdminSidebar({
   }
 
   const isActive = (href: string) => {
-    // Dashboard is only active when exactly on /admin or /admin/dashboard
+    // Dashboard is only active when exactly on /admin
     if (href === '/admin') {
-      return pathname === '/admin' || pathname === '/admin/dashboard'
+      return pathname === '/admin'
     }
     // For all other routes, check exact match or if it's a child route
     return pathname === href || pathname.startsWith(href + '/')

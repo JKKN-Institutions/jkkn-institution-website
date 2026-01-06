@@ -262,24 +262,64 @@ USING (EXISTS (
 
 
 -- ============================================
--- CMS PAGES TABLE POLICIES
+-- CMS PAGES TABLE POLICIES (WITH SOFT DELETE)
+-- ============================================
+-- Updated: 2026-01-06
+-- Changes: Added support for soft delete/trash bin system
+-- - SELECT policy excludes soft-deleted pages for normal viewing
+-- - New policy for viewing trash (deleted pages)
+-- - UPDATE policy supports both normal updates and restore operations
+-- - DELETE policy only allows permanent deletion from trash
+-- Dependencies: deleted_at, deleted_by columns in cms_pages table
 -- ============================================
 
+-- Policy 1: View non-deleted pages
 CREATE POLICY "Users can view pages"
 ON public.cms_pages
 FOR SELECT
 TO public
 USING (
-    (status = 'published' AND visibility = 'public')
-    OR created_by = auth.uid()
-    OR EXISTS (
-        SELECT 1 FROM user_roles ur
-        JOIN roles r ON ur.role_id = r.id
-        WHERE ur.user_id = auth.uid() AND r.name = 'super_admin'
+    -- Exclude soft-deleted pages from normal viewing
+    deleted_at IS NULL
+    AND (
+        -- Public can view published public pages
+        (status = 'published' AND visibility = 'public')
+        -- Creators can view their own pages
+        OR created_by = auth.uid()
+        -- Super admins can view all non-deleted pages
+        OR EXISTS (
+            SELECT 1 FROM user_roles ur
+            JOIN roles r ON ur.role_id = r.id
+            WHERE ur.user_id = auth.uid() AND r.name = 'super_admin'
+        )
+        -- Users with cms:pages:view permission can view all non-deleted pages
+        OR has_permission(auth.uid(), 'cms:pages:view')
     )
-    OR has_permission(auth.uid(), 'cms:pages:view')
 );
 
+-- Policy 2: View trash (deleted pages only)
+CREATE POLICY "Users can view trash"
+ON public.cms_pages
+FOR SELECT
+TO public
+USING (
+    -- Only show deleted pages to authorized users
+    deleted_at IS NOT NULL
+    AND (
+        -- Super admins can view trash
+        EXISTS (
+            SELECT 1 FROM user_roles ur
+            JOIN roles r ON ur.role_id = r.id
+            WHERE ur.user_id = auth.uid() AND r.name = 'super_admin'
+        )
+        -- Users with cms:pages:restore permission can view trash
+        OR has_permission(auth.uid(), 'cms:pages:restore')
+        -- Users with cms:pages:delete permission can view trash
+        OR has_permission(auth.uid(), 'cms:pages:delete')
+    )
+);
+
+-- Policy 3: Create new pages
 CREATE POLICY "Users with permission can create pages"
 ON public.cms_pages
 FOR INSERT
@@ -299,16 +339,27 @@ WITH CHECK (
     )
 );
 
+-- Policy 4: Update pages and restore from trash
 CREATE POLICY "Users with permission can update pages"
 ON public.cms_pages
 FOR UPDATE
 TO public
 USING (
-    created_by = auth.uid()
+    -- User can update if:
+    created_by = auth.uid() -- They created the page (for non-deleted pages)
     OR EXISTS (
-        SELECT 1 FROM has_permission(auth.uid(), 'cms:pages:edit')
-        WHERE has_permission = true
+        SELECT 1 FROM user_roles ur
+        JOIN roles r ON ur.role_id = r.id
+        WHERE ur.user_id = auth.uid() AND r.name = 'super_admin'
     )
+    OR has_permission(auth.uid(), 'cms:pages:edit')
+    -- Users with restore permission can update (restore) deleted pages
+    OR (deleted_at IS NOT NULL AND has_permission(auth.uid(), 'cms:pages:restore'))
+)
+WITH CHECK (
+    -- Additional check: Only allow restoring if user has restore permission
+    (deleted_at IS NULL AND updated_by = auth.uid()) -- Normal updates
+    OR (deleted_at IS NOT NULL AND has_permission(auth.uid(), 'cms:pages:restore')) -- Restore operations
     OR EXISTS (
         SELECT 1 FROM user_roles ur
         JOIN roles r ON ur.role_id = r.id
@@ -316,19 +367,21 @@ USING (
     )
 );
 
+-- Policy 5: Permanent deletion (only from trash)
 CREATE POLICY "Users with permission can delete pages"
 ON public.cms_pages
 FOR DELETE
 TO public
 USING (
-    EXISTS (
-        SELECT 1 FROM has_permission(auth.uid(), 'cms:pages:delete')
-        WHERE has_permission = true
-    )
-    OR EXISTS (
-        SELECT 1 FROM user_roles ur
-        JOIN roles r ON ur.role_id = r.id
-        WHERE ur.user_id = auth.uid() AND r.name = 'super_admin'
+    -- Only allow permanent deletion of already soft-deleted pages
+    deleted_at IS NOT NULL
+    AND (
+        EXISTS (
+            SELECT 1 FROM user_roles ur
+            JOIN roles r ON ur.role_id = r.id
+            WHERE ur.user_id = auth.uid() AND r.name = 'super_admin'
+        )
+        OR has_permission(auth.uid(), 'cms:pages:delete')
     )
 );
 

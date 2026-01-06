@@ -29,7 +29,7 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
     await checkPermission(currentUser.id, 'users:profiles:view')
 
   if (!canView) {
-    redirect('/admin/dashboard')
+    redirect('/admin')
   }
 
   const [user, roles] = await Promise.all([getUserById(id), getRoles()])

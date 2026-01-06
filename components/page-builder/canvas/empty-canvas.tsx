@@ -91,30 +91,33 @@ export function EmptyCanvas({ onAddBlock, onBrowseTemplates, onBrowseBlocks }: E
     <div
       ref={setNodeRef}
       className={cn(
-        'min-h-[calc(100vh-200px)] flex items-center justify-center p-8',
-        'border-2 border-dashed rounded-lg m-4 transition-colors',
+        'min-h-[calc(100vh-200px)] flex items-center justify-center p-4 sm:p-6 lg:p-8',
+        'border-2 border-dashed rounded-xl m-2 sm:m-4 lg:m-6 transition-colors',
         isOver
           ? 'border-primary bg-primary/5'
           : 'border-border/50 bg-muted/20'
       )}
     >
-      <div className="text-center max-w-2xl w-full">
+      <div className="text-center max-w-5xl w-full space-y-8">
         {/* Header with gradient icon */}
-        <div className="mx-auto h-20 w-20 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-6 shadow-sm">
-          <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
-            <FileText className="h-7 w-7 text-primary-foreground" />
+        <div className="mx-auto h-20 w-20 sm:h-24 sm:w-24 lg:h-28 lg:w-28 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center shadow-sm">
+          <div className="h-14 w-14 sm:h-16 sm:w-16 lg:h-20 lg:w-20 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
+            <FileText className="h-7 w-7 sm:h-8 sm:w-8 lg:h-10 lg:w-10 text-primary-foreground" />
           </div>
         </div>
 
-        <h3 className="text-xl font-semibold text-foreground mb-2">
-          Start Building Your Page
-        </h3>
-        <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-          Choose how you want to begin - start fresh, use a template, or browse our component library
-        </p>
+        {/* Title and Description */}
+        <div className="space-y-3">
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-foreground">
+            Start Building Your Page
+          </h3>
+          <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-4">
+            Choose how you want to begin - start fresh, use a template, or browse our component library
+          </p>
+        </div>
 
         {/* Quick Start Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 px-4 sm:px-0">
           {quickStartOptions.map((option) => {
             const Icon = option.icon
             return (
@@ -122,51 +125,51 @@ export function EmptyCanvas({ onAddBlock, onBrowseTemplates, onBrowseBlocks }: E
                 key={option.id}
                 onClick={() => handleQuickStart(option.id)}
                 className={cn(
-                  'group relative p-6 rounded-xl border-2 transition-all duration-200',
-                  'hover:shadow-md hover:scale-[1.02] hover:border-primary/50',
+                  'group relative p-6 sm:p-7 lg:p-8 rounded-xl border-2 transition-all duration-200',
+                  'hover:shadow-lg hover:scale-[1.03] hover:border-primary/50',
                   'bg-gradient-to-br',
                   option.gradient,
                   option.borderColor
                 )}
               >
                 <div className={cn(
-                  'mx-auto h-12 w-12 rounded-xl flex items-center justify-center mb-3',
+                  'mx-auto h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 rounded-xl flex items-center justify-center mb-4',
                   'bg-white/80 dark:bg-background/80 shadow-sm',
                   'group-hover:shadow-md transition-shadow'
                 )}>
-                  <Icon className={cn('h-6 w-6', option.iconColor)} />
+                  <Icon className={cn('h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8', option.iconColor)} />
                 </div>
-                <h4 className="font-medium text-foreground mb-1">{option.label}</h4>
-                <p className="text-xs text-muted-foreground">{option.description}</p>
+                <h4 className="font-semibold text-sm sm:text-base text-foreground mb-2">{option.label}</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">{option.description}</p>
               </button>
             )
           })}
         </div>
 
         {/* Divider */}
-        <div className="relative mb-8">
+        <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-border/50" />
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-3 text-muted-foreground">Or add a block</span>
+          <div className="relative flex justify-center text-xs sm:text-sm uppercase">
+            <span className="bg-background px-4 py-1 text-muted-foreground font-medium">Or add a block</span>
           </div>
         </div>
 
         {/* Starter Blocks Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 px-4 sm:px-0">
           {starterBlocks.map((block) => {
             const Icon = block.icon
             return (
               <Button
                 key={block.name}
                 variant="outline"
-                className="h-auto py-4 px-3 flex flex-col gap-2 hover:border-primary hover:bg-primary/5 group"
+                className="h-auto py-4 sm:py-5 px-3 sm:px-4 flex flex-col gap-2 sm:gap-2.5 hover:border-primary hover:bg-primary/5 hover:shadow-md group transition-all"
                 onClick={() => onAddBlock(block.name)}
               >
-                <Icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                <span className="text-sm font-medium">{block.label}</span>
-                <span className="text-[10px] text-muted-foreground leading-tight hidden sm:block">
+                <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground group-hover:text-primary transition-colors" />
+                <span className="text-xs sm:text-sm font-medium leading-tight">{block.label}</span>
+                <span className="text-[10px] sm:text-xs text-muted-foreground leading-tight hidden sm:block">
                   {block.description}
                 </span>
               </Button>
@@ -175,9 +178,9 @@ export function EmptyCanvas({ onAddBlock, onBrowseTemplates, onBrowseBlocks }: E
         </div>
 
         {/* Help Tip */}
-        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground bg-muted/50 rounded-lg py-2 px-4">
-          <Lightbulb className="h-3.5 w-3.5 text-amber-500 flex-shrink-0" />
-          <span>
+        <div className="flex items-start sm:items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground bg-muted/50 rounded-xl py-3 px-4 sm:px-6 mx-4 sm:mx-0">
+          <Lightbulb className="h-4 w-4 sm:h-4 sm:w-4 text-amber-500 flex-shrink-0 mt-0.5 sm:mt-0" />
+          <span className="text-left sm:text-center">
             <strong className="font-medium">Tip:</strong> Drag components from the left panel or use keyboard shortcut <kbd className="px-1.5 py-0.5 bg-background border rounded text-[10px] font-mono">Ctrl+K</kbd> to search
           </span>
         </div>

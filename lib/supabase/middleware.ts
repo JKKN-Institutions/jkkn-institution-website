@@ -2,9 +2,9 @@ import { createServerClient } from '@supabase/ssr';
 import { NextRequest, NextResponse } from 'next/server';
 
 export function createMiddlewareClient(request: NextRequest) {
-  const response = NextResponse.next({
-    request
-  });
+  // In Next.js 16 proxy, don't pass request to NextResponse.next()
+  // This was causing: TypeError: controller[kState].transformAlgorithm is not a function
+  let response = NextResponse.next();
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -16,7 +16,6 @@ export function createMiddlewareClient(request: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value, options }) => {
-            request.cookies.set(name, value);
             response.cookies.set(name, value, options);
           });
         }

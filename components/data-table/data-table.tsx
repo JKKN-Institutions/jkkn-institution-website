@@ -104,55 +104,57 @@ export function DataTable<TData, TValue>({
   return (
     <div className="space-y-4 w-full max-w-full overflow-hidden">
       <div className="rounded-md border border-border bg-card overflow-x-auto">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="whitespace-nowrap">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {isLoading ? (
-              // Loading skeleton
-              Array.from({ length: pageSize > 10 ? 10 : pageSize }).map((_, index) => (
-                <TableRow key={`skeleton-${index}`}>
-                  {columns.map((_, cellIndex) => (
-                    <TableCell key={`skeleton-cell-${cellIndex}`}>
-                      <div className="h-4 bg-muted rounded animate-pulse" />
-                    </TableCell>
+        <div className="p-4">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id} className="whitespace-nowrap px-4 py-3">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(header.column.columnDef.header, header.getContext())}
+                    </TableHead>
                   ))}
                 </TableRow>
-              ))
-            ) : table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                  className={cn(row.getIsSelected() && 'bg-muted/50')}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
+              ))}
+            </TableHeader>
+            <TableBody>
+              {isLoading ? (
+                // Loading skeleton
+                Array.from({ length: pageSize > 10 ? 10 : pageSize }).map((_, index) => (
+                  <TableRow key={`skeleton-${index}`}>
+                    {columns.map((_, cellIndex) => (
+                      <TableCell key={`skeleton-cell-${cellIndex}`} className="px-4 py-3">
+                        <div className="h-4 bg-muted rounded animate-pulse" />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                    className={cn(row.getIsSelected() && 'bg-muted/50')}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="px-4 py-3">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="h-24 text-center px-4 py-3">
+                    No results found.
+                  </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results found.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
 
       <DataTablePagination

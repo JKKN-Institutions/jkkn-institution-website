@@ -70,30 +70,40 @@ export default async function NewPagePage() {
   ])
 
   return (
-    <div className="container mx-auto py-6 max-w-5xl">
-      <div className="mb-6">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 rounded-xl bg-primary/10">
-            <FileText className="h-6 w-6 text-primary" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">Create New Page</h1>
-            <p className="text-muted-foreground">
-              Set up a new page for your website
-            </p>
+    <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8 max-w-9xl">
+      {/* Professional Header with Gradient */}
+      <div className="mb-8">
+        <div className="glass-card rounded-2xl p-8 relative overflow-hidden">
+          {/* Decorative gradient background */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-blue-500/5 to-transparent rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
+
+          <div className="relative flex items-start gap-4">
+            <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+              <FileText className="h-7 w-7 text-primary" />
+            </div>
+            <div className="flex-1">
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+                Create New Page
+              </h1>
+              <p className="text-base text-muted-foreground">
+                Set up a new page for your website. You'll be able to design it with our visual page builder after creation.
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
-      <Card className="glass-card border-0">
-        <CardHeader>
-          <CardTitle>Page Details</CardTitle>
-          <CardDescription>
-            Configure basic page settings. You can add content after creating the page.
+      {/* Form Card */}
+      <Card className="glass-card border-0 shadow-xl">
+        <CardHeader className="space-y-3 pb-6">
+          <CardTitle className="text-2xl">Page Configuration</CardTitle>
+          <CardDescription className="text-base">
+            Configure basic page settings and options below
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Suspense fallback={<div>Loading form...</div>}>
+        <CardContent className="px-6 sm:px-8 pb-8">
+          <Suspense fallback={<div className="text-center py-12 text-muted-foreground">Loading form...</div>}>
             <PageCreateForm parentPages={parentPages} templates={templates} />
           </Suspense>
         </CardContent>

@@ -695,9 +695,9 @@ export function ResponsiveNavigation() {
         }
       }
 
-      // Dashboard should only be active for exact /admin or /admin/dashboard
+      // Dashboard should only be active for exact /admin
       if (module.href === '/admin') {
-        if (pathname === '/admin' || pathname === '/admin/dashboard') {
+        if (pathname === '/admin') {
           return { moduleId: module.id, subModuleId: '' }
         }
         // Skip the general startsWith check for dashboard

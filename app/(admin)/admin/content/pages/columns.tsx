@@ -40,7 +40,7 @@ export interface PageActionHandlers {
   onPublish?: (pageId: string) => void
   onUnpublish?: (pageId: string) => void
   onArchive?: (pageId: string) => void
-  onDelete?: (pageId: string) => void
+  onDelete?: (pageId: string, pageTitle?: string) => void
 }
 
 export type PageRow = {
@@ -340,7 +340,7 @@ export const createColumns = (handlers: PageActionHandlers = {}): ColumnDef<Page
             {!page.is_homepage && (
               <DropdownMenuItem
                 className="text-red-600"
-                onClick={() => handlers.onDelete?.(page.id)}
+                onClick={() => handlers.onDelete?.(page.id, page.title)}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete

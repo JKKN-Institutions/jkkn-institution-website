@@ -42,7 +42,7 @@ export default function UsersError({ error, reset }: ErrorProps) {
               Try Again
             </Button>
             <Button variant="outline" asChild className="flex-1 gap-2">
-              <Link href="/admin/dashboard">
+              <Link href="/admin">
                 <Home className="h-4 w-4" />
                 Go to Dashboard
               </Link>

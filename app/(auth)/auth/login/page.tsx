@@ -33,7 +33,6 @@ function LoginContent() {
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
-            hd: 'jkkn.ac.in', // Restrict to jkkn.ac.in domain
           },
         },
       })

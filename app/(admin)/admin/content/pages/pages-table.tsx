@@ -76,6 +76,13 @@ export function PagesTable({
   }>({ type: null, isOpen: false })
   const [isProcessing, setIsProcessing] = useState(false)
 
+  // Single delete dialog state
+  const [singleDeleteDialog, setSingleDeleteDialog] = useState<{
+    isOpen: boolean
+    pageId: string | null
+    pageTitle: string | null
+  }>({ isOpen: false, pageId: null, pageTitle: null })
+
   // Reorder modal state
   const [isReorderModalOpen, setIsReorderModalOpen] = useState(false)
   const [allNavigationPages, setAllNavigationPages] = useState<Array<{
@@ -404,12 +411,19 @@ export function PagesTable({
     }
   }
 
-  const handleSingleDelete = async (pageId: string) => {
-    if (!confirm('Are you sure you want to delete this page? This action cannot be undone.')) {
-      return
-    }
+  const handleSingleDelete = (pageId: string, pageTitle?: string) => {
+    setSingleDeleteDialog({
+      isOpen: true,
+      pageId,
+      pageTitle: pageTitle || null,
+    })
+  }
+
+  const executeSingleDelete = async () => {
+    if (!singleDeleteDialog.pageId) return
+
     try {
-      const result = await deletePage(pageId)
+      const result = await deletePage(singleDeleteDialog.pageId)
       if (result.success) {
         toast.success(result.message || 'Page deleted')
         fetchData()
@@ -418,6 +432,8 @@ export function PagesTable({
       }
     } catch (error) {
       toast.error('Failed to delete page')
+    } finally {
+      setSingleDeleteDialog({ isOpen: false, pageId: null, pageTitle: null })
     }
   }
 
@@ -665,6 +681,36 @@ export function PagesTable({
         </AlertDialogContent>
       </AlertDialog>
 
+      {/* Single Delete Confirmation Dialog */}
+      <AlertDialog
+        open={singleDeleteDialog.isOpen}
+        onOpenChange={(open) => !open && setSingleDeleteDialog({ isOpen: false, pageId: null, pageTitle: null })}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete page?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {singleDeleteDialog.pageTitle ? (
+                <>
+                  Are you sure you want to delete &quot;<strong>{singleDeleteDialog.pageTitle}</strong>&quot;? This action cannot be undone.
+                </>
+              ) : (
+                'Are you sure you want to delete this page? This action cannot be undone.'
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={executeSingleDelete}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       {/* Reorder Pages Modal */}
       <ReorderPagesModal
         open={isReorderModalOpen}
@@ -687,7 +733,7 @@ function MobilePageCard({
   page: PageRow
   onPublish: (id: string) => void
   onUnpublish: (id: string) => void
-  onDelete: (id: string) => void
+  onDelete: (id: string, title?: string) => void
 }) {
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -750,7 +796,7 @@ function MobilePageCard({
             )}
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => onDelete(page.id)}
+              onClick={() => onDelete(page.id, page.title)}
               className="text-red-600 dark:text-red-400"
             >
               <Trash2 className="h-4 w-4 mr-2" />

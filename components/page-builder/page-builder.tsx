@@ -21,6 +21,7 @@ import { SeoPanel } from './panels/seo-panel'
 import { FabPanel, type FabConfig } from './panels/fab-panel'
 import { FooterPanel } from './panels/footer-panel'
 import { PageTypographyPanel } from './panels/page-typography-panel'
+import { UnifiedRightPanel } from './right-panel-unified'
 import type { FooterSettings } from '@/app/actions/cms/footer'
 import { TopToolbar } from './toolbar/top-toolbar'
 import { NavigatorPanel } from './elementor/navigator-panel'
@@ -133,8 +134,7 @@ function PageBuilderContent({
 
   const { blocks, isDirty, isSaving, isPreviewMode, device } = state
 
-  // Right panel tab state
-  const [rightPanelTab, setRightPanelTab] = useState<'properties' | 'seo' | 'fab' | 'footer' | 'typography'>('properties')
+  // Right panel saving states
   const [isSavingSeo, setIsSavingSeo] = useState(false)
   const [isSavingFab, setIsSavingFab] = useState(false)
   const [isSavingFooter, setIsSavingFooter] = useState(false)
@@ -798,11 +798,8 @@ function PageBuilderContent({
               collapsed={rightPanelCollapsed}
               onToggle={() => setRightPanelCollapsed(!rightPanelCollapsed)}
             >
-              <Tabs
-                value={rightPanelTab}
-                onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab' | 'footer' | 'typography')}
-                className="flex flex-col h-full min-h-0"
-              >
+              <div className="flex flex-col h-full min-h-0">
+                {/* Collapse button */}
                 <div className="border-b border-border px-2 pt-2 flex-shrink-0 flex items-center gap-2">
                   <Button
                     variant="ghost"
@@ -813,142 +810,55 @@ function PageBuilderContent({
                   >
                     <PanelRightOpen className="size-4" />
                   </Button>
-                  <TabsList className="grid grid-cols-5 flex-1">
-                    <TabsTrigger value="properties" className="flex items-center gap-1 text-xs px-1">
-                      <Settings className="h-3.5 w-3.5" />
-                      Props
-                    </TabsTrigger>
-                    <TabsTrigger value="typography" className="flex items-center gap-1 text-xs px-1">
-                      <Type className="h-3.5 w-3.5" />
-                      Typo
-                    </TabsTrigger>
-                    <TabsTrigger value="seo" className="flex items-center gap-1 text-xs px-1">
-                      <Search className="h-3.5 w-3.5" />
-                      SEO
-                    </TabsTrigger>
-                    <TabsTrigger value="fab" className="flex items-center gap-1 text-xs px-1">
-                      <MessageCircle className="h-3.5 w-3.5" />
-                      FAB
-                    </TabsTrigger>
-                    <TabsTrigger value="footer" className="flex items-center gap-1 text-xs px-1">
-                      <FileText className="h-3.5 w-3.5" />
-                      Footer
-                    </TabsTrigger>
-                  </TabsList>
+                  <div className="flex-1 text-sm font-medium text-muted-foreground px-2">
+                    {selectedBlock ? 'Component Settings' : 'Page Settings'}
+                  </div>
                 </div>
-                <TabsContent value="properties" className="flex-1 m-0 overflow-y-auto min-h-0">
-                  <PropsPanel />
-                </TabsContent>
-                <TabsContent value="typography" className="flex-1 m-0 overflow-y-auto min-h-0">
-                  <PageTypographyPanel
-                    pageId={pageId}
-                    initialTypography={initialTypography}
-                    onSave={handleSaveTypography}
-                    isSaving={isSavingTypography}
-                  />
-                </TabsContent>
-                <TabsContent value="seo" className="flex-1 m-0 overflow-y-auto min-h-0">
-                  <SeoPanel
-                    pageId={pageId}
-                    pageSlug={pageSlug}
-                    initialSeoData={initialSeoData || undefined}
-                    onSave={handleSaveSeo}
-                    isSaving={isSavingSeo}
-                  />
-                </TabsContent>
-                <TabsContent value="fab" className="flex-1 m-0 overflow-y-auto min-h-0">
-                  <FabPanel
-                    pageId={pageId}
-                    initialConfig={initialFabConfig || undefined}
-                    onSave={handleSaveFab}
-                    isSaving={isSavingFab}
-                  />
-                </TabsContent>
-                <TabsContent value="footer" className="flex-1 m-0 overflow-y-auto min-h-0">
-                  {initialFooterSettings && (
-                    <FooterPanel
-                      initialSettings={initialFooterSettings}
-                      onSave={handleSaveFooter}
-                      isSaving={isSavingFooter}
-                    />
-                  )}
-                </TabsContent>
-              </Tabs>
+
+                {/* Unified Right Panel */}
+                <UnifiedRightPanel
+                  pageId={pageId}
+                  pageSlug={pageSlug}
+                  onSeoUpdate={handleSaveSeo}
+                  onFabUpdate={handleSaveFab}
+                  onTypographyUpdate={handleSaveTypography}
+                  onFooterUpdate={handleSaveFooter}
+                  isSavingSeo={isSavingSeo}
+                  isSavingFab={isSavingFab}
+                  isSavingTypography={isSavingTypography}
+                  isSavingFooter={isSavingFooter}
+                  initialSeoData={initialSeoData || undefined}
+                  initialFabConfig={initialFabConfig || undefined}
+                  initialTypography={initialTypography || undefined}
+                  initialFooterSettings={footerSettings || undefined}
+                />
+              </div>
             </ResizablePanel>
           )}
 
-          {/* Right Sidebar - Properties/SEO/FAB/Footer Panel (Mobile/Tablet Sheet) */}
+          {/* Right Sidebar - Unified Panel (Mobile/Tablet Sheet) */}
           {!isPreviewMode && (
             <Sheet open={mobileRightPanel} onOpenChange={setMobileRightPanel}>
               <SheetContent side="right" className="w-full sm:w-[380px] p-0 lg:hidden">
-                <SheetTitle className="sr-only">Page Settings</SheetTitle>
-                <Tabs
-                  value={rightPanelTab}
-                  onValueChange={(v) => setRightPanelTab(v as 'properties' | 'seo' | 'fab' | 'footer' | 'typography')}
-                  className="flex flex-col h-full min-h-0"
-                >
-                  <div className="border-b border-border px-2 pt-2 flex-shrink-0">
-                    <TabsList className="grid grid-cols-5 w-full">
-                      <TabsTrigger value="properties" className="flex items-center gap-1 text-xs px-0.5">
-                        <Settings className="h-3 w-3" />
-                        Props
-                      </TabsTrigger>
-                      <TabsTrigger value="typography" className="flex items-center gap-1 text-xs px-0.5">
-                        <Type className="h-3 w-3" />
-                        Typo
-                      </TabsTrigger>
-                      <TabsTrigger value="seo" className="flex items-center gap-1 text-xs px-0.5">
-                        <Search className="h-3 w-3" />
-                        SEO
-                      </TabsTrigger>
-                      <TabsTrigger value="fab" className="flex items-center gap-1 text-xs px-0.5">
-                        <MessageCircle className="h-3 w-3" />
-                        FAB
-                      </TabsTrigger>
-                      <TabsTrigger value="footer" className="flex items-center gap-1 text-xs px-0.5">
-                        <FileText className="h-3 w-3" />
-                        Foot
-                      </TabsTrigger>
-                    </TabsList>
-                  </div>
-                  <TabsContent value="properties" className="flex-1 m-0 overflow-y-auto min-h-0">
-                    <PropsPanel />
-                  </TabsContent>
-                  <TabsContent value="typography" className="flex-1 m-0 overflow-y-auto min-h-0">
-                    <PageTypographyPanel
-                      pageId={pageId}
-                      initialTypography={initialTypography}
-                      onSave={handleSaveTypography}
-                      isSaving={isSavingTypography}
-                    />
-                  </TabsContent>
-                  <TabsContent value="seo" className="flex-1 m-0 overflow-y-auto min-h-0">
-                    <SeoPanel
-                      pageId={pageId}
-                      pageSlug={pageSlug}
-                      initialSeoData={initialSeoData || undefined}
-                      onSave={handleSaveSeo}
-                      isSaving={isSavingSeo}
-                    />
-                  </TabsContent>
-                  <TabsContent value="fab" className="flex-1 m-0 overflow-y-auto min-h-0">
-                    <FabPanel
-                      pageId={pageId}
-                      initialConfig={initialFabConfig || undefined}
-                      onSave={handleSaveFab}
-                      isSaving={isSavingFab}
-                    />
-                  </TabsContent>
-                  <TabsContent value="footer" className="flex-1 m-0 overflow-y-auto min-h-0">
-                    {initialFooterSettings && (
-                      <FooterPanel
-                        initialSettings={initialFooterSettings}
-                        onSave={handleSaveFooter}
-                        isSaving={isSavingFooter}
-                      />
-                    )}
-                  </TabsContent>
-                </Tabs>
+                <SheetTitle className="sr-only">
+                  {selectedBlock ? 'Component Settings' : 'Page Settings'}
+                </SheetTitle>
+                <UnifiedRightPanel
+                  pageId={pageId}
+                  pageSlug={pageSlug}
+                  onSeoUpdate={handleSaveSeo}
+                  onFabUpdate={handleSaveFab}
+                  onTypographyUpdate={handleSaveTypography}
+                  onFooterUpdate={handleSaveFooter}
+                  isSavingSeo={isSavingSeo}
+                  isSavingFab={isSavingFab}
+                  isSavingTypography={isSavingTypography}
+                  isSavingFooter={isSavingFooter}
+                  initialSeoData={initialSeoData || undefined}
+                  initialFabConfig={initialFabConfig || undefined}
+                  initialTypography={initialTypography || undefined}
+                  initialFooterSettings={footerSettings || undefined}
+                />
               </SheetContent>
             </Sheet>
           )}

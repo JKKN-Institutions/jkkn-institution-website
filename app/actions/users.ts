@@ -940,7 +940,7 @@ export async function removeRole(
       title: 'Role Removed',
       message: `Your "${roleData.display_name}" role has been removed. Some features may no longer be accessible.`,
       type: 'warning',
-      link: '/admin/dashboard',
+      link: '/admin',
     })
   }
 
@@ -1048,7 +1048,7 @@ export async function reactivateUser(userId: string): Promise<FormState> {
     title: 'Account Reactivated',
     message: 'Your account has been reactivated. You now have full access to the system.',
     type: 'success',
-    link: '/admin/dashboard',
+    link: '/admin',
   })
 
   // Log activity

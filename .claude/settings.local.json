@@ -114,7 +114,16 @@
       "mcp__Pharmacy_College_Supabase_Project__apply_migration",
       "mcp__Pharmacy_College_Supabase_Project__execute_sql",
       "Bash(npm run dev:pharmacy:*)",
-      "mcp__Pharmacy_College_Supabase_Project__get_advisors"
+      "mcp__Pharmacy_College_Supabase_Project__get_advisors",
+      "mcp__next-devtools__nextjs_docs",
+      "Bash(del \"D:\\\\Projects\\\\JKKN Websites\\\\jkkn-institution-website\\\\middleware.ts\")",
+      "Bash(node --version:*)",
+      "mcp__chrome-devtools__close_page",
+      "Bash(del proxy.ts)",
+      "Bash(del nul)",
+      "mcp__Main_Supabase_Project__apply_migration",
+      "Bash(del \"D:\\\\Projects\\\\JKKN Websites\\\\jkkn-institution-website\\\\.next\\\\dev\\\\lock\")",
+      "Bash(if exist \".next\\\\dev\\\\lock\" del \".next\\\\dev\\\\lock\")"
     ],
     "deny": [],
     "ask": [],

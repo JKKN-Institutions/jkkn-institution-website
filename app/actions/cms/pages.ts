@@ -171,6 +171,7 @@ export async function getPages(options?: {
       )
     `
     )
+    .is('deleted_at', null) // Exclude soft-deleted pages
     .order('sort_order', { ascending: true, nullsFirst: false })
     .order('title', { ascending: true })
 
@@ -1245,8 +1246,16 @@ export async function deletePage(pageId: string): Promise<FormState> {
     return { success: false, message: 'Cannot delete page with child pages. Delete or move child pages first.' }
   }
 
-  // Delete page (cascade will handle blocks, SEO, FAB, versions)
-  const { error } = await supabase.from('cms_pages').delete().eq('id', pageId)
+  // Soft delete page (move to trash) instead of hard delete
+  const { error } = await supabase
+    .from('cms_pages')
+    .update({
+      deleted_at: new Date().toISOString(),
+      deleted_by: user.id,
+      updated_by: user.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', pageId)
 
   if (error) {
     console.error('Error deleting page:', error)
@@ -1260,12 +1269,13 @@ export async function deletePage(pageId: string): Promise<FormState> {
     module: 'cms',
     resourceType: 'page',
     resourceId: pageId,
-    metadata: { title: page.title, slug: page.slug },
+    metadata: { title: page.title, slug: page.slug, deletionType: 'soft' },
   })
 
   revalidatePath('/admin/content/pages')
+  revalidatePath('/admin/content/pages/trash')
 
-  return { success: true, message: 'Page deleted successfully' }
+  return { success: true, message: 'Page moved to trash. It will be permanently deleted after 30 days.' }
 }
 
 /**
@@ -2719,4 +2729,226 @@ export async function getPageReviewHistory(pageId: string) {
   }
 
   return data || []
+}
+
+/**
+ * Get deleted pages (trash bin)
+ */
+export async function getDeletedPages(options?: {
+  page?: number
+  limit?: number
+  search?: string
+}) {
+  const supabase = await createServerSupabaseClient()
+  const { page = 1, limit = 20, search } = options || {}
+
+  // Permission check
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return { pages: [], total: 0, page, limit, totalPages: 0 }
+  }
+
+  // Check if user has permission to view trash
+  const { data: hasPermission } = await supabase.rpc('has_permission', {
+    user_uuid: user.id,
+    required_permission: 'cms:pages:delete'
+  })
+
+  if (!hasPermission) {
+    return { pages: [], total: 0, page, limit, totalPages: 0 }
+  }
+
+  // Build query for deleted pages only
+  let query = supabase
+    .from('cms_pages')
+    .select(`
+      id,
+      title,
+      slug,
+      description,
+      status,
+      visibility,
+      is_homepage,
+      show_in_navigation,
+      sort_order,
+      parent_id,
+      created_at,
+      updated_at,
+      deleted_at,
+      creator:profiles!cms_pages_created_by_fkey (
+        full_name,
+        email
+      ),
+      deleter:profiles!cms_pages_deleted_by_fkey (
+        full_name,
+        email
+      ),
+      cms_seo_metadata (
+        seo_score
+      )
+    `, { count: 'exact' })
+    .not('deleted_at', 'is', null) // Only show deleted pages
+    .order('deleted_at', { ascending: false }) // Most recently deleted first
+
+  // Apply search filter if provided
+  if (search) {
+    query = query.or(`title.ilike.%${search}%,slug.ilike.%${search}%`)
+  }
+
+  // Get total count
+  const { count: total } = await query
+
+  // Apply pagination
+  const from = (page - 1) * limit
+  const to = from + limit - 1
+  query = query.range(from, to)
+
+  const { data, error } = await query
+
+  if (error) {
+    console.error('Error fetching deleted pages:', error)
+    return { pages: [], total: 0, page, limit, totalPages: 0 }
+  }
+
+  return {
+    pages: data || [],
+    total: total || 0,
+    page,
+    limit,
+    totalPages: Math.ceil((total || 0) / limit),
+  }
+}
+
+/**
+ * Restore a deleted page from trash
+ */
+export async function restorePage(pageId: string): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Check authentication
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'You must be logged in to restore pages.' }
+  }
+
+  // Check permission
+  const { data: hasPermission } = await supabase.rpc('has_permission', {
+    user_uuid: user.id,
+    required_permission: 'cms:pages:restore'
+  })
+
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to restore pages.' }
+  }
+
+  // Get page details before restoring
+  const { data: page } = await supabase
+    .from('cms_pages')
+    .select('title, slug, deleted_at')
+    .eq('id', pageId)
+    .single()
+
+  if (!page || !page.deleted_at) {
+    return { success: false, message: 'Page not found in trash.' }
+  }
+
+  // Restore page using database function
+  const { data: restored, error } = await supabase.rpc('restore_page', {
+    page_uuid: pageId
+  })
+
+  if (error || !restored) {
+    console.error('Error restoring page:', error)
+    return { success: false, message: 'Failed to restore page. Please try again.' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'restore',
+    module: 'cms',
+    resourceType: 'page',
+    resourceId: pageId,
+    metadata: { title: page.title, slug: page.slug },
+  })
+
+  revalidatePath('/admin/content/pages')
+  revalidatePath('/admin/content/pages/trash')
+
+  return { success: true, message: `Page "${page.title}" has been restored successfully.` }
+}
+
+/**
+ * Permanently delete a page from trash
+ */
+export async function permanentlyDeletePage(pageId: string): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Check authentication
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, message: 'You must be logged in to delete pages.' }
+  }
+
+  // Check permission
+  const { data: hasPermission } = await supabase.rpc('has_permission', {
+    user_uuid: user.id,
+    required_permission: 'cms:pages:delete'
+  })
+
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to permanently delete pages.' }
+  }
+
+  // Get page details before deleting
+  const { data: page } = await supabase
+    .from('cms_pages')
+    .select('title, slug, deleted_at')
+    .eq('id', pageId)
+    .single()
+
+  if (!page || !page.deleted_at) {
+    return { success: false, message: 'Page not found in trash.' }
+  }
+
+  // Permanently delete page using database function
+  const { data: deleted, error } = await supabase.rpc('permanently_delete_page', {
+    page_uuid: pageId
+  })
+
+  if (error || !deleted) {
+    console.error('Error permanently deleting page:', error)
+    return { success: false, message: 'Failed to permanently delete page. Please try again.' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'delete',
+    module: 'cms',
+    resourceType: 'page',
+    resourceId: pageId,
+    metadata: { title: page.title, slug: page.slug, deletionType: 'permanent' },
+  })
+
+  revalidatePath('/admin/content/pages')
+  revalidatePath('/admin/content/pages/trash')
+
+  return { success: true, message: `Page "${page.title}" has been permanently deleted.` }
+}
+
+/**
+ * Get trash statistics
+ */
+export async function getTrashStatistics(): Promise<{ total_in_trash: number; expiring_soon: number }> {
+  const supabase = await createServerSupabaseClient()
+
+  const { data, error } = await supabase.rpc('get_trash_statistics').single()
+
+  if (error) {
+    console.error('Error fetching trash statistics:', error)
+    return { total_in_trash: 0, expiring_soon: 0 }
+  }
+
+  return (data as { total_in_trash: number; expiring_soon: number }) || { total_in_trash: 0, expiring_soon: 0 }
 }

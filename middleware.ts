@@ -32,7 +32,7 @@ const compiledRoutePatterns: Array<{ pattern: RegExp; permission: string }> = Ob
 }))
 
 // Routes that guests CAN access (even with pending approval)
-const guestAllowedRoutes = new Set(['/admin', '/admin/dashboard', '/auth/access-denied'])
+const guestAllowedRoutes = new Set(['/admin', '/auth/access-denied'])
 
 export async function middleware(request: NextRequest) {
   const { supabase, response } = createMiddlewareClient(request)

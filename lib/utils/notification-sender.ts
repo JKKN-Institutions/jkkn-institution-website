@@ -176,7 +176,7 @@ export const NotificationHelpers = {
       title: 'Welcome to JKKN!',
       message: `Hello ${userName}, welcome to the JKKN Institution portal. We're excited to have you here!`,
       type: 'success',
-      link: '/admin/dashboard',
+      link: '/admin',
     }),
 
   // Role change notification
@@ -186,7 +186,7 @@ export const NotificationHelpers = {
       title: 'Your Role Has Been Updated',
       message: `Your account role has been updated to ${newRole}. You may now have access to new features.`,
       type: 'info',
-      link: '/admin/dashboard',
+      link: '/admin',
     }),
 
   // Content published notification

@@ -29,7 +29,6 @@ import { formatDistanceToNow } from 'date-fns'
 
 const pageTitles: Record<string, string> = {
   '/admin': 'Dashboard',
-  '/admin/dashboard': 'Dashboard',
   '/admin/users': 'Users',
   '/admin/users/approved-emails': 'Approved Emails',
   '/admin/roles': 'Roles & Permissions',
@@ -154,23 +153,24 @@ export function AdminHeader() {
             )}
 
             {/* Notifications Popover */}
-            <Popover open={notificationPopoverOpen} onOpenChange={setNotificationPopoverOpen}>
-              <PopoverTrigger asChild>
-                <button className="p-2.5 text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-xl transition-all duration-200 relative flex items-center justify-center">
-                  <Bell className="h-5 w-5" />
-                  {/* Notification badge with unread count */}
-                  {unreadCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center bg-secondary text-secondary-foreground text-[10px] font-bold border-2 border-background rounded-full">
-                      {unreadCount > 99 ? '99+' : unreadCount}
-                    </span>
-                  )}
-                  {/* Connection indicator */}
-                  {isConnected && unreadCount === 0 && (
-                    <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-green-500 border-2 border-background rounded-full" />
-                  )}
-                </button>
-              </PopoverTrigger>
-              <PopoverContent className="w-80 p-0" align="end" sideOffset={8}>
+            {mounted && (
+              <Popover open={notificationPopoverOpen} onOpenChange={setNotificationPopoverOpen}>
+                <PopoverTrigger asChild>
+                  <button className="p-2.5 text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-xl transition-all duration-200 relative flex items-center justify-center">
+                    <Bell className="h-5 w-5" />
+                    {/* Notification badge with unread count */}
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center bg-secondary text-secondary-foreground text-[10px] font-bold border-2 border-background rounded-full">
+                        {unreadCount > 99 ? '99+' : unreadCount}
+                      </span>
+                    )}
+                    {/* Connection indicator */}
+                    {isConnected && unreadCount === 0 && (
+                      <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-green-500 border-2 border-background rounded-full" />
+                    )}
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 p-0" align="end" sideOffset={8}>
                 <div className="flex items-center justify-between px-4 py-3 border-b">
                   <div className="flex items-center gap-2">
                     <h4 className="font-semibold text-sm">Notifications</h4>
@@ -276,77 +276,80 @@ export function AdminHeader() {
                 )}
               </PopoverContent>
             </Popover>
+            )}
 
             {/* Divider */}
             <div className="h-8 w-px bg-border mx-2 hidden md:block" />
 
             {/* User Profile Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-3 p-1.5 rounded-xl hover:bg-primary/5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20">
-                  {/* Avatar First */}
-                  <Avatar className="h-10 w-10 border-2 border-primary/20">
-                    <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-white font-semibold text-sm">
-                      {userInitials}
-                    </AvatarFallback>
-                  </Avatar>
-                  {/* Name and Email */}
-                  <div className="hidden md:flex flex-col items-start">
-                    <span className="text-sm font-semibold text-foreground">
-                      {userName || 'User'}
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      {userEmail}
-                    </span>
-                  </div>
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-72 glass-card border-border/50">
-                <DropdownMenuLabel className="pb-3">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="h-12 w-12 border-2 border-primary/20">
-                      <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-white font-semibold">
+            {mounted && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center gap-3 p-1.5 rounded-xl hover:bg-primary/5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20">
+                    {/* Avatar First */}
+                    <Avatar className="h-10 w-10 border-2 border-primary/20">
+                      <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-white font-semibold text-sm">
                         {userInitials}
                       </AvatarFallback>
                     </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm text-foreground truncate">
+                    {/* Name and Email */}
+                    <div className="hidden md:flex flex-col items-start">
+                      <span className="text-sm font-semibold text-foreground">
                         {userName || 'User'}
-                      </p>
-                      <p className="text-xs text-muted-foreground truncate">
+                      </span>
+                      <span className="text-xs text-muted-foreground">
                         {userEmail}
-                      </p>
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 mt-1">
-                        {userRole}
                       </span>
                     </div>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-border/50" />
-                <DropdownMenuItem asChild className="cursor-pointer">
-                  <Link href="/admin/profile" className="flex items-center gap-2">
-                    <User className="h-4 w-4" />
-                    My Profile
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild className="cursor-pointer">
-                  <Link href="/admin/settings" className="flex items-center gap-2">
-                    <Settings className="h-4 w-4" />
-                    Settings
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator className="bg-border/50" />
-                <form action={signOut}>
-                  <button
-                    type="submit"
-                    className="relative flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none hover:bg-destructive/10 dark:hover:bg-destructive/20 text-destructive transition-colors [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    Sign Out
                   </button>
-                </form>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-72 glass-card border-border/50">
+                  <DropdownMenuLabel className="pb-3">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-12 w-12 border-2 border-primary/20">
+                        <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-white font-semibold">
+                          {userInitials}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-sm text-foreground truncate">
+                          {userName || 'User'}
+                        </p>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {userEmail}
+                        </p>
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 mt-1">
+                          {userRole}
+                        </span>
+                      </div>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator className="bg-border/50" />
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href="/admin/profile" className="flex items-center gap-2">
+                      <User className="h-4 w-4" />
+                      My Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href="/admin/settings" className="flex items-center gap-2">
+                      <Settings className="h-4 w-4" />
+                      Settings
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-border/50" />
+                  <form action={signOut}>
+                    <button
+                      type="submit"
+                      className="relative flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none hover:bg-destructive/10 dark:hover:bg-destructive/20 text-destructive transition-colors [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Sign Out
+                    </button>
+                  </form>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         </div>
       </div>
