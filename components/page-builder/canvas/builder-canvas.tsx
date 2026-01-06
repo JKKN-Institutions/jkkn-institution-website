@@ -45,7 +45,6 @@ interface SortableBlockProps {
   onToggleVisibility: () => void
   canMoveUp: boolean
   canMoveDown: boolean
-  onUpdate: (props: Record<string, unknown>) => void
   children?: ReactNode
   depth?: number
 }
@@ -62,7 +61,6 @@ function SortableBlock({
   onToggleVisibility,
   canMoveUp,
   canMoveDown,
-  onUpdate,
   children,
   depth = 0,
 }: SortableBlockProps) {
@@ -170,7 +168,6 @@ function SortableBlock({
         dragHandleProps={{ ...attributes, ...listeners }}
         isContainer={isContainer}
         depth={depth}
-        onUpdate={onUpdate}
       >
         {/* Apply custom_classes wrapper with styles and motion */}
         <div
@@ -262,7 +259,6 @@ interface BlockTreeProps {
   onMoveDown: (id: string) => void
   onToggleVisibility: (id: string) => void
   onAddToContainer: (componentName: string, containerId: string) => void
-  onUpdate: (blockId: string, props: Record<string, unknown>) => void
   depth?: number
 }
 
@@ -278,7 +274,6 @@ function BlockTree({
   onMoveDown,
   onToggleVisibility,
   onAddToContainer,
-  onUpdate,
   depth = 0,
 }: BlockTreeProps) {
   // Get blocks at this level, sorted by sort_order
@@ -305,7 +300,6 @@ function BlockTree({
               onMoveUp={() => onMoveUp(block.id)}
               onMoveDown={() => onMoveDown(block.id)}
               onToggleVisibility={() => onToggleVisibility(block.id)}
-              onUpdate={(props) => onUpdate(block.id, props)}
               canMoveUp={index > 0}
               canMoveDown={index < levelBlocks.length - 1}
               depth={depth}
@@ -325,7 +319,6 @@ function BlockTree({
                       onMoveDown={onMoveDown}
                       onToggleVisibility={onToggleVisibility}
                       onAddToContainer={onAddToContainer}
-                      onUpdate={onUpdate}
                       depth={depth + 1}
                     />
                   ) : (
@@ -355,7 +348,6 @@ export function BuilderCanvas() {
     duplicateBlock,
     moveBlock,
     updateBlockVisibility,
-    updateBlock,
     getRootBlocks,
     zoom,
   } = usePageBuilder()
@@ -365,11 +357,11 @@ export function BuilderCanvas() {
   // Calculate zoom transform style
   const zoomStyle: CSSProperties = zoom !== 100
     ? {
-      transform: `scale(${zoom / 100})`,
-      transformOrigin: 'top center',
-      width: `${10000 / zoom}%`,
-      marginLeft: `${(100 - (10000 / zoom)) / 2}%`,
-    }
+        transform: `scale(${zoom / 100})`,
+        transformOrigin: 'top center',
+        width: `${10000 / zoom}%`,
+        marginLeft: `${(100 - (10000 / zoom)) / 2}%`,
+      }
     : {}
 
   // Make canvas a drop target for palette items
@@ -429,13 +421,6 @@ export function BuilderCanvas() {
       addBlockToContainer(componentName, containerId)
     },
     [addBlockToContainer]
-  )
-
-  const handleBlockUpdate = useCallback(
-    (blockId: string, props: Record<string, unknown>) => {
-      updateBlock(blockId, { props })
-    },
-    [updateBlock]
   )
 
   const handleCanvasClick = useCallback(
@@ -505,7 +490,6 @@ export function BuilderCanvas() {
         onMoveDown={handleBlockMoveDown}
         onToggleVisibility={handleBlockToggleVisibility}
         onAddToContainer={handleAddToContainer}
-        onUpdate={handleBlockUpdate}
       />
 
       {/* Drop zone at the end */}
