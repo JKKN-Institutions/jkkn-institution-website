@@ -1,51 +1,52 @@
-'use client'
-
+import React from 'react'
+import { BaseBlockProps } from '@/lib/cms/registry-types'
 import { cn } from '@/lib/utils'
-import type { ContainerProps } from '@/lib/cms/registry-types'
 
-export default function Container({
+export interface ContainerProps extends BaseBlockProps {
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | 'fluid'
+  paddingX?: 'none' | 'sm' | 'md' | 'lg'
+  className?: string
+  children?: React.ReactNode
+}
+
+export function Container({
   maxWidth = 'xl',
-  padding = '4',
-  centered = true,
-  background,
-  children,
+  paddingX = 'md',
   className,
-  isEditing,
+  children,
+  ...props
 }: ContainerProps) {
-  const maxWidthClasses = {
+
+  const maxW = {
     sm: 'max-w-screen-sm',
     md: 'max-w-screen-md',
     lg: 'max-w-screen-lg',
     xl: 'max-w-screen-xl',
     '2xl': 'max-w-screen-2xl',
     full: 'max-w-full',
+    fluid: 'max-w-none',
   }
 
-  const hasChildren = children && (Array.isArray(children) ? children.length > 0 : true)
+  const px = {
+    none: 'px-0',
+    sm: 'px-2 md:px-4',
+    md: 'px-4 md:px-6 lg:px-8',
+    lg: 'px-6 md:px-10 lg:px-12',
+  }
 
   return (
     <div
       className={cn(
-        maxWidthClasses[maxWidth],
-        centered && 'mx-auto',
+        'mx-auto w-full',
+        maxW[maxWidth],
+        px[paddingX],
         className
       )}
-      style={{
-        padding: `${Number(padding) * 0.25}rem`,
-        background: background || undefined,
-      }}
+      {...props}
     >
-      {hasChildren ? (
-        children
-      ) : isEditing ? (
-        <div className="min-h-[100px] p-8 border-2 border-dashed border-muted-foreground/25 rounded-lg flex items-center justify-center">
-          <p className="text-muted-foreground text-center">
-            Drop blocks here or click to configure container
-          </p>
-        </div>
-      ) : (
-        <div className="min-h-[20px]" />
-      )}
+      {children}
     </div>
   )
 }
+
+export default Container

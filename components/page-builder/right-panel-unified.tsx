@@ -153,7 +153,7 @@ export function UnifiedRightPanel({
       <ScrollArea className="flex-1 overflow-y-auto">
         {isComponentMode && selectedBlock ? (
           // COMPONENT MODE
-          <div className="p-5 space-y-5 pb-20">
+          <div className="p-4 space-y-4 pb-20">
             <Accordion
               type="multiple"
               value={expandedSections}
@@ -255,28 +255,7 @@ export function UnifiedRightPanel({
                 </AccordionContent>
               </AccordionItem>
 
-              {/* Code Viewer Section */}
-              <AccordionItem value="code" className="border rounded-lg bg-card">
-                <AccordionTrigger className="px-4 py-3.5 hover:no-underline hover:bg-muted/50 transition-colors">
-                  <div className="flex items-center gap-2.5 w-full">
-                    <div className="flex items-center justify-center h-7 w-7 rounded-md bg-muted">
-                      <Code2 className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                    <span className="font-semibold text-sm">Code</span>
-                    <Badge variant="outline" className="ml-auto text-[10px] px-1.5 py-0.5">
-                      Read-only
-                    </Badge>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="px-4 pb-4 pt-2 space-y-3">
-                  {/* HybridCodeViewer includes copy buttons for all code views */}
-                  <HybridCodeViewer
-                    componentName={selectedBlock.component_name}
-                    props={selectedBlock.props}
-                    responsiveSettings={responsiveSettings}
-                  />
-                </AccordionContent>
-              </AccordionItem>
+
 
               {/* Design Section - TODO: Implement later */}
               {/* <AccordionItem value="design" className="border rounded-lg">
@@ -296,7 +275,7 @@ export function UnifiedRightPanel({
           </div>
         ) : (
           // PAGE MODE
-          <div className="p-5 space-y-5 pb-20">
+          <div className="p-4 space-y-4 pb-20">
             <Accordion
               type="multiple"
               defaultValue={['seo']}
@@ -313,7 +292,7 @@ export function UnifiedRightPanel({
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="p-0">
-                  <div className="max-h-[600px] overflow-y-auto">
+                  <div className="w-full">
                     <SeoPanel
                       pageId={pageId}
                       pageSlug={pageSlug}
@@ -340,7 +319,7 @@ export function UnifiedRightPanel({
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="p-0">
-                  <div className="max-h-[600px] overflow-y-auto">
+                  <div className="w-full">
                     <FabPanel
                       pageId={pageId}
                       initialConfig={initialFabConfig}
@@ -366,7 +345,7 @@ export function UnifiedRightPanel({
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="p-0">
-                  <div className="max-h-[600px] overflow-y-auto">
+                  <div className="w-full">
                     <PageTypographyPanel
                       pageId={pageId}
                       initialTypography={initialTypography}
@@ -392,7 +371,7 @@ export function UnifiedRightPanel({
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="p-0">
-                  <div className="max-h-[600px] overflow-y-auto">
+                  <div className="w-full">
                     {initialFooterSettings && (
                       <FooterPanel
                         initialSettings={initialFooterSettings}

@@ -1,6 +1,7 @@
 'use client'
 
-import { type ReactNode, useMemo } from 'react'
+import { type ReactNode, useMemo, useState, useCallback, useEffect } from 'react'
+import Editor from '@monaco-editor/react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -18,6 +19,8 @@ import {
   ChevronDown,
   Eye,
   EyeOff,
+  Code2,
+  Check,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { BlockData } from '@/lib/cms/registry-types'
@@ -42,6 +45,7 @@ interface BlockWrapperProps {
   children: ReactNode
   isContainer?: boolean
   depth?: number
+  onUpdate: (props: Record<string, unknown>) => void
 }
 
 export function BlockWrapper({
@@ -62,8 +66,34 @@ export function BlockWrapper({
   children,
   isContainer = false,
   depth = 0,
+  onUpdate,
 }: BlockWrapperProps) {
   const isHidden = !block.is_visible
+  const [showCode, setShowCode] = useState(false)
+  const [codeError, setCodeError] = useState<string | null>(null)
+
+  // Local state for code to prevent jitter while typing
+  const [localCode, setLocalCode] = useState(() => JSON.stringify(block.props, null, 2))
+
+  // Update local code when block props change externally (and we are not editing)
+  useEffect(() => {
+    if (!showCode) {
+      setLocalCode(JSON.stringify(block.props, null, 2))
+    }
+  }, [block.props, showCode])
+
+  const handleCodeChange = useCallback((value: string | undefined) => {
+    if (!value) return
+    setLocalCode(value)
+
+    try {
+      const parsed = JSON.parse(value)
+      setCodeError(null)
+      onUpdate(parsed)
+    } catch (e) {
+      setCodeError((e as Error).message)
+    }
+  }, [onUpdate])
 
   // Compute glass effect styles based on block settings
   const glassStyles = useMemo(() => {
@@ -171,6 +201,19 @@ export function BlockWrapper({
         {/* Right side: Quick actions */}
         <div className="flex items-center gap-1">
           <Button
+            variant={showCode ? "default" : "secondary"}
+            size="icon"
+            className="h-6 w-6"
+            onClick={(e) => {
+              e.stopPropagation()
+              setShowCode(!showCode)
+            }}
+            title={showCode ? "Switch to Preview" : "Edit Code"}
+          >
+            {showCode ? <Eye className="h-3 w-3" /> : <Code2 className="h-3 w-3" />}
+          </Button>
+
+          <Button
             variant="secondary"
             size="icon"
             className="h-6 w-6"
@@ -259,7 +302,35 @@ export function BlockWrapper({
         )}
         style={glassStyles}
       >
-        {children}
+        {showCode ? (
+          <div className="relative bg-[#1e1e1e] rounded-b-lg overflow-hidden border-t">
+            <div className="p-2 bg-[#252526] text-xs text-muted-foreground flex justify-between items-center border-b border-[#333]">
+              <span>JSON Editor</span>
+              {codeError && <span className="text-red-400 flex items-center gap-1">Invalid JSON</span>}
+            </div>
+            <div className="h-[400px]" onClick={(e) => e.stopPropagation()}>
+              <Editor
+                height="100%"
+                defaultLanguage="json"
+                value={localCode}
+                onChange={handleCodeChange}
+                theme="vs-dark"
+                options={{
+                  minimap: { enabled: false },
+                  fontSize: 12,
+                  lineNumbers: 'on',
+                  scrollBeyondLastLine: false,
+                  automaticLayout: true,
+                  tabSize: 2,
+                  formatOnPaste: true,
+                  formatOnType: true,
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          children
+        )}
       </div>
     </div>
   )

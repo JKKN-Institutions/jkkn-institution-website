@@ -790,9 +790,9 @@ function PageBuilderContent({
           {!isPreviewMode && (
             <ResizablePanel
               side="right"
-              defaultWidth={380}
-              minWidth={300}
-              maxWidth={500}
+              defaultWidth={450}
+              minWidth={400}
+              maxWidth={800}
               storageKey="editor-right-panel"
               className="hidden lg:flex border-l border-border bg-card min-h-0"
               collapsed={rightPanelCollapsed}

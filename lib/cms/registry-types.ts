@@ -611,10 +611,8 @@ export type LogoCloudProps = z.infer<typeof LogoCloudPropsSchema> & BaseBlockPro
 
 // Layout Blocks
 export const ContainerPropsSchema = z.object({
-  maxWidth: z.enum(['sm', 'md', 'lg', 'xl', '2xl', 'full']).default('xl'),
-  padding: z.string().default('4'),
-  centered: z.boolean().default(true),
-  background: z.string().optional(),
+  maxWidth: z.enum(['sm', 'md', 'lg', 'xl', '2xl', 'full', 'fluid']).default('xl'),
+  paddingX: z.enum(['none', 'sm', 'md', 'lg']).default('md'),
 })
 export type ContainerProps = z.infer<typeof ContainerPropsSchema> & BaseBlockProps
 
