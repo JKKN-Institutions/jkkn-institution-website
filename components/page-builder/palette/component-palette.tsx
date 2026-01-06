@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useMemo, useEffect, useRef } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
-import Image from 'next/image'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -52,11 +51,7 @@ interface PaletteItemProps {
   previewImage?: string
 }
 
-function PaletteItem({ name, displayName, description, icon, previewImage }: PaletteItemProps) {
-  const [imageError, setImageError] = useState(false)
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false)
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-
+function PaletteItem({ name, displayName, description, icon }: PaletteItemProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: `palette-${name}`,
     data: {
@@ -76,68 +71,25 @@ function PaletteItem({ name, displayName, description, icon, previewImage }: Pal
   const iconName = icon as keyof typeof LucideIcons
   const IconComponent = (LucideIcons[iconName] as LucideIcon) || Type
 
-  const hasPreview = previewImage && !imageError
-
-  // Handle mouse enter with delay (to avoid showing tooltip when quickly moving through items)
-  const handleMouseEnter = () => {
-    if (hasPreview && !isDragging) {
-      hoverTimeoutRef.current = setTimeout(() => {
-        setIsTooltipOpen(true)
-      }, 300)
-    }
-  }
-
-  // Handle mouse leave
-  const handleMouseLeave = () => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current)
-      hoverTimeoutRef.current = null
-    }
-    setIsTooltipOpen(false)
-  }
-
-  // Close tooltip when dragging starts
-  useEffect(() => {
-    if (isDragging) {
-      setIsTooltipOpen(false)
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current)
-        hoverTimeoutRef.current = null
-      }
-    }
-  }, [isDragging])
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current)
-      }
-    }
-  }, [])
-
-  // Create draggable content - optionally with mouse handlers for tooltip
-  const createDraggableContent = (withMouseHandlers: boolean) => (
+  return (
     <div
       ref={setNodeRef}
       style={style}
       {...listeners}
       {...attributes}
-      onMouseEnter={withMouseHandlers ? handleMouseEnter : undefined}
-      onMouseLeave={withMouseHandlers ? handleMouseLeave : undefined}
       className={cn(
-        'group flex items-center gap-2 p-2 rounded-lg border border-border bg-card w-full min-w-0',
-        'hover:border-primary/50 hover:bg-accent cursor-grab transition-all',
+        'group flex items-center gap-3 p-3 rounded-lg border border-border bg-card w-full min-w-0',
+        'hover:border-primary/50 hover:bg-accent hover:scale-[1.01] cursor-grab transition-all',
         isDragging && 'opacity-50 shadow-lg ring-2 ring-primary'
       )}
     >
-      <div className="flex-shrink-0 flex items-center justify-center h-8 w-8 rounded-md bg-muted">
-        <IconComponent className="h-4 w-4 text-muted-foreground" />
+      <div className="flex-shrink-0 flex items-center justify-center h-9 w-9 rounded-md bg-muted group-hover:bg-primary/10 transition-colors">
+        <IconComponent className="h-4.5 w-4.5 text-muted-foreground group-hover:text-primary transition-colors" />
       </div>
-      <div className="flex-1 min-w-0 overflow-hidden">
-        <p className="font-medium text-sm text-foreground truncate">{displayName}</p>
+      <div className="flex-1 min-w-0">
+        <p className="font-medium text-sm text-foreground line-clamp-1">{displayName}</p>
         {description && (
-          <p className="text-xs text-muted-foreground truncate">{description}</p>
+          <p className="text-xs text-muted-foreground line-clamp-2 leading-tight mt-0.5">{description}</p>
         )}
       </div>
       <div className="flex-shrink-0 opacity-50 group-hover:opacity-100">
@@ -145,41 +97,6 @@ function PaletteItem({ name, displayName, description, icon, previewImage }: Pal
       </div>
     </div>
   )
-
-  // If preview image exists, wrap with controlled tooltip
-  if (hasPreview) {
-    return (
-      <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
-        <TooltipTrigger asChild>
-          {createDraggableContent(true)}
-        </TooltipTrigger>
-        <TooltipContent
-          side="right"
-          sideOffset={12}
-          className="p-0 overflow-hidden bg-background border-2 border-primary/20 shadow-xl rounded-lg"
-        >
-          <div className="relative w-[320px] h-[240px] bg-muted">
-            <Image
-              src={previewImage}
-              alt={`${displayName} preview`}
-              fill
-              className="object-cover"
-              onError={() => setImageError(true)}
-              sizes="320px"
-            />
-          </div>
-          <div className="px-3 py-2 bg-background border-t border-border">
-            <p className="font-medium text-sm">{displayName}</p>
-            {description && (
-              <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
-            )}
-          </div>
-        </TooltipContent>
-      </Tooltip>
-    )
-  }
-
-  return createDraggableContent(false)
 }
 
 // Grid variant of PaletteItem for compact view
@@ -209,13 +126,13 @@ function PaletteItemGrid({ name, displayName, icon }: PaletteItemProps) {
       {...listeners}
       {...attributes}
       className={cn(
-        'group flex flex-col items-center justify-center gap-1.5 p-3 rounded-lg border border-border bg-card',
-        'hover:border-primary/50 hover:bg-accent cursor-grab transition-all',
+        'group flex flex-col items-center justify-center gap-2 p-3.5 rounded-lg border border-border bg-card',
+        'hover:border-primary/50 hover:bg-accent hover:scale-[1.02] cursor-grab transition-all',
         isDragging && 'opacity-50 shadow-lg ring-2 ring-primary'
       )}
     >
-      <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-muted group-hover:bg-primary/10 transition-colors">
-        <IconComponent className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+      <div className="flex items-center justify-center h-11 w-11 rounded-lg bg-muted group-hover:bg-primary/10 transition-colors">
+        <IconComponent className="h-5.5 w-5.5 text-muted-foreground group-hover:text-primary transition-colors" />
       </div>
       <p className="font-medium text-xs text-foreground text-center line-clamp-2 leading-tight">
         {displayName}
@@ -270,18 +187,25 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
   const [isLoadingCustom, setIsLoadingCustom] = useState(true)
   const [browseModalOpen, setBrowseModalOpen] = useState(false)
 
-  // View mode state with localStorage persistence
-  const [viewMode, setViewMode] = useState<'list' | 'grid'>(() => {
-    if (typeof window !== 'undefined') {
-      return (localStorage.getItem('palette-view') as 'list' | 'grid') || 'list'
-    }
-    return 'list'
-  })
+  // View mode state with localStorage persistence (hydration-safe)
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list')
+  const [isViewModeInitialized, setIsViewModeInitialized] = useState(false)
 
-  // Persist view mode to localStorage
+  // Load view mode from localStorage after hydration (client-side only)
   useEffect(() => {
-    localStorage.setItem('palette-view', viewMode)
-  }, [viewMode])
+    const savedViewMode = localStorage.getItem('palette-view') as 'list' | 'grid'
+    if (savedViewMode) {
+      setViewMode(savedViewMode)
+    }
+    setIsViewModeInitialized(true)
+  }, [])
+
+  // Persist view mode to localStorage (only after initialization)
+  useEffect(() => {
+    if (isViewModeInitialized) {
+      localStorage.setItem('palette-view', viewMode)
+    }
+  }, [viewMode, isViewModeInitialized])
 
   // Fetch custom components from database and register them
   useEffect(() => {
@@ -403,17 +327,27 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
     <TooltipProvider>
     <div className="flex flex-col h-full w-full overflow-hidden">
       {/* Mobile sheet header - only shown in Sheet component */}
-      <div className="border-b border-border p-4 lg:hidden flex-shrink-0">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Components</h2>
-          {/* Close button removed - SheetContent has built-in close button */}
+      <div className="border-b border-border p-4 lg:hidden flex-shrink-0 bg-muted/30">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-primary/10">
+            <Component className="h-4.5 w-4.5 text-primary" />
+          </div>
+          <div>
+            <h2 className="text-lg font-bold text-foreground">Components</h2>
+            <p className="text-xs text-muted-foreground">Drag to add to your page</p>
+          </div>
         </div>
       </div>
 
       {/* Header - desktop and mobile */}
-      <div className="p-3 sm:p-4 border-b border-border lg:border-t-0 flex-shrink-0">
-        <div className="flex items-center justify-between mb-3 hidden lg:flex">
-          <h2 className="font-semibold text-foreground">Components</h2>
+      <div className="p-4 border-b border-border lg:border-t-0 flex-shrink-0 bg-muted/20 pt-14">
+        <div className="flex items-center justify-between mb-3.5 hidden lg:flex">
+          <div className="flex items-center gap-2.5">
+            <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-primary/10">
+              <Component className="h-4 w-4 text-primary" />
+            </div>
+            <h2 className="text-lg font-bold text-foreground">Components</h2>
+          </div>
           {/* View mode toggle */}
           <div className="flex gap-0.5 border rounded-lg p-0.5 bg-muted/50">
             <Tooltip>
@@ -421,10 +355,10 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
                 <Button
                   variant={viewMode === 'list' ? 'secondary' : 'ghost'}
                   size="icon"
-                  className="h-6 w-6"
+                  className="h-7 w-7"
                   onClick={() => setViewMode('list')}
                 >
-                  <List className="h-3.5 w-3.5" />
+                  <List className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">List view</TooltipContent>
@@ -434,10 +368,10 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
                 <Button
                   variant={viewMode === 'grid' ? 'secondary' : 'ghost'}
                   size="icon"
-                  className="h-6 w-6"
+                  className="h-7 w-7"
                   onClick={() => setViewMode('grid')}
                 >
-                  <Grid3X3 className="h-3.5 w-3.5" />
+                  <Grid3X3 className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">Grid view</TooltipContent>
@@ -447,12 +381,12 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
 
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-muted-foreground" />
           <Input
             placeholder="Search components..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 bg-background/50 border-border/50 h-9"
+            className="pl-10 bg-background border-border h-10 focus-visible:ring-2 focus-visible:ring-primary/20"
             data-palette-search
           />
         </div>
@@ -464,10 +398,10 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
         onValueChange={(v) => setActiveCategory(v as ComponentCategory | 'all')}
         className="flex-1 flex flex-col min-h-0"
       >
-        <TabsList className="w-full justify-start px-3 py-2 h-auto bg-transparent gap-1 flex-shrink-0 flex-wrap">
+        <TabsList className="w-full justify-start px-2 py-2.5 h-auto bg-transparent gap-1.5 flex-shrink-0 flex-wrap">
           <TabsTrigger
             value="all"
-            className="text-xs px-2.5 py-1.5 data-[state=active]:bg-primary/10"
+            className="text-xs px-3 py-2 data-[state=active]:bg-primary/10 data-[state=active]:text-primary font-medium"
           >
             All
           </TabsTrigger>
@@ -479,9 +413,9 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
                 <TooltipTrigger asChild>
                   <TabsTrigger
                     value={category}
-                    className="text-xs px-2.5 py-1.5 data-[state=active]:bg-primary/10 gap-1"
+                    className="text-xs px-3 py-2 data-[state=active]:bg-primary/10 data-[state=active]:text-primary gap-1.5"
                   >
-                    <Icon className="h-3.5 w-3.5" />
+                    <Icon className="h-3 w-3" />
                     {category === 'custom' && count > 0 && (
                       <span className="text-[10px] bg-primary/20 text-primary rounded px-1">
                         {count}
@@ -498,12 +432,12 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
         </TabsList>
 
         <ScrollArea className="flex-1 min-h-0">
-          <div className="p-3 w-full overflow-hidden">
+          <div className="p-4 w-full overflow-hidden">
             {searchQuery ? (
               // Search results
               <div className={cn(
                 "w-full",
-                viewMode === 'grid' ? 'grid grid-cols-2 gap-2' : 'space-y-2'
+                viewMode === 'grid' ? 'grid grid-cols-2 gap-2.5' : 'space-y-2.5'
               )}>
                 {filteredComponents.length === 0 ? (
                   <p className="text-sm text-muted-foreground text-center py-8 col-span-2">
@@ -535,7 +469,7 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
               </div>
             ) : activeCategory === 'all' ? (
               // All categories grouped
-              <div className="space-y-6 w-full">
+              <div className="space-y-7 w-full">
                 {(['content', 'media', 'layout', 'custom'] as Array<ComponentCategory | 'custom'>).map((category) => {
                   const components = groupedComponents[category] || []
                   if (components.length === 0 && category !== 'custom') return null
@@ -544,13 +478,15 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
 
                   return (
                     <div key={category} className="w-full">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Icon className="h-4 w-4 text-muted-foreground" />
-                        <h3 className="text-sm font-medium text-muted-foreground">
+                      <div className="flex items-center gap-2.5 mb-3.5 pb-2 border-b border-border/50">
+                        <div className="flex items-center justify-center h-7 w-7 rounded-md bg-muted">
+                          <Icon className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                        <h3 className="text-sm font-semibold text-foreground">
                           {categoryLabels[category]}
                         </h3>
                         {category === 'custom' && (
-                          <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                          <Badge variant="outline" className="text-[10px] px-1.5 py-0.5 ml-auto">
                             {components.length}
                           </Badge>
                         )}
@@ -558,7 +494,7 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
                       {components.length > 0 ? (
                         <div className={cn(
                           "w-full",
-                          viewMode === 'grid' ? 'grid grid-cols-2 gap-2' : 'space-y-2'
+                          viewMode === 'grid' ? 'grid grid-cols-2 gap-2.5' : 'space-y-2.5'
                         )}>
                           {viewMode === 'grid' ? (
                             components.map((comp) => (
@@ -585,16 +521,16 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
                           )}
                         </div>
                       ) : category === 'custom' ? (
-                        <div className="text-center py-4 border border-dashed rounded-lg">
-                          <Puzzle className="h-6 w-6 mx-auto text-muted-foreground/50 mb-2" />
-                          <p className="text-xs text-muted-foreground">No custom components</p>
+                        <div className="text-center py-6 border border-dashed rounded-lg bg-muted/20">
+                          <Puzzle className="h-7 w-7 mx-auto text-muted-foreground/50 mb-2.5" />
+                          <p className="text-xs text-muted-foreground mb-2">No custom components yet</p>
                           <Button
                             variant="link"
                             size="sm"
-                            className="text-xs h-auto p-0 mt-1"
+                            className="text-xs h-auto p-0 text-primary hover:text-primary/80"
                             onClick={() => setBrowseModalOpen(true)}
                           >
-                            Add components
+                            Browse library to add
                           </Button>
                         </div>
                       ) : null}
@@ -608,7 +544,7 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
                 value={activeCategory}
                 className={cn(
                   "mt-0 w-full",
-                  viewMode === 'grid' ? 'grid grid-cols-2 gap-2' : 'space-y-2'
+                  viewMode === 'grid' ? 'grid grid-cols-2 gap-2.5' : 'space-y-2.5'
                 )}
               >
                 {viewMode === 'grid' ? (
@@ -641,19 +577,15 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
       </Tabs>
 
       {/* Footer with Browse Library button */}
-      <div className="p-3 border-t border-border bg-muted/30 flex-shrink-0 space-y-2">
+      <div className="p-4 border-t border-border bg-muted/30 flex-shrink-0">
         <Button
           variant="outline"
-          size="sm"
-          className="w-full gap-2 text-xs"
+          className="w-full gap-2.5 h-10 text-sm font-medium hover:bg-primary/10 hover:text-primary hover:border-primary/50 transition-all"
           onClick={() => setBrowseModalOpen(true)}
         >
-          <Library className="h-3.5 w-3.5" />
+          <Library className="h-4 w-4" />
           Browse Component Library
         </Button>
-        <p className="text-xs text-muted-foreground text-center">
-          Drag components to add them to your page
-        </p>
       </div>
 
       {/* Browse Components Modal */}

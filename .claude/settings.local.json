@@ -123,7 +123,8 @@
       "Bash(del nul)",
       "mcp__Main_Supabase_Project__apply_migration",
       "Bash(del \"D:\\\\Projects\\\\JKKN Websites\\\\jkkn-institution-website\\\\.next\\\\dev\\\\lock\")",
-      "Bash(if exist \".next\\\\dev\\\\lock\" del \".next\\\\dev\\\\lock\")"
+      "Bash(if exist \".next\\\\dev\\\\lock\" del \".next\\\\dev\\\\lock\")",
+      "Bash(Select-Object -First 30)"
     ],
     "deny": [],
     "ask": [],

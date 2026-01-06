@@ -105,11 +105,19 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
   const [isLayoutPresetsOpen, setIsLayoutPresetsOpen] = useState(false)
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false)
 
+  // Fix hydration errors from Radix UI auto-generated IDs
+  const [mounted, setMounted] = useState(false)
+
   // Inline title editing state
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [editedTitle, setEditedTitle] = useState(page?.title || '')
   const [isSavingTitle, setIsSavingTitle] = useState(false)
   const titleInputRef = useRef<HTMLInputElement>(null)
+
+  // Set mounted to true after client-side hydration
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Update editedTitle when page changes
   useEffect(() => {
@@ -261,6 +269,37 @@ export function TopToolbar({ onSave, onPresetSelect, isNavigatorOpen, onNavigato
       default:
         return 'bg-gray-100 text-gray-800'
     }
+  }
+
+  // Prevent hydration errors by only rendering Radix UI components on client
+  if (!mounted) {
+    return (
+      <div className="h-14 border-b border-border bg-card flex items-center justify-between px-4">
+        {/* Simplified toolbar during SSR */}
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/admin/content/pages">
+              <ArrowLeft className="h-4 w-4" />
+            </Link>
+          </Button>
+          <div className="hidden sm:block h-6 w-px bg-border" />
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 max-w-[200px] sm:max-w-[300px]">
+            <FileText className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="font-medium text-foreground truncate">{page?.title || 'Untitled Page'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm">
+            <Save className="h-4 w-4 md:mr-2" />
+            <span className="hidden md:inline">Save</span>
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   return (

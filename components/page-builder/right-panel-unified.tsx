@@ -122,16 +122,25 @@ export function UnifiedRightPanel({
   return (
     <div className="flex h-full flex-col bg-background">
       {/* Header */}
-      <div className="border-b p-4">
-        <div className="flex items-center gap-2">
-          <Settings className="h-5 w-5 text-muted-foreground" />
-          <h2 className="text-lg font-semibold">
-            {isComponentMode ? 'Component Settings' : 'Page Settings'}
-          </h2>
+      <div className="border-b bg-muted/30 px-4 py-4">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-primary/10">
+            <Settings className="h-4.5 w-4.5 text-primary" />
+          </div>
+          <div className="flex-1">
+            <h2 className="text-lg font-bold text-foreground">
+              {isComponentMode ? 'Component Settings' : 'Page Settings'}
+            </h2>
+            {!isComponentMode && (
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Configure page-wide settings
+              </p>
+            )}
+          </div>
         </div>
         {isComponentMode && selectedBlock && (
-          <div className="mt-2 flex items-center gap-2">
-            <Badge variant="secondary" className="text-xs">
+          <div className="mt-3 flex items-center gap-2 p-2.5 rounded-lg bg-background/80 border border-border/50">
+            <Badge variant="secondary" className="text-xs font-medium">
               {selectedBlock.component_name}
             </Badge>
             <span className="text-xs text-muted-foreground">
@@ -144,25 +153,27 @@ export function UnifiedRightPanel({
       <ScrollArea className="flex-1">
         {isComponentMode && selectedBlock ? (
           // COMPONENT MODE
-          <div className="p-4 space-y-4">
+          <div className="p-5 space-y-5">
             <Accordion
               type="multiple"
               value={expandedSections}
               onValueChange={setExpandedSections}
-              className="space-y-2"
+              className="space-y-3"
             >
               {/* Responsive Breakpoints Section */}
-              <AccordionItem value="breakpoints" className="border rounded-lg">
-                <AccordionTrigger className="px-4 hover:no-underline">
-                  <div className="flex items-center gap-2">
-                    <Smartphone className="h-4 w-4" />
-                    <span className="font-medium">Responsive Design</span>
-                    <Badge variant="outline" className="ml-auto text-xs">
+              <AccordionItem value="breakpoints" className="border rounded-lg bg-card">
+                <AccordionTrigger className="px-4 py-3.5 hover:no-underline hover:bg-muted/50 transition-colors">
+                  <div className="flex items-center gap-2.5 w-full">
+                    <div className="flex items-center justify-center h-7 w-7 rounded-md bg-muted">
+                      <Smartphone className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                    <span className="font-semibold text-sm">Responsive Design</span>
+                    <Badge variant="outline" className="ml-auto text-[10px] px-1.5 py-0.5">
                       NEW
                     </Badge>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="px-4 pb-4">
+                <AccordionContent className="px-4 pb-4 pt-2">
                   {/* Visual Breakpoint Selector */}
                   <div className="mb-4">
                     <label className="text-sm font-medium mb-2 block">
@@ -230,30 +241,34 @@ export function UnifiedRightPanel({
               </AccordionItem>
 
               {/* Component Properties Section */}
-              <AccordionItem value="props" className="border rounded-lg">
-                <AccordionTrigger className="px-4 hover:no-underline">
-                  <div className="flex items-center gap-2">
-                    <Settings className="h-4 w-4" />
-                    <span className="font-medium">Properties</span>
+              <AccordionItem value="props" className="border rounded-lg bg-card">
+                <AccordionTrigger className="px-4 py-3.5 hover:no-underline hover:bg-muted/50 transition-colors">
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex items-center justify-center h-7 w-7 rounded-md bg-muted">
+                      <Settings className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                    <span className="font-semibold text-sm">Properties</span>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="px-4 pb-4">
+                <AccordionContent className="px-4 pb-4 pt-2">
                   <PropsPanel />
                 </AccordionContent>
               </AccordionItem>
 
               {/* Code Viewer Section */}
-              <AccordionItem value="code" className="border rounded-lg">
-                <AccordionTrigger className="px-4 hover:no-underline">
-                  <div className="flex items-center gap-2">
-                    <Code2 className="h-4 w-4" />
-                    <span className="font-medium">Code</span>
-                    <Badge variant="outline" className="ml-auto text-xs">
+              <AccordionItem value="code" className="border rounded-lg bg-card">
+                <AccordionTrigger className="px-4 py-3.5 hover:no-underline hover:bg-muted/50 transition-colors">
+                  <div className="flex items-center gap-2.5 w-full">
+                    <div className="flex items-center justify-center h-7 w-7 rounded-md bg-muted">
+                      <Code2 className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                    <span className="font-semibold text-sm">Code</span>
+                    <Badge variant="outline" className="ml-auto text-[10px] px-1.5 py-0.5">
                       Read-only
                     </Badge>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="px-4 pb-4 space-y-3">
+                <AccordionContent className="px-4 pb-4 pt-2 space-y-3">
                   {/* HybridCodeViewer includes copy buttons for all code views */}
                   <HybridCodeViewer
                     componentName={selectedBlock.component_name}
@@ -281,18 +296,20 @@ export function UnifiedRightPanel({
           </div>
         ) : (
           // PAGE MODE
-          <div className="p-4 space-y-4">
+          <div className="p-5 space-y-5">
             <Accordion
               type="multiple"
               defaultValue={['seo']}
-              className="space-y-2"
+              className="space-y-3"
             >
               {/* SEO Section */}
-              <AccordionItem value="seo" className="border rounded-lg">
-                <AccordionTrigger className="px-4 hover:no-underline">
-                  <div className="flex items-center gap-2">
-                    <Search className="h-4 w-4" />
-                    <span className="font-medium">SEO</span>
+              <AccordionItem value="seo" className="border rounded-lg bg-card shadow-sm">
+                <AccordionTrigger className="px-4 py-3.5 hover:no-underline hover:bg-muted/50 transition-colors">
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex items-center justify-center h-7 w-7 rounded-md bg-muted">
+                      <Search className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                    <span className="font-semibold text-sm">SEO</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="p-0">
@@ -311,11 +328,13 @@ export function UnifiedRightPanel({
               </AccordionItem>
 
               {/* FAB Section */}
-              <AccordionItem value="fab" className="border rounded-lg">
-                <AccordionTrigger className="px-4 hover:no-underline">
-                  <div className="flex items-center gap-2">
-                    <MousePointerClick className="h-4 w-4" />
-                    <span className="font-medium">Floating Action Button</span>
+              <AccordionItem value="fab" className="border rounded-lg bg-card shadow-sm">
+                <AccordionTrigger className="px-4 py-3.5 hover:no-underline hover:bg-muted/50 transition-colors">
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex items-center justify-center h-7 w-7 rounded-md bg-muted">
+                      <MousePointerClick className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                    <span className="font-semibold text-sm">Floating Action Button</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="p-0">
@@ -333,11 +352,13 @@ export function UnifiedRightPanel({
               </AccordionItem>
 
               {/* Typography Section */}
-              <AccordionItem value="typography" className="border rounded-lg">
-                <AccordionTrigger className="px-4 hover:no-underline">
-                  <div className="flex items-center gap-2">
-                    <Type className="h-4 w-4" />
-                    <span className="font-medium">Typography</span>
+              <AccordionItem value="typography" className="border rounded-lg bg-card shadow-sm">
+                <AccordionTrigger className="px-4 py-3.5 hover:no-underline hover:bg-muted/50 transition-colors">
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex items-center justify-center h-7 w-7 rounded-md bg-muted">
+                      <Type className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                    <span className="font-semibold text-sm">Typography</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="p-0">
@@ -355,11 +376,13 @@ export function UnifiedRightPanel({
               </AccordionItem>
 
               {/* Footer Section */}
-              <AccordionItem value="footer" className="border rounded-lg">
-                <AccordionTrigger className="px-4 hover:no-underline">
-                  <div className="flex items-center gap-2">
-                    <Footprints className="h-4 w-4" />
-                    <span className="font-medium">Footer</span>
+              <AccordionItem value="footer" className="border rounded-lg bg-card shadow-sm">
+                <AccordionTrigger className="px-4 py-3.5 hover:no-underline hover:bg-muted/50 transition-colors">
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex items-center justify-center h-7 w-7 rounded-md bg-muted">
+                      <Footprints className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                    <span className="font-semibold text-sm">Footer</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="p-0">
