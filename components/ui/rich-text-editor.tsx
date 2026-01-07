@@ -874,7 +874,7 @@ export function RichTextEditor({
       }),
       Image.configure({
         inline: false,
-        allowBase64: true,
+        allowBase64: false, // Prevent base64 embedding - use media library URLs instead
         HTMLAttributes: {
           class: 'max-w-full h-auto rounded-lg my-4 cursor-move',
           draggable: 'true',

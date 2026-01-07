@@ -133,10 +133,10 @@ export function SiteFooter({ settings }: SiteFooterProps) {
 
           {/* Our Institutions */}
           <div>
-            <h4 className="text-lg font-semibold mb-6 flex items-center gap-2">
+            <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
               <span className="w-8 h-0.5 bg-secondary rounded-full" />
               Our Institutions
-            </h4>
+            </h2>
             <ul className="space-y-3">
               {visibleInstitutions.map((link) => (
                 <li key={link.href}>
@@ -154,10 +154,10 @@ export function SiteFooter({ settings }: SiteFooterProps) {
 
           {/* Location Map */}
           <div className="lg:col-span-2">
-            <h4 className="text-lg font-semibold mb-6 flex items-center gap-2">
+            <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
               <span className="w-8 h-0.5 bg-secondary rounded-full" />
               Our Location
-            </h4>
+            </h2>
             <div className="rounded-xl overflow-hidden border border-white/10 shadow-lg">
               <iframe
                 src={settings.map?.embedUrl || 'https://www.google.com/maps?q=JKKN+Educational+Institutions,Komarapalayam,Tamil+Nadu,India&output=embed'}

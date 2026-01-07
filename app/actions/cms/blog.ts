@@ -6,6 +6,25 @@ import { z } from 'zod'
 import { logActivity } from '@/lib/utils/activity-logger'
 import { checkPermission } from '../permissions'
 
+// Content size validation constants
+const MAX_CONTENT_SIZE_MB = 2.5 // MB (buffer before 3MB Next.js limit)
+
+// Custom content size validator
+const contentSizeValidator = z.any().refine(
+  (content) => {
+    try {
+      const size = new Blob([JSON.stringify(content)]).size
+      const sizeMB = size / (1024 * 1024)
+      return sizeMB < MAX_CONTENT_SIZE_MB
+    } catch {
+      return false
+    }
+  },
+  {
+    message: `Content size exceeds ${MAX_CONTENT_SIZE_MB}MB limit. Please reduce content size or ensure images are uploaded to the media library (not embedded as base64).`,
+  }
+)
+
 // Validation schemas
 const CreatePostSchema = z.object({
   title: z.string().min(1, 'Title is required').max(300, 'Title is too long'),
@@ -15,7 +34,7 @@ const CreatePostSchema = z.object({
     .max(300, 'Slug is too long')
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug must be lowercase with hyphens only'),
   excerpt: z.string().max(500).optional().nullable(),
-  content: z.any(), // JSON content from rich text editor
+  content: contentSizeValidator, // JSON content from rich text editor with size validation
   featured_image: z.string().url().optional().nullable(),
   category_id: z.string().uuid().optional().nullable(),
   author_id: z.string().uuid(),

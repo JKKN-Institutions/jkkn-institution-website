@@ -65,10 +65,10 @@ interface BlogPostFormProps {
   } | null
 }
 
-function SubmitButton({ isEdit }: { isEdit: boolean }) {
+function SubmitButton({ isEdit, isOverLimit }: { isEdit: boolean; isOverLimit: boolean }) {
   const { pending } = useFormStatus()
   return (
-    <Button type="submit" disabled={pending} className="min-h-[44px]">
+    <Button type="submit" disabled={pending || isOverLimit} className="min-h-[44px]">
       {pending ? (
         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
       ) : (
@@ -108,6 +108,11 @@ export function BlogPostForm({ post, categories, tags: initialTags, author }: Bl
   const [seoDescription, setSeoDescription] = useState(post?.seo_description || '')
   const [ogImage, setOgImage] = useState(post?.og_image || '')
   const [canonicalUrl, setCanonicalUrl] = useState(post?.canonical_url || '')
+
+  // Content size monitoring
+  const [contentSize, setContentSize] = useState(0)
+  const WARN_SIZE_MB = 2.0
+  const MAX_SIZE_MB = 2.5
 
   // Tag search state
   const [tagSearch, setTagSearch] = useState('')
@@ -193,6 +198,35 @@ export function BlogPostForm({ post, categories, tags: initialTags, author }: Bl
 
     return () => clearTimeout(searchTimer)
   }, [tagSearch, selectedTags])
+
+  // Monitor content size
+  useEffect(() => {
+    const calculateSize = () => {
+      try {
+        const size = new Blob([content]).size
+        const sizeMB = size / (1024 * 1024)
+        setContentSize(sizeMB)
+
+        // Show warnings
+        if (sizeMB >= MAX_SIZE_MB) {
+          toast.error(
+            `Content size (${sizeMB.toFixed(2)}MB) exceeds the ${MAX_SIZE_MB}MB limit! Please reduce content or ensure images are uploaded to the media library (not embedded as base64).`,
+            { duration: 10000 }
+          )
+        } else if (sizeMB >= WARN_SIZE_MB) {
+          toast.warning(
+            `Content size (${sizeMB.toFixed(2)}MB) is approaching the ${MAX_SIZE_MB}MB limit. Consider moving images to the media library.`,
+            { duration: 5000 }
+          )
+        }
+      } catch (error) {
+        console.error('Error calculating content size:', error)
+      }
+    }
+
+    const debounceTimer = setTimeout(calculateSize, 500)
+    return () => clearTimeout(debounceTimer)
+  }, [content, WARN_SIZE_MB, MAX_SIZE_MB])
 
   // Add tag
   const handleAddTag = async (tag: TagItem) => {
@@ -584,8 +618,19 @@ export function BlogPostForm({ post, categories, tags: initialTags, author }: Bl
                 </div>
               </div>
 
-              <div className="flex gap-2 pt-4">
-                <SubmitButton isEdit={isEdit} />
+              <div className="flex items-center justify-between gap-2 pt-2 pb-2">
+                <span className="text-xs text-muted-foreground">
+                  Content: {contentSize.toFixed(2)}MB / {MAX_SIZE_MB}MB
+                </span>
+                {contentSize >= MAX_SIZE_MB && (
+                  <span className="text-xs text-destructive font-medium">
+                    Size limit exceeded!
+                  </span>
+                )}
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <SubmitButton isEdit={isEdit} isOverLimit={contentSize >= MAX_SIZE_MB} />
                 <Button type="button" variant="outline" asChild className="min-h-[44px]">
                   <a href={`/blog/${slug}`} target="_blank" rel="noopener noreferrer">
                     <Eye className="mr-2 h-4 w-4" />
