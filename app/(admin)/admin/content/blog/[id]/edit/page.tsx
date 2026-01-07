@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ResponsivePageHeader } from '@/components/ui/responsive-page-header'
-import { getBlogPost } from '@/app/actions/cms/blog'
+import { getBlogPostMetadata } from '@/app/actions/cms/blog'
 import { getBlogCategories } from '@/app/actions/cms/blog-categories'
 import { getBlogTags } from '@/app/actions/cms/blog-tags'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
@@ -20,9 +20,9 @@ interface EditBlogPostPageProps {
 export default async function EditBlogPostPage({ params }: EditBlogPostPageProps) {
   const { id } = await params
 
-  // Fetch data in parallel
+  // Fetch data in parallel (excluding content to avoid props serialization limit)
   const [post, categories, tags, supabase] = await Promise.all([
-    getBlogPost(id),
+    getBlogPostMetadata(id),
     getBlogCategories(),
     getBlogTags(),
     createServerSupabaseClient(),

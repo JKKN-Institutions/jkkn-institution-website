@@ -105,6 +105,15 @@ export interface BlogPostWithRelations extends BlogPost {
   }>
 }
 
+// Metadata-only types (content excluded for large posts)
+export interface BlogPostMetadata extends Omit<BlogPost, 'content'> {
+  content?: Record<string, unknown> // Optional for metadata-only
+}
+
+export interface BlogPostMetadataWithRelations extends Omit<BlogPostWithRelations, 'content'> {
+  content?: Record<string, unknown>
+}
+
 /**
  * Get all blog posts with pagination and filtering
  */
@@ -338,6 +347,76 @@ export async function getBlogPost(id: string) {
   const tags = postTags?.map((pt) => pt.tag).filter(Boolean) || []
 
   return { ...post, tags } as BlogPostWithRelations
+}
+
+/**
+ * Get blog post metadata without content (for edit page with large posts)
+ * Excludes the content field to avoid Next.js props serialization limit (~128KB)
+ */
+export async function getBlogPostMetadata(id: string) {
+  const supabase = await createServerSupabaseClient()
+
+  // Select all fields EXCEPT content to keep props small
+  const { data: post, error } = await supabase
+    .from('blog_posts')
+    .select(
+      `
+      id, title, slug, excerpt, featured_image, category_id, author_id,
+      co_authors, status, visibility, password_hash, published_at, scheduled_at,
+      reading_time_minutes, view_count, is_featured, is_pinned, allow_comments,
+      seo_title, seo_description, seo_keywords, og_image, canonical_url,
+      metadata, created_by, updated_by, created_at, updated_at,
+      category:blog_categories!category_id (
+        id, name, slug, color
+      ),
+      author:profiles!author_id (
+        id, full_name, email, avatar_url
+      )
+    `
+    )
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    console.error('Error fetching blog post metadata:', error)
+    return null
+  }
+
+  // Get tags for the post
+  const { data: postTags } = await supabase
+    .from('blog_post_tags')
+    .select(
+      `
+      tag:blog_tags (
+        id, name, slug, color
+      )
+    `
+    )
+    .eq('post_id', id)
+
+  const tags = postTags?.map((pt) => pt.tag).filter(Boolean) || []
+
+  return { ...post, tags } as unknown as BlogPostMetadataWithRelations
+}
+
+/**
+ * Get only the content field of a blog post (for client-side loading)
+ */
+export async function getBlogPostContent(id: string) {
+  const supabase = await createServerSupabaseClient()
+
+  const { data, error } = await supabase
+    .from('blog_posts')
+    .select('content')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    console.error('Error fetching blog post content:', error)
+    return null
+  }
+
+  return data?.content as Record<string, unknown> | null
 }
 
 /**

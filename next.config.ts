@@ -4,6 +4,12 @@ const nextConfig: NextConfig = {
   // Cache Components requires all data fetches to use Suspense boundaries
   // Enable when the codebase is fully migrated to this pattern:
   // cacheComponents: true,
+
+  // Server Actions configuration
+  serverActions: {
+    bodySizeLimit: '3mb' // Increase from default 1MB to support large blog posts
+  },
+
   async redirects() {
     return [
       // Existing redirect

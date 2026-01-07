@@ -3,7 +3,7 @@
 import { useActionState, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useFormStatus } from 'react-dom'
-import { createBlogPost, updateBlogPost, type BlogPostWithRelations } from '@/app/actions/cms/blog'
+import { createBlogPost, updateBlogPost, getBlogPostContent, type BlogPostMetadataWithRelations } from '@/app/actions/cms/blog'
 import { type BlogCategory } from '@/app/actions/cms/blog-categories'
 import { createBlogTagInline, searchBlogTags } from '@/app/actions/cms/blog-tags'
 
@@ -29,6 +29,7 @@ import { Switch } from '@/components/ui/switch'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   Loader2,
   Save,
@@ -53,7 +54,7 @@ import type { MediaItem } from '@/app/actions/cms/media'
 import { RichTextEditor } from '@/components/ui/rich-text-editor-lazy'
 
 interface BlogPostFormProps {
-  post?: BlogPostWithRelations
+  post?: BlogPostMetadataWithRelations
   categories: BlogCategory[]
   tags: TagItem[]
   author?: {
@@ -122,6 +123,29 @@ export function BlogPostForm({ post, categories, tags: initialTags, author }: Bl
   const [galleryImagesCallback, setGalleryImagesCallback] = useState<
     ((images: Array<{src: string, alt?: string}>) => void) | null
   >(null)
+
+  // Content loading state (for large posts)
+  const [isLoadingContent, setIsLoadingContent] = useState(isEdit && !post?.content)
+
+  // Fetch content client-side for edit mode (to avoid props serialization limit)
+  useEffect(() => {
+    if (isEdit && !post?.content && post?.id) {
+      setIsLoadingContent(true)
+      getBlogPostContent(post.id)
+        .then((contentData) => {
+          if (contentData) {
+            setContent(JSON.stringify(contentData, null, 2))
+          }
+        })
+        .catch((error) => {
+          console.error('Error loading content:', error)
+          toast.error('Failed to load content. Please refresh the page.')
+        })
+        .finally(() => {
+          setIsLoadingContent(false)
+        })
+    }
+  }, [isEdit, post?.id, post?.content])
 
   // Generate slug from title (only if not manually edited)
   useEffect(() => {
@@ -349,27 +373,39 @@ export function BlogPostForm({ post, categories, tags: initialTags, author }: Bl
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <RichTextEditor
-                content={content}
-                onChange={setContent}
-                placeholder="Start writing your blog post..."
-                onContentImageUpload={handleContentImageUpload}
-                onGalleryImageSelect={handleGalleryImageSelect}
-              />
-              <div className="flex items-center gap-2 mt-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={calculateReadingTime}
-                >
-                  <Clock className="mr-2 h-4 w-4" />
-                  Calculate Reading Time
-                </Button>
-                <span className="text-sm text-muted-foreground">
-                  Current: {readingTime} min
-                </span>
-              </div>
+              {isLoadingContent ? (
+                <div className="space-y-4">
+                  <Skeleton className="h-64 w-full rounded-xl" />
+                  <p className="text-sm text-muted-foreground text-center">
+                    <Loader2 className="inline mr-2 h-4 w-4 animate-spin" />
+                    Loading content...
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <RichTextEditor
+                    content={content}
+                    onChange={setContent}
+                    placeholder="Start writing your blog post..."
+                    onContentImageUpload={handleContentImageUpload}
+                    onGalleryImageSelect={handleGalleryImageSelect}
+                  />
+                  <div className="flex items-center gap-2 mt-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={calculateReadingTime}
+                    >
+                      <Clock className="mr-2 h-4 w-4" />
+                      Calculate Reading Time
+                    </Button>
+                    <span className="text-sm text-muted-foreground">
+                      Current: {readingTime} min
+                    </span>
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
 
