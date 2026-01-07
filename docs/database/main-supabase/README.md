@@ -12,10 +12,13 @@ This documentation serves as the **single source of truth** for all database obj
 
 | File | Description | Count |
 |------|-------------|-------|
+| `00-tables.sql` | **ALL table definitions** (CREATE TABLE statements) | **52 tables** |
 | `01-functions.sql` | All PostgreSQL functions | ~51 functions |
 | `02-rls-policies.sql` | All Row Level Security policies | ~126 policies |
 | `03-triggers.sql` | All database triggers | ~41 triggers |
 | `04-foreign-keys.sql` | All foreign key relationships | ~48 foreign keys |
+
+**IMPORTANT:** `00-tables.sql` is the **foundation** - always document table structures here first before adding functions, policies, triggers, or foreign keys.
 
 ## Workflow
 
@@ -95,6 +98,6 @@ USING (is_super_admin(auth.uid()) OR user_id = auth.uid())
 
 ## Last Updated
 
-- **Date:** 2026-01-03
-- **Updated By:** Claude Code
-- **Reason:** Initial documentation creation
+- **Date:** 2026-01-07
+- **Updated By:** Claude Code (Deep Analysis Task)
+- **Reason:** Added comprehensive 00-tables.sql with all 52 table definitions organized by category
