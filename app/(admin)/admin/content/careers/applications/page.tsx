@@ -273,9 +273,8 @@ export default function ApplicationsPage() {
         {Object.entries(statusLabels).map(([key, { label, class: cls }]) => (
           <Card
             key={key}
-            className={`cursor-pointer transition-colors ${
-              status === key ? 'ring-2 ring-primary' : ''
-            }`}
+            className={`cursor-pointer transition-colors ${status === key ? 'ring-2 ring-primary' : ''
+              }`}
             onClick={() => updateParams({ status: key, page: '1' })}
           >
             <CardContent className="p-3">
@@ -458,11 +457,10 @@ export default function ApplicationsPage() {
                           {Array.from({ length: 5 }).map((_, i) => (
                             <Star
                               key={i}
-                              className={`h-4 w-4 ${
-                                i < app.rating!
-                                  ? 'text-amber-500 fill-amber-500'
-                                  : 'text-gray-300'
-                              }`}
+                              className={`h-4 w-4 ${i < app.rating!
+                                ? 'text-amber-500 fill-amber-500'
+                                : 'text-gray-300'
+                                }`}
                             />
                           ))}
                         </div>

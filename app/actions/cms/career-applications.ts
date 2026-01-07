@@ -26,6 +26,10 @@ export interface CareerApplication {
   applicant_user_id: string | null
   cover_letter: string | null
   resume_url: string | null
+  resume_file_path: string | null
+  resume_file_name: string | null
+  resume_file_size: number | null
+  resume_mime_type: string | null
   portfolio_url: string | null
   linkedin_url: string | null
   answers: Record<string, unknown>
@@ -89,11 +93,11 @@ const submitApplicationSchema = z.object({
   cover_letter: z.string().max(5000).optional().nullable(),
 
   // Resume options (one required)
-  resume_url: z.string().transform(val => val === '' ? null : val).pipe(z.union([z.string().url(), z.null()])),
-  resume_file_path: z.string().transform(val => val === '' ? null : val).optional().nullable(),
-  resume_file_name: z.string().transform(val => val === '' ? null : val).optional().nullable(),
-  resume_file_size: z.string().transform(val => val === '' ? null : val).pipe(z.union([z.string().transform(v => Number(v)), z.null()])),
-  resume_mime_type: z.string().transform(val => val === '' ? null : val).optional().nullable(),
+  resume_url: z.string().nullable().transform(val => (val === '' || val === null) ? null : val).pipe(z.union([z.string().url(), z.null()])),
+  resume_file_path: z.string().nullable().transform(val => (val === '' || val === null) ? null : val).optional().nullable(),
+  resume_file_name: z.string().nullable().transform(val => (val === '' || val === null) ? null : val).optional().nullable(),
+  resume_file_size: z.string().nullable().transform(val => (val === '' || val === null) ? null : val).pipe(z.union([z.string().transform(v => Number(v)), z.null()])),
+  resume_mime_type: z.string().nullable().transform(val => (val === '' || val === null) ? null : val).optional().nullable(),
 
   portfolio_url: z.string().optional().nullable().transform(val => val === '' ? null : val).pipe(z.union([z.string().url(), z.null()])),
   linkedin_url: z.string().optional().nullable().transform(val => val === '' ? null : val).pipe(z.union([z.string().url(), z.null()])),
@@ -183,8 +187,31 @@ export async function getApplications(options?: {
     return { applications: [], total: 0 }
   }
 
+  // transform data to include signed urls
+  const applicationsWithSignedUrls = await Promise.all(
+    (data || []).map(async (app) => {
+      let signedUrl = app.resume_url
+      if (!signedUrl && app.resume_file_path) {
+        try {
+          const { data: signedData } = await supabase.storage
+            .from('resumes')
+            .createSignedUrl(app.resume_file_path, 3600) // 1 hour expiry
+          if (signedData) {
+            signedUrl = signedData.signedUrl
+          }
+        } catch (e) {
+          console.error('Error generating signed URL:', e)
+        }
+      }
+      return {
+        ...app,
+        resume_url: signedUrl,
+      }
+    })
+  )
+
   return {
-    applications: data || [],
+    applications: applicationsWithSignedUrls,
     total: count || 0,
   }
 }
@@ -218,7 +245,30 @@ export async function getJobApplications(
     return []
   }
 
-  return data || []
+  // transform data to include signed urls
+  const applicationsWithSignedUrls = await Promise.all(
+    (data || []).map(async (app) => {
+      let signedUrl = app.resume_url
+      if (!signedUrl && app.resume_file_path) {
+        try {
+          const { data: signedData } = await supabase.storage
+            .from('resumes')
+            .createSignedUrl(app.resume_file_path, 3600)
+          if (signedData) {
+            signedUrl = signedData.signedUrl
+          }
+        } catch (e) {
+          console.error('Error generating signed URL:', e)
+        }
+      }
+      return {
+        ...app,
+        resume_url: signedUrl,
+      }
+    })
+  )
+
+  return applicationsWithSignedUrls
 }
 
 // Get application by ID
@@ -243,7 +293,27 @@ export async function getApplication(id: string): Promise<CareerApplicationWithR
     return null
   }
 
-  return data
+  if (!data) return null
+
+  // Generate signed URL if needed
+  let signedUrl = data.resume_url
+  if (!signedUrl && data.resume_file_path) {
+    try {
+      const { data: signedData } = await supabase.storage
+        .from('resumes')
+        .createSignedUrl(data.resume_file_path, 3600)
+      if (signedData) {
+        signedUrl = signedData.signedUrl
+      }
+    } catch (e) {
+      console.error('Error generating signed URL:', e)
+    }
+  }
+
+  return {
+    ...data,
+    resume_url: signedUrl,
+  }
 }
 
 // Get application history
@@ -330,11 +400,11 @@ export async function submitApplication(
     cover_letter: formData.get('cover_letter') as string || null,
 
     // Resume options
-    resume_url: formData.get('resume_url') as string || null,
-    resume_file_path: formData.get('resume_file_path') as string || null,
-    resume_file_name: formData.get('resume_file_name') as string || null,
-    resume_file_size: formData.get('resume_file_size') as string || null,
-    resume_mime_type: formData.get('resume_mime_type') as string || null,
+    resume_url: formData.get('resume_url') as string || '',
+    resume_file_path: formData.get('resume_file_path') as string || '',
+    resume_file_name: formData.get('resume_file_name') as string || '',
+    resume_file_size: formData.get('resume_file_size') as string || '',
+    resume_mime_type: formData.get('resume_mime_type') as string || '',
 
     portfolio_url: formData.get('portfolio_url') as string || null,
     linkedin_url: formData.get('linkedin_url') as string || null,
