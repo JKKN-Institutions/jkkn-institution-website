@@ -5,9 +5,11 @@ const nextConfig: NextConfig = {
   // Enable when the codebase is fully migrated to this pattern:
   // cacheComponents: true,
 
-  // Server Actions configuration
-  serverActions: {
-    bodySizeLimit: '3mb' // Increase from default 1MB to support large blog posts
+  // Server Actions configuration (under experimental in Next.js 16)
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '3mb' // Increase from default 1MB to support large blog posts
+    }
   },
 
   async redirects() {
