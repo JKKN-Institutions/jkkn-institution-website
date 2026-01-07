@@ -346,7 +346,7 @@ export async function submitApplication(
   if (!result.success) {
     return {
       success: false,
-      message: 'Validation failed',
+      message: 'Validation failed: ' + JSON.stringify(result.error.flatten().fieldErrors),
       errors: result.error.flatten().fieldErrors,
     }
   }
