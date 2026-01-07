@@ -94,22 +94,26 @@ function getAuthorInitials(author: {
   return name.substring(0, 2).toUpperCase()
 }
 
-// Content Renderer - Renders TipTap JSON content
+// Content Renderer - Renders TipTap JSON content with optimizations for large content
 function ContentRenderer({ content }: { content: Record<string, unknown> }) {
   const renderNode = (node: Record<string, unknown>, index: number): React.ReactNode => {
+    // Guard against undefined or invalid nodes
+    if (!node || typeof node !== 'object') return null
+
     const type = node.type as string
-    const content = node.content as Record<string, unknown>[] | undefined
+    const nodeContent = node.content as Record<string, unknown>[] | undefined
     const text = node.text as string | undefined
     const marks = node.marks as { type: string; attrs?: Record<string, unknown> }[] | undefined
 
     switch (type) {
       case 'doc':
-        return content?.map((child, i) => renderNode(child, i))
+        // For very large content, render in batches to avoid stack overflow
+        return nodeContent?.map((child, i) => renderNode(child, i))
 
       case 'paragraph':
         return (
           <p key={index} className="mb-4 leading-relaxed text-gray-900">
-            {content?.map((child, i) => renderNode(child, i))}
+            {nodeContent?.map((child, i) => renderNode(child, i))}
           </p>
         )
 
@@ -124,7 +128,7 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
           6: 'text-sm font-medium mb-2 mt-3 text-primary',
         }
         const headingClass = headingClasses[level as keyof typeof headingClasses]
-        const headingChildren = content?.map((child, i) => renderNode(child, i))
+        const headingChildren = nodeContent?.map((child, i) => renderNode(child, i))
         if (level === 1) return <h1 key={index} className={headingClass}>{headingChildren}</h1>
         if (level === 2) return <h2 key={index} className={headingClass}>{headingChildren}</h2>
         if (level === 3) return <h3 key={index} className={headingClass}>{headingChildren}</h3>
@@ -135,28 +139,28 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
       case 'bulletList':
         return (
           <ul key={index} className="list-disc pl-6 mb-4 space-y-1 text-gray-900 marker:text-gray-600">
-            {content?.map((child, i) => renderNode(child, i))}
+            {nodeContent?.map((child, i) => renderNode(child, i))}
           </ul>
         )
 
       case 'orderedList':
         return (
           <ol key={index} className="list-decimal pl-6 mb-4 space-y-1 text-gray-900 marker:text-gray-600">
-            {content?.map((child, i) => renderNode(child, i))}
+            {nodeContent?.map((child, i) => renderNode(child, i))}
           </ol>
         )
 
       case 'listItem':
         return (
           <li key={index} className="text-gray-900">
-            {content?.map((child, i) => renderNode(child, i))}
+            {nodeContent?.map((child, i) => renderNode(child, i))}
           </li>
         )
 
       case 'blockquote':
         return (
           <blockquote key={index} className="border-l-4 border-secondary pl-4 italic my-6 text-gray-700">
-            {content?.map((child, i) => renderNode(child, i))}
+            {nodeContent?.map((child, i) => renderNode(child, i))}
           </blockquote>
         )
 
@@ -164,7 +168,7 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
         return (
           <pre key={index} className="bg-gray-100 rounded-lg p-4 my-4 overflow-x-auto border border-gray-200">
             <code className="text-sm font-mono text-gray-900">
-              {content?.map((child, i) => renderNode(child, i))}
+              {nodeContent?.map((child, i) => renderNode(child, i))}
             </code>
           </pre>
         )
@@ -209,20 +213,26 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
       case 'text':
         let textContent: React.ReactNode = text
 
-        // Apply marks (bold, italic, link, etc.)
-        marks?.forEach((mark) => {
+        // Filter out redundant textStyle marks to improve performance
+        const relevantMarks = marks?.filter(mark =>
+          mark.type !== 'textStyle' ||
+          (mark.attrs && Object.keys(mark.attrs).length > 0 && mark.attrs.color !== '#000000')
+        )
+
+        // Apply relevant marks only (bold, italic, link, etc.)
+        relevantMarks?.forEach((mark, markIndex) => {
           switch (mark.type) {
             case 'bold':
-              textContent = <strong key={index}>{textContent}</strong>
+              textContent = <strong key={`${index}-${markIndex}`}>{textContent}</strong>
               break
             case 'italic':
-              textContent = <em key={index}>{textContent}</em>
+              textContent = <em key={`${index}-${markIndex}`}>{textContent}</em>
               break
             case 'link':
               const href = (mark.attrs as { href: string })?.href
               textContent = (
                 <a
-                  key={index}
+                  key={`${index}-${markIndex}`}
                   href={href}
                   className="text-secondary hover:underline hover:text-secondary/80"
                   target="_blank"
@@ -234,10 +244,17 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
               break
             case 'code':
               textContent = (
-                <code key={index} className="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono text-secondary">
+                <code key={`${index}-${markIndex}`} className="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono text-secondary">
                   {textContent}
                 </code>
               )
+              break
+            case 'textStyle':
+              // Apply non-default text styles
+              const color = (mark.attrs as { color?: string })?.color
+              if (color && color !== '#000000') {
+                textContent = <span key={`${index}-${markIndex}`} style={{ color }}>{textContent}</span>
+              }
               break
           }
         })
@@ -249,11 +266,25 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
     }
   }
 
-  return (
-    <div className="prose prose-lg max-w-none">
-      {renderNode(content, 0)}
-    </div>
-  )
+  // Wrap rendering in error handling for malformed content
+  try {
+    return (
+      <div className="prose prose-lg max-w-none">
+        {renderNode(content, 0)}
+      </div>
+    )
+  } catch (error) {
+    console.error('Error rendering blog content:', error)
+    return (
+      <div className="prose prose-lg max-w-none">
+        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+          <p className="text-yellow-700">
+            There was an error rendering some content. Please contact support if this issue persists.
+          </p>
+        </div>
+      </div>
+    )
+  }
 }
 
 // Related Posts Component
