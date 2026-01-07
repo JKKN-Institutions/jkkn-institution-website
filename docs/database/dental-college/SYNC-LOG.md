@@ -7,6 +7,121 @@ This log tracks all migrations and fixes applied to sync Dental College Supabase
 
 ---
 
+## 2026-01-07
+
+### Migration: `add_cms_page_management_functions` + `add_cms_pages_soft_delete_columns`
+
+**Issue:** Admin panel at `/admin/content/pages` showed all statistics as 0 (Total Pages, Published, Drafts, Scheduled) and table displayed "No results found" despite having 117 pages in the database.
+
+**Root Cause Analysis:**
+
+Using deep sequential thinking (ultrathink), identified two missing components:
+
+1. **Missing CMS Functions (6 total):**
+   - `get_page_statistics()` - Called by page.tsx to display statistics cards
+   - `get_trash_statistics()` - Called by page.tsx for trash section
+   - `restore_page()` - Restore soft-deleted pages
+   - `permanently_delete_page()` - Hard delete pages from trash
+   - `get_next_page_version_number()` - Version numbering system
+   - `auto_purge_deleted_pages()` - Background job for auto-cleanup
+
+2. **Missing Table Columns:**
+   - `deleted_at` - Soft delete timestamp
+   - `deleted_by` - User who deleted the page
+
+**Database Verification:**
+
+```sql
+-- Confirmed: cms_pages table EXISTS with 117 rows
+SELECT COUNT(*) FROM cms_pages; -- Result: 117
+
+-- Confirmed: RLS policies are correct
+-- "Authenticated can manage pages" - ALL operations for authenticated users
+
+-- Issue: Functions missing
+SELECT routine_name FROM information_schema.routines
+WHERE routine_name LIKE '%page%'; -- Result: 0 functions found
+
+-- Issue: Soft delete columns missing
+SELECT column_name FROM information_schema.columns
+WHERE table_name = 'cms_pages' AND column_name IN ('deleted_at', 'deleted_by');
+-- Result: 0 columns found
+```
+
+**Comparison:**
+
+| Component | Main Supabase | Dental College (Before) | Dental College (After) |
+|-----------|---------------|------------------------|----------------------|
+| `get_page_statistics()` | ✅ Exists | ❌ Missing | ✅ Added |
+| `get_trash_statistics()` | ✅ Exists | ❌ Missing | ✅ Added |
+| `restore_page()` | ✅ Exists | ❌ Missing | ✅ Added |
+| `permanently_delete_page()` | ✅ Exists | ❌ Missing | ✅ Added |
+| `get_next_page_version_number()` | ✅ Exists | ❌ Missing | ✅ Added |
+| `auto_purge_deleted_pages()` | ✅ Exists | ❌ Missing | ✅ Added |
+| `cms_pages.deleted_at` | ✅ Exists | ❌ Missing | ✅ Added |
+| `cms_pages.deleted_by` | ✅ Exists | ❌ Missing | ✅ Added |
+
+**Fix Applied:**
+
+**Migration 1: Add CMS Functions**
+```sql
+-- Created: supabase/migrations/007_add_cms_page_management_functions.sql
+-- Added all 6 CMS page management functions with SECURITY DEFINER and proper search_path
+```
+
+**Migration 2: Add Soft Delete Columns**
+```sql
+ALTER TABLE public.cms_pages
+ADD COLUMN deleted_at TIMESTAMP WITH TIME ZONE,
+ADD COLUMN deleted_by UUID REFERENCES auth.users(id);
+
+CREATE INDEX idx_cms_pages_deleted_at ON public.cms_pages(deleted_at)
+WHERE deleted_at IS NOT NULL;
+```
+
+**Verification Results:**
+
+```sql
+-- Test 1: Verify all 6 functions exist
+SELECT routine_name FROM information_schema.routines
+WHERE routine_name IN (
+  'get_page_statistics', 'get_trash_statistics', 'restore_page',
+  'permanently_delete_page', 'get_next_page_version_number', 'auto_purge_deleted_pages'
+);
+-- Result: 6 functions returned ✅
+
+-- Test 2: Test get_page_statistics()
+SELECT * FROM get_page_statistics();
+-- Result: {total: 117, published: 117, draft: 0, scheduled: 0} ✅
+
+-- Test 3: Test get_trash_statistics()
+SELECT * FROM get_trash_statistics();
+-- Result: {total_in_trash: 0, expiring_soon: 0} ✅
+```
+
+**Documentation Updates:**
+
+- ✅ Functions documented in `docs/database/main-supabase/01-functions.sql`
+- ✅ Updated function count from 51 to 56
+- ✅ Migration files created in `supabase/migrations/`
+- ✅ Sync log updated (this entry)
+
+**Impact:**
+
+Admin panel now correctly displays:
+- ✅ Total Pages: 117 (was showing 0)
+- ✅ Published: 117 (was showing 0)
+- ✅ Drafts: 0 (correct)
+- ✅ Scheduled: 0 (correct)
+- ✅ Table displays all 117 pages (was showing "No results found")
+- ✅ Trash functionality enabled with soft delete support
+
+**Status:** ✅ Complete - Admin panel fully functional
+
+**Note:** This fix highlighted the importance of the MANDATORY database documentation workflow (CLAUDE.md). Functions existed in Main Supabase but were never formally documented or synced. Future development MUST follow: **Document → Migrate → Sync** workflow.
+
+---
+
 ## 2026-01-03
 
 ### Migration: `add_approved_emails_super_admin_policy`
