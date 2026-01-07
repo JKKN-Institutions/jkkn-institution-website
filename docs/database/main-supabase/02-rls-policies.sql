@@ -1110,6 +1110,42 @@ USING (EXISTS (
 -- ============================================
 
 
+-- ============================================
+-- DELETED USERS ARCHIVE TABLE POLICIES
+-- ============================================
+-- Purpose: Archive table for GDPR-compliant user deletion tracking
+-- Created: 2026-01-07
+-- Modified: 2026-01-07 (Upgraded from simple to advanced schema)
+-- Security: Accessible by all authenticated users
+-- Features:
+--   - Email hashing for privacy
+--   - Full profile/role snapshots
+--   - Data retention policies
+--   - Purge tracking
+--   - Anonymization support
+-- ============================================
+
+-- Enable RLS
+ALTER TABLE public.deleted_users_archive ENABLE ROW LEVEL SECURITY;
+
+-- Policy: All authenticated users can view deleted user archives
+CREATE POLICY "Deleted users archive viewable by authenticated users"
+ON public.deleted_users_archive
+FOR SELECT
+TO public
+USING (auth.role() = 'authenticated'::text);
+
+-- Policy: All authenticated users can manage deleted user archives
+CREATE POLICY "Deleted users archive manageable by authenticated users"
+ON public.deleted_users_archive
+FOR ALL
+TO public
+USING (auth.role() = 'authenticated'::text);
+
+-- End of deleted_users_archive policies
+-- ============================================
+
+
 -- ================================================================
 -- END OF RLS POLICIES DOCUMENTATION
 -- ================================================================
