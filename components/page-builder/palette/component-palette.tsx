@@ -288,7 +288,7 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
           })
 
           // Register new component in registry
-          const registryComponent: CustomComponentData = {
+          const registryComponent = {
             id: newComponent.id,
             name: newComponent.name,
             display_name: newComponent.display_name,
@@ -300,7 +300,7 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
             default_props: newComponent.default_props || {},
             props_schema: newComponent.props_schema || undefined,
             is_active: newComponent.is_active,
-          }
+          } as CustomComponentData
 
           registerCustomComponents([registryComponent])
 
