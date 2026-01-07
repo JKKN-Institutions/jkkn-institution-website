@@ -20,20 +20,101 @@ import * as LucideIcons from 'lucide-react'
 import type { CustomComponentData } from '@/lib/cms/component-registry'
 
 // Import all shadcn/ui components that custom components might need
-import { Calendar } from '@/components/ui/calendar'
+import * as Accordion from '@/components/ui/accordion'
+import * as AlertDialog from '@/components/ui/alert-dialog'
+import * as Alert from '@/components/ui/alert'
+import * as AspectRatio from '@/components/ui/aspect-ratio'
+import * as Avatar from '@/components/ui/avatar'
+import * as Badge from '@/components/ui/badge'
+import * as Breadcrumb from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { Calendar } from '@/components/ui/calendar'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import * as Carousel from '@/components/ui/carousel'
+import * as Checkbox from '@/components/ui/checkbox'
+import * as Collapsible from '@/components/ui/collapsible'
+import * as Command from '@/components/ui/command'
+import * as ContextMenu from '@/components/ui/context-menu'
+import * as Dialog from '@/components/ui/dialog'
+import * as Drawer from '@/components/ui/drawer'
+import * as DropdownMenu from '@/components/ui/dropdown-menu'
+import * as Form from '@/components/ui/form'
+import * as HoverCard from '@/components/ui/hover-card'
 import { Input } from '@/components/ui/input'
-// Add more imports as needed
+import { Label } from '@/components/ui/label'
+import * as Menubar from '@/components/ui/menubar'
+import * as NavigationMenu from '@/components/ui/navigation-menu'
+import * as Pagination from '@/components/ui/pagination'
+import * as Popover from '@/components/ui/popover'
+import * as Progress from '@/components/ui/progress'
+import * as RadioGroup from '@/components/ui/radio-group'
+import * as Resizable from '@/components/ui/resizable'
+import * as ScrollArea from '@/components/ui/scroll-area'
+import * as Select from '@/components/ui/select'
+import * as Separator from '@/components/ui/separator'
+import * as Sheet from '@/components/ui/sheet'
+import * as Skeleton from '@/components/ui/skeleton'
+import * as Slider from '@/components/ui/slider'
+import * as Switch from '@/components/ui/switch'
+import * as Table from '@/components/ui/table'
+import * as Tabs from '@/components/ui/tabs'
+import * as Textarea from '@/components/ui/textarea'
+import * as ToggleGroup from '@/components/ui/toggle-group'
+import * as Toggle from '@/components/ui/toggle'
+import * as Tooltip from '@/components/ui/tooltip'
+import * as ThreeDCard from '@/components/ui/3d-card'
 
 // Registry of available external dependencies
 const AVAILABLE_DEPENDENCIES: Record<string, unknown> = {
-  '@/components/ui/calendar': { Calendar },
+  // Shadcn UI Components
+  '@/components/ui/accordion': Accordion,
+  '@/components/ui/alert-dialog': AlertDialog,
+  '@/components/ui/alert': Alert,
+  '@/components/ui/aspect-ratio': AspectRatio,
+  '@/components/ui/avatar': Avatar,
+  '@/components/ui/badge': Badge,
+  '@/components/ui/breadcrumb': Breadcrumb,
   '@/components/ui/button': { Button },
-  '@/components/ui/card': { Card },
+  '@/components/ui/calendar': { Calendar },
+  '@/components/ui/card': { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle },
+  '@/components/ui/carousel': Carousel,
+  '@/components/ui/checkbox': Checkbox,
+  '@/components/ui/collapsible': Collapsible,
+  '@/components/ui/command': Command,
+  '@/components/ui/context-menu': ContextMenu,
+  '@/components/ui/dialog': Dialog,
+  '@/components/ui/drawer': Drawer,
+  '@/components/ui/dropdown-menu': DropdownMenu,
+  '@/components/ui/form': Form,
+  '@/components/ui/hover-card': HoverCard,
   '@/components/ui/input': { Input },
+  '@/components/ui/label': { Label },
+  '@/components/ui/menubar': Menubar,
+  '@/components/ui/navigation-menu': NavigationMenu,
+  '@/components/ui/pagination': Pagination,
+  '@/components/ui/popover': Popover,
+  '@/components/ui/progress': Progress,
+  '@/components/ui/radio-group': RadioGroup,
+  '@/components/ui/resizable': Resizable,
+  '@/components/ui/scroll-area': ScrollArea,
+  '@/components/ui/select': Select,
+  '@/components/ui/separator': Separator,
+  '@/components/ui/sheet': Sheet,
+  '@/components/ui/skeleton': Skeleton,
+  '@/components/ui/slider': Slider,
+  '@/components/ui/switch': Switch,
+  '@/components/ui/table': Table,
+  '@/components/ui/tabs': Tabs,
+  '@/components/ui/textarea': Textarea,
+  '@/components/ui/toggle-group': ToggleGroup,
+  '@/components/ui/toggle': Toggle,
+  '@/components/ui/tooltip': Tooltip,
+
+  // Custom Components
+  '@/components/ui/3d-card': ThreeDCard,
+
+  // Utilities & Icons
   'lucide-react': LucideIcons,
-  // Add more as needed
 }
 
 // Parse imports from code

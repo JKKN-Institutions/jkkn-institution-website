@@ -95,8 +95,8 @@ const submitApplicationSchema = z.object({
   resume_file_size: z.string().transform(val => val === '' ? null : val).pipe(z.union([z.string().transform(v => Number(v)), z.null()])),
   resume_mime_type: z.string().transform(val => val === '' ? null : val).optional().nullable(),
 
-  portfolio_url: z.string().transform(val => val === '' ? null : val).pipe(z.union([z.string().url(), z.null()])),
-  linkedin_url: z.string().transform(val => val === '' ? null : val).pipe(z.union([z.string().url(), z.null()])),
+  portfolio_url: z.string().optional().nullable().transform(val => val === '' ? null : val).pipe(z.union([z.string().url(), z.null()])),
+  linkedin_url: z.string().optional().nullable().transform(val => val === '' ? null : val).pipe(z.union([z.string().url(), z.null()])),
   answers: z.string().transform((val) => {
     try {
       return JSON.parse(val)
