@@ -32,6 +32,9 @@ const VIEWPORTS: Record<Viewport, ViewportConfig> = {
   mobile: { width: 375, height: 667, icon: Smartphone, label: 'Mobile' },
 }
 
+// Maximum time to wait for iframe to reach ready state (10 seconds)
+const IFRAME_LOAD_TIMEOUT = 10000
+
 interface PreviewGeneratorModalProps {
   isOpen: boolean
   onClose: () => void
@@ -242,14 +245,24 @@ export function PreviewGeneratorModal({
     }
   }, [component, router, onClose])
 
-  // Handle iframe load
+  // Handle iframe load with timeout protection
   const handleIframeLoad = useCallback(() => {
-    // Check if the iframe content has the ready status
     const iframe = iframeRef.current
     if (!iframe) return
 
+    const startTime = Date.now()
+    let timeoutId: NodeJS.Timeout | null = null
+
     const checkReady = () => {
       try {
+        // Check if we've exceeded timeout
+        if (Date.now() - startTime > IFRAME_LOAD_TIMEOUT) {
+          console.warn('Preview iframe timeout - assuming ready')
+          setStatus('ready')
+          setError('Preview loaded with timeout - may show placeholder for components with external imports')
+          return
+        }
+
         const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document
         if (iframeDoc) {
           const statusEl = iframeDoc.querySelector('[data-preview-status]')
@@ -257,22 +270,38 @@ export function PreviewGeneratorModal({
 
           if (status === 'ready') {
             setStatus('ready')
+            if (timeoutId) clearTimeout(timeoutId)
           } else if (status === 'error') {
             setStatus('error')
             setError('Component failed to render')
+            if (timeoutId) clearTimeout(timeoutId)
           } else if (status === 'loading') {
-            // Still loading, check again
-            setTimeout(checkReady, 200)
+            // Still loading, check again but respect timeout
+            timeoutId = setTimeout(checkReady, 200)
+          } else {
+            // No status found yet, wait a bit more
+            timeoutId = setTimeout(checkReady, 200)
           }
+        } else {
+          // Can't access iframe doc, wait a bit
+          timeoutId = setTimeout(checkReady, 200)
         }
       } catch (e) {
-        // Cross-origin error, just proceed
+        // Cross-origin error or other issue - proceed with caution
+        console.warn('Iframe access error:', e)
         setStatus('ready')
+        setError('Preview loaded with limited access - capture may not work perfectly')
+        if (timeoutId) clearTimeout(timeoutId)
       }
     }
 
-    // Give time for React to hydrate
+    // Give time for React to hydrate, then start checking
     setTimeout(checkReady, 500)
+
+    // Cleanup timeout on unmount
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId)
+    }
   }, [])
 
   // Reset state when modal opens
@@ -318,6 +347,22 @@ export function PreviewGeneratorModal({
             Test props and capture previews for &quot;{component.display_name}&quot; across all
             viewports
           </DialogDescription>
+
+          {/* Warning banner for components with external imports */}
+          {component.code && /import\s+.*?from\s+['"](?!react)([^'"]+)['"]/.test(component.code) && (
+            <div className="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm">
+              <div className="flex gap-2">
+                <AlertCircle className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                <div className="text-amber-800">
+                  <p className="font-medium">Component uses external imports</p>
+                  <p className="text-xs mt-1">
+                    Preview will show a placeholder. This is normal for components that import from
+                    @/components/ui/*, @tanstack/react-table, lucide-react, etc.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </DialogHeader>
 
         <div className="grid grid-cols-[1fr_300px] gap-4 h-[600px]">
@@ -463,22 +508,48 @@ export function PreviewGeneratorModal({
         </div>
 
         {/* Footer Actions */}
-        <div className="flex justify-end gap-2 pt-4 border-t">
-          <Button variant="outline" onClick={onClose} disabled={status === 'capturing' || status === 'uploading'}>
-            {status === 'success' ? 'Close' : 'Cancel'}
+        <div className="flex justify-between items-center pt-4 border-t">
+          {/* Left side - Skip option */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={async () => {
+              const supabase = createClient()
+              await supabase
+                .from('cms_custom_components')
+                .update({
+                  preview_status: 'completed',
+                  updated_at: new Date().toISOString()
+                })
+                .eq('id', component.id)
+
+              toast.info('Preview skipped. Component ready to use.')
+              router.refresh()
+              onClose()
+            }}
+            disabled={status === 'capturing' || status === 'uploading'}
+          >
+            Skip Preview
           </Button>
-          {status === 'error' && (
-            <Button onClick={handleCaptureAllViewports}>
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Retry All Viewports
+
+          {/* Right side - Action buttons */}
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={onClose} disabled={status === 'capturing' || status === 'uploading'}>
+              {status === 'success' ? 'Close' : 'Cancel'}
             </Button>
-          )}
-          {status === 'ready' && (
-            <Button onClick={handleCaptureAllViewports}>
-              <Camera className="h-4 w-4 mr-2" />
-              Capture All Viewports
-            </Button>
-          )}
+            {status === 'error' && (
+              <Button onClick={handleCaptureAllViewports}>
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Retry All Viewports
+              </Button>
+            )}
+            {status === 'ready' && (
+              <Button onClick={handleCaptureAllViewports}>
+                <Camera className="h-4 w-4 mr-2" />
+                Capture All Viewports
+              </Button>
+            )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>

@@ -43,9 +43,9 @@ export default function AdmissionsPage() {
         titleAccentWord="Success"
         orientation="auto"
         stepColor="#0b6d41"
-        activeColor="#D4AF37"
+        activeColor="var(--gold-decorative)"
         completedColor="#22c55e"
-        accentColor="#D4AF37"
+        accentColor="var(--gold-on-light)"
         showAnimations={true}
         steps={[
           {
@@ -91,7 +91,7 @@ export default function AdmissionsPage() {
         backgroundColor="transparent"
         showAnimations={true}
         alternatingRows={true}
-        accentColor="#D4AF37"
+        accentColor="var(--gold-on-light)"
         dates={[
           { event: "Application Opens", date: "January 20, 2025", status: "open" },
           { event: "Entrance Exam (Phase 1)", date: "April 15, 2025", status: "upcoming" },

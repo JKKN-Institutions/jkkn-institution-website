@@ -868,7 +868,7 @@ export const AccreditationsSectionPropsSchema = z.object({
   // Typography Colors
   titleColor: z.string().optional(),
   subtitleColor: z.string().optional(),
-  accentColor: z.string().default('#D4AF37'), // Gold
+  accentColor: z.string().default('var(--gold-on-light)'), // Gold
 
   // Accreditation Cards (8 cards)
   accreditationCards: z.array(AccreditationCardSchema).default([
@@ -1158,7 +1158,7 @@ export const CollegesGridPropsSchema = z.object({
   // Typography
   titleColor: z.string().optional(),
   subtitleColor: z.string().optional(),
-  accentColor: z.string().default('#D4AF37'),
+  accentColor: z.string().default('var(--gold-on-light)'),
 })
 export type CollegesGridProps = z.infer<typeof CollegesGridPropsSchema> & BaseBlockProps
 
@@ -1200,7 +1200,7 @@ export const AdmissionProcessTimelinePropsSchema = z.object({
   // Typography
   titleColor: z.string().optional(),
   subtitleColor: z.string().optional(),
-  accentColor: z.string().default('#D4AF37'),
+  accentColor: z.string().default('var(--gold-on-light)'),
 })
 export type AdmissionProcessTimelineProps = z.infer<typeof AdmissionProcessTimelinePropsSchema> & BaseBlockProps
 
@@ -1239,7 +1239,7 @@ export const AdmissionDatesTablePropsSchema = z.object({
   // Typography
   titleColor: z.string().optional(),
   subtitleColor: z.string().optional(),
-  accentColor: z.string().default('#D4AF37'),
+  accentColor: z.string().default('var(--gold-on-light)'),
 })
 export type AdmissionDatesTableProps = z.infer<typeof AdmissionDatesTablePropsSchema> & BaseBlockProps
 
@@ -1284,7 +1284,7 @@ export const EligibilityCriteriaTablePropsSchema = z.object({
   // Typography
   titleColor: z.string().optional(),
   subtitleColor: z.string().optional(),
-  accentColor: z.string().default('#D4AF37'),
+  accentColor: z.string().default('var(--gold-on-light)'),
 })
 export type EligibilityCriteriaTableProps = z.infer<typeof EligibilityCriteriaTablePropsSchema> & BaseBlockProps
 
@@ -1339,7 +1339,7 @@ export const FeeStructureTablePropsSchema = z.object({
   // Typography
   titleColor: z.string().optional(),
   subtitleColor: z.string().optional(),
-  accentColor: z.string().default('#D4AF37'),
+  accentColor: z.string().default('var(--gold-on-light)'),
 })
 export type FeeStructureTableProps = z.infer<typeof FeeStructureTablePropsSchema> & BaseBlockProps
 
@@ -1407,7 +1407,7 @@ export const ScholarshipsSectionPropsSchema = z.object({
   // Typography
   titleColor: z.string().optional(),
   subtitleColor: z.string().optional(),
-  accentColor: z.string().default('#D4AF37'),
+  accentColor: z.string().default('var(--gold-on-light)'),
 })
 export type ScholarshipsSectionProps = z.infer<typeof ScholarshipsSectionPropsSchema> & BaseBlockProps
 
@@ -1462,7 +1462,7 @@ export const DocumentsChecklistPropsSchema = z.object({
   // Typography
   titleColor: z.string().optional(),
   subtitleColor: z.string().optional(),
-  accentColor: z.string().default('#D4AF37'),
+  accentColor: z.string().default('var(--gold-on-light)'),
 })
 export type DocumentsChecklistProps = z.infer<typeof DocumentsChecklistPropsSchema> & BaseBlockProps
 
@@ -1501,7 +1501,7 @@ export const WhyChooseSectionPropsSchema = z.object({
   // Typography
   titleColor: z.string().optional(),
   subtitleColor: z.string().optional(),
-  accentColor: z.string().default('#D4AF37'),
+  accentColor: z.string().default('var(--gold-on-light)'),
 })
 export type WhyChooseSectionProps = z.infer<typeof WhyChooseSectionPropsSchema> & BaseBlockProps
 
@@ -1542,7 +1542,7 @@ export const CampusFeaturesGridPropsSchema = z.object({
   // Typography
   titleColor: z.string().optional(),
   subtitleColor: z.string().optional(),
-  accentColor: z.string().default('#D4AF37'),
+  accentColor: z.string().default('var(--gold-on-light)'),
 })
 export type CampusFeaturesGridProps = z.infer<typeof CampusFeaturesGridPropsSchema> & BaseBlockProps
 
@@ -1585,7 +1585,7 @@ export const PlacementsHighlightsPropsSchema = z.object({
   // Typography
   titleColor: z.string().optional(),
   subtitleColor: z.string().optional(),
-  accentColor: z.string().default('#D4AF37'),
+  accentColor: z.string().default('var(--gold-on-light)'),
 })
 export type PlacementsHighlightsProps = z.infer<typeof PlacementsHighlightsPropsSchema> & BaseBlockProps
 
@@ -1642,7 +1642,7 @@ export const AdmissionHeroPropsSchema = z.object({
   // Typography
   titleColor: z.string().optional(),
   subtitleColor: z.string().optional(),
-  accentColor: z.string().default('#D4AF37'),
+  accentColor: z.string().default('var(--gold-on-light)'),
 })
 export type AdmissionHeroProps = z.infer<typeof AdmissionHeroPropsSchema> & BaseBlockProps
 

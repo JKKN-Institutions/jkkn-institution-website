@@ -371,7 +371,7 @@ export async function createCustomComponent(
     collection_id: validation.data.collection_id,
     keywords: validation.data.keywords,
     dependencies: validation.data.dependencies as unknown[],
-    preview_status: 'pending' as const, // Preview will be generated after creation
+    preview_status: (/import\s+.*?from\s+['"](?!react)([^'"]+)['"]/.test(validation.data.code) ? 'completed' : 'pending') as PreviewStatus, // Auto-complete if has external imports
     is_active: true, // Auto-activate for immediate page builder availability
     version: '1.0.0',
     created_by: user.id,
@@ -542,13 +542,20 @@ export async function updateCustomComponent(
   // Check if code changed (need to regenerate preview)
   const codeChanged = updateData.code && updateData.code !== existingComponent?.code
 
+  // Detect external imports if code changed
+  let previewStatus: PreviewStatus | undefined
+  if (codeChanged && updateData.code) {
+    const hasExternalImports = /import\s+.*?from\s+['"](?!react)([^'"]+)['"]/.test(updateData.code)
+    previewStatus = hasExternalImports ? 'completed' : 'pending'
+  }
+
   // Update component
   const { error } = await supabase
     .from('cms_custom_components')
     .update({
       ...updateData,
       ...(filePath && { file_path: filePath }),
-      ...(codeChanged && { preview_status: 'pending' as PreviewStatus }),
+      ...(previewStatus && { preview_status: previewStatus }),
       updated_by: user.id,
       updated_at: new Date().toISOString(),
     })
@@ -1047,13 +1054,27 @@ export async function triggerPreviewGeneration(componentId: string): Promise<For
     return { success: false, message: 'You do not have permission to generate previews' }
   }
 
-  // Note: Real preview generation via Playwright is not yet implemented.
-  // For now, we just ensure the status is 'completed' and use the icon as placeholder.
-  // To implement real previews, set up Playwright screenshot capture in /api/preview/generate
+  // Get component and check for external imports
+  const { data: component } = await supabase
+    .from('cms_custom_components')
+    .select('code')
+    .eq('id', componentId)
+    .single()
 
+  if (!component) {
+    return { success: false, message: 'Component not found' }
+  }
+
+  // Detect external imports
+  const hasExternalImports = /import\s+.*?from\s+['"](?!react)([^'"]+)['"]/.test(component.code)
+
+  // Update status based on import detection
   await supabase
     .from('cms_custom_components')
-    .update({ preview_status: 'completed' })
+    .update({
+      preview_status: hasExternalImports ? 'completed' : 'pending',
+      updated_at: new Date().toISOString()
+    })
     .eq('id', componentId)
 
   revalidatePath('/admin/content/components')
@@ -1061,7 +1082,9 @@ export async function triggerPreviewGeneration(componentId: string): Promise<For
 
   return {
     success: true,
-    message: 'Preview generation is not yet implemented. Components use their icon as preview.'
+    message: hasExternalImports
+      ? 'Preview will show placeholder for components with external imports. Open preview generator to capture.'
+      : 'Preview ready. Open preview generator to capture screenshots.'
   }
 }
 

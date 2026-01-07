@@ -887,7 +887,13 @@ export async function createPage(
     metadata: { title: validation.data.title, slug: validation.data.slug },
   })
 
-  revalidatePath('/admin/content/pages')
+  // Revalidate cache (non-blocking)
+  try {
+    revalidatePath('/admin/content/pages')
+  } catch (error) {
+    // Log error but don't fail the operation since page was created successfully
+    console.error('Cache revalidation failed:', error)
+  }
 
   return { success: true, message: 'Page created successfully', data: { id: page.id } }
 }

@@ -16,6 +16,7 @@ import { useEffect, useState, useCallback, type ComponentType } from 'react'
 import * as React from 'react'
 import * as Babel from '@babel/standalone'
 import { Loader2, AlertTriangle, Package } from 'lucide-react'
+import * as LucideIcons from 'lucide-react'
 import type { CustomComponentData } from '@/lib/cms/component-registry'
 
 // Import all shadcn/ui components that custom components might need
@@ -31,6 +32,7 @@ const AVAILABLE_DEPENDENCIES: Record<string, unknown> = {
   '@/components/ui/button': { Button },
   '@/components/ui/card': { Card },
   '@/components/ui/input': { Input },
+  'lucide-react': LucideIcons,
   // Add more as needed
 }
 

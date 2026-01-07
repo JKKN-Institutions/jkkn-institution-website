@@ -14,7 +14,11 @@ import {
 } from '@/components/ui/select'
 import { Search, X, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getTemplates, deleteTemplate, duplicateTemplate, type TemplateCategory } from '@/app/actions/cms/templates'
+import { duplicateGlobalTemplate } from '@/app/actions/cms/templates'
+import { promoteToGlobalTemplate } from '@/app/actions/cms/export-template'
+import type { TemplateSource } from '@/lib/cms/templates/global/types'
 import type { RowSelectionState } from '@tanstack/react-table'
 import { toast } from 'sonner'
 import {
@@ -33,6 +37,7 @@ interface TemplatesTableProps {
   limit: number
   search: string
   categoryFilter: string
+  sourceFilter?: string
 }
 
 export function TemplatesTable({
@@ -40,6 +45,7 @@ export function TemplatesTable({
   limit: initialLimit,
   search: initialSearch,
   categoryFilter: initialCategoryFilter,
+  sourceFilter: initialSourceFilter,
 }: TemplatesTableProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -54,6 +60,7 @@ export function TemplatesTable({
   // Filter states
   const [searchValue, setSearchValue] = useState(initialSearch)
   const [categoryValue, setCategoryValue] = useState(initialCategoryFilter)
+  const [sourceValue, setSourceValue] = useState<string>(initialSourceFilter ?? 'all')
   const [page, setPage] = useState(initialPage)
   const [limit, setLimit] = useState(initialLimit)
 
@@ -64,6 +71,12 @@ export function TemplatesTable({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [templateToDelete, setTemplateToDelete] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
+
+  // Promote dialog state
+  const [promoteDialogOpen, setPromoteDialogOpen] = useState(false)
+  const [templateToPromote, setTemplateToPromote] = useState<string | null>(null)
+  const [isPromoting, setIsPromoting] = useState(false)
+  const [promotionResult, setPromotionResult] = useState<{filePath?: string; instructions?: string[]} | null>(null)
 
   // Get selected template IDs from row selection
   const selectedTemplateIds = useMemo(() => {
@@ -108,6 +121,7 @@ export function TemplatesTable({
         limit,
         search: searchValue,
         category: categoryValue as TemplateCategory | undefined,
+        source: sourceValue === 'all' ? undefined : (sourceValue as TemplateSource),
         includeSystem: true,
       })
 
@@ -120,7 +134,7 @@ export function TemplatesTable({
     } finally {
       setIsLoading(false)
     }
-  }, [page, limit, searchValue, categoryValue])
+  }, [page, limit, searchValue, categoryValue, sourceValue])
 
   // Initial data fetch
   useEffect(() => {
@@ -142,6 +156,14 @@ export function TemplatesTable({
   }, [searchValue, initialSearch, updateUrlParams])
 
   // Handle filter changes
+  const handleSourceChange = (value: string) => {
+    setSourceValue(value)
+    setPage(1)
+    startTransition(() => {
+      updateUrlParams({ source: value === 'all' ? '' : value, page: 1 })
+    })
+  }
+
   const handleCategoryChange = (value: string) => {
     setCategoryValue(value === 'all' ? '' : value)
     setPage(1)
@@ -168,11 +190,12 @@ export function TemplatesTable({
   const clearFilters = () => {
     setSearchValue('')
     setCategoryValue('')
+    setSourceValue('all')
     setPage(1)
     router.push('/admin/content/templates')
   }
 
-  const hasFilters = searchValue || categoryValue
+  const hasFilters = searchValue || categoryValue || (sourceValue && sourceValue !== 'all')
 
   // Action handlers
   const handleDuplicate = async (templateId: string) => {
@@ -187,6 +210,60 @@ export function TemplatesTable({
     } catch (error) {
       toast.error('Failed to duplicate template')
     }
+  }
+
+  const handleDuplicateGlobal = async (templateId: string) => {
+    try {
+      const result = await duplicateGlobalTemplate(templateId)
+      if (result.success) {
+        toast.success(result.message || 'Global template copied to your local templates')
+        fetchData()
+      } else {
+        toast.error(result.message || 'Failed to duplicate global template')
+      }
+    } catch (error) {
+      toast.error('Failed to duplicate global template')
+    }
+  }
+
+  const handlePromoteToGlobal = (templateId: string) => {
+    setTemplateToPromote(templateId)
+    setPromotionResult(null)
+    setPromoteDialogOpen(true)
+  }
+
+  const confirmPromote = async () => {
+    if (!templateToPromote) return
+
+    setIsPromoting(true)
+    try {
+      const result = await promoteToGlobalTemplate(templateToPromote)
+      if (result.success) {
+        toast.success(result.message || 'Template promoted to global successfully')
+        setPromotionResult({
+          filePath: result.filePath,
+          instructions: result.instructions,
+        })
+        // Don't close dialog yet - show instructions
+      } else {
+        toast.error(result.message || 'Failed to promote template')
+        setPromoteDialogOpen(false)
+        setTemplateToPromote(null)
+      }
+    } catch (error) {
+      toast.error('Failed to promote template')
+      setPromoteDialogOpen(false)
+      setTemplateToPromote(null)
+    } finally {
+      setIsPromoting(false)
+    }
+  }
+
+  const closePromoteDialog = () => {
+    setPromoteDialogOpen(false)
+    setTemplateToPromote(null)
+    setPromotionResult(null)
+    fetchData() // Refresh to show updated data
   }
 
   const handleDelete = (templateId: string) => {
@@ -218,6 +295,8 @@ export function TemplatesTable({
   // Create columns with action handlers
   const actionHandlers: TemplateActionHandlers = useMemo(() => ({
     onDuplicate: handleDuplicate,
+    onDuplicateGlobal: handleDuplicateGlobal,
+    onPromoteToGlobal: handlePromoteToGlobal,
     onDelete: handleDelete,
   }), [])
 
@@ -254,6 +333,20 @@ export function TemplatesTable({
           </div>
         </div>
       )}
+
+      {/* Source Filter Tabs */}
+      <Tabs
+        id="templates-source-tabs"
+        value={sourceValue}
+        onValueChange={handleSourceChange}
+        className="w-full"
+      >
+        <TabsList className="grid w-full max-w-md grid-cols-3">
+          <TabsTrigger value="all">All Templates</TabsTrigger>
+          <TabsTrigger value="global">Global</TabsTrigger>
+          <TabsTrigger value="local">My Templates</TabsTrigger>
+        </TabsList>
+      </Tabs>
 
       {/* Toolbar */}
       <div className="flex flex-col sm:flex-row gap-4">
@@ -329,6 +422,72 @@ export function TemplatesTable({
               {isDeleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Delete
             </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Promote to Global Dialog */}
+      <AlertDialog open={promoteDialogOpen} onOpenChange={setPromoteDialogOpen}>
+        <AlertDialogContent className="max-w-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {promotionResult ? 'Template Promoted Successfully!' : 'Promote to Global Template?'}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {promotionResult ? (
+                <div className="space-y-4 mt-4">
+                  <p className="text-green-600 dark:text-green-400 font-medium">
+                    Your template has been exported to the codebase!
+                  </p>
+                  {promotionResult.filePath && (
+                    <div className="bg-muted p-3 rounded-lg">
+                      <p className="text-sm font-mono">
+                        {promotionResult.filePath}
+                      </p>
+                    </div>
+                  )}
+                  {promotionResult.instructions && promotionResult.instructions.length > 0 && (
+                    <div className="space-y-2">
+                      <p className="font-medium">Next Steps:</p>
+                      <ol className="list-decimal list-inside space-y-2 text-sm">
+                        {promotionResult.instructions.map((instruction, index) => (
+                          <li key={index} className="ml-2">
+                            {instruction.startsWith('git ') ? (
+                              <code className="ml-2 bg-muted px-2 py-1 rounded">
+                                {instruction}
+                              </code>
+                            ) : (
+                              <span className="ml-2">{instruction}</span>
+                            )}
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                'This will create a TypeScript file in lib/cms/templates/global/templates/ and make this template available to ALL 6 institutions. After promotion, you must commit and push the file to GitHub.'
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            {promotionResult ? (
+              <AlertDialogAction onClick={closePromoteDialog}>
+                Done
+              </AlertDialogAction>
+            ) : (
+              <>
+                <AlertDialogCancel disabled={isPromoting}>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={confirmPromote}
+                  disabled={isPromoting}
+                  className="bg-emerald-600 hover:bg-emerald-700"
+                >
+                  {isPromoting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Promote to Global
+                </AlertDialogAction>
+              </>
+            )}
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

@@ -34,13 +34,13 @@ export const EducationVideosPropsSchema = z.object({
   // Label/Badge configuration
   showLabel: z.boolean().default(true).describe('Show label badge above title'),
   labelText: z.string().default('VIDEO GALLERY').describe('Label badge text'),
-  labelColor: z.string().default('#D4AF37').describe('Label text color (gold)'),
-  labelBgColor: z.string().default('rgba(212,175,55,0.2)').describe('Label background color'),
+  labelColor: z.string().default('#1A1A1A').describe('Label text color (dark text for contrast)'),
+  labelBgColor: z.string().default('var(--gold-decorative)').describe('Label background color (gold)'),
 
   // Title configuration
   title: z.string().default('Education Videos').describe('Section title'),
   titleAccentWord: z.string().optional().describe('Word to highlight in accent color'),
-  titleAccentColor: z.string().default('#D4AF37').describe('Accent word color (gold)'),
+  titleAccentColor: z.string().default('var(--gold-on-light)').describe('Accent word color (accessible gold)'),
   titleColor: z.string().default('#0b6d41').describe('Title text color (green)'),
   titleFontSize: z.enum(['3xl', '4xl', '5xl']).default('5xl').describe('Title font size'),
 

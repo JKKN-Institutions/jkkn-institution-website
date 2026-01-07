@@ -28,6 +28,8 @@ import {
   ExternalLink,
   RefreshCw,
   Plus,
+  Camera,
+  AlertCircle,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { ComponentWithCollection } from '@/app/actions/cms/components'
@@ -624,8 +626,16 @@ function ComponentCard({
         {component.preview_status === 'pending' && (
           <div className="absolute top-2 right-2">
             <Badge variant="secondary" className="text-xs">
-              <RefreshCw className="mr-1 h-3 w-3 animate-spin" />
-              Generating...
+              <Camera className="mr-1 h-3 w-3" />
+              Click to Generate
+            </Badge>
+          </div>
+        )}
+        {component.preview_status === 'failed' && (
+          <div className="absolute top-2 right-2">
+            <Badge variant="destructive" className="text-xs">
+              <AlertCircle className="mr-1 h-3 w-3" />
+              Preview Failed
             </Badge>
           </div>
         )}

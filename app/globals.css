@@ -59,6 +59,15 @@
   --color-brand-secondary-light: var(--brand-secondary-light);
   --color-brand-cream: var(--brand-cream);
   --color-cream: var(--brand-cream);
+
+  /* Accessible Gold Color System */
+  --color-gold-decorative: var(--gold-decorative);
+  --color-gold-text: var(--gold-text);
+  --color-gold-text-aa: var(--gold-text-aa);
+  --color-gold-text-large: var(--gold-text-large);
+  --color-gold-accent: var(--gold-accent);
+  --color-gold-on-light: var(--gold-on-light);
+  --color-gold-on-dark: var(--gold-on-dark);
 }
 
 :root {
@@ -85,6 +94,17 @@
   --brand-cream: #fbfbee;
   --brand-gold: #ffd700;
   --brand-gold-light: #ffdf4d;
+
+  /* Accessible Gold System - WCAG AA/AAA Compliant */
+  --gold-decorative: #D4AF37;    /* Original brand gold - backgrounds/borders only (2.8:1) */
+  --gold-text: #735E1E;          /* AA+ compliant text on light backgrounds (6.27:1) */
+  --gold-text-aa: #735E1E;       /* AA minimum compliant text (6.27:1) */
+  --gold-text-large: #A88B2F;    /* AA compliant for large text 18pt+ (3.28:1) */
+
+  /* Semantic gold tokens - context-aware usage */
+  --gold-accent: var(--gold-decorative);      /* Default accent color */
+  --gold-on-light: var(--gold-text);          /* Text on white/light backgrounds */
+  --gold-on-dark: var(--gold-decorative);     /* Text on dark backgrounds */
 
   /* Updated shadcn colors with JKKN brand */
   --background: #fbfbee;
@@ -130,6 +150,9 @@
   --brand-secondary: #ffea9a;
   --brand-secondary-light: #fff3c7;
   --brand-cream: #1a1a1a;
+
+  /* Accessible Gold System - Dark Mode */
+  --gold-on-dark: #F4D03F;    /* Lighter gold for better contrast on dark backgrounds */
 
   /* Updated shadcn colors - Dark Mode */
   --background: #0f0f0f;
@@ -842,6 +865,13 @@
     font-style: inherit;
     text-align: inherit;
     color: inherit;
+    /* NOTE: list-style-type NOT inherited - preserves .prose list styling */
+  }
+
+  /* Preserve list styling for prose content */
+  [data-page-builder-block] .prose ul,
+  [data-page-builder-block] .prose ol {
+    list-style-type: revert; /* Restore Tailwind Typography plugin defaults */
   }
 
   /* Preserve specific component styling when needed */

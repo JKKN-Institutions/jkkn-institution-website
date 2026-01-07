@@ -11,6 +11,7 @@ interface TemplatesPageProps {
     limit?: string
     search?: string
     category?: string
+    source?: string
   }>
 }
 
@@ -20,6 +21,7 @@ export default async function TemplatesPage({ searchParams }: TemplatesPageProps
   const limit = Number(params.limit) || 20
   const search = params.search || ''
   const category = params.category || ''
+  const source = params.source || 'all'
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -40,6 +42,7 @@ export default async function TemplatesPage({ searchParams }: TemplatesPageProps
             limit={limit}
             search={search}
             categoryFilter={category}
+            sourceFilter={source}
           />
         </Suspense>
       </div>

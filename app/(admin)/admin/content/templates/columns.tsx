@@ -22,16 +22,22 @@ import {
   Newspaper,
   Briefcase,
   ShoppingCart,
+  Globe,
+  Database,
+  Upload,
 } from 'lucide-react'
 import Link from 'next/link'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import { Checkbox } from '@/components/ui/checkbox'
 import { format } from 'date-fns'
 import type { TemplateCategory } from '@/app/actions/cms/templates'
+import type { TemplateSource } from '@/lib/cms/templates/global/types'
 
 // Action handlers interface
 export interface TemplateActionHandlers {
   onDuplicate?: (templateId: string) => void
+  onDuplicateGlobal?: (templateId: string) => void
+  onPromoteToGlobal?: (templateId: string) => void
   onDelete?: (templateId: string) => void
 }
 
@@ -44,6 +50,7 @@ export type TemplateRow = {
   default_blocks: unknown[]
   is_system: boolean
   category: TemplateCategory
+  source?: TemplateSource // 'global' or 'local'
   created_at: string | null
   updated_at: string | null
   created_by: string | null
@@ -150,6 +157,29 @@ export const createColumns = (handlers: TemplateActionHandlers = {}): ColumnDef<
     },
   },
   {
+    accessorKey: 'source',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Source" />,
+    cell: ({ row }) => {
+      const source = row.original.source || 'local'
+
+      return source === 'global' ? (
+        <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+          <Globe className="mr-1 h-3 w-3" />
+          Global
+        </Badge>
+      ) : (
+        <Badge variant="outline" className="text-gray-700 dark:text-gray-300">
+          <Database className="mr-1 h-3 w-3" />
+          Local
+        </Badge>
+      )
+    },
+    filterFn: (row, id, value) => {
+      const source = row.original.source || 'local'
+      return value.includes(source)
+    },
+  },
+  {
     id: 'blocks',
     header: 'Blocks',
     cell: ({ row }) => {
@@ -194,6 +224,9 @@ export const createColumns = (handlers: TemplateActionHandlers = {}): ColumnDef<
     cell: ({ row }) => {
       const template = row.original
       const isSystem = template.is_system
+      const isGlobal = template.source === 'global'
+      const isLocal = !isGlobal
+      const isMainInstitution = process.env.NEXT_PUBLIC_INSTITUTION_ID === 'main'
 
       return (
         <DropdownMenu>
@@ -206,7 +239,9 @@ export const createColumns = (handlers: TemplateActionHandlers = {}): ColumnDef<
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {!isSystem && (
+
+            {/* Edit - only for local, non-system templates */}
+            {isLocal && !isSystem && (
               <DropdownMenuItem asChild>
                 <Link href={`/admin/content/templates/${template.id}/edit`}>
                   <Edit className="mr-2 h-4 w-4" />
@@ -214,11 +249,33 @@ export const createColumns = (handlers: TemplateActionHandlers = {}): ColumnDef<
                 </Link>
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem onClick={() => handlers.onDuplicate?.(template.id)}>
-              <Copy className="mr-2 h-4 w-4" />
-              Duplicate
-            </DropdownMenuItem>
-            {!isSystem && (
+
+            {/* Duplicate - different actions for global vs local */}
+            {isGlobal ? (
+              <DropdownMenuItem onClick={() => handlers.onDuplicateGlobal?.(template.id)}>
+                <Copy className="mr-2 h-4 w-4" />
+                Duplicate to Local
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem onClick={() => handlers.onDuplicate?.(template.id)}>
+                <Copy className="mr-2 h-4 w-4" />
+                Duplicate
+              </DropdownMenuItem>
+            )}
+
+            {/* Promote to Global - only for Main institution, local templates */}
+            {isMainInstitution && isLocal && !isSystem && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => handlers.onPromoteToGlobal?.(template.id)}>
+                  <Upload className="mr-2 h-4 w-4" />
+                  Promote to Global
+                </DropdownMenuItem>
+              </>
+            )}
+
+            {/* Delete - only for local, non-system templates */}
+            {isLocal && !isSystem && (
               <>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -228,6 +285,16 @@ export const createColumns = (handlers: TemplateActionHandlers = {}): ColumnDef<
                   <Trash2 className="mr-2 h-4 w-4" />
                   Delete
                 </DropdownMenuItem>
+              </>
+            )}
+
+            {/* Read-only notice for global templates */}
+            {isGlobal && (
+              <>
+                <DropdownMenuSeparator />
+                <div className="px-2 py-1.5 text-xs text-muted-foreground">
+                  Global templates are read-only
+                </div>
               </>
             )}
           </DropdownMenuContent>

@@ -5,6 +5,8 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { logActivity } from '@/lib/utils/activity-logger'
 import { checkPermission } from '../permissions'
+import { getGlobalTemplates, getGlobalTemplateById, mergeTemplates } from '@/lib/cms/templates/global'
+import type { UnifiedTemplate, TemplateSource } from '@/lib/cms/templates/global/types'
 
 // Validation schemas
 const CreateTemplateSchema = z.object({
@@ -46,6 +48,7 @@ export interface Template {
   created_at: string | null
   updated_at: string | null
   created_by: string | null
+  source?: TemplateSource // 'global' for code-based templates, 'local' for database templates
   creator?: {
     full_name: string | null
     email: string
@@ -57,6 +60,8 @@ export async function getTemplates(options?: {
   category?: TemplateCategory
   search?: string
   includeSystem?: boolean
+  includeGlobal?: boolean // New: whether to include global templates (default: true)
+  source?: TemplateSource // New: filter by source ('global' or 'local')
   page?: number
   limit?: number
 }): Promise<{
@@ -70,47 +75,91 @@ export async function getTemplates(options?: {
   const limit = options?.limit || 20
   const offset = (page - 1) * limit
 
-  let query = supabase
-    .from('cms_page_templates')
-    .select(`
-      *,
-      creator:created_by(full_name, email)
-    `, { count: 'exact' })
-
-  // Apply filters
-  if (options?.category) {
-    query = query.eq('category', options.category)
+  // Load global templates if requested (default: true)
+  let globalTemplates: UnifiedTemplate[] = []
+  if (options?.includeGlobal !== false && options?.source !== 'local') {
+    try {
+      const globals = await getGlobalTemplates({
+        category: options?.category,
+        search: options?.search,
+      })
+      globalTemplates = globals as UnifiedTemplate[]
+    } catch (error) {
+      console.error('Error loading global templates:', error)
+    }
   }
 
-  if (options?.search) {
-    query = query.or(`name.ilike.%${options.search}%,description.ilike.%${options.search}%`)
+  // Load local templates from database
+  let localTemplates: Template[] = []
+  if (options?.source !== 'global') {
+    let query = supabase
+      .from('cms_page_templates')
+      .select(`
+        *,
+        creator:created_by(full_name, email)
+      `, { count: 'exact' })
+
+    // Apply filters to local templates
+    if (options?.category) {
+      query = query.eq('category', options.category)
+    }
+
+    if (options?.search) {
+      query = query.or(`name.ilike.%${options.search}%,description.ilike.%${options.search}%`)
+    }
+
+    if (!options?.includeSystem) {
+      query = query.eq('is_system', false)
+    }
+
+    // Order by created_at
+    query = query.order('created_at', { ascending: false })
+
+    const { data, error } = await query
+
+    if (error) {
+      console.error('Error fetching local templates:', error)
+    } else {
+      localTemplates = (data || []).map((t) => ({
+        ...t,
+        source: 'local' as TemplateSource,
+      }))
+    }
   }
 
-  if (!options?.includeSystem) {
-    query = query.eq('is_system', false)
-  }
+  // Merge global and local templates
+  const allTemplates = [...globalTemplates, ...localTemplates] as Template[]
 
-  // Order and paginate
-  query = query
-    .order('created_at', { ascending: false })
-    .range(offset, offset + limit - 1)
-
-  const { data, error, count } = await query
-
-  if (error) {
-    console.error('Error fetching templates:', error)
-    return { templates: [], total: 0, totalPages: 0 }
-  }
+  // Apply pagination to merged results
+  const total = allTemplates.length
+  const totalPages = Math.ceil(total / limit)
+  const paginatedTemplates = allTemplates.slice(offset, offset + limit)
 
   return {
-    templates: (data || []) as Template[],
-    total: count || 0,
-    totalPages: Math.ceil((count || 0) / limit),
+    templates: paginatedTemplates,
+    total,
+    totalPages,
   }
 }
 
 // Get single template by ID
 export async function getTemplateById(templateId: string): Promise<Template | null> {
+  // Check global templates first (filesystem lookup)
+  try {
+    const globalTemplate = await getGlobalTemplateById(templateId)
+    if (globalTemplate) {
+      return {
+        ...globalTemplate,
+        created_at: null,
+        updated_at: globalTemplate.last_updated,
+        created_by: null,
+      } as Template
+    }
+  } catch (error) {
+    console.error('Error checking global templates:', error)
+  }
+
+  // Fallback to database query for local templates
   const supabase = await createServerSupabaseClient()
 
   const { data, error } = await supabase
@@ -123,11 +172,14 @@ export async function getTemplateById(templateId: string): Promise<Template | nu
     .single()
 
   if (error) {
-    console.error('Error fetching template:', error)
+    console.error('Error fetching local template:', error)
     return null
   }
 
-  return data as Template
+  return {
+    ...data,
+    source: 'local' as TemplateSource,
+  } as Template
 }
 
 // Create new template
@@ -783,5 +835,93 @@ export async function duplicateTemplate(templateId: string): Promise<FormState> 
     success: true,
     message: 'Template duplicated successfully',
     data: duplicate,
+  }
+}
+
+// Duplicate global template to local database
+export async function duplicateGlobalTemplate(templateId: string): Promise<FormState> {
+  const supabase = await createServerSupabaseClient()
+
+  // Check authentication
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  // Check permission
+  const hasPermission = await checkPermission(user.id, 'cms:templates:create')
+  if (!hasPermission) {
+    return { success: false, message: 'You do not have permission to create templates' }
+  }
+
+  // Get global template
+  const globalTemplate = await getGlobalTemplateById(templateId)
+  if (!globalTemplate) {
+    return { success: false, message: 'Global template not found' }
+  }
+
+  // Generate new slug (remove 'global-' prefix if present)
+  let baseSlug = globalTemplate.slug.replace(/^global-/, '')
+  let newSlug = baseSlug
+  let counter = 1
+
+  // Check for existing slug and increment counter if needed
+  while (true) {
+    const { data: existing } = await supabase
+      .from('cms_page_templates')
+      .select('id')
+      .eq('slug', newSlug)
+      .single()
+
+    if (!existing) break
+
+    counter++
+    newSlug = `${baseSlug}-${counter}`
+  }
+
+  // Create local copy in database
+  const { data: localCopy, error } = await supabase
+    .from('cms_page_templates')
+    .insert({
+      name: `${globalTemplate.name} (Copy)`,
+      slug: newSlug,
+      description: globalTemplate.description,
+      thumbnail_url: globalTemplate.thumbnail_url,
+      default_blocks: globalTemplate.default_blocks,
+      category: globalTemplate.category,
+      is_system: false,
+      created_by: user.id,
+    })
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error duplicating global template to local:', error)
+    return { success: false, message: 'Failed to duplicate template' }
+  }
+
+  // Log activity
+  await logActivity({
+    userId: user.id,
+    action: 'create',
+    module: 'cms',
+    resourceType: 'template',
+    resourceId: localCopy.id,
+    metadata: {
+      name: localCopy.name,
+      duplicatedFromGlobal: templateId,
+      globalTemplateName: globalTemplate.name,
+    },
+  })
+
+  revalidatePath('/admin/content/templates')
+
+  return {
+    success: true,
+    message: `Global template "${globalTemplate.name}" copied to your local templates`,
+    data: {
+      ...localCopy,
+      source: 'local' as TemplateSource,
+    },
   }
 }

@@ -4,7 +4,7 @@
 -- Project: JKKN Institution Website
 -- Supabase Project ID: pmqodbfhsejbvfbmsfeq
 -- Total Policies: 126+
--- Last Updated: 2026-01-03
+-- Last Updated: 2026-01-07
 -- ================================================================
 --
 -- IMPORTANT: Document changes here BEFORE applying migrations!
@@ -14,6 +14,33 @@
 -- 2. Use has_permission(auth.uid(), 'module:resource:action') for permission checks
 -- 3. Use user_id = auth.uid() for self-access
 -- ================================================================
+
+-- ============================================
+-- CMS TEMPLATES EXPORT PERMISSION
+-- ============================================
+-- Purpose: Grant permission to export templates to global status
+-- Created: 2026-01-07
+-- Module: cms
+-- Resource: templates
+-- Action: export
+-- Usage: Allows Main institution super_admins to promote local templates to global
+-- Security: Only granted to super_admin role by default
+-- ============================================
+
+-- Permission: cms:templates:export
+-- Required for: promoteToGlobalTemplate() Server Action
+-- Granted to: super_admin role (Main institution only in practice)
+-- Applied to: Main, Dental, Pharmacy Supabase databases (2026-01-07)
+--
+-- SQL applied via migration (add_cms_templates_export_permission):
+-- INSERT INTO public.role_permissions (role_id, permission)
+-- SELECT r.id, 'cms:templates:export'
+-- FROM public.roles r
+-- WHERE r.name = 'super_admin'
+-- ON CONFLICT (role_id, permission) DO NOTHING;
+--
+-- End of CMS Templates Export Permission
+-- ============================================
 
 
 -- ============================================
