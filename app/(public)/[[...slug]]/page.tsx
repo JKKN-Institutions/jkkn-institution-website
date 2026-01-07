@@ -2,7 +2,9 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { Metadata } from 'next'
 import { getPageBySlug, getPageWithVisibility } from '@/app/actions/cms/pages'
+import { getActiveCustomComponents } from '@/app/actions/cms/get-custom-components'
 import { PageRenderer } from '@/components/cms-blocks/page-renderer'
+import { CustomComponentRegistrar } from '@/components/cms-blocks/custom-component-registrar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { LandingPage } from '@/components/public/landing-page'
 import { PasswordProtectedPage, PrivatePageGate } from '@/components/public/password-protected-page'
@@ -124,6 +126,9 @@ export default async function DynamicPage({ params }: PageProps) {
   const { slug } = await params
   const slugPath = slug?.join('/') ?? ''
 
+  // Fetch custom components server-side (before any rendering)
+  const customComponents = await getActiveCustomComponents()
+
   // Don't handle admin routes - they should be handled by the (admin) route group
   if (slugPath.startsWith('admin')) {
     notFound()
@@ -193,7 +198,9 @@ export default async function DynamicPage({ params }: PageProps) {
         <FAQSchema />
         <article>
           <Suspense fallback={<BlocksSkeleton />}>
-            <PageRenderer blocks={blocks} pageTypography={pageTypography} />
+            <CustomComponentRegistrar components={customComponents}>
+              <PageRenderer blocks={blocks} pageTypography={pageTypography} />
+            </CustomComponentRegistrar>
           </Suspense>
         </article>
       </>
@@ -244,7 +251,9 @@ export default async function DynamicPage({ params }: PageProps) {
       {isCoursesPage && <CourseCatalogSchema />}
       <article>
         <Suspense fallback={<BlocksSkeleton />}>
-          <PageRenderer blocks={blocks} pageTypography={pageTypography} />
+          <CustomComponentRegistrar components={customComponents}>
+            <PageRenderer blocks={blocks} pageTypography={pageTypography} />
+          </CustomComponentRegistrar>
         </Suspense>
       </article>
     </>

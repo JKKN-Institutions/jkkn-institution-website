@@ -371,8 +371,8 @@ export async function createCustomComponent(
     collection_id: validation.data.collection_id,
     keywords: validation.data.keywords,
     dependencies: validation.data.dependencies as unknown[],
-    preview_status: 'completed' as const, // Skip async preview - use icon as fallback
-    is_active: true,
+    preview_status: 'pending' as const, // Preview will be generated after creation
+    is_active: true, // Auto-activate for immediate page builder availability
     version: '1.0.0',
     created_by: user.id,
     updated_by: user.id,
@@ -389,9 +389,6 @@ export async function createCustomComponent(
     return { success: false, message: 'Failed to create component. Please try again.' }
   }
 
-  // Note: Preview generation is skipped - components use their icon as placeholder
-  // To enable real previews, implement Playwright screenshot capture in /api/preview/generate
-
   // Log activity
   await logActivity({
     userId: user.id,
@@ -404,7 +401,12 @@ export async function createCustomComponent(
 
   revalidatePath('/admin/content/components')
 
-  return { success: true, message: 'Component created successfully', data: { id: component.id } }
+  // Return full component data for preview modal
+  return {
+    success: true,
+    message: 'Component created successfully',
+    data: component, // Return full component data
+  }
 }
 
 /**

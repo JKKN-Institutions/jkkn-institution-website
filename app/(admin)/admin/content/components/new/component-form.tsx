@@ -24,6 +24,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  useFormField,
 } from '@/components/ui/form'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -31,6 +32,8 @@ import { Switch } from '@/components/ui/switch'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { CodeEditor } from '@/components/cms/code-editor-lazy'
+import { LivePreviewPanel } from '@/components/cms/live-preview-panel'
+import { PreviewGeneratorModal } from '@/components/admin/preview-generator-modal'
 import {
   Loader2,
   Save,
@@ -40,6 +43,7 @@ import {
   AlertCircle,
   CheckCircle,
   Info,
+  Eye,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import type { CollectionWithCount } from '@/app/actions/cms/collections'
@@ -176,6 +180,15 @@ export function ComponentForm({
   const [isPending, startTransition] = useTransition()
   const [activeTab, setActiveTab] = useState('code')
 
+  // Live preview state
+  const [showPreview, setShowPreview] = useState(true)
+
+  // Preview modal state
+  const [previewModal, setPreviewModal] = useState<{
+    isOpen: boolean
+    component: unknown | null
+  }>({ isOpen: false, component: null })
+
   // Code validation state
   const [codeValidation, setCodeValidation] = useState<{
     valid: boolean
@@ -297,13 +310,18 @@ export function ComponentForm({
 
   // Handle form state changes
   useEffect(() => {
-    if (state.success) {
-      toast.success(state.message)
-      router.push('/admin/content/components')
+    if (state.success && state.data) {
+      toast.success(state.message || 'Component created successfully!')
+
+      // Open preview modal with component data
+      setPreviewModal({
+        isOpen: true,
+        component: state.data,
+      })
     } else if (state.message && !state.success) {
       toast.error(state.message)
     }
-  }, [state, router])
+  }, [state])
 
   const IconPreview = ICON_OPTIONS.includes(form.watch('icon') || '')
     ? (LucideIcons as unknown as Record<string, React.ComponentType<{ className?: string }>>)[
@@ -340,6 +358,7 @@ export function ComponentForm({
                       <Input
                         placeholder="MyComponent"
                         {...field}
+                        autoComplete="off"
                         className="rounded-xl font-mono"
                       />
                     </FormControl>
@@ -356,7 +375,12 @@ export function ComponentForm({
                   <FormItem>
                     <FormLabel>Display Name *</FormLabel>
                     <FormControl>
-                      <Input placeholder="My Component" {...field} className="rounded-xl" />
+                      <Input
+                        placeholder="My Component"
+                        {...field}
+                        autoComplete="off"
+                        className="rounded-xl"
+                      />
                     </FormControl>
                     <FormDescription>Human-readable name</FormDescription>
                     <FormMessage />
@@ -365,13 +389,13 @@ export function ComponentForm({
               />
             </div>
 
-            {/* Code Editor */}
+            {/* Code Editor with Live Preview */}
             <FormField
               control={form.control}
               name="code"
               render={({ field }) => (
                 <FormItem>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mb-4">
                     <FormLabel>Component Code *</FormLabel>
                     <div className="flex items-center gap-2">
                       {isValidating && (
@@ -408,18 +432,47 @@ export function ComponentForm({
                         <Sparkles className="mr-1 h-3 w-3" />
                         Auto-detect Props
                       </Button>
+                      <div className="flex items-center gap-2">
+                        <Switch
+                          checked={showPreview}
+                          onCheckedChange={setShowPreview}
+                          id="show-preview"
+                        />
+                        <Label htmlFor="show-preview" className="text-xs cursor-pointer flex items-center gap-1">
+                          <Eye className="h-3 w-3" />
+                          Live Preview
+                        </Label>
+                      </div>
                     </div>
                   </div>
-                  <FormControl>
-                    <CodeEditor
-                      value={field.value}
-                      onChange={field.onChange}
-                      language="typescript"
-                      height="400px"
-                      onValidate={handleEditorValidate}
-                      placeholder="// Paste your React component code here..."
-                    />
-                  </FormControl>
+
+                  {/* Split Panel Layout */}
+                  <div className={`grid gap-4 ${showPreview ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                    {/* Left Panel - Code Editor */}
+                    <div>
+                      {/* Hidden input for HTML validation */}
+                      <input type="hidden" {...field} />
+                      <FormControl>
+                        <CodeEditor
+                          value={field.value}
+                          onChange={field.onChange}
+                          language="typescript"
+                          height="600px"
+                          onValidate={handleEditorValidate}
+                          placeholder="// Paste your React component code here..."
+                        />
+                      </FormControl>
+                    </div>
+
+                    {/* Right Panel - Live Preview */}
+                    {showPreview && (
+                      <LivePreviewPanel
+                        code={field.value}
+                        componentName={form.watch('name') || 'MyComponent'}
+                      />
+                    )}
+                  </div>
+
                   <FormMessage />
                 </FormItem>
               )}
@@ -459,6 +512,7 @@ export function ComponentForm({
                     <Textarea
                       placeholder="A brief description of what this component does..."
                       {...field}
+                      autoComplete="off"
                       className="rounded-xl resize-none"
                       rows={3}
                     />
@@ -611,6 +665,7 @@ export function ComponentForm({
                       <Input
                         placeholder="https://ui.shadcn.com/docs/components/button"
                         {...field}
+                        autoComplete="url"
                         className="rounded-xl"
                       />
                     </FormControl>
@@ -631,43 +686,51 @@ export function ComponentForm({
                 <FormField
                   control={form.control}
                   name="supports_children"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
-                        <FormLabel>Supports Children</FormLabel>
-                        <FormDescription>
-                          Can this component wrap other components?
-                        </FormDescription>
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
+                  render={({ field }) => {
+                    const { formItemId } = useFormField()
+                    return (
+                      <FormItem className="flex items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                          <FormLabel htmlFor={formItemId}>Supports Children</FormLabel>
+                          <FormDescription>
+                            Can this component wrap other components?
+                          </FormDescription>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            id={formItemId}
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )
+                  }}
                 />
 
                 <FormField
                   control={form.control}
                   name="is_full_width"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
-                        <FormLabel>Full Width</FormLabel>
-                        <FormDescription>
-                          Should this component span the full page width?
-                        </FormDescription>
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
+                  render={({ field }) => {
+                    const { formItemId } = useFormField()
+                    return (
+                      <FormItem className="flex items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                          <FormLabel htmlFor={formItemId}>Full Width</FormLabel>
+                          <FormDescription>
+                            Should this component span the full page width?
+                          </FormDescription>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            id={formItemId}
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )
+                  }}
                 />
               </CardContent>
             </Card>
@@ -718,6 +781,16 @@ export function ComponentForm({
           </Button>
         </div>
       </form>
+
+      {/* Preview Generator Modal */}
+      <PreviewGeneratorModal
+        isOpen={previewModal.isOpen}
+        onClose={() => {
+          setPreviewModal({ isOpen: false, component: null })
+          router.push('/admin/content/components')
+        }}
+        component={previewModal.component}
+      />
     </Form>
   )
 }

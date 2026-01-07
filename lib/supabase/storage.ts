@@ -146,26 +146,21 @@ export function getStorageUrl(bucket: string, path: string): string {
 
 /**
  * Upload a component preview image to Supabase Storage
+ * Supports multi-viewport previews (desktop, tablet, mobile)
  */
 export async function uploadComponentPreview(
   componentId: string,
-  blob: Blob
+  blob: Blob,
+  viewport: 'desktop' | 'tablet' | 'mobile' = 'desktop'
 ): Promise<{ url: string | null; error: string | null }> {
   const supabase = createClient()
 
-  // Generate filename
-  const timestamp = Date.now()
-  const filePath = `components/${componentId}/${timestamp}.png`
+  // Generate filename with viewport suffix
+  const fileName = `${componentId}-${viewport}.png`
+  const filePath = `components/${fileName}`
 
-  // Delete existing previews for this component
-  const { data: existingFiles } = await supabase.storage
-    .from(STORAGE_BUCKETS.PREVIEWS)
-    .list(`components/${componentId}`)
-
-  if (existingFiles && existingFiles.length > 0) {
-    const filesToDelete = existingFiles.map((f) => `components/${componentId}/${f.name}`)
-    await supabase.storage.from(STORAGE_BUCKETS.PREVIEWS).remove(filesToDelete)
-  }
+  // Delete existing preview for this specific viewport
+  await supabase.storage.from(STORAGE_BUCKETS.PREVIEWS).remove([filePath])
 
   // Upload new preview
   const { error: uploadError } = await supabase.storage
@@ -177,8 +172,8 @@ export async function uploadComponentPreview(
     })
 
   if (uploadError) {
-    console.error('Preview upload error:', uploadError)
-    return { url: null, error: 'Failed to upload preview. Please try again.' }
+    console.error(`Preview upload error (${viewport}):`, uploadError)
+    return { url: null, error: `Failed to upload ${viewport} preview. Please try again.` }
   }
 
   // Get public URL

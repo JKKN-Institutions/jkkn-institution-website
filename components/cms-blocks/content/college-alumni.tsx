@@ -278,6 +278,7 @@ export function CollegeAlumni({
               {/* Navigation Buttons */}
               <button
                 onClick={() => scroll('left')}
+                aria-label="Scroll alumni carousel left"
                 className={cn(
                   "absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 shadow-lg",
                   isDark ? "bg-white/10 backdrop-blur-sm text-white hover:bg-white/20" : "bg-white text-brand-primary"
@@ -312,6 +313,7 @@ export function CollegeAlumni({
 
               <button
                 onClick={() => scroll('right')}
+                aria-label="Scroll alumni carousel right"
                 className={cn(
                   "absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 shadow-lg",
                   isDark ? "bg-white/10 backdrop-blur-sm text-white hover:bg-white/20" : "bg-white text-brand-primary"

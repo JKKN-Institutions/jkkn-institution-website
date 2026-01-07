@@ -353,6 +353,38 @@ ON DELETE CASCADE;
 -- ============================================
 
 
+-- ============================================
+-- SCHEMA MODIFICATIONS (Non-FK Changes)
+-- ============================================
+-- Note: These are schema changes that don't involve foreign keys
+-- but are documented here for completeness
+
+-- ============================================
+-- Multi-Viewport Preview Support for Custom Components
+-- ============================================
+-- Purpose: Add columns for desktop, tablet, and mobile preview images
+-- Created: 2026-01-06
+-- Modified: N/A
+-- Table: cms_custom_components
+-- Dependencies: Supabase Storage (previews bucket)
+-- Used by: Component management UI, Preview generator modal
+-- Context: Enables preview generation for multiple viewport sizes
+--          to improve component visual representation in admin panel
+-- ============================================
+
+ALTER TABLE public.cms_custom_components
+ADD COLUMN IF NOT EXISTS preview_image_desktop TEXT,
+ADD COLUMN IF NOT EXISTS preview_image_tablet TEXT,
+ADD COLUMN IF NOT EXISTS preview_image_mobile TEXT;
+
+COMMENT ON COLUMN cms_custom_components.preview_image_desktop IS 'URL to desktop viewport preview screenshot (1920x1080)';
+COMMENT ON COLUMN cms_custom_components.preview_image_tablet IS 'URL to tablet viewport preview screenshot (768x1024)';
+COMMENT ON COLUMN cms_custom_components.preview_image_mobile IS 'URL to mobile viewport preview screenshot (375x667)';
+
+-- End of Multi-Viewport Preview Support
+-- ============================================
+
+
 -- ================================================================
 -- END OF FOREIGN KEYS DOCUMENTATION
 -- ================================================================

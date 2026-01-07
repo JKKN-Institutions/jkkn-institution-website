@@ -42,6 +42,7 @@ import * as LucideIcons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
+import { toast } from 'sonner'
 
 interface PaletteItemProps {
   name: string
@@ -207,11 +208,12 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
     }
   }, [viewMode, isViewModeInitialized])
 
-  // Fetch custom components from database and register them
+  // Fetch custom components from database and register them + real-time subscription
   useEffect(() => {
+    const supabase = createClient()
+
     const fetchCustomComponents = async () => {
       try {
-        const supabase = createClient()
         const { data, error } = await supabase
           .from('cms_custom_components')
           .select('id, name, display_name, description, category, icon, preview_image, is_active, code, default_props, props_schema')
@@ -255,10 +257,65 @@ export function ComponentPalette({ pageId }: ComponentPaletteProps) {
       }
     }
 
+    // Initial fetch
     fetchCustomComponents()
 
-    // Cleanup: unregister custom components when unmounting
+    // Set up real-time subscription for new components
+    const subscription = supabase
+      .channel('custom-components-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'cms_custom_components',
+          filter: 'is_active=eq.true',
+        },
+        (payload) => {
+          const newComponent = payload.new as CustomComponentPaletteData
+
+          if (process.env.NODE_ENV === 'development') {
+            console.log('[ComponentPalette] New component detected:', newComponent.display_name)
+          }
+
+          // Add to state
+          setCustomComponents((prev) => {
+            const exists = prev.find((c) => c.id === newComponent.id)
+            if (exists) return prev
+            return [...prev, newComponent].sort((a, b) =>
+              a.display_name.localeCompare(b.display_name)
+            )
+          })
+
+          // Register new component in registry
+          const registryComponent: CustomComponentData = {
+            id: newComponent.id,
+            name: newComponent.name,
+            display_name: newComponent.display_name,
+            description: newComponent.description || undefined,
+            category: newComponent.category,
+            icon: newComponent.icon || undefined,
+            preview_image: newComponent.preview_image || undefined,
+            code: newComponent.code,
+            default_props: newComponent.default_props || {},
+            props_schema: newComponent.props_schema || undefined,
+            is_active: newComponent.is_active,
+          }
+
+          registerCustomComponents([registryComponent])
+
+          // Show toast notification
+          toast.success(`New component "${newComponent.display_name}" is now available!`, {
+            description: 'You can now drag it from the component palette',
+            duration: 5000,
+          })
+        }
+      )
+      .subscribe()
+
+    // Cleanup: unsubscribe and unregister custom components when unmounting
     return () => {
+      subscription.unsubscribe()
       clearCustomComponentRegistry()
     }
   }, [])

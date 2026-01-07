@@ -8,7 +8,8 @@
  *
  * Components can be:
  * 1. Self-contained (no external imports) - rendered dynamically
- * 2. With external imports - show a placeholder since imports can't be resolved at runtime
+ * 2. With external imports from @/components/ui/* - resolved via dependency injection
+ * 3. With unsupported imports - show placeholder
  */
 
 import { useEffect, useState, useCallback, type ComponentType } from 'react'
@@ -17,26 +18,68 @@ import * as Babel from '@babel/standalone'
 import { Loader2, AlertTriangle, Package } from 'lucide-react'
 import type { CustomComponentData } from '@/lib/cms/component-registry'
 
-// Check if component has external imports that can't be resolved
-function hasExternalImports(code: string): { hasExternal: boolean; imports: string[] } {
-  const importMatches = code.match(/import\s+.*?from\s+['"]([^'"]+)['"]/g) || []
-  const externalImports: string[] = []
+// Import all shadcn/ui components that custom components might need
+import { Calendar } from '@/components/ui/calendar'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+// Add more imports as needed
 
-  for (const match of importMatches) {
-    const pathMatch = match.match(/from\s+['"]([^'"]+)['"]/)
-    if (pathMatch) {
-      const importPath = pathMatch[1]
-      // Check if it's NOT a React import
-      if (importPath !== 'react' && !importPath.startsWith('react/')) {
-        externalImports.push(importPath)
+// Registry of available external dependencies
+const AVAILABLE_DEPENDENCIES: Record<string, unknown> = {
+  '@/components/ui/calendar': { Calendar },
+  '@/components/ui/button': { Button },
+  '@/components/ui/card': { Card },
+  '@/components/ui/input': { Input },
+  // Add more as needed
+}
+
+// Parse imports from code
+function parseImports(code: string): {
+  supportedImports: Array<{ path: string; names: string[] }>
+  unsupportedImports: string[]
+} {
+  const importRegex = /import\s+(?:(\*\s+as\s+\w+|\{[^}]+\}|\w+))\s+from\s+['"]([^'"]+)['"]/g
+  const supportedImports: Array<{ path: string; names: string[] }> = []
+  const unsupportedImports: string[] = []
+
+  let match
+  while ((match = importRegex.exec(code)) !== null) {
+    const [, importClause, importPath] = match
+
+    // Skip React imports (React, useState, etc.)
+    if (importPath === 'react' || importPath.startsWith('react/')) {
+      continue
+    }
+
+    // Check if this import is supported
+    if (AVAILABLE_DEPENDENCIES[importPath]) {
+      // Extract imported names
+      const names: string[] = []
+      if (importClause.startsWith('{')) {
+        // Named imports: { Calendar, Button }
+        const namedImports = importClause.match(/\{([^}]+)\}/)?.[1]
+        if (namedImports) {
+          names.push(
+            ...namedImports.split(',').map(name => name.trim().split(' as ')[0].trim())
+          )
+        }
+      } else if (importClause.startsWith('*')) {
+        // Namespace import: * as UI
+        const alias = importClause.match(/\*\s+as\s+(\w+)/)?.[1]
+        if (alias) names.push(`* as ${alias}`)
+      } else {
+        // Default import
+        names.push(importClause.trim())
       }
+
+      supportedImports.push({ path: importPath, names })
+    } else {
+      unsupportedImports.push(importPath)
     }
   }
 
-  return {
-    hasExternal: externalImports.length > 0,
-    imports: externalImports
-  }
+  return { supportedImports, unsupportedImports }
 }
 
 // Transform TSX code to render-ready format using Babel
@@ -57,11 +100,14 @@ function transformCode(code: string): { code: string; error: string | null } {
 
     cleaned = cleaned.trim()
 
-    // Step 2: Use Babel to transform JSX to createElement calls
+    // Step 2: Use Babel to transform TypeScript + JSX to createElement calls
     const result = Babel.transform(cleaned, {
-      presets: ['react'],
+      presets: [
+        ['typescript', { isTSX: true, allExtensions: true }],
+        'react'
+      ],
       plugins: [],
-      filename: 'component.jsx',
+      filename: 'component.tsx',
     })
 
     if (!result.code) {
@@ -140,16 +186,18 @@ function LoadingState() {
   )
 }
 
-// Self-contained component renderer
-function SelfContainedRenderer({
+// Component renderer with dependency injection
+function ComponentRenderer({
   code,
   props,
   componentName,
+  supportedImports,
   onError,
 }: {
   code: string
   props: Record<string, unknown>
   componentName: string
+  supportedImports: Array<{ path: string; names: string[] }>
   onError: (error: string) => void
 }) {
   const [Component, setComponent] = useState<ComponentType<Record<string, unknown>> | null>(null)
@@ -164,40 +212,75 @@ function SelfContainedRenderer({
         return
       }
 
-      // Create a function that has access to React and its hooks
+      // Build dependency injection parameters
+      const paramNames = ['React', 'useState', 'useEffect', 'useCallback', 'useMemo', 'useRef', 'useContext', 'useReducer']
+      const paramValues: unknown[] = [React, React.useState, React.useEffect, React.useCallback, React.useMemo, React.useRef, React.useContext, React.useReducer]
+
+      // Inject external dependencies
+      if (Array.isArray(supportedImports) && supportedImports.length > 0) {
+        for (const importItem of supportedImports) {
+          if (!importItem || !importItem.path || !Array.isArray(importItem.names)) {
+            console.warn('[ComponentRenderer] Invalid import item:', importItem)
+            continue
+          }
+
+          const { path, names } = importItem
+          const dependency = AVAILABLE_DEPENDENCIES[path]
+
+          if (dependency && typeof dependency === 'object') {
+            // Add each named export as a parameter
+            for (const name of names) {
+              if (typeof name !== 'string') {
+                console.warn('[ComponentRenderer] Invalid name type:', typeof name, name)
+                continue
+              }
+
+              if (name.startsWith('* as ')) {
+                // Namespace import: provide the whole module
+                const alias = name.replace('* as ', '')
+                paramNames.push(alias)
+                paramValues.push(dependency)
+              } else if (name in dependency) {
+                // Named import: provide specific export
+                paramNames.push(name)
+                paramValues.push(dependency[name as keyof typeof dependency])
+              } else {
+                console.warn(`[ComponentRenderer] Export "${name}" not found in ${path}`)
+              }
+            }
+          } else {
+            console.warn(`[ComponentRenderer] Dependency not found for ${path}`)
+          }
+        }
+      }
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[ComponentRenderer] Injecting dependencies:', paramNames)
+        console.log('[ComponentRenderer] Transformed code:', transformedCode.substring(0, 500))
+      }
+
+      // Create a function that has access to React and injected dependencies
       // The transformed code uses React.createElement instead of JSX
-      const createComponent = new Function(
-        'React',
-        'useState',
-        'useEffect',
-        'useCallback',
-        'useMemo',
-        'useRef',
-        'useContext',
-        'useReducer',
-        `
+      const functionBody = `
+        "use strict";
         ${transformedCode}
         return ${componentName};
-        `
+      `
+
+      const createComponent = new Function(
+        ...paramNames,
+        functionBody
       )
 
-      const ComponentFromCode = createComponent(
-        React,
-        React.useState,
-        React.useEffect,
-        React.useCallback,
-        React.useMemo,
-        React.useRef,
-        React.useContext,
-        React.useReducer
-      )
+      const ComponentFromCode = createComponent(...paramValues)
 
       setComponent(() => ComponentFromCode)
     } catch (err) {
       console.error('Component render error:', err)
+      console.error('[ComponentRenderer] Failed code:', transformedCode?.substring(0, 500))
       onError(err instanceof Error ? err.message : 'Failed to render component')
     }
-  }, [code, componentName, onError])
+  }, [code, componentName, supportedImports, onError])
 
   if (!Component) {
     return <LoadingState />
@@ -220,7 +303,7 @@ export function createCustomComponent(
 ): ComponentType<Record<string, unknown>> {
   // Extract info from component code
   const componentName = extractComponentName(customData.code)
-  const { hasExternal, imports: externalImports } = hasExternalImports(customData.code)
+  const { supportedImports, unsupportedImports } = parseImports(customData.code)
 
   // Return a wrapper component
   return function CustomComponentWrapper(props: Record<string, unknown>) {
@@ -230,12 +313,12 @@ export function createCustomComponent(
       setRenderError(error)
     }, [])
 
-    // If component has external imports, show placeholder
-    if (hasExternal) {
+    // If component has unsupported imports, show placeholder
+    if (unsupportedImports.length > 0) {
       return (
         <ExternalDependencyPlaceholder
           displayName={customData.display_name}
-          imports={externalImports}
+          imports={unsupportedImports}
         />
       )
     }
@@ -258,12 +341,13 @@ export function createCustomComponent(
       ...props,
     }
 
-    // Render the self-contained component
+    // Render the component with dependency injection
     return (
-      <SelfContainedRenderer
+      <ComponentRenderer
         code={customData.code}
         props={mergedProps}
         componentName={componentName}
+        supportedImports={supportedImports}
         onError={handleError}
       />
     )

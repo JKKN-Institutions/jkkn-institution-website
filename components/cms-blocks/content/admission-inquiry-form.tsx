@@ -861,6 +861,7 @@ export default function AdmissionInquiryForm({
                     required
                   >
                     <SelectTrigger
+                      aria-label="Choose a college"
                       className={cn(
                         'h-12 rounded-xl',
                         inputClasses[theme],
@@ -907,6 +908,7 @@ export default function AdmissionInquiryForm({
                     required
                   >
                     <SelectTrigger
+                      aria-label="Select a course"
                       className={cn(
                         'h-12 rounded-xl',
                         inputClasses[theme],
@@ -954,6 +956,7 @@ export default function AdmissionInquiryForm({
                   </Label>
                   <Select name="currentQualification" disabled={isPending} required>
                     <SelectTrigger
+                      aria-label="Select your qualification"
                       className={cn(
                         'h-12 rounded-xl',
                         inputClasses[theme],
@@ -998,6 +1001,7 @@ export default function AdmissionInquiryForm({
                   </Label>
                   <Select name="preferredContactTime" disabled={isPending}>
                     <SelectTrigger
+                      aria-label="Select preferred contact time"
                       className={cn(
                         'h-12 rounded-xl',
                         inputClasses[theme],
