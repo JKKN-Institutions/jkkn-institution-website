@@ -277,7 +277,7 @@ function ComponentRenderer({
       setComponent(() => ComponentFromCode)
     } catch (err) {
       console.error('Component render error:', err)
-      console.error('[ComponentRenderer] Failed code:', transformedCode?.substring(0, 500))
+      console.error('[ComponentRenderer] Failed code:', code?.substring(0, 500))
       onError(err instanceof Error ? err.message : 'Failed to render component')
     }
   }, [code, componentName, supportedImports, onError])

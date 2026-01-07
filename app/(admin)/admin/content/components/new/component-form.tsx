@@ -186,7 +186,20 @@ export function ComponentForm({
   // Preview modal state
   const [previewModal, setPreviewModal] = useState<{
     isOpen: boolean
-    component: unknown | null
+    component: {
+      id: string
+      name: string
+      display_name: string
+      code: string
+      default_props: Record<string, unknown>
+      props_schema?: Record<string, {
+        type: string
+        description?: string
+        default?: unknown
+        enum?: string[]
+        required?: boolean
+      }>
+    } | null
   }>({ isOpen: false, component: null })
 
   // Code validation state
@@ -316,7 +329,20 @@ export function ComponentForm({
       // Open preview modal with component data
       setPreviewModal({
         isOpen: true,
-        component: state.data,
+        component: state.data as {
+          id: string
+          name: string
+          display_name: string
+          code: string
+          default_props: Record<string, unknown>
+          props_schema?: Record<string, {
+            type: string
+            description?: string
+            default?: unknown
+            enum?: string[]
+            required?: boolean
+          }>
+        },
       })
     } else if (state.message && !state.success) {
       toast.error(state.message)

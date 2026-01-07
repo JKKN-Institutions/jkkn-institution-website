@@ -27,28 +27,28 @@ export async function getActiveCustomComponents(): Promise<CustomComponentData[]
     }
 
     // Transform database records to CustomComponentData format
-    const components: CustomComponentData[] = data.map((comp) => ({
+    const components = data.map((comp) => ({
       id: comp.id,
       name: comp.name,
       display_name: comp.display_name,
       description: comp.description,
-      category: comp.category as 'data' | 'custom',
+      category: comp.category,
       icon: comp.icon,
       code: comp.code,
-      props_schema: comp.props_schema as Record<string, unknown>,
-      default_props: comp.default_props as Record<string, unknown>,
-      source_type: comp.source_type as 'custom' | 'shadcn' | 'library' | 'builtin',
+      props_schema: comp.props_schema,
+      default_props: comp.default_props,
+      source_type: comp.source_type,
       source_url: comp.source_url,
-      dependencies: comp.dependencies as string[],
+      dependencies: comp.dependencies,
       is_active: comp.is_active,
       preview_image: comp.preview_image,
-      preview_status: comp.preview_status as 'pending' | 'generating' | 'completed' | 'failed',
+      preview_status: comp.preview_status,
       supports_children: comp.supports_children,
       is_full_width: comp.is_full_width,
       created_at: comp.created_at,
       updated_at: comp.updated_at,
       created_by: comp.created_by,
-    }))
+    })) as CustomComponentData[]
 
     return components
   } catch (err) {
