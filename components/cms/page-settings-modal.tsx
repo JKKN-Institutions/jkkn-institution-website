@@ -56,43 +56,7 @@ const pageSettingsSchema = z.object({
   show_in_navigation: z.boolean(),
   is_homepage: z.boolean(),
   external_url: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
-  is_redirect: z.boolean(),
-  redirect_url: z.string().optional().or(z.literal('')),
-  redirect_type: z.enum(['permanent', 'temporary']),
-}).refine(
-  (data) => {
-    // If redirect is enabled, redirect_url must be provided
-    if (data.is_redirect) {
-      return data.redirect_url && data.redirect_url.length > 0
-    }
-    return true
-  },
-  {
-    message: 'Redirect URL is required when redirect is enabled',
-    path: ['redirect_url'],
-  }
-).refine(
-  (data) => {
-    // Validate redirect_url format when provided
-    if (data.is_redirect && data.redirect_url) {
-      // Allow internal paths or valid URLs
-      const isInternalPath = data.redirect_url.startsWith('/')
-      try {
-        if (!isInternalPath) {
-          new URL(data.redirect_url)
-        }
-        return true
-      } catch {
-        return false
-      }
-    }
-    return true
-  },
-  {
-    message: 'Redirect URL must be a valid URL or internal path (starting with /)',
-    path: ['redirect_url'],
-  }
-)
+})
 
 type PageSettingsFormData = z.infer<typeof pageSettingsSchema>
 

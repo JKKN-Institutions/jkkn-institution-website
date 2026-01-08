@@ -140,38 +140,6 @@ const navigationItems: NavItem[] = [
     ],
   },
   {
-    title: 'Careers',
-    href: '/admin/content/careers',
-    icon: Briefcase,
-    permission: 'cms:careers:view',
-    children: [
-      {
-        title: 'All Jobs',
-        href: '/admin/content/careers',
-        icon: Briefcase,
-        permission: 'cms:careers:view',
-      },
-      {
-        title: 'Departments',
-        href: '/admin/content/careers/departments',
-        icon: Building2,
-        permission: 'cms:careers:view',
-      },
-      {
-        title: 'Applications',
-        href: '/admin/content/careers/applications',
-        icon: UserCheck,
-        permission: 'cms:careers:applications',
-      },
-      {
-        title: 'Email Templates',
-        href: '/admin/content/careers/emails',
-        icon: Mail,
-        permission: 'cms:careers:emails',
-      },
-    ],
-  },
-  {
     title: 'Settings',
     href: '/admin/settings',
     icon: Settings,
@@ -192,8 +160,6 @@ export function AdminSidebar({
     // Auto-expand based on current path
     if (pathname.startsWith('/admin/content/blog')) {
       expanded.push('/admin/content/blog')
-    } else if (pathname.startsWith('/admin/content/careers')) {
-      expanded.push('/admin/content/careers')
     } else if (pathname.startsWith('/admin/content')) {
       expanded.push('/admin/content')
     }
@@ -394,8 +360,7 @@ export function AdminSidebar({
           <div className="space-y-1">
             {filteredNavItems.filter(item =>
               item.href === '/admin/content' ||
-              item.href === '/admin/content/blog' ||
-              item.href === '/admin/content/careers'
+              item.href === '/admin/content/blog'
             ).map((item) => (
               <NavLink key={item.href} item={item} />
             ))}

@@ -147,16 +147,6 @@ export const ADMIN_PRIMARY_ITEMS: NavMenuItemConfig[] = [
           { href: '/admin/content/blog/tags', label: 'Tags', icon: Tags },
           { href: '/admin/content/blog/comments', label: 'Comments', icon: MessageSquare }
         ]
-      },
-      {
-        id: 'careers',
-        label: 'Careers',
-        icon: Briefcase,
-        items: [
-          { href: '/admin/content/careers', label: 'Jobs', icon: Briefcase },
-          { href: '/admin/content/careers/departments', label: 'Departments', icon: Building2 },
-          { href: '/admin/content/careers/applications', label: 'Applications', icon: UserCheck }
-        ]
       }
     ]
   },

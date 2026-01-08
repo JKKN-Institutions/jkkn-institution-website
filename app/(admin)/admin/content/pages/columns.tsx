@@ -54,9 +54,6 @@ export type PageRow = {
   show_in_navigation: boolean | null
   sort_order: number | null
   parent_id: string | null
-  is_redirect: boolean | null
-  redirect_url: string | null
-  redirect_type: string | null
   created_at: string | null
   updated_at: string | null
   published_at: string | null

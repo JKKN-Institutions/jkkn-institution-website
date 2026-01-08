@@ -37,44 +37,8 @@ const CreatePageSchema = z.object({
   show_in_navigation: z.boolean().default(true),
   navigation_label: z.string().optional(),
   is_homepage: z.boolean().default(false),
-  external_url: z.string().url().nullable().optional(),
-  is_redirect: z.boolean().default(false),
-  redirect_url: z.string().nullable().optional(),
-  redirect_type: z.enum(['permanent', 'temporary']).default('temporary'),
-}).refine(
-  (data) => {
-    // If redirect is enabled, redirect_url must be provided
-    if (data.is_redirect) {
-      return data.redirect_url && data.redirect_url.length > 0
-    }
-    return true
-  },
-  {
-    message: 'Redirect URL is required when redirect is enabled',
-    path: ['redirect_url'],
-  }
-).refine(
-  (data) => {
-    // Validate redirect_url format when provided
-    if (data.is_redirect && data.redirect_url) {
-      // Allow internal paths or valid URLs
-      const isInternalPath = data.redirect_url.startsWith('/')
-      try {
-        if (!isInternalPath) {
-          new URL(data.redirect_url)
-        }
-        return true
-      } catch {
-        return false
-      }
-    }
-    return true
-  },
-  {
-    message: 'Redirect URL must be a valid URL or internal path (starting with /)',
-    path: ['redirect_url'],
-  }
-)
+  external_url: z.string().url('Please enter a valid URL').optional().or(z.literal('')).transform(val => val || null),
+})
 
 const UpdatePageSchema = CreatePageSchema.partial().extend({
   id: z.string().uuid('Invalid page ID'),
@@ -1037,7 +1001,6 @@ export async function updatePage(
 
   // Validate input
   const sortOrderValue = formData.get('sort_order')
-  const externalUrlValue = formData.get('external_url')
   const validation = UpdatePageSchema.safeParse({
     id: pageId,
     title: formData.get('title') || undefined,
@@ -1054,7 +1017,7 @@ export async function updatePage(
         : undefined,
     navigation_label: formData.get('navigation_label') || undefined,
     is_homepage: isHomepage || undefined,
-    external_url: externalUrlValue !== null ? (externalUrlValue || null) : undefined,
+    external_url: formData.get('external_url') || undefined,
   })
 
   if (!validation.success) {
