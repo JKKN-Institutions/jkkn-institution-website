@@ -125,7 +125,8 @@
       "Bash(del \"D:\\\\Projects\\\\JKKN Websites\\\\jkkn-institution-website\\\\.next\\\\dev\\\\lock\")",
       "Bash(if exist \".next\\\\dev\\\\lock\" del \".next\\\\dev\\\\lock\")",
       "Bash(Select-Object -First 30)",
-      "Bash(git revert:*)"
+      "Bash(git revert:*)",
+      "Bash(git fetch:*)"
     ],
     "deny": [],
     "ask": [],
