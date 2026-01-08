@@ -315,6 +315,50 @@ CREATE TABLE cms_pages (
 -- End of cms_pages
 -- ============================================
 
+-- ============================================
+-- ALTER TABLE: cms_pages - Add Page Redirect Feature
+-- ============================================
+-- Purpose: Add redirect functionality to pages
+-- Modified: 2026-01-08
+-- Feature: Page Redirect URL
+-- Description: When is_redirect is TRUE, the page will redirect to redirect_url
+--              instead of rendering components. This allows pages to redirect
+--              to external URLs or internal paths without creating content blocks.
+-- Dependencies: None
+-- Used by: Page editor, public page renderer
+-- Security: redirect_url is validated to prevent open redirect vulnerabilities
+-- ============================================
+-- Columns Added:
+--   - is_redirect: Boolean flag to enable/disable redirect
+--   - redirect_url: Target URL for redirect (required when is_redirect = TRUE)
+--   - redirect_type: Redirect HTTP status code ('permanent' = 301, 'temporary' = 302)
+--
+-- Business Rules:
+--   1. When is_redirect = TRUE, redirect_url must be provided
+--   2. redirect_url must be a valid URL or path
+--   3. When is_redirect = TRUE, cms_page_blocks should be empty (enforced in UI)
+--   4. redirect_type determines HTTP status code (301 vs 302)
+--   5. Validation prevents open redirect attacks (whitelist approach)
+-- ============================================
+
+ALTER TABLE cms_pages
+ADD COLUMN is_redirect BOOLEAN DEFAULT FALSE,
+ADD COLUMN redirect_url TEXT,
+ADD COLUMN redirect_type TEXT DEFAULT 'temporary' CHECK (redirect_type IN ('permanent', 'temporary')),
+ADD CONSTRAINT redirect_url_required_when_enabled
+  CHECK (is_redirect = FALSE OR (redirect_url IS NOT NULL AND redirect_url != ''));
+
+-- Create index for filtering redirect pages
+CREATE INDEX idx_cms_pages_is_redirect ON cms_pages(is_redirect) WHERE is_redirect = TRUE;
+
+-- Comment for documentation
+COMMENT ON COLUMN cms_pages.is_redirect IS 'Enable page redirect instead of rendering content';
+COMMENT ON COLUMN cms_pages.redirect_url IS 'Target URL for redirect (required when is_redirect = TRUE)';
+COMMENT ON COLUMN cms_pages.redirect_type IS 'Redirect type: permanent (301) or temporary (302)';
+
+-- End of cms_pages redirect feature
+-- ============================================
+
 
 -- ============================================
 -- TABLE: cms_page_blocks

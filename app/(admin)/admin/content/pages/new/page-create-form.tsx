@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Loader2, CheckCircle2, XCircle, Info, Home, Globe, Lock, Eye, ExternalLink } from 'lucide-react'
+import { Loader2, CheckCircle2, XCircle, Info, Home, Globe, Lock, Eye, ExternalLink, ArrowRight, AlertTriangle } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface PageCreateFormProps {

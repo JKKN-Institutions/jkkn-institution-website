@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect, RedirectType } from 'next/navigation'
 import { Suspense } from 'react'
 import { Metadata } from 'next'
 import { getPageBySlug, getPageWithVisibility } from '@/app/actions/cms/pages'
