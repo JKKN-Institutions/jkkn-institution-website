@@ -333,6 +333,7 @@ import {
   ImageBlockPropsSchema,
   ImageGalleryPropsSchema,
   VideoPlayerPropsSchema,
+  EmbedBlockPropsSchema,
   ImageCarouselPropsSchema,
   BeforeAfterSliderPropsSchema,
   LogoCloudPropsSchema,
@@ -389,6 +390,7 @@ const PlacementsHighlights = lazy(() => import('@/components/cms-blocks/admissio
 const ImageBlock = lazy(() => import('@/components/cms-blocks/media/image-block'))
 const ImageGallery = lazy(() => import('@/components/cms-blocks/media/image-gallery'))
 const VideoPlayer = lazy(() => import('@/components/cms-blocks/media/video-player'))
+const EmbedBlock = lazy(() => import('@/components/cms-blocks/media/embed-block'))
 const ImageCarousel = lazy(() => import('@/components/cms-blocks/media/image-carousel'))
 const BeforeAfterSlider = lazy(() => import('@/components/cms-blocks/media/before-after-slider'))
 const LogoCloud = lazy(() => import('@/components/cms-blocks/media/logo-cloud'))
@@ -4747,6 +4749,59 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'aspectRatio', type: 'enum', label: 'Aspect Ratio', options: ['16/9', '4/3', '1/1', '9/16'] },
       { name: 'poster', type: 'image', label: 'Poster Image' },
       { name: 'posterAlt', type: 'string', label: 'Poster Image Alt Text', required: true },
+    ],
+  },
+
+  EmbedBlock: {
+    name: 'EmbedBlock',
+    displayName: 'Embed Content',
+    category: 'media',
+    description: 'Embed external content: YouTube, Google Maps, Forms, or any iframe',
+    icon: 'Code2',
+    previewImage: '/cms-previews/EmbedBlock.png',
+    component: EmbedBlock,
+    propsSchema: EmbedBlockPropsSchema,
+    defaultProps: {
+      embedUrl: '',
+      embedType: 'iframe',
+      embedCode: '',
+      aspectRatio: '16/9',
+      allowFullscreen: true,
+      autoHeight: false,
+      borderRadius: '8px',
+      showBorder: false,
+      title: 'Embedded content',
+    },
+    supportsChildren: false,
+    keywords: ['embed', 'iframe', 'youtube', 'maps', 'form', 'external'],
+    editableProps: [
+      {
+        name: 'embedType',
+        type: 'enum',
+        label: 'Embed Type',
+        options: ['iframe', 'youtube', 'vimeo', 'google-maps', 'google-forms', 'google-drive', 'html'],
+        description: 'Choose the type of content to embed'
+      },
+      {
+        name: 'embedUrl',
+        type: 'url',
+        label: 'URL',
+        description: 'Paste the URL of the content (YouTube, Maps, Forms, etc.)'
+      },
+      {
+        name: 'embedCode',
+        type: 'string',
+        label: 'Embed Code (HTML)',
+        description: 'Or paste embed code/HTML (only if Embed Type is "html")'
+      },
+      { name: 'title', type: 'string', label: 'Title', description: 'Accessibility title for screen readers' },
+      { name: 'aspectRatio', type: 'enum', label: 'Aspect Ratio', options: ['16/9', '4/3', '1/1', '21/9', '9/16'] },
+      { name: 'autoHeight', type: 'boolean', label: 'Auto Height', description: 'Let content determine height' },
+      { name: 'minHeight', type: 'string', label: 'Min Height', description: 'CSS value (e.g., 400px) - works with Auto Height' },
+      { name: 'maxHeight', type: 'string', label: 'Max Height', description: 'CSS value (e.g., 800px)' },
+      { name: 'allowFullscreen', type: 'boolean', label: 'Allow Fullscreen' },
+      { name: 'showBorder', type: 'boolean', label: 'Show Border' },
+      { name: 'borderRadius', type: 'string', label: 'Border Radius', description: 'CSS value (e.g., 8px, 1rem)' },
     ],
   },
 

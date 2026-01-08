@@ -574,6 +574,23 @@ export const VideoPlayerPropsSchema = z.object({
 })
 export type VideoPlayerProps = z.infer<typeof VideoPlayerPropsSchema> & BaseBlockProps
 
+export const EmbedBlockPropsSchema = z.object({
+  embedUrl: z.string().default(''),
+  embedType: z
+    .enum(['iframe', 'youtube', 'vimeo', 'google-maps', 'google-forms', 'google-drive', 'html'])
+    .default('iframe'),
+  embedCode: z.string().default(''),
+  aspectRatio: z.string().default('16/9'),
+  allowFullscreen: z.boolean().default(true),
+  autoHeight: z.boolean().default(false),
+  minHeight: z.string().optional(),
+  maxHeight: z.string().optional(),
+  borderRadius: z.string().default('8px'),
+  showBorder: z.boolean().default(false),
+  title: z.string().default('Embedded content'),
+})
+export type EmbedBlockProps = z.infer<typeof EmbedBlockPropsSchema> & BaseBlockProps
+
 export const ImageCarouselPropsSchema = z.object({
   images: z.array(ImageSchema).default([]),
   autoplay: z.boolean().default(true),

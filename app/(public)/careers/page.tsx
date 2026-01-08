@@ -3,6 +3,13 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { getPublishedCareerJobs } from '@/app/actions/cms/careers'
 import { getCareerDepartments } from '@/app/actions/cms/career-departments'
+import { getPageWithVisibility } from '@/app/actions/cms/pages'
+import { getActiveCustomComponents } from '@/app/actions/cms/get-custom-components'
+import { PageRenderer } from '@/components/cms-blocks/page-renderer'
+import { CustomComponentRegistrar } from '@/components/cms-blocks/custom-component-registrar'
+import { Skeleton } from '@/components/ui/skeleton'
+import { PasswordProtectedPage, PrivatePageGate } from '@/components/public/password-protected-page'
+import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -37,6 +44,43 @@ export async function generateMetadata(): Promise<Metadata> {
   const breadcrumbs = getBreadcrumbsForPath('/careers')
   const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbs)
 
+  // Check if CMS page exists for careers
+  const { getPageBySlug } = await import('@/app/actions/cms/pages')
+  const cmsPage = await getPageBySlug('careers')
+
+  // If CMS page exists, use its SEO metadata
+  if (cmsPage) {
+    const seo = cmsPage.cms_seo_metadata
+
+    return {
+      title: {
+        absolute: seo?.meta_title || cmsPage.title
+      },
+      description: seo?.meta_description || cmsPage.description || undefined,
+      keywords: seo?.meta_keywords || undefined,
+      openGraph: {
+        title: seo?.og_title || seo?.meta_title || cmsPage.title,
+        description: seo?.og_description || seo?.meta_description || cmsPage.description || undefined,
+        images: seo?.og_image ? [{ url: seo.og_image }] : undefined,
+        type: (seo?.og_type as any) || 'website',
+      },
+      twitter: {
+        card: (seo?.twitter_card as any) || 'summary_large_image',
+        title: seo?.twitter_title || seo?.og_title || seo?.meta_title || cmsPage.title,
+        description: seo?.twitter_description || seo?.og_description || seo?.meta_description || cmsPage.description || undefined,
+        images: seo?.twitter_image ? [seo.twitter_image] : (seo?.og_image ? [seo.og_image] : undefined),
+      },
+      alternates: seo?.canonical_url ? {
+        canonical: seo.canonical_url,
+      } : undefined,
+      robots: seo?.robots_directive || undefined,
+      other: {
+        'script:ld+json:breadcrumb': serializeSchema(breadcrumbSchema),
+      },
+    }
+  }
+
+  // Default metadata if no CMS page
   return {
     title: 'Careers | JKKN Institution',
     description: 'Join our team! Explore current job openings and career opportunities at JKKN Institution.',
@@ -475,6 +519,46 @@ async function JobList({
 }
 
 export default async function CareersPage({ searchParams }: CareersPageProps) {
+  // First, check if a CMS page with slug "careers" exists
+  const cmsPageResult = await getPageWithVisibility('careers')
+
+  // If CMS page exists and is accessible, render it instead of the static careers module
+  if (cmsPageResult.status === 'found' && cmsPageResult.page) {
+    const customComponents = await getActiveCustomComponents()
+    const page = cmsPageResult.page
+
+    const blocks = page.cms_page_blocks.map((block) => ({
+      id: block.id,
+      component_name: block.component_name,
+      props: block.props,
+      sort_order: block.sort_order,
+      parent_block_id: block.parent_block_id,
+      is_visible: block.is_visible ?? true,
+    }))
+
+    const pageTypography = (page.metadata as Record<string, unknown> | null)?.typography as PageTypographySettings | undefined
+
+    return (
+      <article>
+        <Suspense fallback={<CMSPageSkeleton />}>
+          <CustomComponentRegistrar components={customComponents}>
+            <PageRenderer blocks={blocks} pageTypography={pageTypography} />
+          </CustomComponentRegistrar>
+        </Suspense>
+      </article>
+    )
+  }
+
+  // Handle CMS page visibility restrictions
+  if (cmsPageResult.status === 'requires_auth') {
+    return <PrivatePageGate />
+  }
+
+  if (cmsPageResult.status === 'requires_password') {
+    return <PasswordProtectedPage slug="careers" pageTitle="Careers" />
+  }
+
+  // If no CMS page exists or not published, show the default careers module
   const params = await searchParams
   const page = params.page ? parseInt(params.page) : 1
   const departmentSlug = params.department === 'all' ? undefined : params.department
@@ -609,6 +693,20 @@ function JobListSkeleton() {
           </CardFooter>
         </Card>
       ))}
+    </div>
+  )
+}
+
+function CMSPageSkeleton() {
+  return (
+    <div className="space-y-8 p-4">
+      <Skeleton className="h-[400px] w-full rounded-lg" />
+      <div className="space-y-4 max-w-4xl mx-auto">
+        <Skeleton className="h-10 w-3/4" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-2/3" />
+      </div>
     </div>
   )
 }
