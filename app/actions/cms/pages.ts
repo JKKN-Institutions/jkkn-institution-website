@@ -28,16 +28,16 @@ const CreatePageSchema = z.object({
       'Slug must be lowercase with hyphens, paths separated by /'
     ),
   description: z.string().optional(),
-  parent_id: z.string().uuid().nullable().optional(),
-  template_id: z.string().uuid().nullable().optional(),
+  parent_id: z.string().uuid().optional().or(z.literal('')).nullable().transform(val => val || null),
+  template_id: z.string().uuid().optional().or(z.literal('')).nullable().transform(val => val || null),
   status: z.enum(['draft', 'pending_review', 'approved', 'published', 'archived', 'scheduled']).default('draft'),
   visibility: z.enum(['public', 'private', 'password_protected']).default('public'),
-  featured_image: z.string().url().nullable().optional(),
+  featured_image: z.union([z.string().url(), z.literal('')]).optional().nullable().transform(val => val || null),
   sort_order: z.coerce.number().min(1).optional(),
   show_in_navigation: z.boolean().default(true),
   navigation_label: z.string().optional(),
   is_homepage: z.boolean().default(false),
-  external_url: z.string().url('Please enter a valid URL').optional().or(z.literal('')).transform(val => val || null),
+  external_url: z.union([z.string().url('Please enter a valid URL'), z.literal('')]).optional().nullable().transform(val => val || null),
 })
 
 const UpdatePageSchema = CreatePageSchema.partial().extend({
@@ -716,186 +716,241 @@ export async function createPage(
   prevState: FormState,
   formData: FormData
 ): Promise<FormState> {
-  const supabase = await createServerSupabaseClient()
+  try {
+    console.log('🔍 [createPage] Starting page creation...')
+    console.log('📋 [createPage] FormData entries:', Object.fromEntries(formData.entries()))
 
-  // Get current user
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) {
-    return { success: false, message: 'Unauthorized' }
-  }
+    const supabase = await createServerSupabaseClient()
 
-  // Check permission
-  const hasPermission = await checkPermission(user.id, 'cms:pages:create')
-  if (!hasPermission) {
-    return { success: false, message: 'You do not have permission to create pages' }
-  }
+    // Get current user
+    console.log('👤 [createPage] Fetching current user...')
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser()
 
-  // Get raw input values
-  const rawSlug = formData.get('slug') as string
-  const parentId = formData.get('parent_id') as string | null
-  const isHomepage = formData.get('is_homepage') === 'true'
+    if (userError) {
+      console.error('❌ [createPage] Auth error:', userError)
+      return { success: false, message: `Authentication error: ${userError.message}` }
+    }
 
-  // Build hierarchical slug if parent exists
-  let finalSlug = rawSlug
+    if (!user) {
+      console.error('❌ [createPage] No user found')
+      return { success: false, message: 'Unauthorized' }
+    }
 
-  if (parentId && parentId !== 'none' && parentId !== '') {
-    const { data: parent } = await supabase
+    console.log('✅ [createPage] User authenticated:', user.id)
+
+    // Check permission
+    console.log('🔐 [createPage] Checking permissions...')
+    const hasPermission = await checkPermission(user.id, 'cms:pages:create')
+    if (!hasPermission) {
+      console.error('❌ [createPage] Permission denied')
+      return { success: false, message: 'You do not have permission to create pages' }
+    }
+
+    console.log('✅ [createPage] Permission granted')
+
+    // Get raw input values
+    const rawSlug = formData.get('slug') as string
+    const parentId = formData.get('parent_id') as string | null
+    const isHomepage = formData.get('is_homepage') === 'true'
+
+    console.log('📝 [createPage] Raw input - slug:', rawSlug, 'parentId:', parentId, 'isHomepage:', isHomepage)
+
+    // Build hierarchical slug if parent exists
+    let finalSlug = rawSlug
+
+    if (parentId && parentId !== 'none' && parentId !== '') {
+      console.log('🔗 [createPage] Fetching parent page...')
+      const { data: parent } = await supabase
       .from('cms_pages')
       .select('slug')
       .eq('id', parentId)
       .single()
 
-    if (!parent) {
-      return { success: false, message: 'Parent page not found' }
+      if (!parent) {
+        console.error('❌ [createPage] Parent page not found')
+        return { success: false, message: 'Parent page not found' }
+      }
+
+      // Prepend parent path if not already included
+      if (!rawSlug.startsWith(`${parent.slug}/`)) {
+        finalSlug = `${parent.slug}/${rawSlug}`
+      }
+      console.log('✅ [createPage] Parent page found, final slug:', finalSlug)
     }
 
-    // Prepend parent path if not already included
-    if (!rawSlug.startsWith(`${parent.slug}/`)) {
-      finalSlug = `${parent.slug}/${rawSlug}`
+    // Validate homepage parent constraint
+    console.log('🏠 [createPage] Validating homepage constraints...')
+    const homepageValidation = validateHomepageParent(isHomepage, parentId)
+    if (!homepageValidation.valid) {
+      console.error('❌ [createPage] Homepage validation failed:', homepageValidation.error)
+      return { success: false, message: homepageValidation.error }
     }
-  }
 
-  // Validate homepage parent constraint
-  const homepageValidation = validateHomepageParent(isHomepage, parentId)
-  if (!homepageValidation.valid) {
-    return { success: false, message: homepageValidation.error }
-  }
-
-  // Validate slug depth
-  const depthValidation = validateSlugDepth(finalSlug)
-  if (!depthValidation.valid) {
-    return { success: false, message: depthValidation.error }
-  }
-
-  // Validate input with hierarchical slug
-  const validation = CreatePageSchema.safeParse({
-    title: formData.get('title'),
-    slug: finalSlug,
-    description: formData.get('description') || undefined,
-    parent_id: parentId || null,
-    template_id: formData.get('template_id') || null,
-    status: formData.get('status') || 'draft',
-    visibility: formData.get('visibility') || 'public',
-    featured_image: formData.get('featured_image') || null,
-    show_in_navigation: formData.get('show_in_navigation') === 'true',
-    navigation_label: formData.get('navigation_label') || undefined,
-    is_homepage: isHomepage,
-    external_url: formData.get('external_url') || null,
-  })
-
-  if (!validation.success) {
-    return {
-      success: false,
-      errors: validation.error.flatten().fieldErrors,
-      message: 'Invalid fields. Please check the form.',
+    // Validate slug depth
+    console.log('📏 [createPage] Validating slug depth...')
+    const depthValidation = validateSlugDepth(finalSlug)
+    if (!depthValidation.valid) {
+      console.error('❌ [createPage] Slug depth validation failed:', depthValidation.error)
+      return { success: false, message: depthValidation.error }
     }
-  }
 
-  // Validate hierarchical slug structure
-  const slugValidation = await validateSlugHierarchy(
-    finalSlug,
-    parentId || null,
-    null,
-    supabase
-  )
+    // Validate input with hierarchical slug
+    console.log('✔️ [createPage] Validating input schema...')
+    const validation = CreatePageSchema.safeParse({
+      title: formData.get('title'),
+      slug: finalSlug,
+      description: formData.get('description') || undefined,
+      parent_id: parentId || null,
+      template_id: formData.get('template_id') || null,
+      status: formData.get('status') || 'draft',
+      visibility: formData.get('visibility') || 'public',
+      featured_image: formData.get('featured_image') || null,
+      show_in_navigation: formData.get('show_in_navigation') === 'true',
+      navigation_label: formData.get('navigation_label') || undefined,
+      is_homepage: isHomepage,
+      external_url: formData.get('external_url') || null,
+    })
 
-  if (!slugValidation.valid) {
-    return { success: false, message: slugValidation.error }
-  }
+    if (!validation.success) {
+      console.error('❌ [createPage] Schema validation failed:', validation.error.flatten().fieldErrors)
+      return {
+        success: false,
+        errors: validation.error.flatten().fieldErrors,
+        message: 'Invalid fields. Please check the form.',
+      }
+    }
 
-  // If setting as homepage, unset any existing homepage
-  if (validation.data.is_homepage) {
-    await supabase.from('cms_pages').update({ is_homepage: false }).eq('is_homepage', true)
-  }
+    console.log('✅ [createPage] Schema validation passed')
 
-  // Get default blocks from template if provided
-  let defaultBlocks: unknown[] = []
-  if (validation.data.template_id) {
-    const { data: template } = await supabase
-      .from('cms_page_templates')
-      .select('default_blocks')
-      .eq('id', validation.data.template_id)
+    // Validate hierarchical slug structure
+    console.log('🔗 [createPage] Validating slug hierarchy...')
+    const slugValidation = await validateSlugHierarchy(
+      finalSlug,
+      parentId || null,
+      null,
+      supabase
+    )
+
+    if (!slugValidation.valid) {
+      console.error('❌ [createPage] Slug hierarchy validation failed:', slugValidation.error)
+      return { success: false, message: slugValidation.error }
+    }
+
+    console.log('✅ [createPage] Slug hierarchy validated')
+
+    // If setting as homepage, unset any existing homepage
+    if (validation.data.is_homepage) {
+      console.log('🏠 [createPage] Unsetting existing homepage...')
+      await supabase.from('cms_pages').update({ is_homepage: false }).eq('is_homepage', true)
+    }
+
+    // Get default blocks from template if provided
+    let defaultBlocks: unknown[] = []
+    if (validation.data.template_id) {
+      console.log('📄 [createPage] Fetching template blocks...')
+      const { data: template } = await supabase
+        .from('cms_page_templates')
+        .select('default_blocks')
+        .eq('id', validation.data.template_id)
+        .single()
+
+      if (template?.default_blocks) {
+        defaultBlocks = template.default_blocks as unknown[]
+        console.log('✅ [createPage] Template blocks loaded:', defaultBlocks.length)
+      }
+    }
+
+    // Create page
+    console.log('💾 [createPage] Creating page in database...')
+    const { data: page, error } = await supabase
+      .from('cms_pages')
+      .insert({
+        title: validation.data.title,
+        slug: validation.data.slug,
+        description: validation.data.description,
+        parent_id: validation.data.parent_id,
+        template_id: validation.data.template_id,
+        status: validation.data.status,
+        visibility: validation.data.visibility,
+        featured_image: validation.data.featured_image,
+        show_in_navigation: validation.data.show_in_navigation,
+        navigation_label: validation.data.navigation_label,
+        is_homepage: validation.data.is_homepage,
+        external_url: validation.data.external_url,
+        created_by: user.id,
+      })
+      .select()
       .single()
 
-    if (template?.default_blocks) {
-      defaultBlocks = template.default_blocks as unknown[]
+    if (error) {
+      console.error('❌ [createPage] Database error:', error)
+      return { success: false, message: 'Failed to create page. Please try again.' }
+    }
+
+    console.log('✅ [createPage] Page created in database:', page.id)
+
+    // Create default blocks from template
+    if (defaultBlocks.length > 0) {
+      console.log('📦 [createPage] Inserting default blocks...')
+      const blocksToInsert = defaultBlocks.map((block: unknown, index: number) => {
+        const b = block as { component_name: string; props: Record<string, unknown> }
+        return {
+          page_id: page.id,
+          component_name: b.component_name,
+          props: b.props || {},
+          sort_order: index,
+        }
+      })
+
+      await supabase.from('cms_page_blocks').insert(blocksToInsert)
+      console.log('✅ [createPage] Default blocks inserted')
+    }
+
+    // Create default SEO metadata
+    console.log('🔍 [createPage] Creating SEO metadata...')
+    await supabase.from('cms_seo_metadata').insert({
+      page_id: page.id,
+      meta_title: validation.data.title,
+    })
+
+    // Create default FAB config
+    console.log('⚙️ [createPage] Creating FAB config...')
+    await supabase.from('cms_page_fab_config').insert({
+      page_id: page.id,
+      is_enabled: false,
+    })
+
+    // Log activity
+    console.log('📝 [createPage] Logging activity...')
+    await logActivity({
+      userId: user.id,
+      action: 'create',
+      module: 'cms',
+      resourceType: 'page',
+      resourceId: page.id,
+      metadata: { title: validation.data.title, slug: validation.data.slug },
+    })
+
+    // Revalidate cache (non-blocking)
+    try {
+      revalidatePath('/admin/content/pages')
+    } catch (error) {
+      // Log error but don't fail the operation since page was created successfully
+      console.error('Cache revalidation failed:', error)
+    }
+
+    console.log('✅ [createPage] Page created successfully:', page.id)
+    return { success: true, message: 'Page created successfully', data: { id: page.id } }
+  } catch (error) {
+    console.error('💥 [createPage] Fatal error:', error)
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'An unexpected error occurred. Please try again.'
     }
   }
-
-  // Create page
-  const { data: page, error } = await supabase
-    .from('cms_pages')
-    .insert({
-      title: validation.data.title,
-      slug: validation.data.slug,
-      description: validation.data.description,
-      parent_id: validation.data.parent_id,
-      template_id: validation.data.template_id,
-      status: validation.data.status,
-      visibility: validation.data.visibility,
-      featured_image: validation.data.featured_image,
-      show_in_navigation: validation.data.show_in_navigation,
-      navigation_label: validation.data.navigation_label,
-      is_homepage: validation.data.is_homepage,
-      external_url: validation.data.external_url,
-      created_by: user.id,
-    })
-    .select()
-    .single()
-
-  if (error) {
-    console.error('Error creating page:', error)
-    return { success: false, message: 'Failed to create page. Please try again.' }
-  }
-
-  // Create default blocks from template
-  if (defaultBlocks.length > 0) {
-    const blocksToInsert = defaultBlocks.map((block: unknown, index: number) => {
-      const b = block as { component_name: string; props: Record<string, unknown> }
-      return {
-        page_id: page.id,
-        component_name: b.component_name,
-        props: b.props || {},
-        sort_order: index,
-      }
-    })
-
-    await supabase.from('cms_page_blocks').insert(blocksToInsert)
-  }
-
-  // Create default SEO metadata
-  await supabase.from('cms_seo_metadata').insert({
-    page_id: page.id,
-    meta_title: validation.data.title,
-  })
-
-  // Create default FAB config
-  await supabase.from('cms_page_fab_config').insert({
-    page_id: page.id,
-    is_enabled: false,
-  })
-
-  // Log activity
-  await logActivity({
-    userId: user.id,
-    action: 'create',
-    module: 'cms',
-    resourceType: 'page',
-    resourceId: page.id,
-    metadata: { title: validation.data.title, slug: validation.data.slug },
-  })
-
-  // Revalidate cache (non-blocking)
-  try {
-    revalidatePath('/admin/content/pages')
-  } catch (error) {
-    // Log error but don't fail the operation since page was created successfully
-    console.error('Cache revalidation failed:', error)
-  }
-
-  return { success: true, message: 'Page created successfully', data: { id: page.id } }
 }
 
 /**
@@ -940,6 +995,7 @@ export async function updatePage(
 
   // Detect if parent is changing
   const parentChanged = currentPage.parent_id !== newParentId
+  const slugChanged = newSlug && newSlug !== currentPage.slug
 
   // Prevent circular parent references
   if (newParentId && newParentId !== 'none' && newParentId !== '') {
@@ -949,15 +1005,18 @@ export async function updatePage(
     }
   }
 
-  // Build hierarchical slug if parent changed or slug changed
+  // Build hierarchical slug if parent changed OR slug changed
   let finalSlug = newSlug || currentPage.slug
 
-  if (parentChanged && newSlug) {
-    if (newParentId && newParentId !== 'none' && newParentId !== '') {
+  // If slug or parent changed, rebuild the hierarchical path
+  if (slugChanged || parentChanged) {
+    const effectiveParentId = newParentId !== undefined ? newParentId : currentPage.parent_id
+
+    if (effectiveParentId && effectiveParentId !== 'none' && effectiveParentId !== '') {
       const { data: parent } = await supabase
         .from('cms_pages')
         .select('slug')
-        .eq('id', newParentId)
+        .eq('id', effectiveParentId)
         .single()
 
       if (!parent) {
@@ -965,11 +1024,11 @@ export async function updatePage(
       }
 
       // Build hierarchical slug
-      const segment = extractSlugSegment(newSlug)
+      const segment = extractSlugSegment(newSlug || currentPage.slug)
       finalSlug = `${parent.slug}/${segment}`
     } else {
-      // Moved to root: use segment only
-      finalSlug = extractSlugSegment(newSlug)
+      // Root level page: use segment only
+      finalSlug = extractSlugSegment(newSlug || currentPage.slug)
     }
   }
 
@@ -1001,11 +1060,12 @@ export async function updatePage(
 
   // Validate input
   const sortOrderValue = formData.get('sort_order')
+  const descriptionValue = formData.get('description')
   const validation = UpdatePageSchema.safeParse({
     id: pageId,
     title: formData.get('title') || undefined,
     slug: finalSlug,
-    description: formData.get('description') || undefined,
+    description: descriptionValue !== null ? String(descriptionValue) : undefined,
     parent_id: newParentId || null,
     status: formData.get('status') || undefined,
     visibility: formData.get('visibility') || undefined,
@@ -1048,6 +1108,40 @@ export async function updatePage(
   if (error) {
     console.error('Error updating page:', error)
     return { success: false, message: 'Failed to update page. Please try again.' }
+  }
+
+  // Update SEO metadata if provided
+  const metaTitle = formData.get('meta_title')
+  const metaDescription = formData.get('meta_description')
+
+  if (metaTitle !== null || metaDescription !== null) {
+    // Check if SEO metadata exists
+    const { data: existingSeo } = await supabase
+      .from('cms_seo_metadata')
+      .select('id')
+      .eq('page_id', id)
+      .single()
+
+    const seoData: Record<string, unknown> = {}
+    if (metaTitle !== null) seoData.meta_title = String(metaTitle)
+    if (metaDescription !== null) seoData.meta_description = String(metaDescription)
+    seoData.updated_at = new Date().toISOString()
+
+    if (existingSeo) {
+      // Update existing SEO metadata
+      await supabase
+        .from('cms_seo_metadata')
+        .update(seoData)
+        .eq('page_id', id)
+    } else {
+      // Create new SEO metadata
+      await supabase
+        .from('cms_seo_metadata')
+        .insert({
+          page_id: id,
+          ...seoData,
+        })
+    }
   }
 
   // Cascade slug updates to children if slug changed
@@ -2780,14 +2874,8 @@ export async function getDeletedPages(options?: {
       created_at,
       updated_at,
       deleted_at,
-      creator:profiles!cms_pages_created_by_fkey (
-        full_name,
-        email
-      ),
-      deleter:profiles!cms_pages_deleted_by_fkey (
-        full_name,
-        email
-      ),
+      created_by,
+      deleted_by,
       cms_seo_metadata (
         seo_score
       )
@@ -2815,8 +2903,40 @@ export async function getDeletedPages(options?: {
     return { pages: [], total: 0, page, limit, totalPages: 0 }
   }
 
+  // Fetch creator and deleter profiles separately
+  const pagesWithProfiles = await Promise.all((data || []).map(async (page) => {
+    let creator = null
+    let deleter = null
+
+    // Fetch creator profile
+    if (page.created_by) {
+      const { data: creatorProfile } = await supabase
+        .from('profiles')
+        .select('full_name, email')
+        .eq('id', page.created_by)
+        .single()
+      creator = creatorProfile
+    }
+
+    // Fetch deleter profile
+    if (page.deleted_by) {
+      const { data: deleterProfile } = await supabase
+        .from('profiles')
+        .select('full_name, email')
+        .eq('id', page.deleted_by)
+        .single()
+      deleter = deleterProfile
+    }
+
+    return {
+      ...page,
+      creator,
+      deleter
+    }
+  }))
+
   return {
-    pages: data || [],
+    pages: pagesWithProfiles,
     total: total || 0,
     page,
     limit,

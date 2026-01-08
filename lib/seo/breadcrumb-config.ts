@@ -128,10 +128,11 @@ export const BREADCRUMB_CONFIG: BreadcrumbConfig = {
     { name: 'Blog', url: '/blog' },
   ],
 
-  // Careers
-  '/careers': [
+  // Careers (under More)
+  '/more/careers': [
     { name: 'Home', url: '/' },
-    { name: 'Careers', url: '/careers' },
+    { name: 'More', url: '/more' },
+    { name: 'Careers', url: '/more/careers' },
   ],
 
   // Our Colleges

@@ -51,7 +51,7 @@ const fallbackNavigation: NavItem[] = [
     label: 'More',
     href: '#',
     children: [
-      { id: 'careers', label: 'Careers', href: '/careers' },
+      { id: 'careers', label: 'Careers', href: '/more/careers' },
       { id: 'events', label: 'Events', href: '/events' },
       { id: 'gallery', label: 'Gallery', href: '/gallery' },
       { id: 'news', label: 'News & Updates', href: '/news' },

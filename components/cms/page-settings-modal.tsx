@@ -44,10 +44,10 @@ const pageSettingsSchema = z.object({
   slug: z
     .string()
     .min(1, 'Slug is required')
-    .max(500, 'Slug is too long') // Increased for hierarchical paths
+    .max(200, 'Slug is too long')
     .regex(
-      /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/,
-      'Slug must be lowercase with hyphens, paths separated by /'
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      'Slug must be lowercase with hyphens only (no slashes)'
     ),
   description: z.string().optional(),
   parent_id: z.string().uuid().nullable().optional(),
@@ -56,6 +56,8 @@ const pageSettingsSchema = z.object({
   show_in_navigation: z.boolean(),
   is_homepage: z.boolean(),
   external_url: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
+  meta_title: z.string().optional(),
+  meta_description: z.string().optional(),
 })
 
 type PageSettingsFormData = z.infer<typeof pageSettingsSchema>
@@ -87,11 +89,17 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
   // Check if this is a child page
   const isChildPage = !!page.parent_id
 
+  // Extract slug segment from full hierarchical path
+  const getSlugSegment = (fullSlug: string) => {
+    const parts = fullSlug.split('/')
+    return parts[parts.length - 1] // Return last segment
+  }
+
   const form = useForm<PageSettingsFormData>({
     resolver: zodResolver(pageSettingsSchema),
     defaultValues: {
       title: page.title,
-      slug: page.slug,
+      slug: getSlugSegment(page.slug), // Extract segment only
       description: page.description || '',
       parent_id: page.parent_id || null,
       visibility: page.visibility as 'public' | 'private' | 'password_protected',
@@ -99,10 +107,12 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
       show_in_navigation: page.show_in_navigation ?? true,
       is_homepage: page.is_homepage ?? false,
       external_url: page.external_url || '',
+      meta_title: '',
+      meta_description: '',
     },
   })
 
-  // Fetch children count and parent pages
+  // Fetch children count, parent pages, and SEO metadata
   useEffect(() => {
     async function fetchData() {
       const supabase = createClient()
@@ -124,18 +134,30 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
         .order('title')
 
       setParentPages(pages || [])
+
+      // Fetch SEO metadata
+      const { data: seoData } = await supabase
+        .from('cms_seo_metadata')
+        .select('meta_title, meta_description')
+        .eq('page_id', page.id)
+        .single()
+
+      if (seoData) {
+        form.setValue('meta_title', seoData.meta_title || '')
+        form.setValue('meta_description', seoData.meta_description || '')
+      }
     }
 
     if (open) {
       fetchData()
     }
-  }, [open, page.id])
+  }, [open, page.id, form])
 
   // Reset form when page data changes
   useEffect(() => {
     form.reset({
       title: page.title,
-      slug: page.slug,
+      slug: getSlugSegment(page.slug), // Extract segment only
       description: page.description || '',
       parent_id: page.parent_id || null,
       visibility: page.visibility as 'public' | 'private' | 'password_protected',
@@ -143,19 +165,22 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
       show_in_navigation: page.show_in_navigation ?? true,
       is_homepage: page.is_homepage ?? false,
       external_url: page.external_url || '',
+      meta_title: '',
+      meta_description: '',
     })
   }, [page, form])
 
   // Auto-generate slug from title
   const handleTitleChange = (value: string) => {
     const currentSlug = form.getValues('slug')
+    const currentPageSegment = getSlugSegment(page.slug)
     const expectedSlug = page.title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '')
 
     // Only auto-generate if slug hasn't been manually changed
-    if (currentSlug === expectedSlug || currentSlug === page.slug) {
+    if (currentSlug === expectedSlug || currentSlug === currentPageSegment) {
       const newSlug = value
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
@@ -179,6 +204,8 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
       formData.append('show_in_navigation', String(data.show_in_navigation))
       formData.append('is_homepage', String(data.is_homepage))
       formData.append('external_url', data.external_url || '')
+      formData.append('meta_title', data.meta_title || '')
+      formData.append('meta_description', data.meta_description || '')
 
       const result = await updatePage({ success: false }, formData)
 
@@ -272,6 +299,56 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
                   </FormItem>
                 )}
               />
+
+              {/* SEO Metadata Fields */}
+              <div className="space-y-4 pt-2">
+                <div className="flex items-center gap-2 pb-2 border-b border-border/50">
+                  <div className="h-1 w-1 rounded-full bg-primary" />
+                  <h4 className="text-sm font-semibold text-foreground">SEO Metadata</h4>
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="meta_title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Meta Title</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Custom SEO title (optional)"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription className="text-xs">
+                        Overrides page title in search results. Leave blank to use page title.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="meta_description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Meta Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="SEO meta description (optional)"
+                          className="resize-none"
+                          rows={2}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription className="text-xs">
+                        Shown in search results. Recommended: 150-160 characters.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               {/* Current Full Path Display */}
               <div className="p-3 bg-muted rounded-md">

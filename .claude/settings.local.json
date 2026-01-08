@@ -126,7 +126,9 @@
       "Bash(if exist \".next\\\\dev\\\\lock\" del \".next\\\\dev\\\\lock\")",
       "Bash(Select-Object -First 30)",
       "Bash(git revert:*)",
-      "Bash(git fetch:*)"
+      "Bash(git fetch:*)",
+      "Bash(git commit:*)",
+      "Bash(del \".next\\\\dev\\\\lock\")"
     ],
     "deny": [],
     "ask": [],

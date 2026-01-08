@@ -14,13 +14,6 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
-      // Existing redirect
-      {
-        source: '/more/careers',
-        destination: '/careers',
-        permanent: true,
-      },
-
       // === Legacy Content URLs → Homepage ===
       {
         source: '/the-rise-of-artificial-intelligence-in-healthcare',
