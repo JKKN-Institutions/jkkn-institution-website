@@ -20,6 +20,8 @@ import {
   Sparkles,
   Eye,
   EyeOff,
+  Sliders,
+  Wand2,
 } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -33,6 +35,8 @@ import {
 } from '../elementor/style-controls'
 import type { GlassSettings } from '@/lib/cms/styling-types'
 import { MotionControls, type MotionSettings } from '../elementor/motion-controls'
+import { TransformControls, type TransformSettings } from '../elementor/transform-controls'
+import { FilterControls, type FilterSettings } from '../elementor/filter-controls'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
@@ -100,19 +104,21 @@ interface BlockStyles {
     borderBottomLeftRadius?: string | number
   }
   background?: {
-    backgroundColor?: string
-    backgroundImage?: string
-    backgroundPosition?: string
-    backgroundSize?: string
-    backgroundRepeat?: string
-    backgroundGradient?: string
-    backgroundOverlay?: string
-    backgroundOverlayOpacity?: number
+    color?: string
+    image?: string
+    position?: string
+    size?: string
+    repeat?: string
+    gradient?: string
+    overlay?: string
+    overlayOpacity?: number
   }
   shadow?: {
     boxShadow?: string
   }
   glass?: GlassSettings
+  transform?: TransformSettings
+  filters?: FilterSettings
 }
 
 export function PropsPanel() {
@@ -328,6 +334,22 @@ export function PropsPanel() {
             <MotionControls
               motion={motion}
               onChange={updateMotion}
+            />
+          </AccordionSection>
+
+          {/* Transform Section */}
+          <AccordionSection value="transform" icon={Move} title="Transform">
+            <TransformControls
+              transform={styles.transform}
+              onChange={(transform) => updateStyles('transform', transform)}
+            />
+          </AccordionSection>
+
+          {/* Filters Section */}
+          <AccordionSection value="filters" icon={Wand2} title="Filters">
+            <FilterControls
+              filters={styles.filters}
+              onChange={(filters) => updateStyles('filters', filters)}
             />
           </AccordionSection>
 

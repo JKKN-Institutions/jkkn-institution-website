@@ -19,6 +19,7 @@ export interface BlockTypography {
   letterSpacing?: string
   textTransform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize'
   textDecoration?: 'none' | 'underline' | 'overline' | 'line-through'
+  textStyle?: 'normal' | 'bullet-list' | 'number-list' | 'quote'
 }
 
 export interface BlockSpacing {
@@ -75,12 +76,35 @@ export interface BlockShadow {
   preset?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'inner'
 }
 
+export interface BlockTransform {
+  rotate?: number      // -180 to 180 degrees
+  scaleX?: number      // 0.1 to 2
+  scaleY?: number      // 0.1 to 2
+  skewX?: number       // -45 to 45 degrees
+  skewY?: number       // -45 to 45 degrees
+  translateX?: number  // pixels
+  translateY?: number  // pixels
+}
+
+export interface BlockFilters {
+  blur?: number          // 0-10px
+  brightness?: number    // 0-200%
+  contrast?: number      // 0-200%
+  saturate?: number      // 0-200%
+  grayscale?: number     // 0-100%
+  hueRotate?: number     // 0-360deg
+  invert?: number        // 0-100%
+  sepia?: number         // 0-100%
+}
+
 export interface BlockStyles {
   typography?: BlockTypography
   spacing?: BlockSpacing
   background?: BlockBackground
   border?: BlockBorder
   shadow?: BlockShadow
+  transform?: BlockTransform
+  filters?: BlockFilters
   // Additional style properties
   opacity?: number
   overflow?: 'visible' | 'hidden' | 'scroll' | 'auto'
@@ -144,9 +168,27 @@ export function applyBlockStyles(styles?: BlockStyles): CSSProperties {
     if (typography.textTransform) cssProperties.textTransform = typography.textTransform
     if (typography.textDecoration) cssProperties.textDecoration = typography.textDecoration
     if (typography.fontStyle) cssProperties.fontStyle = typography.fontStyle
+
+    // Text Style (Lists, Quote)
+    if (typography.textStyle === 'bullet-list') {
+      cssProperties.listStyleType = 'disc'
+      cssProperties.paddingLeft = '1.5rem'
+    }
+    if (typography.textStyle === 'number-list') {
+      cssProperties.listStyleType = 'decimal'
+      cssProperties.paddingLeft = '1.5rem'
+    }
+    if (typography.textStyle === 'quote') {
+      cssProperties.borderLeft = '4px solid #e5e7eb'
+      cssProperties.paddingLeft = '1rem'
+      cssProperties.fontStyle = 'italic'
+      cssProperties.color = '#6b7280'
+    }
   }
 
   // Spacing - convert numeric values to pixels
+  // IMPORTANT: Avoid mixing shorthand (padding, margin) with longhand (paddingLeft, marginTop, etc.)
+  // Prioritize individual properties over shorthand to prevent React warnings
   if (styles.spacing) {
     const { spacing } = styles
     const toPixels = (value?: string | number): string | undefined => {
@@ -154,16 +196,38 @@ export function applyBlockStyles(styles?: BlockStyles): CSSProperties {
       if (typeof value === 'number') return `${value}px`
       return value
     }
-    if (spacing.padding !== undefined) cssProperties.padding = toPixels(spacing.padding)
-    if (spacing.paddingTop !== undefined) cssProperties.paddingTop = toPixels(spacing.paddingTop)
-    if (spacing.paddingRight !== undefined) cssProperties.paddingRight = toPixels(spacing.paddingRight)
-    if (spacing.paddingBottom !== undefined) cssProperties.paddingBottom = toPixels(spacing.paddingBottom)
-    if (spacing.paddingLeft !== undefined) cssProperties.paddingLeft = toPixels(spacing.paddingLeft)
-    if (spacing.margin !== undefined) cssProperties.margin = toPixels(spacing.margin)
-    if (spacing.marginTop !== undefined) cssProperties.marginTop = toPixels(spacing.marginTop)
-    if (spacing.marginRight !== undefined) cssProperties.marginRight = toPixels(spacing.marginRight)
-    if (spacing.marginBottom !== undefined) cssProperties.marginBottom = toPixels(spacing.marginBottom)
-    if (spacing.marginLeft !== undefined) cssProperties.marginLeft = toPixels(spacing.marginLeft)
+
+    // Check if any individual padding properties are set
+    const hasIndividualPadding = spacing.paddingTop !== undefined ||
+                                  spacing.paddingRight !== undefined ||
+                                  spacing.paddingBottom !== undefined ||
+                                  spacing.paddingLeft !== undefined
+
+    // Apply padding: use individual properties if any are set, otherwise use shorthand
+    if (hasIndividualPadding) {
+      if (spacing.paddingTop !== undefined) cssProperties.paddingTop = toPixels(spacing.paddingTop)
+      if (spacing.paddingRight !== undefined) cssProperties.paddingRight = toPixels(spacing.paddingRight)
+      if (spacing.paddingBottom !== undefined) cssProperties.paddingBottom = toPixels(spacing.paddingBottom)
+      if (spacing.paddingLeft !== undefined) cssProperties.paddingLeft = toPixels(spacing.paddingLeft)
+    } else if (spacing.padding !== undefined) {
+      cssProperties.padding = toPixels(spacing.padding)
+    }
+
+    // Check if any individual margin properties are set
+    const hasIndividualMargin = spacing.marginTop !== undefined ||
+                                 spacing.marginRight !== undefined ||
+                                 spacing.marginBottom !== undefined ||
+                                 spacing.marginLeft !== undefined
+
+    // Apply margin: use individual properties if any are set, otherwise use shorthand
+    if (hasIndividualMargin) {
+      if (spacing.marginTop !== undefined) cssProperties.marginTop = toPixels(spacing.marginTop)
+      if (spacing.marginRight !== undefined) cssProperties.marginRight = toPixels(spacing.marginRight)
+      if (spacing.marginBottom !== undefined) cssProperties.marginBottom = toPixels(spacing.marginBottom)
+      if (spacing.marginLeft !== undefined) cssProperties.marginLeft = toPixels(spacing.marginLeft)
+    } else if (spacing.margin !== undefined) {
+      cssProperties.margin = toPixels(spacing.margin)
+    }
   }
 
   // Background
@@ -184,6 +248,8 @@ export function applyBlockStyles(styles?: BlockStyles): CSSProperties {
   }
 
   // Border - convert numeric values to pixels
+  // IMPORTANT: Avoid mixing shorthand (borderWidth, borderRadius) with longhand properties
+  // Prioritize individual properties over shorthand to prevent React warnings
   if (styles.border) {
     const { border } = styles
     const toPixels = (value?: string | number): string | undefined => {
@@ -191,27 +257,54 @@ export function applyBlockStyles(styles?: BlockStyles): CSSProperties {
       if (typeof value === 'number') return `${value}px`
       return value
     }
-    // Handle various border property naming conventions
-    if (border.width !== undefined) cssProperties.borderWidth = toPixels(border.width)
-    if (border.borderWidth !== undefined) cssProperties.borderWidth = toPixels(border.borderWidth)
-    if (border.borderTopWidth !== undefined) cssProperties.borderTopWidth = toPixels(border.borderTopWidth)
-    if (border.borderRightWidth !== undefined) cssProperties.borderRightWidth = toPixels(border.borderRightWidth)
-    if (border.borderBottomWidth !== undefined) cssProperties.borderBottomWidth = toPixels(border.borderBottomWidth)
-    if (border.borderLeftWidth !== undefined) cssProperties.borderLeftWidth = toPixels(border.borderLeftWidth)
+
+    // Check if any individual border width properties are set
+    const hasIndividualBorderWidth = border.borderTopWidth !== undefined ||
+                                      border.borderRightWidth !== undefined ||
+                                      border.borderBottomWidth !== undefined ||
+                                      border.borderLeftWidth !== undefined
+
+    // Apply border width: use individual properties if any are set, otherwise use shorthand
+    if (hasIndividualBorderWidth) {
+      if (border.borderTopWidth !== undefined) cssProperties.borderTopWidth = toPixels(border.borderTopWidth)
+      if (border.borderRightWidth !== undefined) cssProperties.borderRightWidth = toPixels(border.borderRightWidth)
+      if (border.borderBottomWidth !== undefined) cssProperties.borderBottomWidth = toPixels(border.borderBottomWidth)
+      if (border.borderLeftWidth !== undefined) cssProperties.borderLeftWidth = toPixels(border.borderLeftWidth)
+    } else {
+      if (border.width !== undefined) cssProperties.borderWidth = toPixels(border.width)
+      if (border.borderWidth !== undefined) cssProperties.borderWidth = toPixels(border.borderWidth)
+    }
+
+    // Border style and color (no conflicts)
     if (border.style) cssProperties.borderStyle = border.style
     if (border.borderStyle) cssProperties.borderStyle = border.borderStyle
     if (border.color) cssProperties.borderColor = border.color
     if (border.borderColor) cssProperties.borderColor = border.borderColor
-    if (border.radius !== undefined) cssProperties.borderRadius = toPixels(border.radius)
-    if (border.borderRadius !== undefined) cssProperties.borderRadius = toPixels(border.borderRadius)
-    if (border.radiusTopLeft !== undefined) cssProperties.borderTopLeftRadius = toPixels(border.radiusTopLeft)
-    if (border.borderTopLeftRadius !== undefined) cssProperties.borderTopLeftRadius = toPixels(border.borderTopLeftRadius)
-    if (border.radiusTopRight !== undefined) cssProperties.borderTopRightRadius = toPixels(border.radiusTopRight)
-    if (border.borderTopRightRadius !== undefined) cssProperties.borderTopRightRadius = toPixels(border.borderTopRightRadius)
-    if (border.radiusBottomLeft !== undefined) cssProperties.borderBottomLeftRadius = toPixels(border.radiusBottomLeft)
-    if (border.radiusBottomRight !== undefined) cssProperties.borderBottomRightRadius = toPixels(border.radiusBottomRight)
-    if (border.borderBottomRightRadius !== undefined) cssProperties.borderBottomRightRadius = toPixels(border.borderBottomRightRadius)
-    if (border.borderBottomLeftRadius !== undefined) cssProperties.borderBottomLeftRadius = toPixels(border.borderBottomLeftRadius)
+
+    // Check if any individual border radius properties are set
+    const hasIndividualBorderRadius = border.radiusTopLeft !== undefined ||
+                                       border.borderTopLeftRadius !== undefined ||
+                                       border.radiusTopRight !== undefined ||
+                                       border.borderTopRightRadius !== undefined ||
+                                       border.radiusBottomLeft !== undefined ||
+                                       border.borderBottomLeftRadius !== undefined ||
+                                       border.radiusBottomRight !== undefined ||
+                                       border.borderBottomRightRadius !== undefined
+
+    // Apply border radius: use individual properties if any are set, otherwise use shorthand
+    if (hasIndividualBorderRadius) {
+      if (border.radiusTopLeft !== undefined) cssProperties.borderTopLeftRadius = toPixels(border.radiusTopLeft)
+      if (border.borderTopLeftRadius !== undefined) cssProperties.borderTopLeftRadius = toPixels(border.borderTopLeftRadius)
+      if (border.radiusTopRight !== undefined) cssProperties.borderTopRightRadius = toPixels(border.radiusTopRight)
+      if (border.borderTopRightRadius !== undefined) cssProperties.borderTopRightRadius = toPixels(border.borderTopRightRadius)
+      if (border.radiusBottomLeft !== undefined) cssProperties.borderBottomLeftRadius = toPixels(border.radiusBottomLeft)
+      if (border.borderBottomLeftRadius !== undefined) cssProperties.borderBottomLeftRadius = toPixels(border.borderBottomLeftRadius)
+      if (border.radiusBottomRight !== undefined) cssProperties.borderBottomRightRadius = toPixels(border.radiusBottomRight)
+      if (border.borderBottomRightRadius !== undefined) cssProperties.borderBottomRightRadius = toPixels(border.borderBottomRightRadius)
+    } else {
+      if (border.radius !== undefined) cssProperties.borderRadius = toPixels(border.radius)
+      if (border.borderRadius !== undefined) cssProperties.borderRadius = toPixels(border.borderRadius)
+    }
   }
 
   // Shadow
@@ -223,6 +316,71 @@ export function applyBlockStyles(styles?: BlockStyles): CSSProperties {
       cssProperties.boxShadow = shadow.boxShadow
     } else if (shadow.value) {
       cssProperties.boxShadow = shadow.value
+    }
+  }
+
+  // Transform
+  if (styles.transform) {
+    const { transform } = styles
+    const transforms: string[] = []
+
+    if (transform.rotate !== undefined && transform.rotate !== 0) {
+      transforms.push(`rotate(${transform.rotate}deg)`)
+    }
+    if (transform.scaleX !== undefined || transform.scaleY !== undefined) {
+      const scaleX = transform.scaleX ?? 1
+      const scaleY = transform.scaleY ?? 1
+      transforms.push(`scale(${scaleX}, ${scaleY})`)
+    }
+    if (transform.skewX !== undefined && transform.skewX !== 0) {
+      transforms.push(`skewX(${transform.skewX}deg)`)
+    }
+    if (transform.skewY !== undefined && transform.skewY !== 0) {
+      transforms.push(`skewY(${transform.skewY}deg)`)
+    }
+    if (transform.translateX !== undefined || transform.translateY !== undefined) {
+      const translateX = transform.translateX ?? 0
+      const translateY = transform.translateY ?? 0
+      transforms.push(`translate(${translateX}px, ${translateY}px)`)
+    }
+
+    if (transforms.length > 0) {
+      cssProperties.transform = transforms.join(' ')
+    }
+  }
+
+  // Filters
+  if (styles.filters) {
+    const { filters } = styles
+    const filterList: string[] = []
+
+    if (filters.blur !== undefined && filters.blur > 0) {
+      filterList.push(`blur(${filters.blur}px)`)
+    }
+    if (filters.brightness !== undefined && filters.brightness !== 100) {
+      filterList.push(`brightness(${filters.brightness}%)`)
+    }
+    if (filters.contrast !== undefined && filters.contrast !== 100) {
+      filterList.push(`contrast(${filters.contrast}%)`)
+    }
+    if (filters.saturate !== undefined && filters.saturate !== 100) {
+      filterList.push(`saturate(${filters.saturate}%)`)
+    }
+    if (filters.grayscale !== undefined && filters.grayscale > 0) {
+      filterList.push(`grayscale(${filters.grayscale}%)`)
+    }
+    if (filters.hueRotate !== undefined && filters.hueRotate > 0) {
+      filterList.push(`hue-rotate(${filters.hueRotate}deg)`)
+    }
+    if (filters.invert !== undefined && filters.invert > 0) {
+      filterList.push(`invert(${filters.invert}%)`)
+    }
+    if (filters.sepia !== undefined && filters.sepia > 0) {
+      filterList.push(`sepia(${filters.sepia}%)`)
+    }
+
+    if (filterList.length > 0) {
+      cssProperties.filter = filterList.join(' ')
     }
   }
 

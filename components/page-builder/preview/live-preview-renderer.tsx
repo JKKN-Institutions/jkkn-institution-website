@@ -5,8 +5,9 @@ import { getComponent, getComponentEntry, isFullWidthComponent } from '@/lib/cms
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { applyBlockStyles, type BlockStyles } from '@/components/page-builder/utils/style-applicator'
+import { filterBuilderProps } from '@/lib/cms/filter-builder-props'
 import { AnimationWrapper } from '@/components/cms-blocks/animations/animation-wrapper'
-import type { BlockAnimation, BlockData } from '@/lib/cms/registry-types'
+import type { BlockAnimation, BlockData, CmsPageSettings } from '@/lib/cms/registry-types'
 import { PageTypographyProvider } from '@/lib/cms/page-typography-context'
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { DEFAULT_FONT_FAMILY } from '@/lib/cms/page-typography-types'
@@ -25,6 +26,8 @@ interface LivePreviewRendererProps {
   blocks: BlockData[]
   /** Page-level typography settings */
   pageTypography?: PageTypographySettings
+  /** Page-level styling settings (background, glassmorphism, layout) */
+  pageSettings?: CmsPageSettings
 }
 
 function BlockSkeleton() {
@@ -177,7 +180,7 @@ function RenderBlock({ block, isNested = false }: { block: BlockDataWithChildren
         <BlockWrapper>
           <BlockErrorBoundary componentName={block.component_name}>
             <Suspense fallback={<BlockSkeleton />}>
-              <Component {...block.props} id={block.id} isEditing={false}>
+              <Component {...filterBuilderProps(block.props)} id={block.id} isEditing={false}>
                 {block.children
                   .filter((child) => child.is_visible)
                   .map((child) => (
@@ -197,7 +200,7 @@ function RenderBlock({ block, isNested = false }: { block: BlockDataWithChildren
       <BlockWrapper>
         <BlockErrorBoundary componentName={block.component_name}>
           <Suspense fallback={<BlockSkeleton />}>
-            <Component {...block.props} id={block.id} isEditing={false} />
+            <Component {...filterBuilderProps(block.props)} id={block.id} isEditing={false} />
           </Suspense>
         </BlockErrorBoundary>
       </BlockWrapper>

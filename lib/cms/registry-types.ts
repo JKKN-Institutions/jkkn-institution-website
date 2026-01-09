@@ -1716,3 +1716,51 @@ export function blocksToPageBlocks(blocks: BlockData[]): PageBlock[] {
 export function pageBlocksToBlockData(blocks: PageBlock[]): BlockData[] {
   return blocks.map(pageBlockToBlockData)
 }
+
+// ==========================================
+// Page-Level Settings
+// ==========================================
+
+/**
+ * Page-level styling settings for the page builder
+ * Controls background, glassmorphism, layout, and custom CSS
+ */
+export interface CmsPageSettings {
+  // Background
+  background?: {
+    type: 'color' | 'gradient' | 'image'
+    color?: string
+    gradient?: string              // Tailwind class or CSS gradient
+    gradientStops?: {              // For visual gradient builder
+      color: string
+      position: number             // 0-100%
+    }[]
+    image?: string
+    imagePosition?: string
+    imageSize?: string
+  }
+
+  // Glassmorphism
+  glassmorphism?: {
+    enabled: boolean
+    preset?: 'subtle' | 'medium' | 'intense' | 'colorful'
+    blur?: number                  // 4-24
+    transparency?: number          // 0-100
+    borderGlow?: boolean
+  }
+
+  // Page Layout
+  layout?: {
+    minHeight?: string
+    maxWidth?: string
+    padding?: {
+      top?: number
+      bottom?: number
+      left?: number
+      right?: number
+    }
+  }
+
+  // Custom Styling
+  customCss?: string
+}

@@ -136,7 +136,10 @@
   },
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
-    "supabase",
+    "Main Supabase Project",
+    "Dental College Supabase Project",
+    "Pharmacy College Supabase Project",
+    "Engineering College Supabase Project",
     "sequential-thinking",
     "actor-critic-thinking",
     "next-devtools",

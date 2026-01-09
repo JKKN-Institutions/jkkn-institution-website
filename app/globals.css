@@ -1549,6 +1549,270 @@
     border-radius: 0.5rem;
     margin: 1rem 0;
   }
+
+  /* Tables */
+  table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    margin: 1rem 0;
+    overflow: hidden;
+    border: 2px solid #cbd5e1; /* Tailwind gray-300 */
+  }
+
+  th,
+  td {
+    min-width: 1em;
+    border: 1px solid #cbd5e1;
+    padding: 0.5rem 0.75rem;
+    vertical-align: top;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  th {
+    font-weight: 600;
+    text-align: left;
+    background-color: #f1f5f9; /* Tailwind gray-100 */
+  }
+
+  /* Dark mode table styles */
+  .dark & table {
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .dark & th,
+  .dark & td {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .dark & th {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  /* Selected cell highlight */
+  .selectedCell:after {
+    background: rgba(59, 130, 246, 0.1);
+    content: "";
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 2;
+  }
+
+  /* Column resize handle */
+  .column-resize-handle {
+    background-color: #3b82f6;
+    bottom: -2px;
+    position: absolute;
+    right: -2px;
+    pointer-events: none;
+    top: 0;
+    width: 4px;
+  }
+
+  /* Table wrapper for horizontal scroll on mobile */
+  .tableWrapper {
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+
+  /* ===== ADVANCED TABLE STYLES ===== */
+
+  /* Zebra striping */
+  table.table-striped tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+  }
+
+  .dark & table.table-striped tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+
+  /* Hover effect */
+  table.table-hover tbody tr:hover {
+    background-color: #f3f4f6;
+    transition: background-color 0.2s ease;
+  }
+
+  .dark & table.table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  /* Border styles */
+  table.border-none {
+    border: none !important;
+  }
+
+  table.border-none th,
+  table.border-none td {
+    border: none !important;
+  }
+
+  table.border-dashed {
+    border-style: dashed;
+  }
+
+  table.border-dashed th,
+  table.border-dashed td {
+    border-style: dashed;
+  }
+
+  table.border-dotted {
+    border-style: dotted;
+  }
+
+  table.border-dotted th,
+  table.border-dotted td {
+    border-style: dotted;
+  }
+
+  /* Cell alignment */
+  table td.align-left,
+  table th.align-left {
+    text-align: left;
+  }
+
+  table td.align-center,
+  table th.align-center {
+    text-align: center;
+  }
+
+  table td.align-right,
+  table th.align-right {
+    text-align: right;
+  }
+
+  table td.align-justify,
+  table th.align-justify {
+    text-align: justify;
+  }
+
+  /* Vertical alignment */
+  table td.valign-top,
+  table th.valign-top {
+    vertical-align: top;
+  }
+
+  table td.valign-middle,
+  table th.valign-middle {
+    vertical-align: middle;
+  }
+
+  table td.valign-bottom,
+  table th.valign-bottom {
+    vertical-align: bottom;
+  }
+
+  /* Cell padding utilities */
+  table.padding-compact td,
+  table.padding-compact th {
+    padding: 0.25rem 0.5rem;
+  }
+
+  table.padding-normal td,
+  table.padding-normal th {
+    padding: 0.5rem 0.75rem;
+  }
+
+  table.padding-relaxed td,
+  table.padding-relaxed th {
+    padding: 0.75rem 1rem;
+  }
+
+  /* Merged cells */
+  table td[colspan],
+  table th[colspan],
+  table td[rowspan],
+  table th[rowspan] {
+    position: relative;
+  }
+
+  /* Merged cell indicator */
+  .merged-cell {
+    outline: 2px solid rgba(59, 130, 246, 0.3);
+    outline-offset: -2px;
+  }
+
+  /* Template-specific styles */
+
+  /* Calendar table */
+  table.calendar-table th {
+    text-align: center;
+    font-weight: 600;
+    background-color: #e0f2fe;
+  }
+
+  .dark & table.calendar-table th {
+    background-color: rgba(96, 165, 250, 0.15);
+  }
+
+  table.calendar-table td {
+    min-height: 80px;
+    vertical-align: top;
+    padding: 0.5rem;
+  }
+
+  /* Pricing table */
+  table.pricing-table {
+    border-collapse: separate;
+    border-spacing: 0.5rem;
+  }
+
+  table.pricing-table th {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+
+  table.pricing-table td {
+    text-align: center;
+    padding: 0.75rem;
+  }
+
+  /* Comparison table */
+  table.comparison-table th:first-child,
+  table.comparison-table td:first-child {
+    font-weight: 600;
+    background-color: #f1f5f9;
+  }
+
+  .dark & table.comparison-table th:first-child,
+  .dark & table.comparison-table td:first-child {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  /* Timeline table */
+  table.timeline-table td:first-child {
+    font-weight: 600;
+    white-space: nowrap;
+    color: #3b82f6;
+  }
+
+  .dark & table.timeline-table td:first-child {
+    color: #60a5fa;
+  }
+
+  /* Responsive table wrapper */
+  table.table-responsive {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    table.table-responsive {
+      font-size: 0.875rem;
+    }
+
+    table.table-responsive td,
+    table.table-responsive th {
+      padding: 0.5rem;
+    }
+  }
 }
 
 /* ===== BUG REPORTER WIDGET POSITIONING ===== */

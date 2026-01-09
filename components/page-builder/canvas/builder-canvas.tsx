@@ -22,6 +22,7 @@ import type { BlockData } from '@/lib/cms/registry-types'
 import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Plus, Loader2 } from 'lucide-react'
+import { filterBuilderProps } from '@/lib/cms/filter-builder-props'
 import {
   applyBlockStyles,
   applyMotionStyles,
@@ -185,7 +186,7 @@ function SortableBlock({
           <BlockErrorBoundary blockId={block.id} blockName={entry.displayName}>
             <Suspense fallback={<BlockSkeleton />}>
               <Component
-                {...block.props}
+                {...filterBuilderProps(block.props)}
                 id={block.id}
                 isEditing={!isPreviewMode}
                 isSelected={isSelected}
@@ -352,7 +353,80 @@ export function BuilderCanvas() {
     zoom,
   } = usePageBuilder()
 
-  const { blocks, selectedBlockId, isPreviewMode } = state
+  const { blocks, selectedBlockId, isPreviewMode, pageSettings } = state
+
+  // Generate page wrapper styles from page settings
+  const getPageWrapperStyles = (): CSSProperties => {
+    if (!pageSettings) return {}
+
+    const styles: CSSProperties = {}
+
+    // Background
+    if (pageSettings.background?.color) {
+      styles.backgroundColor = pageSettings.background.color
+    }
+    if (pageSettings.background?.gradient) {
+      // Handle both Tailwind classes and CSS gradients
+      if (!pageSettings.background.gradient.startsWith('bg-')) {
+        styles.backgroundImage = pageSettings.background.gradient
+      }
+    }
+    if (pageSettings.background?.image) {
+      styles.backgroundImage = `url(${pageSettings.background.image})`
+      if (pageSettings.background.imagePosition) {
+        styles.backgroundPosition = pageSettings.background.imagePosition
+      }
+      if (pageSettings.background.imageSize) {
+        styles.backgroundSize = pageSettings.background.imageSize
+      }
+    }
+
+    // Layout
+    if (pageSettings.layout?.minHeight) {
+      styles.minHeight = pageSettings.layout.minHeight
+    }
+    if (pageSettings.layout?.maxWidth) {
+      styles.maxWidth = pageSettings.layout.maxWidth
+      styles.marginLeft = 'auto'
+      styles.marginRight = 'auto'
+    }
+    if (pageSettings.layout?.padding) {
+      const { top, bottom, left, right } = pageSettings.layout.padding
+      styles.paddingTop = top ? `${top}px` : undefined
+      styles.paddingBottom = bottom ? `${bottom}px` : undefined
+      styles.paddingLeft = left ? `${left}px` : undefined
+      styles.paddingRight = right ? `${right}px` : undefined
+    }
+
+    // Glassmorphism
+    if (pageSettings.glassmorphism?.enabled) {
+      const { blur = 12, transparency = 80 } = pageSettings.glassmorphism
+      styles.backdropFilter = `blur(${blur}px)`
+      styles.backgroundColor = `rgba(255, 255, 255, ${transparency / 100})`
+      if (pageSettings.glassmorphism.borderGlow) {
+        styles.border = '1px solid rgba(255, 255, 255, 0.3)'
+        styles.boxShadow = '0 8px 32px 0 rgba(31, 38, 135, 0.15)'
+      }
+    }
+
+    return styles
+  }
+
+  const getPageWrapperClasses = (): string => {
+    if (!pageSettings) return ''
+
+    const classes: string[] = []
+
+    // Tailwind gradient classes
+    if (pageSettings.background?.gradient?.startsWith('bg-')) {
+      classes.push(pageSettings.background.gradient)
+    }
+
+    return classes.join(' ')
+  }
+
+  const pageWrapperStyles = getPageWrapperStyles()
+  const pageWrapperClasses = getPageWrapperClasses()
 
   // Calculate zoom transform style
   const zoomStyle: CSSProperties = zoom !== 100
@@ -448,7 +522,10 @@ export function BuilderCanvas() {
 
   if (rootBlocks.length === 0 && !isPreviewMode) {
     return (
-      <div style={zoomStyle}>
+      <div
+        className={pageWrapperClasses}
+        style={{ ...zoomStyle, ...pageWrapperStyles }}
+      >
         <EmptyCanvas
           onAddBlock={(name) => addBlock(name)}
           onBrowseTemplates={handleBrowseTemplates}
@@ -462,8 +539,11 @@ export function BuilderCanvas() {
   // This renders blocks exactly as they appear on the live site
   if (isPreviewMode) {
     return (
-      <div className="min-h-full" style={zoomStyle}>
-        <LivePreviewRenderer blocks={blocks} />
+      <div
+        className={cn('min-h-full', pageWrapperClasses)}
+        style={{ ...zoomStyle, ...pageWrapperStyles }}
+      >
+        <LivePreviewRenderer blocks={blocks} pageSettings={pageSettings} />
       </div>
     )
   }
@@ -473,9 +553,10 @@ export function BuilderCanvas() {
     <div
       className={cn(
         'min-h-full',
-        'p-4'
+        'p-4',
+        pageWrapperClasses
       )}
-      style={zoomStyle}
+      style={{ ...zoomStyle, ...pageWrapperStyles }}
       onClick={handleCanvasClick}
     >
       <BlockTree

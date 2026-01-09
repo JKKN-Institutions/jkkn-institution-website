@@ -658,7 +658,15 @@ function PageBuilderContent({
   const handlePresetSelect = useCallback((preset: LayoutPreset) => {
     // Add each block from the preset to the page
     preset.blocks.forEach((presetBlock) => {
-      addBlock(presetBlock.component_name, undefined, presetBlock.props)
+      addBlock(
+        presetBlock.component_name,
+        undefined,                           // insertAt
+        presetBlock.props,                   // props
+        undefined,                           // parentId
+        presetBlock.responsive_settings,     // responsive_settings
+        presetBlock.custom_css,              // custom_css
+        presetBlock.custom_classes           // custom_classes
+      )
     })
   }, [addBlock])
 

@@ -22,6 +22,10 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Switch } from '@/components/ui/switch'
 import {
   Settings,
   Smartphone,
@@ -34,7 +38,8 @@ import {
   Search,
   MousePointerClick,
   Type,
-  Footprints
+  Footprints,
+  Palette
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { PropsPanel } from './properties/props-panel'
@@ -87,7 +92,7 @@ export function UnifiedRightPanel({
   initialTypography,
   initialFooterSettings,
 }: UnifiedRightPanelProps) {
-  const { state, updateBlock, selectedBlock } = usePageBuilder()
+  const { state, updateBlock, selectedBlock, updatePageSettings } = usePageBuilder()
   const [activeBreakpoint, setActiveBreakpoint] = useState<DeviceBreakpoint>('desktop')
   const [expandedSections, setExpandedSections] = useState<string[]>(['props'])
 
@@ -329,6 +334,26 @@ export function UnifiedRightPanel({
                 </AccordionContent>
               </AccordionItem>
 
+              {/* Page Styling Section */}
+              <AccordionItem value="page-styling" className="border rounded-lg bg-card shadow-sm">
+                <AccordionTrigger className="px-4 py-3.5 hover:no-underline hover:bg-muted/50 transition-colors">
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex items-center justify-center h-7 w-7 rounded-md bg-muted">
+                      <Palette className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                    <span className="font-semibold text-sm">Page Styling</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="p-0">
+                  <div className="max-h-[600px] overflow-y-auto">
+                    <PageStylingControls
+                      settings={state.pageSettings}
+                      onChange={(settings) => updatePageSettings(settings)}
+                    />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
               {/* FAB Section */}
               <AccordionItem value="fab" className="border rounded-lg bg-card shadow-sm">
                 <AccordionTrigger className="px-4 py-3.5 hover:no-underline hover:bg-muted/50 transition-colors">
@@ -423,3 +448,288 @@ export function UnifiedRightPanel({
 // Used in the "Responsive Design" accordion section for component mode
 
 // Note: Placeholder ResponsivePropsEditor function removed - using real import instead
+
+// ============================================================================
+// PageStylingControls Component
+// ============================================================================
+
+interface PageStylingControlsProps {
+  settings?: import('@/lib/cms/registry-types').CmsPageSettings
+  onChange: (settings: import('@/lib/cms/registry-types').CmsPageSettings) => void
+}
+
+function PageStylingControls({ settings, onChange }: PageStylingControlsProps) {
+  const [bgTab, setBgTab] = useState<'color' | 'gradient' | 'image'>('color')
+
+  const updateBackground = (key: string, value: any) => {
+    onChange({
+      ...settings,
+      background: { ...settings?.background, type: bgTab, [key]: value }
+    })
+  }
+
+  const updateGlassmorphism = (key: string, value: any) => {
+    onChange({
+      ...settings,
+      glassmorphism: { enabled: false, ...settings?.glassmorphism, [key]: value }
+    })
+  }
+
+  const updateLayout = (key: string, value: any) => {
+    onChange({
+      ...settings,
+      layout: { ...settings?.layout, [key]: value }
+    })
+  }
+
+  return (
+    <div className="p-4 space-y-6">
+      {/* Background Section */}
+      <div className="space-y-3">
+        <Label className="text-sm font-medium">Page Background</Label>
+        <Tabs value={bgTab} onValueChange={(v) => setBgTab(v as any)}>
+          <TabsList className="grid grid-cols-3 w-full">
+            <TabsTrigger value="color">Color</TabsTrigger>
+            <TabsTrigger value="gradient">Gradient</TabsTrigger>
+            <TabsTrigger value="image">Image</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="color" className="space-y-3 mt-3">
+            <div className="space-y-2">
+              <Label className="text-xs text-muted-foreground">Background Color</Label>
+              <div className="flex gap-2">
+                <Input
+                  type="color"
+                  value={settings?.background?.color || '#ffffff'}
+                  onChange={(e) => updateBackground('color', e.target.value)}
+                  className="h-10 w-20 cursor-pointer"
+                />
+                <Input
+                  type="text"
+                  value={settings?.background?.color || '#ffffff'}
+                  onChange={(e) => updateBackground('color', e.target.value)}
+                  placeholder="#ffffff"
+                  className="flex-1 font-mono text-xs"
+                />
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="gradient" className="space-y-3 mt-3">
+            <div className="space-y-2">
+              <Label className="text-xs text-muted-foreground">
+                Gradient (Tailwind class or CSS)
+              </Label>
+              <Input
+                type="text"
+                value={settings?.background?.gradient || ''}
+                onChange={(e) => updateBackground('gradient', e.target.value)}
+                placeholder="bg-gradient-to-r from-blue-500 to-purple-600"
+                className="font-mono text-xs"
+              />
+              <p className="text-xs text-muted-foreground">
+                Examples: bg-gradient-to-r from-blue-500 to-purple-600
+              </p>
+            </div>
+
+            {/* Gradient Preview */}
+            {settings?.background?.gradient && (
+              <div
+                className={cn(
+                  'h-20 rounded-lg border',
+                  settings.background.gradient.startsWith('bg-')
+                    ? settings.background.gradient
+                    : ''
+                )}
+                style={
+                  !settings.background.gradient.startsWith('bg-')
+                    ? { background: settings.background.gradient }
+                    : undefined
+                }
+              />
+            )}
+          </TabsContent>
+
+          <TabsContent value="image" className="space-y-3 mt-3">
+            <div className="space-y-2">
+              <Label className="text-xs text-muted-foreground">Image URL</Label>
+              <Input
+                type="url"
+                value={settings?.background?.image || ''}
+                onChange={(e) => updateBackground('image', e.target.value)}
+                placeholder="https://example.com/image.jpg"
+                className="text-xs"
+              />
+            </div>
+
+            {settings?.background?.image && (
+              <>
+                <div className="space-y-2">
+                  <Label className="text-xs text-muted-foreground">Position</Label>
+                  <Input
+                    type="text"
+                    value={settings?.background?.imagePosition || 'center'}
+                    onChange={(e) => updateBackground('imagePosition', e.target.value)}
+                    placeholder="center"
+                    className="text-xs"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-xs text-muted-foreground">Size</Label>
+                  <Input
+                    type="text"
+                    value={settings?.background?.imageSize || 'cover'}
+                    onChange={(e) => updateBackground('imageSize', e.target.value)}
+                    placeholder="cover"
+                    className="text-xs"
+                  />
+                </div>
+              </>
+            )}
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      <Separator />
+
+      {/* Glassmorphism Section */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <Label className="text-sm font-medium">Glassmorphism</Label>
+          <Switch
+            checked={settings?.glassmorphism?.enabled || false}
+            onCheckedChange={(enabled) => updateGlassmorphism('enabled', enabled)}
+          />
+        </div>
+
+        {settings?.glassmorphism?.enabled && (
+          <div className="space-y-3 pt-2">
+            <div className="space-y-2">
+              <Label className="text-xs text-muted-foreground">
+                Blur Intensity (4-24px)
+              </Label>
+              <Input
+                type="number"
+                min={4}
+                max={24}
+                value={settings?.glassmorphism?.blur || 12}
+                onChange={(e) => updateGlassmorphism('blur', Number(e.target.value))}
+                className="text-xs"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs text-muted-foreground">
+                Transparency (0-100%)
+              </Label>
+              <Input
+                type="number"
+                min={0}
+                max={100}
+                value={settings?.glassmorphism?.transparency || 80}
+                onChange={(e) => updateGlassmorphism('transparency', Number(e.target.value))}
+                className="text-xs"
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <Label className="text-xs text-muted-foreground">Border Glow</Label>
+              <Switch
+                checked={settings?.glassmorphism?.borderGlow || false}
+                onCheckedChange={(glow) => updateGlassmorphism('borderGlow', glow)}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+      <Separator />
+
+      {/* Layout Section */}
+      <div className="space-y-3">
+        <Label className="text-sm font-medium">Page Layout</Label>
+
+        <div className="space-y-2">
+          <Label className="text-xs text-muted-foreground">Min Height</Label>
+          <Input
+            type="text"
+            value={settings?.layout?.minHeight || '100vh'}
+            onChange={(e) => updateLayout('minHeight', e.target.value)}
+            placeholder="100vh"
+            className="text-xs"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-xs text-muted-foreground">Max Width</Label>
+          <Input
+            type="text"
+            value={settings?.layout?.maxWidth || ''}
+            onChange={(e) => updateLayout('maxWidth', e.target.value)}
+            placeholder="1280px or 80rem"
+            className="text-xs"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-2">
+            <Label className="text-xs text-muted-foreground">Padding Top</Label>
+            <Input
+              type="number"
+              value={settings?.layout?.padding?.top || 0}
+              onChange={(e) => {
+                const padding = { ...settings?.layout?.padding, top: Number(e.target.value) }
+                updateLayout('padding', padding)
+              }}
+              placeholder="0"
+              className="text-xs"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-xs text-muted-foreground">Padding Bottom</Label>
+            <Input
+              type="number"
+              value={settings?.layout?.padding?.bottom || 0}
+              onChange={(e) => {
+                const padding = { ...settings?.layout?.padding, bottom: Number(e.target.value) }
+                updateLayout('padding', padding)
+              }}
+              placeholder="0"
+              className="text-xs"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-xs text-muted-foreground">Padding Left</Label>
+            <Input
+              type="number"
+              value={settings?.layout?.padding?.left || 0}
+              onChange={(e) => {
+                const padding = { ...settings?.layout?.padding, left: Number(e.target.value) }
+                updateLayout('padding', padding)
+              }}
+              placeholder="0"
+              className="text-xs"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-xs text-muted-foreground">Padding Right</Label>
+            <Input
+              type="number"
+              value={settings?.layout?.padding?.right || 0}
+              onChange={(e) => {
+                const padding = { ...settings?.layout?.padding, right: Number(e.target.value) }
+                updateLayout('padding', padding)
+              }}
+              placeholder="0"
+              className="text-xs"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

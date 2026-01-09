@@ -5,6 +5,14 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
+  // Filter out page-builder-specific props that may have been passed
+  // This is a defensive measure to prevent React warnings about invalid DOM attributes
+  const { isEditing, isSelected, blockId, ...validProps } = props as React.ComponentProps<"table"> & {
+    isEditing?: boolean
+    isSelected?: boolean
+    blockId?: string
+  }
+
   return (
     <div
       data-slot="table-container"
@@ -13,7 +21,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
       <table
         data-slot="table"
         className={cn("w-full caption-bottom text-sm", className)}
-        {...props}
+        {...validProps}
       />
     </div>
   )

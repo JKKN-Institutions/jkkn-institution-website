@@ -10,10 +10,18 @@ import TextAlign from '@tiptap/extension-text-align'
 import Highlight from '@tiptap/extension-highlight'
 import { TextStyle } from '@tiptap/extension-text-style'
 import Color from '@tiptap/extension-color'
+import { Table } from '@tiptap/extension-table'
+import { TableRow } from '@tiptap/extension-table-row'
+import { TableHeader } from '@tiptap/extension-table-header'
+import { TableCell } from '@tiptap/extension-table-cell'
 import { ImageGallery, type GalleryImage } from './rich-text-editor/extensions/image-gallery'
+import { TableCellMerge } from './rich-text-editor/extensions/table-cell-merge'
+import { TableTemplatePicker } from './rich-text-editor/table-template-picker'
+import { TablePropertiesDialog } from './rich-text-editor/table-properties-dialog'
 import { useCallback, useEffect, useState, useRef } from 'react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import { ColorPicker } from '@/components/admin/settings/color-picker'
 import {
   Bold,
   Italic,
@@ -43,6 +51,11 @@ import {
   ArrowUp,
   ArrowDown,
   Replace,
+  Table as TableIcon,
+  Columns,
+  Rows,
+  Palette,
+  Settings,
 } from 'lucide-react'
 // Note: Using custom floating menu instead of BubbleMenu for better control
 import {
@@ -50,6 +63,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -641,6 +655,214 @@ function ImageFloatingToolbar({
   )
 }
 
+// Text Color Popover
+function TextColorPopover({ editor }: { editor: Editor }) {
+  const [isOpen, setIsOpen] = useState(false)
+  const currentColor = editor.getAttributes('textStyle').color || '#000000'
+
+  const handleColorChange = (color: string) => {
+    editor.chain().focus().setColor(color).run()
+  }
+
+  const handleRemoveColor = () => {
+    editor.chain().focus().unsetColor().run()
+    setIsOpen(false)
+  }
+
+  return (
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 p-0 relative"
+        >
+          <Palette className="h-4 w-4" />
+          <div
+            className="absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-1 rounded"
+            style={{ backgroundColor: currentColor }}
+          />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto" align="start">
+        <div className="space-y-3">
+          <Label>Text Color</Label>
+          <ColorPicker
+            value={currentColor}
+            onChange={handleColorChange}
+          />
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            onClick={handleRemoveColor}
+            className="w-full"
+          >
+            Remove Color
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
+// Background Color Popover
+function BackgroundColorPopover({ editor }: { editor: Editor }) {
+  const [isOpen, setIsOpen] = useState(false)
+  const currentBgColor = editor.getAttributes('highlight').color || '#fef08a'
+
+  const handleColorChange = (color: string) => {
+    editor.chain().focus().toggleHighlight({ color }).run()
+  }
+
+  const handleRemoveHighlight = () => {
+    editor.chain().focus().unsetHighlight().run()
+    setIsOpen(false)
+  }
+
+  return (
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className={cn(
+            'h-8 w-8 p-0 relative',
+            editor.isActive('highlight') && 'bg-muted text-primary'
+          )}
+        >
+          <Highlighter className="h-4 w-4" />
+          {editor.isActive('highlight') && (
+            <div
+              className="absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-1 rounded"
+              style={{ backgroundColor: currentBgColor }}
+            />
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto" align="start">
+        <div className="space-y-3">
+          <Label>Background Color</Label>
+          <ColorPicker
+            value={currentBgColor}
+            onChange={handleColorChange}
+          />
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            onClick={handleRemoveHighlight}
+            className="w-full"
+          >
+            Remove Highlight
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
+// Table Insert Popover
+function TableInsertPopover({ editor }: { editor: Editor }) {
+  const [isOpen, setIsOpen] = useState(false)
+  const [rows, setRows] = useState(3)
+  const [cols, setCols] = useState(3)
+
+  const insertTable = useCallback((r: number, c: number) => {
+    editor.chain().focus().insertTable({ rows: r, cols: c, withHeaderRow: true }).run()
+    setIsOpen(false)
+  }, [editor])
+
+  return (
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 p-0"
+        >
+          <TableIcon className="h-4 w-4" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[500px] max-h-[600px] overflow-y-auto" align="start">
+        <Tabs defaultValue="quick-insert" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="quick-insert">Quick Insert</TabsTrigger>
+            <TabsTrigger value="templates">Templates</TabsTrigger>
+          </TabsList>
+
+          {/* Quick Insert Tab */}
+          <TabsContent value="quick-insert" className="space-y-4 mt-4">
+            <div>
+              <Label>Insert Table</Label>
+              <p className="text-xs text-muted-foreground">Select table size or enter custom dimensions</p>
+            </div>
+
+            {/* Quick size buttons */}
+            <div className="flex flex-wrap gap-2">
+              <Button type="button" size="sm" onClick={() => insertTable(3, 3)}>
+                3×3
+              </Button>
+              <Button type="button" size="sm" onClick={() => insertTable(4, 4)}>
+                4×4
+              </Button>
+              <Button type="button" size="sm" onClick={() => insertTable(5, 5)}>
+                5×5
+              </Button>
+            </div>
+
+            {/* Custom size */}
+            <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label htmlFor="table-rows" className="text-xs">Rows</Label>
+                  <Input
+                    id="table-rows"
+                    type="number"
+                    min="1"
+                    max="20"
+                    value={rows}
+                    onChange={(e) => setRows(parseInt(e.target.value) || 1)}
+                    className="h-8"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="table-cols" className="text-xs">Columns</Label>
+                  <Input
+                    id="table-cols"
+                    type="number"
+                    min="1"
+                    max="10"
+                    value={cols}
+                    onChange={(e) => setCols(parseInt(e.target.value) || 1)}
+                    className="h-8"
+                  />
+                </div>
+              </div>
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => insertTable(rows, cols)}
+                className="w-full"
+              >
+                Insert {rows}×{cols} Table
+              </Button>
+            </div>
+          </TabsContent>
+
+          {/* Templates Tab */}
+          <TabsContent value="templates" className="mt-0">
+            <TableTemplatePicker editor={editor} onSelect={() => setIsOpen(false)} />
+          </TabsContent>
+        </Tabs>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
 // Main Toolbar Component
 function EditorToolbar({
   editor,
@@ -653,6 +875,7 @@ function EditorToolbar({
   onContentImageUpload?: (insertCallback: (src: string, alt?: string) => void) => void
   onGalleryImageSelect?: (onImagesSelected: (images: Array<{src: string, alt?: string}>) => void) => void
 }) {
+  const [tablePropsOpen, setTablePropsOpen] = useState(false)
   if (!editor) return null
 
   return (
@@ -705,19 +928,40 @@ function EditorToolbar({
         <Strikethrough className="h-4 w-4" />
       </ToolbarButton>
       <ToolbarButton
-        onClick={() => editor.chain().focus().toggleHighlight().run()}
-        isActive={editor.isActive('highlight')}
-        tooltip="Highlight"
-      >
-        <Highlighter className="h-4 w-4" />
-      </ToolbarButton>
-      <ToolbarButton
         onClick={() => editor.chain().focus().toggleCode().run()}
         isActive={editor.isActive('code')}
         tooltip="Inline Code"
       >
         <Code className="h-4 w-4" />
       </ToolbarButton>
+
+      <ToolbarDivider />
+
+      {/* Colors */}
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span>
+              <TextColorPopover editor={editor} />
+            </span>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" className="text-xs">
+            Text Color
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span>
+              <BackgroundColorPopover editor={editor} />
+            </span>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" className="text-xs">
+            Background Color
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
 
       <ToolbarDivider />
 
@@ -807,6 +1051,86 @@ function EditorToolbar({
       >
         <AlignJustify className="h-4 w-4" />
       </ToolbarButton>
+
+      <ToolbarDivider />
+
+      {/* Table Controls */}
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span>
+              <TableInsertPopover editor={editor} />
+            </span>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" className="text-xs">
+            Insert Table
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      {/* Table Manipulation Controls - Only show when cursor is inside a table */}
+      {editor.isActive('table') && (
+        <>
+          <ToolbarButton
+            onClick={() => editor.chain().focus().addColumnBefore().run()}
+            tooltip="Add Column Before"
+          >
+            <Columns className="h-4 w-4" />
+          </ToolbarButton>
+          <ToolbarButton
+            onClick={() => editor.chain().focus().addColumnAfter().run()}
+            tooltip="Add Column After"
+          >
+            <Columns className="h-4 w-4" />
+          </ToolbarButton>
+          <ToolbarButton
+            onClick={() => editor.chain().focus().deleteColumn().run()}
+            tooltip="Delete Column"
+          >
+            <Trash2 className="h-4 w-4" />
+          </ToolbarButton>
+          <ToolbarButton
+            onClick={() => editor.chain().focus().addRowBefore().run()}
+            tooltip="Add Row Before"
+          >
+            <Rows className="h-4 w-4" />
+          </ToolbarButton>
+          <ToolbarButton
+            onClick={() => editor.chain().focus().addRowAfter().run()}
+            tooltip="Add Row After"
+          >
+            <Rows className="h-4 w-4" />
+          </ToolbarButton>
+          <ToolbarButton
+            onClick={() => editor.chain().focus().deleteRow().run()}
+            tooltip="Delete Row"
+          >
+            <Trash2 className="h-4 w-4" />
+          </ToolbarButton>
+          <ToolbarButton
+            onClick={() => editor.chain().focus().deleteTable().run()}
+            tooltip="Delete Table"
+          >
+            <TableIcon className="h-4 w-4" />
+          </ToolbarButton>
+
+          <ToolbarDivider />
+
+          <ToolbarButton
+            onClick={() => setTablePropsOpen(true)}
+            tooltip="Table Properties"
+          >
+            <Settings className="h-4 w-4" />
+          </ToolbarButton>
+        </>
+      )}
+
+      {/* Table Properties Dialog */}
+      <TablePropertiesDialog
+        editor={editor}
+        isOpen={tablePropsOpen}
+        onClose={() => setTablePropsOpen(false)}
+      />
 
       <ToolbarDivider />
 
@@ -904,10 +1228,46 @@ export function RichTextEditor({
         types: ['heading', 'paragraph'],
       }),
       Highlight.configure({
-        multicolor: false,
+        multicolor: true,
       }),
       TextStyle,
       Color,
+      Table.configure({
+        resizable: true,
+        HTMLAttributes: {
+          class: 'tiptap-table',
+        },
+      }),
+      TableRow,
+      TableHeader,
+      TableCell.extend({
+        addAttributes() {
+          return {
+            ...this.parent?.(),
+            colspan: {
+              default: 1,
+              parseHTML: element => {
+                const colspan = element.getAttribute('colspan')
+                return colspan ? parseInt(colspan, 10) : 1
+              },
+              renderHTML: attributes => {
+                return attributes.colspan > 1 ? { colspan: attributes.colspan } : {}
+              },
+            },
+            rowspan: {
+              default: 1,
+              parseHTML: element => {
+                const rowspan = element.getAttribute('rowspan')
+                return rowspan ? parseInt(rowspan, 10) : 1
+              },
+              renderHTML: attributes => {
+                return attributes.rowspan > 1 ? { rowspan: attributes.rowspan } : {}
+              },
+            },
+          }
+        },
+      }),
+      TableCellMerge,
     ],
     content: initialContent,
     editorProps: {

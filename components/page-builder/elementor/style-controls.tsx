@@ -38,6 +38,7 @@ import {
   Sparkles,
   Link2,
   Unlink2,
+  Quote,
 } from 'lucide-react'
 
 // Re-export GlassmorphismControls for use in Style tab
@@ -57,6 +58,7 @@ interface TypographyControlsProps {
     textDecoration?: string
     textAlign?: string
     color?: string
+    textStyle?: 'normal' | 'bullet-list' | 'number-list' | 'quote'
   }
   onChange: (typography: TypographyControlsProps['typography']) => void
 }
@@ -250,6 +252,50 @@ export function TypographyControls({ typography = {}, onChange }: TypographyCont
                 <Icon className="h-4 w-4" />
               </Button>
             ))}
+          </div>
+        </div>
+
+        {/* Text Style (Lists, Quote) */}
+        <div className="space-y-2">
+          <Label className="text-xs text-muted-foreground">Text Style</Label>
+          <div className="grid grid-cols-3 gap-2">
+            <Button
+              type="button"
+              size="sm"
+              variant={typography.textStyle === 'normal' || !typography.textStyle ? 'default' : 'outline'}
+              onClick={() => updateTypography('textStyle', 'normal')}
+              className="h-8"
+            >
+              Normal
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant={typography.textStyle === 'bullet-list' ? 'default' : 'outline'}
+              onClick={() => updateTypography('textStyle', 'bullet-list')}
+              className="h-8"
+            >
+              • List
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant={typography.textStyle === 'number-list' ? 'default' : 'outline'}
+              onClick={() => updateTypography('textStyle', 'number-list')}
+              className="h-8"
+            >
+              1. List
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant={typography.textStyle === 'quote' ? 'default' : 'outline'}
+              onClick={() => updateTypography('textStyle', 'quote')}
+              className="h-8 col-span-3"
+            >
+              <Quote className="h-3 w-3 mr-1" />
+              Quote
+            </Button>
           </div>
         </div>
 
@@ -656,14 +702,14 @@ export function BorderControls({ border = {}, onChange }: BorderControlsProps) {
 // Background Controls
 interface BackgroundControlsProps {
   background?: {
-    backgroundColor?: string
-    backgroundImage?: string
-    backgroundPosition?: string
-    backgroundSize?: string
-    backgroundRepeat?: string
-    backgroundGradient?: string
-    backgroundOverlay?: string
-    backgroundOverlayOpacity?: number
+    color?: string                  // Matches style-applicator BlockBackground
+    image?: string                  // Matches style-applicator BlockBackground
+    position?: string              // Matches style-applicator BlockBackground
+    size?: string                  // Matches style-applicator BlockBackground
+    repeat?: string                // Matches style-applicator BlockBackground
+    gradient?: string              // Matches style-applicator BlockBackground
+    overlay?: string
+    overlayOpacity?: number
   }
   onChange: (background: BackgroundControlsProps['background']) => void
 }
@@ -698,14 +744,14 @@ export function BackgroundControls({ background = {}, onChange }: BackgroundCont
             <div className="flex items-center gap-2">
               <input
                 type="color"
-                value={background.backgroundColor || '#ffffff'}
-                onChange={(e) => updateBackground('backgroundColor', e.target.value)}
+                value={background.color || '#ffffff'}
+                onChange={(e) => updateBackground('color', e.target.value)}
                 className="h-10 w-10 rounded border cursor-pointer"
               />
               <Input
                 type="text"
-                value={background.backgroundColor || '#ffffff'}
-                onChange={(e) => updateBackground('backgroundColor', e.target.value)}
+                value={background.color || '#ffffff'}
+                onChange={(e) => updateBackground('color', e.target.value)}
                 placeholder="#ffffff"
                 className="h-8 text-xs flex-1"
               />
@@ -717,8 +763,8 @@ export function BackgroundControls({ background = {}, onChange }: BackgroundCont
               <Label className="text-xs text-muted-foreground">Gradient CSS</Label>
               <Input
                 type="text"
-                value={background.backgroundGradient || ''}
-                onChange={(e) => updateBackground('backgroundGradient', e.target.value)}
+                value={background.gradient || ''}
+                onChange={(e) => updateBackground('gradient', e.target.value)}
                 placeholder="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
                 className="h-8 text-xs"
               />
@@ -732,7 +778,7 @@ export function BackgroundControls({ background = {}, onChange }: BackgroundCont
               ].map((gradient, i) => (
                 <button
                   key={i}
-                  onClick={() => updateBackground('backgroundGradient', gradient)}
+                  onClick={() => updateBackground('gradient', gradient)}
                   className="h-8 rounded border cursor-pointer transition-transform hover:scale-105"
                   style={{ background: gradient }}
                 />
@@ -745,8 +791,8 @@ export function BackgroundControls({ background = {}, onChange }: BackgroundCont
               <Label className="text-xs text-muted-foreground">Image URL</Label>
               <Input
                 type="url"
-                value={background.backgroundImage || ''}
-                onChange={(e) => updateBackground('backgroundImage', e.target.value)}
+                value={background.image || ''}
+                onChange={(e) => updateBackground('image', e.target.value)}
                 placeholder="https://..."
                 className="h-8 text-xs"
               />
@@ -755,8 +801,8 @@ export function BackgroundControls({ background = {}, onChange }: BackgroundCont
               <div className="space-y-2">
                 <Label className="text-xs text-muted-foreground">Position</Label>
                 <Select
-                  value={background.backgroundPosition || 'center'}
-                  onValueChange={(v) => updateBackground('backgroundPosition', v)}
+                  value={background.position || 'center'}
+                  onValueChange={(v) => updateBackground('position', v)}
                 >
                   <SelectTrigger className="h-8 text-xs">
                     <SelectValue />
@@ -773,8 +819,8 @@ export function BackgroundControls({ background = {}, onChange }: BackgroundCont
               <div className="space-y-2">
                 <Label className="text-xs text-muted-foreground">Size</Label>
                 <Select
-                  value={background.backgroundSize || 'cover'}
-                  onValueChange={(v) => updateBackground('backgroundSize', v)}
+                  value={background.size || 'cover'}
+                  onValueChange={(v) => updateBackground('size', v)}
                 >
                   <SelectTrigger className="h-8 text-xs">
                     <SelectValue />
@@ -792,14 +838,14 @@ export function BackgroundControls({ background = {}, onChange }: BackgroundCont
               <Label className="text-xs text-muted-foreground">Overlay Opacity</Label>
               <div className="flex items-center gap-2">
                 <Slider
-                  value={[background.backgroundOverlayOpacity || 0]}
-                  onValueChange={([v]) => updateBackground('backgroundOverlayOpacity', v)}
+                  value={[background.overlayOpacity || 0]}
+                  onValueChange={([v]) => updateBackground('overlayOpacity', v)}
                   max={100}
                   step={5}
                   className="flex-1"
                 />
                 <span className="text-xs text-muted-foreground w-8 text-right">
-                  {background.backgroundOverlayOpacity || 0}%
+                  {background.overlayOpacity || 0}%
                 </span>
               </div>
             </div>

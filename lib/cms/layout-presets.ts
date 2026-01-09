@@ -805,6 +805,633 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         custom_classes: 'my-8 max-w-4xl mx-auto'
       }
     ]
+  },
+
+  // ============================================
+  // DEMO: COMPREHENSIVE LANDING PAGE
+  // ============================================
+  {
+    id: 'demo-landing-page',
+    name: '🎨 Demo Landing Page (All Features)',
+    description: 'Comprehensive demo showcasing ALL page builder features: gradients, glassmorphism, transforms, filters, animations, and more',
+    category: 'hero',
+    icon: 'Sparkles',
+    blocks: [
+      // ========== HERO SECTION WITH GRADIENT & GLASSMORPHISM ==========
+      {
+        component_name: 'Container',
+        props: {
+          _styles: {
+            background: {
+              gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            },
+            spacing: {
+              paddingTop: 120,
+              paddingBottom: 120,
+            },
+          },
+        },
+        sort_order: 0,
+        is_visible: true,
+        custom_classes: 'min-h-[80vh] flex items-center justify-center relative overflow-hidden',
+      },
+
+      // ========== ANIMATED STATS SECTION ==========
+      {
+        component_name: 'Container',
+        props: {
+          _styles: {
+            background: {
+              color: '#f8f9fa',
+            },
+            spacing: {
+              paddingTop: 80,
+              paddingBottom: 80,
+            },
+          },
+        },
+        sort_order: 1,
+        is_visible: true,
+      },
+
+      // ========== FEATURES WITH TRANSFORMS & FILTERS ==========
+      {
+        component_name: 'GridLayout',
+        props: {
+          columns: 3,
+          columnsMobile: 1,
+          gap: 32,
+          _styles: {
+            spacing: {
+              paddingTop: 80,
+              paddingBottom: 80,
+              paddingLeft: 40,
+              paddingRight: 40,
+            },
+          },
+        },
+        sort_order: 2,
+        is_visible: true,
+        custom_classes: 'max-w-7xl mx-auto',
+      },
+
+      // Feature Card 1 - Transform: Scale & Rotate on Hover
+      {
+        component_name: 'Card',
+        props: {
+          title: 'Transform Controls',
+          description: 'Rotate, scale, skew, and translate elements with precision controls',
+          icon: 'RotateCw',
+          _styles: {
+            background: {
+              color: '#ffffff',
+            },
+            border: {
+              width: 1,
+              color: '#e5e7eb',
+              radius: 16,
+            },
+            shadow: {
+              preset: 'lg',
+            },
+            spacing: {
+              padding: 32,
+            },
+            transform: {
+              rotate: 0,
+              scaleX: 1,
+              scaleY: 1,
+            },
+          },
+          _motion: {
+            animation: 'fade-in-up',
+            duration: '0.6s',
+            delay: '0s',
+            hoverScale: 1.05,
+            hoverRotate: 2,
+          },
+        },
+        sort_order: 3,
+        is_visible: true,
+        parent_block_id: undefined, // Will be set to GridLayout block ID
+      },
+
+      // Feature Card 2 - Filters: Blur & Brightness
+      {
+        component_name: 'Card',
+        props: {
+          title: 'Filter Effects',
+          description: 'Apply blur, brightness, contrast, saturation, and more CSS filters',
+          icon: 'Sparkles',
+          _styles: {
+            background: {
+              color: '#ffffff',
+            },
+            border: {
+              width: 1,
+              color: '#e5e7eb',
+              radius: 16,
+            },
+            shadow: {
+              preset: 'lg',
+            },
+            spacing: {
+              padding: 32,
+            },
+            filters: {
+              brightness: 110,
+              contrast: 105,
+              saturate: 110,
+            },
+          },
+          _motion: {
+            animation: 'fade-in-up',
+            duration: '0.6s',
+            delay: '0.2s',
+            hoverScale: 1.05,
+          },
+        },
+        sort_order: 4,
+        is_visible: true,
+      },
+
+      // Feature Card 3 - Glassmorphism
+      {
+        component_name: 'Card',
+        props: {
+          title: 'Glassmorphism',
+          description: 'Modern frosted glass effects with blur, transparency, and border glow',
+          icon: 'Wand2',
+          _styles: {
+            background: {
+              color: 'rgba(255, 255, 255, 0.1)',
+            },
+            border: {
+              width: 1,
+              color: 'rgba(255, 255, 255, 0.3)',
+              radius: 16,
+            },
+            shadow: {
+              value: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
+            },
+            spacing: {
+              padding: 32,
+            },
+          },
+          _motion: {
+            animation: 'fade-in-up',
+            duration: '0.6s',
+            delay: '0.4s',
+            hoverScale: 1.05,
+          },
+        },
+        sort_order: 5,
+        is_visible: true,
+        custom_css: 'backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);',
+      },
+
+      // ========== NESTED LAYOUTS DEMO (Flex inside Grid) ==========
+      {
+        component_name: 'Container',
+        props: {
+          _styles: {
+            background: {
+              gradient: 'linear-gradient(to right, #4facfe 0%, #00f2fe 100%)',
+            },
+            spacing: {
+              paddingTop: 80,
+              paddingBottom: 80,
+            },
+          },
+        },
+        sort_order: 6,
+        is_visible: true,
+      },
+
+      // Outer FlexboxLayout
+      {
+        component_name: 'FlexboxLayout',
+        props: {
+          direction: 'column',
+          justify: 'center',
+          align: 'center',
+          gap: 32,
+          _styles: {
+            spacing: {
+              paddingLeft: 40,
+              paddingRight: 40,
+            },
+          },
+        },
+        sort_order: 7,
+        is_visible: true,
+        custom_classes: 'max-w-7xl mx-auto',
+      },
+
+      // Heading inside Flex
+      {
+        component_name: 'Heading',
+        props: {
+          text: 'Complex Nested Layouts',
+          level: 'h2',
+          alignment: 'center',
+          _styles: {
+            typography: {
+              fontSize: '3rem',
+              fontWeight: '800',
+              color: '#ffffff',
+              textAlign: 'center',
+            },
+          },
+          _motion: {
+            animation: 'fade-in-down',
+            duration: '0.8s',
+          },
+        },
+        sort_order: 8,
+        is_visible: true,
+      },
+
+      // Inner GridLayout inside Flex
+      {
+        component_name: 'GridLayout',
+        props: {
+          columns: 2,
+          columnsMobile: 1,
+          gap: 24,
+          _styles: {
+            spacing: {
+              marginTop: 40,
+            },
+          },
+        },
+        sort_order: 9,
+        is_visible: true,
+        custom_classes: 'w-full',
+      },
+
+      // Grid Item 1 - Typography Showcase
+      {
+        component_name: 'RichText',
+        props: {
+          content: '<h3>Typography Styles</h3><p>This demonstrates the enhanced typography controls with:</p><ul><li>Bullet lists</li><li>Number lists</li><li>Quote blocks</li></ul>',
+          _styles: {
+            typography: {
+              textStyle: 'bullet-list',
+              fontSize: '1.1rem',
+              color: '#ffffff',
+            },
+            background: {
+              color: 'rgba(255, 255, 255, 0.15)',
+            },
+            spacing: {
+              padding: 24,
+            },
+            border: {
+              radius: 12,
+            },
+          },
+        },
+        sort_order: 10,
+        is_visible: true,
+        custom_css: 'backdrop-filter: blur(8px);',
+      },
+
+      // Grid Item 2 - Quote Style
+      {
+        component_name: 'RichText',
+        props: {
+          content: '<p>"Page builder transforms are working perfectly! Rotate, scale, skew, and translate with ease."</p>',
+          _styles: {
+            typography: {
+              textStyle: 'quote',
+              fontSize: '1.2rem',
+              color: '#ffffff',
+            },
+            background: {
+              color: 'rgba(255, 255, 255, 0.15)',
+            },
+            spacing: {
+              padding: 24,
+            },
+            border: {
+              radius: 12,
+            },
+          },
+        },
+        sort_order: 11,
+        is_visible: true,
+        custom_css: 'backdrop-filter: blur(8px);',
+      },
+
+      // ========== GRADIENT SHOWCASE SECTION ==========
+      {
+        component_name: 'Container',
+        props: {
+          _styles: {
+            spacing: {
+              paddingTop: 80,
+              paddingBottom: 80,
+            },
+          },
+        },
+        sort_order: 12,
+        is_visible: true,
+      },
+
+      {
+        component_name: 'Heading',
+        props: {
+          text: 'Advanced Gradient Builder',
+          level: 'h2',
+          alignment: 'center',
+          _styles: {
+            typography: {
+              fontSize: '2.5rem',
+              fontWeight: '700',
+            },
+            spacing: {
+              marginBottom: 48,
+            },
+          },
+        },
+        sort_order: 13,
+        is_visible: true,
+      },
+
+      // Gradient Samples Grid
+      {
+        component_name: 'GridLayout',
+        props: {
+          columns: 5,
+          columnsMobile: 2,
+          gap: 16,
+        },
+        sort_order: 14,
+        is_visible: true,
+        custom_classes: 'max-w-6xl mx-auto px-8',
+      },
+
+      // Gradient 1: Sunset
+      {
+        component_name: 'Container',
+        props: {
+          _styles: {
+            background: {
+              gradient: 'linear-gradient(to right, #ff6b6b, #feca57)',
+            },
+            spacing: {
+              padding: 48,
+            },
+            border: {
+              radius: 16,
+            },
+            shadow: {
+              preset: 'xl',
+            },
+          },
+          _motion: {
+            animation: 'zoom-in',
+            duration: '0.5s',
+            hoverScale: 1.1,
+          },
+        },
+        sort_order: 15,
+        is_visible: true,
+        custom_classes: 'h-32',
+      },
+
+      // Gradient 2: Ocean
+      {
+        component_name: 'Container',
+        props: {
+          _styles: {
+            background: {
+              gradient: 'linear-gradient(to right, #4facfe, #00f2fe)',
+            },
+            spacing: {
+              padding: 48,
+            },
+            border: {
+              radius: 16,
+            },
+            shadow: {
+              preset: 'xl',
+            },
+          },
+          _motion: {
+            animation: 'zoom-in',
+            duration: '0.5s',
+            delay: '0.1s',
+            hoverScale: 1.1,
+          },
+        },
+        sort_order: 16,
+        is_visible: true,
+        custom_classes: 'h-32',
+      },
+
+      // Gradient 3: Forest
+      {
+        component_name: 'Container',
+        props: {
+          _styles: {
+            background: {
+              gradient: 'linear-gradient(to bottom right, #43e97b, #38f9d7)',
+            },
+            spacing: {
+              padding: 48,
+            },
+            border: {
+              radius: 16,
+            },
+            shadow: {
+              preset: 'xl',
+            },
+          },
+          _motion: {
+            animation: 'zoom-in',
+            duration: '0.5s',
+            delay: '0.2s',
+            hoverScale: 1.1,
+          },
+        },
+        sort_order: 17,
+        is_visible: true,
+        custom_classes: 'h-32',
+      },
+
+      // Gradient 4: Purple Dream
+      {
+        component_name: 'Container',
+        props: {
+          _styles: {
+            background: {
+              gradient: 'linear-gradient(to right, #667eea, #764ba2)',
+            },
+            spacing: {
+              padding: 48,
+            },
+            border: {
+              radius: 16,
+            },
+            shadow: {
+              preset: 'xl',
+            },
+          },
+          _motion: {
+            animation: 'zoom-in',
+            duration: '0.5s',
+            delay: '0.3s',
+            hoverScale: 1.1,
+          },
+        },
+        sort_order: 18,
+        is_visible: true,
+        custom_classes: 'h-32',
+      },
+
+      // Gradient 5: Fire
+      {
+        component_name: 'Container',
+        props: {
+          _styles: {
+            background: {
+              gradient: 'linear-gradient(to bottom right, #f093fb, #f5576c)',
+            },
+            spacing: {
+              padding: 48,
+            },
+            border: {
+              radius: 16,
+            },
+            shadow: {
+              preset: 'xl',
+            },
+          },
+          _motion: {
+            animation: 'zoom-in',
+            duration: '0.5s',
+            delay: '0.4s',
+            hoverScale: 1.1,
+          },
+        },
+        sort_order: 19,
+        is_visible: true,
+        custom_classes: 'h-32',
+      },
+
+      // ========== CTA SECTION WITH ALL FEATURES ==========
+      {
+        component_name: 'Container',
+        props: {
+          _styles: {
+            background: {
+              gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+            },
+            spacing: {
+              paddingTop: 100,
+              paddingBottom: 100,
+            },
+            transform: {
+              skewY: -2,
+            },
+          },
+        },
+        sort_order: 20,
+        is_visible: true,
+        custom_classes: 'relative overflow-hidden',
+      },
+
+      {
+        component_name: 'FlexboxLayout',
+        props: {
+          direction: 'column',
+          justify: 'center',
+          align: 'center',
+          gap: 24,
+          _styles: {
+            transform: {
+              skewY: 2, // Counter-skew for content
+            },
+          },
+        },
+        sort_order: 21,
+        is_visible: true,
+        custom_classes: 'max-w-4xl mx-auto px-8 text-center',
+      },
+
+      {
+        component_name: 'Heading',
+        props: {
+          text: 'Ready to Build Amazing Pages?',
+          level: 'h1',
+          alignment: 'center',
+          _styles: {
+            typography: {
+              fontSize: '3.5rem',
+              fontWeight: '900',
+              color: '#ffffff',
+              textAlign: 'center',
+            },
+            spacing: {
+              marginBottom: 16,
+            },
+            shadow: {
+              value: '0 4px 16px rgba(0, 0, 0, 0.2)',
+            },
+          },
+          _motion: {
+            animation: 'fade-in-up',
+            duration: '0.8s',
+          },
+        },
+        sort_order: 22,
+        is_visible: true,
+      },
+
+      {
+        component_name: 'Paragraph',
+        props: {
+          text: 'This demo page showcases transforms, filters, gradients, glassmorphism, animations, nested layouts, and more!',
+          _styles: {
+            typography: {
+              fontSize: '1.25rem',
+              color: 'rgba(255, 255, 255, 0.95)',
+              textAlign: 'center',
+            },
+            spacing: {
+              marginBottom: 32,
+            },
+          },
+          _motion: {
+            animation: 'fade-in-up',
+            duration: '0.8s',
+            delay: '0.2s',
+          },
+        },
+        sort_order: 23,
+        is_visible: true,
+      },
+
+      {
+        component_name: 'ButtonGroup',
+        props: {
+          buttons: [
+            { text: 'Get Started', variant: 'primary', link: '#' },
+            { text: 'View Docs', variant: 'outline', link: '#' },
+          ],
+          alignment: 'center',
+          _motion: {
+            animation: 'bounce-in',
+            duration: '1s',
+            delay: '0.4s',
+          },
+        },
+        sort_order: 24,
+        is_visible: true,
+      },
+    ]
   }
 ]
 

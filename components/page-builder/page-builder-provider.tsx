@@ -12,7 +12,7 @@ import {
 } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { getDefaultProps, getComponentEntry } from '@/lib/cms/component-registry'
-import type { BlockData } from '@/lib/cms/registry-types'
+import type { BlockData, CmsPageSettings } from '@/lib/cms/registry-types'
 
 /**
  * Validate blocks against the component registry.
@@ -73,13 +73,14 @@ interface PageBuilderState {
   isPreviewMode: boolean
   clipboard: BlockData | null
   lastSavedAt: Date | null
+  pageSettings?: CmsPageSettings
 }
 
 // Action types
 type PageBuilderAction =
   | { type: 'SET_PAGE'; payload: CmsPage }
   | { type: 'SET_BLOCKS'; payload: BlockData[] }
-  | { type: 'ADD_BLOCK'; payload: { componentName: string; insertAt?: number; props?: Record<string, unknown>; parentId?: string | null } }
+  | { type: 'ADD_BLOCK'; payload: { componentName: string; insertAt?: number; props?: Record<string, unknown>; parentId?: string | null; responsive_settings?: Record<string, unknown>; custom_css?: string; custom_classes?: string } }
   | { type: 'UPDATE_BLOCK'; payload: { id: string; props: Record<string, unknown> } }
   | { type: 'UPDATE_BLOCK_FULL'; payload: { id: string; updates: Partial<BlockData> } }
   | { type: 'UPDATE_BLOCK_VISIBILITY'; payload: { id: string; isVisible: boolean } }
@@ -98,6 +99,7 @@ type PageBuilderAction =
   | { type: 'SET_DEVICE'; payload: 'desktop' | 'tablet' | 'mobile' }
   | { type: 'SET_ZOOM'; payload: number }
   | { type: 'SET_PREVIEW_MODE'; payload: boolean }
+  | { type: 'UPDATE_PAGE_SETTINGS'; payload: CmsPageSettings }
   | { type: 'MARK_DIRTY' }
   | { type: 'MARK_SAVED' }
   | { type: 'SET_SAVING'; payload: boolean }
@@ -116,6 +118,7 @@ const initialState: PageBuilderState = {
   isPreviewMode: false,
   clipboard: null,
   lastSavedAt: null,
+  pageSettings: undefined,
 }
 
 // Max history entries
@@ -157,7 +160,7 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
     }
 
     case 'ADD_BLOCK': {
-      const { componentName, insertAt, props, parentId } = action.payload
+      const { componentName, insertAt, props, parentId, responsive_settings, custom_css, custom_classes } = action.payload
 
       // Get component entry - may be null for custom components being added
       // before the registry is fully loaded, but we still allow adding them
@@ -179,6 +182,9 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
         sort_order: insertAt ?? maxSortOrder,
         parent_block_id: parentId || null,
         is_visible: true,
+        responsive_settings,  // NEW: Set responsive settings from preset
+        custom_css,           // NEW: Set custom CSS from preset
+        custom_classes,       // NEW: Set custom classes from preset
       }
 
       let newBlocks: BlockData[]
@@ -603,6 +609,13 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
         selectedBlockId: action.payload ? null : state.selectedBlockId,
       }
 
+    case 'UPDATE_PAGE_SETTINGS':
+      return {
+        ...state,
+        pageSettings: action.payload,
+        isDirty: true,
+      }
+
     case 'MARK_DIRTY':
       return {
         ...state,
@@ -634,7 +647,7 @@ interface PageBuilderContextValue {
   // Convenience actions
   setPage: (page: CmsPage) => void
   setBlocks: (blocks: BlockData[]) => void
-  addBlock: (componentName: string, insertAt?: number, props?: Record<string, unknown>, parentId?: string | null) => void
+  addBlock: (componentName: string, insertAt?: number, props?: Record<string, unknown>, parentId?: string | null, responsive_settings?: Record<string, unknown>, custom_css?: string, custom_classes?: string) => void
   addBlockToContainer: (componentName: string, containerId: string, insertAt?: number, props?: Record<string, unknown>) => void
   updateBlock: (id: string, props: Record<string, unknown>) => void
   updateBlockFull: (id: string, updates: Partial<BlockData>) => void
@@ -654,6 +667,7 @@ interface PageBuilderContextValue {
   setDevice: (device: 'desktop' | 'tablet' | 'mobile') => void
   setZoom: (zoom: number) => void
   setPreviewMode: (isPreview: boolean) => void
+  updatePageSettings: (settings: CmsPageSettings) => void
   markSaved: () => void
   setSaving: (isSaving: boolean) => void
   // Computed values
@@ -722,8 +736,8 @@ export function PageBuilderProvider({
     dispatch({ type: 'SET_BLOCKS', payload: blocks })
   }, [])
 
-  const addBlock = useCallback((componentName: string, insertAt?: number, props?: Record<string, unknown>, parentId?: string | null) => {
-    dispatch({ type: 'ADD_BLOCK', payload: { componentName, insertAt, props, parentId } })
+  const addBlock = useCallback((componentName: string, insertAt?: number, props?: Record<string, unknown>, parentId?: string | null, responsive_settings?: Record<string, unknown>, custom_css?: string, custom_classes?: string) => {
+    dispatch({ type: 'ADD_BLOCK', payload: { componentName, insertAt, props, parentId, responsive_settings, custom_css, custom_classes } })
   }, [])
 
   const addBlockToContainer = useCallback((componentName: string, containerId: string, insertAt?: number, props?: Record<string, unknown>) => {
@@ -802,6 +816,10 @@ export function PageBuilderProvider({
     dispatch({ type: 'SET_PREVIEW_MODE', payload: isPreview })
   }, [])
 
+  const updatePageSettings = useCallback((settings: CmsPageSettings) => {
+    dispatch({ type: 'UPDATE_PAGE_SETTINGS', payload: settings })
+  }, [])
+
   const markSaved = useCallback(() => {
     dispatch({ type: 'MARK_SAVED' })
   }, [])
@@ -854,6 +872,7 @@ export function PageBuilderProvider({
     setDevice,
     setZoom,
     setPreviewMode,
+    updatePageSettings,
     markSaved,
     setSaving,
     canUndo,
