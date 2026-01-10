@@ -128,7 +128,8 @@
       "Bash(git revert:*)",
       "Bash(git fetch:*)",
       "Bash(git commit:*)",
-      "Bash(del \".next\\\\dev\\\\lock\")"
+      "Bash(del \".next\\\\dev\\\\lock\")",
+      "mcp__Engineering_College_Supabase_Project__apply_migration"
     ],
     "deny": [],
     "ask": [],

@@ -98,6 +98,6 @@ USING (is_super_admin(auth.uid()) OR user_id = auth.uid())
 
 ## Last Updated
 
-- **Date:** 2026-01-07
-- **Updated By:** Claude Code (Deep Analysis Task)
-- **Reason:** Added comprehensive 00-tables.sql with all 52 table definitions organized by category
+- **Date:** 2026-01-10
+- **Updated By:** Claude Code (Custom URL Override Feature)
+- **Reason:** Added slug_overridden and hierarchical_slug columns to cms_pages table for custom URL support

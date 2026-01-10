@@ -38,6 +38,8 @@ const CreatePageSchema = z.object({
   navigation_label: z.string().optional(),
   is_homepage: z.boolean().default(false),
   external_url: z.union([z.string().url('Please enter a valid URL'), z.literal('')]).optional().nullable().transform(val => val || null),
+  slug_overridden: z.boolean().default(false),
+  hierarchical_slug: z.string().max(500).optional().nullable(),
 })
 
 const UpdatePageSchema = CreatePageSchema.partial().extend({
@@ -981,11 +983,12 @@ export async function updatePage(
   const newSlug = formData.get('slug') as string | undefined
   const newParentId = formData.get('parent_id') as string | null
   const isHomepage = formData.get('is_homepage') === 'true'
+  const slugOverridden = formData.get('slug_overridden') === 'true'
 
   // Get current page state
   const { data: currentPage, error: fetchError } = await supabase
     .from('cms_pages')
-    .select('slug, parent_id')
+    .select('slug, parent_id, slug_overridden, hierarchical_slug')
     .eq('id', pageId)
     .single()
 
@@ -996,6 +999,7 @@ export async function updatePage(
   // Detect if parent is changing
   const parentChanged = currentPage.parent_id !== newParentId
   const slugChanged = newSlug && newSlug !== currentPage.slug
+  const overrideChanged = slugOverridden !== (currentPage.slug_overridden ?? false)
 
   // Prevent circular parent references
   if (newParentId && newParentId !== 'none' && newParentId !== '') {
@@ -1007,15 +1011,20 @@ export async function updatePage(
 
   // Build hierarchical slug if parent changed OR slug changed
   let finalSlug = newSlug || currentPage.slug
+  let hierarchicalSlug = currentPage.hierarchical_slug || currentPage.slug
 
-  // If slug or parent changed, rebuild the hierarchical path
-  if (slugChanged || parentChanged) {
+  // Handle slug override logic
+  if (slugOverridden) {
+    // Custom URL mode: use slug as-is, don't prepend parent
+    finalSlug = newSlug || currentPage.slug
+
+    // But still calculate hierarchical_slug for navigation context
     const effectiveParentId = newParentId !== undefined ? newParentId : currentPage.parent_id
 
     if (effectiveParentId && effectiveParentId !== 'none' && effectiveParentId !== '') {
       const { data: parent } = await supabase
         .from('cms_pages')
-        .select('slug')
+        .select('slug, hierarchical_slug')
         .eq('id', effectiveParentId)
         .single()
 
@@ -1023,12 +1032,40 @@ export async function updatePage(
         return { success: false, message: 'Parent page not found' }
       }
 
-      // Build hierarchical slug
-      const segment = extractSlugSegment(newSlug || currentPage.slug)
-      finalSlug = `${parent.slug}/${segment}`
+      // Use parent's hierarchical_slug for proper nesting
+      const parentHierarchical = parent.hierarchical_slug || parent.slug
+      const segment = extractSlugSegment(finalSlug)
+      hierarchicalSlug = `${parentHierarchical}/${segment}`
     } else {
-      // Root level page: use segment only
-      finalSlug = extractSlugSegment(newSlug || currentPage.slug)
+      // Root level page
+      hierarchicalSlug = extractSlugSegment(finalSlug)
+    }
+  } else {
+    // Hierarchical mode (current behavior): build from parent
+    if (slugChanged || parentChanged) {
+      const effectiveParentId = newParentId !== undefined ? newParentId : currentPage.parent_id
+
+      if (effectiveParentId && effectiveParentId !== 'none' && effectiveParentId !== '') {
+        const { data: parent } = await supabase
+          .from('cms_pages')
+          .select('slug, hierarchical_slug')
+          .eq('id', effectiveParentId)
+          .single()
+
+        if (!parent) {
+          return { success: false, message: 'Parent page not found' }
+        }
+
+        // Build hierarchical slug from parent's hierarchical path
+        const parentHierarchical = parent.hierarchical_slug || parent.slug
+        const segment = extractSlugSegment(newSlug || currentPage.slug)
+        finalSlug = `${parentHierarchical}/${segment}`
+        hierarchicalSlug = finalSlug
+      } else {
+        // Root level page: use segment only
+        finalSlug = extractSlugSegment(newSlug || currentPage.slug)
+        hierarchicalSlug = finalSlug
+      }
     }
   }
 
@@ -1045,16 +1082,19 @@ export async function updatePage(
       return { success: false, message: depthValidation.error }
     }
 
-    // Validate hierarchical slug structure
-    const slugValidation = await validateSlugHierarchy(
-      finalSlug,
-      newParentId || null,
-      pageId,
-      supabase
-    )
+    // Validate hierarchical slug structure (skip if override is enabled)
+    // When slug_overridden is true, the slug can be independent of parent hierarchy
+    if (!slugOverridden) {
+      const slugValidation = await validateSlugHierarchy(
+        finalSlug,
+        newParentId || null,
+        pageId,
+        supabase
+      )
 
-    if (!slugValidation.valid) {
-      return { success: false, message: slugValidation.error }
+      if (!slugValidation.valid) {
+        return { success: false, message: slugValidation.error }
+      }
     }
   }
 
@@ -1078,6 +1118,8 @@ export async function updatePage(
     navigation_label: formData.get('navigation_label') || undefined,
     is_homepage: isHomepage || undefined,
     external_url: formData.get('external_url') || undefined,
+    slug_overridden: slugOverridden,
+    hierarchical_slug: hierarchicalSlug,
   })
 
   if (!validation.success) {

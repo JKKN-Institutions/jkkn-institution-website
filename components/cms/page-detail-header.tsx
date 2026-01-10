@@ -1,10 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, Edit, Eye, FileText, Settings, Sparkles } from 'lucide-react'
+import { ArrowLeft, Edit, Eye, FileText, Settings, Sparkles, Send, Loader2 } from 'lucide-react'
 import { PageSettingsModal } from './page-settings-modal'
+import { publishPage } from '@/app/actions/cms/pages'
+import { toast } from 'sonner'
 
 interface PageDetailHeaderProps {
   page: {
@@ -24,8 +27,28 @@ interface PageDetailHeaderProps {
 }
 
 export function PageDetailHeader({ page, parentOrder }: PageDetailHeaderProps) {
+  const router = useRouter()
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [isPublishing, setIsPublishing] = useState(false)
   const isPublished = page.status === 'published'
+  const isDraft = page.status === 'draft'
+
+  const handlePublish = async () => {
+    setIsPublishing(true)
+    try {
+      const result = await publishPage(page.id)
+      if (result.success) {
+        toast.success('Page published successfully!')
+        router.refresh()
+      } else {
+        toast.error(result.message || 'Failed to publish page')
+      }
+    } catch (error) {
+      toast.error('An error occurred while publishing')
+    } finally {
+      setIsPublishing(false)
+    }
+  }
 
   return (
     <>
@@ -58,6 +81,25 @@ export function PageDetailHeader({ page, parentOrder }: PageDetailHeaderProps) {
               <Settings className="mr-2 h-4 w-4" />
               Edit Settings
             </Button>
+            {isDraft && (
+              <Button
+                onClick={handlePublish}
+                disabled={isPublishing}
+                className="bg-green-600 hover:bg-green-700 text-white shadow-lg"
+              >
+                {isPublishing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Publishing...
+                  </>
+                ) : (
+                  <>
+                    <Send className="mr-2 h-4 w-4" />
+                    Publish Page
+                  </>
+                )}
+              </Button>
+            )}
             {isPublished && (
               <Button asChild variant="outline">
                 <Link href={`/${page.slug}`} target="_blank">

@@ -33,7 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Loader2, AlertTriangle } from 'lucide-react'
+import { Loader2, AlertTriangle, ArrowRight, CheckCircle2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { updatePage } from '@/app/actions/cms/pages'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -44,11 +44,7 @@ const pageSettingsSchema = z.object({
   slug: z
     .string()
     .min(1, 'Slug is required')
-    .max(200, 'Slug is too long')
-    .regex(
-      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      'Slug must be lowercase with hyphens only (no slashes)'
-    ),
+    .max(500, 'Slug is too long'),
   description: z.string().optional(),
   parent_id: z.string().uuid().nullable().optional(),
   visibility: z.enum(['public', 'private', 'password_protected']),
@@ -58,6 +54,7 @@ const pageSettingsSchema = z.object({
   external_url: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
   meta_title: z.string().optional(),
   meta_description: z.string().optional(),
+  slug_overridden: z.boolean().default(false),
 })
 
 type PageSettingsFormData = z.infer<typeof pageSettingsSchema>
@@ -85,6 +82,8 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [childrenCount, setChildrenCount] = useState(0)
   const [parentPages, setParentPages] = useState<Array<{ id: string; title: string; slug: string }>>([])
+  const [slugManuallyEdited, setSlugManuallyEdited] = useState(false)
+  const [newPathPreview, setNewPathPreview] = useState<string>('')
 
   // Check if this is a child page
   const isChildPage = !!page.parent_id
@@ -109,13 +108,28 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
       external_url: page.external_url || '',
       meta_title: '',
       meta_description: '',
+      slug_overridden: false, // Will be fetched from database
     },
   })
 
-  // Fetch children count, parent pages, and SEO metadata
+  // Fetch children count, parent pages, SEO metadata, and slug override status
   useEffect(() => {
     async function fetchData() {
       const supabase = createClient()
+
+      // Reset slug manual edit flag when modal opens
+      setSlugManuallyEdited(false)
+
+      // Fetch page data including slug_overridden
+      const { data: pageData } = await supabase
+        .from('cms_pages')
+        .select('slug_overridden')
+        .eq('id', page.id)
+        .single()
+
+      if (pageData) {
+        form.setValue('slug_overridden', pageData.slug_overridden || false)
+      }
 
       // Check for children
       const { data: children } = await supabase
@@ -170,24 +184,61 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
     })
   }, [page, form])
 
-  // Auto-generate slug from title
+  // Auto-generate slug from title (only if not manually edited)
   const handleTitleChange = (value: string) => {
-    const currentSlug = form.getValues('slug')
-    const currentPageSegment = getSlugSegment(page.slug)
-    const expectedSlug = page.title
+    // Don't auto-generate if user has manually edited the slug
+    if (slugManuallyEdited) return
+
+    const newSlug = value
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '')
 
-    // Only auto-generate if slug hasn't been manually changed
-    if (currentSlug === expectedSlug || currentSlug === currentPageSegment) {
-      const newSlug = value
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-|-$/g, '')
-      form.setValue('slug', newSlug)
-    }
+    form.setValue('slug', newSlug)
   }
+
+  // Handle manual slug changes
+  const handleSlugChange = (value: string) => {
+    setSlugManuallyEdited(true)
+    form.setValue('slug', value)
+  }
+
+  // Update path preview when parent, slug, or override changes
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      const selectedParentId = value.parent_id
+      const currentSlug = value.slug || ''
+      const isOverridden = value.slug_overridden || false
+
+      if (!currentSlug) {
+        setNewPathPreview('')
+        return
+      }
+
+      // If slug override is enabled, use custom URL (ignore parent)
+      if (isOverridden) {
+        setNewPathPreview(`/${currentSlug}`)
+        return
+      }
+
+      // Otherwise, use hierarchical structure based on parent
+      // If no parent (root level)
+      if (!selectedParentId || selectedParentId === 'none') {
+        setNewPathPreview(`/${currentSlug}`)
+        return
+      }
+
+      // Find parent and build hierarchical path
+      const selectedParent = parentPages.find((p) => p.id === selectedParentId)
+      if (selectedParent) {
+        setNewPathPreview(`/${selectedParent.slug}/${currentSlug}`)
+      } else {
+        setNewPathPreview(`/${currentSlug}`)
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [form, parentPages])
 
   const onSubmit = async (data: PageSettingsFormData) => {
     setIsSubmitting(true)
@@ -206,6 +257,7 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
       formData.append('external_url', data.external_url || '')
       formData.append('meta_title', data.meta_title || '')
       formData.append('meta_description', data.meta_description || '')
+      formData.append('slug_overridden', String(data.slug_overridden))
 
       const result = await updatePage({ success: false }, formData)
 
@@ -267,16 +319,46 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
                     <FormControl>
                       <div className="flex items-center">
                         <span className="text-sm text-muted-foreground mr-1">/</span>
-                        <Input placeholder="page-url" {...field} />
+                        <Input
+                          placeholder={form.watch('slug_overridden') ? "custom-url" : "page-url"}
+                          {...field}
+                          onChange={(e) => handleSlugChange(e.target.value)}
+                        />
                       </div>
                     </FormControl>
                     <FormDescription className="text-xs">
-                      Lowercase, hyphens only
+                      {form.watch('slug_overridden')
+                        ? 'Custom URL independent of navigation hierarchy.'
+                        : 'Lowercase, hyphens only. Auto-generated from title unless manually edited.'}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              {/* Slug Override Switch */}
+              {page.parent_id && (
+                <FormField
+                  control={form.control}
+                  name="slug_overridden"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between rounded-lg border p-3 bg-muted/30">
+                      <div className="space-y-0.5">
+                        <FormLabel className="text-sm font-medium">Override URL Structure</FormLabel>
+                        <FormDescription className="text-xs">
+                          Use a custom URL independent of parent hierarchy. Page will still appear in "{parentPages.find(p => p.id === page.parent_id)?.title || 'parent'}" menu, but have a different URL.
+                        </FormDescription>
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              )}
 
               <FormField
                 control={form.control}
@@ -350,10 +432,57 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
                 />
               </div>
 
-              {/* Current Full Path Display */}
-              <div className="p-3 bg-muted rounded-md">
-                <p className="text-xs text-muted-foreground mb-1">Current Full Path:</p>
-                <p className="text-sm font-mono text-foreground break-all">/{page.slug}</p>
+              {/* Path Preview - Shows current and new path */}
+              <div className="space-y-3">
+                <div className="p-3 bg-muted/50 rounded-lg border border-border/50">
+                  <p className="text-xs font-medium text-muted-foreground mb-1.5">Current Path:</p>
+                  <p className="text-sm font-mono text-foreground break-all">/{page.slug}</p>
+                </div>
+
+                {newPathPreview && newPathPreview !== `/${page.slug}` && (
+                  <div className="relative">
+                    <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/50 to-transparent" />
+                    <div className="p-4 bg-primary/5 rounded-lg border-2 border-primary/30">
+                      <div className="flex items-start gap-2">
+                        <div className="flex-1">
+                          <p className="text-xs font-semibold text-primary mb-1.5 flex items-center gap-1">
+                            <ArrowRight className="h-3 w-3" />
+                            New Path After Save:
+                            {form.watch('slug_overridden') && (
+                              <span className="ml-1 px-1.5 py-0.5 bg-primary/20 text-primary text-[10px] font-bold rounded">
+                                CUSTOM URL
+                              </span>
+                            )}
+                          </p>
+                          <p className="text-sm font-mono text-foreground font-semibold break-all">
+                            {newPathPreview}
+                          </p>
+                        </div>
+                      </div>
+                      {form.watch('slug_overridden') && page.parent_id && (
+                        <p className="text-xs text-primary/80 mt-2 flex items-start gap-1">
+                          <CheckCircle2 className="h-3 w-3 mt-0.5 shrink-0" />
+                          <span>Navigation: "{parentPages.find(p => p.id === page.parent_id)?.title}" → URL: {newPathPreview}</span>
+                        </p>
+                      )}
+                      {!form.watch('slug_overridden') && !form.watch('parent_id') && page.parent_id && (
+                        <p className="text-xs text-primary/80 mt-2 flex items-start gap-1">
+                          <AlertTriangle className="h-3 w-3 mt-0.5 shrink-0" />
+                          <span>Moving from child page to root level page</span>
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {newPathPreview && newPathPreview === `/${page.slug}` && (
+                  <div className="p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-900">
+                    <p className="text-xs text-green-700 dark:text-green-400 flex items-center gap-1">
+                      <CheckCircle2 className="h-3 w-3" />
+                      Path will remain the same
+                    </p>
+                  </div>
+                )}
               </div>
 
               <FormField
@@ -381,7 +510,7 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
                       </SelectContent>
                     </Select>
                     <FormDescription className="text-xs">
-                      Nest this page under another page
+                      Change parent to control the page hierarchy. Select "None" to move to root level.
                     </FormDescription>
 
                     {childrenCount > 0 && field.value !== page.parent_id && (

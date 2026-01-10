@@ -59,7 +59,7 @@ export async function updateChildSlugs(
   // Get direct children
   const { data: children, error } = await supabase
     .from('cms_pages')
-    .select('id, slug')
+    .select('id, slug, slug_overridden, hierarchical_slug')
     .eq('parent_id', pageId)
 
   if (error) {
@@ -74,23 +74,44 @@ export async function updateChildSlugs(
   // Update each child
   for (const child of children) {
     const childSegment = extractSlugSegment(child.slug)
-    const newChildSlug = `${newSlug}/${childSegment}`
+    const newHierarchicalSlug = `${newSlug}/${childSegment}`
 
-    const { error: updateError } = await supabase
-      .from('cms_pages')
-      .update({
-        slug: newChildSlug,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', child.id)
+    // If child has slug override, only update hierarchical_slug
+    if (child.slug_overridden) {
+      const { error: updateError } = await supabase
+        .from('cms_pages')
+        .update({
+          hierarchical_slug: newHierarchicalSlug,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', child.id)
 
-    if (updateError) {
-      console.error(`Error updating child ${child.id}:`, updateError)
-      throw new Error(`Failed to update child page: ${child.id}`)
+      if (updateError) {
+        console.error(`Error updating child ${child.id}:`, updateError)
+        throw new Error(`Failed to update child page: ${child.id}`)
+      }
+
+      // Recursively update grandchildren with hierarchical slug
+      await updateChildSlugs(child.id, newHierarchicalSlug, supabase)
+    } else {
+      // No override: update both slug and hierarchical_slug
+      const { error: updateError } = await supabase
+        .from('cms_pages')
+        .update({
+          slug: newHierarchicalSlug,
+          hierarchical_slug: newHierarchicalSlug,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', child.id)
+
+      if (updateError) {
+        console.error(`Error updating child ${child.id}:`, updateError)
+        throw new Error(`Failed to update child page: ${child.id}`)
+      }
+
+      // Recursively update grandchildren
+      await updateChildSlugs(child.id, newHierarchicalSlug, supabase)
     }
-
-    // Recursively update grandchildren
-    await updateChildSlugs(child.id, newChildSlug, supabase)
   }
 }
 

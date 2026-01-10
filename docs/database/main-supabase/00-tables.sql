@@ -308,6 +308,8 @@ CREATE TABLE cms_pages (
   review_notes text,
   deleted_at timestamp with time zone,
   deleted_by uuid,
+  slug_overridden boolean DEFAULT false NOT NULL,
+  hierarchical_slug varchar(500),
   PRIMARY KEY (id),
   UNIQUE (slug)
 );
@@ -323,6 +325,20 @@ CREATE TABLE cms_pages (
 -- Note: The redirect fields (is_redirect, redirect_url, redirect_type) were removed
 --       from both the database schema and codebase to simplify page management.
 --       Use the external_url field for linking to external sites in navigation instead.
+-- ============================================
+
+-- ============================================
+-- ALTER TABLE: cms_pages - Custom URL Override Feature
+-- ============================================
+-- Purpose: Allow pages to have custom URLs independent of navigation hierarchy
+-- Modified: 2026-01-10
+-- Migration: 008_add_slug_override_to_cms_pages.sql
+-- New Columns:
+--   - slug_overridden: Flag indicating if slug is custom (default: false)
+--   - hierarchical_slug: Auto-calculated hierarchical path for navigation
+-- Use Case: A page can appear in a parent menu (e.g., "More") but have a
+--           different URL (e.g., /boobal instead of /more/boobal)
+-- Index: idx_cms_pages_slug_overridden (conditional on slug_overridden = true)
 -- ============================================
 
 
