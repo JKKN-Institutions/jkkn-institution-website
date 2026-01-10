@@ -54,7 +54,7 @@ const pageSettingsSchema = z.object({
   external_url: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
   meta_title: z.string().optional(),
   meta_description: z.string().optional(),
-  slug_overridden: z.boolean().default(false),
+  slug_overridden: z.boolean(),
 })
 
 type PageSettingsFormData = z.infer<typeof pageSettingsSchema>
