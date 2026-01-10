@@ -4,21 +4,26 @@ import { FeatureFlag, hasFeature } from '@/lib/config/multi-tenant'
 /**
  * Feature flag to URL pattern mapping
  * Maps feature flags to their corresponding URL paths
+ *
+ * IMPORTANT: Patterns should be specific to avoid false matches.
+ * Use trailing slashes or query params to match exact paths:
+ * - '/courses/' matches '/courses/' but NOT '/courses-offered'
+ * - '/courses?' matches '/courses?category=engineering' but NOT '/courses-offered'
  */
 const FEATURE_URL_PATTERNS: Partial<Record<FeatureFlag, string[]>> = {
-  careers: ['/careers'],
-  blog: ['/blog'],
-  events: ['/events'],
-  gallery: ['/gallery'],
-  admissions: ['/admissions', '/admission'],
-  'faculty-directory': ['/faculty'],
-  'course-catalog': ['/courses'],
-  testimonials: ['/testimonials'],
-  newsletter: ['/newsletter'],
-  'research-publications': ['/research', '/publications'],
-  'alumni-network': ['/alumni'],
-  'student-portal': ['/student-portal', '/students'],
-  placements: ['/placements', '/placement'],
+  careers: ['/careers/', '/careers?'],
+  blog: ['/blog/', '/blog?'],
+  events: ['/events/', '/events?'],
+  gallery: ['/gallery/', '/gallery?'],
+  admissions: ['/admissions/', '/admissions?', '/admission/', '/admission?'],
+  'faculty-directory': ['/faculty/', '/faculty?'],
+  'course-catalog': ['/courses/', '/courses?'],
+  testimonials: ['/testimonials/', '/testimonials?'],
+  newsletter: ['/newsletter/', '/newsletter?'],
+  'research-publications': ['/research/', '/research?', '/publications/', '/publications?'],
+  'alumni-network': ['/alumni/', '/alumni?'],
+  'student-portal': ['/student-portal/', '/student-portal?', '/students/', '/students?'],
+  placements: ['/placements/', '/placements?', '/placement/', '/placement?'],
 }
 
 /**

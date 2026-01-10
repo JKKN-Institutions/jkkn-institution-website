@@ -153,7 +153,7 @@ export default function EmbedBlock({
   // Render iframe embed
   const finalUrl = getEmbedUrl(embedUrl, embedType)
 
-  // Container styles
+  // Container styles - responsive heights
   const containerStyles: React.CSSProperties = {
     aspectRatio: autoHeight ? undefined : aspectRatio,
     minHeight: minHeight,  // Always apply minHeight if provided
@@ -165,23 +165,44 @@ export default function EmbedBlock({
     <div
       className={cn(
         'relative overflow-hidden',
-        fullWidth && 'w-full',
-        showBorder && 'border border-border',
+        'transition-all duration-300',
+        fullWidth ? 'w-full' : 'w-full mx-auto',
+        fullWidth ? 'bg-transparent' : 'bg-white',
+        showBorder && 'border border-border shadow-md',
+        // Responsive padding - no padding when full width
+        fullWidth ? 'p-0' : 'p-1 sm:p-2 md:p-0',
         className
       )}
       style={containerStyles}
     >
+      {/* Loading overlay */}
+      <div className="absolute inset-0 bg-gray-50 animate-pulse flex items-center justify-center">
+        <div className="text-gray-400 text-sm">Loading careers...</div>
+      </div>
+
+      {/* Iframe */}
       <iframe
         src={finalUrl}
         title={title}
         className={cn(
-          'w-full h-full',
-          autoHeight ? 'min-h-[400px]' : 'absolute inset-0'
+          'w-full h-full relative z-10',
+          autoHeight ? 'min-h-[400px] sm:min-h-[500px] md:min-h-[600px]' : 'absolute inset-0',
+          // Smooth load transition
+          'opacity-0 transition-opacity duration-500',
         )}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen={allowFullscreen}
         loading="lazy"
         style={{ border: 0 }}
+        onLoad={(e) => {
+          // Fade in iframe once loaded
+          e.currentTarget.style.opacity = '1'
+          // Hide loading overlay
+          const loadingOverlay = e.currentTarget.previousElementSibling
+          if (loadingOverlay) {
+            (loadingOverlay as HTMLElement).style.display = 'none'
+          }
+        }}
       />
     </div>
   )

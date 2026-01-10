@@ -16,6 +16,12 @@ import { EventsCalendarSchema } from '@/components/seo/events-calendar-schema'
 import { getCurrentInstitution } from '@/lib/config/multi-tenant'
 import { filterNavigationByFeatures } from '@/lib/utils/navigation-filter'
 
+/**
+ * Revalidate layout data every 5 minutes
+ * This ensures navigation and other CMS content stays fresh while maintaining good performance
+ */
+export const revalidate = 300
+
 export default async function PublicLayout({
   children
 }: {
