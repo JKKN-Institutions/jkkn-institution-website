@@ -996,34 +996,6 @@
     flex-direction: column;
   }
 
-  /* Add compact gap between non-full-width sections */
-  .page-content > .page-content-container {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .page-content > .page-content-container:first-child {
-    margin-top: 0;
-  }
-
-  .page-content > .page-content-container:last-child {
-    margin-bottom: 0;
-  }
-
-  @media (min-width: 640px) {
-    .page-content > .page-content-container {
-      margin-top: 0.75rem;
-      margin-bottom: 0.75rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .page-content > .page-content-container {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-    }
-  }
-
   /* Responsive container for CMS page content blocks */
   .page-content-container {
     width: 100%;

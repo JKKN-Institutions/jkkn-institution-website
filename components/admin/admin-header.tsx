@@ -56,7 +56,7 @@ const notificationStyles: Record<string, { icon: string; bg: string }> = {
   announcement: { icon: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-950/30' },
 }
 
-export function AdminHeader() {
+export function AdminHeader({ logoUrl }: { logoUrl?: string }) {
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
@@ -114,18 +114,20 @@ export function AdminHeader() {
           {/* Logo + Page Title */}
           <div className="flex items-center gap-3">
             {/* JKKN Logo - visible on mobile */}
-            <Link href="/admin" className="lg:hidden flex-shrink-0">
-              <div className="relative w-10 h-10">
-                <Image
-                  src="/images/logo.png"
-                  alt="JKKN Institution"
-                  fill
-                  sizes="40px"
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            </Link>
+            {logoUrl && (
+              <Link href="/admin" className="lg:hidden flex-shrink-0">
+                <div className="relative w-10 h-10">
+                  <Image
+                    src={logoUrl}
+                    alt="JKKN Institution"
+                    fill
+                    sizes="40px"
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+              </Link>
+            )}
             {/* Page Title - no description */}
             <h1 className="text-lg lg:text-xl font-semibold text-foreground">{getPageTitle()}</h1>
           </div>

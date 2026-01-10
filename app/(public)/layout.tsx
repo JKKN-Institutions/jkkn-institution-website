@@ -7,23 +7,50 @@ import { MetaPixel } from '@/components/analytics/meta-pixel'
 import { GoogleAnalytics } from '@/components/analytics/google-analytics'
 import { getPublicNavigation } from '@/app/actions/cms/navigation'
 import { getGlobalFabConfig } from '@/app/actions/cms/fab'
-import { getLogoSizes } from '@/app/actions/cms/appearance'
+import { getLogoSizes, getLogoUrl, getLogoAltText } from '@/app/actions/cms/appearance'
 import { getFooterSettings } from '@/app/actions/cms/footer'
+import { getContactInfo } from '@/app/actions/cms/contact'
+import { getSocialLinks } from '@/app/actions/cms/social'
 import { PublicThemeProvider } from '@/components/providers/public-theme-provider'
 import { EventsCalendarSchema } from '@/components/seo/events-calendar-schema'
+import { getCurrentInstitution } from '@/lib/config/multi-tenant'
+import { filterNavigationByFeatures } from '@/lib/utils/navigation-filter'
 
 export default async function PublicLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
-  // Fetch navigation, FAB config, logo sizes, and footer settings from CMS
-  const [navigation, fabConfig, logoSizes, footerSettings] = await Promise.all([
+  // Fetch all data in parallel for optimal performance
+  const [
+    rawNavigation,
+    fabConfig,
+    logoSizes,
+    logoUrl,
+    logoAltText,
+    footerSettings,
+    contactInfo,
+    socialLinks
+  ] = await Promise.all([
     getPublicNavigation(),
     getGlobalFabConfig(),
     getLogoSizes(),
-    getFooterSettings()
+    getLogoUrl(),
+    getLogoAltText(),
+    getFooterSettings(),
+    getContactInfo(),
+    getSocialLinks()
   ])
+
+  // Get institution info for fallbacks
+  const institution = getCurrentInstitution()
+
+  // Filter navigation by feature flags
+  const navigation = filterNavigationByFeatures(rawNavigation)
+
+  // Extract primary contact info
+  const primaryPhone = contactInfo.find(c => c.contact_type === 'phone' && c.is_primary)
+  const primaryEmail = contactInfo.find(c => c.contact_type === 'email' && c.is_primary)
 
   return (
     <PublicThemeProvider>
@@ -32,7 +59,17 @@ export default async function PublicLayout({
 
       <div className='min-h-screen bg-cream flex flex-col relative'>
         {/* Site Header with CMS Navigation and Logo Settings - Fixed glassmorphic */}
-        <SiteHeader navigation={navigation} logoSizes={logoSizes} />
+        <SiteHeader
+          navigation={navigation}
+          logoSizes={logoSizes}
+          logoUrl={logoUrl}
+          logoAltText={logoAltText || institution.name}
+          contactInfo={{
+            phone: primaryPhone?.contact_value || null,
+            email: primaryEmail?.contact_value || null
+          }}
+          socialLinks={socialLinks}
+        />
 
         {/* Main Content */}
         <main className="flex-1 overflow-x-hidden">{children}</main>
@@ -53,7 +90,7 @@ export default async function PublicLayout({
         <FloatingActionButton config={fabConfig} />
 
         {/* Mobile Bottom Navbar */}
-        <PublicBottomNav navigation={navigation} />
+        <PublicBottomNav navigation={navigation as any} />
       </div>
     </PublicThemeProvider>
   );

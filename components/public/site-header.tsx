@@ -1,10 +1,13 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { chunkArray } from '@/lib/utils/array'
+import { NavDropdownItem } from './nav-dropdown-item'
+import { NavMobileItem } from './nav-mobile-item'
 import {
   ChevronDown,
   Phone,
@@ -14,15 +17,26 @@ import {
   Instagram,
   Linkedin,
   Youtube,
+  Globe,
 } from 'lucide-react'
 
 export interface NavItem {
   id: string
   label: string
   href: string
-  is_homepage?: boolean
+  is_homepage: boolean
   external_url?: string | null
   children?: NavItem[]
+}
+
+export interface ContactInfo {
+  phone: string | null
+  email: string | null
+}
+
+export interface SocialLink {
+  platform: string
+  url: string
 }
 
 interface SiteHeaderProps {
@@ -36,26 +50,126 @@ interface SiteHeaderProps {
     desktop?: number
     desktopLarge?: number
   }
+  /** Logo URL (from database or fallback) */
+  logoUrl?: string
+  /** Logo alt text (institution name) */
+  logoAltText?: string
+  /** Contact information */
+  contactInfo?: ContactInfo
+  /** Social media links */
+  socialLinks?: SocialLink[]
+}
+
+// Helper to map platform name to Lucide icon
+const getSocialIcon = (platform: string) => {
+  const iconMap: Record<string, typeof Facebook> = {
+    facebook: Facebook,
+    twitter: Twitter,
+    instagram: Instagram,
+    linkedin: Linkedin,
+    youtube: Youtube,
+  }
+  return iconMap[platform.toLowerCase()] || Globe
+}
+
+// Helper functions for dynamic layout scaling based on row count
+const getLogoWidth = (rows: number): string => {
+  if (rows === 1) return 'lg:w-[15%]'
+  if (rows === 2) return 'lg:w-[20%]'
+  return 'lg:w-[22%]' // 3+ rows
+}
+
+const getLogoSize = (rows: number, logoSizes: SiteHeaderProps['logoSizes'] = {}): number => {
+  if (rows === 1) return logoSizes.desktop || 110
+  if (rows === 2) return logoSizes.desktopLarge || 130
+  return 140 // 3+ rows
+}
+
+const getNavWidth = (rows: number): string => {
+  if (rows === 1) return 'w-[85%]'
+  if (rows === 2) return 'w-[80%]'
+  return 'w-[78%]' // 3+ rows
+}
+
+const getHeaderHeight = (rows: number): string => {
+  if (rows === 1) return 'h-20 sm:h-24 lg:h-28'
+  if (rows === 2) return 'h-24 sm:h-28 lg:h-36'
+  if (rows === 3) return 'h-28 sm:h-32 lg:h-40'
+  return 'h-32 sm:h-36 lg:h-44' // 4+ rows
+}
+
+// Navigation Row Component for dynamic row rendering
+interface NavigationRowProps {
+  items: NavItem[]
+  rowIndex: number
+  rowCount: number
+  pathname: string
+  openDropdownPath: string[]
+  setOpenDropdownPath: (path: string[]) => void
+  isActive: (href: string) => boolean
+  handleDropdownHover: (itemId: string | null, parentPath?: string[]) => void
+  isActiveOrHasActiveChild: (item: NavItem) => boolean
+}
+
+function NavigationRow({
+  items,
+  rowIndex,
+  rowCount,
+  pathname,
+  openDropdownPath,
+  setOpenDropdownPath,
+  isActive,
+  handleDropdownHover,
+  isActiveOrHasActiveChild
+}: NavigationRowProps) {
+  // Adjust spacing for 3+ rows
+  const textSize = rowCount <= 2 ? 'text-xs xl:text-sm' : 'text-[10px] xl:text-xs'
+  const gap = rowCount <= 2 ? 'gap-1 lg:gap-2 xl:gap-4' : 'gap-0.5 lg:gap-1 xl:gap-2'
+
+  return (
+    <nav className={cn(
+      'flex items-center justify-start',
+      gap,
+      rowIndex > 0 && (rowCount <= 2 ? 'mt-1' : 'mt-0.5')
+    )}>
+      {items.map((item) => (
+        <NavDropdownItem
+          key={item.id}
+          item={item}
+          level={0}
+          parentPath={[]}
+          onPathChange={setOpenDropdownPath}
+          onHover={handleDropdownHover}
+          pathname={pathname}
+          isActive={isActive}
+          isActiveOrHasActiveChild={isActiveOrHasActiveChild}
+          textSize={textSize}
+          openDropdownPath={openDropdownPath}
+        />
+      ))}
+    </nav>
+  )
 }
 
 // Fallback navigation when CMS is empty
 const fallbackNavigation: NavItem[] = [
   { id: 'home', label: 'Home', href: '/', is_homepage: true },
-  { id: 'about', label: 'About', href: '/about' },
-  { id: 'academics', label: 'Academics', href: '/academics' },
-  { id: 'admissions', label: 'Admissions', href: '/admissions' },
-  { id: 'blog', label: 'Blog', href: '/blog' },
-  { id: 'contact', label: 'Contact', href: '/contact' },
+  { id: 'about', label: 'About', href: '/about', is_homepage: false },
+  { id: 'academics', label: 'Academics', href: '/academics', is_homepage: false },
+  { id: 'admissions', label: 'Admissions', href: '/admissions', is_homepage: false },
+  { id: 'blog', label: 'Blog', href: '/blog', is_homepage: false },
+  { id: 'contact', label: 'Contact', href: '/contact', is_homepage: false },
   {
     id: 'more',
     label: 'More',
     href: '#',
+    is_homepage: false,
     children: [
-      { id: 'careers', label: 'Careers', href: '/more/careers' },
-      { id: 'events', label: 'Events', href: '/events' },
-      { id: 'gallery', label: 'Gallery', href: '/gallery' },
-      { id: 'news', label: 'News & Updates', href: '/news' },
-      { id: 'terms', label: 'Terms & Conditions', href: '/terms-and-conditions' },
+      { id: 'careers', label: 'Careers', href: '/careers', is_homepage: false },
+      { id: 'events', label: 'Events', href: '/events', is_homepage: false },
+      { id: 'gallery', label: 'Gallery', href: '/gallery', is_homepage: false },
+      { id: 'news', label: 'News & Updates', href: '/news', is_homepage: false },
+      { id: 'terms', label: 'Terms & Conditions', href: '/terms-and-conditions', is_homepage: false },
     ],
   },
 ]
@@ -76,22 +190,50 @@ export function SiteHeader({
     tablet: 100,
     desktop: 110,
     desktopLarge: 130
-  }
+  },
+  logoUrl = '/images/logo.png',
+  logoAltText = 'Institution Logo',
+  contactInfo,
+  socialLinks = []
 }: SiteHeaderProps) {
   const pathname = usePathname()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+  const [openDropdownPath, setOpenDropdownPath] = useState<string[]>([])
+  const hoverTimeoutsRef = useRef<Map<string, NodeJS.Timeout>>(new Map())
 
   // Use CMS navigation if available, otherwise fallback
   const mainNavigation = navigation && navigation.length > 0 ? navigation : fallbackNavigation
 
-  // Calculate if we need 1 row or 2 rows (max 8 items in row 1, max 8 in row 2, strictly 2 rows max)
-  const ROW1_MAX = 8
-  const ROW2_MAX = 8
-  const hasSecondRow = mainNavigation.length > ROW1_MAX
-  const row1Items = mainNavigation.slice(0, ROW1_MAX)
-  const row2Items = mainNavigation.slice(ROW1_MAX, ROW1_MAX + ROW2_MAX) // Limit to 2 rows only
+  // Dynamic row calculation - support unlimited rows (8 items per row)
+  const ITEMS_PER_ROW = 8
+  const navRows = useMemo(
+    () => chunkArray(mainNavigation, ITEMS_PER_ROW),
+    [mainNavigation]
+  )
+  const rowCount = navRows.length
+
+  // Utility: Check if a specific path is currently open
+  const isPathOpen = useCallback((itemId: string, parentPath: string[] = []) => {
+    const fullPath = [...parentPath, itemId]
+    return openDropdownPath.slice(0, fullPath.length)
+      .every((id, i) => id === fullPath[i])
+  }, [openDropdownPath])
+
+  // Utility: Toggle path (add or remove from path)
+  const togglePath = useCallback((itemId: string, parentPath: string[] = []) => {
+    const fullPath = [...parentPath, itemId]
+    const isOpen = openDropdownPath.slice(0, fullPath.length)
+      .every((id, i) => id === fullPath[i])
+
+    if (isOpen) {
+      // Close this level and all children
+      setOpenDropdownPath(parentPath)
+    } else {
+      // Open this level
+      setOpenDropdownPath(fullPath)
+    }
+  }, [openDropdownPath])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -103,7 +245,7 @@ export function SiteHeader({
 
   useEffect(() => {
     setIsMobileMenuOpen(false)
-    setOpenDropdown(null)
+    setOpenDropdownPath([])
   }, [pathname])
 
   // Prevent body scroll when mobile menu is open
@@ -120,8 +262,49 @@ export function SiteHeader({
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/'
-    return pathname.startsWith(href)
+    return pathname === href || pathname.startsWith(href + '/')
   }
+
+  const isActiveOrHasActiveChild = useCallback((item: NavItem): boolean => {
+    // Check if this item is active
+    if (isActive(item.href)) return true
+
+    // Recursively check children
+    if (item.children && item.children.length > 0) {
+      return item.children.some(child => isActiveOrHasActiveChild(child))
+    }
+
+    return false
+  }, [pathname])
+
+  // Global hover coordinator to prevent multiple dropdowns from being open
+  const handleDropdownHover = useCallback((itemId: string | null, parentPath: string[] = []) => {
+    // Clear all existing timeouts
+    hoverTimeoutsRef.current.forEach(timeout => clearTimeout(timeout))
+    hoverTimeoutsRef.current.clear()
+
+    if (itemId) {
+      // Set new path after short delay (for smooth UX)
+      const timeout = setTimeout(() => {
+        setOpenDropdownPath([...parentPath, itemId])
+      }, 150)
+      hoverTimeoutsRef.current.set(itemId, timeout)
+    } else {
+      // Close all dropdowns after delay (gives user time to move mouse to dropdown)
+      const timeout = setTimeout(() => {
+        setOpenDropdownPath([])
+      }, 200)
+      hoverTimeoutsRef.current.set('close', timeout)
+    }
+  }, [])
+
+  // Cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      hoverTimeoutsRef.current.forEach(timeout => clearTimeout(timeout))
+      hoverTimeoutsRef.current.clear()
+    }
+  }, [])
 
   return (
     <>
@@ -139,7 +322,8 @@ export function SiteHeader({
       >
         <div className="container mx-auto px-4 lg:px-6">
           <div className={cn(
-            'flex items-center h-20 sm:h-24 lg:h-28', // Fixed height prevents CLS
+            'flex items-center', // Fixed height prevents CLS
+            getHeaderHeight(rowCount),
             // Mobile: center logo, Desktop: space-between for logo + nav
             'justify-center lg:justify-between'
           )}>
@@ -147,184 +331,45 @@ export function SiteHeader({
             <Link href="/" className={cn(
               'flex-shrink-0 flex items-center group relative z-10',
               // Mobile: no width constraint (centered), Desktop: fixed width
-              hasSecondRow ? 'lg:w-[20%]' : 'lg:w-[15%]'
+              getLogoWidth(rowCount)
             )}>
               <div
                 className="relative transition-transform duration-300 group-hover:scale-105"
                 style={{
-                  width: `clamp(${logoSizes.mobile}px, 12vw, ${hasSecondRow ? logoSizes.desktopLarge : logoSizes.desktop}px)`,
-                  height: `clamp(${logoSizes.mobile}px, 12vw, ${hasSecondRow ? logoSizes.desktopLarge : logoSizes.desktop}px)`,
+                  width: `clamp(${logoSizes.mobile}px, 12vw, ${getLogoSize(rowCount, logoSizes)}px)`,
+                  height: `clamp(${logoSizes.mobile}px, 12vw, ${getLogoSize(rowCount, logoSizes)}px)`,
                 }}
               >
                 <Image
-                  src="/images/logo.png"
-                  alt="JKKN Institution Logo"
+                  src={logoUrl}
+                  alt={logoAltText}
                   fill
-                  sizes={`(max-width: 640px) ${logoSizes.mobile}px, (max-width: 1024px) ${logoSizes.tablet}px, ${hasSecondRow ? logoSizes.desktopLarge : logoSizes.desktop}px`}
+                  sizes={`(max-width: 640px) ${logoSizes.mobile}px, (max-width: 1024px) ${logoSizes.tablet}px, ${getLogoSize(rowCount, logoSizes)}px`}
                   className="object-contain"
                   priority
                 />
               </div>
             </Link>
 
-            {/* Desktop Navigation - Adjusts width based on single/double row */}
+            {/* Desktop Navigation - Dynamic Rows */}
             <div className={cn(
               'hidden lg:flex flex-col justify-center py-1',
-              hasSecondRow ? 'w-[80%]' : 'w-[85%]'
+              getNavWidth(rowCount)
             )}>
-              {/* Row 1 - First 7 menu items + Search */}
-              <div className="flex items-center">
-                <nav className="flex-1 flex items-center justify-start gap-1 lg:gap-2 xl:gap-4">
-                  {row1Items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="relative group"
-                      onMouseEnter={() => item.children && item.children.length > 0 && setOpenDropdown(item.id)}
-                      onMouseLeave={() => setOpenDropdown(null)}
-                    >
-                      {item.children && item.children.length > 0 ? (
-                        <button
-                          type="button"
-                          onClick={() => setOpenDropdown(openDropdown === item.id ? null : item.id)}
-                          className={cn(
-                            'flex items-center gap-1 px-1 xl:px-2 py-2 text-xs xl:text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
-                            openDropdown === item.id
-                              ? 'text-primary border-primary'
-                              : 'text-gray-800 hover:text-primary border-transparent hover:border-primary'
-                          )}
-                        >
-                          {item.label}
-                          <ChevronDown className={cn(
-                            'h-3 w-3 transition-transform duration-200',
-                            openDropdown === item.id && 'rotate-180'
-                          )} />
-                        </button>
-                      ) : (
-                        <Link
-                          href={item.href}
-                          className={cn(
-                            'flex items-center gap-1 px-1 xl:px-2 py-2 text-xs xl:text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
-                            isActive(item.href)
-                              ? 'text-primary border-primary'
-                              : 'text-gray-800 hover:text-primary border-transparent hover:border-primary'
-                          )}
-                        >
-                          {item.label}
-                        </Link>
-                      )}
-
-                      {/* Dropdown */}
-                      {item.children && item.children.length > 0 && openDropdown === item.id && (
-                        <div className="absolute top-full left-0 pt-1 w-72 origin-top animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-                          <div className="bg-white rounded-lg shadow-lg shadow-black/10 border border-gray-100 py-1 overflow-hidden">
-                            {item.children.map((child) =>
-                              child.external_url ? (
-                                <a
-                                  key={child.id}
-                                  href={child.external_url}
-                                  className="block px-3 py-1.5 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-150"
-                                >
-                                  {child.label}
-                                </a>
-                              ) : (
-                                <Link
-                                  key={child.id}
-                                  href={child.href}
-                                  className={cn(
-                                    'block px-3 py-1.5 text-sm transition-colors duration-150',
-                                    isActive(child.href)
-                                      ? 'text-primary bg-primary/5 font-medium'
-                                      : 'text-gray-700 hover:text-primary hover:bg-gray-50'
-                                  )}
-                                >
-                                  {child.label}
-                                </Link>
-                              )
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </nav>
-              </div>
-
-              {/* Row 2 - Remaining menu items (max 7 more, strictly 2 rows only) */}
-              {hasSecondRow && row2Items.length > 0 && (
-              <nav className="flex items-center justify-start gap-1 lg:gap-2 xl:gap-4 mt-1">
-                {row2Items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="relative group"
-                    onMouseEnter={() => item.children && item.children.length > 0 && setOpenDropdown(item.id)}
-                    onMouseLeave={() => setOpenDropdown(null)}
-                  >
-                    {item.children && item.children.length > 0 ? (
-                      <button
-                        type="button"
-                        onClick={() => setOpenDropdown(openDropdown === item.id ? null : item.id)}
-                        className={cn(
-                          'flex items-center gap-1 px-1 xl:px-2 py-2 text-xs xl:text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
-                          openDropdown === item.id
-                            ? 'text-primary border-primary'
-                            : 'text-gray-800 hover:text-primary border-transparent hover:border-primary'
-                        )}
-                      >
-                        {item.label}
-                        <ChevronDown className={cn(
-                          'h-3 w-3 transition-transform duration-200',
-                          openDropdown === item.id && 'rotate-180'
-                        )} />
-                      </button>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        className={cn(
-                          'flex items-center gap-1 px-1 xl:px-2 py-2 text-xs xl:text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
-                          isActive(item.href)
-                            ? 'text-primary border-primary'
-                            : 'text-gray-800 hover:text-primary border-transparent hover:border-primary'
-                        )}
-                      >
-                        {item.label}
-                      </Link>
-                    )}
-
-                    {/* Dropdown */}
-                    {item.children && item.children.length > 0 && openDropdown === item.id && (
-                      <div className="absolute top-full left-0 pt-1 w-72 origin-top animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-                        <div className="bg-white rounded-lg shadow-lg shadow-black/10 border border-gray-100 py-1 overflow-hidden">
-                          {item.children.map((child) =>
-                            child.external_url ? (
-                              <a
-                                key={child.id}
-                                href={child.external_url}
-                                className="block px-3 py-1.5 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors duration-150"
-                              >
-                                {child.label}
-                              </a>
-                            ) : (
-                              <Link
-                                key={child.id}
-                                href={child.href}
-                                className={cn(
-                                  'block px-3 py-1.5 text-sm transition-colors duration-150',
-                                  isActive(child.href)
-                                    ? 'text-primary bg-primary/5 font-medium'
-                                    : 'text-gray-700 hover:text-primary hover:bg-gray-50'
-                                )}
-                              >
-                                {child.label}
-                              </Link>
-                            )
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </nav>
-              )}
+              {navRows.map((rowItems, index) => (
+                <NavigationRow
+                  key={`nav-row-${index}`}
+                  items={rowItems}
+                  rowIndex={index}
+                  rowCount={rowCount}
+                  pathname={pathname}
+                  openDropdownPath={openDropdownPath}
+                  setOpenDropdownPath={setOpenDropdownPath}
+                  isActive={isActive}
+                  handleDropdownHover={handleDropdownHover}
+                  isActiveOrHasActiveChild={isActiveOrHasActiveChild}
+                />
+              ))}
             </div>
 
             {/* Mobile Menu Button - Hidden on mobile (using bottom nav instead) */}
@@ -382,8 +427,8 @@ export function SiteHeader({
             <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
               <div className="relative w-14 h-14">
                 <Image
-                  src="/images/logo.png"
-                  alt="JKKN Institution Logo"
+                  src={logoUrl}
+                  alt={logoAltText}
                   fill
                   sizes="56px"
                   className="object-contain"
@@ -406,110 +451,65 @@ export function SiteHeader({
             {/* Navigation Items */}
             <nav className="p-4">
               {mainNavigation.map((item) => (
-                <div key={item.id} className="border-b border-gray-100 last:border-b-0">
-                  {item.children && item.children.length > 0 ? (
-                    <div>
-                      <button
-                        onClick={() => setOpenDropdown(openDropdown === item.id ? null : item.id)}
-                        className={cn(
-                          'w-full flex items-center justify-between py-3 text-sm font-semibold uppercase tracking-wide transition-colors',
-                          isActive(item.href)
-                            ? 'text-primary'
-                            : 'text-gray-700 hover:text-primary'
-                        )}
-                      >
-                        {item.label}
-                        <ChevronDown className={cn(
-                          'h-4 w-4 transition-transform duration-200',
-                          openDropdown === item.id && 'rotate-180'
-                        )} />
-                      </button>
-                      <div className={cn(
-                        'overflow-hidden transition-all duration-200',
-                        openDropdown === item.id ? 'max-h-[500px] pb-2' : 'max-h-0'
-                      )}>
-                        <div className="pl-4 border-l-2 border-primary/30 ml-2 space-y-1">
-                          {item.children.map((child) =>
-                            child.external_url ? (
-                              <a
-                                key={child.id}
-                                href={child.external_url}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="block py-2 text-sm text-gray-600 hover:text-primary transition-colors"
-                              >
-                                {child.label}
-                              </a>
-                            ) : (
-                              <Link
-                                key={child.id}
-                                href={child.href}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className={cn(
-                                  'block py-2 text-sm transition-colors',
-                                  isActive(child.href)
-                                    ? 'text-primary font-medium'
-                                    : 'text-gray-600 hover:text-primary'
-                                )}
-                              >
-                                {child.label}
-                              </Link>
-                            )
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={cn(
-                        'block py-3 text-sm font-semibold uppercase tracking-wide transition-colors',
-                        isActive(item.href)
-                          ? 'text-primary'
-                          : 'text-gray-700 hover:text-primary'
-                      )}
-                    >
-                      {item.label}
-                    </Link>
-                  )}
-                </div>
+                <NavMobileItem
+                  key={item.id}
+                  item={item}
+                  level={0}
+                  parentPath={[]}
+                  onPathChange={setOpenDropdownPath}
+                  onItemClick={() => setIsMobileMenuOpen(false)}
+                  pathname={pathname}
+                  isActive={isActive}
+                  openDropdownPath={openDropdownPath}
+                />
               ))}
             </nav>
 
             {/* Contact Info */}
-            <div className="px-4 py-4 border-t border-gray-200 bg-white/50">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Contact Us</p>
-              <div className="space-y-3">
-                <a href="tel:+919345855001" className="flex items-center gap-3 text-sm text-gray-700 hover:text-primary transition-colors">
-                  <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
-                    <Phone className="h-4 w-4 text-primary" />
-                  </div>
-                  +91 93458 55001
-                </a>
-                <a href="mailto:info@jkkn.ac.in" className="flex items-center gap-3 text-sm text-gray-700 hover:text-primary transition-colors">
-                  <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
-                    <Mail className="h-4 w-4 text-primary" />
-                  </div>
-                  info@jkkn.ac.in
-                </a>
-              </div>
+            {(contactInfo?.phone || contactInfo?.email || socialLinks.length > 0) && (
+              <div className="px-4 py-4 border-t border-gray-200 bg-white/50">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Contact Us</p>
+                <div className="space-y-3">
+                  {contactInfo?.phone && (
+                    <a href={`tel:${contactInfo.phone}`} className="flex items-center gap-3 text-sm text-gray-700 hover:text-primary transition-colors">
+                      <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
+                        <Phone className="h-4 w-4 text-primary" />
+                      </div>
+                      {contactInfo.phone}
+                    </a>
+                  )}
+                  {contactInfo?.email && (
+                    <a href={`mailto:${contactInfo.email}`} className="flex items-center gap-3 text-sm text-gray-700 hover:text-primary transition-colors">
+                      <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
+                        <Mail className="h-4 w-4 text-primary" />
+                      </div>
+                      {contactInfo.email}
+                    </a>
+                  )}
+                </div>
 
-              {/* Social Links */}
-              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-200">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2.5 bg-gray-100 rounded-lg hover:bg-primary hover:text-white transition-all duration-200"
-                    aria-label={social.label}
-                  >
-                    <social.icon className="h-4 w-4" />
-                  </a>
-                ))}
+                {/* Social Links */}
+                {socialLinks.length > 0 && (
+                  <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-200">
+                    {socialLinks.map((social) => {
+                      const Icon = getSocialIcon(social.platform)
+                      return (
+                        <a
+                          key={social.platform}
+                          href={social.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2.5 bg-gray-100 rounded-lg hover:bg-primary hover:text-white transition-all duration-200"
+                          aria-label={social.platform}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </a>
+                      )
+                    })}
+                  </div>
+                )}
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
@@ -517,7 +517,7 @@ export function SiteHeader({
       {/* Spacer for fixed header - only needed on live site, not in preview */}
       {/* Fixed height prevents CLS from dynamic height changes */}
       {!isPreview && (
-        <div className="h-20 sm:h-24 lg:h-28" />
+        <div className={getHeaderHeight(rowCount)} />
       )}
     </>
   )

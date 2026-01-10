@@ -28,7 +28,7 @@ export function ImageUpload({
   description,
   accept = 'image/*',
   maxSize = 2, // 2MB default
-  bucket = 'settings',
+  bucket = 'cms-media',
   folder = 'images',
   className,
 }: ImageUploadProps) {

@@ -248,8 +248,21 @@ const HoverCardPropsSchema = z.object({
 // Data component schemas
 const TablePropsSchema = z.object({
   caption: z.string().optional(),
-  headers: z.array(z.string()).default(['Column 1', 'Column 2', 'Column 3']),
-  rows: z.array(z.array(z.string())).default([]),
+  headers: z.array(z.string()).default(['Name', 'Email', 'Role']),
+  rows: z.array(z.array(z.string())).default([
+    ['John Doe', 'john@example.com', 'Developer'],
+    ['Jane Smith', 'jane@example.com', 'Designer'],
+    ['Bob Johnson', 'bob@example.com', 'Manager'],
+  ]),
+  striped: z.boolean().default(true),
+  bordered: z.boolean().default(true),
+  hoverable: z.boolean().default(true),
+  compact: z.boolean().default(false),
+  responsive: z.boolean().default(true),
+  headerStyle: z.enum(['default', 'dark', 'accent']).default('default'),
+  columnAlignment: z.array(z.enum(['left', 'center', 'right'])).default(['left', 'left', 'left']),
+  showCaption: z.boolean().default(true),
+  captionPosition: z.enum(['top', 'bottom']).default('bottom'),
 })
 
 const CalendarPropsSchema = z.object({

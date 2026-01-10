@@ -1173,6 +1173,101 @@ USING (auth.role() = 'authenticated'::text);
 -- ============================================
 
 
+-- ============================================
+-- TABLE: site_contact_info RLS POLICIES
+-- ============================================
+-- Purpose: Public read access for anonymous users (for website display)
+--          Admin write access for super_admin only
+-- Created: 2026-01-09
+-- Security: Public SELECT, admin-only INSERT/UPDATE/DELETE
+-- ============================================
+
+-- Enable RLS
+ALTER TABLE public.site_contact_info ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Public can view contact info (for website footer/navigation)
+CREATE POLICY "Public can view contact info"
+ON public.site_contact_info
+FOR SELECT
+TO public
+USING (true); -- Allow all anonymous users to read
+
+-- Policy: Super admins can insert contact info
+CREATE POLICY "Super admins can insert contact info"
+ON public.site_contact_info
+FOR INSERT
+TO public
+WITH CHECK (is_super_admin(auth.uid()));
+
+-- Policy: Super admins can update contact info
+CREATE POLICY "Super admins can update contact info"
+ON public.site_contact_info
+FOR UPDATE
+TO public
+USING (is_super_admin(auth.uid()));
+
+-- Policy: Super admins can delete contact info
+CREATE POLICY "Super admins can delete contact info"
+ON public.site_contact_info
+FOR DELETE
+TO public
+USING (is_super_admin(auth.uid()));
+
+-- End of site_contact_info policies
+-- ============================================
+
+
+-- ============================================
+-- TABLE: site_social_links RLS POLICIES
+-- ============================================
+-- Purpose: Public read access for anonymous users (for website display)
+--          Admin write access for super_admin only
+-- Created: 2026-01-09
+-- Security: Public SELECT, admin-only INSERT/UPDATE/DELETE
+-- ============================================
+
+-- Enable RLS
+ALTER TABLE public.site_social_links ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Public can view active social links (for website footer/navigation)
+CREATE POLICY "Public can view active social links"
+ON public.site_social_links
+FOR SELECT
+TO public
+USING (is_active = true); -- Only show active links to public
+
+-- Policy: Super admins can view all social links (including inactive)
+CREATE POLICY "Super admins can view all social links"
+ON public.site_social_links
+FOR SELECT
+TO public
+USING (is_super_admin(auth.uid()));
+
+-- Policy: Super admins can insert social links
+CREATE POLICY "Super admins can insert social links"
+ON public.site_social_links
+FOR INSERT
+TO public
+WITH CHECK (is_super_admin(auth.uid()));
+
+-- Policy: Super admins can update social links
+CREATE POLICY "Super admins can update social links"
+ON public.site_social_links
+FOR UPDATE
+TO public
+USING (is_super_admin(auth.uid()));
+
+-- Policy: Super admins can delete social links
+CREATE POLICY "Super admins can delete social links"
+ON public.site_social_links
+FOR DELETE
+TO public
+USING (is_super_admin(auth.uid()));
+
+-- End of site_social_links policies
+-- ============================================
+
+
 -- ================================================================
 -- END OF RLS POLICIES DOCUMENTATION
 -- ================================================================

@@ -1,6 +1,6 @@
 'use server'
 
-import { createServerSupabaseClient } from '@/lib/supabase/server'
+import { createServerSupabaseClient, createPublicSupabaseClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { logActivity } from '@/lib/utils/activity-logger'
@@ -64,7 +64,9 @@ export async function getBlogCategories(options?: {
   search?: string
   categoryType?: CategoryType
 }) {
-  const supabase = await createServerSupabaseClient()
+  // Use public client for read-only operations to avoid authentication issues
+  // during build time and public page rendering
+  const supabase = createPublicSupabaseClient()
   const { includeInactive = false, parentId, search, categoryType } = options || {}
 
   let query = supabase
@@ -97,8 +99,14 @@ export async function getBlogCategories(options?: {
   const { data, error } = await query
 
   if (error) {
-    console.error('Error fetching blog categories:', error)
-    throw new Error('Failed to fetch blog categories')
+    console.error('Error fetching blog categories:', {
+      error,
+      errorMessage: error.message,
+      errorDetails: error.details,
+      errorHint: error.hint,
+      options,
+    })
+    throw new Error(`Failed to fetch blog categories: ${error.message}`)
   }
 
   return data as BlogCategory[]

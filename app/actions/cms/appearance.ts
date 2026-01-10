@@ -84,3 +84,28 @@ export async function getLogoUrl(): Promise<string> {
 
   return data?.setting_value ? String(data.setting_value) : '/images/logo.png'
 }
+
+/**
+ * Get logo alt text from site settings
+ */
+export async function getLogoAltText(): Promise<string> {
+  const supabase = await createServerSupabaseClient()
+
+  const { data } = await supabase
+    .from('site_settings')
+    .select('setting_value')
+    .eq('setting_key', 'logo_alt_text')
+    .single()
+
+  // setting_value is JSONB, so we need to parse it
+  if (data?.setting_value) {
+    // If it's a JSON string, parse it
+    if (typeof data.setting_value === 'string') {
+      return data.setting_value
+    }
+    // If it's already an object, extract the string value
+    return String(data.setting_value).replace(/^"|"$/g, '')
+  }
+
+  return 'Institution Logo'
+}

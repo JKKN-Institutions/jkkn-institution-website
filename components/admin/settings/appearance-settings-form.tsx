@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { ColorPicker } from './color-picker'
-import { ImageUpload } from './image-upload'
+import { MediaLibraryImagePicker } from './media-library-image-picker'
 import { Input } from '@/components/ui/input'
 import { Loader2, Save, Palette, Image as ImageIcon, Maximize2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -160,7 +160,7 @@ export function AppearanceSettingsForm({ initialSettings }: AppearanceSettingsFo
               name="logo_url"
               render={({ field }) => (
                 <FormItem>
-                  <ImageUpload
+                  <MediaLibraryImagePicker
                     value={field.value || ''}
                     onChange={field.onChange}
                     label="Logo (Light Mode)"
@@ -177,7 +177,7 @@ export function AppearanceSettingsForm({ initialSettings }: AppearanceSettingsFo
               name="logo_dark_url"
               render={({ field }) => (
                 <FormItem>
-                  <ImageUpload
+                  <MediaLibraryImagePicker
                     value={field.value || ''}
                     onChange={field.onChange}
                     label="Logo (Dark Mode)"
@@ -194,13 +194,12 @@ export function AppearanceSettingsForm({ initialSettings }: AppearanceSettingsFo
               name="favicon_url"
               render={({ field }) => (
                 <FormItem>
-                  <ImageUpload
+                  <MediaLibraryImagePicker
                     value={field.value || ''}
                     onChange={field.onChange}
                     label="Favicon"
                     description="32x32px or 64x64px PNG/ICO"
                     folder="branding"
-                    maxSize={0.5}
                   />
                   <FormMessage />
                 </FormItem>
@@ -212,13 +211,12 @@ export function AppearanceSettingsForm({ initialSettings }: AppearanceSettingsFo
               name="hero_background_url"
               render={({ field }) => (
                 <FormItem>
-                  <ImageUpload
+                  <MediaLibraryImagePicker
                     value={field.value || ''}
                     onChange={field.onChange}
                     label="Default Hero Background"
                     description="Used as fallback for page heroes"
-                    folder="backgrounds"
-                    maxSize={5}
+                    folder="branding"
                   />
                   <FormMessage />
                 </FormItem>

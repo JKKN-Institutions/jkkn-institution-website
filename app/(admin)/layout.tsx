@@ -5,6 +5,7 @@ import { AdminHeader } from '@/components/admin/admin-header'
 import { AdminLayoutClient } from '@/components/admin/admin-layout-client'
 import { AdminBottomNav } from '@/components/navigation/bottom-nav/admin/admin-bottom-nav'
 import { AdminThemeProvider } from '@/components/providers/admin-theme-provider'
+import { getSetting } from '@/app/actions/settings'
 
 // Type for role relation from Supabase join
 type RoleData = { id: string; name: string; display_name: string }
@@ -98,6 +99,10 @@ export default async function AdminLayout({
     permissions: userData.permissions,
   }
 
+  // Fetch logo URL from site settings
+  const logoResult = await getSetting('logo_url')
+  const logoUrl = logoResult.success && typeof logoResult.data === 'string' ? logoResult.data : undefined
+
   return (
     <AdminThemeProvider>
       <AdminLayoutClient userId={user.id} initialUserData={initialUserData}>
@@ -119,12 +124,12 @@ export default async function AdminLayout({
           </div>
 
           {/* Responsive Navigation (Desktop Sidebar + Mobile Bottom Nav) */}
-          <ResponsiveNavigation />
+          <ResponsiveNavigation logoUrl={logoUrl} />
 
           {/* Main Content Area with Fixed Header */}
           <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden">
             {/* Fixed Header - uses user data from context */}
-            <AdminHeader />
+            <AdminHeader logoUrl={logoUrl} />
 
             {/* Scrollable Page Content */}
             <main className="flex-1 overflow-y-auto overflow-x-hidden w-full p-4 lg:p-6 pb-20 lg:pb-6">{children}</main>

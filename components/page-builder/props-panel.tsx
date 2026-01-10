@@ -18,6 +18,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { getComponentEntry } from '@/lib/cms/component-registry'
+import { TableEditor } from '@/components/page-builder/table-editor'
 import type { EditableProp } from '@/lib/cms/registry-types'
 import { usePageBuilder } from './page-builder-context'
 import { GlassmorphismControls } from './elementor/glassmorphism-controls'
@@ -188,6 +189,16 @@ export function PropsPanel({ className }: PropsPanelProps) {
             value={(value as string) || ''}
             onChange={(e) => handlePropChange(prop.name, e.target.value)}
             placeholder="https://"
+          />
+        )
+
+      case 'table':
+        const tableData = value as { headers: string[]; rows: string[][] }
+        return (
+          <TableEditor
+            headers={tableData?.headers || []}
+            rows={tableData?.rows || []}
+            onChange={(data) => handlePropChange(prop.name, data)}
           />
         )
 

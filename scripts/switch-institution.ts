@@ -33,7 +33,7 @@ const INSTITUTIONS: Record<string, InstitutionEnv> = {
     supabaseUrl: 'https://pmqodbfhsejbvfbmsfeq.supabase.co',
     supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtcW9kYmZoc2VqYnZmYm1zZmVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM3NTAzMDcsImV4cCI6MjA3OTMyNjMwN30.v2DXQ-0Aa1UTotrzWguqWRYR7Eh8mkXcwCYxBjgiFmI',
     siteUrl: 'http://localhost:3000',
-    features: 'blog,careers,page-builder,analytics,events,gallery,testimonials,newsletter',
+    features: 'blog,careers,page-builder,analytics,events,gallery,testimonials,newsletter,course-catalog',
     mediaBucket: 'cms-media',
   },
   dental: {

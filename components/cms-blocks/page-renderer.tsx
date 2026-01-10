@@ -214,8 +214,11 @@ function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?:
 
   // Responsive container for non-full-width blocks at root level
   const ResponsiveContainer = ({ children }: { children: React.ReactNode }) => {
+    // Check both registry property AND block props for full-width
+    const propFullWidth = block.props.fullWidth === true
+
     // Only apply container to root-level, non-full-width blocks
-    if (isNested || isFullWidth) {
+    if (isNested || isFullWidth || propFullWidth) {
       return <>{children}</>
     }
     return (

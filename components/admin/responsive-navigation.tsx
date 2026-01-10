@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import NextImage from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useUserData } from '@/components/providers/user-data-provider'
@@ -240,12 +241,14 @@ function DesktopSidebar({
   activeSubModule,
   collapsed,
   onToggleCollapse,
+  logoUrl,
 }: {
   groups: NavGroup[]
   activeModule: string
   activeSubModule: string
   collapsed: boolean
   onToggleCollapse: () => void
+  logoUrl?: string
 }) {
   const [expandedItems, setExpandedItems] = useState<string[]>([activeModule])
 
@@ -347,13 +350,45 @@ function DesktopSidebar({
       {/* Logo */}
       <div className="p-5 border-b border-border flex items-center justify-between">
         <Link href="/admin" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow duration-300 flex-shrink-0">
-            <span className="text-white font-bold text-lg">J</span>
-          </div>
-          {!collapsed && (
-            <div className="overflow-hidden">
-              <span className="text-lg font-semibold text-foreground">JKKN Admin</span>
-            </div>
+          {logoUrl ? (
+            <>
+              {collapsed ? (
+                // Collapsed: Show small square logo
+                <div className="relative w-10 h-10 flex-shrink-0">
+                  <NextImage
+                    src={logoUrl}
+                    alt="JKKN Admin"
+                    fill
+                    sizes="40px"
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+              ) : (
+                // Expanded: Show full logo (larger)
+                <div className="relative h-10 w-48 overflow-hidden flex-shrink-0">
+                  <NextImage
+                    src={logoUrl}
+                    alt="JKKN Admin"
+                    fill
+                    sizes="192px"
+                    className="object-contain object-left"
+                    priority
+                  />
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow duration-300 flex-shrink-0">
+                <span className="text-white font-bold text-lg">J</span>
+              </div>
+              {!collapsed && (
+                <div className="overflow-hidden">
+                  <span className="text-lg font-semibold text-foreground">JKKN Admin</span>
+                </div>
+              )}
+            </>
           )}
         </Link>
         <button
@@ -605,7 +640,7 @@ function MobileMenuButton({ onClick }: { onClick: () => void }) {
 }
 
 // Main Responsive Navigation Component
-export function ResponsiveNavigation() {
+export function ResponsiveNavigation({ logoUrl }: { logoUrl?: string }) {
   const pathname = usePathname()
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -685,6 +720,7 @@ export function ResponsiveNavigation() {
         activeSubModule={activeSubModule}
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+        logoUrl={logoUrl}
       />
 
       {/* Mobile Menu Button */}

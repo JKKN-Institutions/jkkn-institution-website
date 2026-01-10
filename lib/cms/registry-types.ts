@@ -33,7 +33,7 @@ export interface EditableProp {
   /** Display label (defaults to formatted name) */
   label?: string
   /** Property type for form field rendering */
-  type: 'string' | 'number' | 'boolean' | 'enum' | 'array' | 'object' | 'color' | 'url' | 'image' | 'video' | 'media'
+  type: 'string' | 'number' | 'boolean' | 'enum' | 'array' | 'object' | 'color' | 'url' | 'image' | 'video' | 'media' | 'table'
   /** Description shown below the field */
   description?: string
   /** Whether this field is required */
@@ -588,6 +588,7 @@ export const EmbedBlockPropsSchema = z.object({
   borderRadius: z.string().default('8px'),
   showBorder: z.boolean().default(false),
   title: z.string().default('Embedded content'),
+  fullWidth: z.boolean().default(false), // Enable full-width breakout
 })
 export type EmbedBlockProps = z.infer<typeof EmbedBlockPropsSchema> & BaseBlockProps
 
@@ -654,6 +655,18 @@ export const FlexboxLayoutPropsSchema = z.object({
   gap: z.number().default(4),
 })
 export type FlexboxLayoutProps = z.infer<typeof FlexboxLayoutPropsSchema> & BaseBlockProps
+
+export const SplitLayoutPropsSchema = z.object({
+  proportion: z.enum(['50-50', '40-60', '60-40', '33-67']).default('50-50'),
+  reverse: z.boolean().default(false),
+  verticalAlign: z.enum(['start', 'center', 'end', 'stretch']).default('center'),
+  gap: z.number().default(8),
+  stackOnMobile: z.boolean().default(true),
+  mobileBreakpoint: z.enum(['sm', 'md', 'lg']).default('md'),
+  background: z.string().optional(),
+  padding: z.number().default(0),
+})
+export type SplitLayoutProps = z.infer<typeof SplitLayoutPropsSchema> & BaseBlockProps
 
 export const SpacerPropsSchema = z.object({
   height: z.string().default('8'),

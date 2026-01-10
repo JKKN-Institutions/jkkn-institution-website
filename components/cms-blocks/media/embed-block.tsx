@@ -16,6 +16,7 @@ export default function EmbedBlock({
   borderRadius = '8px',
   showBorder = false,
   title = 'Embedded content',
+  fullWidth = false,
   className,
   isEditing,
 }: EmbedBlockProps) {
@@ -97,7 +98,7 @@ export default function EmbedBlock({
         )}
         style={{
           aspectRatio: autoHeight ? undefined : aspectRatio,
-          minHeight: autoHeight ? minHeight || '300px' : undefined,
+          minHeight: minHeight || '300px',  // Always apply minHeight with fallback
         }}
       >
         <div className="text-center text-muted-foreground p-8">
@@ -136,7 +137,7 @@ export default function EmbedBlock({
         )}
         style={{
           aspectRatio: autoHeight ? undefined : aspectRatio,
-          minHeight: autoHeight ? minHeight : undefined,
+          minHeight: minHeight,  // Always apply minHeight if provided
           maxHeight: maxHeight,
           borderRadius,
         }}
@@ -155,7 +156,7 @@ export default function EmbedBlock({
   // Container styles
   const containerStyles: React.CSSProperties = {
     aspectRatio: autoHeight ? undefined : aspectRatio,
-    minHeight: autoHeight ? minHeight : undefined,
+    minHeight: minHeight,  // Always apply minHeight if provided
     maxHeight: maxHeight,
     borderRadius,
   }
@@ -164,6 +165,7 @@ export default function EmbedBlock({
     <div
       className={cn(
         'relative overflow-hidden',
+        fullWidth && 'w-full',
         showBorder && 'border border-border',
         className
       )}

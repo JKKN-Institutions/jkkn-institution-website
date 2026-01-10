@@ -1543,8 +1543,8 @@ CREATE TABLE in_app_notifications (
 -- ================================================================
 -- CATEGORY 8: SYSTEM CONFIGURATION
 -- ================================================================
--- Purpose: System settings and analytics
--- Tables: 4
+-- Purpose: System settings, contact info, social links, and analytics
+-- Tables: 6
 -- ================================================================
 
 -- ============================================
@@ -1649,9 +1649,58 @@ CREATE TABLE imported_master_templates (
 -- ============================================
 
 
+-- ============================================
+-- TABLE: site_contact_info
+-- ============================================
+-- Purpose: Institution-specific contact information
+-- Created: 2026-01-09
+-- Dependencies: None
+-- Used by: Public website navigation, footer
+-- ============================================
+
+CREATE TABLE site_contact_info (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  contact_type text NOT NULL, -- 'phone', 'email', 'address', 'fax'
+  contact_value text NOT NULL,
+  display_label text, -- e.g., "Admissions Office", "Main Reception"
+  is_primary boolean DEFAULT false,
+  display_order integer DEFAULT 0,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  PRIMARY KEY (id)
+);
+
+-- End of site_contact_info
+-- ============================================
+
+
+-- ============================================
+-- TABLE: site_social_links
+-- ============================================
+-- Purpose: Institution-specific social media links
+-- Created: 2026-01-09
+-- Dependencies: None
+-- Used by: Public website navigation, footer
+-- ============================================
+
+CREATE TABLE site_social_links (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  platform text NOT NULL, -- 'facebook', 'twitter', 'instagram', 'linkedin', 'youtube'
+  url text NOT NULL,
+  is_active boolean DEFAULT true,
+  display_order integer DEFAULT 0,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  PRIMARY KEY (id)
+);
+
+-- End of site_social_links
+-- ============================================
+
+
 -- ================================================================
 -- END OF TABLES DOCUMENTATION
 -- ================================================================
--- Total Tables Documented: 52
--- Last Updated: 2026-01-07
+-- Total Tables Documented: 54
+-- Last Updated: 2026-01-09
 -- ================================================================

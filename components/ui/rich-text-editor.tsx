@@ -1188,6 +1188,25 @@ export function RichTextEditor({
         heading: {
           levels: [1, 2, 3],
         },
+        // Explicitly enable list extensions (required in TipTap v3.13.0+)
+        bulletList: {
+          HTMLAttributes: {
+            class: 'list-disc list-inside ml-4 my-2',
+          },
+        },
+        orderedList: {
+          HTMLAttributes: {
+            class: 'list-decimal list-inside ml-4 my-2',
+          },
+        },
+        listItem: {
+          HTMLAttributes: {
+            class: 'my-1',
+          },
+        },
+        listKeymap: {
+          // Enable keyboard shortcuts: Tab/Shift+Tab for indent/outdent, Enter for new item
+        },
       }),
       Underline,
       Link.configure({
