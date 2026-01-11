@@ -54,7 +54,10 @@ export function CanvaLikeToolbar({ editor }: CanvaLikeToolbarProps) {
             variant="ghost"
             size="sm"
             className="h-8 px-2"
-            onClick={() => setShowFontPicker(!showFontPicker)}
+            onMouseDown={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+            }}
           >
             <Type className="h-4 w-4 mr-1" />
             <span className="text-xs">Font</span>
@@ -140,7 +143,10 @@ export function CanvaLikeToolbar({ editor }: CanvaLikeToolbarProps) {
             variant="ghost"
             size="sm"
             className="h-8 w-8 p-0"
-            onClick={() => setShowColorPicker(!showColorPicker)}
+            onMouseDown={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+            }}
           >
             <div
               className="w-4 h-4 rounded border border-border"

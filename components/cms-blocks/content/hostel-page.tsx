@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { z } from 'zod'
+import { RichTextInlineEditor } from '@/components/page-builder/elementor/inline-editor'
 
 // Custom hook for intersection observer animations
 function useInView(threshold = 0.1) {
@@ -72,8 +73,8 @@ function TabButton({
         px-6 py-3 rounded-lg font-semibold text-base md:text-lg
         transition-all duration-300 ease-out
         ${isActive
-          ? 'text-gray-900 shadow-lg scale-105'
-          : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
+          ? 'text-white shadow-lg scale-105'
+          : 'bg-white/10 text-black hover:bg-white/20 border border-white/20'
         }
       `}
       style={isActive ? { backgroundColor: accentColor } : {}}
@@ -90,7 +91,9 @@ function HostelContent({
   highlights,
   accentColor,
   isVisible,
-  tabKey
+  tabKey,
+  isEditing,
+  blockId
 }: {
   images: { src: string; alt?: string }[]
   paragraphs: string[]
@@ -98,6 +101,8 @@ function HostelContent({
   accentColor: string
   isVisible: boolean
   tabKey: string
+  isEditing?: boolean
+  blockId?: string
 }) {
   const [isAnimated, setIsAnimated] = useState(false)
 
@@ -156,9 +161,20 @@ function HostelContent({
             key={index}
             className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20"
           >
-            <p className="text-base md:text-lg leading-relaxed text-white/95">
-              {paragraph}
-            </p>
+            {isEditing && blockId ? (
+              <RichTextInlineEditor
+                blockId={blockId}
+                propName={`${tabKey}Hostel.paragraphs.${index}`}
+                value={paragraph || '<p></p>'}
+                className="text-base md:text-lg leading-relaxed prose prose-invert max-w-none"
+                placeholder="Click to add paragraph..."
+              />
+            ) : (
+              <div
+                className="text-base md:text-lg leading-relaxed prose max-w-none"
+                dangerouslySetInnerHTML={{ __html: paragraph }}
+              />
+            )}
           </div>
         ))}
 
@@ -169,7 +185,7 @@ function HostelContent({
               {highlights.map((highlight, index) => (
                 <li
                   key={index}
-                  className="flex items-start gap-3 text-base md:text-lg text-white/95"
+                  className="flex items-start gap-3 text-base md:text-lg"
                 >
                   <span
                     className="w-2 h-2 rounded-full mt-2.5 flex-shrink-0"
@@ -193,8 +209,10 @@ export function HostelPage({
   defaultTab = 'boys',
   backgroundColor = '#0b6d41',
   accentColor = '#ffde59',
-  textColor = '#ffffff'
-}: HostelPageProps) {
+  textColor = '#ffffff',
+  isEditing,
+  id
+}: HostelPageProps & { isEditing?: boolean; id?: string }) {
   const [activeTab, setActiveTab] = useState<'boys' | 'girls'>(defaultTab)
   const { ref: titleRef, isInView: titleInView } = useInView(0.1)
 
@@ -263,7 +281,7 @@ export function HostelPage({
           </div>
 
           {/* Tab Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-start max-w-xs">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <TabButton
               label="Boys Hostel"
               isActive={activeTab === 'boys'}
@@ -287,6 +305,8 @@ export function HostelPage({
           accentColor={accentColor}
           isVisible={activeTab === 'boys'}
           tabKey="boys"
+          isEditing={isEditing}
+          blockId={id}
         />
 
         {/* Girls Hostel Content */}
@@ -297,6 +317,8 @@ export function HostelPage({
           accentColor={accentColor}
           isVisible={activeTab === 'girls'}
           tabKey="girls"
+          isEditing={isEditing}
+          blockId={id}
         />
       </div>
 

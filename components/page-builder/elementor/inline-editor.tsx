@@ -220,6 +220,7 @@ export function RichTextInlineEditor({
   const { isPreviewMode } = state
   const [isReady, setIsReady] = useState(false)
   const [showToolbar, setShowToolbar] = useState(false)
+  const [isToolbarHovered, setIsToolbarHovered] = useState(false)
   const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Debounced update function
@@ -303,19 +304,40 @@ export function RichTextInlineEditor({
     const updateToolbar = () => {
       const { from, to } = editor.state.selection
       const hasSelection = from !== to
-      setShowToolbar(hasSelection && editor.isFocused)
+      // Show toolbar if there's a selection
+      if (hasSelection) {
+        setShowToolbar(true)
+      } else if (!editor.isFocused && !isToolbarHovered) {
+        setShowToolbar(false)
+      }
+    }
+
+    const handleBlur = () => {
+      // Delay hiding toolbar to allow clicking on toolbar buttons
+      setTimeout(() => {
+        // Don't hide if toolbar is being hovered (user is interacting with it)
+        if (isToolbarHovered) {
+          return
+        }
+        const { from, to } = editor.state.selection
+        const hasSelection = from !== to
+        // Only hide if there's no selection and toolbar is not hovered
+        if (!hasSelection) {
+          setShowToolbar(false)
+        }
+      }, 200)
     }
 
     editor.on('selectionUpdate', updateToolbar)
     editor.on('focus', updateToolbar)
-    editor.on('blur', () => setShowToolbar(false))
+    editor.on('blur', handleBlur)
 
     return () => {
       editor.off('selectionUpdate', updateToolbar)
       editor.off('focus', updateToolbar)
-      editor.off('blur')
+      editor.off('blur', handleBlur)
     }
-  }, [editor])
+  }, [editor, isToolbarHovered])
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -354,7 +376,11 @@ export function RichTextInlineEditor({
     <div className="relative">
       {/* Canva-like floating toolbar - appears when text is selected */}
       {showToolbar && (
-        <div className="absolute -top-14 left-0 z-50 animate-in fade-in slide-in-from-bottom-2 duration-200">
+        <div
+          className="absolute -top-16 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-2 duration-200"
+          onMouseEnter={() => setIsToolbarHovered(true)}
+          onMouseLeave={() => setIsToolbarHovered(false)}
+        >
           <CanvaLikeToolbar editor={editor} />
         </div>
       )}

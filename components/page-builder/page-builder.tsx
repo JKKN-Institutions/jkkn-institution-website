@@ -228,6 +228,16 @@ function PageBuilderContent({
 
           const overId = String(over.id)
 
+          // Check if dropped onto a split-column drop zone
+          if (overId.startsWith('split-') && over.data.current?.type === 'split-column') {
+            const { parentId, columnIndex } = over.data.current as { parentId: string; columnIndex: number }
+            if (parentId !== undefined && columnIndex !== undefined) {
+              // Add block to the specific column with insertAt set to columnIndex
+              addBlockToContainer(componentName, parentId, columnIndex)
+              return
+            }
+          }
+
           // Check if dropped onto a container drop zone
           if (overId.startsWith('container-drop-')) {
             const containerId = over.data.current?.containerId

@@ -4250,9 +4250,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         { title: 'Trained Drivers', description: 'The drivers are highly trained and experienced with good understanding of local routes and traffic conditions.' }
       ],
       conclusion: 'The transport facility is well-equipped to provide safe, reliable, and affordable transportation to all students and faculty members.',
-      backgroundColor: '#0b6d41',
-      accentColor: '#ffde59',
-      textColor: '#ffffff'
+      backgroundColor: 'rgb(251, 251, 238)',
+      accentColor: '#0b6d41',
+      textColor: '#000000'
     },
     supportsChildren: false,
     keywords: ['facility', 'transport', 'library', 'hostel', 'infrastructure', 'amenities'],
@@ -4334,9 +4334,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         highlights: ['Safe and secure environment', 'Modern amenities']
       },
       defaultTab: 'boys',
-      backgroundColor: '#0b6d41',
-      accentColor: '#ffde59',
-      textColor: '#ffffff'
+      backgroundColor: 'rgb(251, 251, 238)',
+      accentColor: '#0b6d41',
+      textColor: '#000000'
     },
     supportsChildren: false,
     keywords: ['hostel', 'accommodation', 'boys', 'girls', 'dormitory', 'residence'],

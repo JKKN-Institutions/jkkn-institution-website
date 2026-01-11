@@ -263,31 +263,6 @@ export function CoursePage({
         background: `linear-gradient(135deg, ${backgroundColor} 0%, #064d2e 50%, #032818 100%)`
       }}
     >
-      {/* Decorative Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Floating shapes */}
-        <div
-          className="absolute top-40 left-20 w-96 h-96 rounded-full opacity-10 animate-[float_12s_ease-in-out_infinite]"
-          style={{ backgroundColor: accentColor }}
-        />
-        <div
-          className="absolute bottom-20 right-20 w-80 h-80 rounded-full opacity-5 animate-[float_10s_ease-in-out_infinite_reverse]"
-          style={{ backgroundColor: accentColor }}
-        />
-        <div
-          className="absolute top-1/3 right-1/4 w-64 h-64 rounded-full opacity-5 animate-[float_14s_ease-in-out_infinite]"
-          style={{ backgroundColor: textColor }}
-        />
-
-        {/* Diagonal pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `repeating-linear-gradient(45deg, ${textColor} 0, ${textColor} 1px, transparent 0, transparent 50%)`,
-            backgroundSize: '30px 30px'
-          }}
-        />
-      </div>
 
       {/* Content Container */}
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">

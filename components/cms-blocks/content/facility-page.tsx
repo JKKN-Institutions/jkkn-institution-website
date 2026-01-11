@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { z } from 'zod'
-import { parseListContent } from '@/lib/utils/parse-bullet-list'
+import { RichTextInlineEditor } from '@/components/page-builder/elementor/inline-editor'
 
 // Custom hook for intersection observer animations
 function useInView(threshold = 0.1) {
@@ -55,12 +55,18 @@ function FeatureCard({
   title,
   description,
   index,
-  accentColor
+  accentColor,
+  isEditing,
+  blockId,
+  featureIndex
 }: {
   title: string
   description: string
   index: number
   accentColor: string
+  isEditing?: boolean
+  blockId?: string
+  featureIndex: number
 }) {
   const { ref, isInView } = useInView(0.1)
 
@@ -85,9 +91,20 @@ function FeatureCard({
       </h3>
 
       {/* Feature Description */}
-      <div className="text-white/90 text-base md:text-lg leading-relaxed">
-        {parseListContent(description)}
-      </div>
+      {isEditing && blockId ? (
+        <RichTextInlineEditor
+          blockId={blockId}
+          propName={`features.${featureIndex}.description`}
+          value={description || '<p></p>'}
+          className="text-base md:text-lg leading-relaxed prose prose-invert max-w-none"
+          placeholder="Click to add feature description..."
+        />
+      ) : (
+        <div
+          className="text-base md:text-lg leading-relaxed prose max-w-none"
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
+      )}
     </div>
   )
 }
@@ -100,8 +117,10 @@ export function FacilityPage({
   conclusion,
   backgroundColor = '#0b6d41',
   accentColor = '#ffde59',
-  textColor = '#ffffff'
-}: FacilityPageProps) {
+  textColor = '#ffffff',
+  isEditing,
+  id
+}: FacilityPageProps & { isEditing?: boolean; id?: string }) {
   const { ref: titleRef, isInView: titleInView } = useInView(0.1)
   const { ref: imagesRef, isInView: imagesInView } = useInView(0.1)
   const { ref: introRef, isInView: introInView } = useInView(0.1)
@@ -115,21 +134,7 @@ export function FacilityPage({
         color: textColor
       }}
     >
-      {/* Decorative Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div
-          className="absolute top-20 right-10 w-72 h-72 rounded-full opacity-10 animate-[float_15s_ease-in-out_infinite]"
-          style={{ backgroundColor: accentColor }}
-        />
-        <div
-          className="absolute bottom-40 left-10 w-96 h-96 rounded-full opacity-5 animate-[float_20s_ease-in-out_infinite_reverse]"
-          style={{ backgroundColor: accentColor }}
-        />
-        <div
-          className="absolute top-1/2 right-1/4 w-64 h-64 rounded-full opacity-5 animate-[float_18s_ease-in-out_infinite]"
-          style={{ backgroundColor: textColor }}
-        />
-      </div>
+      {/* Decorative Background Elements - Removed per user request */}
 
       {/* Content Container */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
@@ -201,7 +206,7 @@ export function FacilityPage({
         )}
 
         {/* Introduction Paragraph */}
-        {introduction && (
+        {(introduction || isEditing) && (
           <div
             ref={introRef}
             className={`
@@ -211,9 +216,20 @@ export function FacilityPage({
             `}
           >
             <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 md:p-10 border border-white/20">
-              <div className="text-lg md:text-xl leading-relaxed text-white/95">
-                {parseListContent(introduction)}
-              </div>
+              {isEditing && id ? (
+                <RichTextInlineEditor
+                  blockId={id}
+                  propName="introduction"
+                  value={introduction || '<p></p>'}
+                  className="text-lg md:text-xl leading-relaxed prose prose-invert max-w-none"
+                  placeholder="Click to add introduction..."
+                />
+              ) : (
+                <div
+                  className="text-lg md:text-xl leading-relaxed prose max-w-none"
+                  dangerouslySetInnerHTML={{ __html: introduction }}
+                />
+              )}
             </div>
           </div>
         )}
@@ -229,6 +245,9 @@ export function FacilityPage({
                   description={feature.description}
                   index={index}
                   accentColor={accentColor}
+                  isEditing={isEditing}
+                  blockId={id}
+                  featureIndex={index}
                 />
               ))}
             </div>
@@ -236,7 +255,7 @@ export function FacilityPage({
         )}
 
         {/* Conclusion Paragraph */}
-        {conclusion && (
+        {(conclusion || isEditing) && (
           <div
             ref={conclusionRef}
             className={`
@@ -249,9 +268,20 @@ export function FacilityPage({
               className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 md:p-10 border-2"
               style={{ borderColor: `${accentColor}40` }}
             >
-              <div className="text-lg md:text-xl leading-relaxed text-white/95 font-medium">
-                {parseListContent(conclusion)}
-              </div>
+              {isEditing && id ? (
+                <RichTextInlineEditor
+                  blockId={id}
+                  propName="conclusion"
+                  value={conclusion || '<p></p>'}
+                  className="text-lg md:text-xl leading-relaxed font-medium prose prose-invert max-w-none"
+                  placeholder="Click to add conclusion..."
+                />
+              ) : conclusion ? (
+                <div
+                  className="text-lg md:text-xl leading-relaxed font-medium prose max-w-none"
+                  dangerouslySetInnerHTML={{ __html: conclusion }}
+                />
+              ) : null}
             </div>
           </div>
         )}

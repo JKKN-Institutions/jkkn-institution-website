@@ -64,7 +64,8 @@ function SortableBlock({
   canMoveDown,
   children,
   depth = 0,
-}: SortableBlockProps) {
+  onAddToContainer,
+}: SortableBlockProps & { onAddToContainer?: (componentName: string, containerId: string, insertAt?: number) => void }) {
   const {
     attributes,
     listeners,
@@ -150,6 +151,14 @@ function SortableBlock({
     ...(isHovered && hoverTransform ? { transform: hoverTransform } : {}),
   }
 
+  // Adapter function for SplitLayout onAddBlock
+  // Converts (componentName, columnIndex) to (componentName, containerId, insertAt)
+  const handleAddBlock = (componentName: string, columnIndex: number) => {
+    if (onAddToContainer) {
+      onAddToContainer(componentName, block.id, columnIndex)
+    }
+  }
+
   return (
     <div ref={setNodeRef} style={style}>
       <BlockWrapper
@@ -190,6 +199,7 @@ function SortableBlock({
                 id={block.id}
                 isEditing={!isPreviewMode}
                 isSelected={isSelected}
+                {...(isContainer && { onAddBlock: handleAddBlock })}
               >
                 {children}
               </Component>
@@ -304,6 +314,7 @@ function BlockTree({
               canMoveUp={index > 0}
               canMoveDown={index < levelBlocks.length - 1}
               depth={depth}
+              onAddToContainer={onAddToContainer}
             >
               {isContainer && (
                 <>

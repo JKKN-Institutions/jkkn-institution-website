@@ -15,6 +15,52 @@ import { getDefaultProps, getComponentEntry } from '@/lib/cms/component-registry
 import type { BlockData, CmsPageSettings } from '@/lib/cms/registry-types'
 
 /**
+ * Set a value at a nested property path in an object.
+ * Supports dot notation and array indices (e.g., "features.0.description")
+ */
+function setNestedProperty(obj: Record<string, unknown>, path: string, value: unknown): Record<string, unknown> {
+  const keys = path.split('.')
+
+  // Helper to recursively update nested structure
+  function updateNested(current: unknown, keyIndex: number): unknown {
+    if (keyIndex === keys.length) {
+      return value
+    }
+
+    const key = keys[keyIndex]
+    const arrayIndex = Number(key)
+    const isArrayAccess = !isNaN(arrayIndex)
+
+    if (isArrayAccess && Array.isArray(current)) {
+      // Clone array and update specific index
+      const newArray = [...current]
+      newArray[arrayIndex] = updateNested(current[arrayIndex], keyIndex + 1)
+      return newArray
+    } else if (!isArrayAccess && typeof current === 'object' && current !== null) {
+      // Clone object and update specific key
+      const currentObj = current as Record<string, unknown>
+      return {
+        ...currentObj,
+        [key]: updateNested(currentObj[key], keyIndex + 1)
+      }
+    }
+
+    // Fallback: create new structure
+    if (isArrayAccess) {
+      const newArray: unknown[] = []
+      newArray[arrayIndex] = updateNested(undefined, keyIndex + 1)
+      return newArray
+    } else {
+      return {
+        [key]: updateNested(undefined, keyIndex + 1)
+      }
+    }
+  }
+
+  return updateNested(obj, 0) as Record<string, unknown>
+}
+
+/**
  * Validate blocks against the component registry.
  *
  * NOTE: Custom components are loaded asynchronously from the database and may not
@@ -234,9 +280,22 @@ function pageBuilderReducer(state: PageBuilderState, action: PageBuilderAction):
 
     case 'UPDATE_BLOCK': {
       const { id, props } = action.payload
-      const newBlocks = state.blocks.map((block) =>
-        block.id === id ? { ...block, props: { ...block.props, ...props } } : block
-      )
+      const newBlocks = state.blocks.map((block) => {
+        if (block.id !== id) return block
+
+        let updatedProps = { ...block.props }
+
+        // Handle nested property paths (e.g., "features.0.description")
+        for (const [key, value] of Object.entries(props)) {
+          if (key.includes('.')) {
+            updatedProps = setNestedProperty(updatedProps, key, value) as typeof updatedProps
+          } else {
+            updatedProps[key] = value
+          }
+        }
+
+        return { ...block, props: updatedProps }
+      })
       const stateWithHistory = pushToHistory(state, newBlocks)
       return {
         ...stateWithHistory,

@@ -1326,6 +1326,13 @@ export async function updatePageContent(
     })
     .eq('id', pageId)
 
+  // Get page slug for revalidation
+  const { data: pageData } = await supabase
+    .from('cms_pages')
+    .select('slug, hierarchical_slug')
+    .eq('id', pageId)
+    .single()
+
   // Log activity
   await logActivity({
     userId: user.id,
@@ -1337,6 +1344,13 @@ export async function updatePageContent(
   })
 
   revalidatePath(`/admin/content/pages/${pageId}`)
+
+  // Revalidate the public page path
+  if (pageData) {
+    const publicPath = pageData.hierarchical_slug || pageData.slug
+    revalidatePath(`/${publicPath}`)
+    revalidatePath('/', 'layout') // Revalidate layout to refresh navigation
+  }
 
   return { success: true, message: 'Page content saved' }
 }
