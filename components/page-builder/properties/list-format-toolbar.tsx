@@ -5,7 +5,7 @@ import { List, ListOrdered, Star, Minus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 interface ListFormatToolbarProps {
-  textareaRef: React.RefObject<HTMLTextAreaElement>
+  textareaRef: React.RefObject<HTMLTextAreaElement | null>
   value: string
   onChange: (value: string) => void
 }
