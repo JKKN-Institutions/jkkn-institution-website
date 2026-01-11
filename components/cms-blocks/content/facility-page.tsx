@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { z } from 'zod'
+import { parseListContent } from '@/lib/utils/parse-bullet-list'
 
 // Custom hook for intersection observer animations
 function useInView(threshold = 0.1) {
@@ -84,9 +85,9 @@ function FeatureCard({
       </h3>
 
       {/* Feature Description */}
-      <p className="text-white/90 text-base md:text-lg leading-relaxed">
-        {description}
-      </p>
+      <div className="text-white/90 text-base md:text-lg leading-relaxed">
+        {parseListContent(description)}
+      </div>
     </div>
   )
 }
@@ -210,9 +211,9 @@ export function FacilityPage({
             `}
           >
             <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 md:p-10 border border-white/20">
-              <p className="text-lg md:text-xl leading-relaxed text-white/95">
-                {introduction}
-              </p>
+              <div className="text-lg md:text-xl leading-relaxed text-white/95">
+                {parseListContent(introduction)}
+              </div>
             </div>
           </div>
         )}
@@ -248,9 +249,9 @@ export function FacilityPage({
               className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 md:p-10 border-2"
               style={{ borderColor: `${accentColor}40` }}
             >
-              <p className="text-lg md:text-xl leading-relaxed text-white/95 font-medium">
-                {conclusion}
-              </p>
+              <div className="text-lg md:text-xl leading-relaxed text-white/95 font-medium">
+                {parseListContent(conclusion)}
+              </div>
             </div>
           </div>
         )}

@@ -1,9 +1,10 @@
 'use client'
 
-import { useCallback, useState, useTransition } from 'react'
+import React, { useCallback, useState, useTransition } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { ListFormatToolbar } from './list-format-toolbar'
 import { Switch } from '@/components/ui/switch'
 import { Slider } from '@/components/ui/slider'
 import {
@@ -95,16 +96,25 @@ interface FieldProps {
 
 function StringField({ config, value, onChange }: FieldProps) {
   const stringValue = (value as string) || ''
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null)
 
   if (config.multiline) {
     return (
-      <Textarea
-        value={stringValue}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={config.placeholder || `Enter ${config.label.toLowerCase()}...`}
-        rows={3}
-        className="bg-background/50 border-border/50"
-      />
+      <div>
+        <ListFormatToolbar
+          textareaRef={textareaRef}
+          value={stringValue}
+          onChange={onChange}
+        />
+        <Textarea
+          ref={textareaRef}
+          value={stringValue}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={config.placeholder || `Enter ${config.label.toLowerCase()}...`}
+          rows={5}
+          className="bg-background/50 border-border/50"
+        />
+      </div>
     )
   }
 
