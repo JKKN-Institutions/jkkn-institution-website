@@ -3,6 +3,88 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { usePageBuilder } from '../page-builder-provider'
 import { cn } from '@/lib/utils'
+import { useEditor, EditorContent, Extension } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import Underline from '@tiptap/extension-underline'
+import { TextStyle } from '@tiptap/extension-text-style'
+import { Color } from '@tiptap/extension-color'
+import TextAlign from '@tiptap/extension-text-align'
+import { Link } from '@tiptap/extension-link'
+import { CanvaLikeToolbar } from './canva-toolbar'
+
+// Custom FontSize extension for Tiptap
+const FontSize = Extension.create({
+  name: 'fontSize',
+  addOptions() {
+    return {
+      types: ['textStyle'],
+    }
+  },
+  addGlobalAttributes() {
+    return [
+      {
+        types: this.options.types,
+        attributes: {
+          fontSize: {
+            default: null,
+            parseHTML: element => element.style.fontSize?.replace('px', ''),
+            renderHTML: attributes => {
+              if (!attributes.fontSize) return {}
+              return { style: `font-size: ${attributes.fontSize}px` }
+            },
+          },
+        },
+      },
+    ]
+  },
+  addCommands() {
+    return {
+      setFontSize: (fontSize: string) => ({ chain }) => {
+        return chain().setMark('textStyle', { fontSize }).run()
+      },
+      unsetFontSize: () => ({ chain }) => {
+        return chain().setMark('textStyle', { fontSize: null }).removeEmptyTextStyle().run()
+      },
+    }
+  },
+})
+
+// Custom FontFamily extension
+const FontFamily = Extension.create({
+  name: 'fontFamily',
+  addOptions() {
+    return {
+      types: ['textStyle'],
+    }
+  },
+  addGlobalAttributes() {
+    return [
+      {
+        types: this.options.types,
+        attributes: {
+          fontFamily: {
+            default: null,
+            parseHTML: element => element.style.fontFamily?.replace(/['"]/g, ''),
+            renderHTML: attributes => {
+              if (!attributes.fontFamily) return {}
+              return { style: `font-family: ${attributes.fontFamily}` }
+            },
+          },
+        },
+      },
+    ]
+  },
+  addCommands() {
+    return {
+      setFontFamily: (fontFamily: string) => ({ chain }) => {
+        return chain().setMark('textStyle', { fontFamily }).run()
+      },
+      unsetFontFamily: () => ({ chain }) => {
+        return chain().setMark('textStyle', { fontFamily: null }).removeEmptyTextStyle().run()
+      },
+    }
+  },
+})
 
 interface InlineEditorProps {
   blockId: string
@@ -118,7 +200,7 @@ export function InlineEditor({
   )
 }
 
-// Rich text inline editor with formatting toolbar
+// Tiptap-powered rich text inline editor with Canva-like toolbar
 interface RichTextInlineEditorProps {
   blockId: string
   propName: string
@@ -135,44 +217,130 @@ export function RichTextInlineEditor({
   placeholder = 'Click to edit...',
 }: RichTextInlineEditorProps) {
   const { updateBlock, state } = usePageBuilder()
-  const { isPreviewMode, selectedBlockId } = state
-  const [isEditing, setIsEditing] = useState(false)
+  const { isPreviewMode } = state
+  const [isReady, setIsReady] = useState(false)
   const [showToolbar, setShowToolbar] = useState(false)
-  const editorRef = useRef<HTMLDivElement>(null)
+  const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  const execCommand = (command: string, value?: string) => {
-    document.execCommand(command, false, value)
-    editorRef.current?.focus()
+  // Debounced update function
+  const debouncedUpdate = useCallback((html: string) => {
+    if (updateTimeoutRef.current) {
+      clearTimeout(updateTimeoutRef.current)
+    }
+    updateTimeoutRef.current = setTimeout(() => {
+      updateBlock(blockId, { [propName]: html })
+    }, 300) // 300ms debounce
+  }, [blockId, propName, updateBlock])
+
+  const editor = useEditor({
+    immediatelyRender: false, // Fix SSR hydration mismatch
+    shouldRerenderOnTransaction: false, // Optimize performance
+    extensions: [
+      StarterKit.configure({
+        // Disable default heading command to avoid conflicts
+        heading: false,
+      }),
+      Underline,
+      TextStyle,
+      Color,
+      FontFamily,
+      FontSize,
+      TextAlign.configure({
+        types: ['paragraph'], // Only paragraph since heading is disabled
+        alignments: ['left', 'center', 'right', 'justify'],
+        defaultAlignment: 'left',
+      }),
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class: 'text-primary underline',
+        },
+      }),
+    ],
+    content: value || '<p></p>',
+    editable: !isPreviewMode,
+    onUpdate: ({ editor }) => {
+      const html = editor.getHTML()
+      debouncedUpdate(html)
+    },
+    editorProps: {
+      attributes: {
+        class: cn(
+          className,
+          'outline-none transition-all min-h-[1.5em] focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:rounded-sm'
+        ),
+      },
+    },
+  })
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (updateTimeoutRef.current) {
+        clearTimeout(updateTimeoutRef.current)
+      }
+    }
+  }, [])
+
+  // Sync external value changes
+  useEffect(() => {
+    if (editor && value !== editor.getHTML()) {
+      editor.commands.setContent(value || '<p></p>')
+    }
+  }, [value, editor])
+
+  // Mark as ready when editor is initialized
+  useEffect(() => {
+    if (editor) {
+      setIsReady(true)
+    }
+  }, [editor])
+
+  // Show/hide toolbar on selection
+  useEffect(() => {
+    if (!editor) return
+
+    const updateToolbar = () => {
+      const { from, to } = editor.state.selection
+      const hasSelection = from !== to
+      setShowToolbar(hasSelection && editor.isFocused)
+    }
+
+    editor.on('selectionUpdate', updateToolbar)
+    editor.on('focus', updateToolbar)
+    editor.on('blur', () => setShowToolbar(false))
+
+    return () => {
+      editor.off('selectionUpdate', updateToolbar)
+      editor.off('focus', updateToolbar)
+      editor.off('blur')
+    }
+  }, [editor])
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    if (!editor) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Escape to blur
+      if (e.key === 'Escape') {
+        editor.commands.blur()
+        setShowToolbar(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [editor])
+
+  // Show loading skeleton while editor initializes
+  if (!isReady || !editor) {
+    return (
+      <div className={cn(className, 'animate-pulse bg-muted/20 rounded min-h-[1.5em]')} />
+    )
   }
 
-  const handleClick = useCallback((e: React.MouseEvent) => {
-    if (isPreviewMode) return
-    e.stopPropagation()
-    setIsEditing(true)
-    setShowToolbar(true)
-  }, [isPreviewMode])
-
-  const handleBlur = useCallback((e: React.FocusEvent) => {
-    // Check if focus is moving to toolbar
-    const relatedTarget = e.relatedTarget as HTMLElement
-    if (relatedTarget?.closest('.inline-editor-toolbar')) {
-      return
-    }
-
-    setIsEditing(false)
-    setShowToolbar(false)
-    const content = editorRef.current?.innerHTML || ''
-    if (content !== value) {
-      updateBlock(blockId, { [propName]: content })
-    }
-  }, [blockId, propName, value, updateBlock])
-
-  useEffect(() => {
-    if (isEditing && editorRef.current) {
-      editorRef.current.focus()
-    }
-  }, [isEditing])
-
+  // Preview mode: just render HTML
   if (isPreviewMode) {
     return (
       <div
@@ -184,95 +352,15 @@ export function RichTextInlineEditor({
 
   return (
     <div className="relative">
-      {/* Formatting toolbar */}
+      {/* Canva-like floating toolbar - appears when text is selected */}
       {showToolbar && (
-        <div className="inline-editor-toolbar absolute -top-10 left-0 z-50 flex items-center gap-1 p-1 bg-popover border border-border rounded-lg shadow-lg">
-          <button
-            onClick={() => execCommand('bold')}
-            className="p-1.5 hover:bg-accent rounded"
-            type="button"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 4h8a4 4 0 014 4 4 4 0 01-4 4H6z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 12h9a4 4 0 014 4 4 4 0 01-4 4H6z" />
-            </svg>
-          </button>
-          <button
-            onClick={() => execCommand('italic')}
-            className="p-1.5 hover:bg-accent rounded"
-            type="button"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 4h4m-2 0v16m-4 0h8" transform="skewX(-10)" />
-            </svg>
-          </button>
-          <button
-            onClick={() => execCommand('underline')}
-            className="p-1.5 hover:bg-accent rounded"
-            type="button"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 4v6a6 6 0 0012 0V4M4 20h16" />
-            </svg>
-          </button>
-          <div className="w-px h-4 bg-border mx-1" />
-          <button
-            onClick={() => execCommand('justifyLeft')}
-            className="p-1.5 hover:bg-accent rounded"
-            type="button"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h10M4 18h14" />
-            </svg>
-          </button>
-          <button
-            onClick={() => execCommand('justifyCenter')}
-            className="p-1.5 hover:bg-accent rounded"
-            type="button"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M7 12h10M5 18h14" />
-            </svg>
-          </button>
-          <button
-            onClick={() => execCommand('justifyRight')}
-            className="p-1.5 hover:bg-accent rounded"
-            type="button"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M10 12h10M6 18h14" />
-            </svg>
-          </button>
-          <div className="w-px h-4 bg-border mx-1" />
-          <button
-            onClick={() => {
-              const url = prompt('Enter link URL:')
-              if (url) execCommand('createLink', url)
-            }}
-            className="p-1.5 hover:bg-accent rounded"
-            type="button"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-            </svg>
-          </button>
+        <div className="absolute -top-14 left-0 z-50 animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <CanvaLikeToolbar editor={editor} />
         </div>
       )}
 
-      <div
-        ref={editorRef}
-        contentEditable={isEditing}
-        suppressContentEditableWarning
-        onClick={handleClick}
-        onBlur={handleBlur}
-        className={cn(
-          className,
-          'cursor-text outline-none transition-all min-h-[1.5em]',
-          isEditing && 'ring-2 ring-primary ring-offset-2 rounded-sm',
-          !value && !isEditing && 'text-muted-foreground/50 italic'
-        )}
-        dangerouslySetInnerHTML={{ __html: value || (isEditing ? '' : placeholder) }}
-      />
+      {/* Editable content */}
+      <EditorContent editor={editor} />
     </div>
   )
 }

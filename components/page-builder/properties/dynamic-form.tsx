@@ -26,6 +26,7 @@ import { cn } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { MediaPickerModal } from '@/components/cms/media-picker-modal'
 import type { MediaItem } from '@/app/actions/cms/media'
+import { RichTextEditor } from '@/components/ui/rich-text-editor-lazy'
 
 interface DynamicFormProps {
   componentEntry: ComponentRegistryEntry
@@ -35,7 +36,7 @@ interface DynamicFormProps {
 
 interface FieldConfig {
   key: string
-  type: 'string' | 'number' | 'boolean' | 'enum' | 'array' | 'color' | 'url' | 'image' | 'video' | 'media' | 'object'
+  type: 'string' | 'number' | 'boolean' | 'enum' | 'array' | 'color' | 'url' | 'image' | 'video' | 'media' | 'object' | 'richtext'
   label: string
   description?: string
   required?: boolean
@@ -126,6 +127,36 @@ function StringField({ config, value, onChange }: FieldProps) {
       placeholder={config.placeholder || `Enter ${config.label.toLowerCase()}...`}
       className="bg-background/50 border-border/50"
     />
+  )
+}
+
+function RichTextField({ config, value, onChange }: FieldProps) {
+  // Ensure we always have valid HTML content for Tiptap
+  // Handle migration from old JSON format to new HTML format
+  let htmlValue = (value as string) || ''
+
+  if (!htmlValue) {
+    // Empty value → default to empty paragraph
+    htmlValue = '<p></p>'
+  } else if (htmlValue.trim().startsWith('{')) {
+    // Old JSON format (migration) → convert to empty paragraph
+    // User will need to re-enter content (acceptable since old format was broken)
+    htmlValue = '<p></p>'
+  } else if (!htmlValue.trim().startsWith('<')) {
+    // Plain text without HTML tags → wrap in paragraph
+    htmlValue = `<p>${htmlValue}</p>`
+  }
+  // else: Already valid HTML → use as-is
+
+  return (
+    <div className="border border-border/50 rounded-md">
+      <RichTextEditor
+        content={htmlValue}
+        onChange={onChange}
+        placeholder={config.placeholder || `Enter ${config.label.toLowerCase()}...`}
+        className="min-h-[200px] max-h-[400px] overflow-y-auto"
+      />
+    </div>
   )
 }
 
@@ -1806,6 +1837,14 @@ export function DynamicForm({ componentEntry, values, onChange }: DynamicFormPro
 
             {field.type === 'string' && (
               <StringField
+                config={field}
+                value={fieldValue}
+                onChange={(v) => handleFieldChange(field.key, v)}
+              />
+            )}
+
+            {field.type === 'richtext' && (
+              <RichTextField
                 config={field}
                 value={fieldValue}
                 onChange={(v) => handleFieldChange(field.key, v)}

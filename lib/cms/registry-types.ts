@@ -33,7 +33,7 @@ export interface EditableProp {
   /** Display label (defaults to formatted name) */
   label?: string
   /** Property type for form field rendering */
-  type: 'string' | 'number' | 'boolean' | 'enum' | 'array' | 'object' | 'color' | 'url' | 'image' | 'video' | 'media' | 'table'
+  type: 'string' | 'number' | 'boolean' | 'enum' | 'array' | 'object' | 'color' | 'url' | 'image' | 'video' | 'media' | 'table' | 'richtext'
   /** Description shown below the field */
   description?: string
   /** Whether this field is required */
@@ -52,6 +52,8 @@ export interface EditableProp {
   unit?: string
   /** Whether to show multiline textarea for string type */
   multiline?: boolean
+  /** Enable inline canvas editing for this field (Canva-like editing) */
+  inlineEditable?: boolean
   /** Placeholder text */
   placeholder?: string
   /** For array type: what kind of items (string, image, object) */
@@ -80,6 +82,8 @@ export interface ItemSchemaProperty {
   format?: string
   /** For multiline text fields */
   multiline?: boolean
+  /** Enable inline canvas editing for this field (Canva-like editing) */
+  inlineEditable?: boolean
   /** Placeholder text for input fields */
   placeholder?: string
   /** Options for enum type */

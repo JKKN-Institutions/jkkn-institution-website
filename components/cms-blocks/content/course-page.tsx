@@ -5,6 +5,8 @@ import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import { useEffect, useRef, useState } from 'react'
 import { GraduationCap, BookOpen, Clock, CheckCircle2 } from 'lucide-react'
+import DOMPurify from 'isomorphic-dompurify'
+import { RichTextInlineEditor } from '@/components/page-builder/elementor/inline-editor'
 
 /**
  * Course Category schema (Undergraduate/Postgraduate)
@@ -182,6 +184,7 @@ function CategoryCard({
  * - Scroll animations
  */
 export function CoursePage({
+  id,
   collegeTitle = 'JKKN College',
   description = '',
   categories = [],
@@ -189,7 +192,36 @@ export function CoursePage({
   accentColor = '#ffde59',
   textColor = '#ffffff',
   className,
+  isEditing,
 }: CoursePageProps) {
+  // Sanitize collegeTitle - support both plain text (backward compatibility) and HTML
+  let sanitizedTitle = ''
+
+  if (!collegeTitle || collegeTitle === '<p></p>' || collegeTitle.trim() === '') {
+    // Empty or just empty paragraph → use default
+    sanitizedTitle = '<span>JKKN College</span>'
+  } else if (collegeTitle.includes('<')) {
+    // Already contains HTML tags → sanitize as-is
+    sanitizedTitle = DOMPurify.sanitize(collegeTitle)
+  } else {
+    // Plain text → wrap in span (backward compatibility)
+    sanitizedTitle = `<span>${DOMPurify.sanitize(collegeTitle)}</span>`
+  }
+
+  // Sanitize description - support both plain text and HTML
+  let sanitizedDescription = ''
+
+  if (!description || description === '<p></p>' || description.trim() === '') {
+    // Empty or just empty paragraph → leave empty
+    sanitizedDescription = ''
+  } else if (description.includes('<')) {
+    // Already contains HTML tags → sanitize as-is
+    sanitizedDescription = DOMPurify.sanitize(description)
+  } else {
+    // Plain text → sanitize as-is (no wrapping needed)
+    sanitizedDescription = DOMPurify.sanitize(description)
+  }
+
   const headerRef = useInView()
   const descriptionRef = useInView()
   const categoriesRef = useInView()
@@ -268,12 +300,21 @@ export function CoursePage({
             headerRef.isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           )}
         >
-          <h1
-            className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-wide"
-            style={{ color: textColor }}
-          >
-            {collegeTitle}
-          </h1>
+          {isEditing && id ? (
+            <RichTextInlineEditor
+              blockId={id}
+              propName="collegeTitle"
+              value={collegeTitle}
+              className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-wide"
+              placeholder="Enter college title..."
+            />
+          ) : (
+            <h1
+              className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-wide"
+              style={{ color: textColor }}
+              dangerouslySetInnerHTML={{ __html: sanitizedTitle }}
+            />
+          )}
 
           {/* Decorative line */}
           <div
@@ -283,7 +324,7 @@ export function CoursePage({
         </div>
 
         {/* Description */}
-        {description && (
+        {(description || (isEditing && id)) && (
           <div
             ref={descriptionRef.ref}
             className={cn(
@@ -291,12 +332,21 @@ export function CoursePage({
               descriptionRef.isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             )}
           >
-            <p
-              className="text-base md:text-lg leading-relaxed text-justify max-w-4xl"
-              style={{ color: `${textColor}dd` }}
-            >
-              {description}
-            </p>
+            {isEditing && id ? (
+              <RichTextInlineEditor
+                blockId={id}
+                propName="description"
+                value={description}
+                className="text-base md:text-lg leading-relaxed text-justify max-w-4xl"
+                placeholder="Enter description..."
+              />
+            ) : (
+              <div
+                className="text-base md:text-lg leading-relaxed text-justify max-w-4xl prose prose-lg"
+                style={{ color: `${textColor}dd` }}
+                dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+              />
+            )}
           </div>
         )}
 

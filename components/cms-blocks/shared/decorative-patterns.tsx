@@ -36,21 +36,8 @@ export function DecorativeCircle({
   className,
   animate = false,
 }: DecorativeCircleProps) {
-  return (
-    <div
-      className={cn(
-        'absolute rounded-full pointer-events-none',
-        sizeMap[size],
-        positionMap[position],
-        animate && 'motion-safe:animate-float-slow',
-        className
-      )}
-      style={{
-        background: `radial-gradient(circle, rgba(255, 255, 255, ${opacity}) 0%, transparent 70%)`,
-      }}
-      aria-hidden="true"
-    />
-  )
+  // Background decorations removed as per user request
+  return null
 }
 
 /**
@@ -67,110 +54,8 @@ export function DecorativePatterns({
   color = 'white',
   className,
 }: DecorativePatternsProps) {
-  const colorMap = {
-    white: 'rgba(255, 255, 255,',
-    gold: 'rgba(255, 222, 89,',
-    green: 'rgba(11, 109, 65,',
-    blue: 'rgba(23, 115, 235,',
-  }
-
-  const baseColor = colorMap[color]
-
-  if (variant === 'minimal') {
-    return (
-      <div className={cn('absolute inset-0 overflow-hidden pointer-events-none', className)} aria-hidden="true">
-        <div
-          className="absolute -top-32 -right-32 w-64 h-64 md:w-96 md:h-96 rounded-full"
-          style={{ background: `radial-gradient(circle, ${baseColor}0.06) 0%, transparent 70%)` }}
-        />
-        <div
-          className="absolute -bottom-24 -left-24 w-48 h-48 md:w-64 md:h-64 rounded-full"
-          style={{ background: `radial-gradient(circle, ${baseColor}0.04) 0%, transparent 70%)` }}
-        />
-      </div>
-    )
-  }
-
-  if (variant === 'dense') {
-    return (
-      <div className={cn('absolute inset-0 overflow-hidden pointer-events-none', className)} aria-hidden="true">
-        {/* Large circle top-right */}
-        <div
-          className="absolute -top-48 -right-48 w-96 h-96 md:w-[600px] md:h-[600px] rounded-full motion-safe:animate-float-slow"
-          style={{ background: `radial-gradient(circle, ${baseColor}0.08) 0%, transparent 70%)` }}
-        />
-        {/* Medium circle bottom-left */}
-        <div
-          className="absolute -bottom-32 -left-32 w-64 h-64 md:w-96 md:h-96 rounded-full"
-          style={{ background: `radial-gradient(circle, ${baseColor}0.06) 0%, transparent 70%)` }}
-        />
-        {/* Small circle center-right */}
-        <div
-          className="absolute top-1/3 -right-16 w-32 h-32 md:w-48 md:h-48 rounded-full motion-safe:animate-float"
-          style={{ background: `radial-gradient(circle, ${baseColor}0.05) 0%, transparent 70%)` }}
-        />
-        {/* Extra circle top-left */}
-        <div
-          className="absolute -top-16 -left-16 w-48 h-48 md:w-64 md:h-64 rounded-full"
-          style={{ background: `radial-gradient(circle, ${baseColor}0.04) 0%, transparent 70%)` }}
-        />
-        {/* Bottom center */}
-        <div
-          className="absolute bottom-1/4 left-1/4 w-24 h-24 md:w-32 md:h-32 rounded-full motion-safe:animate-float-slow"
-          style={{ background: `radial-gradient(circle, ${baseColor}0.03) 0%, transparent 70%)` }}
-        />
-      </div>
-    )
-  }
-
-  if (variant === 'scattered') {
-    return (
-      <div className={cn('absolute inset-0 overflow-hidden pointer-events-none', className)} aria-hidden="true">
-        {/* Multiple small circles scattered */}
-        <div
-          className="absolute top-[10%] left-[5%] w-16 h-16 md:w-24 md:h-24 rounded-full motion-safe:animate-float"
-          style={{ background: `radial-gradient(circle, ${baseColor}0.1) 0%, transparent 70%)` }}
-        />
-        <div
-          className="absolute top-[20%] right-[10%] w-20 h-20 md:w-32 md:h-32 rounded-full motion-safe:animate-float-slow"
-          style={{ background: `radial-gradient(circle, ${baseColor}0.08) 0%, transparent 70%)` }}
-        />
-        <div
-          className="absolute top-[50%] left-[8%] w-12 h-12 md:w-20 md:h-20 rounded-full"
-          style={{ background: `radial-gradient(circle, ${baseColor}0.06) 0%, transparent 70%)` }}
-        />
-        <div
-          className="absolute top-[70%] right-[15%] w-24 h-24 md:w-36 md:h-36 rounded-full motion-safe:animate-float"
-          style={{ background: `radial-gradient(circle, ${baseColor}0.07) 0%, transparent 70%)` }}
-        />
-        <div
-          className="absolute bottom-[15%] left-[20%] w-16 h-16 md:w-28 md:h-28 rounded-full motion-safe:animate-float-slow"
-          style={{ background: `radial-gradient(circle, ${baseColor}0.05) 0%, transparent 70%)` }}
-        />
-      </div>
-    )
-  }
-
-  // Default variant
-  return (
-    <div className={cn('absolute inset-0 overflow-hidden pointer-events-none', className)} aria-hidden="true">
-      {/* Large circle top-right */}
-      <div
-        className="absolute -top-32 -right-32 w-64 h-64 md:w-[450px] md:h-[450px] rounded-full"
-        style={{ background: `radial-gradient(circle, ${baseColor}0.06) 0%, transparent 70%)` }}
-      />
-      {/* Medium circle bottom-left */}
-      <div
-        className="absolute -bottom-24 -left-24 w-48 h-48 md:w-80 md:h-80 rounded-full"
-        style={{ background: `radial-gradient(circle, ${baseColor}0.05) 0%, transparent 70%)` }}
-      />
-      {/* Small circle center-right */}
-      <div
-        className="absolute top-1/2 -right-12 w-24 h-24 md:w-40 md:h-40 rounded-full motion-safe:animate-float-slow"
-        style={{ background: `radial-gradient(circle, ${baseColor}0.04) 0%, transparent 70%)` }}
-      />
-    </div>
-  )
+  // Background decorations removed as per user request
+  return null
 }
 
 /**

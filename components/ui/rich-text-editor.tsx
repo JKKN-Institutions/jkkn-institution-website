@@ -1167,16 +1167,9 @@ export function RichTextEditor({
   onContentImageUpload,
   onGalleryImageSelect,
 }: RichTextEditorProps) {
-  // Parse initial content
-  const initialContent = (() => {
-    try {
-      const parsed = JSON.parse(content)
-      return parsed
-    } catch {
-      // If content is not valid JSON, treat it as empty
-      return { type: 'doc', content: [] }
-    }
-  })()
+  // Use HTML content directly (Tiptap can parse HTML)
+  // If empty, use empty paragraph
+  const initialContent = content || '<p></p>'
 
   // Store the gallery callback in a ref so it can be accessed by the extension
   const galleryCallbackRef = useRef<((onImagesSelected: (images: GalleryImage[]) => void) => void) | undefined>(undefined)
@@ -1316,8 +1309,8 @@ export function RichTextEditor({
       },
     },
     onUpdate: ({ editor }) => {
-      const json = editor.getJSON()
-      onChange(JSON.stringify(json))
+      const html = editor.getHTML()
+      onChange(html)
     },
     immediatelyRender: false,
   })
@@ -1325,17 +1318,11 @@ export function RichTextEditor({
   // Update editor content when prop changes (for edit mode)
   useEffect(() => {
     if (editor && content) {
-      try {
-        const parsed = JSON.parse(content)
-        const currentContent = JSON.stringify(editor.getJSON())
-        const newContent = JSON.stringify(parsed)
+      const currentContent = editor.getHTML()
 
-        // Only update if content is different to avoid infinite loops
-        if (currentContent !== newContent) {
-          editor.commands.setContent(parsed)
-        }
-      } catch {
-        // Invalid JSON, ignore
+      // Only update if content is different to avoid infinite loops
+      if (currentContent !== content) {
+        editor.commands.setContent(content)
       }
     }
   }, [editor, content])

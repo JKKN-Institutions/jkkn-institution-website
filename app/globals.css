@@ -613,8 +613,8 @@
     @apply p-4 rounded-r-lg;
   }
 
-  /* Decorative circles background */
-  .pattern-circles {
+  /* Decorative circles background - Disabled as per user request */
+  /* .pattern-circles {
     position: relative;
     overflow: hidden;
   }
@@ -640,7 +640,7 @@
     height: 300px;
     bottom: -50px;
     left: -50px;
-  }
+  } */
 
   /* Curved section divider */
   .curve-divider {

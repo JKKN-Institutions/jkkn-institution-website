@@ -4180,8 +4180,8 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     isFullWidth: true,
     keywords: ['course', 'courses', 'program', 'degree', 'undergraduate', 'postgraduate', 'college', 'education'],
     editableProps: [
-      { name: 'collegeTitle', type: 'string', label: 'College/Department Title' },
-      { name: 'description', type: 'string', label: 'Description', multiline: true },
+      { name: 'collegeTitle', type: 'richtext', label: 'College/Department Title', placeholder: 'Enter college/department title...', inlineEditable: true },
+      { name: 'description', type: 'string', label: 'Description', multiline: true, inlineEditable: true },
       {
         name: 'categories',
         type: 'array',
