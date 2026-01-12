@@ -12,7 +12,10 @@ export function HeroSection() {
   const [imageError, setImageError] = useState(false)
 
   useEffect(() => {
-    setIsVisible(true)
+    // Use requestAnimationFrame to prevent forced reflow on mount
+    requestAnimationFrame(() => {
+      setIsVisible(true)
+    })
   }, [])
 
   // Trust badges removed - now handled in CMS Hero Section

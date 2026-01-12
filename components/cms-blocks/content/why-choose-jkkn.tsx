@@ -191,7 +191,7 @@ const defaultAdditionalUsps = [
   'Entrepreneurship Support through incubation centers and startup mentoring',
 ]
 
-// Intersection Observer hook
+// Intersection Observer hook - Optimized to prevent forced reflows
 function useInView(threshold = 0.2) {
   const ref = useRef<HTMLDivElement>(null)
   const [isInView, setIsInView] = useState(false)
@@ -200,10 +200,13 @@ function useInView(threshold = 0.2) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsInView(true)
+          // Use requestAnimationFrame to prevent forced reflow
+          requestAnimationFrame(() => {
+            setIsInView(true)
+          })
         }
       },
-      { threshold }
+      { threshold, rootMargin: '50px' } // Trigger slightly earlier for smoother UX
     )
 
     if (ref.current) {

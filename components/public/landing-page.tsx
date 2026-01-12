@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from 'react'
 import {
   HeroSection,
   AboutSection,
@@ -10,13 +11,23 @@ import {
   FAQSection,
   CTASection,
 } from './landing'
+import { HeroSkeleton, AboutSkeleton, WhyChooseSkeleton } from '@/components/ui/skeletons'
 
 export function LandingPage() {
   return (
     <div className="overflow-hidden">
-      <HeroSection />
-      <AboutSection />
-      <WhyChooseSection />
+      <Suspense fallback={<HeroSkeleton />}>
+        <HeroSection />
+      </Suspense>
+
+      <Suspense fallback={<AboutSkeleton />}>
+        <AboutSection />
+      </Suspense>
+
+      <Suspense fallback={<WhyChooseSkeleton />}>
+        <WhyChooseSection />
+      </Suspense>
+
       <ProgramsSection />
       <StatsSection />
       <TestimonialsSection />

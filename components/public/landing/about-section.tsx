@@ -49,10 +49,13 @@ export function AboutSection() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true)
+          // Use requestAnimationFrame to prevent forced reflow
+          requestAnimationFrame(() => {
+            setIsVisible(true)
+          })
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2, rootMargin: '50px' } // Trigger slightly earlier
     )
 
     if (sectionRef.current) {
