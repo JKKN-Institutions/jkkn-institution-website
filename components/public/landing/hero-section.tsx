@@ -38,6 +38,8 @@ export function HeroSection() {
             alt="JKKN Students"
             fill
             priority
+            quality={85}
+            sizes="100vw"
             className="object-cover"
             onError={() => setImageError(true)}
           />
