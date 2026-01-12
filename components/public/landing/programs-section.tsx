@@ -74,10 +74,13 @@ export function ProgramsSection() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true)
+          // Use requestAnimationFrame to prevent forced reflow
+          requestAnimationFrame(() => {
+            setIsVisible(true)
+          })
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2, rootMargin: '50px' } // Trigger slightly earlier
     )
 
     if (sectionRef.current) {
@@ -90,7 +93,7 @@ export function ProgramsSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 lg:py-32 overflow-hidden"
+      className="relative min-h-[800px] md:min-h-[1000px] py-24 lg:py-32 overflow-hidden"
     >
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-[#085032]/40 to-gray-900" />

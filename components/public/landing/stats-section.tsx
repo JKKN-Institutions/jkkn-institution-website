@@ -226,10 +226,13 @@ export function StatsSection() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true)
+          // Use requestAnimationFrame to prevent forced reflow
+          requestAnimationFrame(() => {
+            setIsVisible(true)
+          })
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2, rootMargin: '50px' } // Trigger slightly earlier
     )
 
     if (sectionRef.current) {
@@ -242,7 +245,7 @@ export function StatsSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-b from-gray-900/80 via-green-100/50 to-gray-900/80"
+      className="relative min-h-[700px] md:min-h-[900px] py-24 lg:py-32 overflow-hidden bg-gradient-to-b from-gray-900/80 via-green-100/50 to-gray-900/80"
     >
       {/* Background Elements */}
       <div className="absolute inset-0">

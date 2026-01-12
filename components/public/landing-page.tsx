@@ -11,7 +11,14 @@ import {
   FAQSection,
   CTASection,
 } from './landing'
-import { HeroSkeleton, AboutSkeleton, WhyChooseSkeleton } from '@/components/ui/skeletons'
+import {
+  HeroSkeleton,
+  AboutSkeleton,
+  WhyChooseSkeleton,
+  ProgramsSkeleton,
+  StatsSkeleton,
+  TestimonialsSkeleton
+} from '@/components/ui/skeletons'
 
 export function LandingPage() {
   return (
@@ -28,9 +35,18 @@ export function LandingPage() {
         <WhyChooseSection />
       </Suspense>
 
-      <ProgramsSection />
-      <StatsSection />
-      <TestimonialsSection />
+      <Suspense fallback={<ProgramsSkeleton />}>
+        <ProgramsSection />
+      </Suspense>
+
+      <Suspense fallback={<StatsSkeleton />}>
+        <StatsSection />
+      </Suspense>
+
+      <Suspense fallback={<TestimonialsSkeleton />}>
+        <TestimonialsSection />
+      </Suspense>
+
       <FAQSection />
       <CTASection />
     </div>
