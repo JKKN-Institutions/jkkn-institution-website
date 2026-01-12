@@ -256,7 +256,7 @@ export function EventsCalendarSchema() {
           "JKKN Admission Counseling Event",
           "College Open Day Erode"
         ],
-        "description": "Discover your future at JKKN Institutions! Join our Admissions Open House to explore 50+ career-focused programs across Dental (BDS/MDS), Pharmacy (B.Pharm/M.Pharm/Pharm.D), Engineering (B.E./B.Tech/MBA), Nursing (B.Sc/M.Sc), Allied Health Sciences, Arts & Science, and Education (B.Ed). Meet Learning Facilitators, tour state-of-the-art facilities, interact with current Learners, and get on-the-spot admission guidance. Special early bird discounts for registrants!",
+        "description": "Discover your future at JKKN Institutions! Join our Admissions Open House to explore 50+ career-focused programs across Dental (BDS/MDS), Pharmacy (B.Pharm/M.Pharm/Pharm.D), Engineering (B.E./B.Tech/MBA), Nursing (B.Sc/M.Sc), Allied Health Sciencess, Arts & Science, and Education (B.Ed). Meet Learning Facilitators, tour state-of-the-art facilities, interact with current Learners, and get on-the-spot admission guidance. Special early bird discounts for registrants!",
         "url": "https://jkkn.ac.in/events/admissions-open-house-2026",
         "image": [
           "https://jkkn.ac.in/images/events/admissions-open-house-2026.jpg",
@@ -721,7 +721,7 @@ export function EventsCalendarSchema() {
           },
           {
             "@type": "SportsTeam",
-            "name": "JKKN Allied Health Sciences Team"
+            "name": "JKKN Allied Health Sciencess Team"
           },
           {
             "@type": "SportsTeam",
@@ -1121,7 +1121,7 @@ export function EventsCalendarSchema() {
           "JKKN Graduation Day",
           "Degree Award Ceremony"
         ],
-        "description": "Prestigious annual convocation ceremony celebrating the achievements of graduating Learners from all 7 JKKN colleges. Award of degrees in Dental (BDS/MDS), Pharmacy (B.Pharm/M.Pharm/Pharm.D), Engineering (B.E./B.Tech/MBA), Nursing (B.Sc/M.Sc), Allied Health Sciences, Arts & Science, and Education (B.Ed). Features chief guest address, gold medal presentations, and honorary awards.",
+        "description": "Prestigious annual convocation ceremony celebrating the achievements of graduating Learners from all 7 JKKN colleges. Award of degrees in Dental (BDS/MDS), Pharmacy (B.Pharm/M.Pharm/Pharm.D), Engineering (B.E./B.Tech/MBA), Nursing (B.Sc/M.Sc), Allied Health Sciencess, Arts & Science, and Education (B.Ed). Features chief guest address, gold medal presentations, and honorary awards.",
         "url": "https://jkkn.ac.in/events/convocation-2026",
         "image": "https://jkkn.ac.in/images/events/convocation-2026.jpg",
         "startDate": "2026-08-15T10:00:00+05:30",

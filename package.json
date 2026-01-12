@@ -12,6 +12,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "analyze": "cross-env ANALYZE=true npm run build",
+    "analyze:server": "cross-env ANALYZE=true BUNDLE_ANALYZE=server npm run build",
+    "analyze:browser": "cross-env ANALYZE=true BUNDLE_ANALYZE=browser npm run build",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
@@ -120,6 +123,7 @@
     "zustand": "^5.0.9"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.1.1",
     "@playwright/test": "^1.57.0",
     "@tailwindcss/postcss": "^4",
     "@types/babel__standalone": "^7.1.9",
@@ -127,6 +131,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cross-env": "^10.1.0",
     "dotenv": "^17.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",

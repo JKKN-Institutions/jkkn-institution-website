@@ -26,7 +26,7 @@ const programs = [
   {
     icon: Stethoscope,
     title: 'Medical Sciences',
-    description: 'MBBS, BDS, and Allied Health Sciences',
+    description: 'MBBS, BDS, and Allied Health Sciencess',
     courses: 8,
     color: 'from-yellow-400 to-amber-500',
     href: '/academics/programs/medical',

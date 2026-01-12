@@ -348,11 +348,20 @@ export const HeroSectionPropsSchema = z.object({
   titleFontSize: z.enum(['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl']).default('5xl'),
   titleFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold', 'extrabold']).default('bold'),
   titleFontStyle: z.enum(['normal', 'italic']).default('normal'),
+  // Title Typography Enhancement
+  titleLineHeight: z.number().min(0.5).max(3).default(1.2),
+  titleLetterSpacing: z.number().min(-5).max(20).default(0),
+  titleTextAlign: z.enum(['left', 'center', 'right', 'justify']).default('center'),
+  titleManualBreakPosition: z.number().min(0).optional(),
   // Subtitle styling
   subtitleColor: z.string().default('#e5e5e5'),
   subtitleFontSize: z.number().min(8).max(120).default(24),
   subtitleFontWeight: z.enum(['normal', 'medium', 'semibold', 'bold']).default('normal'),
   subtitleFontStyle: z.enum(['normal', 'italic']).default('normal'),
+  // Subtitle Typography Enhancement
+  subtitleLineHeight: z.number().min(0.5).max(3).default(1.5),
+  subtitleLetterSpacing: z.number().min(-5).max(20).default(0),
+  subtitleTextAlign: z.enum(['left', 'center', 'right', 'justify']).default('center'),
   // Trust Badges settings
   showTrustBadges: z.boolean().default(false),
   trustBadgesStyle: z.enum(['glass', 'solid', 'outline']).default('glass'),
@@ -445,7 +454,7 @@ export const FAQSectionPropsSchema = z.object({
     },
     {
       question: 'What courses are offered at JKKN Institutions?',
-      answer: 'JKKN offers 50+ programs across multiple disciplines including Dental Sciences (BDS, MDS), Pharmacy (B.Pharm, M.Pharm, Pharm.D), Engineering & Technology (B.E/B.Tech, M.E/M.Tech), Nursing (B.Sc, M.Sc, GNM), Allied Health Sciences (BPT, BMLT, B.Sc Radiology), Arts & Science (BA, B.Sc, BCA, BBA, M.A, M.Sc), and Education (B.Ed, M.Ed). Each program is designed with industry-integrated curriculum and hands-on learning experiences.',
+      answer: 'JKKN offers 50+ programs across multiple disciplines including Dental Sciences (BDS, MDS), Pharmacy (B.Pharm, M.Pharm, Pharm.D), Engineering & Technology (B.E/B.Tech, M.E/M.Tech), Nursing (B.Sc, M.Sc, GNM), Allied Health Sciencess (BPT, BMLT, B.Sc Radiology), Arts & Science (BA, B.Sc, BCA, BBA, M.A, M.Sc), and Education (B.Ed, M.Ed). Each program is designed with industry-integrated curriculum and hands-on learning experiences.',
     },
     {
       question: 'Is JKKN approved by AICTE, UGC, and other regulatory bodies?',
@@ -699,6 +708,28 @@ export const SectionWrapperPropsSchema = z.object({
   id: z.string().optional(),
 })
 export type SectionWrapperProps = z.infer<typeof SectionWrapperPropsSchema> & BaseBlockProps
+
+export const GridContainerPropsSchema = z.object({
+  columns: z.number().default(2),
+  gap: z.string().default('2rem'),
+  className: z.string().optional(),
+  breakpoint: z.enum(['sm', 'md', 'lg']).default('md'),
+  id: z.string().optional(),
+})
+export type GridContainerProps = z.infer<typeof GridContainerPropsSchema> & BaseBlockProps
+
+export const ContentCardPropsSchema = z.object({
+  title: z.string(),
+  icon: z.string().optional(),
+  iconColor: z.string().default('#0b6d41'),
+  iconBackground: z.string().default('rgba(234, 241, 226, 0.5)'),
+  iconSize: z.number().default(28),
+  htmlContent: z.string().optional(),
+  backgroundColor: z.string().default('#ffffff'),
+  className: z.string().optional(),
+  id: z.string().optional(),
+})
+export type ContentCardProps = z.infer<typeof ContentCardPropsSchema> & BaseBlockProps
 
 // ==========================================
 // Data Blocks
@@ -1178,7 +1209,7 @@ export const CollegesGridPropsSchema = z.object({
     { name: 'JKKN College of Engineering', description: 'AICTE approved programs in emerging technologies', headerColor: '#7c2d12', link: '/colleges/engineering' },
     { name: 'Sresakthimayeil Institute of Nursing', description: 'INC approved nursing programs with clinical training', headerColor: '#0f766e', link: '/colleges/nursing' },
     { name: 'JKKN College of Arts & Science', description: 'UG & PG programs in arts, science & commerce', headerColor: '#6b21a8', link: '/colleges/arts-science' },
-    { name: 'JKKN College of Allied Health Sciences', description: 'Specialized healthcare professional programs', headerColor: '#b91c1c', link: '/colleges/allied-health' },
+    { name: 'JKKN College of Allied Health Sciencess', description: 'Specialized healthcare professional programs', headerColor: '#b91c1c', link: '/colleges/allied-health' },
     { name: 'JKKN Educational Institutions', description: 'CBSE & State Board schools with holistic development', headerColor: '#0369a1', link: '/schools' },
   ]),
 

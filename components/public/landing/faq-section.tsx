@@ -29,12 +29,12 @@ const faqs = [
   {
     question: 'How many colleges are under JKKN?',
     answer:
-      'JKKN comprises 11 institutions: Dental College, Pharmacy College, Engineering College, Allied Health Sciences, Arts & Science College (Autonomous), Education College, Sresakthimayeil Institute Of Nursing And Research, Matriculation School, Nattraja Vidhyalya, Elementary School and Girls Higher Secondary School — all located on one integrated residential campus in Komarapalayam.',
+      'JKKN comprises 11 institutions: Dental College, Pharmacy College, Engineering College, Allied Health Sciencess, Arts & Science College (Autonomous), Education College, Sresakthimayeil Institute Of Nursing And Research, Matriculation School, Nattraja Vidhyalya, Elementary School and Girls Higher Secondary School — all located on one integrated residential campus in Komarapalayam.',
   },
   {
     question: 'What courses does JKKN offer?',
     answer:
-      'JKKN offers 50+ programs including BDS/MDS (Dental), B.Pharm/M.Pharm/Pharm.D (Pharmacy), B.E./B.Tech/MBA (Engineering), B.Sc/M.Sc Nursing, Allied Health Sciences, B.Ed, and various UG/PG Arts & Science degrees with industry-relevant specializations.',
+      'JKKN offers 50+ programs including BDS/MDS (Dental), B.Pharm/M.Pharm/Pharm.D (Pharmacy), B.E./B.Tech/MBA (Engineering), B.Sc/M.Sc Nursing, Allied Health Sciencess, B.Ed, and various UG/PG Arts & Science degrees with industry-relevant specializations.',
   },
   {
     question: 'Which universities is JKKN affiliated with?',

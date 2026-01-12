@@ -63,11 +63,11 @@ export const BREADCRUMB_CONFIG: BreadcrumbConfig = {
     { name: 'Nursing Courses (B.Sc/M.Sc Nursing)', url: '/courses-offered/nursing-courses' },
   ],
 
-  // Allied Health Science Courses
-  '/courses-offered/allied-health-science-courses': [
+  // Allied Health Sciences Courses
+  '/courses-offered/allied-health-sciences-courses': [
     { name: 'Home', url: '/' },
     { name: 'Courses Offered', url: '/courses-offered' },
-    { name: 'Allied Health Science Courses', url: '/courses-offered/allied-health-science-courses' },
+    { name: 'Allied Health Sciences Courses', url: '/courses-offered/allied-health-sciences-courses' },
   ],
 
   // Arts & Science Courses

@@ -1,15 +1,88 @@
 import type { NextConfig } from "next";
+import withBundleAnalyzer from '@next/bundle-analyzer';
+
+const bundleAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 const nextConfig: NextConfig = {
   // Cache Components requires all data fetches to use Suspense boundaries
   // Enable when the codebase is fully migrated to this pattern:
   // cacheComponents: true,
 
+  // Turbopack configuration (Next.js 16 default)
+  // Empty config to silence webpack compatibility warning
+  turbopack: {},
+
   // Server Actions configuration (under experimental in Next.js 16)
   experimental: {
     serverActions: {
       bodySizeLimit: '3mb' // Increase from default 1MB to support large blog posts
     }
+  },
+
+  // Webpack configuration for bundle optimization
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            // Radix UI components (18 packages)
+            radix: {
+              test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
+              name: 'radix-ui',
+              priority: 30,
+              reuseExistingChunk: true,
+            },
+            // Supabase client
+            supabase: {
+              test: /[\\/]node_modules[\\/]@supabase[\\/]/,
+              name: 'supabase',
+              priority: 25,
+              reuseExistingChunk: true,
+            },
+            // TanStack (React Query + React Table)
+            tanstack: {
+              test: /[\\/]node_modules[\\/]@tanstack[\\/]/,
+              name: 'tanstack',
+              priority: 25,
+              reuseExistingChunk: true,
+            },
+            // Form libraries (React Hook Form + Zod)
+            forms: {
+              test: /[\\/]node_modules[\\/](react-hook-form|zod|@hookform)[\\/]/,
+              name: 'forms',
+              priority: 20,
+              reuseExistingChunk: true,
+            },
+            // React core
+            react: {
+              test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+              name: 'react-core',
+              priority: 40,
+              reuseExistingChunk: true,
+            },
+            // Utilities
+            utils: {
+              test: /[\\/]node_modules[\\/](clsx|class-variance-authority|tailwind-merge|date-fns|uuid)[\\/]/,
+              name: 'utils',
+              priority: 15,
+              reuseExistingChunk: true,
+            },
+            // Default vendor chunk
+            defaultVendors: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              priority: 10,
+              reuseExistingChunk: true,
+            },
+          },
+        },
+      };
+    }
+    return config;
   },
 
   async redirects() {
@@ -174,6 +247,8 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days cache
+    // Allow loading images from Supabase CDN (which may resolve to IPs flagged as private)
+    dangerouslyAllowLocalIP: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -252,4 +327,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default bundleAnalyzer(nextConfig);

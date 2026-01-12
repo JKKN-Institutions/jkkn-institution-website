@@ -344,6 +344,8 @@ import {
   SpacerPropsSchema,
   DividerPropsSchema,
   SectionWrapperPropsSchema,
+  GridContainerPropsSchema,
+  ContentCardPropsSchema,
   // Data block schemas
   StatsCounterPropsSchema,
   EventsListPropsSchema,
@@ -404,6 +406,8 @@ const SplitLayout = lazy(() => import('@/components/cms-blocks/layout/split-layo
 const Spacer = lazy(() => import('@/components/cms-blocks/layout/spacer'))
 const Divider = lazy(() => import('@/components/cms-blocks/layout/divider'))
 const SectionWrapper = lazy(() => import('@/components/cms-blocks/layout/section-wrapper'))
+const GridContainer = lazy(() => import('@/components/cms-blocks/layout/grid-container'))
+const ContentCard = lazy(() => import('@/components/cms-blocks/layout/content-card'))
 
 // Data blocks
 const EventsList = lazy(() => import('@/components/cms-blocks/data/events-list'))
@@ -482,6 +486,9 @@ const CoursePage = lazy(() => import('@/components/cms-blocks/content/course-pag
 // Facility Page
 const FacilityPage = lazy(() => import('@/components/cms-blocks/content/facility-page'))
 
+// Transport Page
+const TransportPage = lazy(() => import('@/components/cms-blocks/content/transport-page'))
+
 // Gallery Page
 const GalleryPage = lazy(() => import('@/components/cms-blocks/content/gallery-page'))
 
@@ -490,6 +497,9 @@ const PrivacyPolicyPage = lazy(() => import('@/components/cms-blocks/content/pri
 
 // Terms and Conditions Page
 const TermsAndConditionsPage = lazy(() => import('@/components/cms-blocks/content/terms-and-conditions-page'))
+
+// Institutional Development Plan Page
+const InstitutionalDevelopmentPlanPage = lazy(() => import('@/components/cms-blocks/content/institutional-development-plan-page'))
 
 // Contact Page
 const ContactPage = lazy(() => import('@/components/cms-blocks/content/contact-page'))
@@ -578,10 +588,17 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       titleFontSize: '6xl',
       titleFontWeight: 'bold',
       titleFontStyle: 'normal',
+      titleLineHeight: 1.2,
+      titleLetterSpacing: 0,
+      titleTextAlign: 'center',
+      titleManualBreakPosition: undefined,
       subtitleColor: '#fbfbee', // Brand cream for better visibility
       subtitleFontSize: 24,
       subtitleFontWeight: 'normal',
       subtitleFontStyle: 'normal',
+      subtitleLineHeight: 1.5,
+      subtitleLetterSpacing: 0,
+      subtitleTextAlign: 'center',
       showTrustBadges: false,
       trustBadgesStyle: 'glass',
       trustBadgesPosition: 'below-subtitle',
@@ -617,12 +634,21 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'titleFontSize', type: 'enum', label: 'Title Font Size', options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl'] },
       { name: 'titleFontWeight', type: 'enum', label: 'Title Font Weight', options: ['normal', 'medium', 'semibold', 'bold', 'extrabold'] },
       { name: 'titleFontStyle', type: 'enum', label: 'Title Font Style', options: ['normal', 'italic'] },
+      // Title Typography Controls
+      { name: 'titleLineHeight', type: 'number', label: 'Title Line Height', min: 0.5, max: 3, step: 0.1, description: 'Spacing between lines (1.2 = tight, 1.5 = relaxed)' },
+      { name: 'titleLetterSpacing', type: 'number', label: 'Title Letter Spacing', unit: 'px', min: -5, max: 20, step: 0.5, description: 'Character spacing (-2px for tight, +2px for loose)' },
+      { name: 'titleTextAlign', type: 'enum', label: 'Title Alignment', options: ['left', 'center', 'right', 'justify'] },
+      { name: 'titleManualBreakPosition', type: 'number', label: 'Line Break After Word', min: 0, step: 1, description: 'Split title after this word (0=first word, 1=second word, empty=no break)' },
       // Subtitle settings
       { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
       { name: 'subtitleColor', type: 'color', label: 'Subtitle Color' },
       { name: 'subtitleFontSize', type: 'number', label: 'Subtitle Font Size', unit: 'px', min: 8, max: 120 },
       { name: 'subtitleFontWeight', type: 'enum', label: 'Subtitle Font Weight', options: ['normal', 'medium', 'semibold', 'bold'] },
       { name: 'subtitleFontStyle', type: 'enum', label: 'Subtitle Font Style', options: ['normal', 'italic'] },
+      // Subtitle Typography Controls
+      { name: 'subtitleLineHeight', type: 'number', label: 'Subtitle Line Height', min: 0.5, max: 3, step: 0.1, description: 'Spacing between lines' },
+      { name: 'subtitleLetterSpacing', type: 'number', label: 'Subtitle Letter Spacing', unit: 'px', min: -5, max: 20, step: 0.5, description: 'Character spacing' },
+      { name: 'subtitleTextAlign', type: 'enum', label: 'Subtitle Alignment', options: ['left', 'center', 'right', 'justify'] },
       // Trust Badges settings
       { name: 'showTrustBadges', type: 'boolean', label: 'Show Trust Badges', description: 'Display trust badges (NAAC, Placements, etc.) in the hero section' },
       { name: 'trustBadgesStyle', type: 'enum', label: 'Trust Badges Style', options: ['glass', 'solid', 'outline'], description: 'Visual style of trust badges' },
@@ -2311,7 +2337,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         { name: 'JKKN Dental College & Hospital', image: '', link: '/institutions/dental', description: 'Premier dental education' },
         { name: 'JKKN College of Arts & Science', image: '', link: '/institutions/arts-science', description: 'Arts and sciences education' },
         { name: 'Sresakthimayeil Institute Of Nursing And Research', image: '', link: '/institutions/nursing', description: 'Compassionate nursing care' },
-        { name: 'JKKN College of Allied Health Sciences', image: '', link: '/institutions/allied-health', description: 'Healthcare professionals' },
+        { name: 'JKKN College of Allied Health Sciencess', image: '', link: '/institutions/allied-health', description: 'Healthcare professionals' },
       ],
       columns: '3',
       gap: 'md',
@@ -4213,6 +4239,70 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     ],
   },
 
+  InstitutionalDevelopmentPlanPage: {
+    name: 'InstitutionalDevelopmentPlanPage',
+    displayName: 'Institutional Development Plan Page',
+    category: 'content',
+    description: 'Dedicated page component for displaying Institutional Development Plan with sections for vision, highlights, alignment, and contact information',
+    icon: 'BookOpen',
+    previewImage: '/cms-previews/InstitutionalDevelopmentPlanPage.png',
+    component: InstitutionalDevelopmentPlanPage,
+    propsSchema: z.object({
+      pageTitle: z.string().default('Institutional Development Plan (IDP)'),
+      subtitle: z.string().default('Commitment to Academic Excellence and National Educational Goals'),
+      introduction: z.string().default(''),
+      vision: z.string().default(''),
+      highlights: z.array(z.string()).default([]),
+      alignmentItems: z.array(z.string()).default([]),
+      contactInfo: z.string().default(''),
+      backgroundColor: z.string().default('#fbfbee'),
+      primaryColor: z.string().default('#0b6d41'),
+      accentColor: z.string().default('#ffde59'),
+      textColor: z.string().default('#333333'),
+    }),
+    defaultProps: {
+      pageTitle: 'Institutional Development Plan (IDP)',
+      subtitle: 'Commitment to Academic Excellence and National Educational Goals',
+      introduction: 'At JKKN Dental College and Hospital, we are deeply committed to holistic institutional growth guided by the University Grants Commission (UGC) framework for Institutional Development Plans (IDPs). Our IDP is designed to reflect the principles of NEP 2020, ensuring academic innovation, community engagement, digital transformation, and sustainable development.',
+      vision: '"To be a Leading Global Innovative Solution Provider for the Ever-Changing Needs of Society."',
+      highlights: [
+        'Strategic goals focused on academic excellence, research, community health, and financial sustainability.',
+        'Robust faculty development and interdisciplinary learning initiatives.',
+        'Comprehensive community engagement through dental camps and outreach programs.',
+        'Integration of digital technologies in learning and administration.',
+        'Environmentally responsible infrastructure upgrades with green campus initiatives.'
+      ],
+      alignmentItems: [
+        'University Grants Commission (UGC)',
+        'Dental Council of India (DCI)',
+        'Tamil Nadu Dr. M.G.R. Medical University',
+        'National Education Policy 2020 (NEP)',
+        'NAAC Accreditation Framework'
+      ],
+      contactInfo: 'For queries related to the Institutional Development Plan, please contact:\nEmail: dental@jkkn.ac.in\nPhone: +91 93458 55001\nOffice: Principal\'s Office, JKKN Dental College and Hospital',
+      backgroundColor: '#fbfbee',
+      primaryColor: '#0b6d41',
+      accentColor: '#ffde59',
+      textColor: '#333333',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['idp', 'institutional', 'development', 'plan', 'vision', 'policy', 'ugc', 'nep', 'accreditation'],
+    editableProps: [
+      { name: 'pageTitle', type: 'string', label: 'Page Title', required: true },
+      { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
+      { name: 'introduction', type: 'string', label: 'Introduction', multiline: true },
+      { name: 'vision', type: 'string', label: 'Vision Statement', multiline: true },
+      { name: 'highlights', type: 'array', label: 'Highlights', itemType: 'string' },
+      { name: 'alignmentItems', type: 'array', label: 'Alignment Items', itemType: 'string' },
+      { name: 'contactInfo', type: 'string', label: 'Contact Information', multiline: true },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'textColor', type: 'color', label: 'Text Color' },
+    ],
+  },
+
   FacilityPage: {
     name: 'FacilityPage',
     displayName: 'Facility Page',
@@ -4415,6 +4505,138 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     ],
   },
 
+  TransportPage: {
+    name: 'TransportPage',
+    displayName: 'Transport Page',
+    category: 'content',
+    description: 'Specialized transport facility page with bus routes display - shows images, features, and available bus routes',
+    icon: 'Bus',
+    previewImage: '/cms-previews/TransportPage.png',
+    component: TransportPage,
+    propsSchema: z.object({
+      facilityTitle: z.string(),
+      images: z.array(z.object({
+        src: z.string(),
+        alt: z.string().optional()
+      })),
+      introduction: z.string(),
+      features: z.array(z.object({
+        title: z.string(),
+        description: z.string()
+      })),
+      routesTitle: z.string(),
+      routes: z.array(z.object({
+        name: z.string()
+      })),
+      conclusion: z.string().optional(),
+      backgroundColor: z.string(),
+      accentColor: z.string(),
+      textColor: z.string()
+    }),
+    defaultProps: {
+      facilityTitle: 'TRANSPORT',
+      images: [
+        { src: '/images/facilities/transport-1.jpg', alt: 'Transport Facility 1' },
+        { src: '/images/facilities/transport-2.jpg', alt: 'Transport Facility 2' },
+        { src: '/images/facilities/transport-3.jpg', alt: 'Transport Facility 3' }
+      ],
+      introduction: '<p>At JKKN, we prioritize the safety and convenience of our students by providing a comprehensive transportation network. Our fleet of well-maintained buses ensures reliable and comfortable travel for students commuting from various locations.</p>',
+      features: [
+        {
+          title: 'Well-Maintained Fleet',
+          description: '<p>Our modern fleet of buses undergoes regular maintenance and safety checks to ensure a smooth and secure journey for all students.</p>'
+        },
+        {
+          title: 'Trained Drivers',
+          description: '<p>Experienced and licensed drivers who are trained in defensive driving and student safety protocols operate all our buses.</p>'
+        },
+        {
+          title: 'Extensive Coverage',
+          description: '<p>We cover 19+ routes across Tamil Nadu, connecting students from various towns and cities to our campus.</p>'
+        },
+        {
+          title: 'GPS Tracking',
+          description: '<p>All buses are equipped with GPS tracking systems for real-time monitoring and enhanced safety measures.</p>'
+        }
+      ],
+      routesTitle: 'Bus Routes Available',
+      routes: [
+        { name: 'Athani' },
+        { name: 'Guruvarettyur' },
+        { name: 'Poolampatti' },
+        { name: 'Edappadi' },
+        { name: 'Anthiyur' },
+        { name: 'Konganapuram' },
+        { name: 'Kolathur' },
+        { name: 'Salem' },
+        { name: 'Gobichettipalayam' },
+        { name: 'Ganapathipalayam' },
+        { name: 'Omalur' },
+        { name: 'Chennampatti' },
+        { name: 'Chithur' },
+        { name: 'Nangavalli' },
+        { name: 'Thirupur' },
+        { name: 'Tiruchengode' },
+        { name: 'Paalmadai' },
+        { name: 'Erode' },
+        { name: 'Elampillai' }
+      ],
+      conclusion: '<p>Our transportation service is designed to provide safe, affordable, and convenient travel for all students. With extensive route coverage and modern facilities, we ensure that every student can reach campus comfortably and on time.</p>',
+      backgroundColor: '#0b6d41',
+      accentColor: '#ffde59',
+      textColor: '#ffffff'
+    },
+    supportsChildren: false,
+    keywords: ['transport', 'bus', 'routes', 'facility', 'transportation', 'travel', 'commute'],
+    editableProps: [
+      { name: 'facilityTitle', type: 'string', label: 'Facility Title', required: true },
+      {
+        name: 'images',
+        type: 'array',
+        label: 'Gallery Images',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            src: { type: 'string', label: 'Image URL', required: true, format: 'image' },
+            alt: { type: 'string', label: 'Alt Text' }
+          },
+          required: ['src'],
+        },
+      },
+      { name: 'introduction', type: 'string', multiline: true, label: 'Introduction Paragraph', required: true },
+      {
+        name: 'features',
+        type: 'array',
+        label: 'Features',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            title: { type: 'string', label: 'Feature Title', required: true },
+            description: { type: 'string', label: 'Feature Description', required: true }
+          },
+          required: ['title', 'description'],
+        },
+      },
+      { name: 'routesTitle', type: 'string', label: 'Routes Section Title', required: true },
+      {
+        name: 'routes',
+        type: 'array',
+        label: 'Bus Routes',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            name: { type: 'string', label: 'Route Name', required: true }
+          },
+          required: ['name'],
+        },
+      },
+      { name: 'conclusion', type: 'string', multiline: true, label: 'Conclusion Paragraph' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'textColor', type: 'color', label: 'Text Color' },
+    ],
+  },
+
   AdmissionInquiryForm: {
     name: 'AdmissionInquiryForm',
     displayName: 'Admission Inquiry Form',
@@ -4490,7 +4712,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         { id: 'engineering', name: 'JKKN College of Engineering & Technology', courses: ['B.E. CSE', 'B.E. ECE', 'B.E. EEE', 'B.E. Mechanical', 'M.E.', 'MBA'] },
         { id: 'arts', name: 'JKKN College of Arts & Science', courses: ['B.Sc', 'M.Sc', 'BBA', 'BCA', 'B.Com', 'BA'] },
         { id: 'nursing', name: 'Sresakthimayeil Institute Of Nursing And Research', courses: ['B.Sc Nursing', 'M.Sc Nursing', 'GNM', 'ANM'] },
-        { id: 'allied', name: 'JKKN College of Allied Health Sciences', courses: ['BPT', 'BMLT', 'B.Sc Radiology', 'B.Sc Cardiac Technology'] },
+        { id: 'allied', name: 'JKKN College of Allied Health Sciencess', courses: ['BPT', 'BMLT', 'B.Sc Radiology', 'B.Sc Cardiac Technology'] },
         { id: 'education', name: 'JKKN College of Education', courses: ['B.Ed', 'M.Ed', 'D.El.Ed'] },
         { id: 'school', name: 'JKKN Matriculation Higher Secondary School', courses: ['Pre-KG to 12th Standard'] },
       ],
@@ -5147,6 +5369,60 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'backgroundOverlay', type: 'boolean', label: 'Dark Overlay' },
       { name: 'overlayOpacity', type: 'number', label: 'Overlay Opacity', min: 0, max: 1, step: 0.1 },
       { name: 'minHeight', type: 'string', label: 'Min Height', placeholder: '400px' },
+    ],
+  },
+
+  GridContainer: {
+    name: 'GridContainer',
+    displayName: 'Grid Container',
+    category: 'layout',
+    description: 'Responsive grid layout container for organizing child blocks in columns',
+    icon: 'LayoutGrid',
+    previewImage: '/cms-previews/GridContainer.png',
+    component: GridContainer,
+    propsSchema: GridContainerPropsSchema,
+    defaultProps: {
+      columns: 2,
+      gap: '2rem',
+      breakpoint: 'md',
+    },
+    supportsChildren: true,
+    keywords: ['grid', 'columns', 'layout', 'responsive'],
+    editableProps: [
+      { name: 'columns', type: 'number', label: 'Columns', min: 1, max: 4, description: 'Number of columns in grid' },
+      { name: 'gap', type: 'string', label: 'Gap', placeholder: '2rem', description: 'Space between grid items' },
+      { name: 'breakpoint', type: 'enum', label: 'Responsive Breakpoint', options: ['sm', 'md', 'lg'], description: 'When to switch from single column to multi-column' },
+    ],
+  },
+
+  ContentCard: {
+    name: 'ContentCard',
+    displayName: 'Content Card',
+    category: 'layout',
+    description: 'Professional card with icon header and HTML content - perfect for institutional pages',
+    icon: 'FileText',
+    previewImage: '/cms-previews/ContentCard.png',
+    component: ContentCard,
+    propsSchema: ContentCardPropsSchema,
+    defaultProps: {
+      title: 'Card Title',
+      icon: 'BookOpen',
+      iconColor: '#0b6d41',
+      iconBackground: 'rgba(234, 241, 226, 0.5)',
+      iconSize: 28,
+      htmlContent: '<p>Add your content here...</p>',
+      backgroundColor: '#ffffff',
+    },
+    supportsChildren: false,
+    keywords: ['card', 'content', 'icon', 'professional', 'institutional'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title', required: true, description: 'Card heading' },
+      { name: 'icon', type: 'string', label: 'Lucide Icon Name', placeholder: 'BookOpen', description: 'Icon name from Lucide library' },
+      { name: 'iconColor', type: 'color', label: 'Icon Color' },
+      { name: 'iconBackground', type: 'color', label: 'Icon Background' },
+      { name: 'iconSize', type: 'number', label: 'Icon Size (px)', min: 16, max: 64 },
+      { name: 'htmlContent', type: 'string', label: 'Content (HTML)', multiline: true, description: 'HTML content for card body' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
     ],
   },
 

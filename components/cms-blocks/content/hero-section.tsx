@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import type { HeroSectionProps } from '@/lib/cms/registry-types'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
 import { ChevronDown, ArrowRight, Award, TrendingUp, Users, Calendar } from 'lucide-react'
 import Image from 'next/image'
 
@@ -28,6 +28,32 @@ const getFontSize = (value: string | number | undefined): string => {
 
   // Handle new numeric pixel values
   return `${value}px`
+}
+
+/**
+ * Splits title into two lines at specified word position
+ * @param title - Full title text
+ * @param breakPosition - Word index to break after (0-based)
+ * @param isMobile - Skip breaks on mobile
+ */
+const splitTitleAtPosition = (
+  title: string,
+  breakPosition?: number,
+  isMobile?: boolean
+): string[] => {
+  if (breakPosition === undefined || breakPosition < 0 || isMobile) {
+    return [title]
+  }
+
+  const words = title.split(' ')
+  if (breakPosition >= words.length - 1) {
+    return [title]
+  }
+
+  const line1 = words.slice(0, breakPosition + 1).join(' ')
+  const line2 = words.slice(breakPosition + 1).join(' ')
+
+  return [line1, line2]
 }
 
 // Font size mapping for Tailwind classes - RESPONSIVE (used for title only)
@@ -63,11 +89,18 @@ export default function HeroSection({
   titleFontSize = '6xl',
   titleFontWeight = 'bold',
   titleFontStyle = 'normal',
+  titleLineHeight = 1.2,
+  titleLetterSpacing = 0,
+  titleTextAlign = 'center',
+  titleManualBreakPosition,
   // Subtitle styling props
   subtitleColor = '#e5e5e5',
   subtitleFontSize = 24,
   subtitleFontWeight = 'normal',
   subtitleFontStyle = 'normal',
+  subtitleLineHeight = 1.5,
+  subtitleLetterSpacing = 0,
+  subtitleTextAlign = 'center',
   // Trust Badges props
   showTrustBadges = false,
   trustBadgesStyle = 'glass', // 'glass', 'solid', 'outline'
@@ -89,7 +122,16 @@ export default function HeroSection({
 }: HeroSectionProps) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [scrollY, setScrollY] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
   const heroRef = useRef<HTMLElement>(null)
+
+  // Mobile detection for responsive line breaks
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   useEffect(() => {
     setIsLoaded(true)
@@ -234,7 +276,7 @@ export default function HeroSection({
           </div>
         )}
 
-        {/* Animated Title */}
+        {/* Animated Title with Manual Line Breaks */}
         <h1
           className={cn(
             'tracking-wide transition-opacity duration-1000 delay-200 will-change-opacity',
@@ -245,10 +287,23 @@ export default function HeroSection({
           )}
           style={{
             color: titleColor,
-            textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+            textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+            lineHeight: titleLineHeight,
+            letterSpacing: `${titleLetterSpacing}px`,
+            textAlign: titleTextAlign as any,
           }}
         >
-          {title}
+          {useMemo(() => {
+            const lines = splitTitleAtPosition(title, titleManualBreakPosition, isMobile)
+            if (lines.length === 1) return title
+            return (
+              <>
+                {lines[0]}
+                <br />
+                {lines[1]}
+              </>
+            )
+          }, [title, titleManualBreakPosition, isMobile])}
         </h1>
 
         {/* Animated Subtitle */}
@@ -263,7 +318,10 @@ export default function HeroSection({
             )}
             style={{
               color: subtitleColor,
-              fontSize: getFontSize(subtitleFontSize)
+              fontSize: getFontSize(subtitleFontSize),
+              lineHeight: subtitleLineHeight,
+              letterSpacing: `${subtitleLetterSpacing}px`,
+              textAlign: subtitleTextAlign as any,
             }}
           >
             {subtitle}

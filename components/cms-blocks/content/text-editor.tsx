@@ -11,7 +11,32 @@ export default function TextEditor({
   className,
   isEditing,
   id,
+  style,
+  ...restProps
 }: TextEditorProps) {
+  // Extract custom _styles from props (comes from database)
+  const customProps = restProps as any
+  const _styles = customProps._styles || {}
+
+  // Merge custom styles from database
+  const mergedStyles: React.CSSProperties = {
+    ...style,
+    // Background
+    backgroundColor: _styles.background?.backgroundColor || undefined,
+    backgroundImage: _styles.background?.backgroundImage || undefined,
+    // Spacing
+    padding: _styles.spacing?.padding || undefined,
+    borderRadius: _styles.spacing?.borderRadius || undefined,
+    border: _styles.spacing?.border || _styles.effects?.border || undefined,
+    marginBottom: _styles.spacing?.marginBottom || undefined,
+    // Glassmorphism effects
+    backdropFilter: _styles.effects?.backdropFilter || undefined,
+    WebkitBackdropFilter: _styles.effects?.WebkitBackdropFilter || undefined,
+    boxShadow: _styles.effects?.boxShadow || undefined,
+    transition: _styles.effects?.transition || undefined,
+    cursor: _styles.effects?.cursor || undefined,
+  } as React.CSSProperties
+
   const maxWidthClasses = {
     sm: 'max-w-sm',
     md: 'max-w-md',
@@ -38,7 +63,7 @@ export default function TextEditor({
   if (isEditing && id) {
     // Use RichTextInlineEditor in edit mode for inline editing with toolbar
     return (
-      <div className={containerClasses}>
+      <div className={containerClasses} style={mergedStyles}>
         <RichTextInlineEditor
           blockId={id}
           propName="content"
@@ -52,7 +77,7 @@ export default function TextEditor({
 
   // Preview mode or when no ID - render as static HTML
   return (
-    <div className={containerClasses}>
+    <div className={containerClasses} style={mergedStyles}>
       {content ? (
         <div
           className={proseClasses}

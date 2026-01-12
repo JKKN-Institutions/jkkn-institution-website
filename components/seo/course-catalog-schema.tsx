@@ -34,7 +34,7 @@ export function CourseCatalogSchema() {
         "@type": "ItemList",
         "@id": `${config.site.url}/#course-catalog`,
         "name": `JKKN Institutions Course Catalog ${config.academicYear}`,
-        "description": `Complete list of 50+ career-focused courses offered at JKKN Institutions, Komarapalayam - Best College in Erode region for Dental, Pharmacy, Engineering, Nursing, Allied Health Sciences, Arts & Science, and Education programs`,
+        "description": `Complete list of 50+ career-focused courses offered at JKKN Institutions, Komarapalayam - Best College in Erode region for Dental, Pharmacy, Engineering, Nursing, Allied Health Sciencess, Arts & Science, and Education programs`,
         "numberOfItems": 7,
         "itemListOrder": "https://schema.org/ItemListOrderDescending",
         "itemListElement": [
@@ -77,8 +77,8 @@ export function CourseCatalogSchema() {
           {
             "@type": "ListItem",
             "position": 5,
-            "name": "Allied Health Science Courses",
-            "url": `${config.site.url}/courses-offered/allied-health-science-courses`,
+            "name": "Allied Health Sciences Courses",
+            "url": `${config.site.url}/courses-offered/allied-health-sciences-courses`,
             "item": {
               "@id": `${config.site.url}/#allied-health-programs`
             }
@@ -786,17 +786,17 @@ export function CourseCatalogSchema() {
       },
 
       // ============================================
-      // Allied Health Science Programs
+      // Allied Health Sciences Programs
       // ============================================
       {
         "@type": "EducationalOccupationalProgram",
         "@id": `${config.site.url}/#allied-health-programs`,
-        "name": "Allied Health Science Programs at JKKN College of Allied Health Science",
-        "description": "Diverse allied health science programs including Medical Lab Technology, Radiology, Optometry, and more at JKKN Allied Health Sciences College, Komarapalayam. Established 2019, affiliated to Tamil Nadu Dr. M.G.R. Medical University.",
-        "url": `${config.site.url}/courses-offered/allied-health-science-courses`,
+        "name": "Allied Health Sciences Programs at JKKN College of Allied Health Sciences",
+        "description": "Diverse allied health science programs including Medical Lab Technology, Radiology, Optometry, and more at JKKN Allied Health Sciencess College, Komarapalayam. Established 2019, affiliated to Tamil Nadu Dr. M.G.R. Medical University.",
+        "url": `${config.site.url}/courses-offered/allied-health-sciences-courses`,
         "provider": {
           "@type": "CollegeOrUniversity",
-          "name": "JKKN College of Allied Health Science",
+          "name": "JKKN College of Allied Health Sciences",
           "url": "https://ahs.jkkn.ac.in/",
           "parentOrganization": {
             "@id": `${config.site.url}/#organization`
@@ -810,8 +810,8 @@ export function CourseCatalogSchema() {
             "@type": "Course",
             "@id": `${config.site.url}/#course-bsc-mlt`,
             "name": "B.Sc Medical Laboratory Technology",
-            "description": "3-year MLT program at JKKN Allied Health Sciences College. Learn clinical biochemistry, microbiology, pathology, and hematology laboratory techniques.",
-            "url": `${config.site.url}/courses-offered/allied-health-science-courses/bsc-mlt`,
+            "description": "3-year MLT program at JKKN Allied Health Sciencess College. Learn clinical biochemistry, microbiology, pathology, and hematology laboratory techniques.",
+            "url": `${config.site.url}/courses-offered/allied-health-sciences-courses/bsc-mlt`,
             "courseCode": "BSC-MLT",
             "educationalCredentialAwarded": "Bachelor of Science in Medical Laboratory Technology",
             "timeRequired": "P3Y",
@@ -830,7 +830,7 @@ export function CourseCatalogSchema() {
               "startDate": config.courseStartDates.alliedHealth,
               "location": {
                 "@type": "Place",
-                "name": "JKKN College of Allied Health Science",
+                "name": "JKKN College of Allied Health Sciences",
                 "address": {
                   "@type": "PostalAddress",
                   "streetAddress": config.address.streetAddress,
@@ -859,8 +859,8 @@ export function CourseCatalogSchema() {
             "@type": "Course",
             "@id": `${config.site.url}/#course-bsc-radiology`,
             "name": "B.Sc Medical Imaging Technology / Radiology",
-            "description": "3-year radiology program covering X-ray, CT, MRI, and ultrasound imaging techniques at JKKN Allied Health Sciences.",
-            "url": `${config.site.url}/courses-offered/allied-health-science-courses/bsc-radiology`,
+            "description": "3-year radiology program covering X-ray, CT, MRI, and ultrasound imaging techniques at JKKN Allied Health Sciencess.",
+            "url": `${config.site.url}/courses-offered/allied-health-sciences-courses/bsc-radiology`,
             "courseCode": "BSC-MIT",
             "educationalCredentialAwarded": "Bachelor of Science in Medical Imaging Technology",
             "timeRequired": "P3Y",
@@ -878,7 +878,7 @@ export function CourseCatalogSchema() {
               "startDate": config.courseStartDates.alliedHealth,
               "location": {
                 "@type": "Place",
-                "name": "JKKN College of Allied Health Science",
+                "name": "JKKN College of Allied Health Sciences",
                 "address": {
                   "@type": "PostalAddress",
                   "addressLocality": config.address.addressLocality,
@@ -893,8 +893,8 @@ export function CourseCatalogSchema() {
             "@type": "Course",
             "@id": `${config.site.url}/#course-bsc-optometry`,
             "name": "B.Sc Optometry",
-            "description": "4-year optometry program at JKKN Allied Health Sciences covering vision science, contact lenses, and ocular disease management.",
-            "url": `${config.site.url}/courses-offered/allied-health-science-courses/bsc-optometry`,
+            "description": "4-year optometry program at JKKN Allied Health Sciencess covering vision science, contact lenses, and ocular disease management.",
+            "url": `${config.site.url}/courses-offered/allied-health-sciences-courses/bsc-optometry`,
             "courseCode": "BSC-OPTOMETRY",
             "educationalCredentialAwarded": "Bachelor of Science in Optometry",
             "timeRequired": "P4Y",
@@ -905,7 +905,7 @@ export function CourseCatalogSchema() {
               "startDate": config.courseStartDates.alliedHealth,
               "location": {
                 "@type": "Place",
-                "name": "JKKN College of Allied Health Science",
+                "name": "JKKN College of Allied Health Sciences",
                 "address": {
                   "@type": "PostalAddress",
                   "addressLocality": config.address.addressLocality,
@@ -921,7 +921,7 @@ export function CourseCatalogSchema() {
             "@id": `${config.site.url}/#course-bsc-cardiac`,
             "name": "B.Sc Cardiac Technology",
             "description": "3-year cardiac technology program covering ECG, ECHO, cardiac catheterization, and cardiovascular diagnostics.",
-            "url": `${config.site.url}/courses-offered/allied-health-science-courses/bsc-cardiac`,
+            "url": `${config.site.url}/courses-offered/allied-health-sciences-courses/bsc-cardiac`,
             "courseCode": "BSC-CARDIAC",
             "educationalCredentialAwarded": "Bachelor of Science in Cardiac Technology",
             "timeRequired": "P3Y",
@@ -932,7 +932,7 @@ export function CourseCatalogSchema() {
               "startDate": config.courseStartDates.alliedHealth,
               "location": {
                 "@type": "Place",
-                "name": "JKKN College of Allied Health Science",
+                "name": "JKKN College of Allied Health Sciences",
                 "address": {
                   "@type": "PostalAddress",
                   "addressLocality": config.address.addressLocality,
@@ -947,8 +947,8 @@ export function CourseCatalogSchema() {
             "@type": "Course",
             "@id": `${config.site.url}/#course-bsc-dialysis`,
             "name": "B.Sc Dialysis Technology",
-            "description": "3-year dialysis technology program for hemodialysis and renal care at JKKN Allied Health Sciences.",
-            "url": `${config.site.url}/courses-offered/allied-health-science-courses/bsc-dialysis`,
+            "description": "3-year dialysis technology program for hemodialysis and renal care at JKKN Allied Health Sciencess.",
+            "url": `${config.site.url}/courses-offered/allied-health-sciences-courses/bsc-dialysis`,
             "courseCode": "BSC-DIALYSIS",
             "educationalCredentialAwarded": "Bachelor of Science in Dialysis Technology",
             "timeRequired": "P3Y",
@@ -959,7 +959,7 @@ export function CourseCatalogSchema() {
               "startDate": config.courseStartDates.alliedHealth,
               "location": {
                 "@type": "Place",
-                "name": "JKKN College of Allied Health Science",
+                "name": "JKKN College of Allied Health Sciences",
                 "address": {
                   "@type": "PostalAddress",
                   "addressLocality": config.address.addressLocality,
@@ -1236,7 +1236,7 @@ export function CourseCatalogSchema() {
         "@type": "WebPage",
         "@id": `${config.site.url}/courses-offered`,
         "name": `Courses Offered at JKKN Institutions | 50+ Programs | Best College Erode`,
-        "description": "Explore 50+ courses at JKKN Institutions - Dental (BDS/MDS), Pharmacy (B.Pharm/M.Pharm/Pharm.D), Engineering (B.E./B.Tech/MBA), Nursing, Allied Health Sciences, Arts & Science, Education. NAAC accredited, 92%+ placements.",
+        "description": "Explore 50+ courses at JKKN Institutions - Dental (BDS/MDS), Pharmacy (B.Pharm/M.Pharm/Pharm.D), Engineering (B.E./B.Tech/MBA), Nursing, Allied Health Sciencess, Arts & Science, Education. NAAC accredited, 92%+ placements.",
         "url": `${config.site.url}/courses-offered`,
         "isPartOf": {
           "@id": `${config.site.url}/#website`

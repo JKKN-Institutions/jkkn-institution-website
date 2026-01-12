@@ -23,7 +23,7 @@ export function WebsiteSchema() {
       "JKKN Educational Institutions",
       "Best College in Erode"
     ],
-    "description": "JKKN Institutions stands for J.K.K. Nattraja Educational Institutions, a premier educational group established in 1952 by the J.K.K. Rangammal Charitable Trust. Located in Komarapalayam, Tamil Nadu, India, JKKN offers 50+ career-focused programs across 7 colleges including Dental, Pharmacy, Nursing, Allied Health Sciences, Engineering, Arts & Science, and Education with 92%+ placement success rate. NAAC accredited institution with 74+ years of excellence in education.",
+    "description": "JKKN Institutions stands for J.K.K. Nattraja Educational Institutions, a premier educational group established in 1952 by the J.K.K. Rangammal Charitable Trust. Located in Komarapalayam, Tamil Nadu, India, JKKN offers 50+ career-focused programs across 7 colleges including Dental, Pharmacy, Nursing, Allied Health Sciencess, Engineering, Arts & Science, and Education with 92%+ placement success rate. NAAC accredited institution with 74+ years of excellence in education.",
     "publisher": {
       "@type": "EducationalOrganization",
       "@id": "https://jkkn.ac.in/#organization",
