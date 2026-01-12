@@ -21,6 +21,62 @@ const nextConfig: NextConfig = {
     }
   },
 
+  // Cache headers for static assets (PageSpeed optimization)
+  async headers() {
+    return [
+      // Cache static media assets for 1 year (immutable)
+      {
+        source: '/media/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Cache Next.js static files for 1 year (immutable)
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Cache images for 30 days (can be revalidated)
+      {
+        source: '/images/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=2592000, stale-while-revalidate=86400',
+          },
+        ],
+      },
+      // Cache public folder assets for 1 year
+      {
+        source: '/:path*.{jpg,jpeg,png,gif,svg,ico,webp,avif}',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Cache fonts for 1 year
+      {
+        source: '/:path*.{woff,woff2,ttf,otf,eot}',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ]
+  },
+
   // Webpack configuration for bundle optimization
   webpack: (config, { isServer }) => {
     if (!isServer) {

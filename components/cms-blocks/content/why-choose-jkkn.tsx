@@ -391,7 +391,7 @@ export default function WhyChooseJKKN({
   }
 
   return (
-    <section className="py-16 md:py-24 relative overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+    <section className="min-h-[700px] md:min-h-[900px] py-16 md:py-24 relative overflow-hidden bg-gradient-to-b from-gray-50 to-white">
       {/* Background decorations using brand colors */}
       <div className="absolute top-0 left-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />

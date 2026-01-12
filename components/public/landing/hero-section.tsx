@@ -54,7 +54,7 @@ export function HeroSection() {
       <div className="relative z-10 container mx-auto px-4 py-20 flex flex-col items-center justify-center text-center">
         {/* Logo Badge - India's First AI Empowered College */}
         <div className={cn(
-          'mb-6 transition-all duration-1000',
+          'mb-6 transition-all duration-1000 will-change-transform',
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
         )}>
           <div className="inline-flex flex-col items-center bg-white rounded-xl p-3 sm:p-4 shadow-2xl">
@@ -77,7 +77,7 @@ export function HeroSection() {
 
         {/* Main Title */}
         <h1 className={cn(
-          'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 tracking-wide transition-all duration-1000 delay-200',
+          'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 tracking-wide transition-all duration-1000 delay-200 will-change-transform',
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         )}
         style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}
@@ -87,7 +87,7 @@ export function HeroSection() {
 
         {/* Subtitle */}
         <p className={cn(
-          'text-base sm:text-lg md:text-xl text-white/90 mb-6 max-w-2xl mx-auto px-4 transition-all duration-1000 delay-300',
+          'text-base sm:text-lg md:text-xl text-white/90 mb-6 max-w-2xl mx-auto px-4 transition-all duration-1000 delay-300 will-change-transform',
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         )}
         style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}
@@ -118,7 +118,7 @@ export function HeroSection() {
 
         {/* CTA Buttons */}
         <div className={cn(
-          'flex flex-col sm:flex-row gap-4 transition-all duration-1000 delay-400',
+          'flex flex-col sm:flex-row gap-4 transition-all duration-1000 delay-400 will-change-transform',
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         )}>
           {/* Online Admissions Button - Yellow */}

@@ -65,7 +65,7 @@ export function AboutSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-b from-gray-900 via-[#085032]/50 to-gray-900"
+      className="relative min-h-[600px] md:min-h-[800px] py-24 lg:py-32 overflow-hidden bg-gradient-to-b from-gray-900 via-[#085032]/50 to-gray-900"
     >
       {/* Background Elements */}
       <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary/20 to-transparent" />
@@ -74,7 +74,7 @@ export function AboutSection() {
       <div className="relative container mx-auto px-4 lg:px-8">
         {/* Section Header */}
         <div className={cn(
-          'text-center max-w-3xl mx-auto mb-16 lg:mb-20 transition-all duration-700',
+          'text-center max-w-3xl mx-auto mb-16 lg:mb-20 transition-all duration-700 will-change-transform',
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         )}>
           <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/30 text-secondary text-sm font-semibold mb-4 border border-secondary/40">
