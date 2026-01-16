@@ -134,28 +134,30 @@ export function TestimonialsSection() {
             </div>
 
             {/* Testimonial Content */}
-            <div className="relative">
+            <div className="relative min-h-[400px]">
               {testimonials.map((testimonial, index) => (
                 <div
                   key={testimonial.id}
                   className={cn(
-                    'transition-all duration-500',
+                    'transition-all duration-500 h-full flex flex-col justify-between',
                     index === currentIndex
-                      ? 'opacity-100 translate-x-0'
-                      : 'opacity-0 absolute inset-0 translate-x-8'
+                      ? 'opacity-100 translate-x-0 relative'
+                      : 'opacity-0 absolute inset-0 translate-x-8 pointer-events-none'
                   )}
                 >
-                  {/* Rating */}
-                  <div className="flex items-center gap-1 mb-6">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 fill-secondary text-secondary" />
-                    ))}
-                  </div>
+                  <div>
+                    {/* Rating */}
+                    <div className="flex items-center gap-1 mb-6">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="w-5 h-5 fill-secondary text-secondary" />
+                      ))}
+                    </div>
 
-                  {/* Quote */}
-                  <blockquote className="text-xl lg:text-2xl text-white leading-relaxed mb-8 font-medium">
-                    "{testimonial.quote}"
-                  </blockquote>
+                    {/* Quote */}
+                    <blockquote className="text-xl lg:text-2xl text-white leading-relaxed mb-8 font-medium">
+                      "{testimonial.quote}"
+                    </blockquote>
+                  </div>
 
                   {/* Author */}
                   <div className="flex items-center gap-4">

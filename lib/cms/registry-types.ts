@@ -670,7 +670,7 @@ export const FlexboxLayoutPropsSchema = z.object({
 export type FlexboxLayoutProps = z.infer<typeof FlexboxLayoutPropsSchema> & BaseBlockProps
 
 export const SplitLayoutPropsSchema = z.object({
-  proportion: z.enum(['50-50', '40-60', '60-40', '33-67']).default('50-50'),
+  proportion: z.enum(['50-50', '40-60', '60-40', '33-67', '67-33']).default('50-50'),
   reverse: z.boolean().default(false),
   verticalAlign: z.enum(['start', 'center', 'end', 'stretch']).default('center'),
   gap: z.number().default(8),

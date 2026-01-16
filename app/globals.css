@@ -1800,3 +1800,68 @@
     z-index: 70 !important; /* Below bottom nav backdrop */
   }
 }
+
+/* ===== PERFORMANCE OPTIMIZATION - CSS ANIMATIONS ===== */
+/* Landing page animations - replaces JavaScript requestAnimationFrame */
+
+/* Slide in from top animation */
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide in from bottom animation */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation utility classes */
+.animate-slideInDown {
+  animation: slideInDown 1s ease-out both;
+}
+
+.animate-slideInUp {
+  animation: slideInUp 1s ease-out both;
+}
+
+/* Animation delays */
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animation-delay-300 {
+  animation-delay: 0.3s;
+}
+
+.animation-delay-400 {
+  animation-delay: 0.4s;
+}
+
+/* Tabular numbers for consistent width */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  /* Ensures consistent width for numbers - prevents CLS */
+}
+
+/* Accessibility: Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-slideInDown,
+  .animate-slideInUp {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

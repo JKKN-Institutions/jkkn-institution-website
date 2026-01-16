@@ -45,11 +45,8 @@ export function UserDataProvider({ children, userId, initialData }: UserDataProv
   }))
 
   useEffect(() => {
-    // If we have initial data, don't refetch
-    if (initialData && Object.keys(initialData).length > 0) {
-      return
-    }
-
+    // ALWAYS fetch fresh data to ensure role changes are reflected
+    // initialData is used for initial state only (prevents loading flash)
     async function fetchUserData() {
       const supabase = createClient()
 
@@ -104,7 +101,7 @@ export function UserDataProvider({ children, userId, initialData }: UserDataProv
     }
 
     fetchUserData()
-  }, [userId, initialData])
+  }, [userId])
 
   return (
     <UserDataContext.Provider value={userData}>

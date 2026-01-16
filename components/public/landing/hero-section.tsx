@@ -1,22 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import { Award, TrendingUp, Users, Calendar } from 'lucide-react'
-import { useParallax } from '@/lib/hooks/use-parallax'
 
 export function HeroSection() {
-  const [isVisible, setIsVisible] = useState(false)
-  const [imageError, setImageError] = useState(false)
-
-  useEffect(() => {
-    // Use requestAnimationFrame to prevent forced reflow on mount
-    requestAnimationFrame(() => {
-      setIsVisible(true)
-    })
-  }, [])
+  // State and effects removed - using pure CSS animations for better performance
 
   // Trust badges removed - now handled in CMS Hero Section
   // const trustBadges = [
@@ -29,27 +17,13 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-[85vh] md:min-h-screen flex items-center overflow-hidden">
-      {/* Background */}
+      {/* Background - Pure CSS gradients (no image loading delay) */}
       <div className="absolute inset-0">
-        {/* Background Image or Fallback Gradient */}
-        {!imageError ? (
-          <Image
-            src="/images/hero-bg.jpg"
-            alt="JKKN Students"
-            fill
-            priority
-            quality={85}
-            sizes="100vw"
-            className="object-cover"
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          /* Fallback gradient background - Darker, richer gradient */
-          <div className="absolute inset-0 bg-gradient-to-br from-[#085032] via-primary to-emerald-900" />
-        )}
-        {/* Dark overlay for text readability - Increased opacity */}
+        {/* Base gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#085032] via-primary to-emerald-900" />
+        {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-black/50" />
-        {/* Green gradient overlay from top and bottom - Enhanced */}
+        {/* Green gradient overlay from top and bottom */}
         <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-transparent to-primary/50" />
         {/* Aurora-like animated gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 via-transparent to-emerald-600/20 animate-pulse" style={{ animationDuration: '8s' }} />
@@ -58,10 +32,7 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-20 flex flex-col items-center justify-center text-center">
         {/* Logo Badge - India's First AI Empowered College */}
-        <div className={cn(
-          'mb-6 transition-all duration-1000 will-change-transform',
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
-        )}>
+        <div className="mb-6 animate-slideInDown">
           <div className="inline-flex flex-col items-center bg-white rounded-xl p-3 sm:p-4 shadow-2xl">
             {/* India's First Text */}
             <span className="text-[10px] sm:text-xs font-bold text-primary tracking-wider uppercase">
@@ -81,21 +52,17 @@ export function HeroSection() {
         </div>
 
         {/* Main Title */}
-        <h1 className={cn(
-          'text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 tracking-wide transition-all duration-1000 delay-200 will-change-transform',
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        )}
-        style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}
+        <h1
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 tracking-wide animate-slideInUp animation-delay-200"
+          style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}
         >
           JKKN INSTITUTIONS
         </h1>
 
         {/* Subtitle */}
-        <p className={cn(
-          'text-base sm:text-lg md:text-xl text-white/90 mb-6 max-w-2xl mx-auto px-4 transition-all duration-1000 delay-300 will-change-transform',
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        )}
-        style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}
+        <p
+          className="text-base sm:text-lg md:text-xl text-white/90 mb-6 max-w-2xl mx-auto px-4 animate-slideInUp animation-delay-300"
+          style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}
         >
           Empowering Future Leaders Through Innovation and Excellence
         </p>
@@ -122,10 +89,7 @@ export function HeroSection() {
         </div> */}
 
         {/* CTA Buttons */}
-        <div className={cn(
-          'flex flex-col sm:flex-row gap-4 transition-all duration-1000 delay-400 will-change-transform',
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        )}>
+        <div className="flex flex-col sm:flex-row gap-4 animate-slideInUp animation-delay-400">
           {/* Online Admissions Button - Yellow */}
           <Link
             href="/admissions"

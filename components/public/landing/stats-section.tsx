@@ -192,6 +192,7 @@ function StatCard({ stat, index, isVisible }: { stat: typeof stats[0], index: nu
             <span
               className={cn(
                 "text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight transition-transform duration-150",
+                "tabular-nums", // Prevents CLS by ensuring consistent number width
                 isPulsing && "scale-110"
               )}
               aria-live={count === stat.value ? 'polite' : 'off'}
@@ -200,7 +201,7 @@ function StatCard({ stat, index, isVisible }: { stat: typeof stats[0], index: nu
             >
               {displayValue}
             </span>
-            <span className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+            <span className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent tabular-nums">
               {stat.suffix}
             </span>
           </div>

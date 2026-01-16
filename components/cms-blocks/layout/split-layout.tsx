@@ -1,10 +1,16 @@
 'use client'
 
+import { Children as ReactChildren } from 'react'
 import { cn } from '@/lib/utils'
 import type { SplitLayoutProps } from '@/lib/cms/registry-types'
 import { useDroppable } from '@dnd-kit/core'
 import { Button } from '@/components/ui/button'
-import { Type, AlignLeft, Image as ImageIcon, Plus } from 'lucide-react'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { Type, AlignLeft, Image as ImageIcon, Plus, Video, List, Square, Minus } from 'lucide-react'
 
 // Proportion mapping to CSS Grid template columns
 const proportionClasses: Record<string, string> = {
@@ -37,42 +43,103 @@ const gapClassMap: Record<number, string> = {
   16: 'gap-16',
 }
 
-// Quick-add buttons for adding common blocks to columns
-interface QuickAddButtonsProps {
+// Component menu for adding blocks to columns
+interface ComponentMenuProps {
   onAdd: (componentName: string) => void
 }
 
-function QuickAddButtons({ onAdd }: QuickAddButtonsProps) {
+function ComponentMenu({ onAdd }: ComponentMenuProps) {
+  const components = [
+    // Content components
+    { name: 'Heading', icon: Type, category: 'Content' },
+    { name: 'Paragraph', icon: AlignLeft, category: 'Content' },
+    { name: 'Button', icon: Square, category: 'Content' },
+    { name: 'List', icon: List, category: 'Content' },
+    // Media components
+    { name: 'Image', icon: ImageIcon, category: 'Media' },
+    { name: 'Video', icon: Video, category: 'Media' },
+    // Layout components
+    { name: 'Container', icon: Square, category: 'Layout' },
+    { name: 'Divider', icon: Minus, category: 'Layout' },
+  ]
+
+  const contentComponents = components.filter(c => c.category === 'Content')
+  const mediaComponents = components.filter(c => c.category === 'Media')
+  const layoutComponents = components.filter(c => c.category === 'Layout')
+
   return (
-    <div className="flex gap-2 mt-3 flex-wrap justify-center">
-      <Button
-        size="sm"
-        variant="outline"
-        onClick={() => onAdd('Heading')}
-        className="h-8 text-xs"
-      >
-        <Type className="h-3 w-3 mr-1.5" />
-        Heading
-      </Button>
-      <Button
-        size="sm"
-        variant="outline"
-        onClick={() => onAdd('Paragraph')}
-        className="h-8 text-xs"
-      >
-        <AlignLeft className="h-3 w-3 mr-1.5" />
-        Text
-      </Button>
-      <Button
-        size="sm"
-        variant="outline"
-        onClick={() => onAdd('Image')}
-        className="h-8 text-xs"
-      >
-        <ImageIcon className="h-3 w-3 mr-1.5" />
-        Image
-      </Button>
-    </div>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          size="sm"
+          variant="outline"
+          className="h-9 shadow-sm hover:shadow-md transition-all duration-200"
+        >
+          <Plus className="h-4 w-4 mr-1.5" />
+          Add Component
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-72 p-3" align="center">
+        <div className="space-y-3">
+          {/* Content Components */}
+          <div className="space-y-2">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Content</p>
+            <div className="grid grid-cols-2 gap-2">
+              {contentComponents.map(({ name, icon: Icon }) => (
+                <Button
+                  key={name}
+                  variant="ghost"
+                  size="sm"
+                  className="justify-start h-auto py-2 hover:bg-primary/10 hover:text-primary transition-colors"
+                  onClick={() => onAdd(name)}
+                >
+                  <Icon className="h-4 w-4 mr-2" />
+                  <span className="text-xs">{name}</span>
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          {/* Media Components */}
+          <div className="space-y-2">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Media</p>
+            <div className="grid grid-cols-2 gap-2">
+              {mediaComponents.map(({ name, icon: Icon }) => (
+                <Button
+                  key={name}
+                  variant="ghost"
+                  size="sm"
+                  className="justify-start h-auto py-2 hover:bg-primary/10 hover:text-primary transition-colors"
+                  onClick={() => onAdd(name)}
+                >
+                  <Icon className="h-4 w-4 mr-2" />
+                  <span className="text-xs">{name}</span>
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          {/* Layout Components */}
+          <div className="space-y-2">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Layout</p>
+            <div className="grid grid-cols-2 gap-2">
+              {layoutComponents.map(({ name, icon: Icon }) => (
+                <Button
+                  key={name}
+                  variant="ghost"
+                  size="sm"
+                  className="justify-start h-auto py-2 hover:bg-primary/10 hover:text-primary transition-colors"
+                  onClick={() => onAdd(name)}
+                >
+                  <Icon className="h-4 w-4 mr-2" />
+                  <span className="text-xs">{name}</span>
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
   )
 }
 
@@ -102,39 +169,73 @@ function SplitLayoutDropZone({
   })
 
   return (
-    <div
-      ref={setNodeRef}
-      className={cn(
-        "min-h-[240px] p-6 border-2 border-dashed rounded-lg transition-all duration-200",
-        isOver
-          ? "border-primary bg-primary/10 shadow-md scale-[1.02]"
-          : "border-muted-foreground/25 hover:border-primary/50 hover:bg-accent/30"
-      )}
-    >
-      <div className="flex flex-col items-center justify-center h-full text-center">
-        {/* Icon */}
-        <div className={cn(
-          "w-12 h-12 rounded-full flex items-center justify-center mb-3 transition-colors",
-          isOver ? "bg-primary/20" : "bg-muted"
-        )}>
-          <Plus className={cn(
-            "h-6 w-6 transition-colors",
-            isOver ? "text-primary" : "text-muted-foreground"
-          )} />
+    <div className="relative">
+      {/* Column Label Badge */}
+      <div className="absolute -top-2 left-2 z-10 px-2 py-0.5 bg-primary/10 backdrop-blur-sm rounded text-xs font-medium text-primary border border-primary/20">
+        Column {columnIndex + 1}
+      </div>
+
+      <div
+        ref={setNodeRef}
+        className={cn(
+          "min-h-[280px] p-8 border-2 border-dashed rounded-lg transition-all duration-300 relative overflow-hidden",
+          isOver
+            ? "border-primary bg-gradient-to-br from-primary/10 via-primary/5 to-transparent shadow-lg shadow-primary/20 scale-[1.02] ring-2 ring-primary/30"
+            : "border-muted-foreground/20 hover:border-primary/40 hover:bg-accent/20 hover:shadow-md"
+        )}
+      >
+        {/* Animated gradient background on hover */}
+        {isOver && (
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 animate-pulse" />
+        )}
+
+        <div className="relative flex flex-col items-center justify-center h-full text-center space-y-4">
+          {/* Large Icon with glow effect */}
+          <div className={cn(
+            "w-16 h-16 rounded-full flex items-center justify-center mb-2 transition-all duration-300 relative",
+            isOver
+              ? "bg-primary/20 shadow-lg shadow-primary/30 scale-110"
+              : "bg-gradient-to-br from-muted to-muted/50 hover:scale-105"
+          )}>
+            {/* Glow ring on drag-over */}
+            {isOver && (
+              <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping" />
+            )}
+            <Plus className={cn(
+              "h-8 w-8 transition-all duration-300 relative z-10",
+              isOver ? "text-primary rotate-90" : "text-muted-foreground"
+            )} />
+          </div>
+
+          {/* Label with better typography */}
+          <div className="space-y-1">
+            <p className={cn(
+              "font-semibold text-base transition-colors",
+              isOver ? "text-primary" : "text-foreground"
+            )}>
+              {isOver ? '✨ Drop Here' : columnLabel}
+            </p>
+
+            {/* Description */}
+            <p className="text-xs text-muted-foreground max-w-[200px] leading-relaxed">
+              {isOver ? 'Release to add component' : columnDescription}
+            </p>
+          </div>
+
+          {/* Component menu - only show when not dragging */}
+          {!isOver && (
+            <div className="pt-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <ComponentMenu onAdd={onQuickAdd} />
+            </div>
+          )}
+
+          {/* Helper text */}
+          {!isOver && (
+            <p className="text-xs text-muted-foreground/70 pt-2 animate-in fade-in delay-150">
+              or drag from the component palette
+            </p>
+          )}
         </div>
-
-        {/* Label */}
-        <p className="font-medium text-sm mb-1 text-foreground">
-          {columnLabel}
-        </p>
-
-        {/* Description */}
-        <p className="text-xs text-muted-foreground mb-4">
-          {isOver ? 'Drop here to add' : columnDescription}
-        </p>
-
-        {/* Quick-add buttons */}
-        {!isOver && <QuickAddButtons onAdd={onQuickAdd} />}
       </div>
     </div>
   )
@@ -160,11 +261,14 @@ export default function SplitLayout({
   id,
   onAddBlock,
 }: SplitLayoutPropsExtended) {
-  const hasChildren = children && (Array.isArray(children) ? children.length > 0 : true)
-  const childArray = Array.isArray(children) ? children : children ? [children] : []
+  // Convert children to array using React.Children.toArray for better handling
+  // This properly handles fragments, nested children, and other React element types
+  const childArray = children ? ReactChildren.toArray(children) : []
+  const hasChildren = childArray.length > 0
 
-  // Validate children count
-  const validChildCount = childArray.length === 2
+  // Get individual column children (first child = column 0, second child = column 1)
+  const column0Children = childArray[0] || null
+  const column1Children = childArray[1] || null
 
   // Get gap class or fallback to style
   const gapClass = gapClassMap[gap] || undefined
@@ -196,51 +300,29 @@ export default function SplitLayout({
         ...gapStyle,
       }}
     >
-      {hasChildren && validChildCount ? (
-        <>
-          {/* Column 1: Content or Media (based on reverse) */}
-          <div className="min-w-0">
-            {childArray[0]}
+      {/* Render columns - show children if they exist, otherwise show drop zones */}
+      {[0, 1].map((columnIndex) => {
+        const columnChild = columnIndex === 0 ? column0Children : column1Children
+        const hasContent = columnChild !== null
+
+        return (
+          <div key={columnIndex} className="min-w-0">
+            {hasContent ? (
+              // Render actual child block
+              columnChild
+            ) : isEditing ? (
+              // Show drop zone only if column is empty
+              <SplitLayoutDropZone
+                parentId={id || 'unknown'}
+                columnIndex={columnIndex}
+                columnLabel={`Column ${columnIndex + 1}: ${columnIndex === 0 ? 'Content' : 'Media'}`}
+                columnDescription={columnIndex === 0 ? 'Drop heading, text, buttons here' : 'Drop image, video here'}
+                onQuickAdd={(componentName) => onAddBlock?.(componentName, columnIndex)}
+              />
+            ) : null}
           </div>
-
-          {/* Column 2: Media or Content (based on reverse) */}
-          <div className="min-w-0">
-            {childArray[1]}
-          </div>
-        </>
-      ) : isEditing ? (
-        <>
-          {/* Column 1 Drop Zone */}
-          <SplitLayoutDropZone
-            parentId={id || 'unknown'}
-            columnIndex={0}
-            columnLabel="Column 1: Content"
-            columnDescription="Drop heading, text, buttons here"
-            onQuickAdd={(componentName) => onAddBlock?.(componentName, 0)}
-          />
-
-          {/* Column 2 Drop Zone */}
-          <SplitLayoutDropZone
-            parentId={id || 'unknown'}
-            columnIndex={1}
-            columnLabel="Column 2: Media"
-            columnDescription="Drop image, video here"
-            onQuickAdd={(componentName) => onAddBlock?.(componentName, 1)}
-          />
-
-          {/* Validation warning if incorrect child count */}
-          {!validChildCount && childArray.length > 0 && (
-            <div className="col-span-full mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-              <p className="text-yellow-800 dark:text-yellow-200 text-sm">
-                <strong>Warning:</strong> SplitLayout expects exactly 2 child blocks.
-                Currently has {childArray.length}. {childArray.length < 2 ? 'Add more blocks' : 'Remove extra blocks'} to fix.
-              </p>
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="min-h-[20px]" />
-      )}
+        )
+      })}
     </div>
   )
 }

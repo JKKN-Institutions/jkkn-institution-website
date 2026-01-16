@@ -22,6 +22,7 @@ import {
   EyeOff,
   Sliders,
   Wand2,
+  Layout,
 } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -37,6 +38,7 @@ import type { GlassSettings } from '@/lib/cms/styling-types'
 import { MotionControls, type MotionSettings } from '../elementor/motion-controls'
 import { TransformControls, type TransformSettings } from '../elementor/transform-controls'
 import { FilterControls, type FilterSettings } from '../elementor/filter-controls'
+import { SplitLayoutControls } from './split-layout-controls'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
@@ -293,9 +295,23 @@ export function PropsPanel() {
       <div className="flex-1 overflow-auto">
         <Accordion
           type="multiple"
-          defaultValue={["content"]}
+          defaultValue={selectedBlock.component_name === 'SplitLayout' ? ["layout", "content"] : ["content"]}
           className="w-full"
         >
+          {/* Layout Section - Special for SplitLayout */}
+          {selectedBlock.component_name === 'SplitLayout' && (
+            <AccordionSection value="layout" icon={Layout} title="Layout">
+              <SplitLayoutControls
+                block={selectedBlock}
+                onUpdate={(updates) => {
+                  if (updates.props) {
+                    handlePropsChange(updates.props)
+                  }
+                }}
+              />
+            </AccordionSection>
+          )}
+
           {/* Content Section */}
           <AccordionSection value="content" icon={FileText} title="Content">
             <DynamicForm
