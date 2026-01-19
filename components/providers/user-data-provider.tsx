@@ -44,8 +44,19 @@ export function UserDataProvider({ children, userId, initialData }: UserDataProv
     isLoading: !initialData,
   }))
 
+  // Sync state when initialData changes (e.g., after role update)
   useEffect(() => {
-    // If we have initial data, don't refetch
+    if (initialData && Object.keys(initialData).length > 0) {
+      setUserData({
+        ...defaultUserData,
+        ...initialData,
+        isLoading: false,
+      })
+    }
+  }, [initialData])
+
+  // Only fetch if no initial data provided
+  useEffect(() => {
     if (initialData && Object.keys(initialData).length > 0) {
       return
     }
@@ -104,7 +115,7 @@ export function UserDataProvider({ children, userId, initialData }: UserDataProv
     }
 
     fetchUserData()
-  }, [userId, initialData])
+  }, [userId])
 
   return (
     <UserDataContext.Provider value={userData}>

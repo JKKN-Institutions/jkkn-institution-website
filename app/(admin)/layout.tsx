@@ -28,14 +28,25 @@ async function getUserData(userId: string) {
     .single()
 
   // Get user roles
-  const { data: userRoles } = await supabase
+  const { data: userRoles, error: rolesError } = await supabase
     .from('user_roles')
     .select('roles(id, name, display_name)')
     .eq('user_id', userId)
 
+  // DEBUG: Log the query result
+  console.log('=== ROLE FETCH DEBUG ===')
+  console.log('User ID:', userId)
+  console.log('Raw userRoles data:', JSON.stringify(userRoles, null, 2))
+  console.log('Roles error:', rolesError)
+
   const roles = userRoles?.map((ur) => getRoleData(ur.roles as RoleRelation)).filter(Boolean) as RoleData[] || []
+  console.log('Processed roles:', JSON.stringify(roles, null, 2))
+
   const roleNames = roles.map((r) => r?.name).filter(Boolean)
+  console.log('Role names:', roleNames)
+
   const isSuperAdmin = roleNames.includes('super_admin')
+  console.log('Is super admin?', isSuperAdmin)
 
   // Get permissions
   let permissions: string[] = []
@@ -53,6 +64,9 @@ async function getUserData(userId: string) {
 
   // Get primary role display name
   const primaryRole = roles[0]?.display_name || 'User'
+
+  console.log('Final role being returned:', primaryRole)
+  console.log('======================')
 
   return {
     name: profile?.full_name || 'User',

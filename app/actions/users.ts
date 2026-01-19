@@ -203,8 +203,13 @@ export async function getUsers(params?: {
   const { data, error, count } = await query
 
   if (error) {
-    console.error('Error fetching users:', error)
-    throw new Error('Failed to fetch users')
+    console.error('Error fetching users:', {
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      code: error.code,
+    })
+    throw new Error(`Failed to fetch users: ${error.message}`)
   }
 
   return {

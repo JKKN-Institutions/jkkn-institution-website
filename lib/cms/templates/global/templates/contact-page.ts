@@ -18,7 +18,7 @@ const contactPageTemplate: GlobalTemplate = {
   name: 'Contact Page',
   description:
     'Complete contact page template with contact form, location map, contact information cards, social links, and FAQs. Perfect for inquiry and contact pages.',
-  thumbnail_url: '/templates/contact-page-preview.jpg',
+  thumbnail_url: null,
   category: 'content',
   is_system: false,
   source: 'global',

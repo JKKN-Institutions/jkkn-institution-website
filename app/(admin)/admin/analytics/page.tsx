@@ -2,10 +2,15 @@ import { Suspense } from 'react'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { KPICards, KPICardsSkeleton } from '@/components/analytics/charts/kpi-cards'
-import { UserGrowthChart, UserGrowthChartSkeleton } from '@/components/analytics/charts/user-growth-chart'
-import { RoleDistributionChart, RoleDistributionChartSkeleton } from '@/components/analytics/charts/role-distribution-chart'
-import { ContentStatsCards } from '@/components/analytics/charts/content-performance-chart'
+import {
+  KPICards,
+  KPICardsSkeleton,
+  UserGrowthChart,
+  UserGrowthChartSkeleton,
+  RoleDistributionChart,
+  RoleDistributionChartSkeleton,
+  ContentStatsCards
+} from '@/components/analytics/charts-lazy'
 import { ChartGrid } from '@/components/analytics/analytics-card'
 
 export default function AnalyticsOverviewPage() {

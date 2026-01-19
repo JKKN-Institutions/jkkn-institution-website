@@ -79,14 +79,21 @@ This is a **Single Repository, Multiple Deployments (SRMD)** architecture servin
 
 ### Institutions
 
-| Institution | ID | Domain | Supabase |
-|-------------|-----|--------|----------|
-| Main (Umbrella) | `main` | jkkn.ac.in | pmqodbfhsejbvfbmsfeq |
-| Arts & Science | `arts-science` | arts.jkkn.ac.in | TBD |
-| Engineering | `engineering` | engg.jkkn.ac.in | kyvfkyjmdbtyimtedkie |
-| Dental | `dental` | dental.jkkn.ac.in | wnmyvbnqldukeknnmnpl |
-| Pharmacy | `pharmacy` | pharmacy.jkkn.ac.in | rwskookarbolpmtolqkd |
-| Nursing | `nursing` | nursing.jkkn.ac.in | TBD |
+| Institution | ID | Domain | Supabase | DB Status |
+|-------------|-----|--------|----------|-----------|
+| Main (Umbrella) | `main` | jkkn.ac.in | pmqodbfhsejbvfbmsfeq | ✅ Production (49 tables) |
+| Arts & Science | `arts-science` | arts.jkkn.ac.in | TBD | 🚧 Setup Pending |
+| Engineering | `engineering` | engg.jkkn.ac.in | kyvfkyjmdbtyimtedkie | ✅ Feature Parity (49 tables) |
+| Dental | `dental` | dental.jkkn.ac.in | wnmyvbnqldukeknnmnpl | 🔄 Sync Pending (35 tables) |
+| Pharmacy | `pharmacy` | pharmacy.jkkn.ac.in | rwskookarbolpmtolqkd | 🔄 Sync Pending (35 tables) |
+| Nursing | `nursing` | nursing.jkkn.ac.in | TBD | 🚧 Setup Pending |
+
+**Database Status Legend:**
+- ✅ Feature Parity: Complete database sync with all Main Supabase features
+- 🔄 Sync Pending: Basic schema exists, needs feature parity migration
+- 🚧 Setup Pending: Supabase project not yet created
+
+**Engineering College (2026-01-16):** Successfully migrated 16 tables, 34 functions, 12 triggers, and 47 RLS policies. Now has complete feature parity with Main Supabase including blog system, analytics, forms management, and advanced CMS features.
 
 ### Key Principles
 
@@ -223,6 +230,8 @@ npm run dev:dental
 # Just switch (without starting dev server)
 npm run switch main
 npm run switch dental
+npm run switch engineering
+npm run switch pharmacy
 
 # List all available institutions
 npm run switch --list

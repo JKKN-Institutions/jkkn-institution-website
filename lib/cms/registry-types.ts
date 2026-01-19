@@ -1133,8 +1133,24 @@ export const WhyChooseJKKNPropsSchema = z.object({
   additionalUspsHeading: z.string().default('And Much More...'),
 
   // USP Cards
-  uspCards: z.array(USPCardSchema).optional(),
-  additionalUsps: z.array(z.string()).optional(),
+  uspCards: z.array(USPCardSchema).default([
+    { icon: 'heritage', title: '74+ Years of Educational Legacy' },
+    { icon: 'career', title: '92% Placement Success Rate' },
+    { icon: 'excellence', title: 'NAAC A Accredited Quality' },
+    { icon: 'expertise', title: '400+ Expert Learning Facilitators' },
+    { icon: 'facilities', title: 'State-of-the-Art Infrastructure' },
+    { icon: 'value', title: 'Affordable & Accessible Education' },
+  ]),
+  additionalUsps: z.array(z.string()).default([
+    '50+ Industry-Relevant Programs across Medical, Engineering, Arts & Science',
+    'Multi-Specialty Hospital for clinical training and community healthcare',
+    'Industry-Integrated Curriculum with internships and live projects',
+    'Research & Innovation Hub with funded projects and patent support',
+    'Holistic Development through sports, cultural, and social activities',
+    'Safe & Secure Campus with 24/7 security and CCTV surveillance',
+    'Strong Alumni Network of 50,000+ professionals worldwide',
+    'Entrepreneurship Support through incubation centers and startup mentoring',
+  ]),
 
   // === BADGE TYPOGRAPHY ===
   badgeColor: z.string().default('#0b6d41'),
@@ -1764,6 +1780,231 @@ export function blocksToPageBlocks(blocks: BlockData[]): PageBlock[] {
 export function pageBlocksToBlockData(blocks: PageBlock[]): BlockData[] {
   return blocks.map(pageBlockToBlockData)
 }
+
+// ==========================================
+// Modern Component Schemas
+// ==========================================
+
+export const ModernHeroSectionPropsSchema = HeroSectionPropsSchema
+
+export const BentoItemSchema = z.object({
+  title: z.string().describe('Item title'),
+  excerpt: z.string().optional().describe('Brief excerpt or description'),
+  image: z.string().describe('Image URL'),
+  date: z.string().optional().describe('Date (e.g., Jan 10, 2025)'),
+  category: z.string().optional().describe('Category tag'),
+  link: z.string().optional().describe('Link URL'),
+  type: z.enum(['news', 'blog', 'update']).default('news').describe('Item type'),
+})
+
+export const ModernBentoGridPropsSchema = z.object({
+  title: z.string().default('Campus Buzz & Insights').describe('Section title'),
+  subtitle: z.string().default('Stay updated with the latest happenings at JKKN').describe('Section subtitle'),
+  items: z.array(BentoItemSchema).default([]).describe('Bento grid items'),
+})
+
+export const StorySchema = z.object({
+  title: z.string().describe('Story title'),
+  subtitle: z.string().optional().describe('Story subtitle'),
+  image: z.string().describe('Story image URL'),
+  videoUrl: z.string().optional().describe('Optional video URL'),
+  link: z.string().optional().describe('Link URL'),
+})
+
+export const ModernEducationStoriesPropsSchema = z.object({
+  title: z.string().default('Education Stories').describe('Section title'),
+  subtitle: z.string().default('Real-World Impact Through Learning').describe('Section subtitle'),
+  stories: z.array(StorySchema).default([]).describe('Education stories'),
+})
+
+export const ModernAboutSectionPropsSchema = z.object({
+  title: z.string().default('Founded on a legacy of excellence and innovation').describe('Main title'),
+  experienceYear: z.string().default('39+').describe('Years of experience'),
+  subtitle: z.string().default('Elevating Minds, Empowering Futures').describe('Subtitle'),
+  description: z.string().default('JKKN is committed to shaping the future of engineering. Our world-class faculty, state-of-the-art facilities, and collaborative environment empower students to become leaders and change makers.').describe('Description text'),
+  image: z.string().optional().describe('About section image URL'),
+})
+
+export const StatSchema = z.object({
+  value: z.number().describe('Statistic value'),
+  suffix: z.string().optional().describe('Suffix (e.g., %, +, :1)'),
+  label: z.string().describe('Statistic label'),
+  icon: z.string().optional().describe('Icon name'),
+})
+
+export const ModernStatsBarPropsSchema = z.object({
+  stats: z.array(StatSchema).default([]).describe('Statistics to display'),
+})
+
+export const LogoItemSchema = z.object({
+  src: z.string().describe('Logo image URL'),
+  alt: z.string().describe('Logo alt text'),
+})
+
+export const ModernLogoMarqueePropsSchema = z.object({
+  title: z.string().default('Our Global Placement Partners & Recruiters').describe('Marquee section title'),
+  logos: z.array(LogoItemSchema).default([]).describe('Partner/recruiter logos'),
+})
+
+export const VideoItemSchema = z.object({
+  title: z.string().describe('Video title'),
+  duration: z.string().optional().describe('Video duration (e.g., 3:45)'),
+  thumbnail: z.string().describe('Video thumbnail URL'),
+  videoUrl: z.string().describe('Video URL'),
+})
+
+export const ModernVideoHubPropsSchema = z.object({
+  title: z.string().default('Video Hub: Experience JKKN').describe('Section title'),
+  subtitle: z.string().default('A visual journey through our vibrant campus and academic life').describe('Section subtitle'),
+  videos: z.array(VideoItemSchema).default([]).describe('Video items'),
+})
+
+// Management/Trust schemas
+export const ManagementMemberSchema = z.object({
+  name: z.string().describe('Member name'),
+  title: z.string().describe('Position/Title'),
+  image: z.string().describe('Profile image URL'),
+  message: z.string().optional().describe('Message or quote'),
+})
+
+export const ModernManagementSectionPropsSchema = z.object({
+  title: z.string().default('OUR MANAGEMENT').describe('Section title'),
+  subtitle: z.string().default('Visionary Leadership Guiding JKKN').describe('Section subtitle'),
+  members: z.array(ManagementMemberSchema).default([
+    {
+      name: 'SMT. N. SENDAMARAAI',
+      title: 'CHAIRPERSON',
+      image: '/images/chairperson.png',
+      message: 'Leadership and Excellence is not merely our motto but the foundation of our values, a testament to our state-of-the-art infrastructure and unwavering commitment to quality education.',
+    },
+    {
+      name: 'SHRI. S. OMMSHARRAVANA',
+      title: 'DIRECTOR',
+      image: '/images/director.png',
+      message: 'Our mission empowers students to contribute their best to society and the nation. We are committed to innovative education methodologies that enable quality learning.',
+    },
+    {
+      name: 'MRS. O. ISVARYA LAKSHMI',
+      title: 'JOINT DIRECTOR',
+      image: '/images/joint-director-placeholder.png',
+      message: 'Together, we strive to create an environment where excellence thrives and every student achieves their fullest potential.',
+    }
+  ]).describe('Management team members'),
+  showPattern: z.boolean().default(true).describe('Show decorative background pattern'),
+})
+
+export const TrustStatItemSchema = z.object({
+  icon: z.string().describe('Icon name'),
+  value: z.string().describe('Stat value'),
+  label: z.string().describe('Stat label'),
+})
+
+export const ModernTrustSectionPropsSchema = z.object({
+  pageTitle: z.string().default('OUR TRUST').describe('Main page title'),
+  pageSubtitle: z.string().default('J.K.K. Rangammal Charitable Trust').describe('Page subtitle'),
+  founderName: z.string().default('SHRI. J.K.K. NATARAJAH').describe('Founder name'),
+  founderTitle: z.string().default('Founder of J.K.K. Rangammal Charitable Trust').describe('Founder title'),
+  founderImage: z.string().default('/images/founder.webp').describe('Founder image URL'),
+  founderStory: z.string().default("In the sixties, female children in Kumarapalayam had to walk 2.5 km for their schooling to the nearby town of Bhavani. Realizing the need for women's education, a visionary philanthropist of the zone, Shri J.K.K. Natarajah, initiated a girls' school in the town in 1965.").describe('Short bio about the founder'),
+  storyTitle: z.string().default('A Legacy of Service').describe('Story section title'),
+  storyContent: z.string().default("The J.K.K. Rangammal Charitable Trust was established in 1969 with the motto of providing literacy and women's empowerment. Walking in the footsteps of her father, Smt. N. Sendamaraai, Managing Trustee, expanded the service by providing multi-disciplinary education to both genders. Now, under the umbrella, there are ten institutions, including Dental, Pharmacy, Nursing, Education, Engineering, Arts, and Science colleges.").describe('Main trust story'),
+  stats: z.array(TrustStatItemSchema).default([
+    { icon: 'Calendar', value: '1969', label: 'Year Established' },
+    { icon: 'Building2', value: '10+', label: 'Institutions' },
+    { icon: 'GraduationCap', value: '50000+', label: 'Alumni' },
+    { icon: 'Users', value: '5000+', label: 'Current Students' },
+  ]).describe('Trust statistics'),
+  showPattern: z.boolean().default(true).describe('Show decorative background pattern'),
+})
+
+export const ModernPrincipalMessagePropsSchema = z.object({
+  title: z.string().default("Principal's Message").describe('Section title'),
+  name: z.string().default('Dr. C. Kathirvel').describe('Principal Name'),
+  role: z.string().default('Principal').describe('Principal Role/Title'),
+  image: z.string().default('/images/principal.jpg').describe('Principal Image URL'),
+  messagePart1: z.string().default("J.K.K Nataraja College of Engineering and Technology is an emerging AI Powered institute, dedicated to providing top-tier education since its establishment in 2008. Our vision is to be a Leading Global Innovative Solutions provider for the ever-changing needs of society, and we are steadfast in our commitment to this goal. At JKKN, we equip our learners with advanced engineering knowledge and skills, preparing them to tackle complex challenges and contribute effectively to the engineering landscape. Our curriculum is meticulously designed to integrate cutting-edge technology and hands-on learning experiences, ensuring our students are well-prepared for the dynamic demands of the industry.").describe('First paragraph'),
+  messagePart2: z.string().default("We pride ourselves on fostering an environment that encourages collaboration and innovation. Our mission is to facilitate students in collaborating with bioconvergence disciplines, nurturing them into leaders who are poised to make significant contributions to sustainable development. We believe that interdisciplinary knowledge and teamwork are essential in solving global issues, and we provide our students with opportunities to engage in such collaborative efforts. Our dedicated faculty members are committed to guiding and mentoring students, instilling in them a passion for continuous learning and excellence. We continuously upgrade our infrastructure and teaching methodologies to stay abreast of the latest advancements in engineering education. As we continue to grow and evolve, we remain focused on our vision and mission, striving to make a positive impact on society through innovative solutions and sustainable practices. I invite you to explore the myriad opportunities that JKKN College of Engineering and Technology offers and join us in our journey towards excellence.").describe('Second paragraph'),
+  showPattern: z.boolean().default(true).describe('Show decorative background pattern'),
+})
+
+export const OrgMemberSchema = z.object({
+  id: z.string().describe('Unique ID'),
+  managerId: z.string().optional().describe('Manager ID'),
+  name: z.string().describe('Role / Title'),
+  role: z.string().optional().describe('Subtitle (Optional)'),
+  variant: z.enum(['green', 'orange', 'yellow', 'magenta', 'purple', 'red', 'maroon', 'blue', 'dark-purple']).default('green').describe('Color Theme'),
+})
+
+export const ModernOrganogramSectionPropsSchema = z.object({
+  title: z.string().default('Institutional Organogram').describe('Chart Title Box'),
+  members: z.array(OrgMemberSchema).default([
+    // Level 1: Chairman
+    { id: 'chairman', name: 'Chairman', variant: 'green' },
+    // Level 2: Directors (Siblings reporting to Chairman)
+    { id: 'md', managerId: 'chairman', name: 'Managing Director', variant: 'green' },
+    { id: 'director', managerId: 'chairman', name: 'Director', variant: 'green' },
+    { id: 'jd', managerId: 'chairman', name: 'Joint Director', variant: 'green' },
+  ]).describe('Organizational chart members'),
+  showPattern: z.boolean().default(true).describe('Show decorative background pattern'),
+})
+
+// Modern Transport Section
+export const TransportFeatureSchema = z.object({
+  icon: z.string().describe('Icon name'),
+  title: z.string().describe('Feature title'),
+  description: z.string().describe('Feature description'),
+})
+
+export const TransportImageSchema = z.object({
+  src: z.string().describe('Image URL'),
+  alt: z.string().optional().describe('Image alt text'),
+})
+
+export const BusRouteSchema = z.object({
+  route: z.string().describe('Route name (From College)'),
+  distance: z.number().describe('Distance in km'),
+  buses: z.number().describe('Number of buses'),
+})
+
+export const ModernTransportSectionPropsSchema = z.object({
+  pageTitle: z.string().default('TRANSPORT').describe('Main page title'),
+  pageSubtitle: z.string().default('Safe & Reliable Transportation').describe('Page subtitle'),
+  introduction: z.string().default('Transportation is an essential aspect of any educational institution. It provides students and faculty members with a convenient way to reach the campus and enhances the overall educational experience. JKKN Educational Institutions understand the importance of transportation and have made significant efforts to improve their transport facilities.').describe('Introduction text'),
+  images: z.array(TransportImageSchema).default([
+    { src: '/images/facilities/transport-1.jpg', alt: 'College bus fleet' },
+    { src: '/images/facilities/transport-2.jpg', alt: 'Modern buses' },
+  ]).describe('Gallery images'),
+  features: z.array(TransportFeatureSchema).default([
+    { icon: 'Wrench', title: 'Well-Maintained Buses', description: 'The transport facility at JKKN Educational Institutions is equipped with a well-maintained fleet of buses. These buses are regularly serviced and cleaned to ensure the safety and comfort of the passengers. Moreover, the buses are equipped with modern amenities like air-conditioning, comfortable seating, and GPS tracking.' },
+    { icon: 'UserCheck', title: 'Trained Drivers', description: 'The drivers who operate the buses at JKKN Educational Institutions are highly trained and experienced. They have a good understanding of the local routes and traffic conditions, which helps them provide a safe and efficient transportation service. Additionally, they undergo regular training sessions to keep their skills up to date.' },
+    { icon: 'Banknote', title: 'Affordable Fees', description: 'The transport facility at JKKN Educational Institutions is available to all students and faculty members at an affordable fee. The fee is calculated based on the distance of the student\'s residence from the campus, ensuring that the transportation cost is reasonable for everyone.' },
+    { icon: 'Shield', title: 'Safe and Secure', description: 'The safety and security of the passengers are of utmost importance at JKKN Educational Institutions. The buses are equipped with CCTV cameras, and there are female attendants on board to ensure the safety of female passengers. Additionally, the transport facility operates within a strict set of rules and regulations, ensuring that the passengers are always safe.' },
+    { icon: 'Clock', title: 'Timely Service', description: 'The transport facility at JKKN Educational Institutions operates on a strict schedule, ensuring that the buses arrive and depart from the campus on time. This allows the students and faculty members to plan their day accordingly, without worrying about delays or missed buses.' },
+    { icon: 'Accessibility', title: 'Accessibility', description: 'The transport facility at JKKN Educational Institutions is accessible to all students, regardless of their physical abilities. The buses are equipped with wheelchair ramps and other accessibility features, making it easy for students with disabilities to use the service.' },
+  ]).describe('Transport features'),
+  busRoutes: z.array(BusRouteSchema).default([
+    { route: 'Athani', distance: 51, buses: 1 },
+    { route: 'Garusanenkkiyar', distance: 36, buses: 1 },
+    { route: 'Poudenpatti', distance: 31, buses: 1 },
+    { route: 'Pudupatti', distance: 30, buses: 1 },
+    { route: 'Anthiyur', distance: 28, buses: 1 },
+    { route: 'Komarapalayam', distance: 30, buses: 1 },
+    { route: 'Namakkal', distance: 41, buses: 1 },
+    { route: 'Rasiphu', distance: 46, buses: 1 },
+    { route: 'Salem', distance: 57, buses: 2 },
+    { route: 'Gobichettipalayam', distance: 37, buses: 1 },
+    { route: 'Gorapalayam', distance: 86, buses: 1 },
+    { route: 'Omalur', distance: 67, buses: 1 },
+    { route: 'Cherampalli', distance: 43, buses: 1 },
+    { route: 'Chittar', distance: 87, buses: 1 },
+    { route: 'Nanjuneli', distance: 52, buses: 1 },
+  ]).describe('Bus routes with distance and number of buses'),
+  districtsCovered: z.array(z.string()).default(['Namakkal', 'Salem', 'Erode', 'Tiruppur']).describe('Districts covered'),
+  transportInchargeName: z.string().default('Mr. Mani').describe('Transport incharge name'),
+  transportInchargePhone: z.string().default('+91 9976772223, 9655177177').describe('Transport incharge phone'),
+  showPattern: z.boolean().default(true).describe('Show decorative background pattern'),
+})
+
 
 // ==========================================
 // Page-Level Settings

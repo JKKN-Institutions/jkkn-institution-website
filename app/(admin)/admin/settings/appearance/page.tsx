@@ -3,9 +3,6 @@ import { getSettings } from '@/app/actions/settings'
 import { AppearanceSettingsForm } from '@/components/admin/settings/appearance-settings-form'
 import { Skeleton } from '@/components/ui/skeleton'
 
-// Force dynamic rendering - uses cookies for auth
-export const dynamic = 'force-dynamic'
-
 export const metadata = {
   title: 'Appearance Settings | Admin',
   description: 'Customize site appearance and branding',

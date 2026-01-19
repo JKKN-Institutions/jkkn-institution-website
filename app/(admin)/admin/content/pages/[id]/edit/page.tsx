@@ -1,9 +1,8 @@
 import { redirect, notFound } from 'next/navigation'
 import { checkPermission } from '@/app/actions/permissions'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
-import { getPageById, getPageSeo, getPageFab } from '@/app/actions/cms/pages'
+import { getPageById } from '@/app/actions/cms/pages'
 import { PageBuilder } from '@/components/page-builder'
-import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 
 interface EditPageProps {
   params: Promise<{
@@ -42,11 +41,10 @@ export default async function EditPagePage({ params }: EditPageProps) {
   await checkAccess()
 
   const { id } = await params
-  const [page, seoData, fabData] = await Promise.all([
-    getPageById(id),
-    getPageSeo(id),
-    getPageFab(id),
-  ])
+
+  // Only load page data with blocks upfront
+  // SEO, FAB, and Typography will be lazy-loaded by panels when opened
+  const page = await getPageById(id)
 
   if (!page) {
     notFound()
@@ -65,53 +63,6 @@ export default async function EditPagePage({ params }: EditPageProps) {
     custom_classes: block.custom_classes || undefined,
   }))
 
-  // Transform SEO data
-  const initialSeoData = seoData
-    ? {
-        id: seoData.id,
-        meta_title: seoData.meta_title,
-        meta_description: seoData.meta_description,
-        meta_keywords: seoData.meta_keywords as string[] | null,
-        canonical_url: seoData.canonical_url,
-        og_title: seoData.og_title,
-        og_description: seoData.og_description,
-        og_image: seoData.og_image,
-        twitter_title: seoData.twitter_title,
-        twitter_description: seoData.twitter_description,
-        twitter_image: seoData.twitter_image,
-        structured_data: seoData.structured_data as Record<string, unknown>[] | null,
-      }
-    : null
-
-  // Transform FAB data
-  const initialFabConfig = fabData
-    ? {
-        id: fabData.id,
-        is_enabled: fabData.is_enabled ?? false,
-        position: (fabData.position as 'bottom-right' | 'bottom-left' | 'bottom-center') ?? 'bottom-right',
-        theme: (fabData.theme as 'auto' | 'light' | 'dark' | 'brand') ?? 'auto',
-        primary_action: (fabData.primary_action as 'contact' | 'whatsapp' | 'phone' | 'email' | 'custom') ?? 'contact',
-        custom_action_label: fabData.custom_action_label,
-        custom_action_url: fabData.custom_action_url,
-        custom_action_icon: fabData.custom_action_icon,
-        show_whatsapp: fabData.show_whatsapp ?? true,
-        show_phone: fabData.show_phone ?? true,
-        show_email: fabData.show_email ?? true,
-        show_directions: fabData.show_directions ?? false,
-        whatsapp_number: fabData.whatsapp_number,
-        phone_number: fabData.phone_number,
-        email_address: fabData.email_address,
-        directions_url: fabData.directions_url,
-        animation: (fabData.animation as 'none' | 'bounce' | 'pulse' | 'shake') ?? 'bounce',
-        delay_ms: fabData.delay_ms ?? 0,
-        hide_on_scroll: fabData.hide_on_scroll ?? false,
-        custom_css: fabData.custom_css,
-      }
-    : null
-
-  // Extract typography from page metadata
-  const initialTypography = (page.metadata as Record<string, unknown> | null)?.typography as Partial<PageTypographySettings> | undefined
-
   return (
     <PageBuilder
       pageId={page.id}
@@ -119,9 +70,8 @@ export default async function EditPagePage({ params }: EditPageProps) {
       pageSlug={page.slug}
       pageStatus={page.status}
       initialBlocks={blocks}
-      initialSeoData={initialSeoData}
-      initialFabConfig={initialFabConfig}
-      initialTypography={initialTypography}
+      // Remove initialSeoData, initialFabConfig, initialTypography
+      // These will be lazy-loaded by panels when opened
     />
   )
 }

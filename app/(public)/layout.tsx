@@ -17,10 +17,9 @@ import { getCurrentInstitution } from '@/lib/config/multi-tenant'
 import { filterNavigationByFeatures } from '@/lib/utils/navigation-filter'
 
 /**
- * Revalidate layout data every 5 minutes
- * This ensures navigation and other CMS content stays fresh while maintaining good performance
+ * Cache Components handles revalidation automatically
+ * Navigation and CMS content freshness managed by Next.js 16 caching
  */
-export const revalidate = 300
 
 export default async function PublicLayout({
   children

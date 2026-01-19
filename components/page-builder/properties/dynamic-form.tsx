@@ -1392,6 +1392,7 @@ function MediaField({ config, value, onChange, mediaType }: MediaFieldProps) {
               <video
                 src={urlValue}
                 className="w-full h-32 object-cover"
+                preload="metadata"
                 muted
               />
             )

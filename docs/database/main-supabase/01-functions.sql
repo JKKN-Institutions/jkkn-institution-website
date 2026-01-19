@@ -639,7 +639,7 @@ AS $function$
   SELECT json_build_object(
     'total', (SELECT COUNT(*) FROM public.profiles),
     'active', (SELECT COUNT(*) FROM public.members WHERE status = 'active'),
-    'inactive', (SELECT COUNT(*) FROM public.members WHERE status = 'inactive'),
+    'pending', (SELECT COUNT(*) FROM public.members WHERE status = 'inactive'),
     'blocked', (SELECT COUNT(*) FROM public.members WHERE status = 'suspended')
   );
 $function$;

@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { FooterSettings } from '@/app/actions/cms/footer'
+import { LazyFooterMap } from './footer-map-lazy'
 
 interface SiteFooterProps {
   settings?: FooterSettings
@@ -153,33 +154,21 @@ export function SiteFooter({ settings }: SiteFooterProps) {
           </div>
 
           {/* Location Map */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2" id="footer-map-section">
             <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
               <span className="w-8 h-0.5 bg-secondary rounded-full" />
               Our Location
             </h2>
-            <div className="rounded-xl overflow-hidden border border-white/10 shadow-lg">
-              <iframe
-                src={settings.map?.embedUrl || 'https://www.google.com/maps?q=JKKN+Educational+Institutions,Komarapalayam,Tamil+Nadu,India&output=embed'}
-                width="100%"
-                height="200"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="JKKN Institutions Location"
-                className="transition-all duration-500"
-              />
-            </div>
-            <a
-              href={settings.map?.linkUrl || 'https://www.google.com/maps/place/JKKN+Educational+Institutions/@11.26611,77.58373,17z'}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-4 text-sm text-white/70 hover:text-secondary transition-colors"
-            >
-              <MapPin className="h-4 w-4" />
-              View on Google Maps
-            </a>
+            <LazyFooterMap
+              embedUrl={
+                settings.map?.embedUrl ||
+                'https://www.google.com/maps?q=JKKN+Educational+Institutions,Komarapalayam,Tamil+Nadu,India&output=embed'
+              }
+              linkUrl={
+                settings.map?.linkUrl ||
+                'https://www.google.com/maps/place/JKKN+Educational+Institutions/@11.26611,77.58373,17z'
+              }
+            />
           </div>
         </div>
       </div>

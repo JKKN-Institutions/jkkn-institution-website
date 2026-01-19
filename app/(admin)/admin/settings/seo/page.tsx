@@ -3,8 +3,7 @@ import { getSettings } from '@/app/actions/settings'
 import { SEOSettingsForm } from '@/components/admin/settings/seo-settings-form'
 import { Skeleton } from '@/components/ui/skeleton'
 
-// Force dynamic rendering - uses cookies for auth
-export const dynamic = 'force-dynamic'
+// Dynamic rendering (uses cookies for auth) - automatically handled with cacheComponents
 
 export const metadata = {
   title: 'SEO Settings | Admin',

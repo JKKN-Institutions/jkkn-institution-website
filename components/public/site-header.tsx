@@ -287,13 +287,13 @@ export function SiteHeader({
       // Set new path after short delay (for smooth UX)
       const timeout = setTimeout(() => {
         setOpenDropdownPath([...parentPath, itemId])
-      }, 150)
+      }, 100)
       hoverTimeoutsRef.current.set(itemId, timeout)
     } else {
       // Close all dropdowns after delay (gives user time to move mouse to dropdown)
       const timeout = setTimeout(() => {
         setOpenDropdownPath([])
-      }, 200)
+      }, 300)
       hoverTimeoutsRef.current.set('close', timeout)
     }
   }, [])

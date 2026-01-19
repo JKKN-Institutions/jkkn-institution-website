@@ -46,7 +46,7 @@ export default function CollegesGrid({
   showAnimations = true,
   titleColor,
   subtitleColor,
-  accentColor = '#D4AF37',
+  accentColor = '#0b6d41',
   className,
   isEditing,
 }: CollegesGridProps) {

@@ -79,12 +79,14 @@ function buildNavTree(pages: PageNavData[]): NavItem[] {
 }
 
 /**
- * Get public navigation from CMS pages
- * Returns hierarchical navigation tree from published pages with show_in_navigation=true
+ * Get public navigation from cms_pages table
+ * Returns hierarchical navigation tree from published pages marked for navigation
+ * This is fully dynamic - controlled from admin panel via publish/draft status
  */
 export async function getPublicNavigation(): Promise<NavItem[]> {
   const supabase = await createServerSupabaseClient()
 
+  // Get all published pages that should show in navigation
   const { data, error } = await supabase
     .from('cms_pages')
     .select('id, title, slug, parent_id, sort_order, navigation_label, is_homepage, external_url')

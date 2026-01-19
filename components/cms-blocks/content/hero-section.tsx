@@ -213,10 +213,14 @@ export default function HeroSection({
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           poster={videoPosterImage}
           className="absolute inset-0 w-full h-full object-cover"
           style={{ transform: 'scale(1.1)' }}
+          onLoadStart={(e) => {
+            // Start loading video after user sees the page
+            e.currentTarget.setAttribute('preload', 'auto')
+          }}
         >
           <source src={backgroundVideo} type="video/mp4" />
         </video>

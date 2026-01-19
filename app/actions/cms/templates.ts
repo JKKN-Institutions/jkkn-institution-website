@@ -546,15 +546,36 @@ export async function applyTemplateToPage(
     return { success: false, message: 'You do not have permission to edit pages' }
   }
 
-  // Get template
-  const { data: template, error: templateError } = await supabase
-    .from('cms_page_templates')
-    .select('id, name, default_blocks')
-    .eq('id', templateId)
-    .single()
+  // Get template - check global templates first, then database
+  let template: { id: string; name: string; default_blocks: unknown[] } | null = null
 
-  if (templateError || !template) {
-    return { success: false, message: 'Template not found' }
+  // 1. Try global templates first
+  try {
+    const globalTemplate = await getGlobalTemplateById(templateId)
+    if (globalTemplate) {
+      template = {
+        id: globalTemplate.id,
+        name: globalTemplate.name,
+        default_blocks: globalTemplate.default_blocks,
+      }
+    }
+  } catch (error) {
+    console.error('Error checking global templates:', error)
+  }
+
+  // 2. Fallback to database if not found in global templates
+  if (!template) {
+    const { data: dbTemplate, error: templateError } = await supabase
+      .from('cms_page_templates')
+      .select('id, name, default_blocks')
+      .eq('id', templateId)
+      .single()
+
+    if (templateError || !dbTemplate) {
+      return { success: false, message: 'Template not found' }
+    }
+
+    template = dbTemplate
   }
 
   // Check if page exists

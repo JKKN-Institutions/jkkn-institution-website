@@ -18,10 +18,10 @@ export const glassStyles = {
 
   // Badge styles
   badge: 'bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5',
-  badgeGold: 'bg-gold/20 text-gold border border-gold/30',
+  badgeGreen: 'bg-brand-primary/20 text-brand-primary border border-brand-primary/30',
 
   // Section badge (for dark backgrounds)
-  sectionBadge: 'inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-gold/20 text-gold border border-gold/30',
+  sectionBadge: 'inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-brand-primary/20 text-brand-primary border border-brand-primary/30',
   // Section badge for light backgrounds
   sectionBadgeLight: 'inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-brand-primary/10 text-brand-primary border border-brand-primary/20',
 
@@ -40,10 +40,10 @@ export const statusColors = {
     dot: 'bg-brand-primary',
   },
   open: {
-    bg: 'bg-gold/20',
-    text: 'text-gold',
-    border: 'border-gold/30',
-    dot: 'bg-gold',
+    bg: 'bg-brand-primary/20',
+    text: 'text-brand-primary',
+    border: 'border-brand-primary/30',
+    dot: 'bg-brand-primary',
   },
   closed: {
     bg: 'bg-brand-primary/10',
@@ -52,10 +52,10 @@ export const statusColors = {
     dot: 'bg-brand-primary/50',
   },
   extended: {
-    bg: 'bg-gold/15',
-    text: 'text-gold',
-    border: 'border-gold/25',
-    dot: 'bg-gold/80',
+    bg: 'bg-brand-primary/15',
+    text: 'text-brand-primary',
+    border: 'border-brand-primary/25',
+    dot: 'bg-brand-primary/80',
   },
 } as const
 
@@ -129,11 +129,11 @@ export const scholarshipIcons = {
  */
 export const programCategoryColors = {
   medical: { bg: 'bg-brand-primary/20', text: 'text-brand-primary', border: 'border-brand-primary/30' },
-  nursing: { bg: 'bg-gold/20', text: 'text-gold', border: 'border-gold/30' },
+  nursing: { bg: 'bg-brand-primary/20', text: 'text-brand-primary', border: 'border-brand-primary/30' },
   pharmacy: { bg: 'bg-brand-primary/15', text: 'text-brand-primary', border: 'border-brand-primary/25' },
-  engineering: { bg: 'bg-gold/15', text: 'text-gold', border: 'border-gold/25' },
+  engineering: { bg: 'bg-brand-primary/15', text: 'text-brand-primary', border: 'border-brand-primary/25' },
   'arts-science': { bg: 'bg-brand-primary/10', text: 'text-brand-primary', border: 'border-brand-primary/20' },
-  education: { bg: 'bg-gold/10', text: 'text-gold', border: 'border-gold/20' },
+  education: { bg: 'bg-brand-primary/10', text: 'text-brand-primary', border: 'border-brand-primary/20' },
 } as const
 
 export type ProgramCategory = keyof typeof programCategoryColors

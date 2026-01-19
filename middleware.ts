@@ -20,6 +20,7 @@ const routePermissions: Record<string, string> = {
   '/admin/content/media': 'content:media:view',
   '/admin/settings': 'system:settings:view',
   '/admin/settings/modules': 'system:modules:view',
+  '/editor/[id]': 'cms:pages:edit',
 }
 
 // Pre-compile route patterns at module load time (not per-request)
@@ -35,6 +36,19 @@ const compiledRoutePatterns: Array<{ pattern: RegExp; permission: string }> = Ob
 const guestAllowedRoutes = new Set(['/admin', '/auth/access-denied'])
 
 export async function middleware(request: NextRequest) {
+  // CRITICAL: Extract pathname FIRST, before creating any clients
+  const pathname = request.nextUrl.pathname
+
+  // CRITICAL: Skip ALL middleware logic for OAuth callback
+  // Must happen BEFORE creating Supabase client to avoid cookie interference
+  // The callback route handles its own auth verification
+  // Creating the client would call getUser() which interferes with OAuth flow state
+  if (pathname === '/auth/callback') {
+    console.log('✅ [Middleware] Bypassing OAuth callback - cookies preserved')
+    return NextResponse.next()
+  }
+
+  // Only create Supabase client if NOT callback route
   const { supabase, response } = createMiddlewareClient(request)
 
   // IMPORTANT: Use getUser() instead of getSession() to properly refresh the session
@@ -44,12 +58,12 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const pathname = request.nextUrl.pathname
   const isAuthPage = pathname.startsWith('/auth')
   const isAdminPage = pathname.startsWith('/admin')
+  const isEditorPage = pathname.startsWith('/editor')
 
-  // If user is not authenticated and trying to access admin pages, redirect to auth
-  if (!user && isAdminPage) {
+  // If user is not authenticated and trying to access admin or editor pages, redirect to auth
+  if (!user && (isAdminPage || isEditorPage)) {
     const redirectUrl = new URL('/auth/login', request.url)
     redirectUrl.searchParams.set('redirectTo', pathname)
     return NextResponse.redirect(redirectUrl)
@@ -60,8 +74,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/admin', request.url))
   }
 
-  // Check if user email is from @jkkn.ac.in domain for admin access
-  if (user && isAdminPage) {
+  // Check if user email is from @jkkn.ac.in domain for admin and editor access
+  if (user && (isAdminPage || isEditorPage)) {
     const email = user.email
     if (!email?.endsWith('@jkkn.ac.in')) {
       // Redirect unauthorized users to a forbidden page or logout

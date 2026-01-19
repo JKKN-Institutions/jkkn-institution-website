@@ -1,17 +1,50 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { cookies } from 'next/headers'
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
   const redirectTo = requestUrl.searchParams.get('redirectTo') || '/admin'
 
+  // DEBUG: Log all cookies to understand OAuth flow state
+  const cookieStore = await cookies()
+  const allCookies = cookieStore.getAll()
+  console.log('🍪 [OAuth Debug] Available cookies:', allCookies.map(c => ({
+    name: c.name,
+    hasValue: !!c.value,
+    valueLength: c.value?.length || 0
+  })))
+
+  // DEBUG: Log critical Supabase auth cookies
+  const authCookies = allCookies.filter(c =>
+    c.name.includes('sb-') ||
+    c.name.includes('pkce') ||
+    c.name.includes('auth')
+  )
+  console.log('🔐 [OAuth Debug] Auth-related cookies:', authCookies.map(c => ({
+    name: c.name,
+    hasValue: !!c.value,
+    valueLength: c.value?.length || 0
+  })))
+
   if (code) {
     const supabase = await createServerSupabaseClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (error) {
+      // Add comprehensive error logging
+      console.error('🔴 OAuth Code Exchange Failed:', {
+        errorMessage: error.message,
+        errorStatus: error.status,
+        errorCode: error?.code,
+        errorDetails: error,
+        requestedCode: code ? 'present' : 'missing',
+        requestURL: requestUrl.toString(),
+        timestamp: new Date().toISOString()
+      })
+
       return NextResponse.redirect(
         new URL('/auth/login?error=authentication_failed', requestUrl.origin)
       )

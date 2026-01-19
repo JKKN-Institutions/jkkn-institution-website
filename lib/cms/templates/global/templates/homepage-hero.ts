@@ -18,7 +18,7 @@ const homepageHeroTemplate: GlobalTemplate = {
   name: 'Homepage with Hero Section',
   description:
     'Modern landing page template with full-screen hero, call-to-action, features section, stats, and testimonials. Perfect for institutional homepages.',
-  thumbnail_url: '/templates/homepage-hero-preview.jpg',
+  thumbnail_url: null,
   category: 'landing',
   is_system: false,
   source: 'global',

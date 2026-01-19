@@ -122,8 +122,13 @@ CREATE POLICY "members_delete_with_permission" ON public.members
 -- ============================================
 -- Purpose: System roles (super_admin, director, chair, member, guest)
 -- Created: 2026-01-15
+-- Modified: 2026-01-16 (Removed recursive policy)
 -- Dependencies: has_permission() function
 -- Security: All can read, only super_admin can modify
+--
+-- IMPORTANT: Removed problematic policy "Only super_admin can manage roles"
+-- that caused infinite recursion (42P17 error) when querying user roles.
+-- The specific INSERT/UPDATE/DELETE policies using is_super_admin() are sufficient.
 -- ============================================
 
 -- SELECT: All authenticated users can read roles (needed for role checks)

@@ -34,7 +34,7 @@ export const OurInstitutionsPropsSchema = z.object({
 
   // Styling
   backgroundColor: z.string().default('#0b6d41').describe('Primary background color'),
-  accentColor: z.string().default('#ffde59').describe('Accent color (gold/yellow)'),
+  accentColor: z.string().default('#0b6d41').describe('Accent color (brand green)'),
   textColor: z.string().default('#ffffff').describe('Text color'),
 })
 
@@ -86,7 +86,7 @@ export function OurInstitutions({
   whyJkknTitle = 'Why JKKN?',
   whyJkknContent = '',
   backgroundColor = '#0b6d41',
-  accentColor = '#ffde59',
+  accentColor = '#0b6d41',
   textColor = '#ffffff',
   className,
 }: OurInstitutionsProps) {

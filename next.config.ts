@@ -6,9 +6,10 @@ const bundleAnalyzer = withBundleAnalyzer({
 });
 
 const nextConfig: NextConfig = {
-  // Cache Components requires all data fetches to use Suspense boundaries
-  // Enable when the codebase is fully migrated to this pattern:
-  // cacheComponents: true,
+  // Cache Components disabled - incompatible with admin layout that accesses cookies/auth
+  // The admin layout requires dynamic rendering for all routes
+  // Public routes can still use static generation via generateStaticParams
+  cacheComponents: false,
 
   // Turbopack configuration (Next.js 16 default)
   // Empty config to silence webpack compatibility warning
@@ -125,6 +126,27 @@ const nextConfig: NextConfig = {
               test: /[\\/]node_modules[\\/](clsx|class-variance-authority|tailwind-merge|date-fns|uuid)[\\/]/,
               name: 'utils',
               priority: 15,
+              reuseExistingChunk: true,
+            },
+            // Page builder specific (only loads on page builder routes)
+            pageBuilder: {
+              test: /[\\/]node_modules[\\/](@dnd-kit|react-beautiful-dnd)[\\/]/,
+              name: 'page-builder',
+              priority: 35,
+              reuseExistingChunk: true,
+            },
+            // Dashboard grid specific (only loads on dashboard routes)
+            dashboardGrid: {
+              test: /[\\/]node_modules[\\/](react-grid-layout)[\\/]/,
+              name: 'dashboard-grid',
+              priority: 35,
+              reuseExistingChunk: true,
+            },
+            // Analytics specific (only loads on analytics routes)
+            analytics: {
+              test: /[\\/]node_modules[\\/](recharts|html2canvas|jspdf)[\\/]/,
+              name: 'analytics',
+              priority: 35,
               reuseExistingChunk: true,
             },
             // Default vendor chunk

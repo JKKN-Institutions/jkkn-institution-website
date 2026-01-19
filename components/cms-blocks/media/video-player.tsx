@@ -98,6 +98,7 @@ export default function VideoPlayer({
           muted={muted}
           controls={controls}
           playsInline
+          preload={autoplay ? "auto" : "metadata"}
           className="w-full h-full object-cover"
         >
           Your browser does not support the video tag.

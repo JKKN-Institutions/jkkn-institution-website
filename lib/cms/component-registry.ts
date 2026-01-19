@@ -352,6 +352,19 @@ import {
   FacultyDirectoryPropsSchema,
   AnnouncementsFeedPropsSchema,
   BlogPostsGridPropsSchema,
+  // Modern component schemas
+  ModernManagementSectionPropsSchema,
+  ModernTrustSectionPropsSchema,
+  ModernPrincipalMessagePropsSchema,
+  ModernOrganogramSectionPropsSchema,
+  ModernHeroSectionPropsSchema,
+  ModernBentoGridPropsSchema,
+  ModernEducationStoriesPropsSchema,
+  ModernStatsBarPropsSchema,
+  ModernLogoMarqueePropsSchema,
+  ModernVideoHubPropsSchema,
+  ModernAboutSectionPropsSchema,
+  ModernTransportSectionPropsSchema,
 } from './registry-types'
 
 // Re-export types
@@ -473,6 +486,18 @@ const OurTrust = lazy(() => import('@/components/cms-blocks/content/our-trust'))
 
 // Our Management
 const OurManagement = lazy(() => import('@/components/cms-blocks/content/our-management'))
+const ModernManagementSection = lazy(() => import('@/components/cms-blocks/content/modern-management-section'))
+const ModernTrustSection = lazy(() => import('@/components/cms-blocks/content/modern-trust-section'))
+const ModernPrincipalMessage = lazy(() => import('@/components/cms-blocks/content/modern-principal-message'))
+const ModernOrganogramSection = lazy(() => import('@/components/cms-blocks/content/modern-organogram-section'))
+const ModernHeroSection = lazy(() => import('@/components/cms-blocks/content/modern-hero-section'))
+const ModernBentoGrid = lazy(() => import('@/components/cms-blocks/content/modern-bento-grid'))
+const ModernEducationStories = lazy(() => import('@/components/cms-blocks/content/modern-education-stories'))
+const ModernStatsBar = lazy(() => import('@/components/cms-blocks/content/modern-stats-bar'))
+const ModernLogoMarquee = lazy(() => import('@/components/cms-blocks/content/modern-logo-marquee'))
+const ModernVideoHub = lazy(() => import('@/components/cms-blocks/content/modern-video-hub'))
+const ModernAboutSection = lazy(() => import('@/components/cms-blocks/content/modern-about-section'))
+const ModernTransportSection = lazy(() => import('@/components/cms-blocks/content/modern-transport-section'))
 
 // Leadership Profile (Principal, VP, HOD, etc.)
 const LeadershipProfile = lazy(() => import('@/components/cms-blocks/content/leadership-profile'))
@@ -567,6 +592,147 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
   // ==========================================
   // Content Blocks
   // ==========================================
+  ModernHeroSection: {
+    name: 'ModernHeroSection',
+    displayName: 'Modern Hero (White)',
+    category: 'content',
+    description: 'Elite hero section with glassmorphism card and white/cream theme',
+    icon: 'Maximize',
+    component: ModernHeroSection,
+    propsSchema: ModernHeroSectionPropsSchema as any,
+    defaultProps: {
+      title: 'JKKN COLLEGE OF ENGINEERING & TECHNOLOGY',
+      subtitle: 'Innovate. Inspire. Impact.',
+      titleColor: '#1A1A1A',
+      subtitleColor: '#52525B',
+      overlayOpacity: 0.2,
+      minHeight: '100vh',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title', required: true },
+      { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
+      { name: 'logoImage', type: 'image', label: 'Logo Image' },
+      { name: 'backgroundImage', type: 'image', label: 'Background Image' },
+      { name: 'backgroundVideo', type: 'video', label: 'Background Video' },
+      { name: 'titleColor', type: 'color', label: 'Title Color' },
+      { name: 'subtitleColor', type: 'color', label: 'Subtitle Color' },
+      { name: 'overlayOpacity', type: 'number', label: 'Overlay Opacity', min: 0, max: 1, step: 0.1 },
+    ],
+  },
+
+  ModernAboutSection: {
+    name: 'ModernAboutSection',
+    displayName: 'Modern About (Heritage)',
+    category: 'content',
+    description: 'Magazine-style split layout for campus heritage and mission',
+    icon: 'Info',
+    component: ModernAboutSection,
+    propsSchema: ModernAboutSectionPropsSchema as any,
+    defaultProps: {
+      title: 'Founded on a legacy of excellence and innovation',
+      experienceYear: '39+',
+      subtitle: 'Elevating Minds, Empowering Futures',
+    },
+    supportsChildren: false,
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title' },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+      { name: 'experienceYear', type: 'string', label: 'Experience Years' },
+      { name: 'description', type: 'string', label: 'Description', multiline: true },
+      { name: 'image', type: 'image', label: 'About Image' },
+    ],
+  },
+
+  ModernBentoGrid: {
+    name: 'ModernBentoGrid',
+    displayName: 'Modern Bento (News)',
+    category: 'content',
+    description: 'Advanced grid layout for combined News and Blogs',
+    icon: 'LayoutGrid',
+    component: ModernBentoGrid,
+    propsSchema: ModernBentoGridPropsSchema as any,
+    defaultProps: {
+      title: 'Campus Buzz & Insights',
+      subtitle: 'Stay updated with the latest happenings at JKKN',
+    },
+    supportsChildren: false,
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title' },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+    ],
+  },
+
+  ModernEducationStories: {
+    name: 'ModernEducationStories',
+    displayName: 'Modern Stories (Tiles)',
+    category: 'content',
+    description: 'High-fidelity story tiles with liquid hover animations',
+    icon: 'Play',
+    component: ModernEducationStories,
+    propsSchema: ModernEducationStoriesPropsSchema as any,
+    defaultProps: {
+      title: 'Education Stories',
+      subtitle: 'Real-World Impact Through Learning',
+    },
+    supportsChildren: false,
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title' },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+    ],
+  },
+
+  ModernStatsBar: {
+    name: 'ModernStatsBar',
+    displayName: 'Modern Stats (Bar)',
+    category: 'data',
+    description: 'Minimalist floating stats with animated counters',
+    icon: 'TrendingUp',
+    component: ModernStatsBar,
+    propsSchema: ModernStatsBarPropsSchema as any,
+    defaultProps: {
+      stats: [],
+    },
+    supportsChildren: false,
+    editableProps: [],
+  },
+
+  ModernVideoHub: {
+    name: 'ModernVideoHub',
+    displayName: 'Modern Video Hub',
+    category: 'media',
+    description: 'Cinema-style video player with playlist sidebar',
+    icon: 'Video',
+    component: ModernVideoHub,
+    propsSchema: ModernVideoHubPropsSchema as any,
+    defaultProps: {
+      title: 'Video Hub: Experience JKKN',
+    },
+    supportsChildren: false,
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title' },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+    ],
+  },
+
+  ModernLogoMarquee: {
+    name: 'ModernLogoMarquee',
+    displayName: 'Modern Logo Marquee',
+    category: 'media',
+    description: 'Infinite scrolling partner logos with grayscale hover',
+    icon: 'Repeat',
+    component: ModernLogoMarquee,
+    propsSchema: ModernLogoMarqueePropsSchema as any,
+    defaultProps: {
+      title: 'Our Global Placement Partners & Recruiters',
+    },
+    supportsChildren: false,
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title' },
+    ],
+  },
+
   HeroSection: {
     name: 'HeroSection',
     displayName: 'Hero Section',
@@ -4027,6 +4193,277 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'backgroundColor', type: 'color', label: 'Background Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },
       { name: 'textColor', type: 'color', label: 'Text Color' },
+    ],
+  },
+
+  ModernManagementSection: {
+    name: 'ModernManagementSection',
+    displayName: 'Modern Management Section',
+    category: 'content',
+    description: 'Premium, modern layout for showcasing the leadership team (Chairperson, Director, Joint Director)',
+    icon: 'Users',
+    previewImage: '/cms-previews/ModernManagementSection.png',
+    component: ModernManagementSection,
+    propsSchema: ModernManagementSectionPropsSchema,
+    defaultProps: {
+      title: 'OUR MANAGEMENT',
+      subtitle: 'Visionary Leadership Guiding JKKN',
+      members: [
+        {
+          name: 'SMT. N. SENDAMARAAI',
+          title: 'CHAIRPERSON',
+          image: '/images/chairperson.png',
+          message: 'Leadership and Excellence is not merely our motto but the foundation of our values, a testament to our state-of-the-art infrastructure and unwavering commitment to quality education.',
+        },
+        {
+          name: 'SHRI. S. OMMSHARRAVANA',
+          title: 'DIRECTOR',
+          image: '/images/director.png',
+          message: 'Our mission empowers students to contribute their best to society and the nation. We are committed to innovative education methodologies that enable quality learning.',
+        },
+        {
+          name: 'MRS. O. ISVARYA LAKSHMI',
+          title: 'JOINT DIRECTOR',
+          image: '/images/joint-director-placeholder.png',
+          message: 'Together, we strive to create an environment where excellence thrives and every student achieves their fullest potential.',
+        }
+      ],
+      showPattern: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['management', 'leadership', 'modern', 'profile', 'team', 'chairperson', 'director'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'subtitle', type: 'string', label: 'Section Subtitle' },
+      {
+        name: 'members',
+        type: 'array',
+        label: 'Team Members',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            name: { type: 'string', label: 'Name', required: true },
+            title: { type: 'string', label: 'Title', required: true },
+            image: { type: 'image', label: 'Image URL', required: true },
+            message: { type: 'string', label: 'Message', multiline: true },
+          },
+          required: ['name', 'title', 'image'],
+        },
+      },
+      { name: 'showPattern', type: 'boolean', label: 'Show Background Pattern' },
+    ],
+  },
+
+  ModernTrustSection: {
+    name: 'ModernTrustSection',
+    displayName: 'Modern Trust Section',
+    category: 'content',
+    description: 'Premium, modern layout for the "Our Trust" page with Founder spotlight and stats',
+    icon: 'Building2',
+    previewImage: '/cms-previews/ModernTrustSection.png',
+    component: ModernTrustSection,
+    propsSchema: ModernTrustSectionPropsSchema,
+    defaultProps: {
+      pageTitle: 'OUR TRUST',
+      pageSubtitle: 'J.K.K. Rangammal Charitable Trust',
+      founderName: 'SHRI. J.K.K. NATARAJAH',
+      storyTitle: 'A Legacy of Service',
+      showPattern: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['trust', 'founder', 'history', 'modern', 'about'],
+    editableProps: [
+      { name: 'pageTitle', type: 'string', label: 'Page Title' },
+      { name: 'pageSubtitle', type: 'string', label: 'Page Subtitle' },
+      { name: 'founderName', type: 'string', label: 'Founder Name' },
+      { name: 'founderTitle', type: 'string', label: 'Founder Title' },
+      { name: 'founderImage', type: 'image', label: 'Founder Image' },
+      { name: 'founderStory', type: 'string', label: 'Founder Bio', multiline: true },
+      { name: 'storyTitle', type: 'string', label: 'Story Title' },
+      { name: 'storyContent', type: 'string', label: 'Story Content', multiline: true },
+      { name: 'showPattern', type: 'boolean', label: 'Show Background Pattern' },
+    ],
+  },
+
+  ModernPrincipalMessage: {
+    name: 'ModernPrincipalMessage',
+    displayName: 'Modern Principal Message',
+    category: 'content',
+    description: 'Premium, modern layout for the Principal\'s message with profile image and rich text',
+    icon: 'UserCheck',
+    previewImage: '/cms-previews/ModernPrincipalMessage.png',
+    component: ModernPrincipalMessage,
+    propsSchema: ModernPrincipalMessagePropsSchema,
+    defaultProps: {
+      title: "Principal's Message",
+      name: 'Dr. C. Kathirvel',
+      role: 'Principal',
+      messagePart1: "J.K.K Nataraja College of Engineering and Technology is an emerging AI Powered institute, dedicated to providing top-tier education since its establishment in 2008.",
+      showPattern: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['principal', 'message', 'profile', 'modern', 'management'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'name', type: 'string', label: 'Name' },
+      { name: 'role', type: 'string', label: 'Role/Title' },
+      { name: 'image', type: 'image', label: 'Profile Image' },
+      { name: 'messagePart1', type: 'string', label: 'Message Part 1', multiline: true },
+      { name: 'messagePart2', type: 'string', label: 'Message Part 2', multiline: true },
+      { name: 'showPattern', type: 'boolean', label: 'Show Background Pattern' },
+    ],
+  },
+
+  ModernOrganogramSection: {
+    name: 'ModernOrganogramSection',
+    displayName: 'Modern Organogram (Chart)',
+    category: 'content',
+    description: 'Code-based interactive organizational chart with collapsible nodes',
+    icon: 'Network',
+    previewImage: '/cms-previews/ModernOrganogramSection.png',
+    component: ModernOrganogramSection,
+    propsSchema: ModernOrganogramSectionPropsSchema,
+    defaultProps: {
+      title: 'Organizational Chart',
+      subtitle: 'Hierarchy of JKKN Educational Institutions',
+      showPattern: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['organogram', 'chart', 'hierarchy', 'structure', 'tree'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+      {
+        name: 'members',
+        type: 'array',
+        label: 'Team Members',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            id: { type: 'string', label: 'Unique ID (e.g. principal)', required: true },
+            managerId: { type: 'string', label: 'Manager ID (Parent)' },
+            name: { type: 'string', label: 'Name', required: true },
+            role: { type: 'string', label: 'Role', required: true },
+            variant: {
+              type: 'select',
+              label: 'Color Theme',
+              options: ['green', 'orange', 'yellow', 'magenta', 'purple', 'red', 'maroon', 'blue', 'dark-purple']
+            },
+          }
+        }
+      },
+      { name: 'showPattern', type: 'boolean', label: 'Show Background Pattern' },
+    ],
+  },
+
+  ModernTransportSection: {
+    name: 'ModernTransportSection',
+    displayName: 'Modern Transport Section',
+    category: 'content',
+    description: 'Premium modern transport page with bus routes table, feature cards, image gallery, and transport incharge contact',
+    icon: 'Bus',
+    previewImage: '/cms-previews/ModernTransportSection.png',
+    component: ModernTransportSection,
+    propsSchema: ModernTransportSectionPropsSchema,
+    defaultProps: {
+      pageTitle: 'TRANSPORT',
+      pageSubtitle: 'Safe & Reliable Transportation',
+      introduction: 'Transportation is an essential aspect of any educational institution. It provides students and faculty members with a convenient way to reach the campus and enhances the overall educational experience. JKKN Educational Institutions understand the importance of transportation and have made significant efforts to improve their transport facilities.',
+      images: [
+        { src: '/images/facilities/transport-1.jpg', alt: 'College bus fleet' },
+        { src: '/images/facilities/transport-2.jpg', alt: 'Modern buses' },
+      ],
+      features: [
+        { icon: 'Wrench', title: 'Well-Maintained Buses', description: 'The transport facility at JKKN Educational Institutions is equipped with a well-maintained fleet of buses. These buses are regularly serviced and cleaned to ensure the safety and comfort of the passengers.' },
+        { icon: 'UserCheck', title: 'Trained Drivers', description: 'The drivers who operate the buses at JKKN Educational Institutions are highly trained and experienced. They have a good understanding of the local routes and traffic conditions.' },
+        { icon: 'Banknote', title: 'Affordable Fees', description: 'The transport facility is available to all students and faculty members at an affordable fee calculated based on the distance from the campus.' },
+        { icon: 'Shield', title: 'Safe and Secure', description: 'The buses are equipped with CCTV cameras, and there are female attendants on board to ensure the safety of female passengers.' },
+        { icon: 'Clock', title: 'Timely Service', description: 'The transport facility operates on a strict schedule, ensuring that the buses arrive and depart from the campus on time.' },
+        { icon: 'Accessibility', title: 'Accessibility', description: 'The buses are equipped with wheelchair ramps and other accessibility features, making it easy for students with disabilities to use the service.' },
+      ],
+      busRoutes: [
+        { route: 'Athani', distance: 51, buses: 1 },
+        { route: 'Garusanenkkiyar', distance: 36, buses: 1 },
+        { route: 'Poudenpatti', distance: 31, buses: 1 },
+        { route: 'Pudupatti', distance: 30, buses: 1 },
+        { route: 'Anthiyur', distance: 28, buses: 1 },
+        { route: 'Komarapalayam', distance: 30, buses: 1 },
+        { route: 'Namakkal', distance: 41, buses: 1 },
+        { route: 'Rasiphu', distance: 46, buses: 1 },
+        { route: 'Salem', distance: 57, buses: 2 },
+        { route: 'Gobichettipalayam', distance: 37, buses: 1 },
+        { route: 'Gorapalayam', distance: 86, buses: 1 },
+        { route: 'Omalur', distance: 67, buses: 1 },
+        { route: 'Cherampalli', distance: 43, buses: 1 },
+        { route: 'Chittar', distance: 87, buses: 1 },
+        { route: 'Nanjuneli', distance: 52, buses: 1 },
+      ],
+      districtsCovered: ['Namakkal', 'Salem', 'Erode', 'Tiruppur'],
+      transportInchargeName: 'Mr. Mani',
+      transportInchargePhone: '+91 9976772223, 9655177177',
+      showPattern: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['transport', 'bus', 'travel', 'commute', 'facility', 'modern', 'safety', 'routes'],
+    editableProps: [
+      { name: 'pageTitle', type: 'string', label: 'Page Title' },
+      { name: 'pageSubtitle', type: 'string', label: 'Page Subtitle' },
+      { name: 'introduction', type: 'string', label: 'Introduction', multiline: true },
+      {
+        name: 'images',
+        type: 'array',
+        label: 'Gallery Images',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            src: { type: 'image', label: 'Image URL', required: true },
+            alt: { type: 'string', label: 'Alt Text' },
+          },
+          required: ['src'],
+        },
+      },
+      {
+        name: 'features',
+        type: 'array',
+        label: 'Transport Features',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            icon: { type: 'string', label: 'Icon (Lucide name)', required: true },
+            title: { type: 'string', label: 'Title', required: true },
+            description: { type: 'string', label: 'Description', required: true },
+          },
+          required: ['icon', 'title', 'description'],
+        },
+      },
+      {
+        name: 'busRoutes',
+        type: 'array',
+        label: 'Bus Routes',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            route: { type: 'string', label: 'Route Name', required: true },
+            distance: { type: 'number', label: 'Distance (km)', required: true },
+            buses: { type: 'number', label: 'Number of Buses', required: true },
+          },
+          required: ['route', 'distance', 'buses'],
+        },
+      },
+      {
+        name: 'districtsCovered',
+        type: 'array',
+        label: 'Districts Covered',
+        itemType: 'string',
+      },
+      { name: 'transportInchargeName', type: 'string', label: 'Transport Incharge Name' },
+      { name: 'transportInchargePhone', type: 'string', label: 'Transport Incharge Phone' },
+      { name: 'showPattern', type: 'boolean', label: 'Show Background Pattern' },
     ],
   },
 

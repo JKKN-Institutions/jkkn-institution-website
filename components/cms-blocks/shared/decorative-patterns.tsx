@@ -141,7 +141,7 @@ export function GoldRing({
         className
       )}
       style={{
-        background: 'linear-gradient(135deg, #ffde59 0%, #ffd700 50%, #ffde59 100%)',
+        background: 'linear-gradient(135deg, #0b6d41 0%, #0d8f57 50%, #0b6d41 100%)',
       }}
     >
       <div className="rounded-full bg-[#085032] p-0.5">

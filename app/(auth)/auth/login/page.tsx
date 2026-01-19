@@ -17,6 +17,10 @@ function LoginContent() {
   const [errorMessage, setErrorMessage] = useState<string | null>(
     error === 'unauthorized'
       ? 'Unauthorized. Only @jkkn.ac.in emails are allowed.'
+      : error === 'unauthorized_domain'
+      ? 'Your email domain is not allowed. Only @jkkn.ac.in emails are permitted.'
+      : error === 'authentication_failed'
+      ? 'Authentication failed. Please check your Google account or contact support.'
       : null
   )
 

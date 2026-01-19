@@ -14,7 +14,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Shield, Users, Key, Edit, Trash2, Lock, Copy, Loader2 } from 'lucide-react'
+import { Shield, Users, Key, Edit, Trash2, Lock, Copy, Loader2, Eye } from 'lucide-react'
 import Link from 'next/link'
 import { deleteRole, duplicateRole } from '@/app/actions/roles'
 import { toast } from 'sonner'
@@ -208,6 +208,3 @@ export function RolesList({ roles }: RolesListProps) {
     </div>
   )
 }
-
-// Eye icon import was missing
-import { Eye } from 'lucide-react'

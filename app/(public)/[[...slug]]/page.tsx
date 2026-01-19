@@ -15,9 +15,8 @@ import { FAQSchema } from '@/components/seo/faq-schema'
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from '@/lib/seo'
 
-// Force dynamic rendering to ensure proper 404 status code
-// Without this, streaming may send 200 status before notFound() is called
-export const dynamic = 'force-dynamic'
+// Dynamic rendering for 404 handling - automatically handled with cacheComponents
+// Cache Components ensures proper 404 status codes without force-dynamic
 
 interface PageProps {
   params: Promise<{ slug?: string[] }>

@@ -917,7 +917,12 @@ function MediaPreview({
             className="object-contain"
           />
         ) : isVideo ? (
-          <video src={item.file_url} controls className="w-full h-full" />
+          <video
+            src={item.file_url}
+            controls
+            preload="metadata"
+            className="w-full h-full"
+          />
         ) : (
           <div className="h-full flex items-center justify-center">
             <File className="h-16 w-16 text-muted-foreground" />

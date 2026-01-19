@@ -145,7 +145,7 @@ export function InstitutionsGrid({
       )} />
 
       {/* Content Container */}
-      <div className="relative py-16 md:py-20 lg:py-24">
+      <div className="relative py-12 md:py-14 lg:py-16">
         {/* Decorative Patterns */}
         {showDecorations && isModern && (
           <DecorativePatterns variant="default" color={isDark ? 'white' : 'green'} />
@@ -283,7 +283,7 @@ function InstitutionCard({
           "absolute -inset-1 rounded-2xl opacity-0 blur-xl transition-opacity duration-500",
           isHovered && "opacity-20"
         )}
-        style={{ backgroundColor: '#ffde59' }}
+        style={{ backgroundColor: '#0b6d41' }}
       />
 
       {/* Image Container */}
@@ -348,13 +348,13 @@ function InstitutionCard({
         "relative p-3",
         isDark && cardStyle === 'glassmorphic' ? 'bg-transparent' : 'bg-white'
       )}>
-        {/* Gold accent line on hover */}
+        {/* Green accent line on hover */}
         <div
           className={cn(
             'absolute top-0 left-1/2 -translate-x-1/2 h-1 rounded-full transition-all duration-500',
             isHovered ? 'w-3/4' : 'w-0'
           )}
-          style={{ backgroundColor: '#ffde59' }}
+          style={{ backgroundColor: '#0b6d41' }}
         />
 
         <h3 className={cn(
@@ -372,7 +372,7 @@ function InstitutionCard({
           isHovered ? 'opacity-100' : 'opacity-0'
         )}
         style={{
-          background: 'linear-gradient(to right, transparent, #ffde59, transparent)'
+          background: 'linear-gradient(to right, transparent, #0b6d41, transparent)'
         }}
       />
     </div>

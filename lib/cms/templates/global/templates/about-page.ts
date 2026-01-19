@@ -18,7 +18,7 @@ const aboutPageTemplate: GlobalTemplate = {
   name: 'About Page',
   description:
     'Comprehensive about page template with mission/vision, history timeline, leadership team, and facilities gallery. Perfect for institutional overview pages.',
-  thumbnail_url: '/templates/about-page-preview.jpg',
+  thumbnail_url: null,
   category: 'content',
   is_system: false,
   source: 'global',
