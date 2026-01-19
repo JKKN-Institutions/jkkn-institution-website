@@ -3,7 +3,8 @@ import { getSettings } from '@/app/actions/settings'
 import { NotificationSettingsForm } from '@/components/admin/settings/notification-settings-form'
 import { Skeleton } from '@/components/ui/skeleton'
 
-// Dynamic rendering (uses cookies for auth) - automatically handled with cacheComponents
+// Force dynamic rendering (uses cookies for auth)
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Notification Settings | Admin',
