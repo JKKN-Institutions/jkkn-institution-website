@@ -3,159 +3,31 @@
 import { cn } from '@/lib/utils'
 import type { z } from 'zod'
 import { ModernOrganogramSectionPropsSchema, OrgMemberSchema, type BaseBlockProps } from '@/lib/cms/registry-types'
-import { useState, useMemo, useRef } from 'react'
-import { ChevronDown, ZoomIn, ZoomOut, Maximize, RotateCcw } from 'lucide-react'
+import { useMemo } from 'react'
 import Image from 'next/image'
 
 export type ModernOrganogramSectionProps = z.infer<typeof ModernOrganogramSectionPropsSchema> & BaseBlockProps
 export type OrgMember = z.infer<typeof OrgMemberSchema>
 
-// --- Types ---
-interface TreeNodeData extends OrgMember {
-    children: TreeNodeData[];
-}
-
-// --- Color Variants ---
-const variants = {
-    green: "from-green-600 to-green-700 shadow-green-600/30 ring-green-600/20",
-    orange: "from-orange-500 to-amber-600 shadow-orange-500/30 ring-orange-500/20",
-    yellow: "from-yellow-400 to-amber-500 shadow-yellow-500/30 ring-yellow-500/20 text-slate-800",
-    magenta: "from-pink-600 to-rose-600 shadow-pink-600/30 ring-pink-600/20",
-    purple: "from-violet-600 to-purple-700 shadow-purple-600/30 ring-purple-600/20",
-    red: "from-red-600 to-red-700 shadow-red-600/30 ring-red-600/20",
-    maroon: "from-red-800 to-rose-900 shadow-red-900/30 ring-red-900/20",
-    blue: "from-sky-500 to-blue-600 shadow-blue-500/30 ring-blue-500/20",
-    "dark-purple": "from-slate-600 to-slate-700 shadow-slate-600/30 ring-slate-600/20",
-}
-
-// --- Helpers ---
-function buildTree(members: OrgMember[]): TreeNodeData[] {
-    const memberMap = new Map<string, TreeNodeData>();
-    const roots: TreeNodeData[] = [];
-
-    members.forEach(member => {
-        memberMap.set(member.id, { ...member, children: [] });
-    });
-
-    members.forEach(member => {
-        const node = memberMap.get(member.id);
-        if (!node) return;
-
-        if (member.managerId && memberMap.has(member.managerId)) {
-            const parent = memberMap.get(member.managerId);
-            parent!.children.push(node);
-        } else {
-            roots.push(node);
-        }
-    });
-
-    return roots;
-}
-
-// --- Tree Node Component ---
-
-const TreeNode = ({ node, level = 0 }: { node: TreeNodeData; level?: number }) => {
-    const [isExpanded, setIsExpanded] = useState(true);
-    const hasChildren = node.children && node.children.length > 0;
-    // @ts-ignore
-    const gradientClass = variants[node.variant || 'green'];
-    const isYellow = node.variant === 'yellow';
-
-    return (
-        <div className="flex flex-col items-center relative">
-
-            {/* Node Card */}
-            <div
-                className={cn(
-                    "relative z-10 p-2 transition-all duration-300 w-44 sm:w-48",
-                    "hover:scale-105 group cursor-pointer"
-                )}
-                onClick={() => hasChildren && setIsExpanded(!isExpanded)}
-            >
-                <div className={cn(
-                    "rounded-xl px-2 py-4 shadow-lg flex flex-col items-center text-center justify-center min-h-[4rem] bg-gradient-to-b ring-4 ring-white relative overflow-hidden",
-                    gradientClass
-                )}>
-                    {/* Glossy Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none" />
-
-                    <h3 className={cn(
-                        "text-sm font-bold leading-tight relative z-10",
-                        isYellow ? "text-slate-900" : "text-white"
-                    )}>
-                        {node.name}
-                    </h3>
-                    {node.role && (
-                        <p className={cn(
-                            "text-[10px] uppercase tracking-wider mt-1 opacity-90 relative z-10",
-                            isYellow ? "text-slate-800" : "text-white"
-                        )}>
-                            {node.role}
-                        </p>
-                    )}
-                </div>
-
-                {/* Expand Toggle */}
-                {hasChildren && (
-                    <div className={cn(
-                        "absolute -bottom-1 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full flex items-center justify-center bg-white border-2 border-slate-100 text-slate-400 shadow-md z-20 hover:bg-slate-50 transition-transform duration-300",
-                        isExpanded ? "rotate-0" : "-rotate-90"
-                    )}>
-                        <ChevronDown className="w-3 h-3" />
-                    </div>
-                )}
-            </div>
-
-            {/* Connecting Lines (Curved) */}
-            {hasChildren && isExpanded && (
-                <div className="flex flex-col items-center animate-in fade-in slide-in-from-top-2 duration-300 origin-top">
-                    {/* Vertical Line Down from Parent */}
-                    <div className="w-0.5 h-6 bg-slate-300"></div>
-
-                    <div className="flex relative items-start">
-                        {node.children!.map((child, index) => {
-                            const isFirst = index === 0;
-                            const isLast = index === node.children!.length - 1;
-                            const isSingle = node.children!.length === 1;
-
-                            return (
-                                <div key={index} className="flex flex-col items-center relative px-2 sm:px-4">
-                                    {/* Horizontal Connectors */}
-                                    {!isSingle && (
-                                        <>
-                                            {/* Left Line */}
-                                            <div className={cn(
-                                                "absolute top-0 right-1/2 h-0.5 bg-slate-300",
-                                                isFirst ? "w-0" : "w-[calc(50%+4px)] rounded-r-none"
-                                            )}></div>
-                                            {/* Right Line */}
-                                            <div className={cn(
-                                                "absolute top-0 left-1/2 h-0.5 bg-slate-300",
-                                                isLast ? "w-0" : "w-[calc(50%+4px)]"
-                                            )}></div>
-
-                                            {/* CSS Curved Corner Hack */}
-                                            {isFirst && <div className="absolute top-[-0.5px] right-[calc(50%-0.5px)] w-2 h-2 border-t-2 border-l-2 border-slate-300 rounded-tl-md" />}
-                                            {isLast && <div className="absolute top-[-0.5px] left-[calc(50%-0.5px)] w-2 h-2 border-t-2 border-r-2 border-slate-300 rounded-tr-md" />}
-                                        </>
-                                    )}
-
-                                    {/* Vertical Line down to Child */}
-                                    <div className="w-0.5 h-6 bg-slate-300"></div>
-
-                                    <TreeNode node={child} level={level + 1} />
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            )}
-        </div>
-    );
+// --- Color Variants matching the screenshot ---
+const variantColors: Record<string, string> = {
+    green: "bg-[#2e7d32]", // Chairman, MD, Principal, HoD branch
+    "dark-green": "bg-[#1b5e20]",
+    yellow: "bg-[#f9a825]", // IQAC, Exam cell
+    teal: "bg-[#00838f]", // Vice Principal branch
+    cyan: "bg-[#00838f]",
+    orange: "bg-[#e65100]", // Research branch
+    olive: "bg-[#827717]", // Admin Officer branch
+    purple: "bg-[#6a1b9a]", // HR Manager
+    maroon: "bg-[#6d4c41]", // Librarian
+    "dark-gray": "bg-[#37474f]", // Physical Director, Hostel Warden
+    "dark-purple": "bg-[#37474f]",
+    magenta: "bg-[#ad1457]",
+    red: "bg-[#c62828]",
+    blue: "bg-[#1565c0]",
 }
 
 // --- Main Component ---
-
 export function ModernOrganogramSection({
     title = 'Institutional Organogram',
     members = [],
@@ -163,85 +35,261 @@ export function ModernOrganogramSection({
     className,
 }: ModernOrganogramSectionProps) {
 
-    // Zoom State
-    const [scale, setScale] = useState(1);
-    const rootNodes = useMemo(() => buildTree(members), [members]);
-
-    const handleZoomIn = () => setScale(prev => Math.min(prev + 0.1, 2));
-    const handleZoomOut = () => setScale(prev => Math.max(prev - 0.1, 0.5));
-    const handleReset = () => setScale(1);
-
     return (
-        <section className={cn("relative py-12 px-4 overflow-hidden min-h-screen bg-slate-50 selection:bg-green-100", className)}>
+        <section className={cn("relative py-8 px-4 bg-white min-h-screen", className)}>
+            <div className="max-w-7xl mx-auto">
 
-            {/* Background Pattern */}
-            {showPattern && (
-                <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
-                    <div className="absolute top-0 left-0 w-full h-full"
-                        style={{
-                            backgroundImage: `linear-gradient(#0b6d41 1px, transparent 1px), linear-gradient(90deg, #0b6d41 1px, transparent 1px)`,
-                            backgroundSize: '40px 40px'
-                        }}
-                    />
-                </div>
-            )}
-
-            <div className="relative z-10 w-full h-full flex flex-col">
-
-                {/* Official Institutional Header */}
-                <div className="bg-white border-2 border-slate-200 rounded-2xl p-6 mb-8 max-w-7xl mx-auto w-full shadow-sm text-center relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-2 bg-[#0b6d41]" />
-
-                    <div className="flex flex-col items-center justify-center space-y-2 relative z-10">
-                        {/* Logo can go here if needed, adding simple text for now to match screenshot text density */}
-                        <h1 className="text-xl md:text-3xl font-extrabold text-[#0b6d41] uppercase tracking-wide">
-                            J.K.K. NATRAJA COLLEGE OF ENGINEERING AND TECHNOLOGY
+                {/* Institution Header */}
+                <div className="flex items-center justify-center gap-4 mb-6 border-b-2 border-[#0b6d41] pb-4">
+                    <div className="w-16 h-16 relative flex-shrink-0">
+                        <Image
+                            src="/images/jkkn-logo.png"
+                            alt="JKKN Logo"
+                            fill
+                            className="object-contain"
+                            onError={(e) => {
+                                e.currentTarget.style.display = 'none'
+                            }}
+                        />
+                    </div>
+                    <div className="text-center">
+                        <h1 className="text-lg md:text-xl font-bold text-[#0b6d41] uppercase">
+                            J.K.K. NATARAJA COLLEGE OF ENGINEERING AND TECHNOLOGY
                         </h1>
-                        <p className="text-sm md:text-base font-medium text-[#0b6d41]">
+                        <p className="text-xs md:text-sm text-[#0b6d41]">
                             (Managed by J.K.K. Rangammal Charitable Trust)
                         </p>
-                        <p className="text-xs md:text-sm font-medium text-[#0b6d41]">
+                        <p className="text-xs text-[#0b6d41]">
                             (Approved by AICTE-New Delhi and Affiliated to Anna University-Chennai)
                         </p>
-                        <a href="https://www.engg.jkkn.ac.in" className="text-xs md:text-sm font-bold text-blue-600 hover:underline">
+                        <p className="text-xs text-blue-600">
                             Website: www.engg.jkkn.ac.in
-                        </a>
+                        </p>
                     </div>
                 </div>
 
-                {/* Toolbar */}
-                <div className="flex justify-between items-center max-w-7xl mx-auto w-full px-4 mb-4">
-                    <div className="border border-slate-700 bg-white px-6 py-2 rounded-lg shadow-sm">
-                        <h2 className="text-lg font-bold text-[#0b6d41] uppercase tracking-wider">
-                            {title}
-                        </h2>
-                    </div>
-
-                    <div className="flex items-center gap-2 bg-white/80 backdrop-blur shadow-lg border border-slate-200 p-1.5 rounded-xl z-20">
-                        <button onClick={handleZoomOut} className="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors" title="Zoom Out">
-                            <ZoomOut className="w-5 h-5" />
-                        </button>
-                        <span className="w-12 text-center text-sm font-medium text-slate-500">{Math.round(scale * 100)}%</span>
-                        <button onClick={handleZoomIn} className="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors" title="Zoom In">
-                            <ZoomIn className="w-5 h-5" />
-                        </button>
-                        <div className="w-px h-6 bg-slate-200 mx-1" />
-                        <button onClick={handleReset} className="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors" title="Reset View">
-                            <RotateCcw className="w-4 h-4" />
-                        </button>
+                {/* Title Box */}
+                <div className="flex justify-center mb-8">
+                    <div className="border-2 border-gray-400 rounded-lg px-8 py-3">
+                        <h2 className="text-xl font-semibold text-gray-700">{title}</h2>
                     </div>
                 </div>
 
-                {/* Chart Container - Infinite Scroll / Pan Area */}
-                <div className="flex-1 w-full overflow-auto cursor-grab active:cursor-grabbing border border-slate-200 bg-white p-8 min-h-[700px] shadow-inner relative rounded-xl mx-auto max-w-[95%]">
-                    <div
-                        className="min-w-max min-h-full flex justify-center origin-top transition-transform duration-300 ease-out pt-8"
-                        style={{ transform: `scale(${scale})` }}
-                    >
-                        {rootNodes.map((node, i) => (
-                            <TreeNode key={i} node={node} />
-                        ))}
-                    </div>
+                {/* Organogram Chart - SVG based for precise control */}
+                <div className="w-full overflow-hidden">
+                    <svg viewBox="0 0 1200 750" className="w-full h-auto max-h-[70vh]" preserveAspectRatio="xMidYMin meet">
+                        {/* Styles */}
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#555" />
+                            </marker>
+                            <marker id="arrowhead-right" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="0">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#555" />
+                            </marker>
+                        </defs>
+
+                        {/* Level 1: Chairman */}
+                        <g transform="translate(600, 30)">
+                            <rect x="-60" y="0" width="120" height="35" rx="4" fill="#2e7d32" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="13" fontWeight="bold">Chairman</text>
+                        </g>
+
+                        {/* Line: Chairman to MD */}
+                        <line x1="600" y1="65" x2="600" y2="85" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+
+                        {/* Level 2: Managing Director */}
+                        <g transform="translate(600, 90)">
+                            <rect x="-70" y="0" width="140" height="35" rx="4" fill="#1b5e20" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">Managing Director</text>
+                        </g>
+
+                        {/* Line: MD to Principal */}
+                        <line x1="600" y1="125" x2="600" y2="145" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+
+                        {/* Level 3: Principal + IQAC */}
+                        <g transform="translate(550, 150)">
+                            <rect x="-55" y="0" width="110" height="35" rx="4" fill="#2e7d32" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="13" fontWeight="bold">Principal</text>
+                        </g>
+
+                        {/* Arrow from Principal to IQAC */}
+                        <line x1="605" y1="167" x2="665" y2="167" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead-right)" />
+
+                        {/* IQAC */}
+                        <g transform="translate(720, 150)">
+                            <rect x="-45" y="0" width="90" height="35" rx="4" fill="#f9a825" />
+                            <text x="0" y="22" textAnchor="middle" fill="#333" fontSize="13" fontWeight="bold">IQAC</text>
+                        </g>
+
+                        {/* Main vertical line from Principal */}
+                        <line x1="550" y1="185" x2="550" y2="220" stroke="#555" strokeWidth="2" />
+
+                        {/* Horizontal line spanning all departments */}
+                        <line x1="80" y1="220" x2="1120" y2="220" stroke="#555" strokeWidth="2" />
+
+                        {/* Department branches - 9 departments */}
+
+                        {/* 1. Vice Principal-IQAC Coordinator */}
+                        <line x1="100" y1="220" x2="100" y2="245" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(100, 250)">
+                            <rect x="-65" y="0" width="130" height="45" rx="4" fill="#00838f" />
+                            <text x="0" y="18" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Vice Principal-IQAC</text>
+                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Coordinator</text>
+                        </g>
+                        <line x1="100" y1="295" x2="100" y2="315" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(100, 320)">
+                            <rect x="-55" y="0" width="110" height="35" rx="4" fill="#2e7d32" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">IQAC Members</text>
+                        </g>
+                        <line x1="100" y1="355" x2="100" y2="375" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(100, 380)">
+                            <rect x="-55" y="0" width="110" height="35" rx="4" fill="#2e7d32" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">Office Assistant</text>
+                        </g>
+
+                        {/* 2. Research */}
+                        <line x1="230" y1="220" x2="230" y2="245" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(230, 250)">
+                            <rect x="-50" y="0" width="100" height="35" rx="4" fill="#e65100" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">Research</text>
+                        </g>
+                        <line x1="230" y1="285" x2="230" y2="315" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(230, 320)">
+                            <rect x="-55" y="0" width="110" height="45" rx="4" fill="#e65100" />
+                            <text x="0" y="18" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Research team</text>
+                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Members</text>
+                        </g>
+                        <line x1="230" y1="365" x2="230" y2="385" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(230, 390)">
+                            <rect x="-55" y="0" width="110" height="35" rx="4" fill="#e65100" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">Office Assistant</text>
+                        </g>
+
+                        {/* 3. Exam Cell Coordinator */}
+                        <line x1="360" y1="220" x2="360" y2="245" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(360, 250)">
+                            <rect x="-50" y="0" width="100" height="45" rx="4" fill="#f9a825" />
+                            <text x="0" y="18" textAnchor="middle" fill="#333" fontSize="10" fontWeight="bold">Exam cell</text>
+                            <text x="0" y="32" textAnchor="middle" fill="#333" fontSize="10" fontWeight="bold">Coordinator</text>
+                        </g>
+                        <line x1="360" y1="295" x2="360" y2="315" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(360, 320)">
+                            <rect x="-50" y="0" width="100" height="35" rx="4" fill="#f9a825" />
+                            <text x="0" y="22" textAnchor="middle" fill="#333" fontSize="11" fontWeight="bold">Office Assistant</text>
+                        </g>
+                        <line x1="360" y1="355" x2="360" y2="375" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(360, 380)">
+                            <rect x="-50" y="0" width="100" height="35" rx="4" fill="#f9a825" />
+                            <text x="0" y="22" textAnchor="middle" fill="#333" fontSize="11" fontWeight="bold">Attender&apos;s</text>
+                        </g>
+
+                        {/* 4. Head of the Department */}
+                        <line x1="490" y1="220" x2="490" y2="245" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(490, 250)">
+                            <rect x="-55" y="0" width="110" height="45" rx="4" fill="#2e7d32" />
+                            <text x="0" y="18" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Head of the</text>
+                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Department</text>
+                        </g>
+                        <line x1="490" y1="295" x2="490" y2="315" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(490, 320)">
+                            <rect x="-55" y="0" width="110" height="35" rx="4" fill="#2e7d32" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">Faculty Members</text>
+                        </g>
+                        <line x1="490" y1="355" x2="490" y2="375" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(490, 380)">
+                            <rect x="-55" y="0" width="110" height="35" rx="4" fill="#2e7d32" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">Lab Technicians</text>
+                        </g>
+                        <line x1="490" y1="415" x2="490" y2="435" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(490, 440)">
+                            <rect x="-55" y="0" width="110" height="45" rx="4" fill="#2e7d32" />
+                            <text x="0" y="18" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Assistant &</text>
+                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Attenders</text>
+                        </g>
+
+                        {/* 5. Administrative Officer */}
+                        <line x1="620" y1="220" x2="620" y2="245" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(620, 250)">
+                            <rect x="-55" y="0" width="110" height="45" rx="4" fill="#827717" />
+                            <text x="0" y="18" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Administrative</text>
+                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Officer</text>
+                        </g>
+                        <line x1="620" y1="295" x2="620" y2="315" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(620, 320)">
+                            <rect x="-55" y="0" width="110" height="45" rx="4" fill="#827717" />
+                            <text x="0" y="18" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Non Teaching</text>
+                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Staff</text>
+                        </g>
+                        <line x1="620" y1="365" x2="620" y2="385" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(620, 390)">
+                            <rect x="-60" y="0" width="120" height="45" rx="4" fill="#827717" />
+                            <text x="0" y="18" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">Maintenance &</text>
+                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">Transport Staff</text>
+                        </g>
+                        <line x1="620" y1="435" x2="620" y2="455" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(620, 460)">
+                            <rect x="-55" y="0" width="110" height="45" rx="4" fill="#827717" />
+                            <text x="0" y="18" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">System</text>
+                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Administrator</text>
+                        </g>
+
+                        {/* 6. HR Manager */}
+                        <line x1="750" y1="220" x2="750" y2="245" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(750, 250)">
+                            <rect x="-50" y="0" width="100" height="35" rx="4" fill="#6a1b9a" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">HR Manager</text>
+                        </g>
+                        <line x1="750" y1="285" x2="750" y2="315" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(750, 320)">
+                            <rect x="-50" y="0" width="100" height="45" rx="4" fill="#6a1b9a" />
+                            <text x="0" y="18" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Soft skill</text>
+                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Trainers</text>
+                        </g>
+
+                        {/* 7. Librarian */}
+                        <line x1="870" y1="220" x2="870" y2="245" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(870, 250)">
+                            <rect x="-45" y="0" width="90" height="35" rx="4" fill="#6d4c41" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">Librarian</text>
+                        </g>
+                        <line x1="870" y1="285" x2="870" y2="315" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(870, 320)">
+                            <rect x="-50" y="0" width="100" height="35" rx="4" fill="#6d4c41" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">Library Assistant</text>
+                        </g>
+                        <line x1="870" y1="355" x2="870" y2="375" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(870, 380)">
+                            <rect x="-45" y="0" width="90" height="35" rx="4" fill="#6d4c41" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">Attenders</text>
+                        </g>
+
+                        {/* 8. Physical Director */}
+                        <line x1="980" y1="220" x2="980" y2="245" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(980, 250)">
+                            <rect x="-50" y="0" width="100" height="35" rx="4" fill="#37474f" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">Physical Director</text>
+                        </g>
+
+                        {/* 9. Hostel Warden */}
+                        <line x1="1100" y1="220" x2="1100" y2="245" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(1100, 250)">
+                            <rect x="-55" y="0" width="110" height="35" rx="4" fill="#37474f" />
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">Hostel Warden</text>
+                        </g>
+                        <line x1="1100" y1="285" x2="1100" y2="315" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(1100, 320)">
+                            <rect x="-55" y="0" width="110" height="45" rx="4" fill="#37474f" />
+                            <text x="0" y="18" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Mess & Admin</text>
+                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Staffs</text>
+                        </g>
+                        <line x1="1100" y1="365" x2="1100" y2="385" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <g transform="translate(1100, 390)">
+                            <rect x="-60" y="0" width="120" height="45" rx="4" fill="#37474f" />
+                            <text x="0" y="18" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">House Keeping</text>
+                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">& Attenders</text>
+                        </g>
+
+                    </svg>
                 </div>
             </div>
         </section>

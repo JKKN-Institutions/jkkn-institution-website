@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Loader2, CheckCircle2, XCircle, Info, Home, Globe, Lock, Eye, ExternalLink, ArrowRight, AlertTriangle } from 'lucide-react'
+import { Loader2, CheckCircle2, XCircle, Info, Home, Globe, Lock, Eye, ExternalLink, ArrowRight, AlertTriangle, FileText } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface PageCreateFormProps {
@@ -76,6 +76,7 @@ export function PageCreateForm({ parentPages, templates }: PageCreateFormProps) 
   const [isHomepage, setIsHomepage] = useState(false)
   const [showInNavigation, setShowInNavigation] = useState(true)
   const [externalUrl, setExternalUrl] = useState('')
+  const [redirectUrl, setRedirectUrl] = useState('')
   const [slugPreview, setSlugPreview] = useState<string>('')
 
   // Auto-generate slug from title
@@ -392,6 +393,28 @@ export function PageCreateForm({ parentPages, templates }: PageCreateFormProps) 
             </p>
           </div>
         )}
+
+        {/* Redirect URL Field - Redirects page visitors to external URL */}
+        <div className="space-y-2.5">
+          <div className="flex items-center gap-2">
+            <FileText className="h-4 w-4 text-muted-foreground" />
+            <Label htmlFor="redirect_url" className="text-foreground text-sm font-medium">
+              Redirect URL (Optional)
+            </Label>
+          </div>
+          <Input
+            id="redirect_url"
+            name="redirect_url"
+            type="url"
+            placeholder="https://drive.google.com/file/d/xxx/view"
+            value={redirectUrl}
+            onChange={(e) => setRedirectUrl(e.target.value)}
+            className="bg-background/50 border-border/50 focus:border-primary/30 focus:ring-primary/20 h-11"
+          />
+          <p className="text-xs text-muted-foreground">
+            If set, visiting this page will redirect to this URL in the same tab (e.g., Google Drive PDF)
+          </p>
+        </div>
       </div>
 
       {/* Status (hidden, default to draft) */}

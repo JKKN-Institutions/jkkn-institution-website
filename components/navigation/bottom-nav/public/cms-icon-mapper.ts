@@ -157,6 +157,8 @@ const CMS_ICON_MAP: Record<string, LucideIcon> = {
   'sports': Trophy,
   'wi-fi-campus': Wifi,
   'smart-classroom': Monitor,
+  'library': BookOpen,
+  'digital-library': BookOpen,
 
   // More section
   'careers': Briefcase,

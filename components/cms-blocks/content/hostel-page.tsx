@@ -38,7 +38,11 @@ const HostelSectionSchema = z.object({
     alt: z.string().optional()
   })),
   paragraphs: z.array(z.string()),
-  highlights: z.array(z.string())
+  highlights: z.array(z.string()),
+  warden: z.object({
+    name: z.string(),
+    mobile: z.string()
+  }).optional()
 })
 
 // Schema for the HostelPage component
@@ -89,6 +93,7 @@ function HostelContent({
   images,
   paragraphs,
   highlights,
+  warden,
   accentColor,
   isVisible,
   tabKey,
@@ -98,6 +103,7 @@ function HostelContent({
   images: { src: string; alt?: string }[]
   paragraphs: string[]
   highlights: string[]
+  warden?: { name: string; mobile: string }
   accentColor: string
   isVisible: boolean
   tabKey: string
@@ -195,6 +201,33 @@ function HostelContent({
                 </li>
               ))}
             </ul>
+          </div>
+        )}
+
+        {/* Hostel Warden Contact */}
+        {warden && (
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20">
+            <h3
+              className="text-xl font-semibold mb-4"
+              style={{ color: accentColor }}
+            >
+              Hostel warden
+            </h3>
+            <div className="space-y-2">
+              <p className="text-base md:text-lg">
+                <span className="font-medium">Name:</span> {warden.name}
+              </p>
+              <p className="text-base md:text-lg">
+                <span className="font-medium">Mobile no:</span>{' '}
+                <a
+                  href={`tel:${warden.mobile.replace(/\s/g, '')}`}
+                  className="hover:underline transition-colors"
+                  style={{ color: accentColor }}
+                >
+                  {warden.mobile}
+                </a>
+              </p>
+            </div>
           </div>
         )}
       </div>
@@ -302,6 +335,7 @@ export function HostelPage({
           images={boysHostel?.images || []}
           paragraphs={boysHostel?.paragraphs || []}
           highlights={boysHostel?.highlights || []}
+          warden={boysHostel?.warden}
           accentColor={accentColor}
           isVisible={activeTab === 'boys'}
           tabKey="boys"
@@ -314,6 +348,7 @@ export function HostelPage({
           images={girlsHostel?.images || []}
           paragraphs={girlsHostel?.paragraphs || []}
           highlights={girlsHostel?.highlights || []}
+          warden={girlsHostel?.warden}
           accentColor={accentColor}
           isVisible={activeTab === 'girls'}
           tabKey="girls"

@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react'
 import { PageRenderer } from '@/components/cms-blocks/page-renderer'
-import engineeringHomeTemplate from '@/lib/cms/templates/global/templates/engineering-home-template'
+import homepageHeroTemplate from '@/lib/cms/templates/global/templates/homepage-hero'
 
 // Define the Skeleton component locally if not exported
 function LandingPageSkeleton() {
@@ -10,9 +10,9 @@ function LandingPageSkeleton() {
 }
 
 export function LandingPage() {
-  // Use the blocks from our engineering template
+  // Use the blocks from our homepage hero template
   // We need to map them to the structure PageRenderer expects
-  const blocks = engineeringHomeTemplate.default_blocks.map(block => ({
+  const blocks = homepageHeroTemplate.default_blocks.map(block => ({
     id: block.id,
     component_name: block.component_name,
     props: block.props,

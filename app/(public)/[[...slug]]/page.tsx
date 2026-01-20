@@ -177,6 +177,14 @@ export default async function DynamicPage({ params }: PageProps) {
 
     // If CMS homepage exists and is accessible, render it
     const page = result.page
+
+    // Check for redirect URL in metadata - redirect to external URL if set
+    const homepageMetadata = page.metadata as Record<string, unknown> | null
+    const homepageRedirectUrl = homepageMetadata?.redirect_url as string | undefined
+    if (homepageRedirectUrl) {
+      redirect(homepageRedirectUrl)
+    }
+
     const blocks = page.cms_page_blocks.map((block) => ({
       id: block.id,
       component_name: block.component_name,
@@ -227,6 +235,13 @@ export default async function DynamicPage({ params }: PageProps) {
 
   if (!page) {
     notFound()
+  }
+
+  // Check for redirect URL in metadata - redirect to external URL if set
+  const pageMetadata = page.metadata as Record<string, unknown> | null
+  const redirectUrl = pageMetadata?.redirect_url as string | undefined
+  if (redirectUrl) {
+    redirect(redirectUrl)
   }
 
   // Transform blocks to the format expected by PageRenderer

@@ -367,6 +367,23 @@ import {
   ModernTransportSectionPropsSchema,
 } from './registry-types'
 
+// Import BECSECoursePage schema from component
+import { BECSECoursePagePropsSchema } from '@/components/cms-blocks/content/be-cse-course-page'
+
+// Import BEEEECoursePage schema from component
+import { BEEEECoursePagePropsSchema } from '@/components/cms-blocks/content/be-eee-course-page'
+
+// Import engineering component schemas
+import { EngineeringHeroSectionPropsSchema } from '@/components/cms-blocks/content/engineering-hero-section'
+import { EngineeringAccreditationsBarPropsSchema } from '@/components/cms-blocks/content/engineering-accreditations-bar'
+import { EngineeringAboutSectionPropsSchema } from '@/components/cms-blocks/content/engineering-about-section'
+import { EngineeringWhyChooseSectionPropsSchema } from '@/components/cms-blocks/content/engineering-why-choose-section'
+import { EngineeringFacilitiesSectionPropsSchema } from '@/components/cms-blocks/content/engineering-facilities-section'
+import { EngineeringCTASectionPropsSchema } from '@/components/cms-blocks/content/engineering-cta-section'
+
+// Import sample data for course pages
+import { BE_EEE_SAMPLE_DATA } from './templates/engineering/be-eee-data'
+
 // Re-export types
 export * from './registry-types'
 
@@ -508,11 +525,23 @@ const OurInstitutions = lazy(() => import('@/components/cms-blocks/content/our-i
 // Course Page
 const CoursePage = lazy(() => import('@/components/cms-blocks/content/course-page'))
 
+// BE CSE Course Page
+const BECSECoursePage = lazy(() => import('@/components/cms-blocks/content/be-cse-course-page').then(m => ({ default: m.BECSECoursePage })))
+
+// BE EEE Course Page
+const BEEEECoursePage = lazy(() => import('@/components/cms-blocks/content/be-eee-course-page').then(m => ({ default: m.BEEEECoursePage })))
+
 // Facility Page
 const FacilityPage = lazy(() => import('@/components/cms-blocks/content/facility-page'))
 
 // Transport Page
 const TransportPage = lazy(() => import('@/components/cms-blocks/content/transport-page'))
+
+// Food Court Page
+const FoodCourtPage = lazy(() => import('@/components/cms-blocks/content/food-court-page'))
+
+// Sports Page
+const SportsPage = lazy(() => import('@/components/cms-blocks/content/sports-page'))
 
 // Gallery Page
 const GalleryPage = lazy(() => import('@/components/cms-blocks/content/gallery-page'))
@@ -526,11 +555,29 @@ const TermsAndConditionsPage = lazy(() => import('@/components/cms-blocks/conten
 // Institutional Development Plan Page
 const InstitutionalDevelopmentPlanPage = lazy(() => import('@/components/cms-blocks/content/institutional-development-plan-page'))
 
+// Institution Policies Page
+const InstitutionPoliciesPage = lazy(() => import('@/components/cms-blocks/content/institution-policies-page'))
+
+// Institution Rules Page
+const InstitutionRulesPage = lazy(() => import('@/components/cms-blocks/content/institution-rules-page'))
+
 // Contact Page
 const ContactPage = lazy(() => import('@/components/cms-blocks/content/contact-page'))
 
 // Hostel Page
 const HostelPage = lazy(() => import('@/components/cms-blocks/content/hostel-page'))
+
+// Auditorium Page
+const AuditoriumPage = lazy(() => import('@/components/cms-blocks/content/auditorium-page'))
+
+// Seminar Hall Page
+const SeminarHallPage = lazy(() => import('@/components/cms-blocks/content/seminar-hall-page'))
+
+// Library Page
+const LibraryPage = lazy(() => import('@/components/cms-blocks/content/library-page'))
+
+// Digital Classroom Page
+const DigitalClassroomPage = lazy(() => import('@/components/cms-blocks/content/digital-classroom-page'))
 
 // Admission Inquiry Form
 const AdmissionInquiryForm = lazy(() => import('@/components/cms-blocks/content/admission-inquiry-form'))
@@ -540,6 +587,24 @@ const OurCoursesSection = lazy(() => import('@/components/cms-blocks/content/our
 
 // Admission Zone Section
 const AdmissionZoneSection = lazy(() => import('@/components/cms-blocks/content/admission-zone-section'))
+
+// Contact Info Section (Homepage compact contact)
+const ContactInfoSection = lazy(() => import('@/components/cms-blocks/content/contact-info-section'))
+
+// Approvals and Affiliation Section
+const ApprovalsAffiliationSection = lazy(() => import('@/components/cms-blocks/content/approvals-affiliation-section'))
+
+// Engineering-specific blocks
+const EngineeringCenturySection = lazy(() => import('@/components/cms-blocks/content/engineering-century-section'))
+const EngineeringProgramsSection = lazy(() => import('@/components/cms-blocks/content/engineering-programs-section'))
+const EngineeringPlacementsSection = lazy(() => import('@/components/cms-blocks/content/engineering-placements-section'))
+const EngineeringAdmissionSection = lazy(() => import('@/components/cms-blocks/content/engineering-admission-section'))
+const EngineeringHeroSection = lazy(() => import('@/components/cms-blocks/content/engineering-hero-section'))
+const EngineeringAccreditationsBar = lazy(() => import('@/components/cms-blocks/content/engineering-accreditations-bar'))
+const EngineeringAboutSection = lazy(() => import('@/components/cms-blocks/content/engineering-about-section'))
+const EngineeringWhyChooseSection = lazy(() => import('@/components/cms-blocks/content/engineering-why-choose-section'))
+const EngineeringFacilitiesSection = lazy(() => import('@/components/cms-blocks/content/engineering-facilities-section'))
+const EngineeringCTASection = lazy(() => import('@/components/cms-blocks/content/engineering-cta-section'))
 
 // shadcn/ui blocks
 const ShadcnButtonBlock = lazy(() => import('@/components/cms-blocks/shadcn/button-block'))
@@ -3499,6 +3564,300 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     ],
   },
 
+  InstitutionPoliciesPage: {
+    name: 'InstitutionPoliciesPage',
+    displayName: 'Institution Policies Page',
+    category: 'content',
+    description: 'Modern policies page with glassmorphism cards, category badges, and PDF download links',
+    icon: 'FileText',
+    previewImage: '/cms-previews/InstitutionPoliciesPage.png',
+    component: InstitutionPoliciesPage,
+    propsSchema: z.object({
+      showHeader: z.boolean().default(true),
+      headerTitle: z.string().default('Institution Policies'),
+      headerSubtitle: z.string().optional(),
+      policies: z.array(z.object({
+        id: z.string(),
+        title: z.string(),
+        description: z.string().optional(),
+        category: z.enum(['academic', 'administrative', 'hr', 'research', 'student', 'environment', 'communication', 'general']).default('general'),
+        icon: z.string().optional(),
+        pdfUrl: z.string(),
+        fileSize: z.string().optional(),
+        lastUpdated: z.string().optional(),
+      })).default([]),
+      layout: z.enum(['grid', 'list', 'categorized']).default('grid'),
+      columns: z.enum(['2', '3', '4']).default('3'),
+      showCategories: z.boolean().default(true),
+      showFileSize: z.boolean().default(true),
+      showLastUpdated: z.boolean().default(true),
+      showSearch: z.boolean().default(false),
+      showCategoryFilter: z.boolean().default(false),
+      variant: z.enum(['modern-dark', 'modern-light']).default('modern-light'),
+      cardStyle: z.enum(['glass', 'solid', 'gradient', 'outline']).default('glass'),
+      showDecorations: z.boolean().default(true),
+    }),
+    defaultProps: {
+      showHeader: true,
+      headerTitle: 'Institution Policies',
+      headerSubtitle: 'Guidelines and procedures for academic excellence',
+      policies: [
+        {
+          id: '1',
+          title: 'Incubation NLB Startup',
+          description: 'Guidelines for startup incubation and New Learning Behaviour initiatives',
+          category: 'research',
+          icon: 'Lightbulb',
+          pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_1/view',
+          fileSize: '2.4 MB',
+          lastUpdated: 'January 2026',
+        },
+        {
+          id: '2',
+          title: 'Engineering Scholarship',
+          description: 'Scholarship eligibility criteria and application procedures',
+          category: 'academic',
+          icon: 'Award',
+          pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_2/view',
+          fileSize: '1.8 MB',
+          lastUpdated: 'January 2026',
+        },
+        {
+          id: '3',
+          title: 'Students Play Book',
+          description: 'Comprehensive guide for student conduct and campus life',
+          category: 'student',
+          icon: 'BookMarked',
+          pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_3/view',
+          fileSize: '5.2 MB',
+          lastUpdated: 'January 2026',
+        },
+        {
+          id: '4',
+          title: 'Solution-Oriented Research and Entrepreneurship',
+          description: 'Framework for research initiatives and entrepreneurship programs',
+          category: 'research',
+          icon: 'Beaker',
+          pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_4/view',
+          fileSize: '3.1 MB',
+          lastUpdated: 'January 2026',
+        },
+        {
+          id: '5',
+          title: 'Solid Waste Management',
+          description: 'Environmental guidelines for waste disposal and recycling',
+          category: 'environment',
+          icon: 'Recycle',
+          pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_5/view',
+          fileSize: '1.5 MB',
+          lastUpdated: 'January 2026',
+        },
+        {
+          id: '6',
+          title: 'Professional Body Memberships Sponsorship',
+          description: 'Sponsorship policy for professional organization memberships',
+          category: 'hr',
+          icon: 'Users',
+          pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_6/view',
+          fileSize: '0.9 MB',
+          lastUpdated: 'January 2026',
+        },
+        {
+          id: '7',
+          title: 'HR Policy',
+          description: 'Human resources guidelines, benefits, and procedures',
+          category: 'hr',
+          icon: 'Briefcase',
+          pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_7/view',
+          fileSize: '4.7 MB',
+          lastUpdated: 'January 2026',
+        },
+        {
+          id: '8',
+          title: 'Event Policy',
+          description: 'Guidelines for organizing and conducting campus events',
+          category: 'administrative',
+          icon: 'Calendar',
+          pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_8/view',
+          fileSize: '2.0 MB',
+          lastUpdated: 'January 2026',
+        },
+        {
+          id: '9',
+          title: 'YUVA Policy',
+          description: 'Youth development and engagement program guidelines',
+          category: 'student',
+          icon: 'Sparkles',
+          pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_9/view',
+          fileSize: '1.6 MB',
+          lastUpdated: 'January 2026',
+        },
+        {
+          id: '10',
+          title: 'Yuva Verticals SOP',
+          description: 'Standard operating procedures for YUVA vertical activities',
+          category: 'student',
+          icon: 'FileStack',
+          pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_10/view',
+          fileSize: '2.8 MB',
+          lastUpdated: 'January 2026',
+        },
+        {
+          id: '11',
+          title: 'Engineering Green Theme SOP',
+          description: 'Sustainability initiatives and green campus procedures',
+          category: 'environment',
+          icon: 'TreeDeciduous',
+          pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_11/view',
+          fileSize: '1.3 MB',
+          lastUpdated: 'January 2026',
+        },
+        {
+          id: '12',
+          title: 'JKKN IQAC - SOP',
+          description: 'Internal Quality Assurance Cell standard operating procedures',
+          category: 'academic',
+          icon: 'ClipboardCheck',
+          pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_12/view',
+          fileSize: '2.2 MB',
+          lastUpdated: 'January 2026',
+        },
+        {
+          id: '13',
+          title: 'JKKN Institutions Comprehensive Communication Policy',
+          description: 'Guidelines for internal and external communications',
+          category: 'communication',
+          icon: 'MessageCircle',
+          pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_13/view',
+          fileSize: '1.1 MB',
+          lastUpdated: 'January 2026',
+        },
+      ],
+      layout: 'grid',
+      columns: '3',
+      showCategories: true,
+      showFileSize: true,
+      showLastUpdated: true,
+      showSearch: false,
+      showCategoryFilter: false,
+      variant: 'modern-light',
+      cardStyle: 'glass',
+      showDecorations: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['policies', 'documents', 'pdf', 'download', 'guidelines', 'rules', 'regulations', 'sop'],
+    editableProps: [
+      { name: 'showHeader', type: 'boolean', label: 'Show Header' },
+      { name: 'headerTitle', type: 'string', label: 'Header Title' },
+      { name: 'headerSubtitle', type: 'string', label: 'Header Subtitle' },
+      {
+        name: 'policies',
+        type: 'array',
+        label: 'Policy Documents',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            id: { type: 'string', label: 'ID', required: true },
+            title: { type: 'string', label: 'Policy Title', required: true },
+            description: { type: 'string', label: 'Description' },
+            category: { type: 'string', label: 'Category (academic, hr, research, student, environment, administrative, communication, general)' },
+            icon: { type: 'string', label: 'Icon Name (Lightbulb, Award, BookMarked, Beaker, Recycle, Users, Briefcase, Calendar, Sparkles, FileStack, TreeDeciduous, ClipboardCheck, MessageCircle)' },
+            pdfUrl: { type: 'string', label: 'PDF URL (Google Drive link)', required: true },
+            fileSize: { type: 'string', label: 'File Size (e.g., 2.4 MB)' },
+            lastUpdated: { type: 'string', label: 'Last Updated (e.g., January 2026)' },
+          },
+          required: ['id', 'title', 'pdfUrl'],
+        },
+      },
+      { name: 'layout', type: 'enum', label: 'Layout', options: ['grid', 'list', 'categorized'] },
+      { name: 'columns', type: 'enum', label: 'Columns', options: ['2', '3', '4'] },
+      { name: 'showCategories', type: 'boolean', label: 'Show Category Badges' },
+      { name: 'showFileSize', type: 'boolean', label: 'Show File Size' },
+      { name: 'showLastUpdated', type: 'boolean', label: 'Show Last Updated' },
+      { name: 'showSearch', type: 'boolean', label: 'Enable Search' },
+      { name: 'showCategoryFilter', type: 'boolean', label: 'Enable Category Filter' },
+      { name: 'variant', type: 'enum', label: 'Color Scheme', options: ['modern-dark', 'modern-light'] },
+      { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['glass', 'solid', 'gradient', 'outline'] },
+      { name: 'showDecorations', type: 'boolean', label: 'Show Decorations' },
+    ],
+  },
+
+  InstitutionRulesPage: {
+    name: 'InstitutionRulesPage',
+    displayName: 'Institution Rules Page',
+    category: 'content',
+    description: 'Comprehensive institutional rules page with conduct guidelines, anti-ragging policies, dress code, and attendance rules',
+    icon: 'ClipboardList',
+    previewImage: '/cms-previews/InstitutionRulesPage.png',
+    component: InstitutionRulesPage,
+    propsSchema: z.object({
+      showHeader: z.boolean().default(true),
+      headerTitle: z.string().default('Institution Rules'),
+      headerSubtitle: z.string().optional(),
+      lastUpdated: z.string().optional(),
+      sections: z.array(z.object({
+        id: z.string(),
+        title: z.string(),
+        icon: z.string().optional(),
+        introduction: z.string().optional(),
+        rules: z.array(z.object({
+          text: z.string(),
+          subItems: z.array(z.string()).optional(),
+        })).optional(),
+        content: z.string().optional(),
+        subsections: z.array(z.object({
+          title: z.string(),
+          content: z.string(),
+        })).optional(),
+      })).default([]),
+      showTableOfContents: z.boolean().default(false),
+      variant: z.enum(['modern-dark', 'modern-light']).default('modern-light'),
+      cardStyle: z.enum(['glass', 'solid', 'gradient']).default('glass'),
+      showDecorations: z.boolean().default(true),
+    }),
+    defaultProps: {
+      showHeader: true,
+      headerTitle: 'Institution Rules',
+      headerSubtitle: 'Guidelines for conduct, discipline, and campus life',
+      lastUpdated: 'January 2026',
+      sections: [],
+      showTableOfContents: false,
+      variant: 'modern-light',
+      cardStyle: 'glass',
+      showDecorations: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['rules', 'regulations', 'conduct', 'discipline', 'ragging', 'dress code', 'attendance', 'identity card', 'mobile phone', 'helmet', 'guidelines'],
+    editableProps: [
+      { name: 'showHeader', type: 'boolean', label: 'Show Header' },
+      { name: 'headerTitle', type: 'string', label: 'Header Title' },
+      { name: 'headerSubtitle', type: 'string', label: 'Header Subtitle' },
+      { name: 'lastUpdated', type: 'string', label: 'Last Updated Date' },
+      {
+        name: 'sections',
+        type: 'array',
+        label: 'Rule Sections',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            id: { type: 'string', label: 'Section ID', required: true },
+            title: { type: 'string', label: 'Section Title', required: true },
+            icon: { type: 'string', label: 'Icon Name (Info, ClipboardList, AlertTriangle, Gavel, Shirt, Clock, CreditCard, Bike, Smartphone, BookOpen, Shield, FileWarning)' },
+            introduction: { type: 'string', label: 'Introduction Text' },
+            content: { type: 'string', label: 'Content (for plain text sections)' },
+          },
+          required: ['id', 'title'],
+        },
+      },
+      { name: 'showTableOfContents', type: 'boolean', label: 'Show Table of Contents' },
+      { name: 'variant', type: 'enum', label: 'Color Scheme', options: ['modern-dark', 'modern-light'] },
+      { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['glass', 'solid', 'gradient'] },
+      { name: 'showDecorations', type: 'boolean', label: 'Show Decorations' },
+    ],
+  },
+
   TermsAndConditionsPage: {
     name: 'TermsAndConditionsPage',
     displayName: 'Terms & Conditions Page',
@@ -4676,6 +5035,160 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     ],
   },
 
+  BECSECoursePage: {
+    name: 'BECSECoursePage',
+    displayName: 'BE CSE Course Page (Cream)',
+    category: 'content',
+    description: 'Comprehensive B.E. Computer Science & Engineering course page with cream color backgrounds. Includes hero, overview, benefits, curriculum, specializations, careers, recruiters, admission, fees, facilities, faculty, and FAQs.',
+    icon: 'GraduationCap',
+    previewImage: '/cms-previews/BECSECoursePage.png',
+    component: BECSECoursePage,
+    propsSchema: BECSECoursePagePropsSchema as any,
+    defaultProps: {
+      heroTitle: 'B.E. Computer Science & Engineering',
+      heroSubtitle: 'Transform your passion for technology into a rewarding career. Our AICTE-approved, NBA-accredited program combines cutting-edge curriculum with industry-ready skills to shape tomorrow\'s tech leaders.',
+      heroStats: [
+        { icon: '', label: 'Years Duration', value: '4' },
+        { icon: '', label: 'Seats Available', value: '120' },
+        { icon: '', label: 'Placement Rate', value: '95%' },
+        { icon: '', label: 'Highest Package', value: '₹12L' },
+      ],
+      heroCTAs: [
+        { label: 'Apply Now for 2025-26', link: '/apply', variant: 'primary' as const },
+        { label: 'Explore Curriculum', link: '#curriculum', variant: 'secondary' as const },
+      ],
+      affiliatedTo: 'Affiliated to Anna University, Chennai',
+      overviewTitle: 'Course Overview',
+      overviewCards: [
+        { icon: '⏱️', title: 'Duration', value: '4 Years', description: 'Full-time undergraduate program with 8 semesters' },
+        { icon: '📊', title: 'Intake', value: '120 Seats', description: 'Available seats per academic year' },
+        { icon: '📚', title: 'Eligibility', value: '10+2 with PCM', description: 'Minimum 50% aggregate in Physics, Chemistry & Mathematics' },
+        { icon: '🏛️', title: 'Affiliation', value: 'Anna University', description: 'Approved by AICTE and affiliated to Anna University, Chennai' },
+      ],
+      whyChooseTitle: 'Why Choose CSE at Our College?',
+      benefits: [
+        { icon: '🎓', title: 'Industry-Aligned Curriculum', description: 'Updated curriculum covering latest technologies including AI, ML, Cloud Computing, and Cybersecurity.' },
+        { icon: '🏢', title: 'Strong Industry Partnerships', description: 'Collaborations with top tech companies for internships and placements.' },
+        { icon: '💻', title: 'State-of-the-Art Labs', description: 'Well-equipped computer labs with latest hardware and software tools.' },
+      ],
+      curriculumTitle: 'Course Curriculum',
+      curriculumYears: [
+        {
+          year: 1,
+          semesters: [
+            { semester: 1, credits: 20, subjects: [{ code: 'MA3151', name: 'Matrices and Calculus', credits: 4 }] },
+            { semester: 2, credits: 20, subjects: [{ code: 'MA3251', name: 'Statistics and Numerical Methods', credits: 4 }] },
+          ],
+        },
+      ],
+      specializationsTitle: 'Specializations Offered',
+      specializations: [
+        { icon: '🤖', title: 'AI & Machine Learning', description: 'Deep learning, neural networks, and AI applications.' },
+        { icon: '☁️', title: 'Cloud Computing', description: 'AWS, Azure, Google Cloud, and cloud architecture.' },
+      ],
+      careerTitle: 'Career Opportunities',
+      careerPaths: [
+        { icon: '💻', title: 'Software Engineer', description: 'Design and develop software applications.', avgSalary: '₹3.5-8 LPA' },
+        { icon: '📊', title: 'Data Scientist', description: 'Analyze data and build predictive models.', avgSalary: '₹5-12 LPA' },
+      ],
+      recruitersTitle: 'Our Top Recruiters',
+      recruiters: ['TCS', 'Infosys', 'Wipro', 'Cognizant', 'HCL', 'Amazon', 'Google', 'Microsoft'],
+      admissionTitle: 'Admission Process',
+      admissionSteps: [
+        { step: 1, icon: '📝', title: 'Apply Online', description: 'Fill out the online application form.' },
+        { step: 2, icon: '✅', title: 'Document Verification', description: 'Submit required documents for verification.' },
+        { step: 3, icon: '🎓', title: 'Admission Confirmation', description: 'Pay fees and confirm your seat.' },
+      ],
+      feeTitle: 'Fee Structure (Annual)',
+      feeBreakdown: [
+        { component: 'Tuition Fee', amount: '70,000' },
+        { component: 'Lab Fee', amount: '5,000' },
+        { component: 'Library Fee', amount: '2,000' },
+        { component: 'TOTAL', amount: '90,000', isTotal: true },
+      ],
+      facilitiesTitle: 'State-of-the-Art Facilities',
+      facilities: [
+        { name: 'Programming Lab', description: 'Equipped with high-end workstations and development tools.', image: '/images/labs/programming-lab.jpg' },
+        { name: 'AI & ML Lab', description: 'GPU-enabled systems for deep learning projects.', image: '/images/labs/ai-ml-lab.jpg' },
+      ],
+      facultyTitle: 'Our Experienced Faculty',
+      faculty: [
+        { name: 'Dr. Rajesh Kumar', designation: 'Professor & HOD', qualification: 'Ph.D. in Computer Science', specialization: 'Machine Learning', image: '/images/faculty/hod-cse.jpg' },
+      ],
+      faqTitle: 'Frequently Asked Questions',
+      faqs: [
+        { question: 'What is the eligibility criteria?', answer: '10+2 with Physics, Chemistry, and Mathematics with minimum 50% aggregate.' },
+        { question: 'What is the admission process?', answer: 'Admissions are based on TNEA counseling for Tamil Nadu students.' },
+      ],
+      ctaTitle: 'Ready to Start Your Journey?',
+      ctaDescription: 'Join our B.E. Computer Science & Engineering program and transform your passion for technology into a successful career.',
+      ctaButtonLabel: 'Apply Now for 2025-26',
+      ctaButtonLink: '/apply',
+      primaryColor: '#0b6d41',
+      accentColor: '#ffde59',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['course', 'engineering', 'cse', 'computer science', 'be', 'bachelor', 'curriculum', 'placements', 'admission', 'cream'],
+    editableProps: [
+      { name: 'heroTitle', type: 'string', label: 'Hero Title', required: true, inlineEditable: true },
+      { name: 'heroSubtitle', type: 'string', label: 'Hero Subtitle', multiline: true, inlineEditable: true },
+      { name: 'affiliatedTo', type: 'string', label: 'Affiliated To', inlineEditable: true },
+      { name: 'overviewTitle', type: 'string', label: 'Overview Section Title' },
+      { name: 'whyChooseTitle', type: 'string', label: 'Why Choose Section Title' },
+      { name: 'curriculumTitle', type: 'string', label: 'Curriculum Section Title' },
+      { name: 'careerTitle', type: 'string', label: 'Career Section Title' },
+      { name: 'recruitersTitle', type: 'string', label: 'Recruiters Section Title' },
+      { name: 'admissionTitle', type: 'string', label: 'Admission Section Title' },
+      { name: 'feeTitle', type: 'string', label: 'Fee Section Title' },
+      { name: 'facilitiesTitle', type: 'string', label: 'Facilities Section Title' },
+      { name: 'facultyTitle', type: 'string', label: 'Faculty Section Title' },
+      { name: 'faqTitle', type: 'string', label: 'FAQ Section Title' },
+      { name: 'ctaTitle', type: 'string', label: 'Final CTA Title', inlineEditable: true },
+      { name: 'ctaDescription', type: 'string', label: 'Final CTA Description', multiline: true, inlineEditable: true },
+      { name: 'ctaButtonLabel', type: 'string', label: 'Final CTA Button Label' },
+      { name: 'ctaButtonLink', type: 'string', label: 'Final CTA Button Link' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+    ],
+  },
+
+  BEEEECoursePage: {
+    name: 'BEEEECoursePage',
+    displayName: 'BE EEE Course Page (Cream)',
+    category: 'content',
+    description: 'Comprehensive B.E. Electrical & Electronics Engineering course page with cream color backgrounds. Includes hero, overview, benefits, curriculum, specializations, careers, recruiters, admission, fees, facilities, faculty, and FAQs.',
+    icon: 'Zap',
+    previewImage: '/cms-previews/BEEEECoursePage.png',
+    component: BEEEECoursePage,
+    propsSchema: BEEEECoursePagePropsSchema as any,
+    defaultProps: BE_EEE_SAMPLE_DATA,
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['course', 'engineering', 'eee', 'electrical', 'electronics', 'be', 'bachelor', 'curriculum', 'placements', 'admission', 'cream'],
+    editableProps: [
+      { name: 'heroTitle', type: 'string', label: 'Hero Title', required: true, inlineEditable: true },
+      { name: 'heroSubtitle', type: 'string', label: 'Hero Subtitle', multiline: true, inlineEditable: true },
+      { name: 'affiliatedTo', type: 'string', label: 'Affiliated To', inlineEditable: true },
+      { name: 'overviewTitle', type: 'string', label: 'Overview Section Title' },
+      { name: 'whyChooseTitle', type: 'string', label: 'Why Choose Section Title' },
+      { name: 'curriculumTitle', type: 'string', label: 'Curriculum Section Title' },
+      { name: 'careerTitle', type: 'string', label: 'Career Section Title' },
+      { name: 'recruitersTitle', type: 'string', label: 'Recruiters Section Title' },
+      { name: 'admissionTitle', type: 'string', label: 'Admission Section Title' },
+      { name: 'feeTitle', type: 'string', label: 'Fee Section Title' },
+      { name: 'facilitiesTitle', type: 'string', label: 'Facilities Section Title' },
+      { name: 'facultyTitle', type: 'string', label: 'Faculty Section Title' },
+      { name: 'faqTitle', type: 'string', label: 'FAQ Section Title' },
+      { name: 'ctaTitle', type: 'string', label: 'Final CTA Title', inlineEditable: true },
+      { name: 'ctaDescription', type: 'string', label: 'Final CTA Description', multiline: true, inlineEditable: true },
+      { name: 'ctaButtonLabel', type: 'string', label: 'Final CTA Button Label' },
+      { name: 'ctaButtonLink', type: 'string', label: 'Final CTA Button Link' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+    ],
+  },
+
   InstitutionalDevelopmentPlanPage: {
     name: 'InstitutionalDevelopmentPlanPage',
     displayName: 'Institutional Development Plan Page',
@@ -4833,13 +5346,15 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         title: z.string(),
         images: z.array(z.object({ src: z.string(), alt: z.string().optional() })),
         paragraphs: z.array(z.string()),
-        highlights: z.array(z.string())
+        highlights: z.array(z.string()),
+        warden: z.object({ name: z.string(), mobile: z.string() }).optional()
       }),
       girlsHostel: z.object({
         title: z.string(),
         images: z.array(z.object({ src: z.string(), alt: z.string().optional() })),
         paragraphs: z.array(z.string()),
-        highlights: z.array(z.string())
+        highlights: z.array(z.string()),
+        warden: z.object({ name: z.string(), mobile: z.string() }).optional()
       }),
       defaultTab: z.enum(['boys', 'girls']),
       backgroundColor: z.string(),
@@ -4852,13 +5367,15 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         title: 'Boys Hostel',
         images: [],
         paragraphs: ['Our hostel is located within the campus premises, making it an ideal choice for students.'],
-        highlights: ['Community living experience', 'Dedicated staff support']
+        highlights: ['Community living experience', 'Dedicated staff support'],
+        warden: { name: 'Mr. Srinivasan', mobile: '+91 6374967302' }
       },
       girlsHostel: {
         title: 'Girls Hostel',
         images: [],
         paragraphs: ['Our girls hostel is equipped with all modern facilities.'],
-        highlights: ['Safe and secure environment', 'Modern amenities']
+        highlights: ['Safe and secure environment', 'Modern amenities'],
+        warden: { name: 'Mrs. Lakshmi', mobile: '+91 6374967303' }
       },
       defaultTab: 'boys',
       backgroundColor: 'rgb(251, 251, 238)',
@@ -4901,6 +5418,15 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
             label: 'Highlights',
             itemType: 'string',
           },
+          {
+            name: 'warden',
+            type: 'object',
+            label: 'Hostel Warden',
+            properties: [
+              { name: 'name', type: 'string', label: 'Warden Name' },
+              { name: 'mobile', type: 'string', label: 'Mobile Number' },
+            ],
+          },
         ],
       },
       {
@@ -4934,11 +5460,551 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
             label: 'Highlights',
             itemType: 'string',
           },
+          {
+            name: 'warden',
+            type: 'object',
+            label: 'Hostel Warden',
+            properties: [
+              { name: 'name', type: 'string', label: 'Warden Name' },
+              { name: 'mobile', type: 'string', label: 'Mobile Number' },
+            ],
+          },
         ],
       },
       { name: 'backgroundColor', type: 'color', label: 'Background Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },
       { name: 'textColor', type: 'color', label: 'Text Color' },
+    ],
+  },
+
+  AuditoriumPage: {
+    name: 'AuditoriumPage',
+    displayName: 'Auditorium Page',
+    category: 'content',
+    description: 'Facility page for auditorium with hero image, description paragraphs, and features list',
+    icon: 'Theater',
+    previewImage: '/cms-previews/AuditoriumPage.png',
+    component: AuditoriumPage,
+    propsSchema: z.object({
+      showHeader: z.boolean().default(true),
+      headerTitle: z.string().default('Auditorium'),
+      headerSubtitle: z.string().optional(),
+      heroImage: z.string().default('/images/facilities/auditorium.jpg'),
+      heroImageAlt: z.string().default('JKKN Auditorium'),
+      showHeroImage: z.boolean().default(true),
+      paragraphs: z.array(z.object({
+        text: z.string(),
+      })).default([]),
+      showFeatures: z.boolean().default(true),
+      featuresTitle: z.string().optional(),
+      features: z.array(z.object({
+        text: z.string(),
+        icon: z.string().optional(),
+      })).default([]),
+      variant: z.enum(['modern-dark', 'modern-light']).default('modern-light'),
+      cardStyle: z.enum(['glass', 'solid', 'gradient']).default('glass'),
+      showDecorations: z.boolean().default(true),
+    }),
+    defaultProps: {
+      showHeader: true,
+      headerTitle: 'Auditorium',
+      headerSubtitle: 'A world-class venue for events and performances',
+      heroImage: '/images/facilities/auditorium.jpg',
+      heroImageAlt: 'JKKN Auditorium',
+      showHeroImage: true,
+      paragraphs: [
+        {
+          text: 'The JKKN auditorium is a spacious facility that can accommodate a large number of guests comfortably. The seating arrangement is well-designed to provide an uninterrupted view of the stage, and the acoustics are impeccable, ensuring that every note and word is heard clearly. The stage is equipped with the latest audio-visual technology, making it possible to host a wide range of events, including concerts, lectures, and theatrical performances.',
+        },
+        {
+          text: 'In addition to its impressive features, the auditorium is designed with utmost attention to detail, making it a truly elegant space. The interior decor features a combination of modern and traditional elements that blend perfectly to create a warm and welcoming atmosphere. The lighting is also carefully selected to enhance the ambiance and mood of the event.',
+        },
+        {
+          text: 'The JKKN auditorium is not just an impressive facility, but it is also a versatile one. It can be used for various purposes, including graduation ceremonies, workshops, and seminars, making it an essential resource for the institution. The auditorium is also well-maintained, ensuring that it remains in top condition at all times.',
+        },
+      ],
+      showFeatures: true,
+      featuresTitle: '',
+      features: [
+        { text: 'Spacious seating', icon: 'Users' },
+        { text: 'High-tech sound and lighting systems', icon: 'Speaker' },
+        { text: 'Stage equipment and props', icon: 'Theater' },
+        { text: 'Excellent acoustics', icon: 'Volume2' },
+        { text: 'Professional staff', icon: 'UserCheck' },
+      ],
+      variant: 'modern-light',
+      cardStyle: 'glass',
+      showDecorations: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['auditorium', 'facility', 'events', 'theater', 'stage', 'performances', 'venue', 'hall'],
+    editableProps: [
+      { name: 'showHeader', type: 'boolean', label: 'Show Header' },
+      { name: 'headerTitle', type: 'string', label: 'Header Title' },
+      { name: 'headerSubtitle', type: 'string', label: 'Header Subtitle' },
+      { name: 'heroImage', type: 'image', label: 'Hero Image URL' },
+      { name: 'heroImageAlt', type: 'string', label: 'Hero Image Alt Text' },
+      { name: 'showHeroImage', type: 'boolean', label: 'Show Hero Image' },
+      {
+        name: 'paragraphs',
+        type: 'array',
+        label: 'Content Paragraphs',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            text: { type: 'string', label: 'Paragraph Text', required: true },
+          },
+          required: ['text'],
+        },
+      },
+      { name: 'showFeatures', type: 'boolean', label: 'Show Features List' },
+      { name: 'featuresTitle', type: 'string', label: 'Features Section Title' },
+      {
+        name: 'features',
+        type: 'array',
+        label: 'Features',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            text: { type: 'string', label: 'Feature Text', required: true },
+            icon: { type: 'string', label: 'Icon Name (Users, Speaker, Theater, Volume2, UserCheck, Sparkles, Award, Calendar, CheckCircle2)' },
+          },
+          required: ['text'],
+        },
+      },
+      { name: 'variant', type: 'enum', label: 'Color Scheme', options: ['modern-dark', 'modern-light'] },
+      { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['glass', 'solid', 'gradient'] },
+      { name: 'showDecorations', type: 'boolean', label: 'Show Decorations' },
+    ],
+  },
+
+  SeminarHallPage: {
+    name: 'SeminarHallPage',
+    displayName: 'Seminar Hall Page',
+    category: 'content',
+    description: 'Modern facility page for seminar hall with hero image, description, features, and stats',
+    icon: 'Presentation',
+    previewImage: '/cms-previews/SeminarHallPage.png',
+    component: SeminarHallPage,
+    propsSchema: z.object({
+      showHeader: z.boolean().default(true),
+      badge: z.string().default('Premium Facility'),
+      headerTitle: z.string().default('SEMINAR HALL'),
+      headerSubtitle: z.string().optional(),
+      heroImage: z.string().default('/images/facilities/seminar-hall.jpg'),
+      heroImageAlt: z.string().default('JKKN Seminar Hall'),
+      showHeroImage: z.boolean().default(true),
+      introduction: z.string().default('Our seminar hall is designed to offer a comfortable and engaging learning environment to all attendees, with a generous seating capacity and modern amenities.'),
+      additionalContent: z.string().optional(),
+      paragraphs: z.array(z.object({
+        text: z.string(),
+      })).default([]),
+      showFeatures: z.boolean().default(true),
+      featuresTitle: z.string().default('Key Features'),
+      features: z.array(z.object({
+        text: z.string(),
+        icon: z.string().optional(),
+      })).default([]),
+      showStats: z.boolean().default(true),
+      stats: z.array(z.object({
+        icon: z.string(),
+        value: z.string(),
+        label: z.string(),
+      })).default([]),
+      variant: z.enum(['modern-light', 'modern-dark']).default('modern-light'),
+      cardStyle: z.enum(['glass', 'solid', 'gradient']).default('glass'),
+      showDecorations: z.boolean().default(true),
+    }),
+    defaultProps: {
+      showHeader: true,
+      badge: 'Premium Facility',
+      headerTitle: 'SEMINAR HALL',
+      headerSubtitle: 'A modern space for learning and collaboration',
+      heroImage: '/images/facilities/seminar-hall.jpg',
+      heroImageAlt: 'JKKN Seminar Hall',
+      showHeroImage: true,
+      introduction: 'Our seminar hall is designed to offer a comfortable and engaging learning environment to all attendees, with a generous seating capacity and modern amenities.',
+      additionalContent: '',
+      paragraphs: [
+        {
+          text: 'Our seminar hall is designed to offer a comfortable and engaging learning environment to all attendees, with a generous seating capacity and modern amenities.',
+        },
+        {
+          text: 'Fully air-conditioned and equipped with a stage, projector, sound system, and lighting equipment.',
+        },
+        {
+          text: 'High-speed Wi-Fi and ample parking facilities.',
+        },
+        {
+          text: 'Team of skilled technicians and support staff available.',
+        },
+      ],
+      showFeatures: true,
+      featuresTitle: 'Key Features',
+      features: [
+        { text: 'Spacious and well-lit', icon: 'Sun' },
+        { text: 'Audio-visual equipment', icon: 'Projector' },
+        { text: 'Internet connectivity', icon: 'Wifi' },
+        { text: 'Comfortable seating', icon: 'Armchair' },
+        { text: 'Air conditioning', icon: 'Wind' },
+        { text: 'Hygiene standards', icon: 'ShieldCheck' },
+      ],
+      showStats: true,
+      stats: [
+        { icon: 'Users', value: '500+', label: 'Seating Capacity' },
+        { icon: 'Calendar', value: '100+', label: 'Events Yearly' },
+      ],
+      variant: 'modern-light',
+      cardStyle: 'glass',
+      showDecorations: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['seminar', 'hall', 'facility', 'meeting', 'conference', 'presentation', 'events', 'venue'],
+    editableProps: [
+      { name: 'showHeader', type: 'boolean', label: 'Show Header' },
+      { name: 'badge', type: 'string', label: 'Badge Text' },
+      { name: 'headerTitle', type: 'string', label: 'Header Title' },
+      { name: 'headerSubtitle', type: 'string', label: 'Header Subtitle' },
+      { name: 'heroImage', type: 'image', label: 'Hero Image URL' },
+      { name: 'heroImageAlt', type: 'string', label: 'Hero Image Alt Text' },
+      { name: 'showHeroImage', type: 'boolean', label: 'Show Hero Image' },
+      { name: 'introduction', type: 'string', label: 'Introduction Text' },
+      { name: 'additionalContent', type: 'string', label: 'Additional Content' },
+      {
+        name: 'paragraphs',
+        type: 'array',
+        label: 'Content Paragraphs',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            text: { type: 'string', label: 'Paragraph Text', required: true },
+          },
+          required: ['text'],
+        },
+      },
+      { name: 'showFeatures', type: 'boolean', label: 'Show Features' },
+      { name: 'featuresTitle', type: 'string', label: 'Features Section Title' },
+      {
+        name: 'features',
+        type: 'array',
+        label: 'Features',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            text: { type: 'string', label: 'Feature Text', required: true },
+            icon: { type: 'string', label: 'Icon Name (Sun, Projector, Wifi, Armchair, Wind, ShieldCheck, Users, Calendar, CheckCircle2)' },
+          },
+          required: ['text'],
+        },
+      },
+      { name: 'showStats', type: 'boolean', label: 'Show Stats Section' },
+      {
+        name: 'stats',
+        type: 'array',
+        label: 'Statistics',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            icon: { type: 'string', label: 'Icon Name', required: true },
+            value: { type: 'string', label: 'Stat Value', required: true },
+            label: { type: 'string', label: 'Stat Label', required: true },
+          },
+          required: ['icon', 'value', 'label'],
+        },
+      },
+      { name: 'variant', type: 'enum', label: 'Color Scheme', options: ['modern-light', 'modern-dark'] },
+      { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['glass', 'solid', 'gradient'] },
+      { name: 'showDecorations', type: 'boolean', label: 'Show Decorations' },
+    ],
+  },
+
+  LibraryPage: {
+    name: 'LibraryPage',
+    displayName: 'Library Page',
+    category: 'content',
+    description: 'Facility page for library with resources, sections, services, and librarian contact information',
+    icon: 'BookOpen',
+    previewImage: '/cms-previews/LibraryPage.png',
+    component: LibraryPage,
+    propsSchema: z.object({
+      showHeader: z.boolean().default(true),
+      headerTitle: z.string().default('LIBRARY'),
+      headerSubtitle: z.string().default('LIBRARY AND INFORMATION RESOURCES CENTRE'),
+      paragraphs: z.array(z.object({
+        text: z.string(),
+      })).default([]),
+      timing: z.string().optional(),
+      showResources: z.boolean().default(true),
+      resourcesTitle: z.string().default('LIBRARY RESOURCES'),
+      resources: z.array(z.object({
+        label: z.string(),
+        value: z.string(),
+        icon: z.string().optional(),
+      })).default([]),
+      showSections: z.boolean().default(true),
+      sectionsTitle: z.string().default('LIBRARY SECTIONS'),
+      sections: z.array(z.object({
+        title: z.string(),
+        icon: z.string().optional(),
+      })).default([]),
+      showServices: z.boolean().default(true),
+      servicesTitle: z.string().default('OTHER SERVICES'),
+      services: z.array(z.object({
+        title: z.string(),
+        icon: z.string().optional(),
+      })).default([]),
+      showContact: z.boolean().default(true),
+      contactTitle: z.string().default('CONTACT US'),
+      librarian: z.object({
+        name: z.string(),
+        qualification: z.string(),
+        phone: z.string(),
+      }).optional(),
+      variant: z.enum(['modern-dark', 'modern-light']).default('modern-light'),
+      cardStyle: z.enum(['glass', 'solid', 'gradient']).default('glass'),
+      showDecorations: z.boolean().default(true),
+    }),
+    defaultProps: {
+      showHeader: true,
+      headerTitle: 'LIBRARY',
+      headerSubtitle: 'LIBRARY AND INFORMATION RESOURCES CENTRE',
+      paragraphs: [
+        {
+          text: 'The library covers a wide range of subjects in Science, Humanities, Engineering, Management, Computer Applications, etc. The library is well equipped with infrastructure. With 175 seating capacity, 30 Mbps high-speed internet and CCTV surveillance are available. The library is automated using Koha software.',
+        },
+        {
+          text: 'All the students and faculty can access online catalog, OPAC. The library uses barcode technology for its circulation and stock verification. The central collection represents a relatively small library. Special collection areas include Women\'s Studies, Total Quality Management, Competitive Exams etc., with special emphasis on local area studies.',
+        },
+        {
+          text: 'JKKN library offers 6500 E-Journals through DELNET, E-GATE, NPTEL, NDL, SWAYAM, the online digital library. All books are covered with RFID tag. The library is open from 8:30 A.M. to 6:00 P.M. on all working days.',
+        },
+      ],
+      timing: '8:30 A.M. to 6:00 P.M.',
+      showResources: true,
+      resourcesTitle: 'LIBRARY RESOURCES',
+      resources: [
+        { label: 'Volumes', value: '26,505', icon: 'BookOpen' },
+        { label: 'Titles', value: '4,949', icon: 'BookMarked' },
+        { label: 'Journals', value: '29', icon: 'Newspaper' },
+        { label: 'E-Journals', value: '6,533', icon: 'Globe' },
+        { label: 'Magazines', value: '25', icon: 'Newspaper' },
+        { label: 'News Paper', value: '03', icon: 'Newspaper' },
+        { label: 'Software', value: 'Koha', icon: 'Database' },
+        { label: 'Internet Speed', value: '500 Mbps', icon: 'Wifi' },
+        { label: 'E-Resources & Delnet', value: 'Available', icon: 'Globe' },
+      ],
+      showSections: true,
+      sectionsTitle: 'LIBRARY SECTIONS',
+      sections: [
+        { title: 'Reference Books Section', icon: 'BookMarked' },
+        { title: 'Circulation Section', icon: 'Library' },
+        { title: 'Journals Section', icon: 'Newspaper' },
+      ],
+      showServices: true,
+      servicesTitle: 'OTHER SERVICES',
+      services: [
+        { title: 'Reprographic Service', icon: 'Printer' },
+        { title: 'Digital Library', icon: 'Monitor' },
+      ],
+      showContact: true,
+      contactTitle: 'CONTACT US',
+      librarian: {
+        name: 'M. MUHAMMAD NAZAR',
+        qualification: 'B.Sc., M.L.I.S., M.Phil.',
+        phone: '9443472294',
+      },
+      variant: 'modern-light',
+      cardStyle: 'glass',
+      showDecorations: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['library', 'books', 'resources', 'journals', 'e-journals', 'facility', 'study', 'reading', 'digital library'],
+    editableProps: [
+      { name: 'showHeader', type: 'boolean', label: 'Show Header' },
+      { name: 'headerTitle', type: 'string', label: 'Header Title' },
+      { name: 'headerSubtitle', type: 'string', label: 'Header Subtitle' },
+      {
+        name: 'paragraphs',
+        type: 'array',
+        label: 'Introduction Paragraphs',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            text: { type: 'string', label: 'Paragraph Text', required: true },
+          },
+          required: ['text'],
+        },
+      },
+      { name: 'timing', type: 'string', label: 'Operating Hours' },
+      { name: 'showResources', type: 'boolean', label: 'Show Resources Section' },
+      { name: 'resourcesTitle', type: 'string', label: 'Resources Section Title' },
+      {
+        name: 'resources',
+        type: 'array',
+        label: 'Library Resources',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            label: { type: 'string', label: 'Resource Label', required: true },
+            value: { type: 'string', label: 'Resource Value', required: true },
+            icon: { type: 'string', label: 'Icon Name (BookOpen, BookMarked, Newspaper, Globe, Database, Wifi, Library, etc.)' },
+          },
+          required: ['label', 'value'],
+        },
+      },
+      { name: 'showSections', type: 'boolean', label: 'Show Library Sections' },
+      { name: 'sectionsTitle', type: 'string', label: 'Sections Title' },
+      {
+        name: 'sections',
+        type: 'array',
+        label: 'Library Sections',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            title: { type: 'string', label: 'Section Title', required: true },
+            icon: { type: 'string', label: 'Icon Name' },
+          },
+          required: ['title'],
+        },
+      },
+      { name: 'showServices', type: 'boolean', label: 'Show Services Section' },
+      { name: 'servicesTitle', type: 'string', label: 'Services Title' },
+      {
+        name: 'services',
+        type: 'array',
+        label: 'Library Services',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            title: { type: 'string', label: 'Service Title', required: true },
+            icon: { type: 'string', label: 'Icon Name' },
+          },
+          required: ['title'],
+        },
+      },
+      { name: 'showContact', type: 'boolean', label: 'Show Contact Section' },
+      { name: 'contactTitle', type: 'string', label: 'Contact Section Title' },
+      {
+        name: 'librarian',
+        type: 'object',
+        label: 'Librarian Details',
+        itemSchema: {
+          properties: {
+            name: { type: 'string', label: 'Librarian Name', required: true },
+            qualification: { type: 'string', label: 'Qualification', required: true },
+            phone: { type: 'string', label: 'Phone Number', required: true },
+          },
+          required: ['name', 'qualification', 'phone'],
+        },
+      },
+      { name: 'variant', type: 'enum', label: 'Color Scheme', options: ['modern-dark', 'modern-light'] },
+      { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['glass', 'solid', 'gradient'] },
+      { name: 'showDecorations', type: 'boolean', label: 'Show Decorations' },
+    ],
+  },
+
+  DigitalClassroomPage: {
+    name: 'DigitalClassroomPage',
+    displayName: 'Digital Classroom Page',
+    category: 'content',
+    description: 'Facility page for digital classroom with hero image, description paragraphs, and technology features list',
+    icon: 'Monitor',
+    previewImage: '/cms-previews/DigitalClassroomPage.png',
+    component: DigitalClassroomPage,
+    propsSchema: z.object({
+      showHeader: z.boolean().default(true),
+      headerTitle: z.string().default('Digital Class Room'),
+      headerSubtitle: z.string().optional(),
+      heroImage: z.string().default('/images/facilities/digital-classroom.jpg'),
+      heroImageAlt: z.string().default('JKKN Digital Classroom'),
+      showHeroImage: z.boolean().default(true),
+      paragraphs: z.array(z.object({
+        text: z.string(),
+      })).default([]),
+      showFeatures: z.boolean().default(true),
+      featuresTitle: z.string().optional(),
+      features: z.array(z.object({
+        text: z.string(),
+        icon: z.string().optional(),
+      })).default([]),
+      variant: z.enum(['modern-dark', 'modern-light']).default('modern-light'),
+      cardStyle: z.enum(['glass', 'solid', 'gradient']).default('glass'),
+      showDecorations: z.boolean().default(true),
+    }),
+    defaultProps: {
+      showHeader: true,
+      headerTitle: 'Digital Class Room',
+      headerSubtitle: 'Modern learning spaces with cutting-edge technology',
+      heroImage: '/images/facilities/digital-classroom.jpg',
+      heroImageAlt: 'JKKN Digital Classroom',
+      showHeroImage: true,
+      paragraphs: [
+        {
+          text: 'JKKN Educational Institutions prioritizes exceptional classroom facilities as a crucial aspect of a great learning environment. Our classrooms are thoughtfully designed to offer a comfortable and engaging space for students to thrive and progress in their studies.',
+        },
+        {
+          text: 'Our facilities boast cutting-edge technology, including high-speed internet, multimedia projectors, and interactive whiteboards, providing students with access to a vast array of information at their fingertips. We also ensure that our seating arrangements are comfortable and conducive to learning, eliminating distractions and disruptions.',
+        },
+        {
+          text: 'With modern furnishings, proper ventilation, excellent lighting, and inspiring posters, our classrooms provide a warm and welcoming atmosphere that fosters a passion for learning.',
+        },
+      ],
+      showFeatures: true,
+      featuresTitle: '',
+      features: [
+        { text: 'Digital classrooms are equipped with the latest technology', icon: 'Monitor' },
+        { text: 'Interactive whiteboards', icon: 'Presentation' },
+        { text: 'High-speed internet', icon: 'Wifi' },
+        { text: 'Multimedia resources', icon: 'Video' },
+        { text: 'Collaboration tools', icon: 'Users' },
+      ],
+      variant: 'modern-light',
+      cardStyle: 'glass',
+      showDecorations: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['digital', 'classroom', 'technology', 'smart', 'interactive', 'whiteboard', 'internet', 'multimedia', 'education'],
+    editableProps: [
+      { name: 'showHeader', type: 'boolean', label: 'Show Header' },
+      { name: 'headerTitle', type: 'string', label: 'Header Title' },
+      { name: 'headerSubtitle', type: 'string', label: 'Header Subtitle' },
+      { name: 'heroImage', type: 'image', label: 'Hero Image URL' },
+      { name: 'heroImageAlt', type: 'string', label: 'Hero Image Alt Text' },
+      { name: 'showHeroImage', type: 'boolean', label: 'Show Hero Image' },
+      {
+        name: 'paragraphs',
+        type: 'array',
+        label: 'Content Paragraphs',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            text: { type: 'string', label: 'Paragraph Text', required: true },
+          },
+          required: ['text'],
+        },
+      },
+      { name: 'showFeatures', type: 'boolean', label: 'Show Features List' },
+      { name: 'featuresTitle', type: 'string', label: 'Features Section Title' },
+      {
+        name: 'features',
+        type: 'array',
+        label: 'Features',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            text: { type: 'string', label: 'Feature Text', required: true },
+            icon: { type: 'string', label: 'Icon Name (Monitor, Wifi, Presentation, Video, Users, CheckCircle2, GraduationCap, Lightbulb, Laptop)' },
+          },
+          required: ['text'],
+        },
+      },
+      { name: 'variant', type: 'enum', label: 'Color Scheme', options: ['modern-dark', 'modern-light'] },
+      { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['glass', 'solid', 'gradient'] },
+      { name: 'showDecorations', type: 'boolean', label: 'Show Decorations' },
     ],
   },
 
@@ -5071,6 +6137,291 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'backgroundColor', type: 'color', label: 'Background Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },
       { name: 'textColor', type: 'color', label: 'Text Color' },
+    ],
+  },
+
+  FoodCourtPage: {
+    name: 'FoodCourtPage',
+    displayName: 'Food Court Page',
+    category: 'content',
+    description: 'Specialized food court/canteen facility page with glassmorphism design - shows images, features, and highlights',
+    icon: 'UtensilsCrossed',
+    previewImage: '/cms-previews/FoodCourtPage.png',
+    component: FoodCourtPage,
+    propsSchema: z.object({
+      facilityTitle: z.string(),
+      images: z.array(z.object({
+        src: z.string(),
+        alt: z.string().optional()
+      })),
+      introduction: z.string(),
+      features: z.array(z.object({
+        title: z.string(),
+        description: z.string()
+      })),
+      highlightsTitle: z.string(),
+      highlights: z.array(z.object({
+        item: z.string()
+      })),
+      conclusion: z.string().optional(),
+      backgroundColor: z.string(),
+      accentColor: z.string(),
+      textColor: z.string()
+    }),
+    defaultProps: {
+      facilityTitle: 'FOOD COURT',
+      images: [
+        { src: 'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=800&auto=format&fit=crop', alt: 'Food Court Interior 1' },
+        { src: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop', alt: 'Food Court Interior 2' },
+        { src: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&auto=format&fit=crop', alt: 'Food Court Interior 3' }
+      ],
+      introduction: '<p>Our canteen offers more than just a mere food stop, as it serves as a social hub for students to unwind, catch up with peers, and recharge themselves before resuming their studies. With its cozy seating and inviting ambiance, the canteen provides a comfortable space for students to take a breather and replenish their energy.</p><p>Regarding the food options, you won\'t be disappointed with the wide array of choices available at our canteen. From crisp salads and appetizing sandwiches to substantial hot meals and snacks, we offer something to suit every palate. Our menu is thoughtfully crafted to accommodate diverse dietary needs and preferences, ensuring that everyone can find a delicious and fulfilling meal.</p>',
+      features: [
+        {
+          title: 'Diverse Menu',
+          description: '<p>Wide variety of cuisines and food options including South Indian, North Indian, Chinese, and Continental dishes to cater to all taste preferences.</p>'
+        },
+        {
+          title: 'Quality Ingredients',
+          description: '<p>Fresh, quality ingredients sourced from trusted suppliers ensure every meal is nutritious, tasty, and prepared with care.</p>'
+        },
+        {
+          title: 'Healthy Options',
+          description: '<p>Nutritious choices for health-conscious students including salads, fresh juices, and balanced meal options with proper nutritional value.</p>'
+        },
+        {
+          title: 'Affordable Prices',
+          description: '<p>Student-friendly pricing ensures that quality food is accessible to all, with special meal combos and discounts available.</p>'
+        }
+      ],
+      highlightsTitle: 'Key Highlights',
+      highlights: [
+        { item: 'Diverse menu' },
+        { item: 'Quality ingredients' },
+        { item: 'Healthy options' },
+        { item: 'Affordable prices' },
+        { item: 'Hygiene and safety' }
+      ],
+      conclusion: '<p>Our food court is designed to be more than just a dining facility - it\'s a space where students can enjoy delicious, nutritious meals in a comfortable and hygienic environment. With strict quality standards and a focus on student satisfaction, we ensure that every dining experience is pleasant and fulfilling.</p>',
+      backgroundColor: '#0b6d41',
+      accentColor: '#ffde59',
+      textColor: '#ffffff'
+    },
+    supportsChildren: false,
+    keywords: ['food', 'court', 'canteen', 'cafeteria', 'dining', 'meal', 'restaurant', 'facility'],
+    editableProps: [
+      { name: 'facilityTitle', type: 'string', label: 'Facility Title', required: true },
+      {
+        name: 'images',
+        type: 'array',
+        label: 'Gallery Images',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            src: { type: 'string', label: 'Image URL', required: true, format: 'image' },
+            alt: { type: 'string', label: 'Alt Text' }
+          },
+          required: ['src'],
+        },
+      },
+      { name: 'introduction', type: 'string', multiline: true, label: 'Introduction Paragraph', required: true },
+      {
+        name: 'features',
+        type: 'array',
+        label: 'Features',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            title: { type: 'string', label: 'Feature Title', required: true },
+            description: { type: 'string', label: 'Feature Description', required: true }
+          },
+          required: ['title', 'description'],
+        },
+      },
+      { name: 'highlightsTitle', type: 'string', label: 'Highlights Section Title', required: true },
+      {
+        name: 'highlights',
+        type: 'array',
+        label: 'Highlights',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            item: { type: 'string', label: 'Highlight Item', required: true }
+          },
+          required: ['item'],
+        },
+      },
+      { name: 'conclusion', type: 'string', multiline: true, label: 'Conclusion Paragraph' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'textColor', type: 'color', label: 'Text Color' },
+    ],
+  },
+
+  SportsPage: {
+    name: 'SportsPage',
+    displayName: 'Sports Page',
+    category: 'content',
+    description: 'Modern sports facility page with light background, stats cards, outdoor/indoor games galleries, and feature cards',
+    icon: 'Trophy',
+    previewImage: '/cms-previews/SportsPage.png',
+    component: SportsPage,
+    propsSchema: z.object({
+      facilityTitle: z.string(),
+      subtitle: z.string(),
+      introduction: z.string(),
+      stats: z.array(z.object({
+        value: z.string(),
+        label: z.string(),
+        icon: z.string().optional()
+      })),
+      outdoorGamesTitle: z.string(),
+      outdoorGamesImages: z.array(z.object({
+        src: z.string(),
+        alt: z.string().optional()
+      })),
+      indoorGamesTitle: z.string(),
+      indoorGamesImages: z.array(z.object({
+        src: z.string(),
+        alt: z.string().optional()
+      })),
+      featuresTitle: z.string(),
+      features: z.array(z.object({
+        title: z.string(),
+        description: z.string(),
+        icon: z.string().optional()
+      })),
+      conclusion: z.string().optional(),
+      primaryColor: z.string(),
+      accentColor: z.string(),
+      backgroundColor: z.string()
+    }),
+    defaultProps: {
+      facilityTitle: 'SPORTS',
+      subtitle: 'Fitness & Athletics Excellence',
+      introduction: '<p>Welcome to the Sports Club Facility at JKKN Educational Institutions, where fitness and fun come together! Our top-notch facility is designed to cater to all your sporting and fitness needs. Here\'s why our Sports Club Facility stands out from the rest:</p>',
+      stats: [
+        { value: '10+', label: 'Sports Disciplines', icon: 'Trophy' },
+        { value: '5000+', label: 'Sq.ft Sports Complex', icon: 'Target' },
+        { value: '20+', label: 'Expert Coaches', icon: 'Users' }
+      ],
+      outdoorGamesTitle: 'Outdoor Games',
+      outdoorGamesImages: [
+        { src: '/images/facilities/sports-outdoor-1.jpg', alt: 'Outdoor Sports 1' },
+        { src: '/images/facilities/sports-outdoor-2.jpg', alt: 'Outdoor Sports 2' },
+        { src: '/images/facilities/sports-outdoor-3.jpg', alt: 'Outdoor Sports 3' }
+      ],
+      indoorGamesTitle: 'Indoor Games',
+      indoorGamesImages: [
+        { src: '/images/facilities/sports-indoor-1.jpg', alt: 'Indoor Sports 1' },
+        { src: '/images/facilities/sports-indoor-2.jpg', alt: 'Indoor Sports 2' },
+        { src: '/images/facilities/sports-indoor-3.jpg', alt: 'Indoor Sports 3' }
+      ],
+      featuresTitle: 'Why Choose Our Sports Facility?',
+      features: [
+        {
+          title: 'World-class Facilities',
+          description: '<p>State-of-the-art gym, swimming pool, basketball court, tennis court, and football field - all designed to meet international standards.</p>',
+          icon: 'Award'
+        },
+        {
+          title: 'Expert Instructors',
+          description: '<p>Our certified and experienced trainers are dedicated to helping you achieve your fitness goals with personalized guidance and support.</p>',
+          icon: 'Users'
+        },
+        {
+          title: 'Cutting-edge Equipment',
+          description: '<p>Access to the latest cardio machines, weight training equipment, and sports gear to enhance your training experience.</p>',
+          icon: 'Dumbbell'
+        },
+        {
+          title: 'Free Memberships',
+          description: '<p>Complimentary access for all students, staff, and community members - because fitness should be accessible to everyone.</p>',
+          icon: 'Heart'
+        },
+        {
+          title: 'Community Spirit',
+          description: '<p>Regular events, tournaments, and competitions that foster camaraderie and team spirit among participants.</p>',
+          icon: 'Trophy'
+        },
+        {
+          title: 'Holistic Development',
+          description: '<p>Focus on physical fitness, mental wellness, and character building through sports and athletic activities.</p>',
+          icon: 'Target'
+        }
+      ],
+      conclusion: '<p>So why wait? Join the Sports Club Facility at JKKN Educational Institutions and experience the ultimate fitness and sporting experience. Whether you\'re a beginner or a seasoned pro, we\'ve got something for everyone. Come and join our vibrant community of sports enthusiasts today!</p>',
+      primaryColor: '#0b6d41',
+      accentColor: '#ffde59',
+      backgroundColor: '#ffffff'
+    },
+    supportsChildren: false,
+    keywords: ['sports', 'games', 'outdoor', 'indoor', 'facilities', 'athletics', 'gym', 'fitness', 'basketball', 'football', 'tennis', 'swimming'],
+    editableProps: [
+      { name: 'facilityTitle', type: 'string', label: 'Facility Title', required: true },
+      { name: 'subtitle', type: 'string', label: 'Subtitle', required: true },
+      { name: 'introduction', type: 'string', multiline: true, label: 'Introduction Paragraph', required: true },
+      {
+        name: 'stats',
+        type: 'array',
+        label: 'Stats Cards',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            value: { type: 'string', label: 'Stat Value', required: true },
+            label: { type: 'string', label: 'Stat Label', required: true },
+            icon: { type: 'enum', label: 'Icon', options: ['Trophy', 'Target', 'Users', 'Award', 'Dumbbell', 'Heart'] }
+          },
+          required: ['value', 'label'],
+        },
+      },
+      { name: 'outdoorGamesTitle', type: 'string', label: 'Outdoor Games Section Title', required: true },
+      {
+        name: 'outdoorGamesImages',
+        type: 'array',
+        label: 'Outdoor Games Images',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            src: { type: 'string', label: 'Image URL', required: true, format: 'image' },
+            alt: { type: 'string', label: 'Alt Text' }
+          },
+          required: ['src'],
+        },
+      },
+      { name: 'indoorGamesTitle', type: 'string', label: 'Indoor Games Section Title', required: true },
+      {
+        name: 'indoorGamesImages',
+        type: 'array',
+        label: 'Indoor Games Images',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            src: { type: 'string', label: 'Image URL', required: true, format: 'image' },
+            alt: { type: 'string', label: 'Alt Text' }
+          },
+          required: ['src'],
+        },
+      },
+      { name: 'featuresTitle', type: 'string', label: 'Features Section Title', required: true },
+      {
+        name: 'features',
+        type: 'array',
+        label: 'Features',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            title: { type: 'string', label: 'Feature Title', required: true },
+            description: { type: 'string', label: 'Feature Description', required: true },
+            icon: { type: 'enum', label: 'Icon', options: ['Trophy', 'Target', 'Users', 'Award', 'Dumbbell', 'Heart'] }
+          },
+          required: ['title', 'description'],
+        },
+      },
+      { name: 'conclusion', type: 'string', multiline: true, label: 'Conclusion Paragraph' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color (Header)' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color (Yellow)' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
     ],
   },
 
@@ -6344,6 +7695,846 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'showAnimations', type: 'boolean', label: 'Enable Animations' },
       { name: 'bulletStyle', type: 'enum', label: 'Bullet Style', options: ['check', 'arrow', 'dot', 'number'] },
       { name: 'bulletColor', type: 'color', label: 'Bullet Color' },
+    ],
+  },
+
+  ContactInfoSection: {
+    name: 'ContactInfoSection',
+    displayName: 'Contact Info Section',
+    category: 'content',
+    description: 'Compact contact section with phone, email, address cards and embedded map - perfect for homepage use',
+    icon: 'Phone',
+    previewImage: '/cms-previews/ContactInfoSection.png',
+    component: ContactInfoSection,
+    propsSchema: z.object({
+      title: z.string().default('Contact Us'),
+      subtitle: z.string().optional(),
+      headerPart1Color: z.string().default('#0b6d41'),
+      headerPart2Color: z.string().default('#D4AF37'),
+      phone: z.string().default('+91 93458 55001'),
+      email: z.string().default('info@jkkn.ac.in'),
+      address: z.string().default('Natarajapuram, NH-544, Kumarapalayam, Namakkal, Tamil Nadu - 638183'),
+      workingHours: z.string().optional(),
+      showMap: z.boolean().default(true),
+      mapEmbedUrl: z.string().default('https://www.google.com/maps?q=JKKN+Educational+Institutions,Komarapalayam,Tamil+Nadu,India&output=embed'),
+      variant: z.enum(['modern-light', 'modern-dark', 'cream']).default('modern-light'),
+      cardStyle: z.enum(['glassmorphic', 'solid', 'minimal']).default('glassmorphic'),
+      showDecorations: z.boolean().default(true),
+      layout: z.enum(['horizontal', 'vertical']).default('horizontal'),
+    }),
+    defaultProps: {
+      title: 'Contact Us',
+      subtitle: 'Get in touch with us for any inquiries about admissions or programs.',
+      headerPart1Color: '#0b6d41',
+      headerPart2Color: '#D4AF37',
+      phone: '+91 93458 55001',
+      email: 'info@jkkn.ac.in',
+      address: 'Natarajapuram, NH-544, Kumarapalayam, Namakkal, Tamil Nadu - 638183',
+      showMap: true,
+      mapEmbedUrl: 'https://www.google.com/maps?q=JKKN+Educational+Institutions,Komarapalayam,Tamil+Nadu,India&output=embed',
+      variant: 'modern-light',
+      cardStyle: 'glassmorphic',
+      showDecorations: true,
+      layout: 'horizontal',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['contact', 'phone', 'email', 'address', 'map', 'location', 'reach us'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
+      { name: 'headerPart1Color', type: 'color', label: 'Primary Color' },
+      { name: 'headerPart2Color', type: 'color', label: 'Accent Color' },
+      { name: 'phone', type: 'string', label: 'Phone Number' },
+      { name: 'email', type: 'string', label: 'Email Address' },
+      { name: 'address', type: 'string', label: 'Address', multiline: true },
+      { name: 'workingHours', type: 'string', label: 'Working Hours' },
+      { name: 'showMap', type: 'boolean', label: 'Show Map' },
+      { name: 'mapEmbedUrl', type: 'url', label: 'Google Maps Embed URL' },
+      { name: 'variant', type: 'enum', label: 'Style Variant', options: ['modern-light', 'modern-dark', 'cream'] },
+      { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['glassmorphic', 'solid', 'minimal'] },
+      { name: 'showDecorations', type: 'boolean', label: 'Show Decorations' },
+      { name: 'layout', type: 'enum', label: 'Layout', options: ['horizontal', 'vertical'] },
+    ],
+  },
+
+  ApprovalsAffiliationSection: {
+    name: 'ApprovalsAffiliationSection',
+    displayName: 'Approvals & Affiliation Section',
+    category: 'content',
+    description: 'Simple approvals and affiliation page with section headers and green PDF buttons - ideal for AICTE EOA, Anna University Affiliation, RTI Act documents',
+    icon: 'FileCheck2',
+    previewImage: '/cms-previews/ApprovalsAffiliationSection.png',
+    component: ApprovalsAffiliationSection,
+    propsSchema: z.object({
+      pageTitle: z.string().default('APPROVALS AND AFFILIATION'),
+      breadcrumbLabel: z.string().default('APPROVALS AND AFFILIATION'),
+      showBreadcrumb: z.boolean().default(true),
+      homeUrl: z.string().default('/'),
+      sections: z.array(z.object({
+        id: z.string(),
+        title: z.string(),
+        documents: z.array(z.object({
+          id: z.string(),
+          buttonLabel: z.string(),
+          pdfUrl: z.string(),
+        })),
+      })).default([]),
+      buttonStyle: z.enum(['solid', 'gradient']).default('gradient'),
+      pdfOpenMode: z.enum(['same-tab', 'new-tab']).default('same-tab'),
+      variant: z.enum(['light', 'cream']).default('cream'),
+    }),
+    defaultProps: {
+      pageTitle: 'APPROVALS AND AFFILIATION',
+      breadcrumbLabel: 'APPROVALS AND AFFILIATION',
+      showBreadcrumb: true,
+      homeUrl: '/',
+      sections: [
+        {
+          id: '1',
+          title: 'AICTE Extension of Approval (EOA)',
+          documents: [
+            { id: '1-1', buttonLabel: 'AICTE EOA 2008-2023', pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_1/view' },
+            { id: '1-2', buttonLabel: 'AICTE EOA 2024-2025', pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_2/view' },
+          ],
+        },
+        {
+          id: '2',
+          title: 'Anna University Affiliation order 2008-2023',
+          documents: [
+            { id: '2-1', buttonLabel: 'Anna-University-Affiliation-order-2023-2024', pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_3/view' },
+            { id: '2-2', buttonLabel: 'Anna-University-Affiliation-order-2008-2023', pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_4/view' },
+          ],
+        },
+        {
+          id: '3',
+          title: 'Statutory Declaration under section 4(1)(b) of the RTI Act-2005',
+          documents: [
+            { id: '3-1', buttonLabel: 'Section 4(1)(b) of the RTI Act-2005', pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_5/view' },
+          ],
+        },
+      ],
+      buttonStyle: 'gradient',
+      pdfOpenMode: 'same-tab',
+      variant: 'cream',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['approvals', 'affiliation', 'aicte', 'eoa', 'anna university', 'rti', 'statutory', 'recognition', 'accreditation', 'documents', 'pdf'],
+    editableProps: [
+      { name: 'pageTitle', type: 'string', label: 'Page Title' },
+      { name: 'breadcrumbLabel', type: 'string', label: 'Breadcrumb Label' },
+      { name: 'showBreadcrumb', type: 'boolean', label: 'Show Breadcrumb' },
+      { name: 'homeUrl', type: 'url', label: 'Home URL' },
+      {
+        name: 'sections',
+        type: 'array',
+        label: 'Sections',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            id: { type: 'string', label: 'Section ID', required: true },
+            title: { type: 'string', label: 'Section Title', required: true },
+            documents: {
+              type: 'array',
+              label: 'Documents',
+              itemType: 'object',
+              itemSchema: {
+                properties: {
+                  id: { type: 'string', label: 'Document ID', required: true },
+                  buttonLabel: { type: 'string', label: 'Button Label', required: true },
+                  pdfUrl: { type: 'string', label: 'PDF URL', required: true },
+                },
+                required: ['id', 'buttonLabel', 'pdfUrl'],
+              },
+            },
+          },
+          required: ['id', 'title'],
+        },
+      },
+      { name: 'buttonStyle', type: 'enum', label: 'Button Style', options: ['solid', 'gradient'] },
+      { name: 'pdfOpenMode', type: 'enum', label: 'PDF Open Mode', options: ['same-tab', 'new-tab'] },
+      { name: 'variant', type: 'enum', label: 'Background Style', options: ['light', 'cream'] },
+    ],
+  },
+
+  // ==========================================
+  // Engineering-Specific Blocks
+  // ==========================================
+
+  EngineeringCenturySection: {
+    name: 'EngineeringCenturySection',
+    displayName: 'Engineering Century Section',
+    category: 'content',
+    description: 'Century of excellence section with large year badge and feature grid - designed for engineering homepage',
+    icon: 'Award',
+    component: EngineeringCenturySection,
+    propsSchema: z.object({
+      yearsBadge: z.string().default('100'),
+      badgeSubtext: z.string().default('YEARS'),
+      title: z.string().default('A Century of Excellence in Progressive Technical Education'),
+      subtitle: z.string().default('Building future-ready engineers with world-class infrastructure'),
+      features: z.array(z.object({
+        icon: z.string(),
+        label: z.string(),
+      })).default([]),
+      primaryColor: z.string().default('#1e3a5f'),
+      accentColor: z.string().default('#f97316'),
+      backgroundColor: z.string().default('#f9fafb'),
+      showAnimations: z.boolean().default(true),
+      paddingY: z.enum(['sm', 'md', 'lg', 'xl']).default('lg'),
+    }),
+    defaultProps: {
+      yearsBadge: '100',
+      badgeSubtext: 'YEARS',
+      title: 'A Century of Excellence in Progressive Technical Education',
+      subtitle: 'Building future-ready engineers with world-class infrastructure and industry partnerships',
+      features: [
+        { icon: 'award', label: 'AICTE Approved' },
+        { icon: 'star', label: 'NBA Accredited' },
+        { icon: 'award', label: 'NAAC Accredited' },
+        { icon: 'building', label: 'Autonomous Status' },
+        { icon: 'handshake', label: 'Industry Partnerships' },
+        { icon: 'microscope', label: 'Research Excellence' },
+      ],
+      primaryColor: '#1e3a5f',
+      accentColor: '#f97316',
+      backgroundColor: '#f9fafb',
+      showAnimations: true,
+      paddingY: 'lg',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['engineering', 'century', 'excellence', 'badge', 'features', 'accreditation', 'aicte', 'nba', 'naac'],
+    editableProps: [
+      { name: 'yearsBadge', type: 'string', label: 'Years Badge' },
+      { name: 'badgeSubtext', type: 'string', label: 'Badge Subtext' },
+      { name: 'title', type: 'string', label: 'Title', required: true },
+      { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'showAnimations', type: 'boolean', label: 'Show Animations' },
+      { name: 'paddingY', type: 'enum', label: 'Vertical Padding', options: ['sm', 'md', 'lg', 'xl'] },
+    ],
+  },
+
+  EngineeringProgramsSection: {
+    name: 'EngineeringProgramsSection',
+    displayName: 'Engineering Programs Section',
+    category: 'content',
+    description: 'Tabbed programs grid with UG/PG filtering - designed for engineering courses showcase',
+    icon: 'GraduationCap',
+    component: EngineeringProgramsSection,
+    propsSchema: z.object({
+      title: z.string().default('Comprehensive Engineering & Technology Programs'),
+      subtitle: z.string().default('Choose from our wide range of AICTE approved programs'),
+      programs: z.array(z.object({
+        name: z.string(),
+        type: z.enum(['ug', 'pg']),
+        duration: z.string(),
+        icon: z.string(),
+        description: z.string(),
+        link: z.string(),
+      })).default([]),
+      showTabs: z.boolean().default(true),
+      primaryColor: z.string().default('#1e3a5f'),
+      accentColor: z.string().default('#f97316'),
+      backgroundColor: z.string().default('#ffffff'),
+      showAnimations: z.boolean().default(true),
+      paddingY: z.enum(['sm', 'md', 'lg', 'xl']).default('lg'),
+    }),
+    defaultProps: {
+      title: 'Comprehensive Engineering & Technology Programs',
+      subtitle: 'Choose from our wide range of AICTE approved programs',
+      programs: [
+        { name: 'B.E. Computer Science & Engineering', type: 'ug', duration: '4 Years', icon: 'code', description: 'AI, Machine Learning, Full Stack Development', link: '/courses/cse' },
+        { name: 'B.E. Electronics & Communication', type: 'ug', duration: '4 Years', icon: 'cpu', description: 'Embedded Systems, IoT, VLSI Design', link: '/courses/ece' },
+        { name: 'B.E. Electrical & Electronics', type: 'ug', duration: '4 Years', icon: 'zap', description: 'Power Systems, Renewable Energy', link: '/courses/eee' },
+        { name: 'B.E. Mechanical Engineering', type: 'ug', duration: '4 Years', icon: 'settings', description: 'Robotics, CAD/CAM, Automation', link: '/courses/mech' },
+        { name: 'B.Tech Information Technology', type: 'ug', duration: '4 Years', icon: 'wifi', description: 'Cloud Computing, Cybersecurity, DevOps', link: '/courses/it' },
+        { name: 'B.E. Biomedical Engineering', type: 'ug', duration: '4 Years', icon: 'activity', description: 'Healthcare Tech, Medical Instrumentation', link: '/courses/biomedical' },
+        { name: 'MBA - Business Administration', type: 'pg', duration: '2 Years', icon: 'briefcase', description: 'Business Analytics, Marketing, Finance', link: '/courses/mba' },
+      ],
+      showTabs: true,
+      primaryColor: '#1e3a5f',
+      accentColor: '#f97316',
+      backgroundColor: '#ffffff',
+      showAnimations: true,
+      paddingY: 'lg',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['engineering', 'programs', 'courses', 'ug', 'pg', 'btech', 'mba', 'tabs', 'filter'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title', required: true },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+      { name: 'showTabs', type: 'boolean', label: 'Show Filter Tabs' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'showAnimations', type: 'boolean', label: 'Show Animations' },
+      { name: 'paddingY', type: 'enum', label: 'Vertical Padding', options: ['sm', 'md', 'lg', 'xl'] },
+    ],
+  },
+
+  EngineeringPlacementsSection: {
+    name: 'EngineeringPlacementsSection',
+    displayName: 'Engineering Placements Section',
+    category: 'content',
+    description: 'Placement statistics with animated counters and company logo marquee',
+    icon: 'Briefcase',
+    component: EngineeringPlacementsSection,
+    propsSchema: z.object({
+      title: z.string().default('Launching Careers, Building Futures'),
+      subtitle: z.string().default('Our placement cell works tirelessly to connect students with top companies'),
+      stats: z.array(z.object({
+        value: z.number(),
+        suffix: z.string(),
+        prefix: z.string(),
+        label: z.string(),
+        icon: z.string(),
+      })).default([]),
+      companies: z.array(z.object({
+        name: z.string(),
+        logo: z.string(),
+        category: z.string(),
+      })).default([]),
+      showCategoryTabs: z.boolean().default(true),
+      marqueeSpeed: z.number().default(30),
+      showGrayscale: z.boolean().default(true),
+      primaryColor: z.string().default('#1e3a5f'),
+      accentColor: z.string().default('#f97316'),
+      backgroundColor: z.string().default('#f9fafb'),
+      showAnimations: z.boolean().default(true),
+      paddingY: z.enum(['sm', 'md', 'lg', 'xl']).default('lg'),
+    }),
+    defaultProps: {
+      title: 'Launching Careers, Building Futures',
+      subtitle: 'Our placement cell works tirelessly to connect students with top companies',
+      stats: [
+        { value: 95, suffix: '%+', prefix: '', label: 'Placement Rate', icon: 'trending' },
+        { value: 12, suffix: ' LPA', prefix: '', label: 'Highest Package', icon: 'award' },
+        { value: 4.8, suffix: ' LPA', prefix: '', label: 'Average Package', icon: 'users' },
+        { value: 200, suffix: '+', prefix: '', label: 'Recruiting Companies', icon: 'building' },
+      ],
+      companies: [],
+      showCategoryTabs: true,
+      marqueeSpeed: 30,
+      showGrayscale: true,
+      primaryColor: '#1e3a5f',
+      accentColor: '#f97316',
+      backgroundColor: '#f9fafb',
+      showAnimations: true,
+      paddingY: 'lg',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['engineering', 'placements', 'careers', 'companies', 'stats', 'recruiters', 'package', 'salary'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title', required: true },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+      { name: 'showCategoryTabs', type: 'boolean', label: 'Show Category Tabs' },
+      { name: 'marqueeSpeed', type: 'number', label: 'Marquee Speed', min: 10, max: 100 },
+      { name: 'showGrayscale', type: 'boolean', label: 'Grayscale Logos' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'showAnimations', type: 'boolean', label: 'Show Animations' },
+      { name: 'paddingY', type: 'enum', label: 'Vertical Padding', options: ['sm', 'md', 'lg', 'xl'] },
+    ],
+  },
+
+  EngineeringAdmissionSection: {
+    name: 'EngineeringAdmissionSection',
+    displayName: 'Engineering Admission Section',
+    category: 'content',
+    description: 'Two-column admission section with eligibility criteria and process steps',
+    icon: 'ClipboardList',
+    component: EngineeringAdmissionSection,
+    propsSchema: z.object({
+      title: z.string().default('Begin Your Engineering Journey at JKKN'),
+      subtitle: z.string().default('Simple admission process with transparent eligibility criteria'),
+      eligibility: z.array(z.object({
+        program: z.string(),
+        criteria: z.array(z.string()),
+      })).default([]),
+      processSteps: z.array(z.object({
+        step: z.number(),
+        title: z.string(),
+        description: z.string().optional(),
+        icon: z.string(),
+      })).default([]),
+      ctaButton: z.object({
+        label: z.string(),
+        link: z.string(),
+      }).default({ label: 'Apply Now', link: '/admissions/apply' }),
+      secondaryCtaButton: z.object({
+        label: z.string(),
+        link: z.string(),
+      }).optional(),
+      primaryColor: z.string().default('#1e3a5f'),
+      accentColor: z.string().default('#f97316'),
+      backgroundColor: z.string().default('#ffffff'),
+      showAnimations: z.boolean().default(true),
+      paddingY: z.enum(['sm', 'md', 'lg', 'xl']).default('lg'),
+    }),
+    defaultProps: {
+      title: 'Begin Your Engineering Journey at JKKN',
+      subtitle: 'Simple admission process with transparent eligibility criteria',
+      eligibility: [
+        {
+          program: 'B.E. / B.Tech Programs',
+          criteria: [
+            'Passed 10+2 with Physics, Chemistry, and Mathematics',
+            'Minimum 45% aggregate marks (40% for reserved categories)',
+            'Valid TNEA counselling rank or direct admission',
+          ],
+        },
+        {
+          program: 'MBA Program',
+          criteria: [
+            'Bachelor\'s degree in any discipline with 50% marks',
+            'Valid TANCET / CAT / MAT / XAT score',
+            'Group discussion and personal interview clearance',
+          ],
+        },
+      ],
+      processSteps: [
+        { step: 1, title: 'Online Application', description: 'Fill out the online application form', icon: 'file' },
+        { step: 2, title: 'Document Submission', description: 'Upload required documents', icon: 'clipboard' },
+        { step: 3, title: 'Counselling', description: 'Attend TNEA counselling or direct admission', icon: 'user' },
+        { step: 4, title: 'Fee Payment', description: 'Pay admission fees', icon: 'graduation' },
+        { step: 5, title: 'Enrollment', description: 'Complete registration', icon: 'badge' },
+      ],
+      ctaButton: { label: 'Apply Now', link: '/admissions/apply' },
+      primaryColor: '#1e3a5f',
+      accentColor: '#f97316',
+      backgroundColor: '#ffffff',
+      showAnimations: true,
+      paddingY: 'lg',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['engineering', 'admission', 'eligibility', 'process', 'apply', 'criteria', 'tnea', 'counselling'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title', required: true },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'showAnimations', type: 'boolean', label: 'Show Animations' },
+      { name: 'paddingY', type: 'enum', label: 'Vertical Padding', options: ['sm', 'md', 'lg', 'xl'] },
+    ],
+  },
+
+  EngineeringHeroSection: {
+    name: 'EngineeringHeroSection',
+    displayName: 'Engineering Hero Section',
+    category: 'content',
+    description: 'Modern engineering college hero section with animated stats and JKKN green gradient',
+    icon: 'GraduationCap',
+    component: EngineeringHeroSection,
+    propsSchema: EngineeringHeroSectionPropsSchema,
+    defaultProps: {
+      title: 'Shape Your Future in Engineering & Technology',
+      subtitle: 'AICTE Approved | Anna University Affiliated | NBA Accredited',
+      description: 'Join one of the leading engineering colleges with 100+ years of educational excellence. World-class faculty, state-of-the-art infrastructure, and 95%+ placement record.',
+      badge: 'AICTE Approved | Anna University Affiliated | NBA Accredited',
+      stats: [
+        { value: 3000, suffix: '+', label: 'Learners', icon: 'graduation' },
+        { value: 95, suffix: '%', label: 'Placement', icon: 'trending' },
+        { value: 50, suffix: '+', label: 'Recruiters', icon: 'building' },
+        { value: 12, suffix: '+', label: 'Programs', icon: 'users' },
+      ],
+      primaryCta: { label: 'Apply Now', link: '/admissions' },
+      secondaryCta: { label: 'Explore Programs', link: '/courses' },
+      heroImage: '/images/engineering/campus-hero.jpg',
+      primaryColor: '#0b6d41',
+      accentColor: '#ffde59',
+      showAnimations: true,
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['engineering', 'hero', 'stats', 'banner', 'homepage'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Main Title', required: true },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+      { name: 'description', type: 'string', label: 'Description', multiline: true },
+      { name: 'badge', type: 'string', label: 'Badge Text' },
+      {
+        name: 'stats',
+        type: 'array',
+        label: 'Statistics',
+        description: 'Animated counter statistics',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            value: { type: 'number', label: 'Value', required: true },
+            suffix: { type: 'string', label: 'Suffix', placeholder: '+, %, etc.', defaultValue: '+' },
+            label: { type: 'string', label: 'Label', required: true },
+            icon: {
+              type: 'enum',
+              label: 'Icon',
+              options: ['graduation', 'trending', 'building', 'users'],
+              defaultValue: 'graduation'
+            }
+          }
+        }
+      },
+      {
+        name: 'primaryCta',
+        type: 'object',
+        label: 'Primary CTA Button',
+        itemSchema: {
+          properties: {
+            label: { type: 'string', label: 'Button Text', required: true, defaultValue: 'Apply Now' },
+            link: { type: 'url', label: 'Button Link', required: true, defaultValue: '/admissions' }
+          }
+        }
+      },
+      {
+        name: 'secondaryCta',
+        type: 'object',
+        label: 'Secondary CTA Button',
+        itemSchema: {
+          properties: {
+            label: { type: 'string', label: 'Button Text', defaultValue: 'Explore Programs' },
+            link: { type: 'url', label: 'Button Link', defaultValue: '/courses' }
+          }
+        }
+      },
+      { name: 'heroImage', type: 'image', label: 'Hero Image', description: 'Main visual (4:3 aspect ratio)' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color', defaultValue: '#0b6d41' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color', defaultValue: '#ffde59' },
+      { name: 'showAnimations', type: 'boolean', label: 'Enable Animations', defaultValue: true }
+    ],
+  },
+
+  EngineeringAccreditationsBar: {
+    name: 'EngineeringAccreditationsBar',
+    displayName: 'Engineering Accreditations Bar',
+    category: 'content',
+    description: 'Horizontal bar displaying accreditations and approvals',
+    icon: 'Award',
+    component: EngineeringAccreditationsBar,
+    propsSchema: EngineeringAccreditationsBarPropsSchema,
+    defaultProps: {
+      label: 'Recognized & Approved By',
+      accreditations: [
+        { name: 'All India Council for Technical Education', shortName: 'AICTE', description: 'Approved', icon: 'shield' },
+        { name: 'Anna University', shortName: 'Anna University', description: 'Affiliated', icon: 'graduation' },
+        { name: 'National Board of Accreditation', shortName: 'NBA', description: 'Accredited', icon: 'award' },
+        { name: 'National Assessment and Accreditation Council', shortName: 'NAAC', description: 'A+ Grade', icon: 'badge' },
+        { name: 'International Organization for Standardization', shortName: 'ISO 9001:2015', description: 'Certified', icon: 'building' },
+      ],
+      primaryColor: '#0b6d41',
+      backgroundColor: '#f8f9fa',
+      showAnimations: true,
+      paddingY: 'md',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['accreditation', 'aicte', 'nba', 'naac', 'approvals'],
+    editableProps: [
+      { name: 'label', type: 'string', label: 'Label', required: true },
+      {
+        name: 'accreditations',
+        type: 'array',
+        label: 'Accreditations',
+        description: 'List of accreditations and approvals',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            name: { type: 'string', label: 'Full Name', required: true },
+            shortName: { type: 'string', label: 'Short Name', required: true },
+            description: { type: 'string', label: 'Description' },
+            logo: { type: 'image', label: 'Logo (optional)' },
+            icon: {
+              type: 'enum',
+              label: 'Icon',
+              options: ['award', 'shield', 'graduation', 'building', 'badge'],
+              defaultValue: 'award'
+            }
+          }
+        }
+      },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color', defaultValue: '#0b6d41' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color', defaultValue: '#f8f9fa' },
+      { name: 'showAnimations', type: 'boolean', label: 'Enable Animations', defaultValue: true },
+      { name: 'paddingY', type: 'enum', label: 'Vertical Padding', options: ['sm', 'md', 'lg'], defaultValue: 'md' },
+    ],
+  },
+
+  EngineeringAboutSection: {
+    name: 'EngineeringAboutSection',
+    displayName: 'Engineering About Section',
+    category: 'content',
+    description: 'About section with image, features, and 100 Years Legacy badge',
+    icon: 'Info',
+    component: EngineeringAboutSection,
+    propsSchema: EngineeringAboutSectionPropsSchema,
+    defaultProps: {
+      badge: { text: '100 Years Legacy', position: 'top-left' },
+      title: 'Welcome to JKKN College of Engineering',
+      subtitle: 'About Us',
+      description: 'Established as part of the prestigious JKKN Educational Institutions with over 100 years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development.',
+      features: [
+        'AICTE Approved & Anna University Affiliated',
+        'NBA Accredited Programs',
+        'Industry-Academia Partnerships',
+        'State-of-the-Art Laboratories',
+        '95%+ Placement Record',
+        'Experienced Faculty Members',
+      ],
+      image: '/images/engineering/about-campus.jpg',
+      imageAlt: 'JKKN Engineering College Campus',
+      cta: { label: 'Learn More About Us', link: '/about' },
+      primaryColor: '#0b6d41',
+      accentColor: '#ffde59',
+      backgroundColor: '#ffffff',
+      showAnimations: true,
+      paddingY: 'lg',
+      imagePosition: 'left',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['about', 'features', 'legacy', 'history'],
+    editableProps: [
+      {
+        name: 'badge',
+        type: 'object',
+        label: 'Legacy Badge',
+        itemSchema: {
+          properties: {
+            text: { type: 'string', label: 'Badge Text', required: true, defaultValue: '100 Years Legacy' },
+            position: {
+              type: 'enum',
+              label: 'Badge Position',
+              options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
+              defaultValue: 'top-left'
+            }
+          }
+        }
+      },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+      { name: 'title', type: 'string', label: 'Title', required: true },
+      { name: 'description', type: 'string', label: 'Description', multiline: true },
+      {
+        name: 'features',
+        type: 'array',
+        label: 'Features',
+        description: 'List of key features',
+        itemType: 'string'
+      },
+      { name: 'image', type: 'image', label: 'Image' },
+      { name: 'imageAlt', type: 'string', label: 'Image Alt Text' },
+      {
+        name: 'cta',
+        type: 'object',
+        label: 'Call to Action',
+        itemSchema: {
+          properties: {
+            label: { type: 'string', label: 'Button Text', defaultValue: 'Learn More About Us' },
+            link: { type: 'url', label: 'Button Link', defaultValue: '/about' }
+          }
+        }
+      },
+      { name: 'imagePosition', type: 'enum', label: 'Image Position', options: ['left', 'right'], defaultValue: 'left' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color', defaultValue: '#0b6d41' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color', defaultValue: '#ffde59' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color', defaultValue: '#ffffff' },
+      { name: 'showAnimations', type: 'boolean', label: 'Enable Animations', defaultValue: true },
+      { name: 'paddingY', type: 'enum', label: 'Vertical Padding', options: ['sm', 'md', 'lg', 'xl'], defaultValue: 'lg' },
+    ],
+  },
+
+  EngineeringWhyChooseSection: {
+    name: 'EngineeringWhyChooseSection',
+    displayName: 'Engineering Why Choose Section',
+    category: 'content',
+    description: 'Feature cards grid explaining why choose the college',
+    icon: 'CheckCircle',
+    component: EngineeringWhyChooseSection,
+    propsSchema: EngineeringWhyChooseSectionPropsSchema,
+    defaultProps: {
+      title: 'Why Choose JKKN Engineering College?',
+      subtitle: 'Your Gateway to a Successful Engineering Career',
+      features: [
+        { title: '100 Years Legacy', description: 'Part of JKKN Educational Institutions with a century of excellence in education', icon: 'award' },
+        { title: 'Industry Connect', description: 'Strong partnerships with leading IT and core industry companies', icon: 'building' },
+        { title: 'Expert Learning Facilitators', description: 'Highly qualified faculty with industry experience and research background', icon: 'graduation' },
+        { title: 'Modern Labs & Infrastructure', description: 'State-of-the-art laboratories equipped with latest technology', icon: 'flask' },
+        { title: '95%+ Placements', description: 'Consistently high placement rate with top recruiters visiting campus', icon: 'trending' },
+        { title: 'Innovation Hub', description: 'Dedicated centers for AI, ML, IoT, and emerging technologies', icon: 'lightbulb' },
+        { title: 'Global Exposure', description: 'International collaborations and student exchange programs', icon: 'globe' },
+        { title: 'Excellent Hostel Facilities', description: 'Separate hostels for boys and girls with modern amenities', icon: 'home' },
+      ],
+      primaryColor: '#0b6d41',
+      accentColor: '#ffde59',
+      backgroundColor: '#fbfbee',
+      showAnimations: true,
+      paddingY: 'lg',
+      columns: '4',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['features', 'benefits', 'advantages', 'why choose'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title', required: true },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+      {
+        name: 'features',
+        type: 'array',
+        label: 'Features',
+        description: 'List of reasons to choose the college',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            title: { type: 'string', label: 'Title', required: true },
+            description: { type: 'string', label: 'Description', required: true },
+            icon: {
+              type: 'enum',
+              label: 'Icon',
+              options: ['award', 'building', 'graduation', 'flask', 'trending', 'lightbulb', 'globe', 'home'],
+              defaultValue: 'award'
+            }
+          }
+        }
+      },
+      { name: 'columns', type: 'enum', label: 'Grid Columns', options: ['2', '3', '4'], defaultValue: '4' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color', defaultValue: '#0b6d41' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color', defaultValue: '#ffde59' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color', defaultValue: '#fbfbee' },
+      { name: 'showAnimations', type: 'boolean', label: 'Enable Animations', defaultValue: true },
+      { name: 'paddingY', type: 'enum', label: 'Vertical Padding', options: ['sm', 'md', 'lg', 'xl'], defaultValue: 'lg' },
+    ],
+  },
+
+  EngineeringFacilitiesSection: {
+    name: 'EngineeringFacilitiesSection',
+    displayName: 'Engineering Facilities Section',
+    category: 'content',
+    description: 'Facilities grid showcasing campus infrastructure',
+    icon: 'Building',
+    component: EngineeringFacilitiesSection,
+    propsSchema: EngineeringFacilitiesSectionPropsSchema,
+    defaultProps: {
+      title: 'World-Class Infrastructure & Facilities',
+      subtitle: 'Everything you need for an exceptional learning experience',
+      facilities: [
+        { title: 'Computer Centers', description: 'Modern computer labs with high-performance systems', highlight: '500+ Systems', icon: 'monitor' },
+        { title: 'Engineering Workshops', description: 'Hands-on training facilities for practical learning', icon: 'wrench' },
+        { title: 'Research Labs', description: 'Specialized labs for advanced research', highlight: 'AI/ML, IoT, Robotics', icon: 'flask' },
+        { title: 'Digital Library', description: 'Extensive collection of books and digital resources', highlight: '50,000+ Books', icon: 'book' },
+        { title: 'Wi-Fi Campus', description: 'High-speed internet connectivity across the campus', icon: 'wifi' },
+        { title: 'Hostels', description: 'Comfortable accommodation with all amenities', highlight: 'Men & Women', icon: 'home' },
+        { title: 'Cafeteria', description: 'Hygienic food court with variety of cuisines', icon: 'utensils' },
+        { title: 'Sports Complex', description: 'Indoor and outdoor sports facilities', icon: 'trophy' },
+        { title: 'Transportation', description: 'Fleet of buses covering major routes', icon: 'bus' },
+      ],
+      cta: { label: 'Explore All Facilities', link: '/facilities' },
+      primaryColor: '#0b6d41',
+      accentColor: '#ffde59',
+      backgroundColor: '#ffffff',
+      showAnimations: true,
+      paddingY: 'lg',
+      columns: '3',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['facilities', 'infrastructure', 'labs', 'library', 'hostel'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title', required: true },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+      {
+        name: 'facilities',
+        type: 'array',
+        label: 'Facilities',
+        description: 'List of campus facilities',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            title: { type: 'string', label: 'Title', required: true },
+            description: { type: 'string', label: 'Description', required: true },
+            highlight: { type: 'string', label: 'Highlight (optional)' },
+            icon: {
+              type: 'enum',
+              label: 'Icon',
+              options: ['monitor', 'wrench', 'flask', 'book', 'wifi', 'home', 'utensils', 'trophy', 'bus'],
+              defaultValue: 'monitor'
+            },
+            image: { type: 'image', label: 'Image (optional)' },
+            link: { type: 'url', label: 'Link (optional)' }
+          }
+        }
+      },
+      {
+        name: 'cta',
+        type: 'object',
+        label: 'Call to Action',
+        itemSchema: {
+          properties: {
+            label: { type: 'string', label: 'Button Text', defaultValue: 'Explore All Facilities' },
+            link: { type: 'url', label: 'Button Link', defaultValue: '/facilities' }
+          }
+        }
+      },
+      { name: 'columns', type: 'enum', label: 'Grid Columns', options: ['2', '3'], defaultValue: '3' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color', defaultValue: '#0b6d41' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color', defaultValue: '#ffde59' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color', defaultValue: '#ffffff' },
+      { name: 'showAnimations', type: 'boolean', label: 'Enable Animations', defaultValue: true },
+      { name: 'paddingY', type: 'enum', label: 'Vertical Padding', options: ['sm', 'md', 'lg', 'xl'], defaultValue: 'lg' },
+    ],
+  },
+
+  EngineeringCTASection: {
+    name: 'EngineeringCTASection',
+    displayName: 'Engineering CTA Section',
+    category: 'content',
+    description: 'Call-to-action footer section with Apply Now button',
+    icon: 'PhoneCall',
+    component: EngineeringCTASection,
+    propsSchema: EngineeringCTASectionPropsSchema,
+    defaultProps: {
+      title: 'Ready to Engineer Your Future?',
+      subtitle: 'Join JKKN College of Engineering and take the first step towards a successful career in technology',
+      primaryCta: { label: 'Apply Now', link: '/admissions' },
+      phoneNumber: '+91 98765 43210',
+      showPhone: true,
+      email: undefined,
+      showEmail: false,
+      primaryColor: '#0b6d41',
+      accentColor: '#ffde59',
+      showAnimations: true,
+      paddingY: 'lg',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['cta', 'call to action', 'apply', 'contact'],
+    editableProps: [
+      { name: 'title', type: 'string', label: 'Title', required: true },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+      {
+        name: 'primaryCta',
+        type: 'object',
+        label: 'Primary CTA Button',
+        itemSchema: {
+          properties: {
+            label: { type: 'string', label: 'Button Text', required: true, defaultValue: 'Apply Now' },
+            link: { type: 'url', label: 'Button Link', required: true, defaultValue: '/admissions' }
+          }
+        }
+      },
+      { name: 'showPhone', type: 'boolean', label: 'Show Phone Number', defaultValue: true },
+      { name: 'phoneNumber', type: 'string', label: 'Phone Number', defaultValue: '+91 98765 43210' },
+      { name: 'showEmail', type: 'boolean', label: 'Show Email', defaultValue: false },
+      { name: 'email', type: 'string', label: 'Email Address' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color', defaultValue: '#0b6d41' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color', defaultValue: '#ffde59' },
+      { name: 'showAnimations', type: 'boolean', label: 'Enable Animations', defaultValue: true },
+      { name: 'paddingY', type: 'enum', label: 'Vertical Padding', options: ['sm', 'md', 'lg', 'xl'], defaultValue: 'lg' },
     ],
   },
 }

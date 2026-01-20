@@ -5,6 +5,8 @@ import { cn } from '@/lib/utils'
 import type { FAQAccordionProps } from '@/lib/cms/registry-types'
 
 export default function FAQAccordion({
+  title = 'Frequently Asked Questions',
+  subtitle = 'Everything you need to know',
   faqs = [],
   searchEnabled = true,
   allowMultiple = false,
@@ -53,6 +55,18 @@ export default function FAQAccordion({
   return (
     <section className={cn('py-16 px-4', className)}>
       <div className="container mx-auto max-w-3xl">
+        {/* Title and Subtitle */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+            {title}
+          </h2>
+          {subtitle && (
+            <p className="text-lg text-muted-foreground">
+              {subtitle}
+            </p>
+          )}
+        </div>
+
         {searchEnabled && (
           <div className="mb-8">
             <input

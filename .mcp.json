@@ -77,6 +77,10 @@
         "-y",
         "chrome-devtools-mcp@latest"
       ]
+    },
+    "shadcn": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "shadcn@latest", "mcp"]
     }
   }
 }

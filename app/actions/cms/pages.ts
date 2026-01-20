@@ -865,6 +865,12 @@ export async function createPage(
       }
     }
 
+    // Get redirect URL from form (stored in metadata)
+    const redirectUrl = (formData.get('redirect_url') as string) || null
+
+    // Build metadata object
+    const metadata = redirectUrl ? { redirect_url: redirectUrl } : null
+
     // Create page
     console.log('💾 [createPage] Creating page in database...')
     const { data: page, error } = await supabase
@@ -882,6 +888,7 @@ export async function createPage(
         navigation_label: validation.data.navigation_label,
         is_homepage: validation.data.is_homepage,
         external_url: validation.data.external_url,
+        metadata,
         created_by: user.id,
       })
       .select()
@@ -1137,11 +1144,35 @@ export async function updatePage(
     await supabase.from('cms_pages').update({ is_homepage: false }).neq('id', id).eq('is_homepage', true)
   }
 
+  // Handle redirect_url stored in metadata
+  const redirectUrl = formData.get('redirect_url') as string | null
+
+  // Fetch existing metadata to preserve other fields
+  const { data: existingPage } = await supabase
+    .from('cms_pages')
+    .select('metadata')
+    .eq('id', id)
+    .single()
+
+  // Build updated metadata object
+  let updatedMetadata = (existingPage?.metadata as Record<string, unknown>) || {}
+  if (redirectUrl !== null) {
+    if (redirectUrl) {
+      updatedMetadata = { ...updatedMetadata, redirect_url: redirectUrl }
+    } else {
+      // Remove redirect_url if empty string
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { redirect_url: _, ...rest } = updatedMetadata
+      updatedMetadata = rest
+    }
+  }
+
   // Update page
   const { error } = await supabase
     .from('cms_pages')
     .update({
       ...updateData,
+      metadata: Object.keys(updatedMetadata).length > 0 ? updatedMetadata : null,
       updated_by: user.id,
       updated_at: new Date().toISOString(),
     })

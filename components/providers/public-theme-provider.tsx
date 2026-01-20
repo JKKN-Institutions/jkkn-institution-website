@@ -12,9 +12,10 @@ export function PublicThemeProvider({ children }: PublicThemeProviderProps) {
     <ThemeProvider
       attribute="class"
       defaultTheme="light"
-      enableSystem
+      enableSystem={false}
       disableTransitionOnChange
       storageKey="public-theme"
+      enableColorScheme={false}
     >
       {children}
     </ThemeProvider>

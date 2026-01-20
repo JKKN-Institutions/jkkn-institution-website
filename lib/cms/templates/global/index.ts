@@ -16,7 +16,7 @@ const CACHE_DURATION = 1000 * 60 * 60 // 1 hour
 import aboutPage from './templates/about-page'
 import contactPage from './templates/contact-page'
 import homepageHero from './templates/homepage-hero'
-import engineeringHome from './templates/engineering-home-template'
+import engineeringModernHomeTemplate from './templates/engineering-modern-home'
 
 /**
  * Import all global templates dynamically
@@ -31,7 +31,7 @@ async function loadGlobalTemplatesFromFilesystem(): Promise<GlobalTemplate[]> {
 
   try {
     const templates: GlobalTemplate[] = []
-    const rawTemplates = [aboutPage, contactPage, homepageHero, engineeringHome]
+    const rawTemplates = [aboutPage, contactPage, homepageHero, engineeringModernHomeTemplate]
 
     for (const template of rawTemplates) {
       try {

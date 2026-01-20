@@ -33,7 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Loader2, AlertTriangle, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { Loader2, AlertTriangle, ArrowRight, CheckCircle2, FileText } from 'lucide-react'
 import { toast } from 'sonner'
 import { updatePage } from '@/app/actions/cms/pages'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -52,6 +52,7 @@ const pageSettingsSchema = z.object({
   show_in_navigation: z.boolean(),
   is_homepage: z.boolean(),
   external_url: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
+  redirect_url: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
   meta_title: z.string().optional(),
   meta_description: z.string().optional(),
   slug_overridden: z.boolean(),
@@ -106,6 +107,7 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
       show_in_navigation: page.show_in_navigation ?? true,
       is_homepage: page.is_homepage ?? false,
       external_url: page.external_url || '',
+      redirect_url: '', // Will be fetched from metadata
       meta_title: '',
       meta_description: '',
       slug_overridden: false, // Will be fetched from database
@@ -120,15 +122,19 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
       // Reset slug manual edit flag when modal opens
       setSlugManuallyEdited(false)
 
-      // Fetch page data including slug_overridden
+      // Fetch page data including slug_overridden and metadata
       const { data: pageData } = await supabase
         .from('cms_pages')
-        .select('slug_overridden')
+        .select('slug_overridden, metadata')
         .eq('id', page.id)
         .single()
 
       if (pageData) {
         form.setValue('slug_overridden', pageData.slug_overridden || false)
+        // Extract redirect_url from metadata
+        const metadata = pageData.metadata as Record<string, unknown> | null
+        const redirectUrl = (metadata?.redirect_url as string) || ''
+        form.setValue('redirect_url', redirectUrl)
       }
 
       // Check for children
@@ -179,6 +185,7 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
       show_in_navigation: page.show_in_navigation ?? true,
       is_homepage: page.is_homepage ?? false,
       external_url: page.external_url || '',
+      redirect_url: '', // Will be fetched from metadata in fetchData
       meta_title: '',
       meta_description: '',
     })
@@ -255,6 +262,7 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
       formData.append('show_in_navigation', String(data.show_in_navigation))
       formData.append('is_homepage', String(data.is_homepage))
       formData.append('external_url', data.external_url || '')
+      formData.append('redirect_url', data.redirect_url || '')
       formData.append('meta_title', data.meta_title || '')
       formData.append('meta_description', data.meta_description || '')
       formData.append('slug_overridden', String(data.slug_overridden))
@@ -632,6 +640,30 @@ export function PageSettingsModal({ open, onOpenChange, page, parentOrder }: Pag
                     )}
                   />
                 )}
+
+                <FormField
+                  control={form.control}
+                  name="redirect_url"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-2">
+                        <FileText className="h-4 w-4" />
+                        Redirect URL
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="url"
+                          placeholder="https://drive.google.com/file/d/xxx/view"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription className="text-xs">
+                        If set, visiting this page will redirect to this URL in the same tab (e.g., Google Drive PDF)
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <FormField
                   control={form.control}

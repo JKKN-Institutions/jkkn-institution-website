@@ -434,6 +434,8 @@ export const FAQItemSchema = z.object({
 export type FAQItem = z.infer<typeof FAQItemSchema>
 
 export const FAQAccordionPropsSchema = z.object({
+  title: z.string().default('Frequently Asked Questions'),
+  subtitle: z.string().default('Everything you need to know'),
   faqs: z.array(FAQItemSchema).default([]),
   searchEnabled: z.boolean().default(true),
   allowMultiple: z.boolean().default(false),

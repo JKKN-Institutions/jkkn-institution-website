@@ -398,7 +398,7 @@ const FACILITIES: Facility[] = [
   // 6. Hostel
   {
     title: 'Hostel',
-    slug: 'facilities/hostel',
+    slug: 'hostel',
     componentName: 'HostelPage',
     sortOrder: 6,
     description: 'Separate hostel facilities for boys and girls with modern amenities and 24/7 security',
@@ -410,82 +410,55 @@ const FACILITIES: Facility[] = [
       og_image: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=1200&h=630'
     },
     props: {
-      facilityTitle: 'HOSTEL FACILITIES',
-      introduction: '<p class="text-lg text-gray-700 leading-relaxed mb-4">JKKN Engineering College provides separate hostel facilities for boys and girls, offering a safe, comfortable, and conducive environment for students from distant places. Our hostels are equipped with modern amenities and are supervised by dedicated wardens who ensure the well-being of residents.</p><p class="text-lg text-gray-700 leading-relaxed">With 24/7 security, hygienic mess facilities, recreation rooms, and study areas, our hostels truly provide a home away from home for students.</p>',
+      pageTitle: 'Hostel',
+      defaultTab: 'boys',
+      backgroundColor: '#0b6d41',
+      accentColor: '#ffde59',
+      textColor: '#ffffff',
       boysHostel: {
+        title: 'Boys Hostel',
         images: [
-          'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800',
-          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800',
-          'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800'
+          { src: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800', alt: 'Boys studying in hostel' },
+          { src: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800', alt: 'Hostel activities' },
+          { src: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800', alt: 'Student life' }
         ],
-        features: [
-          {
-            title: 'Accommodation',
-            description: '2-3 students per room with comfortable beds, study tables, chairs, and storage cupboards.'
-          },
-          {
-            title: 'Mess Facility',
-            description: 'Hygienic mess providing nutritious vegetarian and non-vegetarian meals four times a day.'
-          },
-          {
-            title: 'Recreation Room',
-            description: 'Common room with TV, indoor games, and recreational facilities for relaxation.'
-          },
-          {
-            title: 'Study Room',
-            description: 'Dedicated study area with proper lighting and peaceful environment for academic pursuits.'
-          },
-          {
-            title: 'Laundry Service',
-            description: 'On-campus laundry facilities and washing machines for students\' convenience.'
-          },
-          {
-            title: 'Wi-Fi Connectivity',
-            description: 'High-speed internet access throughout the hostel for academic and personal use.'
-          }
+        paragraphs: [
+          'Our hostel is located within the campus premises, making it an ideal choice for students who prefer a hassle-free commute to their classes. The hostel is well-maintained and equipped with all the necessary amenities to cater to your needs. We offer single and shared rooms that are spacious and well-ventilated, ensuring a comfortable living experience for our residents.',
+          'At JKKN, we understand the importance of academics, and hence we provide an environment that is conducive to studying. Our hostel provides a peaceful and quiet atmosphere, enabling students to concentrate on their studies without any distractions. With our high-speed internet connectivity, students can easily access online resources and complete their academic assignments with ease.'
         ],
-        capacity: '500 students',
+        highlights: [
+          "JKKN Educational Institutions' Boys Hostel is a community where you can make lifelong friendships and memories.",
+          "The hostel's dedicated staff is always available to assist you with any issues you may face during your stay.",
+          'The Boys Hostel offers a comfortable and safe living experience for students.',
+          'State-of-the-art facilities and amenities are available to ensure a memorable stay.',
+          'Ideal for students looking for a supportive and conducive living environment during their academic journey.'
+        ],
         warden: {
-          name: 'Dr. Rajkumar',
-          contact: '+91-9876543210'
+          name: 'Mr. Srinivasan',
+          mobile: '+91 6374967302'
         }
       },
       girlsHostel: {
+        title: 'Girls Hostel',
         images: [
-          'https://images.unsplash.com/photo-1631049035182-249067d7618e?w=800',
-          'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
-          'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=800'
+          { src: 'https://images.unsplash.com/photo-1631049035182-249067d7618e?w=800', alt: 'Girls hostel room' },
+          { src: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800', alt: 'Common area' },
+          { src: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=800', alt: 'Study room' }
         ],
-        features: [
-          {
-            title: 'Safe Environment',
-            description: 'Enhanced security measures with CCTV surveillance, biometric access, and 24/7 security personnel.'
-          },
-          {
-            title: 'Comfortable Rooms',
-            description: '2-3 students per room with modern furniture, attached bathrooms, and hot water facility.'
-          },
-          {
-            title: 'Nutritious Meals',
-            description: 'Specially designed menu providing balanced diet with focus on health and nutrition.'
-          },
-          {
-            title: 'Common Areas',
-            description: 'Well-furnished common rooms for socializing, group studies, and recreational activities.'
-          },
-          {
-            title: 'Medical Support',
-            description: 'In-house medical facility with first-aid and arrangements for emergency medical care.'
-          },
-          {
-            title: 'Gymnasium',
-            description: 'Well-equipped fitness center exclusively for girl students to maintain physical health.'
-          }
+        paragraphs: [
+          'Our Girls Hostel provides a safe, secure, and nurturing environment for female students. Located within the campus premises, it offers modern amenities and comfortable living spaces designed specifically for the needs of young women pursuing their education.',
+          'With 24/7 security, CCTV surveillance, and dedicated female wardens, parents can be assured of their daughter\'s safety. The hostel features well-furnished rooms, hygienic mess facilities, recreation areas, and study rooms to support both academic excellence and personal well-being.'
         ],
-        capacity: '400 students',
+        highlights: [
+          'Enhanced security with CCTV surveillance, biometric access, and 24/7 security personnel.',
+          'Comfortable rooms with modern furniture, attached bathrooms, and hot water facility.',
+          'Specially designed nutritious menu focusing on health and balanced diet.',
+          'Well-furnished common rooms for socializing, group studies, and recreational activities.',
+          'In-house medical facility with first-aid and emergency medical care arrangements.'
+        ],
         warden: {
-          name: 'Dr. Lakshmi',
-          contact: '+91-9876543211'
+          name: 'Mrs. Lakshmi',
+          mobile: '+91 6374967303'
         }
       }
     },

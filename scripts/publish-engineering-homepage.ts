@@ -28,13 +28,15 @@ import * as path from 'path'
 import { fileURLToPath } from 'url'
 
 // Load environment variables
-dotenv.config({ path: '.env.local' })
+const envPath = path.resolve(process.cwd(), '.env.local')
+console.log('Loading env from:', envPath)
+dotenv.config({ path: envPath })
 
 // Check for rollback flag
 const isRollback = process.argv.includes('--rollback')
 
 // Template ID for Engineering Homepage
-const ENGINEERING_TEMPLATE_ID = '3e4a1f8c-9d2b-4c7e-a5f3-1b8d6e9c2a4f'
+const ENGINEERING_TEMPLATE_ID = '3e4a1f8c-9d2b-4c7e-a5f3-1b8d6e9c2bf2'
 
 // SEO Configuration
 const SEO_CONFIG = {
@@ -144,10 +146,20 @@ async function publishEngineeringHomepage() {
   // Step 2: Create Supabase client
   log('🔧', 'Step 2: Creating Supabase admin client...', colors.cyan)
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY
-  )
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+  if (!url) log('❌', 'NEXT_PUBLIC_SUPABASE_URL is missing', colors.red)
+  else log('✓', `NEXT_PUBLIC_SUPABASE_URL found (starts with: ${url.substring(0, 8)}...)`, colors.green)
+
+  if (!key) log('❌', 'SUPABASE_SERVICE_ROLE_KEY is missing', colors.red)
+  else log('✓', `SUPABASE_SERVICE_ROLE_KEY found (length: ${key.length})`, colors.green)
+
+  if (!url || !key) {
+    process.exit(1)
+  }
+
+  const supabase = createClient(url, key)
 
   success('✅', 'Supabase client created')
   console.log('')
