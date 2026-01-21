@@ -139,13 +139,6 @@ export default function EngineeringAboutSection({
         )
       : ''
 
-  const badgePositionClasses = {
-    'top-left': '-top-4 -left-4',
-    'top-right': '-top-4 -right-4',
-    'bottom-left': '-bottom-4 -left-4',
-    'bottom-right': '-bottom-4 -right-4',
-  }
-
   const ImageSection = (
     <div
       className={cn(
@@ -154,36 +147,53 @@ export default function EngineeringAboutSection({
       )}
       style={{ transitionDelay: '0ms' }}
     >
-      {/* Main image */}
-      <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-        <div className="aspect-[4/3] relative">
-          <Image
-            src={image}
-            alt={imageAlt}
-            fill
-            className="object-cover"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
+      {/* Main image container with extra padding for badge visibility */}
+      <div className="relative pt-6 px-6 sm:pt-8 sm:px-8">
+        <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+          <div className="aspect-[4/3] relative">
+            <Image
+              src={image}
+              alt={imageAlt}
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+          </div>
+
+          {/* Badge overlay - positioned outside the image border for full visibility */}
+          <div
+            className={cn(
+              'absolute px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl shadow-lg font-bold text-gray-900 text-center z-10',
+              // Custom positioning to ensure full visibility
+              badge.position === 'top-left' && 'top-0 left-0 -translate-x-3 -translate-y-3',
+              badge.position === 'top-right' && 'top-0 right-0 translate-x-3 -translate-y-3',
+              badge.position === 'bottom-left' && 'bottom-0 left-0 -translate-x-3 translate-y-3',
+              badge.position === 'bottom-right' && 'bottom-0 right-0 translate-x-3 translate-y-3'
+            )}
+            style={{ backgroundColor: accentColor }}
+          >
+            {/* Extract number and rest of text for better display */}
+            {(() => {
+              const numberMatch = badge.text.match(/\d+/)
+              const number = numberMatch ? numberMatch[0] : ''
+              const restText = badge.text.replace(number, '').trim()
+
+              return (
+                <>
+                  {number && <div className="text-xl sm:text-2xl leading-none">{number}</div>}
+                  {restText && <div className="text-xs sm:text-sm leading-tight mt-1 whitespace-nowrap">{restText}</div>}
+                </>
+              )
+            })()}
+          </div>
         </div>
 
-        {/* Badge overlay */}
+        {/* Decorative element */}
         <div
-          className={cn(
-            'absolute px-5 py-3 rounded-xl shadow-lg font-bold text-gray-900 text-center',
-            badgePositionClasses[badge.position]
-          )}
-          style={{ backgroundColor: accentColor }}
-        >
-          <div className="text-2xl leading-none">{badge.text.split(' ')[0]}</div>
-          <div className="text-sm">{badge.text.split(' ').slice(1).join(' ')}</div>
-        </div>
+          className="absolute -z-10 w-full h-full rounded-2xl top-8 left-8 sm:top-12 sm:left-12"
+          style={{ backgroundColor: `${primaryColor}15` }}
+        />
       </div>
-
-      {/* Decorative element */}
-      <div
-        className="absolute -z-10 w-full h-full rounded-2xl top-4 left-4"
-        style={{ backgroundColor: `${primaryColor}15` }}
-      />
     </div>
   )
 
@@ -284,17 +294,20 @@ export default function EngineeringAboutSection({
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {imagePosition === 'left' ? (
-            <>
-              {ImageSection}
-              {ContentSection}
-            </>
-          ) : (
-            <>
-              {ContentSection}
-              {ImageSection}
-            </>
-          )}
+          {/* Mobile: Always show content first, then image */}
+          {/* Desktop: Respect imagePosition setting */}
+          <div className={cn(
+            'order-1',
+            imagePosition === 'left' ? 'lg:order-2' : 'lg:order-1'
+          )}>
+            {ContentSection}
+          </div>
+          <div className={cn(
+            'order-2',
+            imagePosition === 'left' ? 'lg:order-1' : 'lg:order-2'
+          )}>
+            {ImageSection}
+          </div>
         </div>
       </div>
 

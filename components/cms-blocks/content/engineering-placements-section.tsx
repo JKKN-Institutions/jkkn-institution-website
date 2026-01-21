@@ -125,8 +125,12 @@ export const EngineeringPlacementsSectionPropsSchema = z.object({
   showCategoryTabs: z.boolean().default(false),
 
   // Logo marquee settings
-  marqueeSpeed: z.number().default(30),
+  marqueeSpeed: z.number().default(15),
   showGrayscale: z.boolean().default(true),
+  enableDrag: z.boolean().default(true),
+  pauseOnHover: z.boolean().default(true),
+  dragSensitivity: z.number().min(0.1).max(2).default(1),
+  speedPreset: z.enum(['slow', 'medium', 'fast', 'custom']).default('medium'),
 
   // Colors (updated to JKKN brand colors)
   primaryColor: z.string().default('#0b6d41'),
@@ -218,18 +222,35 @@ function StatCard({
 }
 
 // ==========================================
-// Logo Marquee Component
+// Logo Marquee Component (Enhanced with Drag & Scroll)
 // ==========================================
 
 function LogoMarquee({
   companies,
-  speed = 30,
+  speed = 15,
   showGrayscale = true,
+  enableDrag = true,
+  pauseOnHover = true,
+  dragSensitivity = 1,
 }: {
   companies: Array<{ name: string; logo: string; category: string }>
   speed?: number
   showGrayscale?: boolean
+  enableDrag?: boolean
+  pauseOnHover?: boolean
+  dragSensitivity?: number
 }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const [isPaused, setIsPaused] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [scrollOffset, setScrollOffset] = useState(0)
+  const [dragStartX, setDragStartX] = useState(0)
+  const [momentum, setMomentum] = useState(0)
+  const [lastDragX, setLastDragX] = useState(0)
+  const [dragVelocity, setDragVelocity] = useState(0)
+  const animationFrameRef = useRef<number | null>(null)
+
   if (companies.length === 0) {
     return (
       <div className="flex justify-center items-center gap-8 py-8 flex-wrap">
@@ -246,40 +267,174 @@ function LogoMarquee({
     )
   }
 
-  // Duplicate companies for seamless loop
-  const duplicatedCompanies = [...companies, ...companies]
+  // Duplicate companies for seamless loop (4 times for smoother infinite scroll)
+  const duplicatedCompanies = [...companies, ...companies, ...companies, ...companies]
+
+  // Handle pointer down (start drag)
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!enableDrag) return
+    setIsDragging(true)
+    setIsPaused(true)
+    setDragStartX(e.clientX)
+    setLastDragX(e.clientX)
+    setDragVelocity(0)
+    if (containerRef.current) {
+      containerRef.current.style.cursor = 'grabbing'
+      containerRef.current.setPointerCapture(e.pointerId)
+    }
+  }
+
+  // Handle pointer move (dragging)
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging || !enableDrag) return
+
+    const deltaX = (e.clientX - lastDragX) * dragSensitivity
+    setScrollOffset((prev) => prev + deltaX)
+
+    // Calculate velocity for momentum
+    setDragVelocity(deltaX)
+    setLastDragX(e.clientX)
+  }
+
+  // Handle pointer up (end drag)
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging || !enableDrag) return
+    setIsDragging(false)
+    if (containerRef.current) {
+      containerRef.current.style.cursor = 'grab'
+      containerRef.current.releasePointerCapture(e.pointerId)
+    }
+
+    // Apply momentum
+    setMomentum(dragVelocity * 0.95)
+
+    // Resume auto-scroll after a delay
+    setTimeout(() => {
+      setIsPaused(false)
+    }, 2000)
+  }
+
+  // Handle mouse enter (pause on hover)
+  const handleMouseEnter = () => {
+    if (pauseOnHover && !isDragging) {
+      setIsPaused(true)
+    }
+  }
+
+  // Handle mouse leave (resume)
+  const handleMouseLeave = () => {
+    if (pauseOnHover && !isDragging) {
+      setIsPaused(false)
+    }
+  }
+
+  // Handle wheel scroll
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (!enableDrag) return
+    e.preventDefault()
+    setScrollOffset((prev) => prev - e.deltaY * 0.5)
+    setIsPaused(true)
+
+    // Resume after wheel stops
+    setTimeout(() => {
+      setIsPaused(false)
+    }, 1000)
+  }
+
+  // Apply momentum animation
+  useEffect(() => {
+    if (Math.abs(momentum) < 0.1) {
+      setMomentum(0)
+      return
+    }
+
+    const applyMomentum = () => {
+      setScrollOffset((prev) => prev + momentum)
+      setMomentum((prev) => prev * 0.95) // Deceleration factor
+      animationFrameRef.current = requestAnimationFrame(applyMomentum)
+    }
+
+    animationFrameRef.current = requestAnimationFrame(applyMomentum)
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+    }
+  }, [momentum])
+
+  // Normalize scroll offset for seamless loop
+  useEffect(() => {
+    if (!contentRef.current) return
+
+    const contentWidth = contentRef.current.scrollWidth / 4 // Divide by 4 because we duplicated 4 times
+
+    if (scrollOffset > 0) {
+      setScrollOffset((prev) => prev - contentWidth)
+    } else if (scrollOffset < -contentWidth) {
+      setScrollOffset((prev) => prev + contentWidth)
+    }
+  }, [scrollOffset])
 
   return (
-    <div className="relative overflow-hidden">
+    <div
+      className="relative overflow-hidden"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onWheel={handleWheel}
+      style={{
+        cursor: enableDrag ? (isDragging ? 'grabbing' : 'grab') : 'default',
+        userSelect: 'none',
+      }}
+    >
       <div
-        className="flex gap-8 animate-marquee"
-        style={{
-          animationDuration: `${speed}s`,
-          animationTimingFunction: 'linear',
-          animationIterationCount: 'infinite',
-        }}
+        ref={containerRef}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        className="relative"
       >
-        {duplicatedCompanies.map((company, index) => (
-          <div
-            key={index}
-            className={cn(
-              'flex-shrink-0 w-32 h-16 bg-white rounded-lg shadow-sm border border-gray-100 p-3 flex items-center justify-center transition-all duration-300',
-              showGrayscale && 'grayscale hover:grayscale-0'
-            )}
-          >
-            {company.logo ? (
-              <Image
-                src={company.logo}
-                alt={company.name}
-                width={100}
-                height={40}
-                className="object-contain max-h-10"
-              />
-            ) : (
-              <span className="text-xs font-semibold text-gray-400">{company.name}</span>
-            )}
-          </div>
-        ))}
+        <div
+          ref={contentRef}
+          className={cn(
+            'flex gap-8',
+            !isDragging && !isPaused && 'animate-marquee'
+          )}
+          style={{
+            animationDuration: `${speed}s`,
+            animationTimingFunction: 'linear',
+            animationIterationCount: 'infinite',
+            animationPlayState: isPaused || isDragging ? 'paused' : 'running',
+            transform: `translateX(${scrollOffset}px)`,
+            transition: isDragging ? 'none' : 'transform 0.1s ease-out',
+            willChange: 'transform',
+          }}
+        >
+          {duplicatedCompanies.map((company, index) => (
+            <div
+              key={index}
+              className={cn(
+                'flex-shrink-0 w-32 h-16 bg-white rounded-lg shadow-sm border border-gray-100 p-3 flex items-center justify-center transition-all duration-300',
+                showGrayscale && 'grayscale hover:grayscale-0',
+                'pointer-events-none' // Prevent image drag
+              )}
+            >
+              {company.logo ? (
+                <Image
+                  src={company.logo}
+                  alt={company.name}
+                  width={100}
+                  height={40}
+                  className="object-contain max-h-10"
+                  draggable={false}
+                />
+              ) : (
+                <span className="text-xs font-semibold text-gray-400">{company.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Gradient overlays */}
@@ -304,8 +459,12 @@ export default function EngineeringPlacementsSection({
   ],
   companies = [],
   showCategoryTabs = true,
-  marqueeSpeed = 30,
+  marqueeSpeed = 15,
   showGrayscale = true,
+  enableDrag = true,
+  pauseOnHover = true,
+  dragSensitivity = 1,
+  speedPreset = 'medium',
   primaryColor = '#1e3a5f',
   accentColor = '#f97316',
   backgroundColor = '#f9fafb',
@@ -317,6 +476,15 @@ export default function EngineeringPlacementsSection({
   const sectionRef = useInView(0.1)
   const statsRef = useInView(0.2)
   const [activeCategory, setActiveCategory] = useState<'all' | 'it' | 'core' | 'manufacturing' | 'service'>('all')
+
+  // Speed preset mapping
+  const speedMapping = {
+    slow: 20,
+    medium: 15,
+    fast: 10,
+    custom: marqueeSpeed,
+  }
+  const actualSpeed = speedMapping[speedPreset]
 
   const paddingClasses = {
     sm: 'py-8 md:py-10',
@@ -452,8 +620,11 @@ export default function EngineeringPlacementsSection({
           </p>
           <LogoMarquee
             companies={filteredCompanies}
-            speed={marqueeSpeed}
+            speed={actualSpeed}
             showGrayscale={showGrayscale}
+            enableDrag={enableDrag}
+            pauseOnHover={pauseOnHover}
+            dragSensitivity={dragSensitivity}
           />
         </div>
       </div>

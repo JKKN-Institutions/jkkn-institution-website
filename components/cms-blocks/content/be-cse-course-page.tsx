@@ -1,10 +1,18 @@
+'use client'
+
 import React from 'react'
 import { z } from 'zod'
-import { ArrowRight, BookOpen, Calendar, Check, ChevronDown, GraduationCap, Users, Award, Briefcase, Building2, Mail, Phone, MapPin, Clock, UserCheck, FileText, IndianRupee } from 'lucide-react'
+import { ArrowRight, BookOpen, Calendar, Check, ChevronDown, GraduationCap, Users, Award, Briefcase, Building2, UserCheck, IndianRupee, TrendingUp, Code, Edit, FileCheck, CheckCircle } from 'lucide-react'
+import Image from 'next/image'
 
 // ============================================
 // Zod Schemas for Type Safety
 // ============================================
+
+const BreadcrumbItemSchema = z.object({
+  label: z.string(),
+  link: z.string().optional(),
+})
 
 const HeroStatSchema = z.object({
   icon: z.string(),
@@ -16,13 +24,6 @@ const HeroCTASchema = z.object({
   label: z.string(),
   link: z.string(),
   variant: z.enum(['primary', 'secondary']),
-})
-
-const OverviewCardSchema = z.object({
-  icon: z.string(),
-  title: z.string(),
-  value: z.string(),
-  description: z.string(),
 })
 
 const BenefitSchema = z.object({
@@ -50,8 +51,7 @@ const CurriculumYearSchema = z.object({
 
 const SpecializationSchema = z.object({
   title: z.string(),
-  description: z.string(),
-  icon: z.string().optional(),
+  description: z.string().optional(),
 })
 
 const CareerPathSchema = z.object({
@@ -59,6 +59,11 @@ const CareerPathSchema = z.object({
   title: z.string(),
   description: z.string(),
   avgSalary: z.string().optional(),
+})
+
+const RecruiterSchema = z.object({
+  name: z.string(),
+  logo: z.string().optional(),
 })
 
 const AdmissionStepSchema = z.object({
@@ -97,23 +102,29 @@ export const BECSECoursePagePropsSchema = z.object({
   // Hero Section
   heroTitle: z.string(),
   heroSubtitle: z.string().optional(),
+  breadcrumbItems: z.array(BreadcrumbItemSchema).optional(),
+  approvalBadge: z.string().optional(),
   heroStats: z.array(HeroStatSchema),
   heroCTAs: z.array(HeroCTASchema),
   affiliatedTo: z.string(),
 
-  // Course Overview
-  overviewTitle: z.string(),
-  overviewCards: z.array(OverviewCardSchema),
-
   // Why Choose Section
   whyChooseTitle: z.string(),
+  whyChooseSubtitle: z.string().optional(),
   benefits: z.array(BenefitSchema),
+
+  // Program Highlights
+  programHighlights: z.array(z.object({
+    icon: z.string(),
+    title: z.string(),
+    description: z.string(),
+  })).optional(),
 
   // Curriculum
   curriculumTitle: z.string(),
   curriculumYears: z.array(CurriculumYearSchema),
 
-  // Specializations
+  // Specializations (Simple List)
   specializationsTitle: z.string().optional(),
   specializations: z.array(SpecializationSchema).optional(),
 
@@ -122,24 +133,31 @@ export const BECSECoursePagePropsSchema = z.object({
   careerPaths: z.array(CareerPathSchema),
 
   // Top Recruiters
-  recruitersTitle: z.string(),
-  recruiters: z.array(z.string()),
+  recruitersTitle: z.string().optional(),
+  recruiters: z.array(RecruiterSchema).optional(),
 
   // Admission Process
-  admissionTitle: z.string(),
-  admissionSteps: z.array(AdmissionStepSchema),
+  admissionTitle: z.string().optional(),
+  admissionSteps: z.array(AdmissionStepSchema).optional(),
 
   // Fee Structure
   feeTitle: z.string(),
   feeBreakdown: z.array(FeeComponentSchema),
+
+  // Placement Statistics
+  placementStats: z.array(z.object({
+    label: z.string(),
+    value: z.string(),
+    icon: z.string(),
+  })).optional(),
 
   // Facilities
   facilitiesTitle: z.string(),
   facilities: z.array(FacilitySchema),
 
   // Faculty
-  facultyTitle: z.string(),
-  faculty: z.array(FacultySchema),
+  facultyTitle: z.string().optional(),
+  faculty: z.array(FacultySchema).optional(),
 
   // FAQ
   faqTitle: z.string(),
@@ -159,6 +177,32 @@ export const BECSECoursePagePropsSchema = z.object({
 export type BECSECoursePageProps = z.infer<typeof BECSECoursePagePropsSchema>
 
 // ============================================
+// Icon Mapping Helper
+// ============================================
+
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  calendar: Calendar,
+  users: Users,
+  'graduation-cap': GraduationCap,
+  'indian-rupee': IndianRupee,
+  'trending-up': TrendingUp,
+  award: Award,
+  briefcase: Briefcase,
+  building: Building2,
+  check: Check,
+  'book-open': BookOpen,
+  code: Code,
+  edit: Edit,
+  'file-check': FileCheck,
+  'check-circle': CheckCircle,
+}
+
+function getIcon(iconName: string, className: string = "w-6 h-6") {
+  const IconComponent = iconMap[iconName] || Check
+  return <IconComponent className={className} />
+}
+
+// ============================================
 // Main Component
 // ============================================
 
@@ -166,13 +210,15 @@ export function BECSECoursePage(props: BECSECoursePageProps) {
   const {
     heroTitle,
     heroSubtitle,
+    breadcrumbItems,
+    approvalBadge,
     heroStats,
     heroCTAs,
     affiliatedTo,
-    overviewTitle,
-    overviewCards,
     whyChooseTitle,
+    whyChooseSubtitle,
     benefits,
+    programHighlights,
     curriculumTitle,
     curriculumYears,
     specializationsTitle,
@@ -185,6 +231,7 @@ export function BECSECoursePage(props: BECSECoursePageProps) {
     admissionSteps,
     feeTitle,
     feeBreakdown,
+    placementStats,
     facilitiesTitle,
     facilities,
     facultyTitle,
@@ -199,104 +246,111 @@ export function BECSECoursePage(props: BECSECoursePageProps) {
     accentColor = '#ffde59',
   } = props
 
+  const [openFAQIndex, setOpenFAQIndex] = React.useState<number | null>(null)
+
   return (
-    <div className="w-full bg-[#FFFBF5]">
-      {/* Hero Section - Cream background instead of dark */}
+    <div className="min-h-screen bg-[#fbfbee]">
+      {/* 1. Hero Section with Integrated Stats */}
       <HeroSection
         title={heroTitle}
         subtitle={heroSubtitle}
+        breadcrumbs={breadcrumbItems}
+        approvalBadge={approvalBadge}
         stats={heroStats}
         ctas={heroCTAs}
         affiliatedTo={affiliatedTo}
         primaryColor={primaryColor}
       />
 
-      {/* Course Overview */}
-      <CourseOverviewSection
-        title={overviewTitle}
-        cards={overviewCards}
-        primaryColor={primaryColor}
-      />
-
-      {/* Why Choose CSE */}
+      {/* 2. Why Choose Section */}
       <WhyChooseSection
         title={whyChooseTitle}
+        subtitle={whyChooseSubtitle}
         benefits={benefits}
-        primaryColor={primaryColor}
       />
 
-      {/* Curriculum */}
-      <CurriculumSection
+      {/* 3. Program Highlights Section (NEW) */}
+      {programHighlights && programHighlights.length > 0 && (
+        <ProgramHighlightsSection highlights={programHighlights} />
+      )}
+
+      {/* 4. Curriculum Table Section */}
+      <CurriculumTableSection
         title={curriculumTitle}
         years={curriculumYears}
-        primaryColor={primaryColor}
       />
 
-      {/* Specializations (if provided) */}
+      {/* 5. Specializations Section - Simple 2-Column List */}
       {specializations && specializations.length > 0 && (
         <SpecializationsSection
-          title={specializationsTitle || 'Specializations Offered'}
+          title={specializationsTitle}
           specializations={specializations}
+        />
+      )}
+
+      {/* 6. Fee Structure Section */}
+      <FeeStructureSection
+        title={feeTitle}
+        breakdown={feeBreakdown}
+      />
+
+      {/* 7. Placement Statistics Section (NEW) */}
+      {placementStats && placementStats.length > 0 && (
+        <PlacementStatsSection stats={placementStats} />
+      )}
+
+      {/* 8. Facilities Section */}
+      <FacilitiesSection
+        title={facilitiesTitle}
+        facilities={facilities}
+      />
+
+      {/* 9. Top Recruiters Section */}
+      {recruiters && recruiters.length > 0 && (
+        <TopRecruitersSection
+          title={recruitersTitle || 'Our Top Recruiters'}
+          recruiters={recruiters}
+        />
+      )}
+
+      {/* 10. Career Opportunities Section (MOVED FROM EARLIER) */}
+      <CareerOpportunitiesSection
+        title={careerTitle}
+        careers={careerPaths}
+      />
+
+      {/* 11. Admission Process Section */}
+      {admissionSteps && admissionSteps.length > 0 && (
+        <AdmissionProcessSection
+          title={admissionTitle || 'Admission Process'}
+          steps={admissionSteps}
           primaryColor={primaryColor}
         />
       )}
 
-      {/* Career Opportunities */}
-      <CareerOpportunitiesSection
-        title={careerTitle}
-        careers={careerPaths}
-        primaryColor={primaryColor}
-      />
+      {/* 12. Faculty Section */}
+      {faculty && faculty.length > 0 && (
+        <FacultySection
+          title={facultyTitle || 'Our Experienced Faculty'}
+          faculty={faculty}
+        />
+      )}
 
-      {/* Top Recruiters */}
-      <TopRecruitersSection
-        title={recruitersTitle}
-        recruiters={recruiters}
-        primaryColor={primaryColor}
-      />
-
-      {/* Admission Process */}
-      <AdmissionProcessSection
-        title={admissionTitle}
-        steps={admissionSteps}
-        primaryColor={primaryColor}
-      />
-
-      {/* Fee Structure */}
-      <FeeStructureSection
-        title={feeTitle}
-        feeBreakdown={feeBreakdown}
-        primaryColor={primaryColor}
-      />
-
-      {/* Facilities */}
-      <FacilitiesSection
-        title={facilitiesTitle}
-        facilities={facilities}
-        primaryColor={primaryColor}
-      />
-
-      {/* Faculty */}
-      <FacultySection
-        title={facultyTitle}
-        faculty={faculty}
-        primaryColor={primaryColor}
-      />
-
-      {/* FAQs */}
+      {/* 13. FAQ Section */}
       <FAQSection
         title={faqTitle}
         faqs={faqs}
-        primaryColor={primaryColor}
+        openIndex={openFAQIndex}
+        setOpenIndex={setOpenFAQIndex}
       />
 
-      {/* Final CTA Section */}
+      {/* 14. Final CTA Section - GREEN GRADIENT */}
       {ctaTitle && (
         <FinalCTASection
           title={ctaTitle}
           description={ctaDescription}
-          buttonLabel={ctaButtonLabel || 'Apply Now'}
-          buttonLink={ctaButtonLink || '/apply'}
+          buttonLabel={ctaButtonLabel}
+          buttonLink={ctaButtonLink}
           primaryColor={primaryColor}
         />
       )}
@@ -308,9 +362,12 @@ export function BECSECoursePage(props: BECSECoursePageProps) {
 // Section Components
 // ============================================
 
+// Hero Section with Integrated Stats
 function HeroSection({
   title,
   subtitle,
+  breadcrumbs,
+  approvalBadge,
   stats,
   ctas,
   affiliatedTo,
@@ -318,146 +375,158 @@ function HeroSection({
 }: {
   title: string
   subtitle?: string
+  breadcrumbs?: Array<{ label: string; link?: string }>
+  approvalBadge?: string
   stats: Array<{ icon: string; label: string; value: string }>
-  ctas: Array<{ label: string; link: string; variant: 'primary' | 'secondary' }>
+  ctas: Array<{ label: string; link: string; variant: string }>
   affiliatedTo: string
   primaryColor: string
 }) {
   return (
-    <section className="relative py-20 md:py-24 lg:py-28 bg-gradient-to-br from-[#0a4c5c] to-[#084554] overflow-hidden">
+    <section className="relative bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6] py-12 md:py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Column - Content */}
-          <div className="space-y-8">
-            {/* Title with Brand Green Color */}
-            <div>
-              <h1
-                className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight"
-                style={{ color: primaryColor }}
-              >
-                {title}
-              </h1>
-            </div>
+        {/* Breadcrumb */}
+        {breadcrumbs && breadcrumbs.length > 0 && (
+          <nav className="flex items-center space-x-2 text-sm mb-4">
+            {breadcrumbs.map((item, index) => (
+              <React.Fragment key={index}>
+                {item.link ? (
+                  <a href={item.link} className="text-gray-700 hover:text-[#0b6d41] transition-colors">
+                    {item.label}
+                  </a>
+                ) : (
+                  <span className="text-[#0b6d41] font-medium">{item.label}</span>
+                )}
+                {index < breadcrumbs.length - 1 && (
+                  <span className="text-gray-400">›</span>
+                )}
+              </React.Fragment>
+            ))}
+          </nav>
+        )}
 
-            {/* Description */}
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
+          {/* Left Content */}
+          <div>
+            {/* Approval Badge */}
+            {approvalBadge && (
+              <div className="inline-block bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full text-sm mb-4 text-[#0b6d41] font-medium border border-gray-200">
+                {approvalBadge}
+              </div>
+            )}
+
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-[#0b6d41]">
+              {title}
+            </h1>
             {subtitle && (
-              <p className="text-lg text-white leading-relaxed max-w-xl">
+              <p className="text-base md:text-lg text-gray-700 mb-4">
                 {subtitle}
               </p>
             )}
-
-            {/* Stats Row - Horizontal */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {stats.map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div
-                    className="text-3xl lg:text-4xl font-bold mb-1"
-                    style={{ color: primaryColor }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-white font-medium">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <p className="text-sm text-gray-600 mb-6">
+              {affiliatedTo}
+            </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-wrap gap-4 mb-8">
               {ctas.map((cta, index) => (
                 <a
                   key={index}
                   href={cta.link}
                   className={`
-                    inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-base transition-all duration-300
+                    px-6 py-3 rounded-lg font-medium transition-all duration-200 inline-flex items-center gap-2
                     ${cta.variant === 'primary'
-                      ? 'text-white shadow-lg hover:shadow-xl'
-                      : 'bg-transparent border-2 border-white text-white hover:bg-white/10'
+                      ? 'bg-[#0b6d41] hover:bg-[#0f8f56] text-white shadow-md'
+                      : 'bg-transparent border-2 border-[#0b6d41] text-[#0b6d41] hover:bg-[#0b6d41] hover:text-white'
                     }
                   `}
-                  style={cta.variant === 'primary' ? { backgroundColor: primaryColor } : {}}
                 >
                   {cta.label}
                   <ArrowRight className="w-5 h-5" />
                 </a>
               ))}
             </div>
+
+            {/* Stats Cards - Integrated in Hero */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {stats.map((stat, index) => (
+                <div
+                  key={index}
+                  className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center border border-gray-200 shadow-sm"
+                >
+                  <div className="flex justify-center mb-2">
+                    {getIcon(stat.icon, "w-6 h-6 text-[#0b6d41]")}
+                  </div>
+                  <div className="text-2xl font-bold mb-1 text-[#0b6d41]">
+                    {stat.value}
+                  </div>
+                  <div className="text-xs text-gray-600">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Right Column - Image + NBA Badge */}
-          <div className="relative hidden lg:block">
-            {/* Computer Lab Image */}
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-              <img
-                src="/images/computer-lab-hero.jpg"
-                alt="Learners working in modern computer lab at JKKN"
-                className="w-full h-[500px] object-cover"
-              />
-              {/* Overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-            </div>
-
-            {/* NBA Accreditation Badge */}
-            <div className="absolute bottom-8 left-8 bg-white rounded-xl shadow-xl p-6 max-w-[250px]">
-              <div className="flex items-center gap-4">
-                <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: primaryColor }}
-                >
-                  <Award className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <div className="text-xl font-bold text-gray-900">NBA</div>
-                  <div className="text-sm text-gray-600">Accredited Program</div>
-                </div>
-              </div>
+          {/* Right Content - Hero Illustration */}
+          <div className="hidden lg:flex items-center justify-center">
+            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-8 w-full h-80 flex items-center justify-center border border-gray-200 shadow-lg">
+              <GraduationCap className="w-40 h-40 text-[#0b6d41]/20" />
             </div>
           </div>
         </div>
       </div>
-
-      {/* Decorative Elements */}
-      <div
-        className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-20"
-        style={{ backgroundColor: primaryColor }}
-      ></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl"></div>
     </section>
   )
 }
 
-function CourseOverviewSection({
+// Why Choose Section
+function WhyChooseSection({
   title,
-  cards,
-  primaryColor,
+  subtitle,
+  benefits,
 }: {
   title: string
-  cards: Array<{ icon: string; title: string; value: string; description: string }>
-  primaryColor: string
+  subtitle?: string
+  benefits: Array<{ icon: string; title: string; description: string }>
 }) {
   return (
-    <section className="py-16 md:py-20 bg-white">
+    <section className="py-16 md:py-20 bg-[#fbfbee]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">
+        {/* Title */}
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-[#0b6d41]">
           {title}
         </h2>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          {cards.map((card, index) => (
+        {/* Introductory Paragraph */}
+        {subtitle && (
+          <p className="text-center text-lg text-gray-700 max-w-4xl mx-auto mb-12">
+            {subtitle}
+          </p>
+        )}
+
+        {/* Feature Cards Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {benefits.map((benefit, index) => (
             <div
               key={index}
-              className="bg-[#FFFBF5] rounded-2xl p-6 border-2 border-gray-100 hover:shadow-lg transition-all duration-300"
+              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-6 border border-gray-100"
             >
-              <div className="text-4xl mb-4">{card.icon}</div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                {card.title}
-              </h3>
-              <div className="text-2xl font-bold mb-3" style={{ color: primaryColor }}>
-                {card.value}
+              {/* Icon Container */}
+              <div className="flex justify-center mb-4">
+                <div className="w-16 h-16 rounded-full bg-[#0b6d41] flex items-center justify-center">
+                  {getIcon(benefit.icon, "w-8 h-8 text-white")}
+                </div>
               </div>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                {card.description}
+
+              {/* Title */}
+              <h3 className="text-xl font-semibold text-center mb-3 text-[#0b6d41]">
+                {benefit.title}
+              </h3>
+
+              {/* Description */}
+              <p className="text-gray-600 text-sm text-center leading-relaxed">
+                {benefit.description}
               </p>
             </div>
           ))}
@@ -467,43 +536,33 @@ function CourseOverviewSection({
   )
 }
 
-function WhyChooseSection({
-  title,
-  benefits,
-  primaryColor,
+// Program Highlights Section
+function ProgramHighlightsSection({
+  highlights,
 }: {
-  title: string
-  benefits: Array<{ icon: string; title: string; description: string }>
-  primaryColor: string
+  highlights: Array<{ icon: string; title: string; description: string }>
 }) {
   return (
-    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
+    <section className="py-16 md:py-20 bg-[#fbfbee]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">
-          {title}
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
+          What Sets Our CSE Program Apart?
         </h2>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {benefits.map((benefit, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300"
-            >
-              <div className="flex items-start gap-4">
-                <div
-                  className="w-12 h-12 rounded-lg flex items-center justify-center text-white text-2xl flex-shrink-0"
-                  style={{ backgroundColor: primaryColor }}
-                >
-                  {benefit.icon}
+        <div className="grid md:grid-cols-2 gap-8">
+          {highlights.map((highlight, index) => (
+            <div key={index} className="flex items-start gap-4 bg-white p-6 rounded-lg shadow-sm">
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 rounded-full bg-[#0b6d41] flex items-center justify-center">
+                  {getIcon(highlight.icon, "w-6 h-6 text-white")}
                 </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">
-                    {benefit.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {benefit.description}
-                  </p>
-                </div>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-2 text-[#0b6d41]">
+                  {highlight.title}
+                </h3>
+                <p className="text-gray-600">
+                  {highlight.description}
+                </p>
               </div>
             </div>
           ))}
@@ -513,10 +572,10 @@ function WhyChooseSection({
   )
 }
 
-function CurriculumSection({
+// Curriculum Table Section
+function CurriculumTableSection({
   title,
   years,
-  primaryColor,
 }: {
   title: string
   years: Array<{
@@ -527,121 +586,127 @@ function CurriculumSection({
       subjects: Array<{ code?: string; name: string; credits?: number }>
     }>
   }>
-  primaryColor: string
 }) {
-  const [activeYear, setActiveYear] = React.useState(1)
+  const [expandedSemesters, setExpandedSemesters] = React.useState<number[]>([1, 2, 3])
 
-  const currentYear = years.find(y => y.year === activeYear) || years[0]
+  const allSemesters = years.flatMap(year => year.semesters)
+
+  const toggleSemester = (semester: number) => {
+    setExpandedSemesters(prev =>
+      prev.includes(semester)
+        ? prev.filter(s => s !== semester)
+        : [...prev, semester]
+    )
+  }
 
   return (
-    <section className="py-16 md:py-20 bg-white">
+    <section className="py-16 md:py-20 bg-[#fbfbee]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
           {title}
         </h2>
 
-        {/* Year Tabs */}
-        <div className="flex justify-center mb-8 overflow-x-auto">
-          <div className="inline-flex bg-[#FFF9F0] rounded-lg p-1 shadow-sm border border-gray-200">
-            {years.map((year) => (
-              <button
-                key={year.year}
-                onClick={() => setActiveYear(year.year)}
-                className={`
-                  px-6 py-3 rounded-md font-semibold transition-all duration-300 whitespace-nowrap
-                  ${activeYear === year.year
-                    ? 'text-white shadow-md'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
-                  }
-                `}
-                style={activeYear === year.year ? { backgroundColor: primaryColor } : {}}
-              >
-                Year {year.year}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Semesters */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {currentYear.semesters.map((semester) => (
-            <div
-              key={semester.semester}
-              className="bg-[#FFFBF5] rounded-2xl p-6 shadow-sm border border-gray-200"
-            >
-              <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
-                <h3 className="text-xl font-bold text-gray-900">
-                  Semester {semester.semester}
-                </h3>
-                <span className="text-sm font-medium px-3 py-1 rounded-full bg-white border" style={{ color: primaryColor, borderColor: primaryColor }}>
-                  {semester.credits} Credits
-                </span>
-              </div>
-
-              <div className="space-y-3">
-                {semester.subjects.map((subject, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-start gap-3 p-3 rounded-lg bg-white hover:shadow-sm transition-shadow"
-                  >
-                    <Check className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: primaryColor }} />
-                    <div className="flex-1 min-w-0">
-                      {subject.code && (
-                        <div className="text-xs text-gray-500 font-mono mb-1">
-                          {subject.code}
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse bg-white shadow-lg rounded-lg overflow-hidden">
+            <thead>
+              <tr className="bg-[#0b6d41]">
+                <th className="px-6 py-4 text-left text-white font-semibold">Semester</th>
+                <th className="px-6 py-4 text-left text-white font-semibold">Course Code</th>
+                <th className="px-6 py-4 text-left text-white font-semibold">Course Name</th>
+                <th className="px-6 py-4 text-left text-white font-semibold">Credits</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allSemesters.map((semester, semIndex) => (
+                <React.Fragment key={semIndex}>
+                  {expandedSemesters.includes(semester.semester) ? (
+                    semester.subjects.map((subject, subIndex) => (
+                      <tr
+                        key={`${semIndex}-${subIndex}`}
+                        className={semIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+                      >
+                        {subIndex === 0 && (
+                          <td
+                            className="px-6 py-3 font-semibold text-gray-900 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
+                            rowSpan={semester.subjects.length}
+                            onClick={() => toggleSemester(semester.semester)}
+                          >
+                            <div className="flex items-center gap-2">
+                              Semester {semester.semester}
+                              <ChevronDown className="w-4 h-4" />
+                            </div>
+                          </td>
+                        )}
+                        <td className="px-6 py-3 text-gray-700 border-b border-gray-200">
+                          {subject.code || '-'}
+                        </td>
+                        <td className="px-6 py-3 text-gray-900 border-b border-gray-200">
+                          {subject.name}
+                        </td>
+                        <td className="px-6 py-3 text-gray-700 border-b border-gray-200">
+                          {subject.credits || '-'}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr
+                      className={`${semIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'} cursor-pointer hover:bg-gray-100`}
+                      onClick={() => toggleSemester(semester.semester)}
+                    >
+                      <td className="px-6 py-3 font-semibold text-gray-900 border-b border-gray-200" colSpan={4}>
+                        <div className="flex items-center gap-2">
+                          Semester {semester.semester} ({semester.subjects.length} courses)
+                          <ChevronDown className="w-4 h-4 transform -rotate-90" />
                         </div>
-                      )}
-                      <div className="text-sm text-gray-900 font-medium">
-                        {subject.name}
-                      </div>
-                    </div>
-                    {subject.credits && (
-                      <span className="text-xs text-gray-500 flex-shrink-0">
-                        {subject.credits}C
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
   )
 }
 
+// Specializations Section - Simple 2-Column List
 function SpecializationsSection({
   title,
   specializations,
-  primaryColor,
 }: {
-  title: string
-  specializations: Array<{ title: string; description: string; icon?: string }>
-  primaryColor: string
+  title?: string
+  specializations: Array<{ title: string; description?: string }>
 }) {
   return (
-    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
+    <section className="py-16 md:py-20 bg-[#fbfbee]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">
-          {title}
-        </h2>
+        {title && (
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
+            {title}
+          </h2>
+        )}
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
           {specializations.map((spec, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200"
+              className="flex items-start gap-4"
             >
-              {spec.icon && (
-                <div className="text-3xl mb-4">{spec.icon}</div>
-              )}
-              <h3 className="text-lg font-bold text-gray-900 mb-3">
-                {spec.title}
-              </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                {spec.description}
-              </p>
+              <div className="flex-shrink-0 mt-1">
+                <Check className="w-6 h-6 text-[#0b6d41]" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {spec.title}
+                </h3>
+                {spec.description && (
+                  <p className="text-gray-600 text-sm mt-1">
+                    {spec.description}
+                  </p>
+                )}
+              </div>
             </div>
           ))}
         </div>
@@ -650,43 +715,44 @@ function SpecializationsSection({
   )
 }
 
+// Career Opportunities Section
 function CareerOpportunitiesSection({
   title,
   careers,
-  primaryColor,
 }: {
   title: string
   careers: Array<{ icon: string; title: string; description: string; avgSalary?: string }>
-  primaryColor: string
 }) {
   return (
-    <section className="py-16 md:py-20 bg-white">
+    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-[#0b6d41]">
           {title}
         </h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto space-y-6">
           {careers.map((career, index) => (
             <div
               key={index}
-              className="bg-[#FFFBF5] rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200"
+              className="bg-white/80 backdrop-blur-sm rounded-lg p-6 flex items-start gap-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
             >
-              <div className="text-4xl mb-4">{career.icon}</div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">
-                {career.title}
-              </h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-4">
-                {career.description}
-              </p>
-              {career.avgSalary && (
-                <div className="pt-4 border-t border-gray-200">
-                  <span className="text-xs text-gray-500">Average Salary:</span>
-                  <div className="text-base font-bold mt-1" style={{ color: primaryColor }}>
-                    {career.avgSalary}
+              <div className="flex-shrink-0">
+                {getIcon(career.icon, "w-8 h-8 text-[#0b6d41]")}
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold mb-2 text-gray-900">
+                  {career.title}
+                </h3>
+                <p className="text-gray-700 mb-2">
+                  {career.description}
+                </p>
+                {career.avgSalary && (
+                  <div className="flex items-center gap-2 text-sm text-[#0b6d41] font-medium">
+                    <IndianRupee className="w-4 h-4" />
+                    <span>{career.avgSalary}</span>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           ))}
         </div>
@@ -695,188 +761,122 @@ function CareerOpportunitiesSection({
   )
 }
 
-function TopRecruitersSection({
-  title,
-  recruiters,
-  primaryColor,
-}: {
-  title: string
-  recruiters: string[]
-  primaryColor: string
-}) {
-  return (
-    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">
-          {title}
-        </h2>
-
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {recruiters.map((recruiter, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg p-4 flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200 min-h-[80px]"
-              >
-                <span className="font-semibold text-gray-900 text-center text-sm">
-                  {recruiter}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function AdmissionProcessSection({
-  title,
-  steps,
-  primaryColor,
-}: {
-  title: string
-  steps: Array<{ step: number; title: string; description: string; icon: string }>
-  primaryColor: string
-}) {
-  return (
-    <section className="py-16 md:py-20 bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">
-          {title}
-        </h2>
-
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {steps.map((step, index) => (
-            <div
-              key={index}
-              className="bg-[#FFFBF5] rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200 relative"
-            >
-              {/* Step Number */}
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center text-white text-xl font-bold mb-4"
-                style={{ backgroundColor: primaryColor }}
-              >
-                {step.step}
-              </div>
-
-              {/* Icon */}
-              <div className="text-3xl mb-4">{step.icon}</div>
-
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                {step.title}
-              </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                {step.description}
-              </p>
-
-              {/* Connector Arrow (except last) */}
-              {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
-                  <ArrowRight className="w-8 h-8 text-gray-300" />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
+// Fee Structure Section
 function FeeStructureSection({
   title,
-  feeBreakdown,
-  primaryColor,
+  breakdown,
 }: {
   title: string
-  feeBreakdown: Array<{ component: string; amount: string; isTotal?: boolean }>
-  primaryColor: string
+  breakdown: Array<{ component: string; amount: string; isTotal?: boolean }>
 }) {
   return (
-    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">
+    <section className="py-16 md:py-20 bg-[#fbfbee]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
           {title}
         </h2>
 
-        <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b-2" style={{ borderColor: primaryColor }}>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                    Fee Component
-                  </th>
-                  <th className="px-6 py-4 text-right text-sm font-semibold text-gray-900">
-                    Amount (₹)
-                  </th>
+        <div className="overflow-x-auto shadow-lg rounded-lg">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-[#0b6d41]">
+                <th className="px-6 py-4 text-left text-white font-semibold">Fee Component</th>
+                <th className="px-6 py-4 text-right text-white font-semibold">Amount (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {breakdown.map((item, index) => (
+                <tr
+                  key={index}
+                  className={`
+                    ${item.isTotal ? 'bg-[#0b6d41]/10 font-semibold' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+                    border-b border-gray-200
+                  `}
+                >
+                  <td className="px-6 py-4 text-gray-900">{item.component}</td>
+                  <td className="px-6 py-4 text-right text-gray-900">{item.amount}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {feeBreakdown.map((fee, index) => (
-                  <tr
-                    key={index}
-                    className={`
-                      border-b border-gray-100
-                      ${fee.isTotal ? 'font-bold text-white' : 'hover:bg-gray-50'}
-                    `}
-                    style={fee.isTotal ? { backgroundColor: primaryColor } : {}}
-                  >
-                    <td className={`px-6 py-4 text-sm ${fee.isTotal ? 'text-white' : 'text-gray-900'}`}>
-                      {fee.component}
-                    </td>
-                    <td className={`px-6 py-4 text-sm text-right ${fee.isTotal ? 'text-white' : 'text-gray-900'}`}>
-                      {fee.amount}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
   )
 }
 
+// Placement Statistics Section
+function PlacementStatsSection({
+  stats,
+}: {
+  stats: Array<{ label: string; value: string; icon: string }>
+}) {
+  return (
+    <section className="py-16 md:py-20 bg-[#fbfbee]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
+          Exceptional Placement Record
+        </h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          {stats.map((stat, index) => (
+            <div key={index} className="text-center p-8 bg-gray-50 rounded-lg">
+              <div className="flex justify-center mb-4">
+                {getIcon(stat.icon, "w-12 h-12 text-[#0b6d41]")}
+              </div>
+              <div className="text-4xl font-bold text-[#0b6d41] mb-2">
+                {stat.value}
+              </div>
+              <div className="text-gray-600 font-medium">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Facilities Section
 function FacilitiesSection({
   title,
   facilities,
-  primaryColor,
 }: {
   title: string
   facilities: Array<{ name: string; image?: string; description: string }>
-  primaryColor: string
 }) {
   return (
-    <section className="py-16 md:py-20 bg-white">
+    <section className="py-16 md:py-20 bg-[#fbfbee]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
           {title}
         </h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {facilities.map((facility, index) => (
             <div
               key={index}
-              className="bg-[#FFFBF5] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200"
+              className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-200"
             >
-              {facility.image && (
-                <div className="aspect-video bg-gray-200">
-                  <img
+              {facility.image ? (
+                <div className="relative w-full h-48">
+                  <Image
                     src={facility.image}
                     alt={facility.name}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
+                    fill
+                    className="object-cover"
                   />
+                </div>
+              ) : (
+                <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+                  <Building2 className="w-16 h-16 text-gray-400" />
                 </div>
               )}
               <div className="p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">
+                <h3 className="text-xl font-semibold mb-2 text-gray-900">
                   {facility.name}
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-gray-600">
                   {facility.description}
                 </p>
               </div>
@@ -888,10 +888,93 @@ function FacilitiesSection({
   )
 }
 
+// Top Recruiters Section - WITH LOGOS
+function TopRecruitersSection({
+  title,
+  recruiters,
+}: {
+  title: string
+  recruiters: Array<{ name: string; logo?: string }>
+}) {
+  return (
+    <section className="py-16 md:py-20 bg-[#fbfbee]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
+          {title}
+        </h2>
+
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
+          {recruiters.map((recruiter, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-center p-4 bg-white rounded-lg hover:shadow-md transition-shadow border border-gray-200"
+            >
+              {recruiter.logo ? (
+                <div className="relative w-full h-16">
+                  <Image
+                    src={recruiter.logo}
+                    alt={recruiter.name}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              ) : (
+                <span className="text-sm font-medium text-gray-700 text-center">
+                  {recruiter.name}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Admission Process Section
+function AdmissionProcessSection({
+  title,
+  steps,
+  primaryColor,
+}: {
+  title: string
+  steps: Array<{ step: number; title: string; description: string; icon: string }>
+  primaryColor: string
+}) {
+  return (
+    <section className="py-16 md:py-20 bg-[#fbfbee]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
+          {title}
+        </h2>
+
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {steps.map((step, index) => (
+            <div key={index} className="text-center">
+              <div
+                className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-2xl shadow-lg"
+                style={{ backgroundColor: primaryColor }}
+              >
+                {step.step}
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-gray-900">
+                {step.title}
+              </h3>
+              <p className="text-gray-600">
+                {step.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Faculty Section
 function FacultySection({
   title,
   faculty,
-  primaryColor,
 }: {
   title: string
   faculty: Array<{
@@ -901,48 +984,39 @@ function FacultySection({
     specialization: string
     image?: string
   }>
-  primaryColor: string
 }) {
   return (
-    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
+    <section className="py-16 md:py-20 bg-[#fbfbee]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
           {title}
         </h2>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {faculty.map((member, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200"
+              className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-200"
             >
-              <div className="aspect-square bg-gray-200">
-                {member.image ? (
-                  <img
+              {member.image ? (
+                <div className="relative w-full h-48">
+                  <Image
                     src={member.image}
                     alt={member.name}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
+                    fill
+                    className="object-cover"
                   />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-400">
-                    <Users className="w-16 h-16" />
-                  </div>
-                )}
-              </div>
+                </div>
+              ) : (
+                <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+                  <UserCheck className="w-16 h-16 text-gray-400" />
+                </div>
+              )}
               <div className="p-4">
-                <h3 className="font-bold text-gray-900 mb-1 text-sm">
-                  {member.name}
-                </h3>
-                <p className="text-xs font-medium mb-2" style={{ color: primaryColor }}>
-                  {member.designation}
-                </p>
-                <p className="text-xs text-gray-600 mb-1">
-                  {member.qualification}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {member.specialization}
-                </p>
+                <h3 className="font-semibold text-gray-900 mb-1">{member.name}</h3>
+                <p className="text-sm text-gray-600 mb-2">{member.designation}</p>
+                <p className="text-xs text-gray-500">{member.qualification}</p>
+                <p className="text-xs text-gray-500 mt-1">{member.specialization}</p>
               </div>
             </div>
           ))}
@@ -952,49 +1026,45 @@ function FacultySection({
   )
 }
 
+// FAQ Section
 function FAQSection({
   title,
   faqs,
-  primaryColor,
+  openIndex,
+  setOpenIndex,
 }: {
   title: string
   faqs: Array<{ question: string; answer: string }>
-  primaryColor: string
+  openIndex: number | null
+  setOpenIndex: (index: number | null) => void
 }) {
-  const [openIndex, setOpenIndex] = React.useState<number | null>(0)
-
   return (
-    <section className="py-16 md:py-20 bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">
+    <section className="py-16 md:py-20 bg-[#fbfbee]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
           {title}
         </h2>
 
-        <div className="max-w-3xl mx-auto space-y-4">
+        <div className="space-y-4">
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-[#FFFBF5] border border-gray-200 rounded-xl overflow-hidden shadow-sm"
+              className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full flex items-center justify-between p-6 text-left hover:bg-white/50 transition-colors"
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
               >
-                <span className="font-semibold text-gray-900 pr-4">
-                  {faq.question}
-                </span>
+                <span className="font-semibold text-gray-900">{faq.question}</span>
                 <ChevronDown
-                  className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 ${
+                  className={`w-5 h-5 text-[#0b6d41] transition-transform ${
                     openIndex === index ? 'transform rotate-180' : ''
                   }`}
-                  style={{ color: primaryColor }}
                 />
               </button>
               {openIndex === index && (
-                <div className="px-6 pb-6 pt-0">
-                  <p className="text-gray-600 leading-relaxed">
-                    {faq.answer}
-                  </p>
+                <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+                  <p className="text-gray-700">{faq.answer}</p>
                 </div>
               )}
             </div>
@@ -1005,6 +1075,7 @@ function FAQSection({
   )
 }
 
+// Final CTA Section - ORANGE GRADIENT (per plan)
 function FinalCTASection({
   title,
   description,
@@ -1014,30 +1085,64 @@ function FinalCTASection({
 }: {
   title: string
   description?: string
-  buttonLabel: string
-  buttonLink: string
+  buttonLabel?: string
+  buttonLink?: string
   primaryColor: string
 }) {
   return (
     <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#0b6d41]">
             {title}
           </h2>
           {description && (
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+            <p className="text-lg mb-8 text-gray-700">
               {description}
             </p>
           )}
-          <a
-            href={buttonLink}
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-base text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
-            style={{ backgroundColor: primaryColor }}
-          >
-            {buttonLabel}
-            <ArrowRight className="w-5 h-5" />
-          </a>
+
+          {/* Institution Details */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 mb-8 border border-gray-200 shadow-lg">
+            <h3 className="text-2xl font-semibold mb-4 text-[#0b6d41]">JKKN Institutions</h3>
+            <div className="grid md:grid-cols-2 gap-4 text-left">
+              <div>
+                <p className="font-medium mb-2 text-gray-900">📍 Address:</p>
+                <p className="text-gray-700">
+                  Komarapalayam - Nangavalli Road,<br />
+                  Kumarappalayam, Namakkal District,<br />
+                  Tamil Nadu - 638183
+                </p>
+              </div>
+              <div>
+                <p className="font-medium mb-2 text-gray-900">📞 Contact:</p>
+                <p className="text-gray-700">
+                  Phone: +91 4288 274 472<br />
+                  Email: info@jkkn.ac.in<br />
+                  Website: www.jkkn.ac.in
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {buttonLabel && buttonLink && (
+              <a
+                href={buttonLink}
+                className="inline-flex items-center justify-center gap-2 bg-[#0b6d41] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#0f8f56] transition-colors shadow-lg"
+              >
+                {buttonLabel}
+                <ArrowRight className="w-5 h-5" />
+              </a>
+            )}
+            <a
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 bg-transparent border-2 border-[#0b6d41] text-[#0b6d41] px-8 py-4 rounded-lg font-semibold hover:bg-[#0b6d41] hover:text-white transition-colors"
+            >
+              Contact Us
+            </a>
+          </div>
         </div>
       </div>
     </section>

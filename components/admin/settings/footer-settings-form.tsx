@@ -55,6 +55,9 @@ const footerSettingsSchema = z.object({
   show_programs: z.boolean(),
   show_resources: z.boolean(),
   show_social: z.boolean(),
+  section_title_institutions: z.string().min(1, 'Section title is required'),
+  section_title_programs: z.string().min(1, 'Section title is required'),
+  section_title_resources: z.string().min(1, 'Section title is required'),
   contactEmail: z.string().email('Invalid email'),
   contactPhone: z.string().min(1, 'Phone is required'),
   address_line1: z.string().min(1, 'Address line 1 is required'),
@@ -92,6 +95,9 @@ export function FooterSettingsForm({ initialSettings }: FooterSettingsFormProps)
       show_programs: initialSettings.sectionsVisibility?.show_programs ?? true,
       show_resources: initialSettings.sectionsVisibility?.show_resources ?? true,
       show_social: initialSettings.sectionsVisibility?.show_social ?? true,
+      section_title_institutions: initialSettings.sectionTitles?.institutions || 'Our Institutions',
+      section_title_programs: initialSettings.sectionTitles?.programs || 'Programs',
+      section_title_resources: initialSettings.sectionTitles?.resources || 'Resources',
       contactEmail: initialSettings.contactEmail || 'info@jkkn.ac.in',
       contactPhone: initialSettings.contactPhone || '+91 422 266 1100',
       address_line1: initialSettings.address?.line1 || '',
@@ -200,10 +206,27 @@ export function FooterSettingsForm({ initialSettings }: FooterSettingsFormProps)
 
         {/* Institutions Links */}
         <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="section_title_institutions"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Institutions Section Title</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Our Institutions" />
+                </FormControl>
+                <FormDescription>
+                  Title displayed in the footer for the institutions section
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div className="flex items-center justify-between pb-2 border-b">
             <div className="flex items-center gap-2">
               <Link2 className="h-5 w-5 text-muted-foreground" />
-              <h3 className="font-medium">Our Institutions</h3>
+              <h3 className="font-medium">Institutions Links</h3>
             </div>
             <div className="flex items-center gap-4">
               <FormField
@@ -296,10 +319,27 @@ export function FooterSettingsForm({ initialSettings }: FooterSettingsFormProps)
 
         {/* Programs Links */}
         <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="section_title_programs"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Programs Section Title</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Programs" />
+                </FormControl>
+                <FormDescription>
+                  Title displayed in the footer for the programs section
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div className="flex items-center justify-between pb-2 border-b">
             <div className="flex items-center gap-2">
               <Link2 className="h-5 w-5 text-muted-foreground" />
-              <h3 className="font-medium">Programs</h3>
+              <h3 className="font-medium">Programs Links</h3>
             </div>
             <div className="flex items-center gap-4">
               <FormField
@@ -392,10 +432,27 @@ export function FooterSettingsForm({ initialSettings }: FooterSettingsFormProps)
 
         {/* Resources Links */}
         <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="section_title_resources"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Resources Section Title</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Resources" />
+                </FormControl>
+                <FormDescription>
+                  Title displayed in the footer for the resources section
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div className="flex items-center justify-between pb-2 border-b">
             <div className="flex items-center gap-2">
               <Link2 className="h-5 w-5 text-muted-foreground" />
-              <h3 className="font-medium">Resources</h3>
+              <h3 className="font-medium">Resources Links</h3>
             </div>
             <div className="flex items-center gap-4">
               <FormField

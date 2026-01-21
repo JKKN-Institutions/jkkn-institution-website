@@ -339,7 +339,7 @@ export default function EngineeringHeroSection({
           {/* Right Content - Image */}
           <div
             className={cn(
-              'relative hidden lg:block',
+              'relative block',
               animateClass(200)
             )}
             style={{ transitionDelay: '200ms' }}
@@ -366,20 +366,20 @@ export default function EngineeringHeroSection({
                   />
                 </div>
 
-                {/* Floating info card */}
+                {/* Floating info card - responsive visibility */}
                 <div
-                  className="absolute bottom-4 left-4 right-4 p-4 rounded-xl backdrop-blur-md bg-white/90 shadow-lg"
+                  className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 p-3 sm:p-4 rounded-xl backdrop-blur-md bg-white/90 shadow-lg"
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center"
+                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0"
                       style={{ backgroundColor: primaryColor }}
                     >
-                      <Phone className="w-6 h-6 text-white" />
+                      <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                     </div>
                     <div>
-                      <div className="text-sm text-gray-500">Admissions Helpline</div>
-                      <div className="text-lg font-bold" style={{ color: primaryColor }}>
+                      <div className="text-xs sm:text-sm text-gray-500">Admissions Helpline</div>
+                      <div className="text-base sm:text-lg font-bold" style={{ color: primaryColor }}>
                         +91 98765 43210
                       </div>
                     </div>
@@ -387,9 +387,9 @@ export default function EngineeringHeroSection({
                 </div>
               </div>
 
-              {/* Floating badges */}
+              {/* Floating badges - responsive sizing */}
               <div
-                className="absolute -top-6 -right-6 w-24 h-24 rounded-full flex items-center justify-center text-gray-900 font-bold text-center text-sm shadow-xl animate-pulse"
+                className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center text-gray-900 font-bold text-center text-xs sm:text-sm shadow-xl animate-pulse"
                 style={{ backgroundColor: accentColor }}
               >
                 100+<br />Years Legacy

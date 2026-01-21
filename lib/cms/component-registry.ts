@@ -367,11 +367,26 @@ import {
   ModernTransportSectionPropsSchema,
 } from './registry-types'
 
+// Import BEEEECoursePage schema from component
+import { BEEEECoursePagePropsSchema } from '@/components/cms-blocks/content/be-eee-course-page'
+
+// Import BEECECoursePage schema from component
+import { BEECECoursePagePropsSchema } from '@/components/cms-blocks/content/be-ece-course-page'
+
 // Import BECSECoursePage schema from component
 import { BECSECoursePagePropsSchema } from '@/components/cms-blocks/content/be-cse-course-page'
 
-// Import BEEEECoursePage schema from component
-import { BEEEECoursePagePropsSchema } from '@/components/cms-blocks/content/be-eee-course-page'
+// Import BEMechanicalCoursePage schema from component
+import { BEMechanicalCoursePagePropsSchema } from '@/components/cms-blocks/content/be-mechanical-course-page'
+
+// Import BEITCoursePage schema from component
+import { BEITCoursePagePropsSchema } from '@/components/cms-blocks/content/be-it-course-page'
+
+// Import MECSECoursePage schema from component
+import { MECSECoursePagePropsSchema } from '@/components/cms-blocks/content/me-cse-course-page'
+
+// Import MBACoursePage schema from component
+import { MBACoursePagePropsSchema } from '@/components/cms-blocks/content/mba-course-page'
 
 // Import engineering component schemas
 import { EngineeringHeroSectionPropsSchema } from '@/components/cms-blocks/content/engineering-hero-section'
@@ -383,6 +398,12 @@ import { EngineeringCTASectionPropsSchema } from '@/components/cms-blocks/conten
 
 // Import sample data for course pages
 import { BE_EEE_SAMPLE_DATA } from './templates/engineering/be-eee-data'
+import { BE_ECE_SAMPLE_DATA } from './templates/engineering/be-ece-data'
+import { BE_CSE_SAMPLE_DATA } from './templates/engineering/be-cse-data'
+import { BE_IT_SAMPLE_DATA } from './templates/engineering/be-it-data'
+import { beMechanicalCourseData } from './templates/engineering/be-mechanical-data'
+import { meCSECourseData } from './templates/engineering/me-cse-data'
+import { MBA_SAMPLE_DATA } from './templates/mba-data'
 
 // Re-export types
 export * from './registry-types'
@@ -525,11 +546,26 @@ const OurInstitutions = lazy(() => import('@/components/cms-blocks/content/our-i
 // Course Page
 const CoursePage = lazy(() => import('@/components/cms-blocks/content/course-page'))
 
+// BE EEE Course Page
+const BEEEECoursePage = lazy(() => import('@/components/cms-blocks/content/be-eee-course-page').then(m => ({ default: m.BEEEECoursePage })))
+
+// BE ECE Course Page
+const BEECECoursePage = lazy(() => import('@/components/cms-blocks/content/be-ece-course-page').then(m => ({ default: m.BEECECoursePage })))
+
 // BE CSE Course Page
 const BECSECoursePage = lazy(() => import('@/components/cms-blocks/content/be-cse-course-page').then(m => ({ default: m.BECSECoursePage })))
 
-// BE EEE Course Page
-const BEEEECoursePage = lazy(() => import('@/components/cms-blocks/content/be-eee-course-page').then(m => ({ default: m.BEEEECoursePage })))
+// BE Mechanical Course Page
+const BEMechanicalCoursePage = lazy(() => import('@/components/cms-blocks/content/be-mechanical-course-page').then(m => ({ default: m.BEMechanicalCoursePage })))
+
+// BE IT Course Page
+const BEITCoursePage = lazy(() => import('@/components/cms-blocks/content/be-it-course-page').then(m => ({ default: m.BEITCoursePage })))
+
+// ME CSE Course Page
+const MECSECoursePage = lazy(() => import('@/components/cms-blocks/content/me-cse-course-page').then(m => ({ default: m.MECSECoursePage })))
+
+// MBA Course Page
+const MBACoursePage = lazy(() => import('@/components/cms-blocks/content/mba-course-page').then(m => ({ default: m.MBACoursePage })))
 
 // Facility Page
 const FacilityPage = lazy(() => import('@/components/cms-blocks/content/facility-page'))
@@ -5035,124 +5071,6 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     ],
   },
 
-  BECSECoursePage: {
-    name: 'BECSECoursePage',
-    displayName: 'BE CSE Course Page (Cream)',
-    category: 'content',
-    description: 'Comprehensive B.E. Computer Science & Engineering course page with cream color backgrounds. Includes hero, overview, benefits, curriculum, specializations, careers, recruiters, admission, fees, facilities, faculty, and FAQs.',
-    icon: 'GraduationCap',
-    previewImage: '/cms-previews/BECSECoursePage.png',
-    component: BECSECoursePage,
-    propsSchema: BECSECoursePagePropsSchema as any,
-    defaultProps: {
-      heroTitle: 'B.E. Computer Science & Engineering',
-      heroSubtitle: 'Transform your passion for technology into a rewarding career. Our AICTE-approved, NBA-accredited program combines cutting-edge curriculum with industry-ready skills to shape tomorrow\'s tech leaders.',
-      heroStats: [
-        { icon: '', label: 'Years Duration', value: '4' },
-        { icon: '', label: 'Seats Available', value: '120' },
-        { icon: '', label: 'Placement Rate', value: '95%' },
-        { icon: '', label: 'Highest Package', value: '₹12L' },
-      ],
-      heroCTAs: [
-        { label: 'Apply Now for 2025-26', link: '/apply', variant: 'primary' as const },
-        { label: 'Explore Curriculum', link: '#curriculum', variant: 'secondary' as const },
-      ],
-      affiliatedTo: 'Affiliated to Anna University, Chennai',
-      overviewTitle: 'Course Overview',
-      overviewCards: [
-        { icon: '⏱️', title: 'Duration', value: '4 Years', description: 'Full-time undergraduate program with 8 semesters' },
-        { icon: '📊', title: 'Intake', value: '120 Seats', description: 'Available seats per academic year' },
-        { icon: '📚', title: 'Eligibility', value: '10+2 with PCM', description: 'Minimum 50% aggregate in Physics, Chemistry & Mathematics' },
-        { icon: '🏛️', title: 'Affiliation', value: 'Anna University', description: 'Approved by AICTE and affiliated to Anna University, Chennai' },
-      ],
-      whyChooseTitle: 'Why Choose CSE at Our College?',
-      benefits: [
-        { icon: '🎓', title: 'Industry-Aligned Curriculum', description: 'Updated curriculum covering latest technologies including AI, ML, Cloud Computing, and Cybersecurity.' },
-        { icon: '🏢', title: 'Strong Industry Partnerships', description: 'Collaborations with top tech companies for internships and placements.' },
-        { icon: '💻', title: 'State-of-the-Art Labs', description: 'Well-equipped computer labs with latest hardware and software tools.' },
-      ],
-      curriculumTitle: 'Course Curriculum',
-      curriculumYears: [
-        {
-          year: 1,
-          semesters: [
-            { semester: 1, credits: 20, subjects: [{ code: 'MA3151', name: 'Matrices and Calculus', credits: 4 }] },
-            { semester: 2, credits: 20, subjects: [{ code: 'MA3251', name: 'Statistics and Numerical Methods', credits: 4 }] },
-          ],
-        },
-      ],
-      specializationsTitle: 'Specializations Offered',
-      specializations: [
-        { icon: '🤖', title: 'AI & Machine Learning', description: 'Deep learning, neural networks, and AI applications.' },
-        { icon: '☁️', title: 'Cloud Computing', description: 'AWS, Azure, Google Cloud, and cloud architecture.' },
-      ],
-      careerTitle: 'Career Opportunities',
-      careerPaths: [
-        { icon: '💻', title: 'Software Engineer', description: 'Design and develop software applications.', avgSalary: '₹3.5-8 LPA' },
-        { icon: '📊', title: 'Data Scientist', description: 'Analyze data and build predictive models.', avgSalary: '₹5-12 LPA' },
-      ],
-      recruitersTitle: 'Our Top Recruiters',
-      recruiters: ['TCS', 'Infosys', 'Wipro', 'Cognizant', 'HCL', 'Amazon', 'Google', 'Microsoft'],
-      admissionTitle: 'Admission Process',
-      admissionSteps: [
-        { step: 1, icon: '📝', title: 'Apply Online', description: 'Fill out the online application form.' },
-        { step: 2, icon: '✅', title: 'Document Verification', description: 'Submit required documents for verification.' },
-        { step: 3, icon: '🎓', title: 'Admission Confirmation', description: 'Pay fees and confirm your seat.' },
-      ],
-      feeTitle: 'Fee Structure (Annual)',
-      feeBreakdown: [
-        { component: 'Tuition Fee', amount: '70,000' },
-        { component: 'Lab Fee', amount: '5,000' },
-        { component: 'Library Fee', amount: '2,000' },
-        { component: 'TOTAL', amount: '90,000', isTotal: true },
-      ],
-      facilitiesTitle: 'State-of-the-Art Facilities',
-      facilities: [
-        { name: 'Programming Lab', description: 'Equipped with high-end workstations and development tools.', image: '/images/labs/programming-lab.jpg' },
-        { name: 'AI & ML Lab', description: 'GPU-enabled systems for deep learning projects.', image: '/images/labs/ai-ml-lab.jpg' },
-      ],
-      facultyTitle: 'Our Experienced Faculty',
-      faculty: [
-        { name: 'Dr. Rajesh Kumar', designation: 'Professor & HOD', qualification: 'Ph.D. in Computer Science', specialization: 'Machine Learning', image: '/images/faculty/hod-cse.jpg' },
-      ],
-      faqTitle: 'Frequently Asked Questions',
-      faqs: [
-        { question: 'What is the eligibility criteria?', answer: '10+2 with Physics, Chemistry, and Mathematics with minimum 50% aggregate.' },
-        { question: 'What is the admission process?', answer: 'Admissions are based on TNEA counseling for Tamil Nadu students.' },
-      ],
-      ctaTitle: 'Ready to Start Your Journey?',
-      ctaDescription: 'Join our B.E. Computer Science & Engineering program and transform your passion for technology into a successful career.',
-      ctaButtonLabel: 'Apply Now for 2025-26',
-      ctaButtonLink: '/apply',
-      primaryColor: '#0b6d41',
-      accentColor: '#ffde59',
-    },
-    supportsChildren: false,
-    isFullWidth: true,
-    keywords: ['course', 'engineering', 'cse', 'computer science', 'be', 'bachelor', 'curriculum', 'placements', 'admission', 'cream'],
-    editableProps: [
-      { name: 'heroTitle', type: 'string', label: 'Hero Title', required: true, inlineEditable: true },
-      { name: 'heroSubtitle', type: 'string', label: 'Hero Subtitle', multiline: true, inlineEditable: true },
-      { name: 'affiliatedTo', type: 'string', label: 'Affiliated To', inlineEditable: true },
-      { name: 'overviewTitle', type: 'string', label: 'Overview Section Title' },
-      { name: 'whyChooseTitle', type: 'string', label: 'Why Choose Section Title' },
-      { name: 'curriculumTitle', type: 'string', label: 'Curriculum Section Title' },
-      { name: 'careerTitle', type: 'string', label: 'Career Section Title' },
-      { name: 'recruitersTitle', type: 'string', label: 'Recruiters Section Title' },
-      { name: 'admissionTitle', type: 'string', label: 'Admission Section Title' },
-      { name: 'feeTitle', type: 'string', label: 'Fee Section Title' },
-      { name: 'facilitiesTitle', type: 'string', label: 'Facilities Section Title' },
-      { name: 'facultyTitle', type: 'string', label: 'Faculty Section Title' },
-      { name: 'faqTitle', type: 'string', label: 'FAQ Section Title' },
-      { name: 'ctaTitle', type: 'string', label: 'Final CTA Title', inlineEditable: true },
-      { name: 'ctaDescription', type: 'string', label: 'Final CTA Description', multiline: true, inlineEditable: true },
-      { name: 'ctaButtonLabel', type: 'string', label: 'Final CTA Button Label' },
-      { name: 'ctaButtonLink', type: 'string', label: 'Final CTA Button Link' },
-      { name: 'primaryColor', type: 'color', label: 'Primary Color' },
-      { name: 'accentColor', type: 'color', label: 'Accent Color' },
-    ],
-  },
-
   BEEEECoursePage: {
     name: 'BEEEECoursePage',
     displayName: 'BE EEE Course Page (Cream)',
@@ -5184,6 +5102,243 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'ctaDescription', type: 'string', label: 'Final CTA Description', multiline: true, inlineEditable: true },
       { name: 'ctaButtonLabel', type: 'string', label: 'Final CTA Button Label' },
       { name: 'ctaButtonLink', type: 'string', label: 'Final CTA Button Link' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+    ],
+  },
+
+  BEECECoursePage: {
+    name: 'BEECECoursePage',
+    displayName: 'BE ECE Course Page (Cream)',
+    category: 'content',
+    description: 'Comprehensive B.E. Electronics & Communication Engineering course page with cream color backgrounds. Includes hero, overview, benefits, curriculum, specializations, careers, recruiters, admission, fees, facilities, faculty, and FAQs.',
+    icon: 'Cpu',
+    previewImage: '/cms-previews/BEECECoursePage.png',
+    component: BEECECoursePage,
+    propsSchema: BEECECoursePagePropsSchema as any,
+    defaultProps: BE_ECE_SAMPLE_DATA,
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['course', 'engineering', 'ece', 'electronics', 'communication', 'be', 'bachelor', 'curriculum', 'placements', 'admission', 'cream', 'vlsi', 'embedded', 'iot'],
+    editableProps: [
+      { name: 'heroTitle', type: 'string', label: 'Hero Title', required: true, inlineEditable: true },
+      { name: 'heroSubtitle', type: 'string', label: 'Hero Subtitle', multiline: true, inlineEditable: true },
+      { name: 'affiliatedTo', type: 'string', label: 'Affiliated To', inlineEditable: true },
+      { name: 'overviewTitle', type: 'string', label: 'Overview Section Title' },
+      { name: 'whyChooseTitle', type: 'string', label: 'Why Choose Section Title' },
+      { name: 'curriculumTitle', type: 'string', label: 'Curriculum Section Title' },
+      { name: 'careerTitle', type: 'string', label: 'Career Section Title' },
+      { name: 'recruitersTitle', type: 'string', label: 'Recruiters Section Title' },
+      { name: 'admissionTitle', type: 'string', label: 'Admission Section Title' },
+      { name: 'feeTitle', type: 'string', label: 'Fee Section Title' },
+      { name: 'facilitiesTitle', type: 'string', label: 'Facilities Section Title' },
+      { name: 'facultyTitle', type: 'string', label: 'Faculty Section Title' },
+      { name: 'faqTitle', type: 'string', label: 'FAQ Section Title' },
+      { name: 'ctaTitle', type: 'string', label: 'Final CTA Title', inlineEditable: true },
+      { name: 'ctaDescription', type: 'string', label: 'Final CTA Description', multiline: true, inlineEditable: true },
+      { name: 'ctaButtonLabel', type: 'string', label: 'Final CTA Button Label' },
+      { name: 'ctaButtonLink', type: 'string', label: 'Final CTA Button Link' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+    ],
+  },
+
+  BECSECoursePage: {
+    name: 'BECSECoursePage',
+    displayName: 'BE CSE Course Page (Cream)',
+    category: 'content',
+    description: 'Comprehensive B.E. Computer Science & Engineering course page with cream color backgrounds. Includes hero, curriculum, benefits, specializations, career paths, fee structure, facilities, recruiters, admission process, faculty, FAQs, and final CTA.',
+    icon: 'Code',
+    previewImage: '/cms-previews/BECSECoursePage.png',
+    component: BECSECoursePage,
+    propsSchema: BECSECoursePagePropsSchema as any,
+    defaultProps: BE_CSE_SAMPLE_DATA,
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['course', 'engineering', 'cse', 'computer', 'science', 'be', 'bachelor', 'curriculum', 'placements', 'admission', 'cream', 'ai', 'ml', 'data science', 'cyber security', 'cloud computing'],
+    editableProps: [
+      { name: 'heroTitle', type: 'string', label: 'Hero Title', required: true, inlineEditable: true },
+      { name: 'heroSubtitle', type: 'string', label: 'Hero Subtitle', multiline: true, inlineEditable: true },
+      { name: 'affiliatedTo', type: 'string', label: 'Affiliated To', inlineEditable: true },
+      { name: 'whyChooseTitle', type: 'string', label: 'Why Choose Section Title' },
+      { name: 'curriculumTitle', type: 'string', label: 'Curriculum Section Title' },
+      { name: 'specializationsTitle', type: 'string', label: 'Specializations Section Title' },
+      { name: 'careerTitle', type: 'string', label: 'Career Section Title' },
+      { name: 'feeTitle', type: 'string', label: 'Fee Section Title' },
+      { name: 'facilitiesTitle', type: 'string', label: 'Facilities Section Title' },
+      { name: 'recruitersTitle', type: 'string', label: 'Recruiters Section Title' },
+      { name: 'admissionTitle', type: 'string', label: 'Admission Section Title' },
+      { name: 'facultyTitle', type: 'string', label: 'Faculty Section Title' },
+      { name: 'faqTitle', type: 'string', label: 'FAQ Section Title' },
+      { name: 'finalCTATitle', type: 'string', label: 'Final CTA Title', inlineEditable: true },
+      { name: 'finalCTADescription', type: 'string', label: 'Final CTA Description', multiline: true, inlineEditable: true },
+      { name: 'finalCTAButton', type: 'string', label: 'Final CTA Button Label' },
+    ],
+  },
+
+  BEMechanicalCoursePage: {
+    name: 'BEMechanicalCoursePage',
+    displayName: 'BE Mechanical Course Page (Cream)',
+    category: 'content',
+    description: 'Comprehensive B.E. Mechanical Engineering course page with cream color backgrounds. Includes hero, overview, benefits, curriculum, specializations, careers, recruiters, facilities, faculty, admission, fees, FAQs, and placement statistics.',
+    icon: 'Settings',
+    previewImage: '/cms-previews/BEMechanicalCoursePage.png',
+    component: BEMechanicalCoursePage,
+    propsSchema: BEMechanicalCoursePagePropsSchema as any,
+    defaultProps: beMechanicalCourseData,
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['course', 'engineering', 'mechanical', 'be', 'bachelor', 'curriculum', 'placements', 'admission', 'cream', 'thermal', 'design', 'manufacturing', 'automobile', 'robotics', 'energy'],
+    editableProps: [
+      { name: 'heroTitle', type: 'string', label: 'Hero Title', required: true, inlineEditable: true },
+      { name: 'heroSubtitle', type: 'string', label: 'Hero Subtitle', multiline: true, inlineEditable: true },
+      { name: 'affiliatedTo', type: 'string', label: 'Affiliated To', inlineEditable: true },
+      { name: 'overviewTitle', type: 'string', label: 'Overview Section Title' },
+      { name: 'whyChooseTitle', type: 'string', label: 'Why Choose Section Title' },
+      { name: 'curriculumTitle', type: 'string', label: 'Curriculum Section Title' },
+      { name: 'specializationsTitle', type: 'string', label: 'Specializations Section Title' },
+      { name: 'careerTitle', type: 'string', label: 'Career Section Title' },
+      { name: 'recruitersTitle', type: 'string', label: 'Recruiters Section Title' },
+      { name: 'facilitiesTitle', type: 'string', label: 'Facilities Section Title' },
+      { name: 'facultyTitle', type: 'string', label: 'Faculty Section Title' },
+      { name: 'admissionTitle', type: 'string', label: 'Admission Section Title' },
+      { name: 'feeTitle', type: 'string', label: 'Fee Section Title' },
+      { name: 'faqTitle', type: 'string', label: 'FAQ Section Title' },
+      { name: 'placementStatsTitle', type: 'string', label: 'Placement Stats Section Title' },
+      { name: 'ctaTitle', type: 'string', label: 'Final CTA Title', inlineEditable: true },
+      { name: 'ctaDescription', type: 'string', label: 'Final CTA Description', multiline: true, inlineEditable: true },
+      { name: 'ctaButtonLabel', type: 'string', label: 'Final CTA Button Label' },
+      { name: 'ctaButtonLink', type: 'string', label: 'Final CTA Button Link' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+    ],
+  },
+
+  BEITCoursePage: {
+    name: 'BEITCoursePage',
+    displayName: 'B.Tech IT Course Page (Cream)',
+    category: 'content',
+    description: 'Comprehensive B.Tech Information Technology course page with cream color backgrounds. Includes hero, overview, benefits, curriculum, specializations, careers, recruiters, admission, fees, facilities, faculty, and FAQs.',
+    icon: 'Laptop',
+    previewImage: '/cms-previews/BEITCoursePage.png',
+    component: BEITCoursePage,
+    propsSchema: BEITCoursePagePropsSchema as any,
+    defaultProps: BE_IT_SAMPLE_DATA,
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['course', 'engineering', 'it', 'information technology', 'btech', 'bachelor', 'curriculum', 'placements', 'admission', 'cream', 'ai', 'ml', 'cloud', 'cybersecurity', 'fullstack', 'data science'],
+    editableProps: [
+      { name: 'heroTitle', type: 'string', label: 'Hero Title', required: true, inlineEditable: true },
+      { name: 'heroSubtitle', type: 'string', label: 'Hero Subtitle', multiline: true, inlineEditable: true },
+      { name: 'affiliatedTo', type: 'string', label: 'Affiliated To', inlineEditable: true },
+      { name: 'overviewTitle', type: 'string', label: 'Overview Section Title' },
+      { name: 'whyChooseTitle', type: 'string', label: 'Why Choose Section Title' },
+      { name: 'curriculumTitle', type: 'string', label: 'Curriculum Section Title' },
+      { name: 'specializationsTitle', type: 'string', label: 'Specializations Section Title' },
+      { name: 'careerTitle', type: 'string', label: 'Career Section Title' },
+      { name: 'recruitersTitle', type: 'string', label: 'Recruiters Section Title' },
+      { name: 'admissionTitle', type: 'string', label: 'Admission Section Title' },
+      { name: 'feeTitle', type: 'string', label: 'Fee Section Title' },
+      { name: 'facilitiesTitle', type: 'string', label: 'Facilities Section Title' },
+      { name: 'facultyTitle', type: 'string', label: 'Faculty Section Title' },
+      { name: 'faqTitle', type: 'string', label: 'FAQ Section Title' },
+      { name: 'ctaTitle', type: 'string', label: 'Final CTA Title', inlineEditable: true },
+      { name: 'ctaDescription', type: 'string', label: 'Final CTA Description', multiline: true, inlineEditable: true },
+      { name: 'ctaButtonLabel', type: 'string', label: 'Final CTA Button Label' },
+      { name: 'ctaButtonLink', type: 'string', label: 'Final CTA Button Link' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+    ],
+  },
+
+  MECSECoursePage: {
+    name: 'MECSECoursePage',
+    displayName: 'ME CSE Course Page (Postgraduate)',
+    category: 'content',
+    description: 'Comprehensive M.E. Computer Science and Engineering postgraduate course page. Includes hero with stats overlay, program overview, highlights, 6 specializations (AI/ML, Data Science, Cybersecurity, Cloud, Vision, IoT), 4-semester curriculum, eligibility criteria, research labs, placement record, faculty directory, FAQs, CTA section, and contact information. Designed for advanced computing programs.',
+    icon: 'GraduationCap',
+    previewImage: '/cms-previews/MECSECoursePage.png',
+    component: MECSECoursePage,
+    propsSchema: MECSECoursePagePropsSchema as any,
+    defaultProps: meCSECourseData,
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['course', 'engineering', 'postgraduate', 'masters', 'me', 'cse', 'computer science', 'ai', 'machine learning', 'data science', 'cybersecurity', 'cloud computing', 'research', 'phd', 'anna university', 'nba', 'aicte'],
+    editableProps: [
+      { name: 'hero.badge', type: 'string', label: 'Hero Badge', inlineEditable: true },
+      { name: 'hero.title', type: 'string', label: 'Hero Title', required: true, inlineEditable: true },
+      { name: 'hero.highlightedText', type: 'string', label: 'Hero Highlighted Text', inlineEditable: true },
+      { name: 'hero.subtitle', type: 'string', label: 'Hero Subtitle', multiline: true, inlineEditable: true },
+      { name: 'overview.label', type: 'string', label: 'Overview Section Label' },
+      { name: 'overview.title', type: 'string', label: 'Overview Title' },
+      { name: 'highlights.label', type: 'string', label: 'Highlights Section Label' },
+      { name: 'highlights.title', type: 'string', label: 'Highlights Title' },
+      { name: 'specializations.label', type: 'string', label: 'Specializations Section Label' },
+      { name: 'specializations.title', type: 'string', label: 'Specializations Title' },
+      { name: 'curriculum.label', type: 'string', label: 'Curriculum Section Label' },
+      { name: 'curriculum.title', type: 'string', label: 'Curriculum Title' },
+      { name: 'eligibility.label', type: 'string', label: 'Eligibility Section Label' },
+      { name: 'eligibility.title', type: 'string', label: 'Eligibility Title' },
+      { name: 'infrastructure.label', type: 'string', label: 'Infrastructure Section Label' },
+      { name: 'infrastructure.title', type: 'string', label: 'Infrastructure Title' },
+      { name: 'placement.label', type: 'string', label: 'Placement Section Label' },
+      { name: 'placement.title', type: 'string', label: 'Placement Title' },
+      { name: 'faculty.label', type: 'string', label: 'Faculty Section Label' },
+      { name: 'faculty.title', type: 'string', label: 'Faculty Title' },
+      { name: 'faqs.label', type: 'string', label: 'FAQs Section Label' },
+      { name: 'faqs.title', type: 'string', label: 'FAQs Title' },
+      { name: 'cta.title', type: 'string', label: 'CTA Title', inlineEditable: true },
+      { name: 'cta.description', type: 'string', label: 'CTA Description', multiline: true, inlineEditable: true },
+      { name: 'contact.label', type: 'string', label: 'Contact Section Label' },
+      { name: 'contact.title', type: 'string', label: 'Contact Title' },
+      { name: 'colors.primaryColor', type: 'color', label: 'Primary Color' },
+      { name: 'colors.accentColor', type: 'color', label: 'Accent Color' },
+    ],
+  },
+
+  MBACoursePage: {
+    name: 'MBACoursePage',
+    displayName: 'MBA Course Page (Business)',
+    category: 'content',
+    description: 'Comprehensive Master of Business Administration course page with cream color backgrounds. Includes hero with admission badge, program overview, key highlights, 4 specializations (Marketing, Finance, HR, Operations), 2-year curriculum (4 semesters), eligibility criteria, admission process, fee structure, career opportunities, placement statistics, top recruiters, facilities, faculty, FAQs, and final CTA with contact information. Perfect for MBA and business management programs.',
+    icon: 'Briefcase',
+    previewImage: '/cms-previews/MBACoursePage.png',
+    component: MBACoursePage,
+    propsSchema: MBACoursePagePropsSchema as any,
+    defaultProps: MBA_SAMPLE_DATA,
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['mba', 'master', 'business', 'administration', 'course', 'management', 'postgraduate', 'marketing', 'finance', 'hr', 'human resource', 'operations', 'placements', 'admission', 'aicte', 'tancet', 'cat', 'mat', 'xat', 'specializations', 'cream', 'business school'],
+    editableProps: [
+      { name: 'heroTitle', type: 'string', label: 'Hero Title', required: true, inlineEditable: true },
+      { name: 'heroSubtitle', type: 'string', label: 'Hero Subtitle', multiline: true, inlineEditable: true },
+      { name: 'affiliatedTo', type: 'string', label: 'Affiliated To', inlineEditable: true },
+      { name: 'admissionBadge', type: 'string', label: 'Admission Badge', inlineEditable: true },
+      { name: 'overviewTitle', type: 'string', label: 'Overview Section Title' },
+      { name: 'overviewSubtitle', type: 'string', label: 'Overview Subtitle' },
+      { name: 'highlightsTitle', type: 'string', label: 'Highlights Section Title' },
+      { name: 'specializationsTitle', type: 'string', label: 'Specializations Section Title' },
+      { name: 'curriculumTitle', type: 'string', label: 'Curriculum Section Title' },
+      { name: 'eligibilityTitle', type: 'string', label: 'Eligibility Section Title' },
+      { name: 'documentsTitle', type: 'string', label: 'Documents Section Title' },
+      { name: 'admissionProcessTitle', type: 'string', label: 'Admission Process Title' },
+      { name: 'feeTitle', type: 'string', label: 'Fee Structure Title' },
+      { name: 'feeDisclaimer', type: 'string', label: 'Fee Disclaimer', multiline: true },
+      { name: 'careerTitle', type: 'string', label: 'Career Section Title' },
+      { name: 'placementTitle', type: 'string', label: 'Placement Statistics Title' },
+      { name: 'recruitersTitle', type: 'string', label: 'Recruiters Section Title' },
+      { name: 'facilitiesTitle', type: 'string', label: 'Facilities Section Title' },
+      { name: 'facultyTitle', type: 'string', label: 'Faculty Section Title' },
+      { name: 'faqTitle', type: 'string', label: 'FAQ Section Title' },
+      { name: 'ctaTitle', type: 'string', label: 'Final CTA Title', inlineEditable: true },
+      { name: 'ctaDescription', type: 'string', label: 'Final CTA Description', multiline: true, inlineEditable: true },
+      { name: 'ctaPrimaryButtonLabel', type: 'string', label: 'Primary CTA Button Label' },
+      { name: 'ctaPrimaryButtonLink', type: 'string', label: 'Primary CTA Button Link' },
+      { name: 'ctaSecondaryButtonLabel', type: 'string', label: 'Secondary CTA Button Label' },
+      { name: 'ctaSecondaryButtonLink', type: 'string', label: 'Secondary CTA Button Link' },
+      { name: 'contactPhone', type: 'string', label: 'Contact Phone' },
+      { name: 'contactEmail', type: 'string', label: 'Contact Email' },
+      { name: 'contactAddress', type: 'string', label: 'Contact Address', multiline: true },
       { name: 'primaryColor', type: 'color', label: 'Primary Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },
     ],

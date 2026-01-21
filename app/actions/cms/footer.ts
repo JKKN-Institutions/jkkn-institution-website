@@ -33,6 +33,11 @@ export interface FooterSettings {
   programs: FooterLink[]
   resources: FooterLink[]
   sectionsVisibility: FooterSectionsVisibility
+  sectionTitles: {
+    institutions: string
+    programs: string
+    resources: string
+  }
   contactEmail: string
   contactPhone: string
   address: {
@@ -72,6 +77,7 @@ export async function getFooterSettings(): Promise<FooterSettings> {
       'footer_programs',
       'footer_resources',
       'footer_sections_visibility',
+      'footer_section_titles',
       'contact_email',
       'contact_phone',
       'address',
@@ -108,6 +114,9 @@ export async function getFooterSettings(): Promise<FooterSettings> {
         break
       case 'footer_sections_visibility':
         settings.sectionsVisibility = value as FooterSectionsVisibility
+        break
+      case 'footer_section_titles':
+        settings.sectionTitles = value as FooterSettings['sectionTitles']
         break
       case 'contact_email':
         settings.contactEmail = String(value)
@@ -149,6 +158,11 @@ function getDefaultFooterSettings(): FooterSettings {
       show_programs: true,
       show_resources: true,
       show_social: true
+    },
+    sectionTitles: {
+      institutions: 'Our Institutions',
+      programs: 'Programs',
+      resources: 'Resources'
     },
     contactEmail: 'info@jkkn.ac.in',
     contactPhone: '+91 93458 55001',

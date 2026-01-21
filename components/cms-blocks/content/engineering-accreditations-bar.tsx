@@ -156,10 +156,10 @@ export default function EngineeringAccreditationsBar({
           </span>
         </div>
 
-        {/* Accreditations Grid */}
+        {/* Accreditations Grid - 3 columns on mobile, 5 columns on desktop */}
         <div
           className={cn(
-            'flex flex-wrap justify-center items-center gap-6 md:gap-8 lg:gap-12',
+            'grid grid-cols-3 md:grid-cols-5 gap-6 md:gap-8 lg:gap-12 justify-items-center',
             animateClass(100)
           )}
           style={{ transitionDelay: '100ms' }}

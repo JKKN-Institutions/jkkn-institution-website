@@ -59,7 +59,6 @@ export const EngineeringProgramsSectionPropsSchema = z.object({
     link: z.string().default('#'),
     tags: z.array(z.string()).optional(),
   })).default([
-    { name: 'B.E. Computer Science & Engineering', type: 'ug', duration: '4 Years', seats: 120, icon: 'code', description: 'AI, Machine Learning, Full Stack Development', link: '/courses/cse', tags: ['Popular', 'High Demand'] },
     { name: 'B.Tech AI & Machine Learning', type: 'ug', duration: '4 Years', seats: 60, icon: 'cpu', description: 'Deep Learning, Neural Networks, Data Science', link: '/courses/aiml', tags: ['New', 'Trending'] },
     { name: 'B.E. Electronics & Communication', type: 'ug', duration: '4 Years', seats: 60, icon: 'cpu', description: 'Embedded Systems, IoT, VLSI Design', link: '/courses/ece' },
     { name: 'B.E. Mechanical Engineering', type: 'ug', duration: '4 Years', seats: 120, icon: 'settings', description: 'Robotics, CAD/CAM, Automation', link: '/courses/mech' },
@@ -123,7 +122,6 @@ export default function EngineeringProgramsSection({
   title = 'Comprehensive Engineering & Technology Programs',
   subtitle = 'Choose from our wide range of AICTE approved programs',
   programs = [
-    { name: 'B.E. Computer Science & Engineering', type: 'ug', duration: '4 Years', icon: 'code', description: 'AI, Machine Learning, Full Stack Development', link: '/courses/cse' },
     { name: 'B.E. Electronics & Communication', type: 'ug', duration: '4 Years', icon: 'cpu', description: 'Embedded Systems, IoT, VLSI Design', link: '/courses/ece' },
     { name: 'B.E. Electrical & Electronics', type: 'ug', duration: '4 Years', icon: 'zap', description: 'Power Systems, Renewable Energy', link: '/courses/eee' },
     { name: 'B.E. Mechanical Engineering', type: 'ug', duration: '4 Years', icon: 'settings', description: 'Robotics, CAD/CAM, Automation', link: '/courses/mech' },

@@ -63,7 +63,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
 
       {/* Main Footer Content */}
       <div className="relative container mx-auto px-4 lg:px-8 py-16 lg:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 lg:gap-12">
           {/* About Section */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-3 mb-6 group">
@@ -136,7 +136,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
           <div>
             <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
               <span className="w-8 h-0.5 bg-secondary rounded-full" />
-              Our Institutions
+              {settings.sectionTitles?.institutions || 'Our Institutions'}
             </h2>
             <ul className="space-y-3">
               {visibleInstitutions.map((link) => (
@@ -150,6 +150,34 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                   </a>
                 </li>
               ))}
+            </ul>
+          </div>
+
+          {/* Legal Section */}
+          <div>
+            <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
+              <span className="w-8 h-0.5 bg-secondary rounded-full" />
+              Legal
+            </h2>
+            <ul className="space-y-3">
+              <li>
+                <Link
+                  href="/privacy-policy"
+                  className="flex items-center gap-2 text-sm text-white/70 hover:text-white transition-all duration-300 group"
+                >
+                  <ChevronRight className="h-4 w-4 text-secondary opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/terms-and-conditions"
+                  className="flex items-center gap-2 text-sm text-white/70 hover:text-white transition-all duration-300 group"
+                >
+                  <ChevronRight className="h-4 w-4 text-secondary opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
+                  Terms & Conditions
+                </Link>
+              </li>
             </ul>
           </div>
 
