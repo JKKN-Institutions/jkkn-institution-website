@@ -106,7 +106,7 @@ export interface PageWithBlocks {
     custom_css: string | null
     custom_classes: string | null
   }>
-  cms_seo_metadata: {
+  cms_seo_metadata: Array<{
     id: string
     meta_title: string | null
     meta_description: string | null
@@ -125,7 +125,7 @@ export interface PageWithBlocks {
     custom_head_tags: string | null
     seo_score: number | null
     last_analyzed_at: string | null
-  } | null
+  }> | null
   cms_page_fab_config: {
     id: string
     is_enabled: boolean | null

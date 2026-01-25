@@ -4,109 +4,110 @@ import type { BECSECoursePageProps } from '@/components/cms-blocks/content/be-cs
  * Comprehensive B.E. Computer Science & Engineering Course Data
  * JKKN College of Engineering & Technology
  *
- * Redesigned with orange color scheme and table-based curriculum display
+ * This data follows JKKN brand styling with cream backgrounds
  */
 export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   // ==========================================
-  // Hero Section with Breadcrumb
+  // Hero Section
   // ==========================================
   heroTitle: 'B.E. Computer Science & Engineering',
   heroSubtitle: 'Transform your passion for technology into a rewarding career. Our AICTE-approved, NBA-accredited program combines cutting-edge curriculum with industry-ready skills to shape tomorrow\'s tech leaders.',
-  breadcrumbItems: [
-    { label: 'Home', link: '/' },
-    { label: 'Courses', link: '/courses' },
-    { label: 'B.E. Computer Science' },
-  ],
-  approvalBadge: 'Approved by AICTE | Accredited by NBA',
   heroStats: [
-    { icon: 'calendar', label: 'Duration', value: '4 Years' },
-    { icon: 'users', label: 'Seats', value: '120' },
-    { icon: 'trending-up', label: 'Placement', value: '95%' },
-    { icon: 'indian-rupee', label: 'Package', value: '₹12 LPA' },
+    { icon: '', label: 'Years Duration', value: '4' },
+    { icon: '', label: 'Seats Available', value: '120' },
+    { icon: '', label: 'Placement Rate', value: '95%+' },
+    { icon: '', label: 'Highest Package', value: '₹12L' },
   ],
   heroCTAs: [
-    { label: 'Apply Now', link: '/apply', variant: 'primary' },
-    { label: 'Download Brochure', link: '/brochure', variant: 'secondary' },
+    { label: 'Apply Now for 2025-26', link: '/apply', variant: 'primary' },
+    { label: 'Explore Curriculum', link: '#curriculum', variant: 'secondary' },
   ],
-  affiliatedTo: 'Affiliated to Anna University, Chennai | Approved by AICTE',
+  affiliatedTo: 'Affiliated to Anna University, Chennai',
 
   // ==========================================
-  // Why Choose CSE
+  // Course Overview
   // ==========================================
-  whyChooseTitle: 'Why Choose B.E. CSE at JKKN?',
+  overviewTitle: 'Why Choose B.E. CSE at JKKN?',
+  overviewCards: [
+    {
+      icon: '🎓',
+      title: 'Program Duration',
+      value: '4 Years (8 Semesters)',
+      description: 'Full-time undergraduate program with structured curriculum spanning 8 semesters of comprehensive learning and skill development.',
+    },
+    {
+      icon: '📊',
+      title: 'Total Credits',
+      value: '160 Credits',
+      description: 'Balanced distribution across core subjects, electives, labs, projects, and internships following Anna University curriculum.',
+    },
+    {
+      icon: '✅',
+      title: 'Accreditation',
+      value: 'AICTE & NBA',
+      description: 'Approved by AICTE and accredited by NBA ensuring quality education standards and global recognition.',
+    },
+    {
+      icon: '🏢',
+      title: 'Industry Connect',
+      value: '50+ Partners',
+      description: 'Collaborations with leading tech companies for internships, guest lectures, workshops, and placement opportunities.',
+    },
+    {
+      icon: '🔬',
+      title: 'Research Focus',
+      value: 'AI, ML & IoT',
+      description: 'Active research centers in Artificial Intelligence, Machine Learning, Data Science, Cybersecurity, and IoT.',
+    },
+    {
+      icon: '💼',
+      title: 'Career Support',
+      value: 'Dedicated Cell',
+      description: 'Comprehensive training, certification programs, mock interviews, and dedicated placement assistance throughout the program.',
+    },
+  ],
+
+  // ==========================================
+  // Why Choose CSE (Program Highlights)
+  // ==========================================
+  whyChooseTitle: 'What Sets Our Program Apart',
   benefits: [
     {
-      icon: 'graduation-cap',
-      title: 'Program Duration',
-      description: '4 Years (8 Semesters) - Full-time undergraduate program with comprehensive curriculum.',
+      icon: '🎯',
+      title: 'Outcome-Based Education',
+      description: 'Program designed with clearly defined Learning Outcomes aligned with industry requirements and global engineering standards.',
     },
     {
-      icon: 'book-open',
-      title: 'Total Credits',
-      description: '160 Credits - Balanced distribution across core subjects, electives, labs, projects, and internships.',
+      icon: '💻',
+      title: 'Hands-on Learning',
+      description: 'Extensive practical sessions, real-world projects, hackathons, and coding challenges ensure strong programming fundamentals.',
     },
     {
-      icon: 'award',
-      title: 'Accreditation',
-      description: 'AICTE & NBA - Approved by AICTE and accredited by NBA ensuring quality education standards.',
+      icon: '🌐',
+      title: 'Industry-Ready Curriculum',
+      description: 'Latest technologies including Cloud Computing, DevOps, Blockchain, AI/ML, and Full Stack Development integrated into curriculum.',
     },
     {
-      icon: 'building',
-      title: 'Industry Connect',
-      description: '50+ Partners - Collaborations with leading tech companies for internships, guest lectures, and placement opportunities.',
+      icon: '📜',
+      title: 'Certification Programs',
+      description: 'Free industry certifications from Microsoft, AWS, Oracle, and Google integrated with the curriculum.',
     },
     {
-      icon: 'code',
-      title: 'Research Focus',
-      description: 'AI, ML & IoT - Active research centers in Artificial Intelligence, Machine Learning, Data Science, Cybersecurity, and IoT.',
+      icon: '🏆',
+      title: 'Experiential Learning',
+      description: 'Mandatory internships, industry visits, tech fests, and participation in national-level competitions enhance practical exposure.',
     },
     {
-      icon: 'briefcase',
-      title: 'Career Support',
-      description: 'Dedicated Cell - Comprehensive training, certification programs, mock interviews, and dedicated placement assistance throughout the program.',
+      icon: '🎓',
+      title: 'Expert Faculty',
+      description: 'Learn from highly qualified faculty with Ph.D. degrees and extensive industry experience in emerging technologies.',
     },
   ],
 
   // ==========================================
-  // Program Highlights
+  // Curriculum (4 Years, 8 Semesters)
   // ==========================================
-  programHighlights: [
-    {
-      icon: 'award',
-      title: 'Industry-Recognized Curriculum',
-      description: 'Our curriculum is designed in collaboration with leading tech companies and updated regularly to match industry trends. Students learn the latest technologies including AI, Cloud Computing, and Blockchain.',
-    },
-    {
-      icon: 'users',
-      title: 'Expert Faculty with Industry Experience',
-      description: 'Learn from professors who have worked at top tech companies like Google, Microsoft, and Amazon. Our faculty bring real-world insights into the classroom.',
-    },
-    {
-      icon: 'briefcase',
-      title: 'Guaranteed Internship Opportunities',
-      description: 'Every student gets guaranteed internship placements in their 3rd year with our 200+ partner companies. Gain hands-on experience before graduation.',
-    },
-    {
-      icon: 'code',
-      title: 'State-of-the-Art Lab Facilities',
-      description: 'Access to cutting-edge laboratories equipped with high-performance computing resources, AI/ML tools, cloud platforms, and the latest development software.',
-    },
-    {
-      icon: 'check',
-      title: '95%+ Placement Record',
-      description: 'Our dedicated placement cell ensures that 95% of students secure job offers from top companies with average packages of ₹8-12 LPA.',
-    },
-    {
-      icon: 'book-open',
-      title: 'Research & Innovation Focus',
-      description: 'Engage in cutting-edge research projects, publish papers in international journals, and present at conferences. We encourage innovation from day one.',
-    },
-  ],
-
-  // ==========================================
-  // Curriculum (Table Mode)
-  // ==========================================
-  curriculumTitle: 'Detailed Course Curriculum',
+  curriculumTitle: 'Comprehensive 4-Year Curriculum',
   curriculumYears: [
     {
       year: 1,
@@ -115,26 +116,26 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
           semester: 1,
           credits: 20,
           subjects: [
-            { code: 'MA3151', name: 'Matrices and Calculus', credits: 4 },
+            { code: 'MA3151', name: 'Engineering Mathematics I', credits: 4 },
             { code: 'PH3151', name: 'Engineering Physics', credits: 3 },
             { code: 'CY3151', name: 'Engineering Chemistry', credits: 3 },
-            { code: 'GE3151', name: 'Problem Solving and Python Programming', credits: 3 },
-            { code: 'EG3151', name: 'Engineering Graphics', credits: 4 },
-            { code: 'GE3171', name: 'Problem Solving and Python Programming Laboratory', credits: 2 },
-            { code: 'BS3171', name: 'Physics and Chemistry Laboratory', credits: 1 },
+            { code: 'GE3151', name: 'Problem Solving & Python Programming', credits: 3 },
+            { code: 'GE3152', name: 'Engineering Graphics', credits: 4 },
+            { code: 'BS3171', name: 'Physics & Chemistry Lab', credits: 2 },
+            { code: 'GE3171', name: 'Python Programming Lab', credits: 2 },
           ],
         },
         {
           semester: 2,
-          credits: 19,
+          credits: 20,
           subjects: [
-            { code: 'MA3251', name: 'Statistics and Numerical Methods', credits: 4 },
+            { code: 'MA3251', name: 'Engineering Mathematics II', credits: 4 },
             { code: 'PH3256', name: 'Physics for Information Science', credits: 3 },
-            { code: 'BE3251', name: 'Basic Electrical and Electronics Engineering', credits: 3 },
-            { code: 'GE3251', name: 'Engineering Mechanics', credits: 3 },
+            { code: 'BE3251', name: 'Basic Electrical & Electronics Engineering', credits: 3 },
             { code: 'CS3251', name: 'Programming in C', credits: 3 },
-            { code: 'CS3271', name: 'Programming in C Laboratory', credits: 2 },
-            { code: 'GE3271', name: 'Engineering Practices Laboratory', credits: 1 },
+            { code: 'HS3251', name: 'Technical English', credits: 3 },
+            { code: 'CS3271', name: 'C Programming Lab', credits: 2 },
+            { code: 'BE3271', name: 'Electrical Lab', credits: 2 },
           ],
         },
       ],
@@ -147,25 +148,25 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
           credits: 21,
           subjects: [
             { code: 'MA3354', name: 'Discrete Mathematics', credits: 4 },
-            { code: 'CS3351', name: 'Digital Principles and Computer Organization', credits: 4 },
-            { code: 'CS3352', name: 'Foundations of Data Science', credits: 3 },
-            { code: 'CS3301', name: 'Data Structures', credits: 3 },
+            { code: 'CS3351', name: 'Data Structures', credits: 3 },
+            { code: 'CS3352', name: 'Digital Principles & Computer Organization', credits: 4 },
+            { code: 'CS3492', name: 'Database Management Systems', credits: 3 },
             { code: 'CS3391', name: 'Object Oriented Programming', credits: 3 },
-            { code: 'CS3311', name: 'Data Structures Laboratory', credits: 2 },
-            { code: 'CS3381', name: 'Object Oriented Programming Laboratory', credits: 2 },
+            { code: 'CS3381', name: 'Data Structures Lab', credits: 2 },
+            { code: 'CS3481', name: 'DBMS Lab', credits: 2 },
           ],
         },
         {
           semester: 4,
-          credits: 20,
+          credits: 21,
           subjects: [
-            { code: 'MA3391', name: 'Probability and Statistics', credits: 4 },
-            { code: 'CS3401', name: 'Algorithms', credits: 3 },
-            { code: 'CS3402', name: 'Database Management Systems', credits: 3 },
-            { code: 'CS3403', name: 'Computer Architecture', credits: 3 },
-            { code: 'CS3452', name: 'Theory of Computation', credits: 4 },
-            { code: 'CS3411', name: 'Database Management Systems Laboratory', credits: 2 },
-            { code: 'GE3451', name: 'Environmental Sciences and Sustainability', credits: 1 },
+            { code: 'MA3451', name: 'Probability & Statistics', credits: 4 },
+            { code: 'CS3451', name: 'Operating Systems', credits: 3 },
+            { code: 'CS3452', name: 'Theory of Computation', credits: 3 },
+            { code: 'CS3401', name: 'Design & Analysis of Algorithms', credits: 3 },
+            { code: 'CS3591', name: 'Software Engineering', credits: 3 },
+            { code: 'CS3461', name: 'OS Lab', credits: 2 },
+            { code: 'CS3491', name: 'OOP Lab', credits: 2 },
           ],
         },
       ],
@@ -175,28 +176,27 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
       semesters: [
         {
           semester: 5,
-          credits: 21,
+          credits: 22,
           subjects: [
-            { code: 'MA3492', name: 'Probability and Queuing Theory', credits: 4 },
-            { code: 'CS3501', name: 'Compiler Design', credits: 3 },
-            { code: 'CS3551', name: 'Distributed Computing', credits: 3 },
-            { code: 'CS3591', name: 'Computer Networks', credits: 3 },
-            { code: 'CS3502', name: 'Operating Systems', credits: 4 },
-            { code: 'CS3512', name: 'Operating Systems Laboratory', credits: 2 },
-            { code: 'CS3561', name: 'Data Science Laboratory', credits: 2 },
+            { code: 'CS3551', name: 'Computer Networks', credits: 3 },
+            { code: 'CS3501', name: 'Compiler Design', credits: 4 },
+            { code: 'CS3491', name: 'Artificial Intelligence', credits: 3 },
+            { code: 'CS3552', name: 'Web Technology', credits: 3 },
+            { code: 'PE-I', name: 'Professional Elective I', credits: 3 },
+            { code: 'CS3591', name: 'Networks Lab', credits: 2 },
+            { code: 'CS3581', name: 'Application Development Lab', credits: 2 },
           ],
         },
         {
           semester: 6,
-          credits: 19,
+          credits: 22,
           subjects: [
-            { code: 'CS3601', name: 'Software Engineering', credits: 3 },
-            { code: 'CS3691', name: 'Artificial Intelligence and Machine Learning', credits: 4 },
-            { code: 'CS3611', name: 'Software Engineering Laboratory', credits: 2 },
-            { code: 'CS3681', name: 'Artificial Intelligence Laboratory', credits: 2 },
-            { code: 'CS3XXX', name: 'Professional Elective I', credits: 3 },
-            { code: 'CS3XXX', name: 'Professional Elective II', credits: 3 },
-            { code: 'HS3152', name: 'Professional English II', credits: 2 },
+            { code: 'CS3651', name: 'Distributed Systems', credits: 3 },
+            { code: 'CS3691', name: 'Machine Learning', credits: 3 },
+            { code: 'CS3791', name: 'Cloud Computing', credits: 3 },
+            { code: 'CS3652', name: 'Cryptography & Network Security', credits: 3 },
+            { code: 'PE-II', name: 'Professional Elective II', credits: 3 },
+            { code: 'CS3681', name: 'Mini Project', credits: 4 },
           ],
         },
       ],
@@ -206,22 +206,24 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
       semesters: [
         {
           semester: 7,
-          credits: 19,
+          credits: 18,
           subjects: [
-            { code: 'CS3792', name: 'Cloud Computing', credits: 3 },
-            { code: 'CS3701', name: 'Cyber Security', credits: 3 },
-            { code: 'CS3XXX', name: 'Professional Elective III', credits: 3 },
-            { code: 'CS3XXX', name: 'Professional Elective IV', credits: 3 },
-            { code: 'CS3XXX', name: 'Open Elective I', credits: 3 },
-            { code: 'CS3791', name: 'Mini Project', credits: 2 },
-            { code: 'HS3252', name: 'Technical English', credits: 2 },
+            { code: 'CS3801', name: 'Deep Learning', credits: 3 },
+            { code: 'CS3751', name: 'Internet of Things', credits: 3 },
+            { code: 'PE-III', name: 'Professional Elective III', credits: 3 },
+            { code: 'PE-IV', name: 'Professional Elective IV', credits: 3 },
+            { code: 'OE-I', name: 'Open Elective I', credits: 3 },
+            { code: 'CS3791', name: 'Internship / Industrial Training', credits: 3 },
           ],
         },
         {
           semester: 8,
-          credits: 10,
+          credits: 16,
           subjects: [
-            { code: 'CS3811', name: 'Project Work', credits: 10 },
+            { code: 'PE-V', name: 'Professional Elective V', credits: 3 },
+            { code: 'PE-VI', name: 'Professional Elective VI', credits: 3 },
+            { code: 'OE-II', name: 'Open Elective II', credits: 3 },
+            { code: 'CS3891', name: 'Project Work / Dissertation', credits: 10 },
           ],
         },
       ],
@@ -229,224 +231,204 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   ],
 
   // ==========================================
-  // Specializations (2x2 Grid)
-  // ==========================================
-  specializationsTitle: 'Specialization Tracks',
-  specializations: [
-    {
-      title: 'Artificial Intelligence & Machine Learning',
-      description: 'Master AI algorithms, deep learning, neural networks, and intelligent systems.',
-    },
-    {
-      title: 'Data Science & Analytics',
-      description: 'Learn big data technologies, statistical analysis, and predictive modeling.',
-    },
-    {
-      title: 'Cyber Security',
-      description: 'Specialize in ethical hacking, network security, and threat detection.',
-    },
-    {
-      title: 'Cloud Computing & DevOps',
-      description: 'Expertise in AWS, Azure, containerization, and CI/CD pipelines.',
-    },
-  ],
-
-  // ==========================================
-  // Career Opportunities
-  // ==========================================
-  careerTitle: 'Begin Your Engineering Journey',
-  careerPaths: [
-    {
-      icon: 'briefcase',
-      title: 'Software Engineer',
-      description: 'Design, develop, test, and maintain software applications for various platforms and industries.',
-      avgSalary: '6-12 LPA',
-    },
-    {
-      icon: 'code',
-      title: 'Data Scientist',
-      description: 'Analyze complex data sets, build predictive models, and extract actionable insights for business growth.',
-      avgSalary: '8-15 LPA',
-    },
-    {
-      icon: 'briefcase',
-      title: 'AI/ML Engineer',
-      description: 'Develop artificial intelligence and machine learning solutions to solve real-world problems.',
-      avgSalary: '10-18 LPA',
-    },
-    {
-      icon: 'check',
-      title: 'Cybersecurity Analyst',
-      description: 'Protect organizations from cyber threats, perform vulnerability assessments, and ensure data security.',
-      avgSalary: '7-14 LPA',
-    },
-    {
-      icon: 'code',
-      title: 'Cloud Architect',
-      description: 'Design and implement scalable cloud infrastructure solutions using AWS, Azure, or Google Cloud Platform.',
-      avgSalary: '9-16 LPA',
-    },
-    {
-      icon: 'briefcase',
-      title: 'Full Stack Developer',
-      description: 'Build end-to-end web applications with expertise in both frontend and backend technologies.',
-      avgSalary: '6-13 LPA',
-    },
-  ],
-
-  // ==========================================
-  // Top Recruiters (with Logo Support)
-  // ==========================================
-  recruitersTitle: 'Top Recruiters',
-  recruiters: [
-    { name: 'TCS', logo: 'https://placehold.co/200x100/0b6d41/ffffff?text=TCS' },
-    { name: 'Infosys', logo: 'https://placehold.co/200x100/0b6d41/ffffff?text=Infosys' },
-    { name: 'Wipro', logo: 'https://placehold.co/200x100/0b6d41/ffffff?text=Wipro' },
-    { name: 'Cognizant', logo: 'https://placehold.co/200x100/0b6d41/ffffff?text=Cognizant' },
-    { name: 'Accenture', logo: 'https://placehold.co/200x100/0b6d41/ffffff?text=Accenture' },
-    { name: 'Amazon', logo: 'https://placehold.co/200x100/0b6d41/ffffff?text=Amazon' },
-    { name: 'Google', logo: 'https://placehold.co/200x100/0b6d41/ffffff?text=Google' },
-    { name: 'Microsoft', logo: 'https://placehold.co/200x100/0b6d41/ffffff?text=Microsoft' },
-    { name: 'Zoho', logo: 'https://placehold.co/200x100/0b6d41/ffffff?text=Zoho' },
-    { name: 'HCL', logo: 'https://placehold.co/200x100/0b6d41/ffffff?text=HCL' },
-  ],
-
-  // ==========================================
   // Admission Process
   // ==========================================
-  admissionTitle: 'Admission Process',
+  admissionTitle: 'Begin Your Engineering Journey',
   admissionSteps: [
     {
       step: 1,
-      title: 'Apply Online',
-      description: 'Submit your application through our online portal with required documents and application fee.',
-      icon: 'edit',
+      title: 'Eligibility Criteria',
+      description: 'Meet the minimum requirements to apply',
+      icon: 'UserCheck',
+      details: [
+        '12th Standard (10+2) with PCM',
+        'Minimum 45% aggregate (40% for reserved)',
+        'Age: Below 21 years as of admission date',
+        'Valid TNEA rank or equivalent',
+      ],
     },
     {
       step: 2,
-      title: 'Document Verification',
-      description: 'Our admissions team will verify your academic records and eligibility criteria.',
-      icon: 'file-check',
+      title: 'Admission Modes',
+      description: 'Multiple pathways to secure admission',
+      icon: 'FileText',
+      details: [
+        'TNEA Counselling (Government Quota)',
+        'Management Quota (Direct Admission)',
+        'NRI/PIO Quota',
+        'Lateral Entry (Diploma Holders)',
+      ],
     },
     {
       step: 3,
-      title: 'Admission Confirmed',
-      description: 'Receive your admission letter and complete the enrollment process with fee payment.',
-      icon: 'check-circle',
-    },
-  ],
-
-  // ==========================================
-  // Faculty
-  // ==========================================
-  facultyTitle: 'Our Experienced Faculty',
-  faculty: [
-    {
-      name: 'Dr. Rajesh Kumar',
-      designation: 'Professor & HOD',
-      qualification: 'Ph.D. in Computer Science',
-      specialization: 'Artificial Intelligence, Machine Learning',
-      image: 'https://placehold.co/300x400/0b6d41/ffffff?text=Faculty+Member',
-    },
-    {
-      name: 'Dr. Priya Sharma',
-      designation: 'Associate Professor',
-      qualification: 'Ph.D. in Data Science',
-      specialization: 'Big Data Analytics, Cloud Computing',
-      image: 'https://placehold.co/300x400/0b6d41/ffffff?text=Faculty+Member',
-    },
-    {
-      name: 'Dr. Arun Patel',
-      designation: 'Assistant Professor',
-      qualification: 'Ph.D. in Cyber Security',
-      specialization: 'Network Security, Cryptography',
-      image: 'https://placehold.co/300x400/0b6d41/ffffff?text=Faculty+Member',
-    },
-    {
-      name: 'Prof. Lakshmi Narayanan',
-      designation: 'Assistant Professor',
-      qualification: 'M.Tech in Software Engineering',
-      specialization: 'Software Development, DevOps',
-      image: 'https://placehold.co/300x400/0b6d41/ffffff?text=Faculty+Member',
-    },
-    {
-      name: 'Dr. Venkatesh Reddy',
-      designation: 'Assistant Professor',
-      qualification: 'Ph.D. in IoT',
-      specialization: 'Internet of Things, Embedded Systems',
-      image: 'https://placehold.co/300x400/0b6d41/ffffff?text=Faculty+Member',
-    },
-    {
-      name: 'Dr. Meera Singh',
-      designation: 'Assistant Professor',
-      qualification: 'Ph.D. in Algorithms',
-      specialization: 'Data Structures, Algorithm Design',
-      image: 'https://placehold.co/300x400/0b6d41/ffffff?text=Faculty+Member',
+      title: 'Required Documents',
+      description: 'Keep these documents ready',
+      icon: 'Award',
+      details: [
+        '10th & 12th Mark Sheets & Certificates',
+        'Transfer Certificate & Conduct Certificate',
+        'Community & Income Certificate',
+        'Passport Size Photographs (8 nos)',
+        'Aadhaar Card & Address Proof',
+      ],
     },
   ],
 
   // ==========================================
   // Fee Structure
   // ==========================================
-  feeTitle: 'Fee Structure',
-  feeBreakdown: [
-    { component: 'Tuition Fee (Per Year)', amount: '₹75,000' },
-    { component: 'Development Fee (One-Time)', amount: '₹10,000' },
-    { component: 'Laboratory Fee (Per Year)', amount: '₹5,000' },
-    { component: 'Library Fee (Per Year)', amount: '₹2,000' },
-    { component: 'Examination Fee (Per Semester)', amount: '₹1,500' },
-    { component: 'Total (Approximate Per Year)', amount: '₹93,500', isTotal: true },
+  feeTitle: 'Fee Structure 2025-26',
+  feeDescription: 'Affordable quality education with multiple scholarship opportunities and flexible payment options.',
+  feeTable: {
+    headers: ['Fee Component', 'Government Quota', 'Management Quota', 'NRI Quota'],
+    rows: [
+      { component: 'Tuition Fee (Annual)', govt: '₹45,000', mgmt: '₹85,000', nri: '₹1,50,000' },
+      { component: 'Development Fee', govt: '₹10,000', mgmt: '₹10,000', nri: '₹15,000' },
+      { component: 'Lab & Library Fee', govt: '₹8,000', mgmt: '₹8,000', nri: '₹10,000' },
+      { component: 'Exam Fee (Approx.)', govt: '₹5,000', mgmt: '₹5,000', nri: '₹5,000' },
+      { component: 'Hostel Fee (Optional)', govt: '₹60,000', mgmt: '₹60,000', nri: '₹75,000' },
+    ],
+    totals: {
+      component: 'Total (Without Hostel)',
+      govt: '₹68,000',
+      mgmt: '₹1,08,000',
+      nri: '₹1,80,000',
+    },
+  },
+  scholarships: [
+    { percentage: '100%', criteria: '12th Aggregate ≥ 95%' },
+    { percentage: '75%', criteria: '12th Aggregate ≥ 90%' },
+    { percentage: '50%', criteria: '12th Aggregate ≥ 85%' },
+    { percentage: '25%', criteria: '12th Aggregate ≥ 80%' },
   ],
 
   // ==========================================
-  // Placement Statistics
+  // Placements
   // ==========================================
-  placementStats: [
+  placementsTitle: 'Exceptional Placement Record',
+  placementsStats: [
+    { label: 'Placement Rate', value: '95%+' },
+    { label: 'Highest Package', value: '₹12 LPA' },
+    { label: 'Average Package', value: '₹4.5 LPA' },
+    { label: 'Recruiting Companies', value: '100+' },
+  ],
+  recruiters: [
+    'TCS', 'Infosys', 'Wipro', 'Cognizant', 'HCL', 'Tech Mahindra',
+    'Accenture', 'Capgemini', 'IBM', 'Amazon', 'Zoho', 'Freshworks',
+  ],
+
+  // ==========================================
+  // Career Paths
+  // ==========================================
+  careerTitle: 'Career Opportunities After B.E. CSE',
+  careerPaths: [
     {
-      label: 'Placement Rate',
-      value: '95%+',
-      icon: 'trending-up',
+      icon: '💻',
+      title: 'Software Engineer',
+      salary: '₹4-15 LPA',
+      description: 'Design, develop, and maintain software applications and systems for various industries.',
+      skills: ['Java', 'Python', 'DSA', 'System Design'],
     },
     {
-      label: 'Companies Visited',
-      value: '500+',
-      icon: 'building',
+      icon: '📊',
+      title: 'Data Scientist',
+      salary: '₹6-20 LPA',
+      description: 'Analyze complex data sets to derive actionable insights and drive business decisions.',
+      skills: ['Python', 'ML', 'Statistics', 'SQL'],
     },
     {
-      label: 'Average Package',
-      value: '₹8.5 LPA',
-      icon: 'indian-rupee',
+      icon: '🤖',
+      title: 'AI/ML Engineer',
+      salary: '₹8-25 LPA',
+      description: 'Build intelligent systems and models that can learn, predict, and automate tasks.',
+      skills: ['TensorFlow', 'PyTorch', 'NLP', 'Deep Learning'],
+    },
+    {
+      icon: '🌐',
+      title: 'Full Stack Developer',
+      salary: '₹5-18 LPA',
+      description: 'Develop complete web applications handling both frontend and backend components.',
+      skills: ['React', 'Node.js', 'MongoDB', 'AWS'],
+    },
+    {
+      icon: '☁️',
+      title: 'Cloud Architect',
+      salary: '₹10-30 LPA',
+      description: 'Design and implement scalable cloud infrastructure and solutions.',
+      skills: ['AWS', 'Azure', 'GCP', 'DevOps'],
+    },
+    {
+      icon: '🔐',
+      title: 'Cybersecurity Analyst',
+      salary: '₹6-20 LPA',
+      description: 'Protect organizations from cyber threats and ensure data security.',
+      skills: ['Security', 'Networking', 'Ethical Hacking', 'SIEM'],
     },
   ],
 
   // ==========================================
-  // Facilities
+  // Labs & Infrastructure
   // ==========================================
-  facilitiesTitle: 'Learning Facilities @ JKKN',
+  infrastructureTitle: 'State-of-the-Art Learning Studios & Labs',
   facilities: [
     {
-      name: 'AI & ML Laboratory',
-      description: 'State-of-the-art lab equipped with high-performance GPUs, deep learning frameworks, and AI development tools.',
+      name: 'Programming Lab',
+      description: 'Equipped with 100+ high-performance workstations running the latest IDEs and development tools.',
+      image: 'https://source.unsplash.com/800x600/?programming,computer,lab',
+      features: ['Visual Studio', 'Eclipse', 'PyCharm', 'VS Code'],
+    },
+    {
+      name: 'Networks & Security Lab',
+      description: 'Cisco-certified lab with routers, switches, and security appliances for hands-on networking experience.',
+      image: 'https://source.unsplash.com/800x600/?network,server,datacenter',
+      features: ['Cisco Devices', 'Wireshark', 'Firewalls'],
+    },
+    {
+      name: 'AI & Machine Learning Lab',
+      description: 'GPU-powered systems with TensorFlow, PyTorch, and specialized AI development environment.',
+      image: 'https://source.unsplash.com/800x600/?artificial,intelligence,technology',
+      features: ['NVIDIA GPUs', 'TensorFlow', 'Jupyter'],
     },
     {
       name: 'Cloud Computing Lab',
-      description: 'Access to AWS, Azure, and Google Cloud platforms for hands-on experience in cloud technologies.',
+      description: 'Access to AWS, Azure, and Google Cloud platforms for cloud-native development and deployment.',
+      image: 'https://source.unsplash.com/800x600/?cloud,computing,technology',
+      features: ['AWS Academy', 'Azure Lab', 'Docker'],
+    },
+  ],
+
+  // ==========================================
+  // Faculty
+  // ==========================================
+  facultyTitle: 'Expert Learning Facilitators',
+  faculty: [
+    {
+      name: 'Dr. Rajesh Kumar',
+      designation: 'Professor & Head',
+      qualification: 'Ph.D. in Computer Science, IIT Madras',
+      specialization: 'Artificial Intelligence, Machine Learning',
+      image: 'https://source.unsplash.com/400x400/?professor,male,indian',
     },
     {
-      name: 'Cyber Security Lab',
-      description: 'Dedicated facility with penetration testing tools, network security equipment, and cyber range simulations.',
+      name: 'Dr. Priya Sharma',
+      designation: 'Associate Professor',
+      qualification: 'Ph.D. in Data Science, Anna University',
+      specialization: 'Big Data Analytics, Cloud Computing',
+      image: 'https://source.unsplash.com/400x400/?professor,female,indian',
     },
     {
-      name: 'Software Development Lab',
-      description: 'Modern workstations with latest IDEs, version control systems, and collaborative development tools.',
+      name: 'Mr. Karthik Sundaram',
+      designation: 'Assistant Professor',
+      qualification: 'M.Tech, 8 Years Industry Experience',
+      specialization: 'Full Stack Development, DevOps',
+      image: 'https://source.unsplash.com/400x400/?developer,male,indian',
     },
     {
-      name: 'Research & Innovation Center',
-      description: 'Dedicated space for final year projects, research activities, and innovation initiatives.',
-    },
-    {
-      name: 'Digital Library',
-      description: 'Vast collection of technical books, e-journals, online databases, and digital resources.',
+      name: 'Dr. Meena Kumari',
+      designation: 'Associate Professor',
+      qualification: 'Ph.D. in Network Security, VIT',
+      specialization: 'Cybersecurity, Blockchain Technology',
+      image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
     },
   ],
 
@@ -456,52 +438,51 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   faqTitle: 'Frequently Asked Questions',
   faqs: [
     {
-      question: 'What is the eligibility criteria for B.E. CSE admission?',
-      answer: 'Candidates must have passed 10+2 (or equivalent) with Physics, Chemistry, and Mathematics with a minimum of 50% aggregate marks (45% for reserved categories). Admission is through TNEA counseling or management quota.',
+      question: 'What is the eligibility criteria for B.E. CSE at JKKN?',
+      answer: 'Candidates must have completed 12th Standard (10+2) or equivalent examination with Physics, Chemistry, and Mathematics as core subjects. A minimum aggregate of 45% marks is required for general category candidates, while reserved category candidates need a minimum of 40%. Additionally, candidates must have a valid TNEA counselling rank for government quota seats or can apply directly for management quota admission. The age limit is generally below 21 years as of the date of admission.',
     },
     {
-      question: 'What are the career prospects after completing B.E. CSE?',
-      answer: 'CSE graduates have diverse career opportunities in software development, data science, AI/ML engineering, cybersecurity, cloud computing, web development, mobile app development, and IT consulting. You can also pursue higher studies like M.E., M.Tech, or MBA.',
+      question: 'What is the duration of B.E. Computer Science and Engineering?',
+      answer: 'B.E. Computer Science and Engineering is a 4-year (8 semesters) full-time undergraduate program. Each academic year consists of two semesters with continuous internal assessment and end-semester examinations conducted by Anna University. The program includes classroom lectures, laboratory sessions, seminars, industrial training, and a final year project.',
     },
     {
-      question: 'Does the college provide placement assistance?',
-      answer: 'Yes, we have a dedicated Training & Placement Cell that conducts pre-placement training, aptitude tests, mock interviews, and facilitates campus recruitment drives. Our placement rate consistently exceeds 95% with top companies visiting for recruitment.',
+      question: 'Is B.E. CSE at JKKN AICTE approved and NBA accredited?',
+      answer: 'Yes, the B.E. Computer Science and Engineering program at JKKN College of Engineering & Technology is approved by AICTE (All India Council for Technical Education) and accredited by NBA (National Board of Accreditation). This ensures that our program meets the highest quality standards in technical education and is recognized nationally and internationally for higher studies and employment opportunities.',
     },
     {
-      question: 'What is the total course fee for the entire program?',
-      answer: 'The approximate fee is ₹93,500 per year, totaling around ₹3.74 lakhs for the 4-year program. This includes tuition, laboratory, library, and examination fees. Additional charges may apply for hostel and transportation if availed.',
+      question: 'What are the career opportunities after B.E. CSE?',
+      answer: 'Graduates of B.E. CSE have diverse career opportunities across multiple industries. Popular roles include Software Engineer, Data Scientist, AI/ML Engineer, Full Stack Developer, Cloud Architect, Cybersecurity Analyst, DevOps Engineer, System Architect, Database Administrator, and Technical Consultant. Our top recruiters include TCS, Infosys, Wipro, Cognizant, HCL, Amazon, Google, Microsoft, Zoho, and many more. Students can also pursue higher studies like M.Tech, MBA, or MS abroad.',
     },
     {
-      question: 'Are there opportunities for internships and industry exposure?',
-      answer: 'Yes, we have tie-ups with leading tech companies for internships, industrial visits, and guest lectures. Students undergo mandatory internships in semester breaks to gain real-world experience and improve employability.',
+      question: 'What is the placement record for B.E. CSE at JKKN?',
+      answer: 'JKKN College of Engineering & Technology maintains an exceptional placement record with over 95% placement rate for B.E. CSE graduates. The highest package offered is ₹12 LPA with an average package of ₹4.5 LPA. Over 100+ companies visit our campus annually for recruitment. Our dedicated Training & Placement Cell provides comprehensive support including aptitude training, soft skills development, mock interviews, and industry certifications.',
     },
     {
-      question: 'Can students pursue specializations within CSE?',
-      answer: 'Yes, students can choose elective courses in specializations like AI & ML, Data Science, Cybersecurity, Cloud Computing, Full Stack Development, and IoT in their final years. This allows them to focus on their areas of interest.',
+      question: 'What are the fee structure and scholarship options?',
+      answer: 'The annual tuition fee for B.E. CSE under government quota is approximately ₹45,000 and under management quota is ₹85,000. Merit scholarships ranging from 25% to 100% fee waiver are available based on 12th standard marks. Government scholarships for SC/ST/OBC/BC categories, first-generation graduate scholarships, and sports quotas are also applicable. We also offer flexible payment options and education loan assistance through partner banks.',
     },
     {
-      question: 'What is the faculty-to-student ratio?',
-      answer: 'We maintain a healthy faculty-to-student ratio of approximately 1:15, ensuring personalized attention and effective mentoring. Our faculty members hold Ph.D. degrees and have extensive industry and academic experience.',
+      question: 'Does JKKN provide hostel facilities for B.E. CSE students?',
+      answer: 'Yes, JKKN provides separate hostel facilities for boys and girls within the campus. The hostels offer comfortable accommodation with facilities including furnished rooms, 24/7 Wi-Fi, mess with nutritious food, recreation areas, gymnasium, and round-the-clock security. The annual hostel fee is approximately ₹60,000 which includes accommodation and meals. Transportation facilities are also available for day scholars from nearby towns.',
     },
     {
-      question: 'Are there research opportunities for undergraduate students?',
-      answer: 'Yes, students can participate in research projects under faculty guidance, publish papers in conferences and journals, and present their work at national/international platforms. We encourage innovation and research from the early stages.',
+      question: 'What certifications can I get during B.E. CSE at JKKN?',
+      answer: 'JKKN has partnered with leading technology companies to offer industry-recognized certifications integrated with our curriculum. Students can earn certifications in AWS Cloud Practitioner, Microsoft Azure Fundamentals, Google IT Support, Oracle Database, Python Programming, Java SE, Cisco CCNA, and more. These certifications are provided at subsidized or no additional cost and significantly enhance employability.',
     },
   ],
 
   // ==========================================
-  // Final CTA Section
+  // CTA Section
   // ==========================================
-  ctaTitle: 'Ready to Begin Your Journey in Technology?',
-  ctaDescription: 'Join JKKN College of Engineering and transform your career with our industry-aligned B.E. CSE program. Apply now for 2025-26 admission.',
-  ctaButtonLabel: 'Apply for Admission',
-  ctaButtonLink: '/apply',
-
-  // ==========================================
-  // Styling
-  // ==========================================
-  primaryColor: '#0b6d41',
-  accentColor: '#ffde59',
+  ctaTitle: 'Ready to Shape Your Future in Technology?',
+  ctaDescription: 'Join thousands of successful alumni who launched their tech careers from JKKN. Applications for 2025-26 batch are now open!',
+  ctaButtons: [
+    { label: 'Apply Now', link: '/apply', variant: 'primary' },
+    { label: 'Talk to Counselor', link: '/contact', variant: 'secondary' },
+  ],
+  ctaContact: [
+    { icon: 'Phone', label: 'Call Us', value: '+91 4288 235636', link: 'tel:+914288235636' },
+    { icon: 'Mail', label: 'Email Us', value: 'admissions@jkkn.ac.in', link: 'mailto:admissions@jkkn.ac.in' },
+    { icon: 'MapPin', label: 'Visit Us', value: 'Kumarapalayam, Namakkal - 638183', link: '#' },
+  ],
 }
-
-export default BE_CSE_SAMPLE_DATA

@@ -499,7 +499,7 @@ export default function InstitutionRulesPage({
   const { ref: headerRef, isInView: headerInView } = useInView(0.1)
   const isDark = variant === 'modern-dark'
 
-  const displaySections = sections.length > 0 ? sections : defaultRuleSections
+  const displaySections = sections?.length > 0 ? sections : defaultRuleSections
 
   return (
     <section

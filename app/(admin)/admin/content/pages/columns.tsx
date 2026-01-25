@@ -239,7 +239,8 @@ export const createColumns = (handlers: PageActionHandlers = {}): ColumnDef<Page
     id: 'seo',
     header: 'SEO',
     cell: ({ row }) => {
-      const seoScore = row.original.cms_seo_metadata?.seo_score
+      const seoMetadata = row.original.cms_seo_metadata as Array<{ seo_score: number | null }> | undefined
+      const seoScore = seoMetadata?.[0]?.seo_score
 
       if (seoScore === null || seoScore === undefined) {
         return <span className="text-muted-foreground">-</span>

@@ -327,7 +327,7 @@ export default function PrivacyPolicyPage({
   const { ref: headerRef, isInView: headerInView } = useInView(0.1)
   const isDark = variant === 'modern-dark'
 
-  const displaySections = sections.length > 0 ? sections : defaultPolicySections
+  const displaySections = sections?.length > 0 ? sections : defaultPolicySections
 
   return (
     <section

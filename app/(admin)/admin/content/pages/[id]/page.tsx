@@ -65,7 +65,7 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
   const parentOrder = await getParentPageOrder(page.parent_id)
 
   const blockCount = page.cms_page_blocks?.length || 0
-  const seoScore = page.cms_seo_metadata?.seo_score
+  const seoScore = page.cms_seo_metadata?.[0]?.seo_score
 
   return (
     <div className="space-y-6">
@@ -237,22 +237,22 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
             <div>
               <label className="text-sm font-medium text-muted-foreground">Meta Title</label>
               <p className="text-foreground">
-                {page.cms_seo_metadata.meta_title || page.title}
+                {page.cms_seo_metadata?.[0]?.meta_title || page.title}
               </p>
             </div>
-            {page.cms_seo_metadata.meta_description && (
+            {page.cms_seo_metadata?.[0]?.meta_description && (
               <div>
                 <label className="text-sm font-medium text-muted-foreground">
                   Meta Description
                 </label>
-                <p className="text-foreground">{page.cms_seo_metadata.meta_description}</p>
+                <p className="text-foreground">{page.cms_seo_metadata[0].meta_description}</p>
               </div>
             )}
-            {page.cms_seo_metadata.og_image && (
+            {page.cms_seo_metadata?.[0]?.og_image && (
               <div>
                 <label className="text-sm font-medium text-muted-foreground">OG Image</label>
                 <p className="text-foreground font-mono text-sm break-all">
-                  {page.cms_seo_metadata.og_image}
+                  {page.cms_seo_metadata[0].og_image}
                 </p>
               </div>
             )}

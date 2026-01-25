@@ -55,7 +55,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: 'Page Not Found' }
   }
 
-  const seo = page.cms_seo_metadata
+  const seo = Array.isArray(page.cms_seo_metadata)
+    ? page.cms_seo_metadata[0]
+    : page.cms_seo_metadata
 
   // Build comprehensive metadata from SEO fields with proper fallback chain
   return {

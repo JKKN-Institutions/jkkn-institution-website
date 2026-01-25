@@ -131,7 +131,7 @@ export function ModernManagementSection({
                                             src={member.image}
                                             alt={member.name}
                                             fill
-                                            className="object-cover object-top hover:scale-105 transition-transform duration-700"
+                                            className="object-cover object-top group-hover:scale-110 transition-transform duration-700"
                                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         />
                                     </div>

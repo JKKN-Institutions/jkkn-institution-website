@@ -77,7 +77,17 @@ function ContactInfoCard({
   return <div className="flex items-center gap-3 p-3">{Content}</div>
 }
 
-export function PrivacyPolicyContent() {
+interface PrivacyPolicyContentProps {
+  contactEmail?: string
+  contactPhone?: string
+  contactAddress?: string
+}
+
+export function PrivacyPolicyContent({
+  contactEmail = 'info@jkkn.ac.in',
+  contactPhone = '+91 93458 55001',
+  contactAddress = 'JKKN College of Engineering and Technology, Kumarapalayam, Namakkal District, Tamil Nadu - 638183, India',
+}: PrivacyPolicyContentProps = {}) {
   const lastUpdated = 'January 21, 2026'
 
   return (
@@ -405,19 +415,19 @@ export function PrivacyPolicyContent() {
             <ContactInfoCard
               icon={Mail}
               label="Email Address"
-              value="info@jkkn.ac.in"
-              href="mailto:info@jkkn.ac.in"
+              value={contactEmail}
+              href={`mailto:${contactEmail}`}
             />
             <ContactInfoCard
               icon={Phone}
               label="Phone Number"
-              value="+91 93458 55001"
-              href="tel:+919345855001"
+              value={contactPhone}
+              href={`tel:${contactPhone.replace(/\s/g, '')}`}
             />
             <ContactInfoCard
               icon={MapPin}
               label="Mailing Address"
-              value="JKKN College of Engineering and Technology, Kumarapalayam, Namakkal District, Tamil Nadu - 638183, India"
+              value={contactAddress}
             />
           </div>
 

@@ -774,7 +774,7 @@ export default function TermsAndConditionsPage({
   const { ref: headerRef, isInView: headerInView } = useInView(0.1)
   const isDark = variant === 'modern-dark'
 
-  const displaySections = sections.length > 0 ? sections : defaultTermsSections
+  const displaySections = sections?.length > 0 ? sections : defaultTermsSections
 
   // Get all section IDs including subsections for tracking
   const allSectionIds = displaySections.flatMap((section) => [

@@ -376,47 +376,47 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
     {
       name: 'Electrical Machines Laboratory',
       description: 'Well-equipped lab with DC machines, transformers, induction motors, synchronous machines, and testing equipment for comprehensive hands-on training in electrical machine operations.',
-      image: '/images/facilities/electrical-machines-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?electrical,motor,machinery',
     },
     {
       name: 'Power Systems Laboratory',
       description: 'Advanced lab with power system simulation software (ETAP, PSCAD), protection relays, circuit breakers, and equipment for studying power generation, transmission, and distribution.',
-      image: '/images/facilities/power-systems-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?power,substation,electrical',
     },
     {
       name: 'Power Electronics Laboratory',
       description: 'Modern lab featuring converters, inverters, choppers, cycloconverters, motor drives, and DSP-based control systems for practical training in power electronics applications.',
-      image: '/images/facilities/power-electronics-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?electronics,power,engineering',
     },
     {
       name: 'Control Systems Laboratory',
       description: 'Equipped with PLC trainers, SCADA systems, servo motors, process control trainers, and simulation software for studying linear and nonlinear control systems.',
-      image: '/images/facilities/control-systems-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?automation,control,industrial',
     },
     {
       name: 'High Voltage Engineering Laboratory',
       description: 'Specialized lab with high voltage testing equipment, impulse generators, transformer testing setups, and insulation testing facilities for understanding HV phenomena.',
-      image: '/images/facilities/high-voltage-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?electricity,voltage,testing',
     },
     {
       name: 'Renewable Energy Laboratory',
       description: 'Dedicated lab with solar panels, wind turbines, battery storage systems, charge controllers, and hybrid renewable energy setups for sustainable energy education.',
-      image: '/images/facilities/renewable-energy-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?solar,renewable,energy',
     },
     {
       name: 'Measurements & Instrumentation Lab',
       description: 'Comprehensive lab with analog and digital measuring instruments, transducers, signal conditioning equipment, and data acquisition systems for precision measurements.',
-      image: '/images/facilities/instrumentation-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?measurement,instrument,precision',
     },
     {
       name: 'Microprocessor & Microcontroller Lab',
       description: 'Advanced lab with 8085, 8086 microprocessor kits, 8051 microcontroller trainers, ARM processors, and embedded development tools for programming and interfacing practice.',
-      image: '/images/facilities/microprocessor-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?microprocessor,embedded,technology',
     },
     {
       name: 'Project Laboratory',
       description: 'Dedicated space for final year projects and research work with access to advanced equipment, design software, fabrication facilities, and mentorship from faculty.',
-      image: '/images/facilities/eee-project-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?engineering,workshop,project',
     },
   ],
 

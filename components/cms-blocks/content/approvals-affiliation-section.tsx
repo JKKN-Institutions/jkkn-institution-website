@@ -502,7 +502,7 @@ export default function ApprovalsAffiliationSection({
   className,
 }: ApprovalsAffiliationSectionProps) {
   const { ref: headerRef, isInView: headerInView } = useInView(0.1)
-  const displaySections = sections.length > 0 ? sections : defaultSections
+  const displaySections = sections?.length > 0 ? sections : defaultSections
 
   const backgroundStyles = {
     light: 'bg-white',

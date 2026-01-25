@@ -373,9 +373,6 @@ import { BEEEECoursePagePropsSchema } from '@/components/cms-blocks/content/be-e
 // Import BEECECoursePage schema from component
 import { BEECECoursePagePropsSchema } from '@/components/cms-blocks/content/be-ece-course-page'
 
-// Import BECSECoursePage schema from component
-import { BECSECoursePagePropsSchema } from '@/components/cms-blocks/content/be-cse-course-page'
-
 // Import BEMechanicalCoursePage schema from component
 import { BEMechanicalCoursePagePropsSchema } from '@/components/cms-blocks/content/be-mechanical-course-page'
 
@@ -399,7 +396,6 @@ import { EngineeringCTASectionPropsSchema } from '@/components/cms-blocks/conten
 // Import sample data for course pages
 import { BE_EEE_SAMPLE_DATA } from './templates/engineering/be-eee-data'
 import { BE_ECE_SAMPLE_DATA } from './templates/engineering/be-ece-data'
-import { BE_CSE_SAMPLE_DATA } from './templates/engineering/be-cse-data'
 import { BE_IT_SAMPLE_DATA } from './templates/engineering/be-it-data'
 import { beMechanicalCourseData } from './templates/engineering/be-mechanical-data'
 import { meCSECourseData } from './templates/engineering/me-cse-data'
@@ -552,9 +548,6 @@ const BEEEECoursePage = lazy(() => import('@/components/cms-blocks/content/be-ee
 // BE ECE Course Page
 const BEECECoursePage = lazy(() => import('@/components/cms-blocks/content/be-ece-course-page').then(m => ({ default: m.BEECECoursePage })))
 
-// BE CSE Course Page
-const BECSECoursePage = lazy(() => import('@/components/cms-blocks/content/be-cse-course-page').then(m => ({ default: m.BECSECoursePage })))
-
 // BE Mechanical Course Page
 const BEMechanicalCoursePage = lazy(() => import('@/components/cms-blocks/content/be-mechanical-course-page').then(m => ({ default: m.BEMechanicalCoursePage })))
 
@@ -572,6 +565,9 @@ const FacilityPage = lazy(() => import('@/components/cms-blocks/content/facility
 
 // Transport Page
 const TransportPage = lazy(() => import('@/components/cms-blocks/content/transport-page'))
+
+// Ambulance Service Page
+const AmbulanceServicePage = lazy(() => import('@/components/cms-blocks/content/ambulance-service-page'))
 
 // Food Court Page
 const FoodCourtPage = lazy(() => import('@/components/cms-blocks/content/food-court-page'))
@@ -5143,39 +5139,6 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     ],
   },
 
-  BECSECoursePage: {
-    name: 'BECSECoursePage',
-    displayName: 'BE CSE Course Page (Cream)',
-    category: 'content',
-    description: 'Comprehensive B.E. Computer Science & Engineering course page with cream color backgrounds. Includes hero, curriculum, benefits, specializations, career paths, fee structure, facilities, recruiters, admission process, faculty, FAQs, and final CTA.',
-    icon: 'Code',
-    previewImage: '/cms-previews/BECSECoursePage.png',
-    component: BECSECoursePage,
-    propsSchema: BECSECoursePagePropsSchema as any,
-    defaultProps: BE_CSE_SAMPLE_DATA,
-    supportsChildren: false,
-    isFullWidth: true,
-    keywords: ['course', 'engineering', 'cse', 'computer', 'science', 'be', 'bachelor', 'curriculum', 'placements', 'admission', 'cream', 'ai', 'ml', 'data science', 'cyber security', 'cloud computing'],
-    editableProps: [
-      { name: 'heroTitle', type: 'string', label: 'Hero Title', required: true, inlineEditable: true },
-      { name: 'heroSubtitle', type: 'string', label: 'Hero Subtitle', multiline: true, inlineEditable: true },
-      { name: 'affiliatedTo', type: 'string', label: 'Affiliated To', inlineEditable: true },
-      { name: 'whyChooseTitle', type: 'string', label: 'Why Choose Section Title' },
-      { name: 'curriculumTitle', type: 'string', label: 'Curriculum Section Title' },
-      { name: 'specializationsTitle', type: 'string', label: 'Specializations Section Title' },
-      { name: 'careerTitle', type: 'string', label: 'Career Section Title' },
-      { name: 'feeTitle', type: 'string', label: 'Fee Section Title' },
-      { name: 'facilitiesTitle', type: 'string', label: 'Facilities Section Title' },
-      { name: 'recruitersTitle', type: 'string', label: 'Recruiters Section Title' },
-      { name: 'admissionTitle', type: 'string', label: 'Admission Section Title' },
-      { name: 'facultyTitle', type: 'string', label: 'Faculty Section Title' },
-      { name: 'faqTitle', type: 'string', label: 'FAQ Section Title' },
-      { name: 'finalCTATitle', type: 'string', label: 'Final CTA Title', inlineEditable: true },
-      { name: 'finalCTADescription', type: 'string', label: 'Final CTA Description', multiline: true, inlineEditable: true },
-      { name: 'finalCTAButton', type: 'string', label: 'Final CTA Button Label' },
-    ],
-  },
-
   BEMechanicalCoursePage: {
     name: 'BEMechanicalCoursePage',
     displayName: 'BE Mechanical Course Page (Cream)',
@@ -6288,6 +6251,119 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
           required: ['name'],
         },
       },
+      { name: 'conclusion', type: 'string', multiline: true, label: 'Conclusion Paragraph' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'textColor', type: 'color', label: 'Text Color' },
+    ],
+  },
+
+
+  AmbulanceServicePage: {
+    name: 'AmbulanceServicePage',
+    displayName: 'Ambulance Service Page',
+    category: 'content',
+    description: 'Emergency ambulance services page with contact card and service details - shows emergency contact, features, and service information',
+    icon: 'Ambulance',
+    previewImage: '/cms-previews/AmbulanceServicePage.png',
+    component: AmbulanceServicePage,
+    propsSchema: z.object({
+      facilityTitle: z.string(),
+      contact: z.object({
+        name: z.string(),
+        designation: z.string().optional(),
+        mobile: z.string(),
+        alternateContact: z.string().optional(),
+        email: z.string().optional(),
+      }),
+      images: z.array(z.object({
+        src: z.string(),
+        alt: z.string().optional()
+      })),
+      introduction: z.string(),
+      features: z.array(z.object({
+        title: z.string(),
+        description: z.string()
+      })),
+      emergencyNote: z.string().optional(),
+      conclusion: z.string().optional(),
+      backgroundColor: z.string(),
+      accentColor: z.string(),
+      textColor: z.string()
+    }),
+    defaultProps: {
+      facilityTitle: 'AMBULANCE SERVICES',
+      contact: {
+        name: 'Mr. Atchuthan',
+        designation: 'Emergency Services Coordinator',
+        mobile: '+91 9360987848',
+      },
+      images: [],
+      introduction: `
+        <p class="mb-4">
+          JKKN Educational Institutions. we prioritize delivering top-notch education to our students, staff, and
+          community members. As a testament to our commitment to the community, we take great pride in offering our
+          own ambulance services. With round-the-clock availability, our ambulance service cater to emergency situations
+          and medical transportation needs of individuals.
+        </p>
+        <p>
+          Our ambulance services are run by a team of certified and well-trained emergency medical technicians who are
+          capable of handling various types of medical emergencies. Equipped with state-of-the-art medical equipment
+          and supplies, our ambulances ensure that our patients receive the best possible care.
+        </p>
+      `,
+      features: [],
+      backgroundColor: '#0b6d41',
+      accentColor: '#ffde59',
+      textColor: '#ffffff'
+    },
+    supportsChildren: false,
+    keywords: ['ambulance', 'emergency', 'medical', 'facility', 'health', 'services', 'ems'],
+    editableProps: [
+      { name: 'facilityTitle', type: 'string', label: 'Facility Title', required: true },
+      {
+        name: 'contact',
+        type: 'object',
+        label: 'Emergency Contact',
+        itemSchema: {
+          properties: {
+            name: { type: 'string', label: 'Contact Name', required: true },
+            designation: { type: 'string', label: 'Designation' },
+            mobile: { type: 'string', label: 'Mobile Number', required: true },
+            alternateContact: { type: 'string', label: 'Alternate Contact' },
+            email: { type: 'string', label: 'Email Address' }
+          },
+          required: ['name', 'mobile'],
+        },
+      },
+      {
+        name: 'images',
+        type: 'array',
+        label: 'Gallery Images',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            src: { type: 'string', label: 'Image URL', required: true, format: 'image' },
+            alt: { type: 'string', label: 'Alt Text' }
+          },
+          required: ['src'],
+        },
+      },
+      { name: 'introduction', type: 'string', multiline: true, label: 'Introduction Paragraph', required: true },
+      {
+        name: 'features',
+        type: 'array',
+        label: 'Features',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            title: { type: 'string', label: 'Feature Title', required: true },
+            description: { type: 'string', label: 'Feature Description', required: true }
+          },
+          required: ['title', 'description'],
+        },
+      },
+      { name: 'emergencyNote', type: 'string', multiline: true, label: 'Emergency Note' },
       { name: 'conclusion', type: 'string', multiline: true, label: 'Conclusion Paragraph' },
       { name: 'backgroundColor', type: 'color', label: 'Background Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },

@@ -255,10 +255,10 @@ export default function LibraryPage({
   const { ref: contactRef, isInView: contactInView } = useInView(0.1)
   const isDark = variant === 'modern-dark'
 
-  const displayParagraphs = paragraphs.length > 0 ? paragraphs : defaultParagraphs
-  const displayResources = resources.length > 0 ? resources : defaultResources
-  const displaySections = sections.length > 0 ? sections : defaultSections
-  const displayServices = services.length > 0 ? services : defaultServices
+  const displayParagraphs = paragraphs?.length > 0 ? paragraphs : defaultParagraphs
+  const displayResources = resources?.length > 0 ? resources : defaultResources
+  const displaySections = sections?.length > 0 ? sections : defaultSections
+  const displayServices = services?.length > 0 ? services : defaultServices
   const displayLibrarian = librarian || defaultLibrarian
 
   const cardStyles = {

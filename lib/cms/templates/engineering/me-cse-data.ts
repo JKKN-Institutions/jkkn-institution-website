@@ -453,42 +453,42 @@ export const meCSECourseData: MECSECoursePageProps = {
       {
         name: 'AI & Machine Learning Lab',
         description: 'High-performance computing systems with GPU clusters for deep learning research',
-        image: '/images/courses/me-cse/labs/ai-ml-lab.jpg'
+        image: 'https://source.unsplash.com/800x600/?artificial-intelligence,machine-learning,laboratory'
       },
       {
         name: 'Data Science Lab',
         description: 'Big data frameworks, analytics tools, and visualization software',
-        image: '/images/courses/me-cse/labs/data-science-lab.jpg'
+        image: 'https://source.unsplash.com/800x600/?data-science,analytics,visualization'
       },
       {
         name: 'Cybersecurity Lab',
         description: 'Ethical hacking tools, network security appliances, and forensic systems',
-        image: '/images/courses/me-cse/labs/cybersecurity-lab.jpg'
+        image: 'https://source.unsplash.com/800x600/?cybersecurity,hacking,security'
       },
       {
         name: 'Cloud Computing Lab',
         description: 'AWS, Azure, and Google Cloud platforms with virtualization infrastructure',
-        image: '/images/courses/me-cse/labs/cloud-lab.jpg'
+        image: 'https://source.unsplash.com/800x600/?cloud-computing,datacenter,virtualization'
       },
       {
         name: 'Research & Development Lab',
         description: 'Dedicated space for postgraduate research projects and innovation',
-        image: '/images/courses/me-cse/labs/research-lab.jpg'
+        image: 'https://source.unsplash.com/800x600/?research,laboratory,innovation'
       },
       {
         name: 'IoT & Embedded Systems Lab',
         description: 'Sensors, microcontrollers, development boards, and smart devices',
-        image: '/images/courses/me-cse/labs/iot-lab.jpg'
+        image: 'https://source.unsplash.com/800x600/?iot,sensors,smart-devices'
       },
       {
         name: 'High-Performance Computing Lab',
         description: 'Multi-core processors, parallel computing systems, and cluster computing',
-        image: '/images/courses/me-cse/labs/hpc-lab.jpg'
+        image: 'https://source.unsplash.com/800x600/?supercomputer,cluster,computing'
       },
       {
         name: 'Project Development Lab',
         description: 'Collaborative workspace for final year dissertation projects',
-        image: '/images/courses/me-cse/labs/project-lab.jpg'
+        image: 'https://source.unsplash.com/800x600/?collaborative,workspace,project'
       }
     ]
   },

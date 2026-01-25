@@ -372,47 +372,47 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   facilities: [
     {
       name: 'Digital Electronics Laboratory',
-      image: '/images/facilities/digital-electronics-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?electronics,circuit,laboratory',
       description: 'Equipped with logic gate trainers, IC testers, digital design kits, breadboards, and multimeters for hands-on learning of digital circuits and logic design.',
     },
     {
       name: 'Analog Electronics Laboratory',
-      image: '/images/facilities/analog-electronics-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?electronics,oscilloscope,engineering',
       description: 'State-of-the-art facility with oscilloscopes, function generators, power supplies, and electronic components for amplifier and oscillator circuit experiments.',
     },
     {
       name: 'Microprocessor & Microcontroller Lab',
-      image: '/images/facilities/microprocessor-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?microcontroller,arduino,technology',
       description: 'Features 8085, 8086, ARM processor kits, Arduino boards, and assembly language programming tools for embedded systems development.',
     },
     {
       name: 'Communication Systems Laboratory',
-      image: '/images/facilities/communication-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?communication,antenna,technology',
       description: 'Advanced lab with AM/FM modulation kits, fiber optic communication systems, antenna testing equipment, and signal generators.',
     },
     {
       name: 'VLSI Design Laboratory',
-      image: '/images/facilities/vlsi-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?microchip,circuit,design',
       description: 'Equipped with Cadence EDA tools, ModelSim, Xilinx ISE, FPGA boards (Spartan, Virtex), and chip design software for VLSI coursework.',
     },
     {
       name: 'Embedded Systems Laboratory',
-      image: '/images/facilities/embedded-systems-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?embedded,raspberry-pi,electronics',
       description: 'Contains Arduino, Raspberry Pi, ESP32 boards, IoT sensor kits, RTOS tools, and embedded development environments.',
     },
     {
       name: 'Signal Processing Laboratory',
-      image: '/images/facilities/signal-processing-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?signal,processing,technology',
       description: 'MATLAB-equipped workstations, DSP processors (TMS320 series), audio/video processing kits, and image processing software.',
     },
     {
       name: 'Network & Security Laboratory',
-      image: '/images/facilities/network-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?network,servers,technology',
       description: 'Cisco routers, switches, network simulators (Packet Tracer, GNS3), firewalls, and network monitoring tools for practical networking experience.',
     },
     {
       name: 'Project Laboratory',
-      image: '/images/facilities/project-lab.jpg',
+      image: 'https://source.unsplash.com/800x600/?engineering,project,laboratory',
       description: 'Dedicated workspace for final year projects with access to all equipment, 3D printers, PCB fabrication tools, and prototyping resources.',
     },
   ],

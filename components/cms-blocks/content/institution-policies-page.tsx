@@ -29,6 +29,7 @@ import {
   Home,
   ChevronRight,
   ScrollText,
+  type LucideIcon,
 } from 'lucide-react'
 
 // ==========================================
@@ -109,30 +110,45 @@ export type InstitutionPoliciesPageProps = z.infer<typeof InstitutionPoliciesPag
 // Icon Mapping
 // ==========================================
 
-const ICON_MAP: Record<string, typeof FileText> = {
-  Lightbulb,
-  Award,
-  BookMarked,
-  Beaker,
-  Recycle,
-  Users,
-  Briefcase,
-  Calendar,
-  Sparkles,
-  FileStack,
-  TreeDeciduous,
-  ClipboardCheck,
-  MessageCircle,
-  FileText,
-  Download,
-  Shield,
-  GraduationCap,
-  ScrollText,
-}
-
-function getIconComponent(iconName?: string) {
-  if (!iconName) return FileText
-  return ICON_MAP[iconName] || FileText
+function getIconComponent(iconName?: string): LucideIcon {
+  switch (iconName) {
+    case 'Lightbulb':
+      return Lightbulb
+    case 'Award':
+      return Award
+    case 'BookMarked':
+      return BookMarked
+    case 'Beaker':
+      return Beaker
+    case 'Recycle':
+      return Recycle
+    case 'Users':
+      return Users
+    case 'Briefcase':
+      return Briefcase
+    case 'Calendar':
+      return Calendar
+    case 'Sparkles':
+      return Sparkles
+    case 'FileStack':
+      return FileStack
+    case 'TreeDeciduous':
+      return TreeDeciduous
+    case 'ClipboardCheck':
+      return ClipboardCheck
+    case 'MessageCircle':
+      return MessageCircle
+    case 'Download':
+      return Download
+    case 'Shield':
+      return Shield
+    case 'GraduationCap':
+      return GraduationCap
+    case 'ScrollText':
+      return ScrollText
+    default:
+      return FileText
+  }
 }
 
 // ==========================================
@@ -141,7 +157,16 @@ function getIconComponent(iconName?: string) {
 
 const CATEGORY_CONFIG: Record<
   PolicyCategory,
-  { label: string; bgColor: string; textColor: string; borderColor: string; gradientFrom: string; gradientTo: string }
+  {
+    label: string
+    bgColor: string
+    textColor: string
+    borderColor: string
+    gradientFrom: string
+    gradientTo: string
+    gradientFromHex: string
+    gradientToHex: string
+  }
 > = {
   academic: {
     label: 'Academic',
@@ -150,6 +175,8 @@ const CATEGORY_CONFIG: Record<
     borderColor: 'border-primary-200',
     gradientFrom: 'from-primary-200',
     gradientTo: 'to-primary-300',
+    gradientFromHex: '#c7f0dd',
+    gradientToHex: '#9fe5c4',
   },
   hr: {
     label: 'HR & Admin',
@@ -158,6 +185,8 @@ const CATEGORY_CONFIG: Record<
     borderColor: 'border-primary-200',
     gradientFrom: 'from-primary-600',
     gradientTo: 'to-primary-700',
+    gradientFromHex: '#085032',
+    gradientToHex: '#064227',
   },
   research: {
     label: 'Research',
@@ -166,6 +195,8 @@ const CATEGORY_CONFIG: Record<
     borderColor: 'border-primary-200',
     gradientFrom: 'from-primary-400',
     gradientTo: 'to-primary-500',
+    gradientFromHex: '#3ec57b',
+    gradientToHex: '#0f8f56',
   },
   student: {
     label: 'Student',
@@ -174,6 +205,8 @@ const CATEGORY_CONFIG: Record<
     borderColor: 'border-primary-200',
     gradientFrom: 'from-primary-500',
     gradientTo: 'to-primary-600',
+    gradientFromHex: '#0f8f56',
+    gradientToHex: '#0b6d41',
   },
   environment: {
     label: 'Environment',
@@ -182,6 +215,8 @@ const CATEGORY_CONFIG: Record<
     borderColor: 'border-primary-200',
     gradientFrom: 'from-primary-300',
     gradientTo: 'to-primary-400',
+    gradientFromHex: '#9fe5c4',
+    gradientToHex: '#6dd1a1',
   },
   administrative: {
     label: 'Administrative',
@@ -190,6 +225,8 @@ const CATEGORY_CONFIG: Record<
     borderColor: 'border-primary-200',
     gradientFrom: 'from-primary-700',
     gradientTo: 'to-primary-800',
+    gradientFromHex: '#064227',
+    gradientToHex: '#032816',
   },
   communication: {
     label: 'Communication',
@@ -198,6 +235,8 @@ const CATEGORY_CONFIG: Record<
     borderColor: 'border-primary-200',
     gradientFrom: 'from-primary-100',
     gradientTo: 'to-primary-200',
+    gradientFromHex: '#e5f7ee',
+    gradientToHex: '#c7f0dd',
   },
   general: {
     label: 'General',
@@ -206,6 +245,8 @@ const CATEGORY_CONFIG: Record<
     borderColor: 'border-primary-200',
     gradientFrom: 'from-primary-400',
     gradientTo: 'to-primary-500',
+    gradientFromHex: '#3ec57b',
+    gradientToHex: '#0f8f56',
   },
 }
 
@@ -635,12 +676,12 @@ function PolicyCard({
         <div
           className={cn(
             'w-11 h-11 rounded-xl flex items-center justify-center',
-            'bg-gradient-to-br',
-            categoryConfig.gradientFrom,
-            categoryConfig.gradientTo,
             'group-hover:scale-110 transition-transform duration-300',
             'shadow-md'
           )}
+          style={{
+            background: `linear-gradient(to bottom right, ${categoryConfig.gradientFromHex}, ${categoryConfig.gradientToHex})`,
+          }}
         >
           <IconComponent className="w-5 h-5 text-white" />
         </div>
@@ -1034,11 +1075,12 @@ export default function InstitutionPoliciesPage({
                         isDark ? 'text-white' : 'text-gray-900'
                       )}
                     >
-                      <span className={cn(
-                        'w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br',
-                        config.gradientFrom,
-                        config.gradientTo
-                      )}>
+                      <span
+                        className="w-8 h-8 rounded-lg flex items-center justify-center"
+                        style={{
+                          background: `linear-gradient(to bottom right, ${config.gradientFromHex}, ${config.gradientToHex})`,
+                        }}
+                      >
                         <ScrollText className="w-4 h-4 text-white" />
                       </span>
                       {config.label}

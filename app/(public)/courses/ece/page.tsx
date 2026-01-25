@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/images/ece-lab-hero.jpg',
+        url: 'https://source.unsplash.com/1200x630/?electronics,communication,engineering',
         width: 1200,
         height: 630,
         alt: 'JKKN ECE Laboratory',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'B.E. Electronics & Communication Engineering | JKKN',
     description: 'NBA accredited ECE program with specializations in Embedded Systems, VLSI, IoT. 90%+ placement rate.',
-    images: ['/images/ece-lab-hero.jpg'],
+    images: ['https://source.unsplash.com/1200x630/?electronics,communication,engineering'],
   },
 }
 

@@ -2,17 +2,23 @@
 
 import React from 'react'
 import { z } from 'zod'
-import { ArrowRight, BookOpen, Calendar, Check, ChevronDown, GraduationCap, Users, Award, Briefcase, Building2, UserCheck, IndianRupee, TrendingUp, Code, Edit, FileCheck, CheckCircle } from 'lucide-react'
-import Image from 'next/image'
+import {
+  ArrowRight,
+  Award,
+  Check,
+  ChevronDown,
+  Phone,
+  Mail,
+  MapPin,
+  UserCheck,
+  FileText,
+  Briefcase,
+  Users,
+} from 'lucide-react'
 
 // ============================================
 // Zod Schemas for Type Safety
 // ============================================
-
-const BreadcrumbItemSchema = z.object({
-  label: z.string(),
-  link: z.string().optional(),
-})
 
 const HeroStatSchema = z.object({
   icon: z.string(),
@@ -24,6 +30,13 @@ const HeroCTASchema = z.object({
   label: z.string(),
   link: z.string(),
   variant: z.enum(['primary', 'secondary']),
+})
+
+const OverviewCardSchema = z.object({
+  icon: z.string(),
+  title: z.string(),
+  value: z.string(),
+  description: z.string(),
 })
 
 const BenefitSchema = z.object({
@@ -49,40 +62,55 @@ const CurriculumYearSchema = z.object({
   semesters: z.array(SemesterSchema),
 })
 
-const SpecializationSchema = z.object({
-  title: z.string(),
-  description: z.string().optional(),
-})
-
-const CareerPathSchema = z.object({
-  icon: z.string(),
-  title: z.string(),
-  description: z.string(),
-  avgSalary: z.string().optional(),
-})
-
-const RecruiterSchema = z.object({
-  name: z.string(),
-  logo: z.string().optional(),
-})
-
 const AdmissionStepSchema = z.object({
   step: z.number(),
   title: z.string(),
   description: z.string(),
   icon: z.string(),
+  details: z.array(z.string()),
 })
 
-const FeeComponentSchema = z.object({
+const FeeTableRowSchema = z.object({
   component: z.string(),
-  amount: z.string(),
-  isTotal: z.boolean().optional(),
+  govt: z.string(),
+  mgmt: z.string(),
+  nri: z.string(),
+})
+
+const FeeTableSchema = z.object({
+  headers: z.array(z.string()),
+  rows: z.array(FeeTableRowSchema),
+  totals: z.object({
+    component: z.string(),
+    govt: z.string(),
+    mgmt: z.string(),
+    nri: z.string(),
+  }),
+})
+
+const ScholarshipSchema = z.object({
+  percentage: z.string(),
+  criteria: z.string(),
+})
+
+const PlacementStatSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+})
+
+const CareerPathSchema = z.object({
+  icon: z.string(),
+  title: z.string(),
+  salary: z.string(),
+  description: z.string(),
+  skills: z.array(z.string()),
 })
 
 const FacilitySchema = z.object({
   name: z.string(),
-  image: z.string().optional(),
   description: z.string(),
+  image: z.string().optional(),
+  features: z.array(z.string()),
 })
 
 const FacultySchema = z.object({
@@ -98,109 +126,72 @@ const FAQSchema = z.object({
   answer: z.string(),
 })
 
+const CTAContactSchema = z.object({
+  icon: z.string(),
+  label: z.string(),
+  value: z.string(),
+  link: z.string(),
+})
+
 export const BECSECoursePagePropsSchema = z.object({
   // Hero Section
   heroTitle: z.string(),
   heroSubtitle: z.string().optional(),
-  breadcrumbItems: z.array(BreadcrumbItemSchema).optional(),
-  approvalBadge: z.string().optional(),
   heroStats: z.array(HeroStatSchema),
   heroCTAs: z.array(HeroCTASchema),
   affiliatedTo: z.string(),
 
+  // Course Overview
+  overviewTitle: z.string(),
+  overviewCards: z.array(OverviewCardSchema),
+
   // Why Choose Section
   whyChooseTitle: z.string(),
-  whyChooseSubtitle: z.string().optional(),
   benefits: z.array(BenefitSchema),
-
-  // Program Highlights
-  programHighlights: z.array(z.object({
-    icon: z.string(),
-    title: z.string(),
-    description: z.string(),
-  })).optional(),
 
   // Curriculum
   curriculumTitle: z.string(),
   curriculumYears: z.array(CurriculumYearSchema),
 
-  // Specializations (Simple List)
-  specializationsTitle: z.string().optional(),
-  specializations: z.array(SpecializationSchema).optional(),
+  // Admission Process
+  admissionTitle: z.string(),
+  admissionSteps: z.array(AdmissionStepSchema),
+
+  // Fee Structure
+  feeTitle: z.string(),
+  feeDescription: z.string().optional(),
+  feeTable: FeeTableSchema,
+  scholarships: z.array(ScholarshipSchema),
+
+  // Placements
+  placementsTitle: z.string(),
+  placementsStats: z.array(PlacementStatSchema),
+  recruiters: z.array(z.string()),
 
   // Career Opportunities
   careerTitle: z.string(),
   careerPaths: z.array(CareerPathSchema),
 
-  // Top Recruiters
-  recruitersTitle: z.string().optional(),
-  recruiters: z.array(RecruiterSchema).optional(),
-
-  // Admission Process
-  admissionTitle: z.string().optional(),
-  admissionSteps: z.array(AdmissionStepSchema).optional(),
-
-  // Fee Structure
-  feeTitle: z.string(),
-  feeBreakdown: z.array(FeeComponentSchema),
-
-  // Placement Statistics
-  placementStats: z.array(z.object({
-    label: z.string(),
-    value: z.string(),
-    icon: z.string(),
-  })).optional(),
-
-  // Facilities
-  facilitiesTitle: z.string(),
+  // Infrastructure
+  infrastructureTitle: z.string(),
   facilities: z.array(FacilitySchema),
 
   // Faculty
-  facultyTitle: z.string().optional(),
-  faculty: z.array(FacultySchema).optional(),
+  facultyTitle: z.string(),
+  faculty: z.array(FacultySchema),
 
   // FAQ
   faqTitle: z.string(),
   faqs: z.array(FAQSchema),
 
   // Final CTA Section
-  ctaTitle: z.string().optional(),
+  ctaTitle: z.string(),
   ctaDescription: z.string().optional(),
-  ctaButtonLabel: z.string().optional(),
-  ctaButtonLink: z.string().optional(),
-
-  // Styling
-  primaryColor: z.string().optional(),
-  accentColor: z.string().optional(),
+  ctaButtons: z.array(HeroCTASchema),
+  ctaContact: z.array(CTAContactSchema),
 })
 
 export type BECSECoursePageProps = z.infer<typeof BECSECoursePagePropsSchema>
-
-// ============================================
-// Icon Mapping Helper
-// ============================================
-
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  calendar: Calendar,
-  users: Users,
-  'graduation-cap': GraduationCap,
-  'indian-rupee': IndianRupee,
-  'trending-up': TrendingUp,
-  award: Award,
-  briefcase: Briefcase,
-  building: Building2,
-  check: Check,
-  'book-open': BookOpen,
-  code: Code,
-  edit: Edit,
-  'file-check': FileCheck,
-  'check-circle': CheckCircle,
-}
-
-function getIcon(iconName: string, className: string = "w-6 h-6") {
-  const IconComponent = iconMap[iconName] || Check
-  return <IconComponent className={className} />
-}
 
 // ============================================
 // Main Component
@@ -210,29 +201,27 @@ export function BECSECoursePage(props: BECSECoursePageProps) {
   const {
     heroTitle,
     heroSubtitle,
-    breadcrumbItems,
-    approvalBadge,
     heroStats,
     heroCTAs,
     affiliatedTo,
+    overviewTitle,
+    overviewCards,
     whyChooseTitle,
-    whyChooseSubtitle,
     benefits,
-    programHighlights,
     curriculumTitle,
     curriculumYears,
-    specializationsTitle,
-    specializations,
-    careerTitle,
-    careerPaths,
-    recruitersTitle,
-    recruiters,
     admissionTitle,
     admissionSteps,
     feeTitle,
-    feeBreakdown,
-    placementStats,
-    facilitiesTitle,
+    feeDescription,
+    feeTable,
+    scholarships,
+    placementsTitle,
+    placementsStats,
+    recruiters,
+    careerTitle,
+    careerPaths,
+    infrastructureTitle,
     facilities,
     facultyTitle,
     faculty,
@@ -240,120 +229,99 @@ export function BECSECoursePage(props: BECSECoursePageProps) {
     faqs,
     ctaTitle,
     ctaDescription,
-    ctaButtonLabel,
-    ctaButtonLink,
-    primaryColor = '#0b6d41',
-    accentColor = '#ffde59',
+    ctaButtons,
+    ctaContact,
   } = props
 
-  const [openFAQIndex, setOpenFAQIndex] = React.useState<number | null>(null)
+  const primaryColor = '#0b6d41'
+  const accentColor = '#ffde59'
 
   return (
-    <div className="min-h-screen bg-[#fbfbee]">
-      {/* 1. Hero Section with Integrated Stats */}
+    <div className="w-full bg-[#fbfbee]">
+      {/* Hero Section */}
       <HeroSection
         title={heroTitle}
         subtitle={heroSubtitle}
-        breadcrumbs={breadcrumbItems}
-        approvalBadge={approvalBadge}
         stats={heroStats}
         ctas={heroCTAs}
         affiliatedTo={affiliatedTo}
         primaryColor={primaryColor}
       />
 
-      {/* 2. Why Choose Section */}
+      {/* Course Overview */}
+      <CourseOverviewSection
+        title={overviewTitle}
+        cards={overviewCards}
+        primaryColor={primaryColor}
+      />
+
+      {/* Why Choose CSE */}
       <WhyChooseSection
         title={whyChooseTitle}
-        subtitle={whyChooseSubtitle}
         benefits={benefits}
+        primaryColor={primaryColor}
       />
 
-      {/* 3. Program Highlights Section (NEW) */}
-      {programHighlights && programHighlights.length > 0 && (
-        <ProgramHighlightsSection highlights={programHighlights} />
-      )}
-
-      {/* 4. Curriculum Table Section */}
-      <CurriculumTableSection
+      {/* Curriculum */}
+      <CurriculumSection
         title={curriculumTitle}
         years={curriculumYears}
+        primaryColor={primaryColor}
       />
 
-      {/* 5. Specializations Section - Simple 2-Column List */}
-      {specializations && specializations.length > 0 && (
-        <SpecializationsSection
-          title={specializationsTitle}
-          specializations={specializations}
-        />
-      )}
+      {/* Admission Process */}
+      <AdmissionProcessSection
+        title={admissionTitle}
+        steps={admissionSteps}
+        primaryColor={primaryColor}
+      />
 
-      {/* 6. Fee Structure Section */}
+      {/* Fee Structure */}
       <FeeStructureSection
         title={feeTitle}
-        breakdown={feeBreakdown}
+        description={feeDescription}
+        feeTable={feeTable}
+        scholarships={scholarships}
+        primaryColor={primaryColor}
       />
 
-      {/* 7. Placement Statistics Section (NEW) */}
-      {placementStats && placementStats.length > 0 && (
-        <PlacementStatsSection stats={placementStats} />
-      )}
-
-      {/* 8. Facilities Section */}
-      <FacilitiesSection
-        title={facilitiesTitle}
-        facilities={facilities}
+      {/* Placements */}
+      <PlacementsSection
+        title={placementsTitle}
+        stats={placementsStats}
+        recruiters={recruiters}
+        primaryColor={primaryColor}
       />
 
-      {/* 9. Top Recruiters Section */}
-      {recruiters && recruiters.length > 0 && (
-        <TopRecruitersSection
-          title={recruitersTitle || 'Our Top Recruiters'}
-          recruiters={recruiters}
-        />
-      )}
-
-      {/* 10. Career Opportunities Section (MOVED FROM EARLIER) */}
+      {/* Career Opportunities */}
       <CareerOpportunitiesSection
         title={careerTitle}
         careers={careerPaths}
+        primaryColor={primaryColor}
       />
 
-      {/* 11. Admission Process Section */}
-      {admissionSteps && admissionSteps.length > 0 && (
-        <AdmissionProcessSection
-          title={admissionTitle || 'Admission Process'}
-          steps={admissionSteps}
-          primaryColor={primaryColor}
-        />
-      )}
-
-      {/* 12. Faculty Section */}
-      {faculty && faculty.length > 0 && (
-        <FacultySection
-          title={facultyTitle || 'Our Experienced Faculty'}
-          faculty={faculty}
-        />
-      )}
-
-      {/* 13. FAQ Section */}
-      <FAQSection
-        title={faqTitle}
-        faqs={faqs}
-        openIndex={openFAQIndex}
-        setOpenIndex={setOpenFAQIndex}
+      {/* Infrastructure */}
+      <InfrastructureSection
+        title={infrastructureTitle}
+        facilities={facilities}
+        primaryColor={primaryColor}
       />
 
-      {/* 14. Final CTA Section - GREEN GRADIENT */}
-      {ctaTitle && (
-        <FinalCTASection
-          title={ctaTitle}
-          description={ctaDescription}
-          buttonLabel={ctaButtonLabel}
-          buttonLink={ctaButtonLink}
-          primaryColor={primaryColor}
-        />
-      )}
+      {/* Faculty */}
+      <FacultySection title={facultyTitle} faculty={faculty} primaryColor={primaryColor} />
+
+      {/* FAQs */}
+      <FAQSection title={faqTitle} faqs={faqs} primaryColor={primaryColor} />
+
+      {/* Final CTA Section */}
+      <FinalCTASection
+        title={ctaTitle}
+        description={ctaDescription}
+        buttons={ctaButtons}
+        contact={ctaContact}
+        primaryColor={primaryColor}
+        accentColor={accentColor}
+      />
     </div>
   )
 }
@@ -362,12 +330,9 @@ export function BECSECoursePage(props: BECSECoursePageProps) {
 // Section Components
 // ============================================
 
-// Hero Section with Integrated Stats
 function HeroSection({
   title,
   subtitle,
-  breadcrumbs,
-  approvalBadge,
   stats,
   ctas,
   affiliatedTo,
@@ -375,194 +340,194 @@ function HeroSection({
 }: {
   title: string
   subtitle?: string
-  breadcrumbs?: Array<{ label: string; link?: string }>
-  approvalBadge?: string
   stats: Array<{ icon: string; label: string; value: string }>
-  ctas: Array<{ label: string; link: string; variant: string }>
+  ctas: Array<{ label: string; link: string; variant: 'primary' | 'secondary' }>
   affiliatedTo: string
   primaryColor: string
 }) {
   return (
-    <section className="relative bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6] py-12 md:py-16">
+    <section className="relative py-16 md:py-20 lg:py-24 bg-[#fff9ee] overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Breadcrumb */}
-        {breadcrumbs && breadcrumbs.length > 0 && (
-          <nav className="flex items-center space-x-2 text-sm mb-4">
-            {breadcrumbs.map((item, index) => (
-              <React.Fragment key={index}>
-                {item.link ? (
-                  <a href={item.link} className="text-gray-700 hover:text-[#0b6d41] transition-colors">
-                    {item.label}
-                  </a>
-                ) : (
-                  <span className="text-[#0b6d41] font-medium">{item.label}</span>
-                )}
-                {index < breadcrumbs.length - 1 && (
-                  <span className="text-gray-400">›</span>
-                )}
-              </React.Fragment>
-            ))}
-          </nav>
-        )}
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Column - Content */}
+          <div className="space-y-8">
+            {/* Badge */}
+            <div className="inline-block text-white rounded-full px-6 py-2" style={{ backgroundColor: primaryColor }}>
+              <span className="text-sm font-medium">⭐ #JKKN100 Centenary Year Admissions Open 2025-26</span>
+            </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 items-start">
-          {/* Left Content */}
-          <div>
-            {/* Approval Badge */}
-            {approvalBadge && (
-              <div className="inline-block bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full text-sm mb-4 text-[#0b6d41] font-medium border border-gray-200">
-                {approvalBadge}
-              </div>
-            )}
+            {/* Title */}
+            <div>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight" style={{ color: primaryColor }}>
+                B.E. Computer Science
+              </h1>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight" style={{ color: primaryColor }}>
+                & Engineering
+              </h1>
+            </div>
 
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-[#0b6d41]">
-              {title}
-            </h1>
+            {/* Subtitle */}
             {subtitle && (
-              <p className="text-base md:text-lg text-gray-700 mb-4">
+              <p className="text-lg text-gray-700 leading-relaxed">
                 {subtitle}
               </p>
             )}
-            <p className="text-sm text-gray-600 mb-6">
-              {affiliatedTo}
-            </p>
 
-            {/* CTAs */}
-            <div className="flex flex-wrap gap-4 mb-8">
-              {ctas.map((cta, index) => (
-                <a
-                  key={index}
-                  href={cta.link}
-                  className={`
-                    px-6 py-3 rounded-lg font-medium transition-all duration-200 inline-flex items-center gap-2
-                    ${cta.variant === 'primary'
-                      ? 'bg-[#0b6d41] hover:bg-[#0f8f56] text-white shadow-md'
-                      : 'bg-transparent border-2 border-[#0b6d41] text-[#0b6d41] hover:bg-[#0b6d41] hover:text-white'
-                    }
-                  `}
-                >
-                  {cta.label}
-                  <ArrowRight className="w-5 h-5" />
-                </a>
-              ))}
-            </div>
-
-            {/* Stats Cards - Integrated in Hero */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {/* Stats Row */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center border border-gray-200 shadow-sm"
-                >
-                  <div className="flex justify-center mb-2">
-                    {getIcon(stat.icon, "w-6 h-6 text-[#0b6d41]")}
+                <div key={index} className="text-left">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xl" style={{ backgroundColor: primaryColor }}>
+                      {index === 0 && '⏱️'}
+                      {index === 1 && '📊'}
+                      {index === 2 && '📈'}
+                      {index === 3 && '₹'}
+                    </div>
                   </div>
-                  <div className="text-2xl font-bold mb-1 text-[#0b6d41]">
+                  <div className="text-3xl font-bold mb-1" style={{ color: primaryColor }}>
                     {stat.value}
                   </div>
-                  <div className="text-xs text-gray-600">
+                  <div className="text-sm text-gray-600 font-medium">
                     {stat.label}
                   </div>
                 </div>
               ))}
             </div>
-          </div>
 
-          {/* Right Content - Hero Illustration */}
-          <div className="hidden lg:flex items-center justify-center">
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-8 w-full h-80 flex items-center justify-center border border-gray-200 shadow-lg">
-              <GraduationCap className="w-40 h-40 text-[#0b6d41]/20" />
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              {ctas.map((cta, index) => (
+                <a
+                  key={index}
+                  href={cta.link}
+                  className={`
+                    inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-base transition-all duration-300
+                    ${
+                      cta.variant === 'primary'
+                        ? 'text-white shadow-lg hover:shadow-xl hover:opacity-90'
+                        : 'bg-white border-2 hover:border-gray-400 shadow-md'
+                    }
+                  `}
+                  style={cta.variant === 'primary' ? { backgroundColor: primaryColor } : { color: primaryColor, borderColor: primaryColor }}
+                >
+                  {cta.label}
+                </a>
+              ))}
             </div>
           </div>
+
+          {/* Right Column - Image */}
+          <div className="relative hidden lg:block">
+            {/* Main Image */}
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <img
+                src="/images/courses/cse-hero.jpg"
+                alt="Learners working in modern computer lab at JKKN"
+                className="w-full h-[500px] object-cover"
+                onError={(e) => {
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop&q=80'
+                }}
+              />
+            </div>
+
+            {/* NBA Badge - Bottom right overlay */}
+            <div className="absolute bottom-6 right-6 bg-white rounded-xl shadow-xl p-6">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: primaryColor }}>
+                  <span className="text-white text-2xl">⭐</span>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-gray-900">NBA</div>
+                  <div className="text-sm text-gray-600">Accredited Program</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Affiliated Text - Below on mobile, part of left column on desktop */}
+        <div className="mt-8 lg:mt-4">
+          <p className="text-sm text-gray-600 text-center lg:text-left">{affiliatedTo}</p>
         </div>
       </div>
     </section>
   )
 }
 
-// Why Choose Section
-function WhyChooseSection({
+function CourseOverviewSection({
   title,
-  subtitle,
-  benefits,
+  cards,
+  primaryColor,
 }: {
   title: string
-  subtitle?: string
+  cards: Array<{ icon: string; title: string; value: string; description: string }>
+  primaryColor: string
+}) {
+  return (
+    <section className="py-16 md:py-20 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4" style={{ color: primaryColor }}>
+          {title}
+        </h2>
+        <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+          Our Bachelor of Engineering in Computer Science and Engineering program is designed to develop competent professionals equipped with strong theoretical foundations and practical skills.
+        </p>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {cards.map((card, index) => (
+            <div
+              key={index}
+              className="bg-[#fbfbee] rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border-l-4 hover:-translate-y-2"
+              style={{ borderLeftColor: primaryColor }}
+            >
+              <div className="text-4xl mb-4">{card.icon}</div>
+              <h3 className="text-xl font-bold mb-2 text-gray-800">{card.title}</h3>
+              <p className="text-2xl font-bold mb-3" style={{ color: primaryColor }}>
+                {card.value}
+              </p>
+              <p className="text-sm text-gray-600 leading-relaxed">{card.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function WhyChooseSection({
+  title,
+  benefits,
+  primaryColor,
+}: {
+  title: string
   benefits: Array<{ icon: string; title: string; description: string }>
+  primaryColor: string
 }) {
   return (
     <section className="py-16 md:py-20 bg-[#fbfbee]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Title */}
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-[#0b6d41]">
-          {title}
-        </h2>
+        <div className="text-center mb-12">
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: primaryColor }}>
+            Program Highlights
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mt-2" style={{ color: primaryColor }}>
+            {title}
+          </h2>
+        </div>
 
-        {/* Introductory Paragraph */}
-        {subtitle && (
-          <p className="text-center text-lg text-gray-700 max-w-4xl mx-auto mb-12">
-            {subtitle}
-          </p>
-        )}
-
-        {/* Feature Cards Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {benefits.map((benefit, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-6 border border-gray-100"
+              className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300"
             >
-              {/* Icon Container */}
-              <div className="flex justify-center mb-4">
-                <div className="w-16 h-16 rounded-full bg-[#0b6d41] flex items-center justify-center">
-                  {getIcon(benefit.icon, "w-8 h-8 text-white")}
+              <div className="flex items-start gap-4">
+                <div className="text-3xl">{benefit.icon}</div>
+                <div>
+                  <h3 className="text-lg font-bold mb-2 text-gray-800">{benefit.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{benefit.description}</p>
                 </div>
-              </div>
-
-              {/* Title */}
-              <h3 className="text-xl font-semibold text-center mb-3 text-[#0b6d41]">
-                {benefit.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-gray-600 text-sm text-center leading-relaxed">
-                {benefit.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// Program Highlights Section
-function ProgramHighlightsSection({
-  highlights,
-}: {
-  highlights: Array<{ icon: string; title: string; description: string }>
-}) {
-  return (
-    <section className="py-16 md:py-20 bg-[#fbfbee]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
-          What Sets Our CSE Program Apart?
-        </h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          {highlights.map((highlight, index) => (
-            <div key={index} className="flex items-start gap-4 bg-white p-6 rounded-lg shadow-sm">
-              <div className="flex-shrink-0">
-                <div className="w-12 h-12 rounded-full bg-[#0b6d41] flex items-center justify-center">
-                  {getIcon(highlight.icon, "w-6 h-6 text-white")}
-                </div>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2 text-[#0b6d41]">
-                  {highlight.title}
-                </h3>
-                <p className="text-gray-600">
-                  {highlight.description}
-                </p>
               </div>
             </div>
           ))}
@@ -572,10 +537,10 @@ function ProgramHighlightsSection({
   )
 }
 
-// Curriculum Table Section
-function CurriculumTableSection({
+function CurriculumSection({
   title,
   years,
+  primaryColor,
 }: {
   title: string
   years: Array<{
@@ -586,383 +551,130 @@ function CurriculumTableSection({
       subjects: Array<{ code?: string; name: string; credits?: number }>
     }>
   }>
+  primaryColor: string
 }) {
-  const [expandedSemesters, setExpandedSemesters] = React.useState<number[]>([1, 2, 3])
-
-  const allSemesters = years.flatMap(year => year.semesters)
-
-  const toggleSemester = (semester: number) => {
-    setExpandedSemesters(prev =>
-      prev.includes(semester)
-        ? prev.filter(s => s !== semester)
-        : [...prev, semester]
-    )
-  }
+  const [selectedYear, setSelectedYear] = React.useState(1)
 
   return (
-    <section className="py-16 md:py-20 bg-[#fbfbee]">
+    <section id="curriculum" className="py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
-          {title}
-        </h2>
-
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse bg-white shadow-lg rounded-lg overflow-hidden">
-            <thead>
-              <tr className="bg-[#0b6d41]">
-                <th className="px-6 py-4 text-left text-white font-semibold">Semester</th>
-                <th className="px-6 py-4 text-left text-white font-semibold">Course Code</th>
-                <th className="px-6 py-4 text-left text-white font-semibold">Course Name</th>
-                <th className="px-6 py-4 text-left text-white font-semibold">Credits</th>
-              </tr>
-            </thead>
-            <tbody>
-              {allSemesters.map((semester, semIndex) => (
-                <React.Fragment key={semIndex}>
-                  {expandedSemesters.includes(semester.semester) ? (
-                    semester.subjects.map((subject, subIndex) => (
-                      <tr
-                        key={`${semIndex}-${subIndex}`}
-                        className={semIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
-                      >
-                        {subIndex === 0 && (
-                          <td
-                            className="px-6 py-3 font-semibold text-gray-900 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
-                            rowSpan={semester.subjects.length}
-                            onClick={() => toggleSemester(semester.semester)}
-                          >
-                            <div className="flex items-center gap-2">
-                              Semester {semester.semester}
-                              <ChevronDown className="w-4 h-4" />
-                            </div>
-                          </td>
-                        )}
-                        <td className="px-6 py-3 text-gray-700 border-b border-gray-200">
-                          {subject.code || '-'}
-                        </td>
-                        <td className="px-6 py-3 text-gray-900 border-b border-gray-200">
-                          {subject.name}
-                        </td>
-                        <td className="px-6 py-3 text-gray-700 border-b border-gray-200">
-                          {subject.credits || '-'}
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr
-                      className={`${semIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'} cursor-pointer hover:bg-gray-100`}
-                      onClick={() => toggleSemester(semester.semester)}
-                    >
-                      <td className="px-6 py-3 font-semibold text-gray-900 border-b border-gray-200" colSpan={4}>
-                        <div className="flex items-center gap-2">
-                          Semester {semester.semester} ({semester.subjects.length} courses)
-                          <ChevronDown className="w-4 h-4 transform -rotate-90" />
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// Specializations Section - Simple 2-Column List
-function SpecializationsSection({
-  title,
-  specializations,
-}: {
-  title?: string
-  specializations: Array<{ title: string; description?: string }>
-}) {
-  return (
-    <section className="py-16 md:py-20 bg-[#fbfbee]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {title && (
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
+        <div className="text-center mb-12">
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: primaryColor }}>
+            Curriculum Structure
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mt-2" style={{ color: primaryColor }}>
             {title}
           </h2>
-        )}
+          <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+            Our curriculum follows the latest Anna University regulations, combining foundational knowledge with specialized skills in emerging technologies.
+          </p>
+        </div>
 
-        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
-          {specializations.map((spec, index) => (
-            <div
-              key={index}
-              className="flex items-start gap-4"
+        {/* Year Tabs */}
+        <div className="flex justify-center mb-8 gap-2 flex-wrap">
+          {years.map((yearData) => (
+            <button
+              key={yearData.year}
+              onClick={() => setSelectedYear(yearData.year)}
+              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                selectedYear === yearData.year
+                  ? 'text-white shadow-lg'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+              style={selectedYear === yearData.year ? { backgroundColor: primaryColor } : {}}
             >
-              <div className="flex-shrink-0 mt-1">
-                <Check className="w-6 h-6 text-[#0b6d41]" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {spec.title}
-                </h3>
-                {spec.description && (
-                  <p className="text-gray-600 text-sm mt-1">
-                    {spec.description}
-                  </p>
-                )}
-              </div>
-            </div>
+              Year {yearData.year}
+            </button>
           ))}
         </div>
-      </div>
-    </section>
-  )
-}
 
-// Career Opportunities Section
-function CareerOpportunitiesSection({
-  title,
-  careers,
-}: {
-  title: string
-  careers: Array<{ icon: string; title: string; description: string; avgSalary?: string }>
-}) {
-  return (
-    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-[#0b6d41]">
-          {title}
-        </h2>
-
-        <div className="max-w-4xl mx-auto space-y-6">
-          {careers.map((career, index) => (
-            <div
-              key={index}
-              className="bg-white/80 backdrop-blur-sm rounded-lg p-6 flex items-start gap-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="flex-shrink-0">
-                {getIcon(career.icon, "w-8 h-8 text-[#0b6d41]")}
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold mb-2 text-gray-900">
-                  {career.title}
-                </h3>
-                <p className="text-gray-700 mb-2">
-                  {career.description}
-                </p>
-                {career.avgSalary && (
-                  <div className="flex items-center gap-2 text-sm text-[#0b6d41] font-medium">
-                    <IndianRupee className="w-4 h-4" />
-                    <span>{career.avgSalary}</span>
+        {/* Semester Content */}
+        {years
+          .filter((y) => y.year === selectedYear)
+          .map((yearData) => (
+            <div key={yearData.year} className="grid lg:grid-cols-2 gap-8">
+              {yearData.semesters.map((semester) => (
+                <div key={semester.semester} className="bg-[#fbfbee] rounded-xl p-6 shadow-md">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-2xl font-bold text-gray-800">Semester {semester.semester}</h3>
+                    <span className="text-sm font-medium px-4 py-2 rounded-full bg-white" style={{ color: primaryColor }}>
+                      {semester.credits} Credits
+                    </span>
                   </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
 
-// Fee Structure Section
-function FeeStructureSection({
-  title,
-  breakdown,
-}: {
-  title: string
-  breakdown: Array<{ component: string; amount: string; isTotal?: boolean }>
-}) {
-  return (
-    <section className="py-16 md:py-20 bg-[#fbfbee]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
-          {title}
-        </h2>
-
-        <div className="overflow-x-auto shadow-lg rounded-lg">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-[#0b6d41]">
-                <th className="px-6 py-4 text-left text-white font-semibold">Fee Component</th>
-                <th className="px-6 py-4 text-right text-white font-semibold">Amount (₹)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {breakdown.map((item, index) => (
-                <tr
-                  key={index}
-                  className={`
-                    ${item.isTotal ? 'bg-[#0b6d41]/10 font-semibold' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
-                    border-b border-gray-200
-                  `}
-                >
-                  <td className="px-6 py-4 text-gray-900">{item.component}</td>
-                  <td className="px-6 py-4 text-right text-gray-900">{item.amount}</td>
-                </tr>
+                  <div className="space-y-3">
+                    {semester.subjects.map((subject, index) => (
+                      <div key={index} className="bg-white rounded-lg p-4 hover:shadow-md transition-shadow duration-300">
+                        <div className="flex justify-between items-start gap-2">
+                          <div className="flex-1">
+                            <p className="font-semibold text-gray-800 text-sm">{subject.name}</p>
+                            {subject.code && (
+                              <p className="text-xs text-gray-500 mt-1">{subject.code}</p>
+                            )}
+                          </div>
+                          {subject.credits !== undefined && (
+                            <span className="text-xs font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded">
+                              {subject.credits}C
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// Placement Statistics Section
-function PlacementStatsSection({
-  stats,
-}: {
-  stats: Array<{ label: string; value: string; icon: string }>
-}) {
-  return (
-    <section className="py-16 md:py-20 bg-[#fbfbee]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
-          Exceptional Placement Record
-        </h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {stats.map((stat, index) => (
-            <div key={index} className="text-center p-8 bg-gray-50 rounded-lg">
-              <div className="flex justify-center mb-4">
-                {getIcon(stat.icon, "w-12 h-12 text-[#0b6d41]")}
-              </div>
-              <div className="text-4xl font-bold text-[#0b6d41] mb-2">
-                {stat.value}
-              </div>
-              <div className="text-gray-600 font-medium">
-                {stat.label}
-              </div>
             </div>
           ))}
-        </div>
       </div>
     </section>
   )
 }
 
-// Facilities Section
-function FacilitiesSection({
-  title,
-  facilities,
-}: {
-  title: string
-  facilities: Array<{ name: string; image?: string; description: string }>
-}) {
-  return (
-    <section className="py-16 md:py-20 bg-[#fbfbee]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
-          {title}
-        </h2>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {facilities.map((facility, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-200"
-            >
-              {facility.image ? (
-                <div className="relative w-full h-48">
-                  <Image
-                    src={facility.image}
-                    alt={facility.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ) : (
-                <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-                  <Building2 className="w-16 h-16 text-gray-400" />
-                </div>
-              )}
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2 text-gray-900">
-                  {facility.name}
-                </h3>
-                <p className="text-gray-600">
-                  {facility.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// Top Recruiters Section - WITH LOGOS
-function TopRecruitersSection({
-  title,
-  recruiters,
-}: {
-  title: string
-  recruiters: Array<{ name: string; logo?: string }>
-}) {
-  return (
-    <section className="py-16 md:py-20 bg-[#fbfbee]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
-          {title}
-        </h2>
-
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
-          {recruiters.map((recruiter, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-center p-4 bg-white rounded-lg hover:shadow-md transition-shadow border border-gray-200"
-            >
-              {recruiter.logo ? (
-                <div className="relative w-full h-16">
-                  <Image
-                    src={recruiter.logo}
-                    alt={recruiter.name}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              ) : (
-                <span className="text-sm font-medium text-gray-700 text-center">
-                  {recruiter.name}
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// Admission Process Section
 function AdmissionProcessSection({
   title,
   steps,
   primaryColor,
 }: {
   title: string
-  steps: Array<{ step: number; title: string; description: string; icon: string }>
+  steps: Array<{ step: number; title: string; description: string; icon: string; details: string[] }>
   primaryColor: string
 }) {
-  return (
-    <section className="py-16 md:py-20 bg-[#fbfbee]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
-          {title}
-        </h2>
+  const iconMap: Record<string, React.ReactNode> = {
+    UserCheck: <UserCheck className="w-6 h-6" />,
+    FileText: <FileText className="w-6 h-6" />,
+    Award: <Award className="w-6 h-6" />,
+  }
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {steps.map((step, index) => (
-            <div key={index} className="text-center">
+  return (
+    <section className="py-16 md:py-20 bg-[#eaf1e2]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: primaryColor }}>Admission Process</span>
+          <h2 className="text-3xl md:text-4xl font-bold mt-2" style={{ color: primaryColor }}>{title}</h2>
+          <p className="text-gray-700 mt-4 max-w-3xl mx-auto">
+            Secure your seat in our prestigious B.E. CSE program through a transparent and streamlined admission process.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {steps.map((step) => (
+            <div key={step.step} className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
               <div
-                className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-2xl shadow-lg"
+                className="w-12 h-12 rounded-full flex items-center justify-center text-white mb-4"
                 style={{ backgroundColor: primaryColor }}
               >
-                {step.step}
+                <span className="text-xl font-bold">{step.step}</span>
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-900">
-                {step.title}
-              </h3>
-              <p className="text-gray-600">
-                {step.description}
-              </p>
+              <h3 className="text-xl font-bold mb-2 text-gray-800">{step.title}</h3>
+              <p className="text-gray-600 mb-4 text-sm">{step.description}</p>
+              <ul className="space-y-2">
+                {step.details.map((detail, idx) => (
+                  <li key={idx} className="flex items-start gap-2 text-sm text-gray-700">
+                    <Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: primaryColor }} />
+                    <span>{detail}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
@@ -971,10 +683,263 @@ function AdmissionProcessSection({
   )
 }
 
-// Faculty Section
+function FeeStructureSection({
+  title,
+  description,
+  feeTable,
+  scholarships,
+  primaryColor,
+}: {
+  title: string
+  description?: string
+  feeTable: {
+    headers: string[]
+    rows: Array<{ component: string; govt: string; mgmt: string; nri: string }>
+    totals: { component: string; govt: string; mgmt: string; nri: string }
+  }
+  scholarships: Array<{ percentage: string; criteria: string }>
+  primaryColor: string
+}) {
+  return (
+    <section className="py-16 md:py-20 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: primaryColor }}>
+            Investment in Your Future
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mt-2" style={{ color: primaryColor }}>
+            {title}
+          </h2>
+          {description && <p className="text-gray-600 mt-4 max-w-3xl mx-auto">{description}</p>}
+        </div>
+
+        {/* Fee Table */}
+        <div className="overflow-x-auto mb-12">
+          <table className="w-full max-w-5xl mx-auto bg-[#fbfbee] rounded-xl overflow-hidden shadow-lg">
+            <thead>
+              <tr className="bg-gray-100 border-b border-gray-200">
+                {feeTable.headers.map((header, idx) => (
+                  <th key={idx} className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {feeTable.rows.map((row, idx) => (
+                <tr key={idx} className="border-b border-gray-100">
+                  <td className="px-6 py-4 text-gray-800">{row.component}</td>
+                  <td className="px-6 py-4 font-semibold text-gray-700">{row.govt}</td>
+                  <td className="px-6 py-4 font-semibold text-gray-700">{row.mgmt}</td>
+                  <td className="px-6 py-4 font-semibold text-gray-700">{row.nri}</td>
+                </tr>
+              ))}
+              <tr className="bg-white font-bold">
+                <td className="px-6 py-4 text-gray-800">{feeTable.totals.component}</td>
+                <td className="px-6 py-4" style={{ color: primaryColor }}>
+                  {feeTable.totals.govt}
+                </td>
+                <td className="px-6 py-4" style={{ color: primaryColor }}>
+                  {feeTable.totals.mgmt}
+                </td>
+                <td className="px-6 py-4" style={{ color: primaryColor }}>
+                  {feeTable.totals.nri}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Scholarships */}
+        <div className="max-w-4xl mx-auto">
+          <h3 className="text-2xl font-bold text-center mb-8 text-gray-800">Scholarship Opportunities</h3>
+          <div className="grid md:grid-cols-4 gap-6">
+            {scholarships.map((scholarship, idx) => (
+              <div key={idx} className="bg-[#fbfbee] rounded-xl p-6 text-center shadow-md">
+                <div className="text-4xl font-bold mb-2" style={{ color: primaryColor }}>
+                  {scholarship.percentage}
+                </div>
+                <p className="text-sm text-gray-600">{scholarship.criteria}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function PlacementsSection({
+  title,
+  stats,
+  recruiters,
+  primaryColor,
+}: {
+  title: string
+  stats: Array<{ label: string; value: string }>
+  recruiters: string[]
+  primaryColor: string
+}) {
+  return (
+    <section className="py-16 md:py-20 bg-[#fbfbee]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: primaryColor }}>
+            Career Launchpad
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mt-2" style={{ color: primaryColor }}>
+            {title}
+          </h2>
+          <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+            Our dedicated Training & Placement Cell ensures every student receives comprehensive career support and access to top industry recruiters.
+          </p>
+        </div>
+
+        {/* Stats */}
+        <div className="grid md:grid-cols-4 gap-6 mb-16">
+          {stats.map((stat, idx) => (
+            <div key={idx} className="bg-white rounded-xl p-6 text-center shadow-md">
+              <div className="text-4xl font-bold mb-2" style={{ color: primaryColor }}>
+                {stat.value}
+              </div>
+              <p className="text-sm text-gray-600">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Recruiters */}
+        <div>
+          <h3 className="text-2xl font-bold text-center mb-8 text-gray-800">Our Top Recruiters</h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {recruiters.map((recruiter, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded-lg p-4 shadow-md hover:shadow-xl transition-shadow duration-300 flex items-center justify-center"
+              >
+                <p className="text-center font-semibold text-gray-800 text-sm">{recruiter}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function CareerOpportunitiesSection({
+  title,
+  careers,
+  primaryColor,
+}: {
+  title: string
+  careers: Array<{ icon: string; title: string; salary: string; description: string; skills: string[] }>
+  primaryColor: string
+}) {
+  return (
+    <section className="py-16 md:py-20 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: primaryColor }}>
+            Your Future Awaits
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mt-2" style={{ color: primaryColor }}>
+            {title}
+          </h2>
+          <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+            A degree in Computer Science and Engineering opens doors to diverse and rewarding career paths across industries.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {careers.map((career, idx) => (
+            <div key={idx} className="bg-[#fbfbee] rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
+              <div className="text-4xl mb-4">{career.icon}</div>
+              <h3 className="text-xl font-bold mb-2 text-gray-800">{career.title}</h3>
+              <p className="text-lg font-bold mb-3" style={{ color: primaryColor }}>
+                {career.salary}
+              </p>
+              <p className="text-sm text-gray-600 mb-4 leading-relaxed">{career.description}</p>
+              <div className="flex flex-wrap gap-2">
+                {career.skills.map((skill, sidx) => (
+                  <span
+                    key={sidx}
+                    className="text-xs font-medium px-3 py-1 rounded-full bg-white text-gray-700 border border-gray-200"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function InfrastructureSection({
+  title,
+  facilities,
+  primaryColor,
+}: {
+  title: string
+  facilities: Array<{ name: string; description: string; image?: string; features: string[] }>
+  primaryColor: string
+}) {
+  return (
+    <section className="py-16 md:py-20 bg-[#fbfbee]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: primaryColor }}>
+            World-Class Facilities
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mt-2" style={{ color: primaryColor }}>
+            {title}
+          </h2>
+          <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+            Experience hands-on learning in our modern laboratories equipped with the latest technology and software.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {facilities.map((facility, idx) => (
+            <div key={idx} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
+              {facility.image && (
+                <div className="h-48 overflow-hidden">
+                  <img
+                    src={facility.image}
+                    alt={facility.name}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              )}
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-3 text-gray-800">{facility.name}</h3>
+                <p className="text-gray-600 text-sm mb-4 leading-relaxed">{facility.description}</p>
+                <div className="flex flex-wrap gap-2">
+                  {facility.features.map((feature, fidx) => (
+                    <span
+                      key={fidx}
+                      className="text-xs font-medium px-3 py-1 rounded-full text-white"
+                      style={{ backgroundColor: primaryColor }}
+                    >
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function FacultySection({
   title,
   faculty,
+  primaryColor,
 }: {
   title: string
   faculty: Array<{
@@ -984,165 +949,171 @@ function FacultySection({
     specialization: string
     image?: string
   }>
-}) {
-  return (
-    <section className="py-16 md:py-20 bg-[#fbfbee]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
-          {title}
-        </h2>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {faculty.map((member, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-200"
-            >
-              {member.image ? (
-                <div className="relative w-full h-48">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ) : (
-                <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-                  <UserCheck className="w-16 h-16 text-gray-400" />
-                </div>
-              )}
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-1">{member.name}</h3>
-                <p className="text-sm text-gray-600 mb-2">{member.designation}</p>
-                <p className="text-xs text-gray-500">{member.qualification}</p>
-                <p className="text-xs text-gray-500 mt-1">{member.specialization}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// FAQ Section
-function FAQSection({
-  title,
-  faqs,
-  openIndex,
-  setOpenIndex,
-}: {
-  title: string
-  faqs: Array<{ question: string; answer: string }>
-  openIndex: number | null
-  setOpenIndex: (index: number | null) => void
-}) {
-  return (
-    <section className="py-16 md:py-20 bg-[#fbfbee]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
-          {title}
-        </h2>
-
-        <div className="space-y-4">
-          {faqs.map((faq, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200"
-            >
-              <button
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
-              >
-                <span className="font-semibold text-gray-900">{faq.question}</span>
-                <ChevronDown
-                  className={`w-5 h-5 text-[#0b6d41] transition-transform ${
-                    openIndex === index ? 'transform rotate-180' : ''
-                  }`}
-                />
-              </button>
-              {openIndex === index && (
-                <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-                  <p className="text-gray-700">{faq.answer}</p>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// Final CTA Section - ORANGE GRADIENT (per plan)
-function FinalCTASection({
-  title,
-  description,
-  buttonLabel,
-  buttonLink,
-  primaryColor,
-}: {
-  title: string
-  description?: string
-  buttonLabel?: string
-  buttonLink?: string
   primaryColor: string
 }) {
   return (
-    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
+    <section className="py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#0b6d41]">
+        <div className="text-center mb-12">
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: primaryColor }}>
+            Learn from the Best
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mt-2" style={{ color: primaryColor }}>
             {title}
           </h2>
-          {description && (
-            <p className="text-lg mb-8 text-gray-700">
-              {description}
-            </p>
-          )}
+          <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+            Our department comprises highly qualified faculty with extensive industry and research experience, dedicated to nurturing future tech leaders.
+          </p>
+        </div>
 
-          {/* Institution Details */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 mb-8 border border-gray-200 shadow-lg">
-            <h3 className="text-2xl font-semibold mb-4 text-[#0b6d41]">JKKN Institutions</h3>
-            <div className="grid md:grid-cols-2 gap-4 text-left">
-              <div>
-                <p className="font-medium mb-2 text-gray-900">📍 Address:</p>
-                <p className="text-gray-700">
-                  Komarapalayam - Nangavalli Road,<br />
-                  Kumarappalayam, Namakkal District,<br />
-                  Tamil Nadu - 638183
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {faculty.map((member, idx) => (
+            <div key={idx} className="bg-[#fbfbee] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
+              {member.image ? (
+                <div className="h-56 overflow-hidden bg-gray-100">
+                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                </div>
+              ) : (
+                <div className="h-56 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                  <Users className="w-16 h-16 text-gray-400" />
+                </div>
+              )}
+              <div className="p-6">
+                <h3 className="text-lg font-bold mb-1 text-gray-800">{member.name}</h3>
+                <p className="text-sm text-gray-600 mb-2">{member.designation}</p>
+                <p className="text-sm font-medium mb-2" style={{ color: primaryColor }}>
+                  {member.qualification}
                 </p>
-              </div>
-              <div>
-                <p className="font-medium mb-2 text-gray-900">📞 Contact:</p>
-                <p className="text-gray-700">
-                  Phone: +91 4288 274 472<br />
-                  Email: info@jkkn.ac.in<br />
-                  Website: www.jkkn.ac.in
-                </p>
+                <p className="text-xs text-gray-600">Specialization: {member.specialization}</p>
               </div>
             </div>
-          </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {buttonLabel && buttonLink && (
-              <a
-                href={buttonLink}
-                className="inline-flex items-center justify-center gap-2 bg-[#0b6d41] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#0f8f56] transition-colors shadow-lg"
+function FAQSection({
+  title,
+  faqs,
+  primaryColor,
+}: {
+  title: string
+  faqs: Array<{ question: string; answer: string }>
+  primaryColor: string
+}) {
+  const [openIndex, setOpenIndex] = React.useState<number | null>(0)
+
+  return (
+    <section className="py-16 md:py-20 bg-[#fbfbee]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: primaryColor }}>
+            Got Questions?
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mt-2" style={{ color: primaryColor }}>
+            {title}
+          </h2>
+          <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+            Find answers to common queries about our B.E. CSE program, admissions, and career prospects.
+          </p>
+        </div>
+
+        <div className="max-w-3xl mx-auto space-y-4">
+          {faqs.map((faq, idx) => (
+            <div key={idx} className="bg-white rounded-xl shadow-md overflow-hidden">
+              <button
+                onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
+                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors duration-300"
               >
-                {buttonLabel}
-                <ArrowRight className="w-5 h-5" />
-              </a>
-            )}
+                <span className="font-semibold text-gray-800 pr-4">{faq.question}</span>
+                <ChevronDown
+                  className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 ${
+                    openIndex === idx ? 'rotate-180' : ''
+                  }`}
+                  style={{ color: primaryColor }}
+                />
+              </button>
+
+              {openIndex === idx && (
+                <div className="px-6 py-4 border-t border-gray-100 bg-[#fbfbee]">
+                  <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function FinalCTASection({
+  title,
+  description,
+  buttons,
+  contact,
+  primaryColor,
+  accentColor,
+}: {
+  title: string
+  description?: string
+  buttons: Array<{ label: string; link: string; variant: 'primary' | 'secondary' }>
+  contact: Array<{ icon: string; label: string; value: string; link: string }>
+  primaryColor: string
+  accentColor: string
+}) {
+  const iconMap: Record<string, React.ReactNode> = {
+    Phone: <Phone className="w-5 h-5" />,
+    Mail: <Mail className="w-5 h-5" />,
+    MapPin: <MapPin className="w-5 h-5" />,
+  }
+
+  return (
+    <section className="py-20 md:py-24 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: primaryColor }}>{title}</h2>
+        {description && (
+          <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-gray-700">{description}</p>
+        )}
+
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          {buttons.map((button, idx) => (
             <a
-              href="/contact"
-              className="inline-flex items-center justify-center gap-2 bg-transparent border-2 border-[#0b6d41] text-[#0b6d41] px-8 py-4 rounded-lg font-semibold hover:bg-[#0b6d41] hover:text-white transition-colors"
+              key={idx}
+              href={button.link}
+              className={`
+                inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-base transition-all duration-300 shadow-lg hover:shadow-xl
+                ${
+                  button.variant === 'primary'
+                    ? 'text-white hover:opacity-90'
+                    : 'bg-white border-2 text-gray-800 hover:bg-gray-50'
+                }
+              `}
+              style={button.variant === 'primary' ? { backgroundColor: primaryColor, borderColor: primaryColor } : { borderColor: primaryColor }}
             >
-              Contact Us
+              {button.label}
+              <ArrowRight className="w-5 h-5" />
             </a>
-          </div>
+          ))}
+        </div>
+
+        {/* Contact Info */}
+        <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
+          {contact.map((item, idx) => (
+            <a
+              key={idx}
+              href={item.link}
+              className="flex items-center gap-3 text-gray-700 hover:text-gray-900 transition-colors duration-300"
+            >
+              <span style={{ color: primaryColor }}>
+                {iconMap[item.icon]}
+              </span>
+              <span className="text-sm font-medium">{item.value}</span>
+            </a>
+          ))}
         </div>
       </div>
     </section>
