@@ -59,7 +59,7 @@ export const EngineeringAboutSectionPropsSchema = z.object({
   // Features list
   features: z.array(z.string()).default([
     'AICTE Approved & Anna University Affiliated',
-    'NBA Accredited Programs',
+    'NAAC Accredited Programs',
     'Industry-Academia Partnerships',
     'State-of-the-Art Laboratories',
     '95%+ Placement Record',
@@ -104,7 +104,7 @@ export default function EngineeringAboutSection({
   description = 'Established as part of the prestigious JKKN Educational Institutions with over 100 years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development.',
   features = [
     'AICTE Approved & Anna University Affiliated',
-    'NBA Accredited Programs',
+    'NAAC Accredited Programs',
     'Industry-Academia Partnerships',
     'State-of-the-Art Laboratories',
     '95%+ Placement Record',

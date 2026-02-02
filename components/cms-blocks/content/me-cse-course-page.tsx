@@ -140,7 +140,13 @@ export const MECSECoursePagePropsSchema = z.object({
   curriculum: z.object({
     label: z.string(),
     title: z.string(),
+    description: z.string().optional(),
     years: z.array(CurriculumYearSchema),
+    syllabusImages: z.array(z.object({
+      semester: z.string(),
+      image: z.string(),
+      alt: z.string(),
+    })).optional(),
   }),
   eligibility: z.object({
     label: z.string(),
@@ -522,16 +528,21 @@ function SpecializationsSection({
 function CurriculumSection({
   label,
   title,
+  description,
   years,
+  syllabusImages,
   colors
 }: MECSECoursePageProps['curriculum'] & { colors: MECSECoursePageProps['colors'] }) {
   return (
-    <section className="py-16 lg:py-24 bg-white">
+    <section className="py-16 lg:py-24 bg-white" id="curriculum">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="text-sm font-semibold text-[#0b6d41] mb-2">{label}</div>
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">{title}</h2>
+          {description && (
+            <p className="text-lg text-gray-600">{description}</p>
+          )}
         </div>
 
         {/* Curriculum by Year */}
@@ -586,6 +597,37 @@ function CurriculumSection({
             </div>
           </div>
         ))}
+
+        {/* Syllabus Images Section */}
+        {syllabusImages && syllabusImages.length > 0 && (
+          <div className="mt-16">
+            <h3
+              className="text-2xl font-bold mb-8 text-center"
+              style={{ color: colors.primaryColor }}
+            >
+              Complete Course Structure
+            </h3>
+            <div className="grid md:grid-cols-2 gap-8">
+              {syllabusImages.map((item, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-gray-200"
+                >
+                  <h4 className="text-lg font-bold text-gray-900 mb-4 text-center">
+                    {item.semester}
+                  </h4>
+                  <div className="overflow-hidden rounded-lg border border-gray-300">
+                    <img
+                      src={item.image}
+                      alt={item.alt}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )

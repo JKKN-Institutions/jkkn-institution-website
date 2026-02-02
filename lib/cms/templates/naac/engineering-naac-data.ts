@@ -115,7 +115,7 @@ export const ENGINEERING_NAAC_DATA: NAACPageProps = {
       id: 'criterion-1',
       heading: 'Criterion I: Curricular Aspects',
       overview:
-        'Engineering curriculum aligned with AICTE guidelines, NBA accreditation requirements, and industry expectations. Focus on outcome-based education, choice-based credit system, and industry-integrated learning.',
+        'Engineering curriculum aligned with AICTE guidelines, NAAC accreditation requirements, and industry expectations. Focus on outcome-based education, choice-based credit system, and industry-integrated learning.',
       documents: [
         {
           title: 'Engineering Curriculum Framework',

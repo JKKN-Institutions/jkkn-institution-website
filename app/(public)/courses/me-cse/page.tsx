@@ -4,7 +4,7 @@ import { meCSECourseData } from '@/lib/cms/templates/engineering/me-cse-data'
 
 export const metadata: Metadata = {
   title: 'ME Computer Science and Engineering (CSE) | JKKN College of Engineering - AICTE Approved',
-  description: 'ME Computer Science and Engineering (CSE) at JKKN College of Engineering - AICTE approved 2-year postgraduate program. Specialize in AI, ML, Data Science, Cybersecurity. NBA accredited with 95% placement record.',
+  description: 'ME Computer Science and Engineering (CSE) at JKKN College of Engineering - AICTE approved 2-year postgraduate program. Specialize in AI, ML, Data Science, Cybersecurity. NAAC accredited with 95% placement record.',
   keywords: [
     'ME CSE',
     'Master of Engineering Computer Science',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     'Cybersecurity',
     'Cloud Computing',
     'Anna University',
-    'NBA accredited',
+    'NAAC accredited',
     'AICTE approved',
     'research program',
     'PhD faculty',

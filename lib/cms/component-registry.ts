@@ -367,6 +367,9 @@ import {
   ModernTransportSectionPropsSchema,
 } from './registry-types'
 
+// Import BECSECoursePage schema from component
+import { BECSECoursePagePropsSchema } from '@/components/cms-blocks/content/be-cse-course-page'
+
 // Import BEEEECoursePage schema from component
 import { BEEEECoursePagePropsSchema } from '@/components/cms-blocks/content/be-eee-course-page'
 
@@ -394,6 +397,7 @@ import { EngineeringFacilitiesSectionPropsSchema } from '@/components/cms-blocks
 import { EngineeringCTASectionPropsSchema } from '@/components/cms-blocks/content/engineering-cta-section'
 
 // Import sample data for course pages
+import { BE_CSE_SAMPLE_DATA } from './templates/engineering/be-cse-data'
 import { BE_EEE_SAMPLE_DATA } from './templates/engineering/be-eee-data'
 import { BE_ECE_SAMPLE_DATA } from './templates/engineering/be-ece-data'
 import { BE_IT_SAMPLE_DATA } from './templates/engineering/be-it-data'
@@ -541,6 +545,9 @@ const OurInstitutions = lazy(() => import('@/components/cms-blocks/content/our-i
 
 // Course Page
 const CoursePage = lazy(() => import('@/components/cms-blocks/content/course-page'))
+
+// BE CSE Course Page
+const BECSECoursePage = lazy(() => import('@/components/cms-blocks/content/be-cse-course-page').then(m => ({ default: m.BECSECoursePage })))
 
 // BE EEE Course Page
 const BEEEECoursePage = lazy(() => import('@/components/cms-blocks/content/be-eee-course-page').then(m => ({ default: m.BEEEECoursePage })))
@@ -1490,7 +1497,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         { icon: 'check', label: 'NAAC Accredited' },
         { icon: 'check', label: 'AICTE Approved' },
         { icon: 'check', label: 'UGC Recognized' },
-        { icon: 'check', label: 'NBA Accredited' },
+        { icon: 'check', label: 'NAAC Accredited' },
       ],
       backgroundColor: 'gradient-dark',
       showAnimations: true,
@@ -5067,6 +5074,43 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     ],
   },
 
+  BECSECoursePage: {
+    name: 'BECSECoursePage',
+    displayName: 'BE CSE Course Page (Cream)',
+    category: 'content',
+    description: 'Comprehensive B.E. Computer Science & Engineering course page with cream color backgrounds. Includes hero, overview, benefits, curriculum, specializations, careers, recruiters, admission, fees, facilities, faculty, and FAQs. Features AI/ML, Data Science, Cybersecurity, and Cloud Computing specializations.',
+    icon: 'Code',
+    previewImage: '/cms-previews/BECSECoursePage.png',
+    component: BECSECoursePage,
+    propsSchema: BECSECoursePagePropsSchema as any,
+    defaultProps: BE_CSE_SAMPLE_DATA,
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['course', 'engineering', 'cse', 'computer science', 'be', 'bachelor', 'curriculum', 'placements', 'admission', 'cream', 'ai', 'ml', 'data science', 'cybersecurity', 'cloud computing', 'programming'],
+    editableProps: [
+      { name: 'heroTitle', type: 'string', label: 'Hero Title', required: true, inlineEditable: true },
+      { name: 'heroSubtitle', type: 'string', label: 'Hero Subtitle', multiline: true, inlineEditable: true },
+      { name: 'affiliatedTo', type: 'string', label: 'Affiliated To', inlineEditable: true },
+      { name: 'overviewTitle', type: 'string', label: 'Overview Section Title' },
+      { name: 'whyChooseTitle', type: 'string', label: 'Why Choose Section Title' },
+      { name: 'curriculumTitle', type: 'string', label: 'Curriculum Section Title' },
+      { name: 'specializationsTitle', type: 'string', label: 'Specializations Section Title' },
+      { name: 'careerTitle', type: 'string', label: 'Career Section Title' },
+      { name: 'recruitersTitle', type: 'string', label: 'Recruiters Section Title' },
+      { name: 'admissionTitle', type: 'string', label: 'Admission Section Title' },
+      { name: 'feeTitle', type: 'string', label: 'Fee Section Title' },
+      { name: 'facilitiesTitle', type: 'string', label: 'Facilities Section Title' },
+      { name: 'facultyTitle', type: 'string', label: 'Faculty Section Title' },
+      { name: 'faqTitle', type: 'string', label: 'FAQ Section Title' },
+      { name: 'ctaTitle', type: 'string', label: 'Final CTA Title', inlineEditable: true },
+      { name: 'ctaDescription', type: 'string', label: 'Final CTA Description', multiline: true, inlineEditable: true },
+      { name: 'ctaButtonLabel', type: 'string', label: 'Final CTA Button Label' },
+      { name: 'ctaButtonLink', type: 'string', label: 'Final CTA Button Link' },
+      { name: 'primaryColor', type: 'color', label: 'Primary Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+    ],
+  },
+
   BEEEECoursePage: {
     name: 'BEEEECoursePage',
     displayName: 'BE EEE Course Page (Cream)',
@@ -6313,9 +6357,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         </p>
       `,
       features: [],
-      backgroundColor: '#0b6d41',
-      accentColor: '#ffde59',
-      textColor: '#ffffff'
+      backgroundColor: '#f6f6f6',
+      accentColor: '#0b6d41',
+      textColor: '#1a1a1a'
     },
     supportsChildren: false,
     keywords: ['ambulance', 'emergency', 'medical', 'facility', 'health', 'services', 'ems'],
@@ -8122,7 +8166,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       subtitle: 'Building future-ready engineers with world-class infrastructure and industry partnerships',
       features: [
         { icon: 'award', label: 'AICTE Approved' },
-        { icon: 'star', label: 'NBA Accredited' },
+        { icon: 'star', label: 'NAAC Accredited' },
         { icon: 'award', label: 'NAAC Accredited' },
         { icon: 'building', label: 'Autonomous Status' },
         { icon: 'handshake', label: 'Industry Partnerships' },
@@ -8200,6 +8244,31 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     editableProps: [
       { name: 'title', type: 'string', label: 'Title', required: true },
       { name: 'subtitle', type: 'string', label: 'Subtitle' },
+      {
+        name: 'programs',
+        type: 'array',
+        label: 'Programs',
+        description: 'Add or edit engineering programs',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            name: { type: 'string', label: 'Program Name', required: true },
+            type: { type: 'enum', label: 'Program Type', options: ['ug', 'pg'], required: true },
+            duration: { type: 'string', label: 'Duration', required: true, placeholder: '4 Years' },
+            seats: { type: 'number', label: 'Available Seats', required: false },
+            icon: {
+              type: 'enum',
+              label: 'Icon',
+              options: ['code', 'cpu', 'zap', 'settings', 'wifi', 'activity', 'briefcase', 'graduation'],
+              required: true
+            },
+            description: { type: 'string', label: 'Description', required: true },
+            link: { type: 'string', label: 'Link URL', required: true, placeholder: '/courses/program-name' },
+            tags: { type: 'array', label: 'Tags (Optional)', itemType: 'string', required: false },
+          },
+          required: ['name', 'type', 'duration', 'icon', 'description', 'link'],
+        },
+      },
       { name: 'showTabs', type: 'boolean', label: 'Show Filter Tabs' },
       { name: 'primaryColor', type: 'color', label: 'Primary Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },
@@ -8265,9 +8334,55 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     editableProps: [
       { name: 'title', type: 'string', label: 'Title', required: true },
       { name: 'subtitle', type: 'string', label: 'Subtitle' },
-      { name: 'showCategoryTabs', type: 'boolean', label: 'Show Category Tabs' },
-      { name: 'marqueeSpeed', type: 'number', label: 'Marquee Speed', min: 10, max: 100 },
-      { name: 'showGrayscale', type: 'boolean', label: 'Grayscale Logos' },
+      {
+        name: 'stats',
+        type: 'array',
+        label: 'Placement Statistics',
+        required: true,
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            value: { type: 'number', label: 'Value', required: true },
+            suffix: { type: 'string', label: 'Suffix', required: false, placeholder: '%+, LPA, +' },
+            prefix: { type: 'string', label: 'Prefix', required: false },
+            label: { type: 'string', label: 'Label', required: true, placeholder: 'Placement Rate' },
+            icon: {
+              type: 'enum',
+              label: 'Icon',
+              options: ['trending', 'award', 'users', 'building'],
+              required: true
+            },
+          },
+          required: ['value', 'label', 'icon'],
+        },
+      },
+      {
+        name: 'companies',
+        type: 'array',
+        label: 'Recruiting Companies',
+        required: false,
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            name: { type: 'string', label: 'Company Name', required: true },
+            logo: { type: 'image', label: 'Company Logo', required: false },
+            category: {
+              type: 'enum',
+              label: 'Category',
+              options: ['it', 'core', 'manufacturing', 'service', 'all'],
+              required: true
+            },
+          },
+          required: ['name', 'category'],
+        },
+      },
+      { name: 'showCategoryTabs', type: 'boolean', label: 'Show Category Filter Tabs' },
+      { name: 'speedPreset', type: 'enum', label: 'Marquee Speed Preset', options: ['slow', 'medium', 'fast', 'custom'] },
+      { name: 'marqueeSpeed', type: 'number', label: 'Custom Marquee Speed', min: 10, max: 100 },
+      { name: 'showGrayscale', type: 'boolean', label: 'Grayscale Company Logos' },
+      { name: 'enableDrag', type: 'boolean', label: 'Enable Drag/Scroll' },
+      { name: 'pauseOnHover', type: 'boolean', label: 'Pause on Hover' },
+      { name: 'dragSensitivity', type: 'number', label: 'Drag Sensitivity', min: 0.1, max: 2 },
       { name: 'primaryColor', type: 'color', label: 'Primary Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },
       { name: 'backgroundColor', type: 'color', label: 'Background Color' },
@@ -8369,9 +8484,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     propsSchema: EngineeringHeroSectionPropsSchema,
     defaultProps: {
       title: 'Shape Your Future in Engineering & Technology',
-      subtitle: 'AICTE Approved | Anna University Affiliated | NBA Accredited',
+      subtitle: 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
       description: 'Join one of the leading engineering colleges with 100+ years of educational excellence. World-class faculty, state-of-the-art infrastructure, and 95%+ placement record.',
-      badge: 'AICTE Approved | Anna University Affiliated | NBA Accredited',
+      badge: 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
       stats: [
         { value: 3000, suffix: '+', label: 'Learners', icon: 'graduation' },
         { value: 95, suffix: '%', label: 'Placement', icon: 'trending' },
@@ -8455,7 +8570,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       accreditations: [
         { name: 'All India Council for Technical Education', shortName: 'AICTE', description: 'Approved', icon: 'shield' },
         { name: 'Anna University', shortName: 'Anna University', description: 'Affiliated', icon: 'graduation' },
-        { name: 'National Board of Accreditation', shortName: 'NBA', description: 'Accredited', icon: 'award' },
+        { name: 'National Board of Accreditation', shortName: 'NAAC', description: 'Accredited', icon: 'award' },
         { name: 'National Assessment and Accreditation Council', shortName: 'NAAC', description: 'A+ Grade', icon: 'badge' },
         { name: 'International Organization for Standardization', shortName: 'ISO 9001:2015', description: 'Certified', icon: 'building' },
       ],
@@ -8512,7 +8627,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       description: 'Established as part of the prestigious JKKN Educational Institutions with over 100 years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development.',
       features: [
         'AICTE Approved & Anna University Affiliated',
-        'NBA Accredited Programs',
+        'NAAC Accredited Programs',
         'Industry-Academia Partnerships',
         'State-of-the-Art Laboratories',
         '95%+ Placement Record',

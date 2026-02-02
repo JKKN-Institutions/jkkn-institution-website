@@ -1761,6 +1761,41 @@ function ObjectField({ config, value, onChange }: ObjectFieldProps) {
   )
 }
 
+// Helper function to get nested value using dot notation
+function getNestedValue(obj: Record<string, unknown>, path: string): unknown {
+  const keys = path.split('.')
+  let current: any = obj
+
+  for (const key of keys) {
+    if (current === null || current === undefined) {
+      return undefined
+    }
+    current = current[key]
+  }
+
+  return current
+}
+
+// Helper function to set nested value using dot notation
+function setNestedValue(obj: Record<string, unknown>, path: string, value: unknown): Record<string, unknown> {
+  const keys = path.split('.')
+  const newObj = { ...obj }
+  let current: any = newObj
+
+  for (let i = 0; i < keys.length - 1; i++) {
+    const key = keys[i]
+    if (!current[key] || typeof current[key] !== 'object') {
+      current[key] = {}
+    } else {
+      current[key] = { ...current[key] }
+    }
+    current = current[key]
+  }
+
+  current[keys[keys.length - 1]] = value
+  return newObj
+}
+
 // Generate field configs from component entry metadata
 function getFieldConfigs(componentEntry: ComponentRegistryEntry): FieldConfig[] {
   const fields: FieldConfig[] = []
@@ -1803,7 +1838,9 @@ export function DynamicForm({ componentEntry, values, onChange }: DynamicFormPro
 
   const handleFieldChange = useCallback(
     (key: string, value: unknown) => {
-      onChange({ ...values, [key]: value })
+      // Handle nested keys with dot notation
+      const updatedValues = setNestedValue(values, key, value)
+      onChange(updatedValues)
     },
     [values, onChange]
   )
@@ -1811,7 +1848,8 @@ export function DynamicForm({ componentEntry, values, onChange }: DynamicFormPro
   return (
     <div className="space-y-5">
       {fields.map((field) => {
-        const fieldValue = values[field.key]
+        // Handle nested keys with dot notation
+        const fieldValue = getNestedValue(values, field.key)
 
         // Boolean fields render their own label
         if (field.type === 'boolean') {

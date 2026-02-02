@@ -11,11 +11,11 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   // Hero Section
   // ==========================================
   heroTitle: 'B.E. Electrical & Electronics Engineering',
-  heroSubtitle: 'Power your future with expertise in electrical systems, power generation, automation, and control systems. Our AICTE-approved, NBA-accredited program prepares you to design, develop, and maintain the electrical infrastructure that powers the modern world.',
+  heroSubtitle: 'Power your future with expertise in electrical systems, power generation, automation, and control systems. Our AICTE-approved, NAAC-accredited program prepares you to design, develop, and maintain the electrical infrastructure that powers the modern world.',
   heroStats: [
     { icon: '', label: 'Years Duration', value: '4' },
     { icon: '', label: 'Seats Available', value: '60' },
-    { icon: '', label: 'Placement Rate', value: '92%' },
+    { icon: '', label: 'Placement Rate', value: '95%' },
     { icon: '', label: 'Highest Package', value: '₹10L' },
   ],
   heroCTAs: [
@@ -44,8 +44,8 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
     {
       icon: '✅',
       title: 'Accreditation',
-      value: 'AICTE & NBA',
-      description: 'Our program is approved by AICTE (All India Council for Technical Education) and accredited by NBA, ensuring quality education standards.',
+      value: 'AICTE & NAAC',
+      description: 'Our program is approved by AICTE (All India Council for Technical Education) and accredited by NAAC, ensuring quality education standards.',
     },
     {
       icon: '📚',

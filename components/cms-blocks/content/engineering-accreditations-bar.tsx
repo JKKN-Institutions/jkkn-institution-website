@@ -57,7 +57,7 @@ export const EngineeringAccreditationsBarPropsSchema = z.object({
   })).default([
     { name: 'All India Council for Technical Education', shortName: 'AICTE', description: 'Approved', icon: 'shield' },
     { name: 'Anna University', shortName: 'Anna University', description: 'Affiliated', icon: 'graduation' },
-    { name: 'National Board of Accreditation', shortName: 'NBA', description: 'Accredited', icon: 'award' },
+    { name: 'National Board of Accreditation', shortName: 'NAAC', description: 'Accredited', icon: 'award' },
     { name: 'National Assessment and Accreditation Council', shortName: 'NAAC', description: 'A+ Grade', icon: 'badge' },
     { name: 'International Organization for Standardization', shortName: 'ISO 9001:2015', description: 'Certified', icon: 'building' },
   ]),
@@ -106,7 +106,7 @@ export default function EngineeringAccreditationsBar({
   accreditations = [
     { name: 'All India Council for Technical Education', shortName: 'AICTE', description: 'Approved', icon: 'shield' },
     { name: 'Anna University', shortName: 'Anna University', description: 'Affiliated', icon: 'graduation' },
-    { name: 'National Board of Accreditation', shortName: 'NBA', description: 'Accredited', icon: 'award' },
+    { name: 'National Board of Accreditation', shortName: 'NAAC', description: 'Accredited', icon: 'award' },
     { name: 'National Assessment and Accreditation Council', shortName: 'NAAC', description: 'A+ Grade', icon: 'badge' },
     { name: 'International Organization for Standardization', shortName: 'ISO 9001:2015', description: 'Certified', icon: 'building' },
   ],

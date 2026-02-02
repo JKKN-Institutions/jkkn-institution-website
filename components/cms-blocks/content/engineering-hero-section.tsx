@@ -85,11 +85,11 @@ function useAnimatedCounter(end: number, duration: number = 2000, isInView: bool
 export const EngineeringHeroSectionPropsSchema = z.object({
   // Title
   title: z.string().default('Shape Your Future in Engineering & Technology'),
-  subtitle: z.string().default('AICTE Approved | Anna University Affiliated | NBA Accredited'),
+  subtitle: z.string().default('AICTE Approved | Anna University Affiliated | NAAC Accredited'),
   description: z.string().default('Join one of the leading engineering colleges with 100+ years of educational excellence. World-class faculty, state-of-the-art infrastructure, and 95%+ placement record.'),
 
   // Badge
-  badge: z.string().default('AICTE Approved | Anna University Affiliated | NBA Accredited'),
+  badge: z.string().default('AICTE Approved | Anna University Affiliated | NAAC Accredited'),
 
   // Stats
   stats: z.array(z.object({
@@ -192,9 +192,9 @@ function StatCard({
 
 export default function EngineeringHeroSection({
   title = 'Shape Your Future in Engineering & Technology',
-  subtitle = 'AICTE Approved | Anna University Affiliated | NBA Accredited',
+  subtitle = 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
   description = 'Join one of the leading engineering colleges with 100+ years of educational excellence. World-class faculty, state-of-the-art infrastructure, and 95%+ placement record.',
-  badge = 'AICTE Approved | Anna University Affiliated | NBA Accredited',
+  badge = 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
   stats = [
     { value: 3000, suffix: '+', label: 'Learners', icon: 'graduation' },
     { value: 95, suffix: '%', label: 'Placement', icon: 'trending' },

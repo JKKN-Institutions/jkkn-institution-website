@@ -431,14 +431,14 @@ function HeroSection({
               />
             </div>
 
-            {/* NBA Badge - Bottom right overlay */}
+            {/* NAAC Badge - Bottom right overlay */}
             <div className="absolute bottom-6 right-6 bg-white rounded-xl shadow-xl p-6">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: primaryColor }}>
                   <span className="text-white text-2xl">⭐</span>
                 </div>
                 <div>
-                  <div className="text-lg font-bold text-gray-900">NBA</div>
+                  <div className="text-lg font-bold text-gray-900">NAAC</div>
                   <div className="text-sm text-gray-600">Accredited Program</div>
                 </div>
               </div>

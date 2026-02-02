@@ -57,7 +57,7 @@ export const EngineeringCenturySectionPropsSchema = z.object({
     label: z.string(),
   })).default([
     { icon: 'award', label: 'AICTE Approved' },
-    { icon: 'star', label: 'NBA Accredited' },
+    { icon: 'star', label: 'NAAC Accredited' },
     { icon: 'award', label: 'NAAC Accredited' },
     { icon: 'building', label: 'Autonomous Status' },
     { icon: 'handshake', label: 'Industry Partnerships' },
@@ -115,7 +115,7 @@ export default function EngineeringCenturySection({
   subtitle = 'Building future-ready engineers with world-class infrastructure and industry partnerships',
   features = [
     { icon: 'award', label: 'AICTE Approved' },
-    { icon: 'star', label: 'NBA Accredited' },
+    { icon: 'star', label: 'NAAC Accredited' },
     { icon: 'award', label: 'NAAC Accredited' },
     { icon: 'building', label: 'Autonomous Status' },
     { icon: 'handshake', label: 'Industry Partnerships' },

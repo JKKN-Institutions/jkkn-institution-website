@@ -3,8 +3,8 @@
 -- ================================================================
 -- Project: JKKN Institution Website
 -- Supabase Project ID: pmqodbfhsejbvfbmsfeq
--- Total Tables: 52
--- Last Updated: 2026-01-07
+-- Total Tables: 53
+-- Last Updated: 2026-01-28
 -- ================================================================
 --
 -- IMPORTANT: This file documents ALL table structures in the database.
@@ -265,7 +265,7 @@ CREATE TABLE deleted_users_archive (
 -- CATEGORY 2: CMS SYSTEM
 -- ================================================================
 -- Purpose: Content Management System with page builder
--- Tables: 15
+-- Tables: 16
 -- ================================================================
 
 -- ============================================
@@ -797,6 +797,72 @@ CREATE TABLE cms_preview_links (
 );
 
 -- End of cms_preview_links
+-- ============================================
+
+
+-- ============================================
+-- TABLE: course_pages
+-- ============================================
+-- Purpose: Comprehensive course catalog management for UG and PG courses
+-- Created: 2026-01-28
+-- Course Types: ug (Undergraduate), pg (Postgraduate), diploma, certificate
+-- Departments: Engineering, Medical, Pharmacy, Nursing, Arts & Science, etc.
+-- Features:
+--   - Linked to cms_pages for content management via page builder
+--   - Supports multiple course formats and levels
+--   - Department and specialization tracking
+--   - Admission and placement metadata
+--   - Custom course attributes (duration, eligibility, fees structure)
+-- Dependencies: cms_pages
+-- Used by: Course listing pages, admissions portal, academic catalog
+-- ============================================
+
+CREATE TABLE course_pages (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  cms_page_id uuid NOT NULL,
+  course_type text NOT NULL, -- 'ug', 'pg', 'diploma', 'certificate'
+  department text NOT NULL, -- 'engineering', 'medical', 'pharmacy', 'nursing', 'arts-science'
+  degree text NOT NULL, -- 'BE', 'BTech', 'ME', 'MTech', 'MBA', 'BDS', 'MDS', etc.
+  specialization text, -- 'CSE', 'ECE', 'Mechanical', 'Civil', etc.
+  full_course_name text NOT NULL, -- 'Bachelor of Engineering in Computer Science'
+  short_name text, -- 'BE CSE'
+  course_code text, -- 'BECSE2024' or other institutional code
+  duration text, -- '4 years', '2 years', etc.
+  total_seats integer, -- Number of available seats
+  eligibility jsonb DEFAULT '{}'::jsonb, -- Eligibility criteria
+  affiliation text, -- University affiliation
+  accreditation jsonb DEFAULT '[]'::jsonb, -- Accreditation details (NBA, NAAC, etc.)
+  admission_process jsonb DEFAULT '{}'::jsonb, -- Admission steps and requirements
+  fee_structure jsonb DEFAULT '{}'::jsonb, -- Fee components
+  scholarship_info jsonb DEFAULT '[]'::jsonb, -- Available scholarships
+  placement_stats jsonb DEFAULT '{}'::jsonb, -- Placement statistics
+  curriculum_overview jsonb DEFAULT '{}'::jsonb, -- Curriculum structure
+  career_opportunities jsonb DEFAULT '[]'::jsonb, -- Career paths
+  facilities jsonb DEFAULT '[]'::jsonb, -- Labs, infrastructure
+  faculty_count integer, -- Number of faculty members
+  is_featured boolean DEFAULT false, -- Feature on homepage
+  display_order integer DEFAULT 0, -- Sort order in lists
+  status text DEFAULT 'draft'::text, -- 'draft', 'published', 'archived'
+  metadata jsonb DEFAULT '{}'::jsonb, -- Additional custom fields
+  created_by uuid,
+  updated_by uuid,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  PRIMARY KEY (id),
+  UNIQUE (course_code),
+  FOREIGN KEY (cms_page_id) REFERENCES cms_pages(id) ON DELETE CASCADE,
+  FOREIGN KEY (created_by) REFERENCES auth.users(id),
+  FOREIGN KEY (updated_by) REFERENCES auth.users(id)
+);
+
+-- Indexes for performance
+CREATE INDEX idx_course_pages_type ON course_pages(course_type);
+CREATE INDEX idx_course_pages_department ON course_pages(department);
+CREATE INDEX idx_course_pages_status ON course_pages(status);
+CREATE INDEX idx_course_pages_cms_page_id ON course_pages(cms_page_id);
+CREATE INDEX idx_course_pages_featured ON course_pages(is_featured);
+
+-- End of course_pages
 -- ============================================
 
 

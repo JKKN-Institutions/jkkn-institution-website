@@ -11,14 +11,14 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'B.E. Computer Science and Engineering | JKKN College of Engineering',
   description:
-    'Pursue B.E. in Computer Science and Engineering at JKKN College of Engineering & Technology. AICTE approved, NBA accredited 4-year program with 95%+ placement record. Industry-aligned curriculum covering AI, ML, Cloud Computing, Cybersecurity, and Full Stack Development.',
+    'Pursue B.E. in Computer Science and Engineering at JKKN College of Engineering & Technology. AICTE approved, NAAC accredited 4-year program with 95%+ placement record. Industry-aligned curriculum covering AI, ML, Cloud Computing, Cybersecurity, and Full Stack Development.',
   keywords: [
     'BE CSE',
     'Computer Science Engineering',
     'JKKN Engineering College',
     'CSE course Tamil Nadu',
     'AICTE approved engineering',
-    'NBA accredited CSE',
+    'NAAC accredited CSE',
     'Anna University',
     'Engineering admission',
     'CSE placements',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'B.E. Computer Science and Engineering | JKKN',
     description:
-      'AICTE approved, NBA accredited CSE program with 95%+ placement success. Transform your future with cutting-edge technology education.',
+      'AICTE approved, NAAC accredited CSE program with 95%+ placement success. Transform your future with cutting-edge technology education.',
     images: ['https://source.unsplash.com/1200x630/?computer,science,engineering'],
   },
 }

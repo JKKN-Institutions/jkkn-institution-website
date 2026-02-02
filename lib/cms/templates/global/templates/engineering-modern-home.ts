@@ -43,9 +43,9 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
       component_name: 'EngineeringHeroSection',
       props: {
         title: 'Shape Your Future in Engineering & Technology',
-        subtitle: 'AICTE Approved | Anna University Affiliated | NBA Accredited',
+        subtitle: 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
         description: 'Join one of the leading engineering colleges with 100+ years of educational excellence. World-class faculty, state-of-the-art infrastructure, and 95%+ placement record.',
-        badge: 'AICTE Approved | Anna University Affiliated | NBA Accredited',
+        badge: 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
         stats: [
           { value: 3000, suffix: '+', label: 'Learners', icon: 'graduation' },
           { value: 95, suffix: '%', label: 'Placement', icon: 'trending' },
@@ -75,7 +75,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
         accreditations: [
           { name: 'All India Council for Technical Education', shortName: 'AICTE', description: 'Approved', icon: 'shield' },
           { name: 'Anna University', shortName: 'Anna University', description: 'Affiliated', icon: 'graduation' },
-          { name: 'National Board of Accreditation', shortName: 'NBA', description: 'Accredited', icon: 'award' },
+          { name: 'National Board of Accreditation', shortName: 'NAAC', description: 'Accredited', icon: 'award' },
           { name: 'National Assessment and Accreditation Council', shortName: 'NAAC', description: 'A+ Grade', icon: 'badge' },
           { name: 'International Organization for Standardization', shortName: 'ISO 9001:2015', description: 'Certified', icon: 'building' },
         ],
@@ -102,7 +102,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
         description: 'Established as part of the prestigious JKKN Educational Institutions with over 100 years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development. Our state-of-the-art infrastructure and experienced faculty ensure students receive world-class technical education.',
         features: [
           'AICTE Approved & Anna University Affiliated',
-          'NBA Accredited Programs',
+          'NAAC Accredited Programs',
           'Industry-Academia Partnerships',
           'State-of-the-Art Laboratories',
           '95%+ Placement Record',
@@ -401,7 +401,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
           },
           {
             question: 'Is JKKN Engineering College AICTE approved?',
-            answer: 'Yes, JKKN College of Engineering & Technology is approved by AICTE (All India Council for Technical Education), affiliated with Anna University, and has NBA accreditation for multiple programs. We are also NAAC accredited with A+ grade and ISO 9001:2015 certified.',
+            answer: 'Yes, JKKN College of Engineering & Technology is approved by AICTE (All India Council for Technical Education), affiliated with Anna University, and has NAAC accreditation for multiple programs. We are also NAAC accredited with A+ grade and ISO 9001:2015 certified.',
           },
           {
             question: 'What is the admission process for B.E./B.Tech programs?',

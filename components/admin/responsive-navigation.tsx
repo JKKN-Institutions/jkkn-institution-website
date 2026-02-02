@@ -31,6 +31,7 @@ import {
   Briefcase,
   Building2,
   UserCheck,
+  GraduationCap,
 } from 'lucide-react'
 
 // Types
@@ -152,6 +153,13 @@ const navigationGroups: NavGroup[] = [
             href: '/admin/content/templates',
             icon: Layers,
             permission: 'cms:templates:view',
+          },
+          {
+            id: 'courses',
+            label: 'Courses',
+            href: '/admin/content/courses',
+            icon: GraduationCap,
+            permission: 'cms:courses:view',
           },
           {
             id: 'media',

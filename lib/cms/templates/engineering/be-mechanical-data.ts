@@ -37,9 +37,9 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
       value: '180',
     },
     {
-      icon: '🔬',
-      label: 'Laboratories',
-      value: 'State-of-the-Art',
+      icon: '💰',
+      label: 'Highest Package',
+      value: '5L',
     },
   ],
 

@@ -415,7 +415,7 @@ function HeroSection({
             </div>
           </div>
 
-          {/* Right Column - Image + NBA Badge */}
+          {/* Right Column - Image + NAAC Badge */}
           <div className="relative hidden lg:block">
             {/* Mechanical Lab Image */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
@@ -428,11 +428,11 @@ function HeroSection({
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
             </div>
 
-            {/* NBA Badge - Positioned top right */}
+            {/* NAAC Badge - Positioned top right */}
             <div className="absolute -top-6 -right-6 bg-white rounded-full shadow-xl p-6 border-4 border-yellow-400">
               <div className="text-center">
                 <Award className="w-12 h-12 mx-auto mb-2 text-yellow-600" />
-                <div className="text-xs font-bold text-gray-700">NBA</div>
+                <div className="text-xs font-bold text-gray-700">NAAC</div>
                 <div className="text-xs text-gray-600">Accredited</div>
               </div>
             </div>

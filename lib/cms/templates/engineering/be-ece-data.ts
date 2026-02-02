@@ -11,11 +11,11 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   // Hero Section
   // ==========================================
   heroTitle: 'B.E. Electronics & Communication Engineering',
-  heroSubtitle: 'Shape the future of communication technology with expertise in embedded systems, VLSI, wireless communication, and IoT. Our AICTE-approved, NBA-accredited program prepares you to design, develop, and innovate in the rapidly evolving world of electronics and communication.',
+  heroSubtitle: 'Shape the future of communication technology with expertise in embedded systems, VLSI, wireless communication, and IoT. Our AICTE-approved, NAAC-accredited program prepares you to design, develop, and innovate in the rapidly evolving world of electronics and communication.',
   heroStats: [
     { icon: '', label: 'Years Duration', value: '4' },
     { icon: '', label: 'Seats Available', value: '60' },
-    { icon: '', label: 'Placement Rate', value: '90%+' },
+    { icon: '', label: 'Placement Rate', value: '95%' },
     { icon: '', label: 'Highest Package', value: '₹10L' },
   ],
   heroCTAs: [
@@ -44,8 +44,8 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
     {
       icon: '✅',
       title: 'Accreditation',
-      value: 'AICTE & NBA',
-      description: 'Our program is approved by AICTE (All India Council for Technical Education) and accredited by NBA, ensuring quality education standards.',
+      value: 'AICTE & NAAC',
+      description: 'Our program is approved by AICTE (All India Council for Technical Education) and accredited by NAAC, ensuring quality education standards.',
     },
     {
       icon: '📚',
@@ -494,8 +494,8 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
       answer: 'ECE graduates can pursue careers as Electronics Design Engineers, VLSI Engineers, Embedded Systems Engineers, Network Engineers, Telecommunications Engineers, IoT Architects, and more. Average starting salaries range from ₹4-10 LPA depending on skills and company.',
     },
     {
-      question: 'Is the ECE program NBA accredited?',
-      answer: 'Yes, our B.E. Electronics & Communication Engineering program is accredited by the National Board of Accreditation (NBA), ensuring quality education that meets international standards.',
+      question: 'Is the ECE program NAAC accredited?',
+      answer: 'Yes, our B.E. Electronics & Communication Engineering program is accredited by the National Board of Accreditation (NAAC), ensuring quality education that meets international standards.',
     },
     {
       question: 'What laboratory facilities are available for ECE students?',

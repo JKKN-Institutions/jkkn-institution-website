@@ -9,7 +9,7 @@ import { MECSECoursePageProps } from '@/components/cms-blocks/content/me-cse-cou
  * Institution: JKKN College of Engineering
  * Program: M.E. Computer Science and Engineering
  * Duration: 2 Years (4 Semesters)
- * Accreditation: AICTE Approved | NBA Accredited
+ * Accreditation: AICTE Approved | NAAC Accredited
  */
 
 export const meCSECourseData: MECSECoursePageProps = {
@@ -17,7 +17,7 @@ export const meCSECourseData: MECSECoursePageProps = {
   // Hero Section
   // ===========================================
   hero: {
-    badge: 'AICTE Approved | NBA Accredited',
+    badge: 'AICTE Approved | NAAC Accredited',
     title: 'Master of Engineering in',
     highlightedText: 'Computer Science & Engineering',
     subtitle: 'Elevate your career with cutting-edge expertise in AI, Machine Learning, Data Science, and advanced computing technologies. Join our research-oriented postgraduate program designed for innovation and industry leadership.',
@@ -99,7 +99,7 @@ export const meCSECourseData: MECSECoursePageProps = {
       },
       {
         label: 'Approval',
-        value: 'AICTE | NBA Accredited'
+        value: 'AICTE | NAAC Accredited'
       },
       {
         label: 'Fee Structure',
@@ -136,7 +136,7 @@ export const meCSECourseData: MECSECoursePageProps = {
     cards: [
       {
         icon: 'award',
-        number: 'NBA',
+        number: 'NAAC',
         label: 'Accreditation'
       },
       {
@@ -268,6 +268,7 @@ export const meCSECourseData: MECSECoursePageProps = {
   curriculum: {
     label: 'Curriculum',
     title: 'Comprehensive 2-Year Curriculum',
+    description: 'Anna University affiliated M.E. Computer Science and Engineering program with industry-oriented courses and research focus',
     years: [
       {
         year: 1,
@@ -277,38 +278,33 @@ export const meCSECourseData: MECSECoursePageProps = {
             credits: 20,
             courses: [
               {
-                code: 'MA7155',
-                name: 'Advanced Data Structures and Algorithms',
+                code: 'MA25C07',
+                name: 'Advanced Mathematical Methods (CSIE)',
                 credits: 4
               },
               {
-                code: 'CS7101',
-                name: 'Machine Learning Techniques',
+                code: 'CP25C01',
+                name: 'Advanced Data Structures and Algorithms',
                 credits: 3
               },
               {
-                code: 'CS7102',
-                name: 'Cloud Computing Architecture',
+                code: 'CP25C02',
+                name: 'Advanced Database Technologies',
                 credits: 3
               },
               {
-                code: 'CS7103',
-                name: 'Advanced Database Management Systems',
+                code: 'CP25C03',
+                name: 'Advanced Operating Systems',
                 credits: 3
               },
               {
-                code: 'CS7001',
-                name: 'Research Methodology and IPR',
+                code: 'CP25C04',
+                name: 'Advanced Compiler Design',
                 credits: 3
               },
               {
-                code: 'CS7111',
-                name: 'Advanced Algorithms Lab',
-                credits: 2
-              },
-              {
-                code: 'CS7112',
-                name: 'Machine Learning Lab',
+                code: 'CP25101',
+                name: 'Technical Seminar',
                 credits: 2
               }
             ]
@@ -318,39 +314,44 @@ export const meCSECourseData: MECSECoursePageProps = {
             credits: 20,
             courses: [
               {
-                code: 'CS7201',
-                name: 'Artificial Intelligence and Expert Systems',
+                code: 'CP25201',
+                name: 'Multicore Architectures',
                 credits: 3
               },
               {
-                code: 'CS7202',
-                name: 'Big Data Analytics',
+                code: 'CP25C05',
+                name: 'Artificial Intelligence and Machine Learning',
                 credits: 3
               },
               {
-                code: 'CS7203',
-                name: 'Advanced Computer Networks',
+                code: 'CP25C06',
+                name: 'Cloud and Big Data Analytics',
                 credits: 3
               },
               {
-                code: 'CS7204',
-                name: 'Elective I - Specialization Course',
+                code: 'CP25C07',
+                name: 'Quantum Computing',
                 credits: 3
               },
               {
-                code: 'CS7205',
-                name: 'Elective II - Specialization Course',
+                code: 'CP25xxx',
+                name: 'Programme Elective I',
                 credits: 3
               },
               {
-                code: 'CS7211',
-                name: 'AI and Big Data Lab',
+                code: 'CP25xxx',
+                name: 'Industry Oriented Course I',
                 credits: 2
               },
               {
-                code: 'CS7212',
-                name: 'Mini Project',
-                credits: 3
+                code: 'CP25202',
+                name: 'Industrial Training',
+                credits: 1
+              },
+              {
+                code: 'CP25xxx',
+                name: 'Self-Learning Course',
+                credits: 2
               }
             ]
           }
@@ -364,33 +365,33 @@ export const meCSECourseData: MECSECoursePageProps = {
             credits: 20,
             courses: [
               {
-                code: 'CS7301',
-                name: 'Deep Learning and Neural Networks',
+                code: 'CP25xxx',
+                name: 'Programme Elective II',
                 credits: 3
               },
               {
-                code: 'CS7302',
-                name: 'Cybersecurity and Cryptography',
+                code: 'CP25xxx',
+                name: 'Programme Elective III',
                 credits: 3
               },
               {
-                code: 'CS7303',
-                name: 'Elective III - Advanced Specialization',
+                code: 'CP25xxx',
+                name: 'Programme Elective IV',
                 credits: 3
               },
               {
-                code: 'CS7304',
-                name: 'Elective IV - Advanced Specialization',
+                code: 'CP25xxx',
+                name: 'Open Elective',
                 credits: 3
               },
               {
-                code: 'CS7311',
-                name: 'Deep Learning Lab',
+                code: 'CP25xxx',
+                name: 'Industry-Oriented Course II',
                 credits: 2
               },
               {
-                code: 'CS7312',
-                name: 'Project Work - Phase I',
+                code: 'CP25301',
+                name: 'Project Work I',
                 credits: 6
               }
             ]
@@ -400,23 +401,35 @@ export const meCSECourseData: MECSECoursePageProps = {
             credits: 20,
             courses: [
               {
-                code: 'CS7401',
-                name: 'Project Work - Phase II (Dissertation)',
-                credits: 16
-              },
-              {
-                code: 'CS7402',
-                name: 'Comprehensive Viva Voce',
-                credits: 2
-              },
-              {
-                code: 'CS7403',
-                name: 'Research Paper Publication',
-                credits: 2
+                code: 'CP25401',
+                name: 'Project Work II',
+                credits: 20
               }
             ]
           }
         ]
+      }
+    ],
+    syllabusImages: [
+      {
+        semester: 'Semester 1',
+        image: '/images/courses/me-cse/syllabus/semester-1.jpg',
+        alt: 'M.E. CSE Semester 1 Course Structure'
+      },
+      {
+        semester: 'Semester 2',
+        image: '/images/courses/me-cse/syllabus/semester-2.jpg',
+        alt: 'M.E. CSE Semester 2 Course Structure'
+      },
+      {
+        semester: 'Semester 3',
+        image: '/images/courses/me-cse/syllabus/semester-3.jpg',
+        alt: 'M.E. CSE Semester 3 Course Structure'
+      },
+      {
+        semester: 'Semester 4',
+        image: '/images/courses/me-cse/syllabus/semester-4.jpg',
+        alt: 'M.E. CSE Semester 4 Course Structure'
       }
     ]
   },
@@ -547,52 +560,16 @@ export const meCSECourseData: MECSECoursePageProps = {
     title: 'Learn from Industry Experts',
     members: [
       {
-        name: 'Dr. Rajesh Kumar',
-        designation: 'Professor & Head',
-        qualification: 'PhD in Artificial Intelligence',
-        photo: '/images/faculty/rajesh-kumar.jpg'
+        name: 'Dr. J.S. Narmadha',
+        designation: 'Professor',
+        qualification: 'M.E-CSE., Ph.D',
+        photo: '/images/faculty/narmadha.jpg'
       },
       {
-        name: 'Dr. Priya Sharma',
-        designation: 'Associate Professor',
-        qualification: 'PhD in Machine Learning',
-        photo: '/images/faculty/priya-sharma.jpg'
-      },
-      {
-        name: 'Dr. Arun Patel',
-        designation: 'Associate Professor',
-        qualification: 'PhD in Data Science',
-        photo: '/images/faculty/arun-patel.jpg'
-      },
-      {
-        name: 'Dr. Meera Reddy',
+        name: 'Mrs. O. Isvarya Lakshmi',
         designation: 'Assistant Professor',
-        qualification: 'PhD in Cybersecurity',
-        photo: '/images/faculty/meera-reddy.jpg'
-      },
-      {
-        name: 'Dr. Vikram Singh',
-        designation: 'Assistant Professor',
-        qualification: 'PhD in Cloud Computing',
-        photo: '/images/faculty/vikram-singh.jpg'
-      },
-      {
-        name: 'Dr. Kavitha Nair',
-        designation: 'Assistant Professor',
-        qualification: 'PhD in Computer Vision',
-        photo: '/images/faculty/kavitha-nair.jpg'
-      },
-      {
-        name: 'Dr. Suresh Iyer',
-        designation: 'Assistant Professor',
-        qualification: 'PhD in IoT Systems',
-        photo: '/images/faculty/suresh-iyer.jpg'
-      },
-      {
-        name: 'Dr. Anita Desai',
-        designation: 'Assistant Professor',
-        qualification: 'PhD in Database Systems',
-        photo: '/images/faculty/anita-desai.jpg'
+        qualification: 'M.E-CSE.',
+        photo: '/images/faculty/isvarya-lakshmi.jpg'
       }
     ]
   },
@@ -622,8 +599,8 @@ export const meCSECourseData: MECSECoursePageProps = {
         answer: 'Our ME CSE program has an excellent placement record of 95%. The average package is ₹12 LPA, with the highest package reaching ₹24 LPA. Top recruiters include TCS, Infosys, Amazon, Microsoft, Google, and many other leading technology companies.'
       },
       {
-        question: 'Is the program NBA accredited?',
-        answer: 'Yes, our ME CSE program is NBA accredited and affiliated with Anna University. The program is also approved by AICTE, ensuring that it meets national quality standards and is recognized by employers and universities worldwide.'
+        question: 'Is the program NAAC accredited?',
+        answer: 'Yes, our ME CSE program is NAAC accredited and affiliated with Anna University. The program is also approved by AICTE, ensuring that it meets national quality standards and is recognized by employers and universities worldwide.'
       },
       {
         question: 'Are there research opportunities in the program?',

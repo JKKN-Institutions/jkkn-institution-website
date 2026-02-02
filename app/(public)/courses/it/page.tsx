@@ -9,14 +9,14 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'B.Tech Information Technology | JKKN College of Engineering',
-  description: 'Comprehensive B.Tech Information Technology program at JKKN College of Engineering & Technology. NBA accredited, affiliated to Anna University. Specializations in AI/ML, Cloud Computing, Cybersecurity, Full Stack Development, Data Science, and more.',
+  description: 'Comprehensive B.Tech Information Technology program at JKKN College of Engineering & Technology. NAAC accredited, affiliated to Anna University. Specializations in AI/ML, Cloud Computing, Cybersecurity, Full Stack Development, Data Science, and more.',
   keywords: [
     'B.Tech IT',
     'Information Technology',
     'IT course',
     'JKKN Engineering',
     'Anna University',
-    'NBA accredited',
+    'NAAC accredited',
     'Artificial Intelligence',
     'Machine Learning',
     'Cloud Computing',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'B.Tech Information Technology | JKKN',
-    description: 'NBA accredited IT program with specializations in AI/ML, Cloud Computing, Cybersecurity. 95%+ placement rate with packages up to ₹18 LPA.',
+    description: 'NAAC accredited IT program with specializations in AI/ML, Cloud Computing, Cybersecurity. 95%+ placement rate with packages up to ₹18 LPA.',
     images: ['https://source.unsplash.com/1200x630/?information-technology,computers,programming'],
   },
 }

@@ -51,9 +51,9 @@ export const AmbulanceServicePageSchema = z.object({
   })).default([]),
   emergencyNote: z.string().optional(),
   conclusion: z.string().optional(),
-  backgroundColor: z.string().default('#0b6d41'),
-  accentColor: z.string().default('#ffde59'),
-  textColor: z.string().default('#ffffff')
+  backgroundColor: z.string().default('#f6f6f6'),
+  accentColor: z.string().default('#0b6d41'),
+  textColor: z.string().default('#1a1a1a')
 })
 
 export type AmbulanceServicePageProps = z.infer<typeof AmbulanceServicePageSchema>
@@ -76,10 +76,10 @@ function FeatureCard({
     <div
       ref={ref}
       className={`
-        bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8
-        border border-white/20
+        bg-white backdrop-blur-sm rounded-2xl p-6 md:p-8
+        border border-gray-200
         transition-all duration-700 ease-out
-        hover:bg-white/15 hover:shadow-xl hover:scale-[1.02]
+        hover:shadow-xl hover:scale-[1.02]
         ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
       `}
       style={{ transitionDelay: `${index * 100}ms` }}
@@ -94,7 +94,7 @@ function FeatureCard({
 
       {/* Feature Description */}
       <div
-        className="text-base md:text-lg leading-relaxed prose max-w-none text-white/90"
+        className="text-base md:text-lg leading-relaxed prose max-w-none text-gray-700"
         dangerouslySetInnerHTML={{ __html: description }}
       />
     </div>
@@ -109,9 +109,9 @@ export function AmbulanceServicePage({
   features = [],
   emergencyNote,
   conclusion,
-  backgroundColor = '#0b6d41',
-  accentColor = '#ffde59',
-  textColor = '#ffffff',
+  backgroundColor = '#f6f6f6',
+  accentColor = '#0b6d41',
+  textColor = '#1a1a1a',
 }: AmbulanceServicePageProps) {
   const { ref: titleRef, isInView: titleInView } = useInView(0.1)
   const { ref: imagesRef, isInView: imagesInView } = useInView(0.1)
@@ -124,7 +124,7 @@ export function AmbulanceServicePage({
     <div
       className="relative min-h-screen overflow-hidden w-screen -ml-[calc((100vw-100%)/2)]"
       style={{
-        background: `linear-gradient(135deg, ${backgroundColor} 0%, #064d2e 50%, #032818 100%)`,
+        backgroundColor: '#f6f6f6',
         color: textColor
       }}
     >
@@ -203,9 +203,9 @@ export function AmbulanceServicePage({
               ${introInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
             `}
           >
-            <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 md:p-10 border border-white/20">
+            <div className="bg-white backdrop-blur-sm rounded-3xl p-6 md:p-10 border border-gray-200">
               <div
-                className="text-lg md:text-xl leading-relaxed prose max-w-none text-white/90"
+                className="text-lg md:text-xl leading-relaxed prose max-w-none text-gray-700"
                 dangerouslySetInnerHTML={{ __html: introduction }}
               />
             </div>
@@ -260,10 +260,10 @@ export function AmbulanceServicePage({
             `}
           >
             <div
-              className="bg-red-500/20 backdrop-blur-sm rounded-2xl p-6 md:p-8 border-2 border-red-400/50"
+              className="bg-red-50 backdrop-blur-sm rounded-2xl p-6 md:p-8 border-2 border-red-300"
             >
               <div
-                className="text-base md:text-lg leading-relaxed font-medium text-white"
+                className="text-base md:text-lg leading-relaxed font-medium text-red-900"
                 dangerouslySetInnerHTML={{ __html: emergencyNote }}
               />
             </div>
@@ -281,11 +281,11 @@ export function AmbulanceServicePage({
             `}
           >
             <div
-              className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 md:p-10 border-2"
+              className="bg-white backdrop-blur-sm rounded-3xl p-6 md:p-10 border-2"
               style={{ borderColor: `${accentColor}40` }}
             >
               <div
-                className="text-lg md:text-xl leading-relaxed font-medium prose max-w-none text-white/90"
+                className="text-lg md:text-xl leading-relaxed font-medium prose max-w-none text-gray-700"
                 dangerouslySetInnerHTML={{ __html: conclusion }}
               />
             </div>
