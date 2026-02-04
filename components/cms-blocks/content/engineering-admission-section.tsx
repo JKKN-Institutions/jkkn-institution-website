@@ -71,11 +71,10 @@ export const EngineeringAdmissionSectionPropsSchema = z.object({
       ],
     },
     {
-      program: 'MBA Program',
+      program: 'MBA / ME Programs',
       criteria: [
         'Bachelor\'s degree in any discipline with 50% marks',
         'Valid TANCET / CAT / MAT / XAT score',
-        'Minimum 2 years work experience (preferred for PGDM)',
         'Group discussion and personal interview clearance',
       ],
     },
@@ -98,8 +97,8 @@ export const EngineeringAdmissionSectionPropsSchema = z.object({
   // CTA Button
   ctaButton: z.object({
     label: z.string().default('Apply Now'),
-    link: z.string().default('/admissions/apply'),
-  }).default({ label: 'Apply Now', link: '/admissions/apply' }),
+    link: z.string().default('https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8'),
+  }).default({ label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8' }),
 
   // Secondary CTA
   secondaryCtaButton: z.object({
@@ -161,11 +160,10 @@ export default function EngineeringAdmissionSection({
       ],
     },
     {
-      program: 'MBA Program',
+      program: 'MBA / ME Programs',
       criteria: [
         'Bachelor\'s degree in any discipline with 50% marks',
         'Valid TANCET / CAT / MAT / XAT score',
-        'Minimum 2 years work experience (preferred for PGDM)',
         'Group discussion and personal interview clearance',
       ],
     },
@@ -177,7 +175,7 @@ export default function EngineeringAdmissionSection({
     { step: 4, title: 'Fee Payment', description: 'Pay admission fees online or at campus', icon: 'graduation' },
     { step: 5, title: 'Enrollment', description: 'Complete registration and start classes', icon: 'badge' },
   ],
-  ctaButton = { label: 'Apply Now', link: '/admissions/apply' },
+  ctaButton = { label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8' },
   secondaryCtaButton,
   primaryColor = '#1e3a5f',
   accentColor = '#f97316',

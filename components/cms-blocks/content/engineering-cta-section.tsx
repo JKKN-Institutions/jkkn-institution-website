@@ -51,11 +51,11 @@ export const EngineeringCTASectionPropsSchema = z.object({
   // Primary CTA
   primaryCta: z.object({
     label: z.string().default('Apply Now'),
-    link: z.string().default('/admissions'),
-  }).default({ label: 'Apply Now', link: '/admissions' }),
+    link: z.string().default('https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8'),
+  }).default({ label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8' }),
 
   // Secondary CTA - Phone
-  phoneNumber: z.string().default('+91 98765 43210'),
+  phoneNumber: z.string().default('+91 9345855001'),
   showPhone: z.boolean().default(true),
 
   // Optional email
@@ -82,8 +82,8 @@ export type EngineeringCTASectionProps = z.infer<typeof EngineeringCTASectionPro
 export default function EngineeringCTASection({
   title = 'Ready to Engineer Your Future?',
   subtitle = 'Join JKKN College of Engineering and take the first step towards a successful career in technology',
-  primaryCta = { label: 'Apply Now', link: '/admissions' },
-  phoneNumber = '+91 98765 43210',
+  primaryCta = { label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8' },
+  phoneNumber = '+91 9345855001',
   showPhone = true,
   email,
   showEmail = false,
@@ -230,7 +230,7 @@ export default function EngineeringCTASection({
               transitionDelay: '300ms'
             }}
           >
-            Admissions Open for 2025-26 Academic Year
+            Admissions Open for 2026-27 Academic Year
           </p>
         </div>
       </div>

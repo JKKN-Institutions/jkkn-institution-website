@@ -169,6 +169,7 @@ export default function EngineeringProgramsSection({
 
   return (
     <section
+      id="programs"
       ref={sectionRef.ref}
       className={cn('relative w-full overflow-hidden', paddingClasses[paddingY], className)}
       style={{ backgroundColor }}
@@ -297,27 +298,6 @@ export default function EngineeringProgramsSection({
               </div>
             </Link>
           ))}
-        </div>
-
-        {/* View All Button */}
-        <div
-          className={cn(
-            'text-center mt-8 md:mt-12',
-            animateClass(400)
-          )}
-          style={{ transitionDelay: '400ms' }}
-        >
-          <Link
-            href="/courses"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105"
-            style={{
-              backgroundColor: accentColor,
-              boxShadow: `0 4px 15px ${accentColor}40`,
-            }}
-          >
-            <span>View All Programs</span>
-            <ChevronRight className="w-5 h-5" />
-          </Link>
         </div>
       </div>
 

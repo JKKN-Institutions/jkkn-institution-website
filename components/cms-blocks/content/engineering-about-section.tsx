@@ -54,7 +54,7 @@ export const EngineeringAboutSectionPropsSchema = z.object({
   // Title
   title: z.string().default('Welcome to JKKN College of Engineering'),
   subtitle: z.string().default('About Us'),
-  description: z.string().default('Established as part of the prestigious JKKN Educational Institutions with over 70+ years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development.'),
+  description: z.string().default('Established as part of the prestigious JKKN Institutions with over 70+ years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development.'),
 
   // Features list
   features: z.array(z.string()).default([
@@ -73,8 +73,8 @@ export const EngineeringAboutSectionPropsSchema = z.object({
   // CTA
   cta: z.object({
     label: z.string().default('Learn More About Us'),
-    link: z.string().default('/about'),
-  }).default({ label: 'Learn More About Us', link: '/about' }),
+    link: z.string().default('/our-institutions'),
+  }).default({ label: 'Learn More About Us', link: '/our-institutions' }),
 
   // Colors
   primaryColor: z.string().default('#0b6d41'),
@@ -101,7 +101,7 @@ export default function EngineeringAboutSection({
   badge = { text: '70+ Years Legacy', position: 'top-left' },
   title = 'Welcome to JKKN College of Engineering',
   subtitle = 'About Us',
-  description = 'Established as part of the prestigious JKKN Educational Institutions with over 70+ years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development.',
+  description = 'Established as part of the prestigious JKKN Institutions with over 70+ years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development.',
   features = [
     'AICTE Approved & Anna University Affiliated',
     'NAAC Accredited Programs',
@@ -112,7 +112,7 @@ export default function EngineeringAboutSection({
   ],
   image = '/images/engineering/about-campus.jpg',
   imageAlt = 'JKKN Engineering College Campus',
-  cta = { label: 'Learn More About Us', link: '/about' },
+  cta = { label: 'Learn More About Us', link: '/our-institutions' },
   primaryColor = '#0b6d41',
   accentColor = '#ffde59',
   backgroundColor = '#ffffff',

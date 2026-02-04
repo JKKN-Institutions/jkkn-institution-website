@@ -390,27 +390,6 @@ export default function EngineeringFacilitiesSection({
             )
           })}
         </div>
-
-        {/* CTA */}
-        <div
-          className={cn(
-            'text-center mt-10 md:mt-12',
-            animateClass(400)
-          )}
-          style={{ transitionDelay: '400ms' }}
-        >
-          <Link
-            href={cta.link}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 shadow-lg"
-            style={{
-              backgroundColor: primaryColor,
-              boxShadow: `0 4px 15px ${primaryColor}40`,
-            }}
-          >
-            <span>{cta.label}</span>
-            <ChevronRight className="w-5 h-5" />
-          </Link>
-        </div>
       </div>
 
       {/* Empty state for editing */}

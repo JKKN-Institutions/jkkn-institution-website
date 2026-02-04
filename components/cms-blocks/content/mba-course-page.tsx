@@ -361,12 +361,12 @@ export function MBACoursePage(props: MBACoursePageProps) {
         primaryColor={primaryColor}
       />
 
-      {/* Facilities */}
-      <FacilitiesSection
+      {/* Facilities - Hidden as per requirement */}
+      {/* <FacilitiesSection
         title={facilitiesTitle}
         facilities={facilities}
         primaryColor={primaryColor}
-      />
+      /> */}
 
       {/* Faculty */}
       <FacultySection title={facultyTitle} faculty={faculty} primaryColor={primaryColor} />
@@ -1045,6 +1045,16 @@ function TopRecruitersSection({
   recruiters: string[]
   primaryColor: string
 }) {
+  // Map recruiter names to logo paths
+  const recruiterLogos: Record<string, string> = {
+    'LGB': '/images/recruiters/lgb.png',
+    'Foxconn': '/images/recruiters/foxconn.png',
+    'TVS Group': '/images/recruiters/tvs-group.jpg',
+    'Sourcesys': '/images/recruiters/sourcesys.png',
+    'Infinix': '/images/recruiters/infinix.png',
+    'Pronoia Insurance': '/images/recruiters/pronoia-insurance.jpg',
+  }
+
   return (
     <section className="py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -1052,13 +1062,23 @@ function TopRecruitersSection({
           {title}
         </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
           {recruiters.map((recruiter, index) => (
             <div
               key={index}
-              className="bg-gradient-to-br from-[#fbfbee] to-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center border border-gray-100"
+              className="bg-white rounded-lg p-4 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow group"
             >
-              <span className="text-sm font-medium text-gray-800 text-center">{recruiter}</span>
+              {recruiterLogos[recruiter] ? (
+                <img
+                  src={recruiterLogos[recruiter]}
+                  alt={recruiter}
+                  className="max-h-12 w-auto opacity-70 group-hover:opacity-100 transition-opacity"
+                />
+              ) : (
+                <span className="text-sm font-semibold text-gray-600 group-hover:text-gray-900 transition-colors text-center">
+                  {recruiter}
+                </span>
+              )}
             </div>
           ))}
         </div>

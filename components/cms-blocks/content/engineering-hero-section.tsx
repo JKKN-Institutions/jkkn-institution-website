@@ -107,13 +107,13 @@ export const EngineeringHeroSectionPropsSchema = z.object({
   // CTAs
   primaryCta: z.object({
     label: z.string().default('Apply Now'),
-    link: z.string().default('/admissions'),
-  }).default({ label: 'Apply Now', link: '/admissions' }),
+    link: z.string().default('https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8'),
+  }).default({ label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8' }),
 
   secondaryCta: z.object({
     label: z.string().default('Explore Programs'),
-    link: z.string().default('/courses'),
-  }).default({ label: 'Explore Programs', link: '/courses' }),
+    link: z.string().default('#programs'),
+  }).default({ label: 'Explore Programs', link: '#programs' }),
 
   // Image
   heroImage: z.string().default('/images/engineering/campus-hero.jpg'),
@@ -201,8 +201,8 @@ export default function EngineeringHeroSection({
     { value: 50, suffix: '+', label: 'Recruiters', icon: 'building' },
     { value: 12, suffix: '+', label: 'Programs', icon: 'users' },
   ],
-  primaryCta = { label: 'Apply Now', link: '/admissions' },
-  secondaryCta = { label: 'Explore Programs', link: '/courses' },
+  primaryCta = { label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8' },
+  secondaryCta = { label: 'Explore Programs', link: '#programs' },
   heroImage = '/images/engineering/campus-hero.jpg',
   primaryColor = '#0b6d41',
   accentColor = '#ffde59',

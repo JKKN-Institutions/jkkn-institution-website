@@ -64,7 +64,7 @@ export const EngineeringWhyChooseSectionPropsSchema = z.object({
   })).default([
     {
       title: '70+ Years Legacy',
-      description: 'Part of JKKN Educational Institutions with 70+ years of excellence in education',
+      description: 'Part of JKKN Institutions with 70+ years of excellence in education',
       icon: 'award',
     },
     {
@@ -160,7 +160,7 @@ export default function EngineeringWhyChooseSection({
   features = [
     {
       title: '70+ Years Legacy',
-      description: 'Part of JKKN Educational Institutions with 70+ years of excellence in education',
+      description: 'Part of JKKN Institutions with 70+ years of excellence in education',
       icon: 'award',
     },
     {
