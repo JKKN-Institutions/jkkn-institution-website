@@ -130,7 +130,9 @@
       "Bash(git commit:*)",
       "Bash(del \".next\\\\dev\\\\lock\")",
       "mcp__Engineering_College_Supabase_Project__apply_migration",
-      "mcp__next-devtools__init"
+      "mcp__next-devtools__init",
+      "mcp__Engineering_College_Supabase_Project__list_tables",
+      "mcp__Engineering_College_Supabase_Project__execute_sql"
     ],
     "deny": [],
     "ask": [],

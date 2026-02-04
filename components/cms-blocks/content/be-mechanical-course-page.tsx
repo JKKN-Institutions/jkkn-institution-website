@@ -56,6 +56,7 @@ const SemesterSchema = z.object({
   semester: z.number(),
   credits: z.number(),
   subjects: z.array(SubjectSchema),
+  syllabusImage: z.string().optional(),
 })
 
 const CurriculumYearSchema = z.object({
@@ -588,6 +589,7 @@ function CurriculumSection({
       semester: number
       credits: number
       subjects: Array<{ code?: string; name: string; credits?: number }>
+      syllabusImage?: string
     }>
   }>
   primaryColor: string
@@ -644,6 +646,17 @@ function CurriculumSection({
                       Total Credits: {semester.credits}
                     </span>
                   </div>
+
+                  {/* Syllabus Image - Display if available */}
+                  {semester.syllabusImage && (
+                    <div className="mb-6 rounded-lg overflow-hidden shadow-md">
+                      <img
+                        src={semester.syllabusImage}
+                        alt={`Semester ${semester.semester} Syllabus`}
+                        className="w-full h-auto object-contain bg-white"
+                      />
+                    </div>
+                  )}
 
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {semester.subjects.map((subject, index) => (
@@ -1216,31 +1229,29 @@ function FinalCTASection({
   primaryColor: string
 }) {
   return (
-    <section
-      className="py-20 md:py-24"
-      style={{
-        background: `linear-gradient(135deg, ${accentColor} 0%, ${accentColor}dd 100%)`,
-        color: primaryColor,
-      }}
-    >
+    <section className="py-20 md:py-24 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: primaryColor }}>
+          {title}
+        </h2>
         {description && (
-          <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto opacity-90">
+          <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-gray-700">
             {description}
           </p>
         )}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a
             href={buttonLink}
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-gray-800 rounded-lg font-semibold text-base hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 text-white rounded-lg font-semibold text-base hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl"
+            style={{ backgroundColor: primaryColor }}
           >
             {buttonLabel}
             <ArrowRight className="w-5 h-5" />
           </a>
           <a
             href="/contact"
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold text-base hover:bg-white/10 transition-all duration-300"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent border-2 rounded-lg font-semibold text-base hover:bg-gray-50 transition-all duration-300"
+            style={{ borderColor: primaryColor, color: primaryColor }}
           >
             Contact Admissions
             <Phone className="w-5 h-5" />

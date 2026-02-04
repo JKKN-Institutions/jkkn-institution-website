@@ -1,6 +1,9 @@
 import { NAACPage } from '@/components/cms-blocks/content/naac-page'
-import { getInstitutionId } from '@/lib/config/multi-tenant'
+import { getInstitutionId, getCurrentInstitution } from '@/lib/config/multi-tenant'
 import type { Metadata } from 'next'
+
+// Force dynamic rendering to ensure correct institution data is loaded
+export const dynamic = 'force-dynamic'
 
 /**
  * NAAC Overview Page Route
@@ -18,10 +21,13 @@ import type { Metadata } from 'next'
  * SEO optimized with proper metadata
  */
 
+// Dynamic metadata based on institution
+const institution = getCurrentInstitution()
+const institutionName = institution.name
+
 export const metadata: Metadata = {
-  title: 'NAAC Accreditation - Overview | JKKN',
-  description:
-    'Comprehensive NAAC accreditation documentation for JKKN Institutions. Access IIQA, all seven criteria, best practices, institutional distinctiveness, stakeholder feedback, DVV clarifications, and Self Study Report.',
+  title: `NAAC Accreditation - Overview | ${institution.shortName}`,
+  description: `Comprehensive NAAC accreditation documentation for ${institutionName}. Access IIQA, all seven criteria, best practices, institutional distinctiveness, stakeholder feedback, DVV clarifications, and Self Study Report.`,
   keywords: [
     'NAAC',
     'NAAC accreditation',
@@ -38,13 +44,13 @@ export const metadata: Metadata = {
     'DVV',
     'SSR',
     'quality assurance',
-    'JKKN',
+    institutionName,
+    institution.shortName,
     'higher education accreditation',
   ],
   openGraph: {
-    title: 'NAAC Accreditation - Overview | JKKN',
-    description:
-      'Complete NAAC accreditation documentation covering all seven criteria, institutional excellence, quality benchmarks, and continuous improvement initiatives.',
+    title: `NAAC Accreditation - Overview | ${institution.shortName}`,
+    description: `Complete NAAC accreditation documentation for ${institutionName} covering all seven criteria, institutional excellence, quality benchmarks, and continuous improvement initiatives.`,
     type: 'website',
   },
 }
