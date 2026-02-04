@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { z } from 'zod'
 import {
@@ -6,6 +8,14 @@ import {
   IndianRupee, Wrench, Flame, Car, Bot, Zap, Compass, Factory,
   CheckCircle, Laptop, Trophy, TrendingUp
 } from 'lucide-react'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
+import Autoplay from 'embla-carousel-autoplay'
 
 // ============================================
 // Zod Schemas for Type Safety
@@ -89,7 +99,7 @@ const FacultySchema = z.object({
   name: z.string(),
   designation: z.string(),
   qualification: z.string(),
-  specialization: z.string(),
+  specialization: z.string().optional(),
   image: z.string().optional(),
 })
 
@@ -103,6 +113,13 @@ const PlacementStatSchema = z.object({
   value: z.string(),
   icon: z.string(),
   description: z.string().optional(),
+})
+
+const MOUSchema = z.object({
+  sno: z.number(),
+  industryName: z.string(),
+  address: z.string(),
+  duration: z.string(),
 })
 
 export const BEMechanicalCoursePagePropsSchema = z.object({
@@ -161,6 +178,10 @@ export const BEMechanicalCoursePagePropsSchema = z.object({
   placementStatsTitle: z.string().optional(),
   placementStats: z.array(PlacementStatSchema).optional(),
 
+  // MOUs
+  mousTitle: z.string().optional(),
+  mous: z.array(MOUSchema).optional(),
+
   // Final CTA Section
   ctaTitle: z.string().optional(),
   ctaDescription: z.string().optional(),
@@ -209,12 +230,14 @@ export function BEMechanicalCoursePage(props: BEMechanicalCoursePageProps) {
     faqs,
     placementStatsTitle,
     placementStats,
+    mousTitle,
+    mous,
     ctaTitle,
     ctaDescription,
     ctaButtonLabel,
     ctaButtonLink,
     primaryColor = '#0b6d41',
-    accentColor = '#ff6b35',
+    accentColor = '#0b6d41', // Using brand green instead of orange
   } = props
 
   return (
@@ -296,12 +319,12 @@ export function BEMechanicalCoursePage(props: BEMechanicalCoursePageProps) {
         primaryColor={primaryColor}
       />
 
-      {/* Fee Structure */}
-      <FeeStructureSection
+      {/* Fee Structure - Hidden as per requirement */}
+      {/* <FeeStructureSection
         title={feeTitle}
         feeBreakdown={feeBreakdown}
         primaryColor={primaryColor}
-      />
+      /> */}
 
       {/* FAQs */}
       <FAQSection
@@ -315,6 +338,15 @@ export function BEMechanicalCoursePage(props: BEMechanicalCoursePageProps) {
         <PlacementStatisticsSection
           title={placementStatsTitle || 'Placement Statistics'}
           stats={placementStats}
+          primaryColor={primaryColor}
+        />
+      )}
+
+      {/* MOUs (if provided) */}
+      {mous && mous.length > 0 && (
+        <MOUsSection
+          title={mousTitle || 'Memorandums of Understanding (MOUs)'}
+          mous={mous}
           primaryColor={primaryColor}
         />
       )}
@@ -358,7 +390,14 @@ function HeroSection({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Content */}
-          <div className="space-y-8">
+          <div className="space-y-6">
+            {/* Centenary Badge */}
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-400 rounded-full px-4 py-2 shadow-md">
+              <span className="text-yellow-600 text-lg">⭐</span>
+              <span className="text-sm font-bold text-gray-800">
+                #JKKN100 Centenary Year Admissions Open 2026-27
+              </span>
+            </div>
             {/* Title with Brand Green Color */}
             <div>
               <h1
@@ -420,7 +459,7 @@ function HeroSection({
             {/* Mechanical Lab Image */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="https://placehold.co/800x500/0b6d41/ffffff?text=Mechanical+Engineering+Lab"
+                src="/images/courses/be-mech/JKKN BE-MECH.png"
                 alt="Students working in Mechanical Engineering laboratory at JKKN"
                 className="w-full h-[500px] object-cover"
               />
@@ -827,11 +866,15 @@ function FacultySection({
     name: string
     designation: string
     qualification: string
-    specialization: string
+    specialization?: string
     image?: string
   }>
   primaryColor: string
 }) {
+  const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  )
+
   return (
     <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -842,35 +885,45 @@ function FacultySection({
           {title}
         </h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {faculty.map((member, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
-            >
-              {member.image ? (
-                <div className="h-56 overflow-hidden bg-gray-100">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ) : (
-                <div className="h-56 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                  <Users className="w-16 h-16 text-gray-400" />
-                </div>
-              )}
-              <div className="p-6">
-                <h3 className="text-lg font-bold mb-1 text-gray-800">{member.name}</h3>
-                <p className="text-sm text-gray-600 mb-1">{member.designation}</p>
-                <p className="text-sm font-medium mb-2" style={{ color: primaryColor }}>
-                  {member.qualification}
-                </p>
-                <p className="text-xs text-gray-600">{member.specialization}</p>
-              </div>
-            </div>
-          ))}
+        <div className="relative px-12">
+          <Carousel
+            opts={{
+              align: 'start',
+              loop: true,
+            }}
+            plugins={[plugin.current]}
+            className="w-full"
+            onMouseEnter={() => plugin.current.stop()}
+            onMouseLeave={() => plugin.current.play()}
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {faculty.map((member, index) => (
+                <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 h-full">
+                    <div className="h-56 overflow-hidden bg-gray-100">
+                      <img
+                        src={member.image || '/images/faculty/placeholder-avatar.jpg'}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-lg font-bold mb-1 text-gray-800">{member.name}</h3>
+                      <p className="text-sm text-gray-600 mb-1">{member.designation}</p>
+                      <p className="text-sm font-medium mb-2" style={{ color: primaryColor }}>
+                        {member.qualification}
+                      </p>
+                      {member.specialization && (
+                        <p className="text-xs text-gray-600">{member.specialization}</p>
+                      )}
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-0" style={{ backgroundColor: primaryColor, color: 'white', border: 'none' }} />
+            <CarouselNext className="right-0" style={{ backgroundColor: primaryColor, color: 'white', border: 'none' }} />
+          </Carousel>
         </div>
       </div>
     </section>
@@ -1073,6 +1126,75 @@ function PlacementStatisticsSection({
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  )
+}
+
+function MOUsSection({
+  title,
+  mous,
+  primaryColor,
+}: {
+  title: string
+  mous: Array<{ sno: number; industryName: string; address: string; duration: string }>
+  primaryColor: string
+}) {
+  return (
+    <section className="py-16 md:py-20 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2
+          className="text-3xl md:text-4xl font-bold text-center mb-12"
+          style={{ color: primaryColor }}
+        >
+          {title}
+        </h2>
+
+        <div className="max-w-6xl mx-auto bg-gradient-to-br from-[#FFF9F0] to-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-gray-50 border-b-2 border-gray-200">
+                  <th className="px-6 py-4 text-left text-sm font-bold text-gray-700 w-20">
+                    S.no
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-bold text-gray-700">
+                    Name of the industry
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-bold text-gray-700">
+                    Address of the industry
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-bold text-gray-700 min-w-[200px]">
+                    Duration of MOU
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {mous.map((mou, index) => (
+                  <tr
+                    key={index}
+                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200"
+                  >
+                    <td className="px-6 py-4 text-gray-800 font-medium">{mou.sno}</td>
+                    <td className="px-6 py-4 text-gray-800 font-semibold">
+                      {mou.industryName}
+                    </td>
+                    <td className="px-6 py-4 text-gray-700 text-sm leading-relaxed">
+                      {mou.address}
+                    </td>
+                    <td className="px-6 py-4 text-gray-700 text-sm whitespace-pre-line">
+                      {mou.duration}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <p className="text-center text-sm text-gray-600 mt-6">
+          * These MOUs facilitate industry collaborations, internships, and knowledge exchange opportunities for students.
+        </p>
       </div>
     </section>
   )

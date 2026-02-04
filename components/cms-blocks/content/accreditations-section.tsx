@@ -377,7 +377,7 @@ const DEFAULT_ACCREDITATION_LOGOS: AccreditationLogoItem[] = [
   { name: 'NAAC A', icon: 'Trophy' },
   { name: 'AICTE', icon: 'Award' },
   { name: 'UGC', icon: 'CheckCircle' },
-  { name: 'NBA', icon: 'Shield' },
+  { name: 'NAAC', icon: 'Shield' },
   { name: 'DCI', icon: 'Stethoscope' },
   { name: 'PCI', icon: 'FlaskConical' },
   { name: 'INC', icon: 'Heart' },

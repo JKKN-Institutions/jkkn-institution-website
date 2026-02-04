@@ -15,6 +15,14 @@ import {
   Briefcase,
   Users,
 } from 'lucide-react'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
+import Autoplay from 'embla-carousel-autoplay'
 
 // ============================================
 // Zod Schemas for Type Safety
@@ -112,7 +120,7 @@ const FacultySchema = z.object({
   name: z.string(),
   designation: z.string(),
   qualification: z.string(),
-  specialization: z.string(),
+  specialization: z.string().optional(),
   image: z.string().optional(),
 })
 
@@ -263,14 +271,14 @@ export function SHCoursePage(props: SHCoursePageProps) {
         primaryColor={primaryColor}
       />
 
-      {/* Fee Structure */}
-      <FeeStructureSection
+      {/* Fee Structure - Hidden as per requirement */}
+      {/* <FeeStructureSection
         title={feeTitle}
         description={feeDescription}
         feeTable={feeTable}
         scholarships={scholarships}
         primaryColor={primaryColor}
-      />
+      /> */}
 
       {/* Career Opportunities */}
       <CareerOpportunitiesSection
@@ -865,11 +873,15 @@ function FacultySection({
     name: string
     designation: string
     qualification: string
-    specialization: string
+    specialization?: string
     image?: string
   }>
   primaryColor: string
 }) {
+  const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  )
+
   return (
     <section className="py-16 md:py-20 bg-[#fbfbee]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -885,28 +897,45 @@ function FacultySection({
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {faculty.map((member, idx) => (
-            <div key={idx} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
-              {member.image ? (
-                <div className="h-56 overflow-hidden bg-gray-100">
-                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
-                </div>
-              ) : (
-                <div className="h-56 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                  <Users className="w-16 h-16 text-gray-400" />
-                </div>
-              )}
-              <div className="p-6">
-                <h3 className="text-lg font-bold mb-1 text-gray-800">{member.name}</h3>
-                <p className="text-sm text-gray-600 mb-2">{member.designation}</p>
-                <p className="text-sm font-medium mb-2" style={{ color: primaryColor }}>
-                  {member.qualification}
-                </p>
-                <p className="text-xs text-gray-600">Specialization: {member.specialization}</p>
-              </div>
-            </div>
-          ))}
+        <div className="relative px-12">
+          <Carousel
+            opts={{
+              align: 'start',
+              loop: true,
+            }}
+            plugins={[plugin.current]}
+            className="w-full"
+            onMouseEnter={() => plugin.current.stop()}
+            onMouseLeave={() => plugin.current.play()}
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {faculty.map((member, idx) => (
+                <CarouselItem key={idx} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 h-full">
+                    <div className="h-56 overflow-hidden bg-gray-100">
+                      <img
+                        src={member.image || '/images/faculty/placeholder-avatar.jpg'}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-lg font-bold mb-1 text-gray-800">{member.name}</h3>
+                      <p className="text-sm text-gray-600 mb-1">{member.designation}</p>
+                      <p className="text-sm font-medium mb-2" style={{ color: primaryColor }}>
+                        {member.qualification}
+                      </p>
+                      {member.specialization && (
+                        <p className="text-xs text-gray-600">Specialization: {member.specialization}</p>
+                      )}
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-0" style={{ backgroundColor: primaryColor, color: 'white', border: 'none' }} />
+            <CarouselNext className="right-0" style={{ backgroundColor: primaryColor, color: 'white', border: 'none' }} />
+          </Carousel>
         </div>
       </div>
     </section>

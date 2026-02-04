@@ -9,7 +9,7 @@ import { BEMechanicalCoursePageProps } from '@/components/cms-blocks/content/be-
  * Institution: JKKN College of Engineering
  * Program: B.E. Mechanical Engineering
  * Duration: 4 Years (8 Semesters)
- * Accreditation: NBA Accredited
+ * Accreditation: NAAC Accredited
  */
 
 export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
@@ -18,35 +18,20 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   // ===========================================
   heroTitle: 'BE Mechanical Engineering',
   heroSubtitle: 'Engineering excellence in mechanical systems, manufacturing, and innovation with 60+ years of academic legacy',
-  affiliatedTo: 'Affiliated to Anna University | Approved by AICTE | NBA Accredited',
+  affiliatedTo: 'Affiliated to Anna University | Approved by AICTE | NAAC Accredite',
 
   heroStats: [
-    {
-      icon: '🏆',
-      label: 'Placement Rate',
-      value: '95%',
-    },
-    {
-      icon: '🎓',
-      label: 'Years of Excellence',
-      value: '60+',
-    },
-    {
-      icon: '📚',
-      label: 'Total Seats',
-      value: '180',
-    },
-    {
-      icon: '💰',
-      label: 'Highest Package',
-      value: '5L',
-    },
+    { icon: '🎓', label: 'Years Duration', value: '4' },
+    { icon: '💺', label: 'Seats Available', value: '60' },
+    { icon: '📈', label: 'Placement Rate', value: '95%' },
+    { icon: '💰', label: 'Highest Package', value: '₹12L' },
+
   ],
 
   heroCTAs: [
     {
       label: 'Apply Now',
-      link: '/admissions/apply',
+      link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8',
       variant: 'primary',
     },
     {
@@ -360,26 +345,12 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   recruitersTitle: 'Top Recruiters',
 
   recruiters: [
-    'Tata Motors',
-    'Ashok Leyland',
-    'TVS Motor Company',
-    'Mahindra & Mahindra',
-    'L&T Construction',
-    'Hyundai Motors',
-    'Ford India',
-    'Caterpillar India',
-    'Bosch India',
-    'Siemens Limited',
-    'Schneider Electric',
-    'ABB India',
-    'Kirloskar Brothers',
-    'Thermax Limited',
-    'Cummins India',
-    'Sundaram Clayton',
-    'Rane Group',
-    'Lucas TVS',
-    'Wheels India',
-    'Bharat Forge',
+    'LGB',
+    'Foxconn',
+    'TVS Group',
+    'Sourcesys',
+    'Infinix',
+    'Pronoia Insurance',
   ],
 
   // ===========================================
@@ -390,32 +361,32 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   facilities: [
     {
       name: 'CAD/CAM/CAE Laboratory',
-      image: 'https://placehold.co/600x400/0b6d41/ffffff?text=CAD+CAM+CAE+Lab',
+      image: '/images/courses/be-mech/JKKN Mech - CAD CAM CAE Laboratory.png',
       description: 'State-of-the-art computer lab equipped with AutoCAD, SolidWorks, CATIA, Mastercam, ANSYS, and other industry-standard software for design, analysis, and manufacturing simulation.',
     },
     {
       name: 'Thermal Engineering Laboratory',
-      image: 'https://placehold.co/600x400/0b6d41/ffffff?text=Thermal+Engineering+Lab',
+      image: '/images/courses/be-mech/JKKN Mech - Thermal Engineering Laboratory.png',
       description: 'Advanced lab with multi-cylinder diesel engines, refrigeration systems, air conditioning trainers, boiler setup, and heat transfer equipment for practical thermal engineering experiments.',
     },
     {
       name: 'Fluid Mechanics Laboratory',
-      image: 'https://placehold.co/600x400/0b6d41/ffffff?text=Fluid+Mechanics+Lab',
+      image: '/images/courses/be-mech/JKKN Mech - Fluid Mechanics Laboratory.png',
       description: 'Comprehensive fluid mechanics lab featuring various pumps, turbines, flow measurement devices, pipe networks, and hydraulic machines for hands-on learning of fluid dynamics principles.',
     },
     {
       name: 'Strength of Materials Laboratory',
-      image: 'https://placehold.co/600x400/0b6d41/ffffff?text=Strength+of+Materials+Lab',
+      image: '/images/courses/be-mech/JKKN Mech - Strength of Materials Laboratory.png',
       description: 'Well-equipped lab with universal testing machine, impact testing machine, hardness testers, torsion apparatus, and beam testing setups for material properties analysis and testing.',
     },
     {
       name: 'Manufacturing Technology Laboratory',
-      image: 'https://placehold.co/600x400/0b6d41/ffffff?text=Manufacturing+Technology+Lab',
+      image: '/images/courses/be-mech/JKKN Mech - Manufacturing Technology Laboratory.png',
       description: 'Modern manufacturing lab with CNC machines, lathe, milling, welding, casting equipment, and precision measuring instruments for practical training in various manufacturing processes.',
     },
     {
-      name: 'Robotics & Automation Laboratory',
-      image: 'https://placehold.co/600x400/0b6d41/ffffff?text=Robotics+Automation+Lab',
+      name: 'Mechatronics and IOT Laboratory',
+      image: '/images/courses/be-mech/JKKN Mech (1).png',
       description: 'Cutting-edge lab with industrial robots, PLC trainers, pneumatic and hydraulic circuits, sensors, actuators, and automation equipment for Industry 4.0 skill development.',
     },
   ],
@@ -427,53 +398,59 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
 
   faculty: [
     {
-      name: 'Dr. R. Rajendran',
-      designation: 'Professor & Head',
-      qualification: 'Ph.D. (Thermal Engineering)',
-      specialization: 'Heat Transfer, Renewable Energy Systems',
-      image: 'https://placehold.co/300x400/0b6d41/ffffff?text=Faculty+Member',
-    },
-    {
-      name: 'Dr. K. Senthilkumar',
-      designation: 'Professor',
-      qualification: 'Ph.D. (Manufacturing Engineering)',
-      specialization: 'CNC Machining, Advanced Manufacturing',
-    },
-    {
-      name: 'Dr. S. Prabhakar',
+      name: 'Dr. R. Sasikumar',
       designation: 'Associate Professor',
-      qualification: 'Ph.D. (Design Engineering)',
-      specialization: 'FEA, Machine Design, CAD/CAM',
+      qualification: 'Ph.D',
     },
     {
-      name: 'Dr. M. Venkatesh',
-      designation: 'Associate Professor',
-      qualification: 'Ph.D. (Automobile Engineering)',
-      specialization: 'Vehicle Dynamics, Electric Vehicles',
-    },
-    {
-      name: 'Mr. A. Karthikeyan',
+      name: 'Mr. S. RanjithKumar',
       designation: 'Assistant Professor',
-      qualification: 'M.E. (Manufacturing)',
-      specialization: 'Production Planning, Quality Control',
+      qualification: 'M.E',
     },
     {
-      name: 'Ms. P. Divya',
+      name: 'Mr. M. Sivashankar',
       designation: 'Assistant Professor',
-      qualification: 'M.E. (Energy Engineering)',
-      specialization: 'Solar Energy, Sustainable Engineering',
+      qualification: 'M.E',
     },
     {
-      name: 'Mr. R. Suresh Kumar',
+      name: 'Mr. S. Sivabalan',
       designation: 'Assistant Professor',
-      qualification: 'M.E. (CAD/CAM)',
-      specialization: 'Computer Aided Design, Solid Modeling',
+      qualification: 'M.E',
     },
     {
-      name: 'Dr. N. Gnanasekaran',
+      name: 'Mr. M. Kandasamy',
       designation: 'Assistant Professor',
-      qualification: 'Ph.D. (Thermal Sciences)',
-      specialization: 'Combustion, IC Engines, CFD',
+      qualification: 'M.E.',
+    },
+    {
+      name: 'Mr. Shanmugam Ponnusamy',
+      designation: 'Assistant Professor',
+      qualification: 'M.E',
+    },
+    {
+      name: 'Mr. D. Yaalarasan',
+      designation: 'Assistant Professor',
+      qualification: 'M.E.',
+    },
+    {
+      name: 'Mr. P. Jeyaprakash',
+      designation: 'Assistant Professor',
+      qualification: 'M.E.',
+    },
+    {
+      name: 'Mr. Meiyazhagan',
+      designation: 'Assistant Professor',
+      qualification: 'M.E.',
+    },
+    {
+      name: 'Mr. L. Gokula Vasan',
+      designation: 'Assistant Professor',
+      qualification: 'M.E.',
+    },
+    {
+      name: 'Mr. V. D. Janarthanan',
+      designation: 'Assistant Professor',
+      qualification: 'M.E.',
     },
   ],
 
@@ -563,8 +540,8 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
       answer: 'Candidates must have passed 10+2 examination with Physics, Chemistry, and Mathematics as core subjects with a minimum of 50% aggregate marks (45% for reserved categories). The minimum age requirement is 17 years as on December 31st of the admission year.',
     },
     {
-      question: 'Is the B.E. Mechanical Engineering program NBA accredited?',
-      answer: 'Yes, our B.E. Mechanical Engineering program is accredited by the National Board of Accreditation (NBA), ensuring that the curriculum and teaching quality meet international standards. The program is also affiliated to Anna University and approved by AICTE.',
+      question: 'Is the B.E. Mechanical Engineering program NAAC accredited?',
+      answer: 'Yes, our B.E. Mechanical Engineering program is accredited by the National Assessment and Accreditation Council (NAAC), ensuring that the curriculum and teaching quality meet international standards. The program is also affiliated to Anna University and approved by AICTE.',
     },
     {
       question: 'What are the career opportunities after completing this program?',
@@ -633,16 +610,36 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   ],
 
   // ===========================================
+  // MOUs
+  // ===========================================
+  mousTitle: 'Memorandums of Understanding (MOUs)',
+
+  mous: [
+    {
+      sno: 1,
+      industryName: 'ABR Engineering Company',
+      address: '1/351 A, Kunnathur village, Kunnathur-post, SS Kulam via, Coimbatore, 641107.',
+      duration: '31st of March, 2023\nto\n31st March, 2033',
+    },
+    {
+      sno: 2,
+      industryName: 'DSR Industries',
+      address: '1/351 A, Kunnathur village, Kunnathur-post, SS Kulam via, Coimbatore, 641107.',
+      duration: '31st of March, 2023\nto\n31st March, 2033',
+    },
+  ],
+
+  // ===========================================
   // Final CTA
   // ===========================================
   ctaTitle: 'Ready to Start Your Engineering Journey?',
   ctaDescription: 'Join JKKN College of Engineering and build a successful career in Mechanical Engineering with industry-relevant skills and world-class education.',
   ctaButtonLabel: 'Apply Now',
-  ctaButtonLink: '/admissions/apply',
+  ctaButtonLink: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8',
 
   // ===========================================
   // Styling
   // ===========================================
   primaryColor: '#0b6d41',
-  accentColor: '#ff6b35',
+  accentColor: '#0b6d41', // Using brand green instead of orange
 }

@@ -8,10 +8,16 @@ import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/components/navigation/hooks/use-mobile';
 import { useBottomNav, useBottomNavHydration } from '@/components/navigation/hooks/use-bottom-nav';
 import { usePublicNavData, type CmsNavItem } from './use-public-nav-data';
+import { mapCmsIconToLucide } from './cms-icon-mapper';
 import { BottomNavItem } from '../core/bottom-nav-item';
 import { BottomNavSubmenu } from '../core/bottom-nav-submenu';
 import { BottomNavMoreMenu } from '../core/bottom-nav-more-menu';
-import type { FlatMenuItem } from '../core/types';
+import type { FlatMenuItem, SubmenuGroup } from '../core/types';
+
+// Generate a unique ID from label
+function toId(label: string): string {
+  return label.toLowerCase().replace(/\s+/g, '-');
+}
 
 interface PublicBottomNavProps {
   navigation?: CmsNavItem[];
@@ -51,21 +57,68 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
     return currentActiveIndex >= 0 ? currentActiveIndex.toString() : null;
   }, [currentActiveIndex, activeNavId, isExpanded]);
 
-  // Get active submenu items
-  const activeSubmenus: FlatMenuItem[] = useMemo(() => {
+  // Get active submenu items or groups
+  const { activeSubmenus, activeSubmenuGroups } = useMemo(() => {
+    console.log(`[PublicBottomNav] Computing active submenus for navId: ${effectiveActiveNavId}`);
+
     if (effectiveActiveNavId !== null) {
       const index = parseInt(effectiveActiveNavId);
       const item = primaryItems[index];
+
+      console.log(`[PublicBottomNav] Active item:`, item);
+
       if (item && item.submenus.length > 0) {
-        return item.submenus.map((sub) => ({
+        // Check if submenus have parentLabel (indicating grouped structure)
+        const hasParentLabels = item.submenus.some((sub: any) => sub.parentLabel);
+
+        console.log(`[PublicBottomNav] Has parent labels: ${hasParentLabels}`);
+
+        if (hasParentLabels) {
+          // Group submenus by parentLabel
+          const groupsMap = new Map<string, FlatMenuItem[]>();
+
+          item.submenus.forEach((sub: any) => {
+            const groupLabel = sub.parentLabel || 'Other';
+            if (!groupsMap.has(groupLabel)) {
+              groupsMap.set(groupLabel, []);
+            }
+            groupsMap.get(groupLabel)!.push({
+              href: sub.href,
+              label: sub.label,
+              icon: sub.icon || item.icon,
+              active: sub.active
+            });
+          });
+
+          // Convert map to array of SubmenuGroup
+          const groups = Array.from(groupsMap.entries()).map(([label, items]) => ({
+            id: toId(label),
+            label,
+            icon: mapCmsIconToLucide(label, ''),
+            items
+          }));
+
+          console.log(`[PublicBottomNav] Created ${groups.length} groups:`, groups);
+
+          return { activeSubmenus: [], activeSubmenuGroups: groups };
+        }
+
+        // Flat submenus (no groups)
+        const flatSubmenus: FlatMenuItem[] = item.submenus.map((sub) => ({
           href: sub.href,
           label: sub.label,
-          icon: sub.icon || item.icon, // Use submenu's icon, fallback to parent's icon
+          icon: sub.icon || item.icon,
           active: sub.active
         }));
+
+        console.log(`[PublicBottomNav] Created ${flatSubmenus.length} flat submenus:`, flatSubmenus);
+
+        return { activeSubmenus: flatSubmenus, activeSubmenuGroups: [] };
       }
     }
-    return [];
+
+    console.log(`[PublicBottomNav] No active submenus`);
+    return { activeSubmenus: [], activeSubmenuGroups: [] };
   }, [effectiveActiveNavId, primaryItems]);
 
   // Sync activeNavId with pathname when not expanded
@@ -80,8 +133,12 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
     (index: number) => {
       const item = primaryItems[index];
 
+      console.log(`[PublicBottomNav] Clicked on nav item ${index}: ${item.label}`);
+      console.log(`[PublicBottomNav] Item has ${item.submenus.length} submenus:`, item.submenus);
+
       // If this item has no submenus, navigate directly
       if (item.submenus.length === 0) {
+        console.log(`[PublicBottomNav] No submenus, navigating to ${item.href}`);
         router.push(item.href);
         setExpanded(false);
         return;
@@ -89,8 +146,10 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
 
       // Toggle submenu
       if (isExpanded && activeNavId === index.toString()) {
+        console.log(`[PublicBottomNav] Collapsing submenu`);
         setExpanded(false);
       } else {
+        console.log(`[PublicBottomNav] Expanding submenu`);
         switchToNav(index.toString());
       }
     },
@@ -192,6 +251,7 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
         {/* Expanded submenu */}
         <BottomNavSubmenu
           items={activeSubmenus}
+          groups={activeSubmenuGroups.length > 0 ? activeSubmenuGroups : undefined}
           isOpen={isExpanded}
           onItemClick={handleSubmenuClick}
         />

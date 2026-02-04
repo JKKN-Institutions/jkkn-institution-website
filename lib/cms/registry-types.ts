@@ -460,7 +460,7 @@ export const FAQSectionPropsSchema = z.object({
     },
     {
       question: 'Is JKKN approved by AICTE, UGC, and other regulatory bodies?',
-      answer: 'Yes, all JKKN institutions are fully approved and recognized by respective regulatory bodies. Our colleges hold approvals from AICTE (All India Council for Technical Education), UGC (University Grants Commission), NAAC (National Assessment and Accreditation Council), NBA (National Board of Accreditation), DCI (Dental Council of India), PCI (Pharmacy Council of India), and INC (Indian Nursing Council). JKKN has achieved NAAC A+ Accreditation, reflecting our commitment to quality education.',
+      answer: 'Yes, all JKKN institutions are fully approved and recognized by respective regulatory bodies. Our colleges hold approvals from AICTE (All India Council for Technical Education), UGC (University Grants Commission), NAAC (National Assessment and Accreditation Council), DCI (Dental Council of India), PCI (Pharmacy Council of India), and INC (Indian Nursing Council). JKKN has achieved NAAC A+ Accreditation, reflecting our commitment to quality education.',
     },
     {
       question: 'What is the placement rate at JKKN?',
@@ -959,8 +959,8 @@ export const AccreditationsSectionPropsSchema = z.object({
     },
     {
       icon: 'CheckCircle',
-      name: 'NBA Accredited',
-      description: 'National Board of Accreditation certification for select Engineering and Pharmacy programs, validating outcome-based education standards.',
+      name: 'NAAC Accredited',
+      description: 'National Assessment and Accreditation Council certification for select Engineering and Pharmacy programs, validating outcome-based education standards.',
       order: 4,
     },
     {
@@ -1715,7 +1715,7 @@ export const AdmissionHeroPropsSchema = z.object({
     { icon: 'check', label: 'NAAC Accredited' },
     { icon: 'check', label: 'AICTE Approved' },
     { icon: 'check', label: 'UGC Recognized' },
-    { icon: 'check', label: 'NBA Accredited' },
+    { icon: 'check', label: 'NAAC Accredited' },
   ]),
 
   // Styling

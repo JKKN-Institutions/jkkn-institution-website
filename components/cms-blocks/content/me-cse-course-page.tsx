@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { z } from 'zod'
 import {
@@ -89,7 +91,9 @@ const FacultySchema = z.object({
   name: z.string(),
   designation: z.string(),
   qualification: z.string(),
-  photo: z.string(),
+  specialization: z.string().optional(),
+  photo: z.string().optional(),
+  image: z.string().optional(),
 })
 
 const FAQSchema = z.object({
@@ -314,7 +318,7 @@ function HeroSection({
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src={image}
+                src={'/images/courses/me-cse/JKKN ME CSE (1).png'}
                 alt="ME CSE Program"
                 className="w-full h-[500px] object-cover"
               />
@@ -480,17 +484,10 @@ function SpecializationsSection({
               key={index}
               className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all border border-gray-200"
             >
-              {/* Image */}
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={spec.image}
-                  alt={spec.title}
-                  className="w-full h-full object-cover transition-transform group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-
+              {/* Content */}
+              <div className="p-6">
                 {/* Badge */}
-                <div className="absolute top-4 left-4">
+                <div className="mb-4">
                   <span
                     className="px-3 py-1 rounded-full text-xs font-semibold text-white"
                     style={{ backgroundColor: colors.accentColor }}
@@ -498,10 +495,7 @@ function SpecializationsSection({
                     {spec.badge}
                   </span>
                 </div>
-              </div>
 
-              {/* Content */}
-              <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{spec.title}</h3>
                 <p className="text-gray-600 mb-4 text-sm">{spec.description}</p>
 
@@ -598,36 +592,7 @@ function CurriculumSection({
           </div>
         ))}
 
-        {/* Syllabus Images Section */}
-        {syllabusImages && syllabusImages.length > 0 && (
-          <div className="mt-16">
-            <h3
-              className="text-2xl font-bold mb-8 text-center"
-              style={{ color: colors.primaryColor }}
-            >
-              Complete Course Structure
-            </h3>
-            <div className="grid md:grid-cols-2 gap-8">
-              {syllabusImages.map((item, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-gray-200"
-                >
-                  <h4 className="text-lg font-bold text-gray-900 mb-4 text-center">
-                    {item.semester}
-                  </h4>
-                  <div className="overflow-hidden rounded-lg border border-gray-300">
-                    <img
-                      src={item.image}
-                      alt={item.alt}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+      
       </div>
     </section>
   )
@@ -823,26 +788,30 @@ function FacultySection({
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">{title}</h2>
         </div>
 
-        {/* Faculty Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Faculty Grid - Centered */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {members.map((faculty, index) => (
-            <div
-              key={index}
-              className="group text-center"
-            >
-              {/* Photo */}
-              <div className="relative mb-4 mx-auto w-48 h-48 rounded-full overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow">
+            <div key={index} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100">
+              <div className="h-64 overflow-hidden bg-gray-100">
                 <img
-                  src={faculty.photo}
+                  src={faculty.photo || faculty.image || '/images/faculty/placeholder-avatar.jpg'}
                   alt={faculty.name}
-                  className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.src = '/images/faculty/placeholder-avatar.jpg'
+                  }}
                 />
               </div>
-
-              {/* Info */}
-              <h3 className="text-lg font-bold text-gray-900 mb-1">{faculty.name}</h3>
-              <p className="text-sm font-medium mb-2" style={{ color: colors.accentColor }}>{faculty.designation}</p>
-              <p className="text-sm text-gray-600">{faculty.qualification}</p>
+              <div className="p-6">
+                <h3 className="text-lg font-bold mb-1 text-gray-800">{faculty.name}</h3>
+                <p className="text-sm text-gray-600 mb-1">{faculty.designation}</p>
+                <p className="text-sm font-medium mb-2" style={{ color: colors.accentColor }}>
+                  {faculty.qualification}
+                </p>
+                {faculty.specialization && (
+                  <p className="text-xs text-gray-600">{faculty.specialization}</p>
+                )}
+              </div>
             </div>
           ))}
         </div>

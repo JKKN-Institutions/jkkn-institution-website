@@ -1,6 +1,16 @@
+'use client'
+
 import React from 'react'
 import { z } from 'zod'
 import { ArrowRight, BookOpen, Calendar, Check, ChevronDown, Cpu, Users, Award, Briefcase, Building2, Mail, Phone, MapPin, Clock, UserCheck, FileText, IndianRupee } from 'lucide-react'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
+import Autoplay from 'embla-carousel-autoplay'
 
 // ============================================
 // Zod Schemas for Type Safety
@@ -84,13 +94,22 @@ const FacultySchema = z.object({
   name: z.string(),
   designation: z.string(),
   qualification: z.string(),
-  specialization: z.string(),
+  specialization: z.string().optional(),
   image: z.string().optional(),
 })
 
 const FAQSchema = z.object({
   question: z.string(),
   answer: z.string(),
+})
+
+const MOUSchema = z.object({
+  title: z.string(),
+  partner: z.string(),
+  location: z.string(),
+  signedDate: z.string(),
+  validUntil: z.string(),
+  description: z.string(),
 })
 
 export const BEITCoursePagePropsSchema = z.object({
@@ -125,13 +144,17 @@ export const BEITCoursePagePropsSchema = z.object({
   recruitersTitle: z.string(),
   recruiters: z.array(z.string()),
 
+  // MOUs (Memorandum of Understanding)
+  mousTitle: z.string().optional(),
+  mous: z.array(MOUSchema).optional(),
+
   // Admission Process
   admissionTitle: z.string(),
   admissionSteps: z.array(AdmissionStepSchema),
 
   // Fee Structure
-  feeTitle: z.string(),
-  feeBreakdown: z.array(FeeComponentSchema),
+  feeTitle: z.string().optional(),
+  feeBreakdown: z.array(FeeComponentSchema).optional(),
 
   // Facilities
   facilitiesTitle: z.string(),
@@ -181,6 +204,8 @@ export function BEITCoursePage(props: BEITCoursePageProps) {
     careerPaths,
     recruitersTitle,
     recruiters,
+    mousTitle,
+    mous,
     admissionTitle,
     admissionSteps,
     feeTitle,
@@ -255,6 +280,15 @@ export function BEITCoursePage(props: BEITCoursePageProps) {
         primaryColor={primaryColor}
       />
 
+      {/* MOUs */}
+      {mous && mous.length > 0 && (
+        <MOUsSection
+          title={mousTitle || 'Memorandum of Understanding (MOUs)'}
+          mous={mous}
+          primaryColor={primaryColor}
+        />
+      )}
+
       {/* Admission Process */}
       <AdmissionProcessSection
         title={admissionTitle}
@@ -262,12 +296,14 @@ export function BEITCoursePage(props: BEITCoursePageProps) {
         primaryColor={primaryColor}
       />
 
-      {/* Fee Structure */}
-      <FeeStructureSection
-        title={feeTitle}
-        feeBreakdown={feeBreakdown}
-        primaryColor={primaryColor}
-      />
+      {/* Fee Structure - Hidden as per requirement */}
+      {/* {feeTitle && feeBreakdown && (
+        <FeeStructureSection
+          title={feeTitle}
+          feeBreakdown={feeBreakdown}
+          primaryColor={primaryColor}
+        />
+      )} */}
 
       {/* Facilities */}
       <FacilitiesSection
@@ -324,11 +360,19 @@ function HeroSection({
   primaryColor: string
 }) {
   return (
-    <section className="relative py-20 md:py-24 lg:py-28 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6] overflow-hidden">
+    <section className="relative py-12 md:py-16 lg:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6] overflow-hidden min-h-[90vh] flex items-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Content */}
-          <div className="space-y-8">
+          <div className="space-y-6">
+            {/* Centenary Badge */}
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-400 rounded-full px-4 py-2 shadow-md">
+              <span className="text-yellow-600 text-lg">⭐</span>
+              <span className="text-sm font-bold text-gray-800">
+                #JKKN100 Centenary Year Admissions Open 2026-27
+              </span>
+            </div>
+
             {/* Title with Brand Blue Color */}
             <div>
               <h1
@@ -347,7 +391,7 @@ function HeroSection({
             )}
 
             {/* Stats Row - Horizontal */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
                   <div
@@ -405,11 +449,6 @@ function HeroSection({
                 <div className="text-xs font-bold text-gray-700">NAAC</div>
                 <div className="text-xs text-gray-600">Accredited</div>
               </div>
-            </div>
-
-            {/* Affiliated Badge */}
-            <div className="mt-6 bg-white rounded-lg shadow-md p-4 text-center">
-              <p className="text-sm text-gray-600 font-medium">{affiliatedTo}</p>
             </div>
           </div>
         </div>
@@ -731,6 +770,92 @@ function TopRecruitersSection({
   )
 }
 
+function MOUsSection({
+  title,
+  mous,
+  primaryColor,
+}: {
+  title: string
+  mous: Array<{
+    title: string
+    partner: string
+    location: string
+    signedDate: string
+    validUntil: string
+    description: string
+  }>
+  primaryColor: string
+}) {
+  return (
+    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFFBF5] to-[#FFF5E6]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2
+          className="text-3xl md:text-4xl font-bold text-center mb-12"
+          style={{ color: primaryColor }}
+        >
+          {title}
+        </h2>
+
+        <div className="">
+          {mous.map((mou, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border-l-4"
+              style={{ borderLeftColor: primaryColor }}
+            >
+              <div className="flex items-start gap-4 mb-4">
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center text-white flex-shrink-0"
+                  style={{ backgroundColor: primaryColor }}
+                >
+                  <Building2 className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold mb-1" style={{ color: primaryColor }}>
+                    {mou.title}
+                  </h3>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-start gap-2">
+                  <Building2 className="w-4 h-4 mt-1 text-gray-500 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-700">Partner Institution</p>
+                    <p className="text-sm text-gray-600">{mou.partner}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2">
+                  <MapPin className="w-4 h-4 mt-1 text-gray-500 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-700">Location</p>
+                    <p className="text-sm text-gray-600">{mou.location}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2">
+                  <Calendar className="w-4 h-4 mt-1 text-gray-500 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-700">Duration</p>
+                    <p className="text-sm text-gray-600">
+                      {mou.signedDate} - {mou.validUntil}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-gray-100">
+                  <p className="text-sm text-gray-600 leading-relaxed">{mou.description}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function AdmissionProcessSection({
   title,
   steps,
@@ -750,31 +875,22 @@ function AdmissionProcessSection({
           {title}
         </h2>
 
-        <div className="grid md:grid-cols-3 gap-8 relative">
-          {steps.map((step, index) => (
-            <React.Fragment key={step.step}>
-              <div className="relative">
-                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 h-full">
-                  {/* Step Number Badge */}
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center text-white text-xl font-bold mb-4"
-                    style={{ backgroundColor: primaryColor }}
-                  >
-                    {step.step}
-                  </div>
-
-                  <h3 className="text-xl font-bold mb-3" style={{ color: primaryColor }}>{step.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {steps.map((step) => (
+            <div key={step.step} className="relative">
+              <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 h-full">
+                {/* Step Number Badge */}
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center text-white text-xl font-bold mb-4"
+                  style={{ backgroundColor: primaryColor }}
+                >
+                  {step.step}
                 </div>
+
+                <h3 className="text-xl font-bold mb-3" style={{ color: primaryColor }}>{step.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{step.description}</p>
               </div>
-
-              {/* Arrow between steps (not after last step) */}
-              {index < steps.length - 1 && (
-                <div className="hidden md:flex absolute top-1/2 -translate-y-1/2 items-center justify-center pointer-events-none" style={{ left: `${(index + 1) * (100 / steps.length)}%` }}>
-                  <ArrowRight className="w-8 h-8 text-gray-400" />
-                </div>
-              )}
-            </React.Fragment>
+            </div>
           ))}
         </div>
       </div>
@@ -814,7 +930,7 @@ function FeeStructureSection({
               </tr>
             </thead>
             <tbody>
-              {feeBreakdown.map((fee, index) => (
+              {feeBreakdown?.map((fee, index) => (
                 <tr
                   key={index}
                   className={`border-b border-gray-100 ${
@@ -895,11 +1011,15 @@ function FacultySection({
     name: string
     designation: string
     qualification: string
-    specialization: string
+    specialization?: string
     image?: string
   }>
   primaryColor: string
 }) {
+  const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  )
+
   return (
     <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -910,35 +1030,45 @@ function FacultySection({
           {title}
         </h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {faculty.map((member, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
-            >
-              {member.image ? (
-                <div className="h-56 overflow-hidden bg-gray-100">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ) : (
-                <div className="h-56 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                  <Users className="w-16 h-16 text-gray-400" />
-                </div>
-              )}
-              <div className="p-6">
-                <h3 className="text-lg font-bold mb-1" style={{ color: primaryColor }}>{member.name}</h3>
-                <p className="text-sm text-gray-600 mb-1">{member.designation}</p>
-                <p className="text-sm font-medium mb-2" style={{ color: primaryColor }}>
-                  {member.qualification}
-                </p>
-                <p className="text-xs text-gray-600">{member.specialization}</p>
-              </div>
-            </div>
-          ))}
+        <div className="relative px-12">
+          <Carousel
+            opts={{
+              align: 'start',
+              loop: true,
+            }}
+            plugins={[plugin.current]}
+            className="w-full"
+            onMouseEnter={() => plugin.current.stop()}
+            onMouseLeave={() => plugin.current.play()}
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {faculty.map((member, index) => (
+                <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 h-full">
+                    <div className="h-56 overflow-hidden bg-gray-100">
+                      <img
+                        src={member.image || '/images/faculty/placeholder-avatar.jpg'}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-lg font-bold mb-1 text-gray-800">{member.name}</h3>
+                      <p className="text-sm text-gray-600 mb-1">{member.designation}</p>
+                      <p className="text-sm font-medium mb-2" style={{ color: primaryColor }}>
+                        {member.qualification}
+                      </p>
+                      {member.specialization && (
+                        <p className="text-xs text-gray-600">{member.specialization}</p>
+                      )}
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-0" style={{ backgroundColor: primaryColor, color: 'white', border: 'none' }} />
+            <CarouselNext className="right-0" style={{ backgroundColor: primaryColor, color: 'white', border: 'none' }} />
+          </Carousel>
         </div>
       </div>
     </section>

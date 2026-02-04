@@ -15,6 +15,7 @@ export interface NavSubmenuItem {
   label: string;
   icon?: LucideIcon;
   active: boolean;
+  parentLabel?: string; // Optional parent label for grouping (e.g., "UG" or "PG" for courses)
 }
 
 // Navigation group with multiple menu items

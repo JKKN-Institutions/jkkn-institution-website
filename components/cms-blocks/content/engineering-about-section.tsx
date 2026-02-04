@@ -47,14 +47,14 @@ function useInView(threshold = 0.1) {
 export const EngineeringAboutSectionPropsSchema = z.object({
   // Badge
   badge: z.object({
-    text: z.string().default('100 Years Legacy'),
+    text: z.string().default('70+ Years Legacy'),
     position: z.enum(['top-left', 'top-right', 'bottom-left', 'bottom-right']).default('top-left'),
-  }).default({ text: '100 Years Legacy', position: 'top-left' }),
+  }).default({ text: '70+ Years Legacy', position: 'top-left' }),
 
   // Title
   title: z.string().default('Welcome to JKKN College of Engineering'),
   subtitle: z.string().default('About Us'),
-  description: z.string().default('Established as part of the prestigious JKKN Educational Institutions with over 100 years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development.'),
+  description: z.string().default('Established as part of the prestigious JKKN Educational Institutions with over 70+ years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development.'),
 
   // Features list
   features: z.array(z.string()).default([
@@ -98,10 +98,10 @@ export type EngineeringAboutSectionProps = z.infer<typeof EngineeringAboutSectio
 // ==========================================
 
 export default function EngineeringAboutSection({
-  badge = { text: '100 Years Legacy', position: 'top-left' },
+  badge = { text: '70+ Years Legacy', position: 'top-left' },
   title = 'Welcome to JKKN College of Engineering',
   subtitle = 'About Us',
-  description = 'Established as part of the prestigious JKKN Educational Institutions with over 100 years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development.',
+  description = 'Established as part of the prestigious JKKN Educational Institutions with over 70+ years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development.',
   features = [
     'AICTE Approved & Anna University Affiliated',
     'NAAC Accredited Programs',

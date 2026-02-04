@@ -86,7 +86,7 @@ export const EngineeringHeroSectionPropsSchema = z.object({
   // Title
   title: z.string().default('Shape Your Future in Engineering & Technology'),
   subtitle: z.string().default('AICTE Approved | Anna University Affiliated | NAAC Accredited'),
-  description: z.string().default('Join one of the leading engineering colleges with 100+ years of educational excellence. World-class faculty, state-of-the-art infrastructure, and 95%+ placement record.'),
+  description: z.string().default('Join one of the leading engineering colleges with 70+ years of educational excellence. World-class faculty, state-of-the-art infrastructure, and 95%+ placement record.'),
 
   // Badge
   badge: z.string().default('AICTE Approved | Anna University Affiliated | NAAC Accredited'),
@@ -193,7 +193,7 @@ function StatCard({
 export default function EngineeringHeroSection({
   title = 'Shape Your Future in Engineering & Technology',
   subtitle = 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
-  description = 'Join one of the leading engineering colleges with 100+ years of educational excellence. World-class faculty, state-of-the-art infrastructure, and 95%+ placement record.',
+  description = 'Join one of the leading engineering colleges with 70+ years of educational excellence. World-class faculty, state-of-the-art infrastructure, and 95%+ placement record.',
   badge = 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
   stats = [
     { value: 3000, suffix: '+', label: 'Learners', icon: 'graduation' },
@@ -245,7 +245,7 @@ export default function EngineeringHeroSection({
       />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[85vh] py-12 lg:py-20">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-screen py-12 lg:py-20">
           {/* Left Content */}
           <div>
             {/* Badge */}
@@ -380,7 +380,7 @@ export default function EngineeringHeroSection({
                     <div>
                       <div className="text-xs sm:text-sm text-gray-500">Admissions Helpline</div>
                       <div className="text-base sm:text-lg font-bold" style={{ color: primaryColor }}>
-                        +91 98765 43210
+                        +91 9345855001
                       </div>
                     </div>
                   </div>
@@ -392,7 +392,7 @@ export default function EngineeringHeroSection({
                 className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center text-gray-900 font-bold text-center text-xs sm:text-sm shadow-xl animate-pulse"
                 style={{ backgroundColor: accentColor }}
               >
-                100+<br />Years Legacy
+                70+<br />Years Legacy
               </div>
             </div>
           </div>

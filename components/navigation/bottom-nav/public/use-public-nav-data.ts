@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import { mapCmsIconToLucide } from './cms-icon-mapper';
 import { PUBLIC_FALLBACK_PRIMARY_ITEMS, PUBLIC_FALLBACK_MORE_MENU_GROUPS } from './public-nav-config';
-import type { NavMenuItem, MoreMenuMainItem, FlatNavItem } from '../core/types';
+import type { NavMenuItem, NavSubmenuItem, MoreMenuMainItem, FlatNavItem } from '../core/types';
 
 // CMS Navigation structure (from app/actions/cms/navigation.ts)
 export interface CmsNavItem {
@@ -58,6 +58,22 @@ function toId(label: string): string {
   return label.toLowerCase().replace(/\s+/g, '-');
 }
 
+// Recursively find a CMS item by href in the navigation tree
+function findCmsItemByHref(items: CmsNavItem[], href: string): CmsNavItem | undefined {
+  for (const item of items) {
+    if (item.href === href) {
+      return item;
+    }
+    if (item.children && item.children.length > 0) {
+      const found = findCmsItemByHref(item.children, href);
+      if (found) {
+        return found;
+      }
+    }
+  }
+  return undefined;
+}
+
 export function usePublicNavData({ cmsNavigation }: UsePublicNavDataProps = {}) {
   const pathname = usePathname();
 
@@ -70,6 +86,57 @@ export function usePublicNavData({ cmsNavigation }: UsePublicNavDataProps = {}) 
     if (hasNavigation) {
       // Transform CMS navigation to bottom nav format
       allItems = transformCmsToBottomNav(cmsNavigation!, pathname);
+
+      // Flatten 3-level hierarchies (e.g., Courses > UG/PG > Courses)
+      // Convert: Courses → UG → [B.E CSE, B.TECH IT]
+      // Into: Courses → [All courses grouped by UG/PG]
+      allItems = allItems.map((item) => {
+        // Check if this item has children with their own children (3-level hierarchy)
+        const hasNestedChildren = item.submenus.some((sub) => {
+          const cmsItem = findCmsItemByHref(cmsNavigation!, sub.href);
+          return cmsItem?.children && cmsItem.children.length > 0;
+        });
+
+        if (hasNestedChildren) {
+          console.log(`[usePublicNavData] Flattening 3-level hierarchy for: ${item.label}`);
+          console.log(`[usePublicNavData] Original submenus:`, item.submenus);
+
+          // Flatten: collect all grandchildren
+          const flattenedSubmenus: NavSubmenuItem[] = [];
+
+          item.submenus.forEach((sub) => {
+            const cmsItem = findCmsItemByHref(cmsNavigation!, sub.href);
+            console.log(`[usePublicNavData] Checking submenu: ${sub.label}, found CMS item:`, cmsItem);
+
+            if (cmsItem?.children && cmsItem.children.length > 0) {
+              console.log(`[usePublicNavData] Found ${cmsItem.children.length} grandchildren under ${sub.label}`);
+
+              // Add all grandchildren
+              cmsItem.children.forEach((grandchild) => {
+                flattenedSubmenus.push({
+                  href: grandchild.href,
+                  label: grandchild.label,
+                  icon: mapCmsIconToLucide(grandchild.label, grandchild.href),
+                  active: pathname === grandchild.href || pathname.startsWith(grandchild.href + '/'),
+                  parentLabel: sub.label, // Store parent label for grouping
+                } as NavSubmenuItem & { parentLabel?: string });
+              });
+            } else {
+              // Keep the original submenu if it has no children
+              flattenedSubmenus.push(sub);
+            }
+          });
+
+          console.log(`[usePublicNavData] Flattened submenus (${flattenedSubmenus.length} items):`, flattenedSubmenus);
+
+          return {
+            ...item,
+            submenus: flattenedSubmenus
+          };
+        }
+
+        return item;
+      });
     } else {
       // Use fallback navigation with active states
       allItems = PUBLIC_FALLBACK_PRIMARY_ITEMS.map((item) => ({

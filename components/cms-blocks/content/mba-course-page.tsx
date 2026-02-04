@@ -27,6 +27,14 @@ import {
   Lightbulb,
   BarChart3,
 } from 'lucide-react'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
+import Autoplay from 'embla-carousel-autoplay'
 
 // ============================================
 // Zod Schemas for Type Safety
@@ -114,7 +122,7 @@ const FacultySchema = z.object({
   name: z.string(),
   designation: z.string(),
   qualification: z.string(),
-  specialization: z.string(),
+  specialization: z.string().optional(),
   image: z.string().optional(),
 })
 
@@ -259,12 +267,12 @@ export function MBACoursePage(props: MBACoursePageProps) {
     contactPhone,
     contactEmail,
     contactAddress,
-    primaryColor = '#003D5B',
-    accentColor = '#FF6B35',
+    primaryColor = '#0b6d41', // JKKN Green
+    accentColor = '#ffde59', // JKKN Yellow
   } = props
 
   return (
-    <div className="w-full bg-[#FFFBF5]">
+    <div className="w-full bg-[#fbfbee]">
       {/* Hero Section */}
       <HeroSection
         title={heroTitle}
@@ -324,13 +332,13 @@ export function MBACoursePage(props: MBACoursePageProps) {
         primaryColor={primaryColor}
       />
 
-      {/* Fee Structure */}
-      <FeeStructureSection
+      {/* Fee Structure - Hidden as per requirement */}
+      {/* <FeeStructureSection
         title={feeTitle}
         feeBreakdown={feeBreakdown}
         disclaimer={feeDisclaimer}
         primaryColor={primaryColor}
-      />
+      /> */}
 
       {/* Career Opportunities */}
       <CareerOpportunitiesSection
@@ -409,7 +417,7 @@ function HeroSection({
   accentColor: string
 }) {
   return (
-    <section className="relative py-20 md:py-24 lg:py-28 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6] overflow-hidden">
+    <section className="relative py-20 md:py-24 lg:py-28 bg-gradient-to-br from-[#fbfbee] to-[#fff0a3] overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left: Content */}
@@ -479,7 +487,7 @@ function HeroSection({
           <div className="relative hidden lg:block">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&h=600&fit=crop"
+                src="/images/courses/mba/JKKN MBA (1).png"
                 alt="MBA Students"
                 className="w-full h-auto object-cover"
               />
@@ -575,7 +583,7 @@ function KeyHighlightsSection({
   }
 
   return (
-    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
+    <section className="py-16 md:py-20 bg-gradient-to-br from-[#fbfbee] to-[#ffffff]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
           {title}
@@ -640,7 +648,7 @@ function SpecializationsSection({
             return (
               <div
                 key={index}
-                className="bg-gradient-to-br from-[#FFF9F0] to-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
+                className="bg-gradient-to-br from-[#fbfbee] to-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
                 <IconComponent className="w-12 h-12 mb-4" style={{ color: accentColor }} />
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{spec.title}</h3>
@@ -690,7 +698,7 @@ function CurriculumSection({
   const currentYearData = years.find((y) => y.year === activeYear)
 
   return (
-    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
+    <section className="py-16 md:py-20 bg-gradient-to-br from-[#fbfbee] to-[#ffffff]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-900">{title}</h2>
 
@@ -741,7 +749,7 @@ function CurriculumSection({
                   {semester.subjects.map((subject, idx) => (
                     <div
                       key={idx}
-                      className="bg-gradient-to-br from-[#FFF9F0] to-white rounded-lg p-4 border-l-4 hover:shadow-md transition-shadow"
+                      className="bg-gradient-to-br from-[#fbfbee] to-white rounded-lg p-4 border-l-4 hover:shadow-md transition-shadow"
                       style={{ borderLeftColor: primaryColor }}
                     >
                       {subject.code && (
@@ -782,7 +790,7 @@ function EligibilityAdmissionSection({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-12">
           {/* Eligibility Criteria */}
-          <div className="bg-gradient-to-br from-[#FFF9F0] to-white rounded-xl p-8 shadow-md border border-gray-200">
+          <div className="bg-gradient-to-br from-[#fbfbee] to-white rounded-xl p-8 shadow-md border border-gray-200">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">{eligibilityTitle}</h3>
             <ul className="space-y-4">
               {eligibilityItems.map((item, index) => (
@@ -795,7 +803,7 @@ function EligibilityAdmissionSection({
           </div>
 
           {/* Required Documents */}
-          <div className="bg-gradient-to-br from-[#FFF9F0] to-white rounded-xl p-8 shadow-md border border-gray-200">
+          <div className="bg-gradient-to-br from-[#fbfbee] to-white rounded-xl p-8 shadow-md border border-gray-200">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">{documentsTitle}</h3>
             <ul className="space-y-4">
               {requiredDocuments.map((doc, index) => (
@@ -832,7 +840,7 @@ function AdmissionProcessSection({
   }
 
   return (
-    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
+    <section className="py-16 md:py-20 bg-gradient-to-br from-[#fbfbee] to-[#ffffff]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
           {title}
@@ -884,7 +892,7 @@ function FeeStructureSection({
         </h2>
 
         <div className="max-w-3xl mx-auto">
-          <div className="bg-gradient-to-br from-[#FFF9F0] to-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+          <div className="bg-gradient-to-br from-[#fbfbee] to-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
             <table className="w-full">
               <thead>
                 <tr className="text-white" style={{ backgroundColor: primaryColor }}>
@@ -899,7 +907,7 @@ function FeeStructureSection({
                     className={`border-b border-gray-200 last:border-b-0 ${
                       fee.isTotal ? 'font-bold text-lg' : ''
                     }`}
-                    style={fee.isTotal ? { backgroundColor: '#FFF9F0' } : {}}
+                    style={fee.isTotal ? { backgroundColor: '#fbfbee' } : {}}
                   >
                     <td className="py-4 px-6 text-gray-800">{fee.component}</td>
                     <td className="py-4 px-6 text-right text-gray-800">{fee.amount}</td>
@@ -940,7 +948,7 @@ function CareerOpportunitiesSection({
   }
 
   return (
-    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
+    <section className="py-16 md:py-20 bg-gradient-to-br from-[#fbfbee] to-[#ffffff]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
           {title}
@@ -1048,7 +1056,7 @@ function TopRecruitersSection({
           {recruiters.map((recruiter, index) => (
             <div
               key={index}
-              className="bg-gradient-to-br from-[#FFF9F0] to-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center border border-gray-100"
+              className="bg-gradient-to-br from-[#fbfbee] to-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center border border-gray-100"
             >
               <span className="text-sm font-medium text-gray-800 text-center">{recruiter}</span>
             </div>
@@ -1070,7 +1078,7 @@ function FacilitiesSection({
   primaryColor: string
 }) {
   return (
-    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
+    <section className="py-16 md:py-20 bg-gradient-to-br from-[#fbfbee] to-[#ffffff]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
           {title}
@@ -1112,11 +1120,15 @@ function FacultySection({
     name: string
     designation: string
     qualification: string
-    specialization: string
+    specialization?: string
     image?: string
   }>
   primaryColor: string
 }) {
+  const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  )
+
   return (
     <section className="py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -1124,33 +1136,45 @@ function FacultySection({
           {title}
         </h2>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {faculty.map((member, index) => (
-            <div
-              key={index}
-              className="bg-gradient-to-br from-[#FFF9F0] to-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 text-center"
-            >
-              {member.image ? (
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-full h-48 object-cover"
-                />
-              ) : (
-                <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-                  <Users className="w-16 h-16 text-gray-400" />
-                </div>
-              )}
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-1">{member.name}</h3>
-                <p className="text-sm text-gray-600 mb-2">{member.designation}</p>
-                <p className="text-xs font-semibold mb-1" style={{ color: primaryColor }}>
-                  {member.qualification}
-                </p>
-                <p className="text-xs text-gray-500">{member.specialization}</p>
-              </div>
-            </div>
-          ))}
+        <div className="relative px-12">
+          <Carousel
+            opts={{
+              align: 'start',
+              loop: true,
+            }}
+            plugins={[plugin.current]}
+            className="w-full"
+            onMouseEnter={() => plugin.current.stop()}
+            onMouseLeave={() => plugin.current.play()}
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {faculty.map((member, index) => (
+                <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                  <div className="bg-gradient-to-br from-[#fbfbee] to-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 h-full">
+                    <div className="h-56 overflow-hidden bg-gray-100">
+                      <img
+                        src={member.image || '/images/faculty/placeholder-avatar.jpg'}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="p-6 text-center">
+                      <h3 className="text-lg font-bold mb-1 text-gray-800">{member.name}</h3>
+                      <p className="text-sm text-gray-600 mb-1">{member.designation}</p>
+                      <p className="text-sm font-medium mb-2" style={{ color: primaryColor }}>
+                        {member.qualification}
+                      </p>
+                      {member.specialization && (
+                        <p className="text-xs text-gray-600">{member.specialization}</p>
+                      )}
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-0" style={{ backgroundColor: primaryColor, color: 'white', border: 'none' }} />
+            <CarouselNext className="right-0" style={{ backgroundColor: primaryColor, color: 'white', border: 'none' }} />
+          </Carousel>
         </div>
       </div>
     </section>
@@ -1170,7 +1194,7 @@ function FAQSection({
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
-    <section className="py-16 md:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6]">
+    <section className="py-16 md:py-20 bg-gradient-to-br from-[#fbfbee] to-[#ffffff]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
           {title}
@@ -1196,7 +1220,7 @@ function FAQSection({
               </button>
 
               {openIndex === index && (
-                <div className="px-6 py-4 border-t border-gray-100 bg-gradient-to-br from-[#FFF9F0] to-white">
+                <div className="px-6 py-4 border-t border-gray-100 bg-gradient-to-br from-[#fbfbee] to-white">
                   <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
                 </div>
               )}

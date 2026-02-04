@@ -19,7 +19,7 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
     { icon: '', label: 'Semesters', value: '8' },
   ],
   heroCTAs: [
-    { label: 'Apply Now for 2025-26', link: '/apply', variant: 'primary' },
+    { label: 'Apply Now for 2026-27', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
     { label: 'Explore Curriculum', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: 'Affiliated to Anna University, Chennai',
@@ -215,7 +215,7 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   // ==========================================
   // Fee Structure
   // ==========================================
-  feeTitle: 'Fee Structure 2025-26',
+  feeTitle: 'Fee Structure 2026-27',
   feeDescription: 'Affordable quality education with multiple scholarship opportunities and flexible payment options.',
   feeTable: {
     headers: ['Fee Component', 'Government Quota', 'Management Quota', 'NRI Quota'],
@@ -384,9 +384,9 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   // CTA Section
   // ==========================================
   ctaTitle: 'Build Your Engineering Foundation with Science & Humanities',
-  ctaDescription: 'Join JKKN College of Engineering & Technology and gain comprehensive knowledge in fundamental sciences. Applications for 2025-26 batch are now open!',
+  ctaDescription: 'Join JKKN College of Engineering & Technology and gain comprehensive knowledge in fundamental sciences. Applications for 2026-27 batch are now open!',
   ctaButtons: [
-    { label: 'Apply Now', link: '/apply', variant: 'primary' },
+    { label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
     { label: 'Talk to Counselor', link: '/contact', variant: 'secondary' },
   ],
   ctaContact: [

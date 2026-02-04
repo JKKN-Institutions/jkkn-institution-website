@@ -42,7 +42,7 @@ export const meCSECourseData: MECSECoursePageProps = {
     ctaButtons: [
       {
         label: 'Apply Now',
-        link: '/admissions/apply',
+        link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8',
         variant: 'primary'
       },
       {
@@ -91,7 +91,7 @@ export const meCSECourseData: MECSECoursePageProps = {
       },
       {
         label: 'Intake',
-        value: '18 Seats'
+        value: '12 Seats'
       },
       {
         label: 'Affiliation',
@@ -101,10 +101,7 @@ export const meCSECourseData: MECSECoursePageProps = {
         label: 'Approval',
         value: 'AICTE | NAAC Accredited'
       },
-      {
-        label: 'Fee Structure',
-        value: '₹75,000 per year'
-      }
+  
     ],
     importantDates: [
       {
@@ -179,7 +176,7 @@ export const meCSECourseData: MECSECoursePageProps = {
         title: 'Artificial Intelligence & Machine Learning',
         badge: 'Most Popular',
         description: 'Deep dive into neural networks, deep learning, natural language processing, and computer vision. Work on AI-powered applications and intelligent systems.',
-        image: '/images/courses/me-cse/ai-ml.jpg',
+        image: '/images/courses/me-cse/ai-ml-lab copy.png',
         topics: [
           'Deep Learning',
           'Neural Networks',
@@ -410,28 +407,28 @@ export const meCSECourseData: MECSECoursePageProps = {
         ]
       }
     ],
-    syllabusImages: [
-      {
-        semester: 'Semester 1',
-        image: '/images/courses/me-cse/syllabus/semester-1.jpg',
-        alt: 'M.E. CSE Semester 1 Course Structure'
-      },
-      {
-        semester: 'Semester 2',
-        image: '/images/courses/me-cse/syllabus/semester-2.jpg',
-        alt: 'M.E. CSE Semester 2 Course Structure'
-      },
-      {
-        semester: 'Semester 3',
-        image: '/images/courses/me-cse/syllabus/semester-3.jpg',
-        alt: 'M.E. CSE Semester 3 Course Structure'
-      },
-      {
-        semester: 'Semester 4',
-        image: '/images/courses/me-cse/syllabus/semester-4.jpg',
-        alt: 'M.E. CSE Semester 4 Course Structure'
-      }
-    ]
+    // syllabusImages: [
+    //   {
+    //     semester: 'Semester 1',
+    //     image: '/images/courses/me-cse/syllabus/semester-1.jpg',
+    //     alt: 'M.E. CSE Semester 1 Course Structure'
+    //   },
+    //   {
+    //     semester: 'Semester 2',
+    //     image: '/images/courses/me-cse/syllabus/semester-2.jpg',
+    //     alt: 'M.E. CSE Semester 2 Course Structure'
+    //   },
+    //   {
+    //     semester: 'Semester 3',
+    //     image: '/images/courses/me-cse/syllabus/semester-3.jpg',
+    //     alt: 'M.E. CSE Semester 3 Course Structure'
+    //   },
+    //   {
+    //     semester: 'Semester 4',
+    //     image: '/images/courses/me-cse/syllabus/semester-4.jpg',
+    //     alt: 'M.E. CSE Semester 4 Course Structure'
+    //   }
+    // ]
   },
 
   // ===========================================
@@ -466,43 +463,35 @@ export const meCSECourseData: MECSECoursePageProps = {
       {
         name: 'AI & Machine Learning Lab',
         description: 'High-performance computing systems with GPU clusters for deep learning research',
-        image: 'https://source.unsplash.com/800x600/?artificial-intelligence,machine-learning,laboratory'
+        image: '/images/courses/me-cse/ai-ml-lab copy.png'
       },
-      {
-        name: 'Data Science Lab',
-        description: 'Big data frameworks, analytics tools, and visualization software',
-        image: 'https://source.unsplash.com/800x600/?data-science,analytics,visualization'
-      },
+
       {
         name: 'Cybersecurity Lab',
         description: 'Ethical hacking tools, network security appliances, and forensic systems',
-        image: 'https://source.unsplash.com/800x600/?cybersecurity,hacking,security'
+        image: '/images/courses/me-cse/cloud-computing-lab.png'
       },
       {
         name: 'Cloud Computing Lab',
         description: 'AWS, Azure, and Google Cloud platforms with virtualization infrastructure',
-        image: 'https://source.unsplash.com/800x600/?cloud-computing,datacenter,virtualization'
+        image: '/images/courses/me-cse/JKKN ME CSE (1).png'
       },
-      {
-        name: 'Research & Development Lab',
-        description: 'Dedicated space for postgraduate research projects and innovation',
-        image: 'https://source.unsplash.com/800x600/?research,laboratory,innovation'
-      },
+     
       {
         name: 'IoT & Embedded Systems Lab',
         description: 'Sensors, microcontrollers, development boards, and smart devices',
-        image: 'https://source.unsplash.com/800x600/?iot,sensors,smart-devices'
+        image: '/images/courses/me-cse/JKKN B.Tech IT - AI & Machine Learning Research Center.png'
       },
-      {
-        name: 'High-Performance Computing Lab',
-        description: 'Multi-core processors, parallel computing systems, and cluster computing',
-        image: 'https://source.unsplash.com/800x600/?supercomputer,cluster,computing'
-      },
-      {
-        name: 'Project Development Lab',
-        description: 'Collaborative workspace for final year dissertation projects',
-        image: 'https://source.unsplash.com/800x600/?collaborative,workspace,project'
-      }
+      // {
+      //   name: 'High-Performance Computing Lab',
+      //   description: 'Multi-core processors, parallel computing systems, and cluster computing',
+      //   image: '/images/courses/me-cse/networks-security-lab.png'
+      // },
+      // {
+      //   name: 'Project Development Lab',
+      //   description: 'Collaborative workspace for final year dissertation projects',
+      //   image:'/images/courses/me-cse/programming-lab.png'
+      // }
     ]
   },
 
@@ -531,24 +520,12 @@ export const meCSECourseData: MECSECoursePageProps = {
       }
     ],
     recruiters: [
-      { name: 'TCS', logo: '/images/recruiters/tcs.png' },
-      { name: 'Infosys', logo: '/images/recruiters/infosys.png' },
-      { name: 'Wipro', logo: '/images/recruiters/wipro.png' },
-      { name: 'Cognizant', logo: '/images/recruiters/cognizant.png' },
-      { name: 'Amazon', logo: '/images/recruiters/amazon.png' },
-      { name: 'Microsoft', logo: '/images/recruiters/microsoft.png' },
-      { name: 'Google', logo: '/images/recruiters/google.png' },
-      { name: 'IBM', logo: '/images/recruiters/ibm.png' },
-      { name: 'Oracle', logo: '/images/recruiters/oracle.png' },
-      { name: 'Accenture', logo: '/images/recruiters/accenture.png' },
-      { name: 'Capgemini', logo: '/images/recruiters/capgemini.png' },
-      { name: 'HCL Technologies', logo: '/images/recruiters/hcl.png' },
-      { name: 'Tech Mahindra', logo: '/images/recruiters/tech-mahindra.png' },
-      { name: 'L&T Infotech', logo: '/images/recruiters/lti.png' },
-      { name: 'Mindtree', logo: '/images/recruiters/mindtree.png' },
-      { name: 'Adobe', logo: '/images/recruiters/adobe.png' },
-      { name: 'Cisco', logo: '/images/recruiters/cisco.png' },
-      { name: 'Dell', logo: '/images/recruiters/dell.png' }
+      { name: 'LGB', logo: '/images/recruiters/lgb.png' },
+      { name: 'Foxconn', logo: '/images/recruiters/foxconn.png' },
+      { name: 'TVS Group', logo: '/images/recruiters/tvs-group.jpg' },
+      { name: 'Sourcesys', logo: '/images/recruiters/sourcesys.png' },
+      { name: 'Infinix', logo: '/images/recruiters/infinix.png' },
+      { name: 'Pronoia Insurance', logo: '/images/recruiters/pronoia-insurance.jpg' }
     ]
   },
 
@@ -626,7 +603,7 @@ export const meCSECourseData: MECSECoursePageProps = {
     buttons: [
       {
         label: 'Apply Online',
-        link: '/admissions/apply',
+        link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8',
         variant: 'primary'
       },
       {
@@ -649,17 +626,16 @@ export const meCSECourseData: MECSECoursePageProps = {
         type: 'phone',
         title: 'Call Us',
         details: [
-          '+91 4288 274741',
-          '+91 4288 274742',
-          'Mon - Sat: 9:00 AM - 5:00 PM'
+          '+91 93458 55001',
+         
         ]
       },
       {
         type: 'email',
         title: 'Email Us',
         details: [
-          'admissions@jkkn.ac.in',
-          'pgadmissions@jkkn.ac.in',
+          'engg@jkkn.ac.in',
+         
           'We reply within 24 hours'
         ]
       },
@@ -667,9 +643,8 @@ export const meCSECourseData: MECSECoursePageProps = {
         type: 'address',
         title: 'Visit Us',
         details: [
-          'JKKN College of Engineering',
-          'Komarapalayam - 638183',
-          'Namakkal District, Tamil Nadu'
+          'JKKN College of Engineering and Technology',
+          'Natarajapuram, NH-544 (Salem To Coimbatore National Highway), Kumarapalayam (TK), Namakkal (DT). Tamil Nadu. 638183.',
         ]
       }
     ]

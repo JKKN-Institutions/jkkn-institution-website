@@ -65,6 +65,8 @@ USING (true);
 -- ============================================
 -- Structure:
 -- HOME | ABOUT | COURSES OFFERED | GALLERY | FACILITIES | POLICY | IQAC | CONTACT
+--   - COURSES OFFERED > UG/PG > [Individual Courses]
+--   - IQAC > NAAC, NIRF
 
 WITH main_items AS (
   INSERT INTO public.cms_nav_items (label, href, display_order, is_homepage, parent_id)
@@ -120,12 +122,26 @@ pg_courses AS (
     ('MBA', '/courses/pg/mba', 4, false, (SELECT id FROM pg_id))
   ) AS t(label, href, display_order, is_homepage, parent_id)
   RETURNING id
+),
+-- Get IQAC parent ID
+iqac_id AS (
+  SELECT id FROM main_items WHERE label = 'IQAC'
+),
+-- Insert IQAC submenu items
+iqac_submenus AS (
+  INSERT INTO public.cms_nav_items (label, href, display_order, is_homepage, parent_id)
+  SELECT * FROM (VALUES
+    ('NAAC', '/iqac/naac', 1, false, (SELECT id FROM iqac_id)),
+    ('NIRF', '/iqac/nirf', 2, false, (SELECT id FROM iqac_id))
+  ) AS t(label, href, display_order, is_homepage, parent_id)
+  RETURNING id
 )
 -- Return summary
 SELECT
   (SELECT COUNT(*) FROM main_items) AS main_menu_items,
   (SELECT COUNT(*) FROM categories) AS categories,
-  (SELECT COUNT(*) FROM ug_courses) + (SELECT COUNT(*) FROM pg_courses) AS total_courses;
+  (SELECT COUNT(*) FROM ug_courses) + (SELECT COUNT(*) FROM pg_courses) AS total_courses,
+  (SELECT COUNT(*) FROM iqac_submenus) AS iqac_items;
 
 -- ============================================
 -- VERIFICATION QUERY

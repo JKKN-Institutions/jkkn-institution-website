@@ -128,7 +128,7 @@ export default function EngineeringProgramsSection({
     { name: 'B.Tech Information Technology', type: 'ug', duration: '4 Years', icon: 'wifi', description: 'Cloud Computing, Cybersecurity, DevOps', link: '/courses/it' },
     { name: 'B.E. Biomedical Engineering', type: 'ug', duration: '4 Years', icon: 'activity', description: 'Healthcare Tech, Medical Instrumentation', link: '/courses/biomedical' },
     { name: 'MBA - Business Administration', type: 'pg', duration: '2 Years', icon: 'briefcase', description: 'Business Analytics, Marketing, Finance', link: '/courses/mba' },
-    { name: 'M.E. Computer Science', type: 'pg', duration: '2 Years', icon: 'graduation', description: 'Advanced AI/ML, Research Focus', link: '/courses/me-cse' },
+    { name: 'M.E. Computer Science', type: 'pg', duration: '2 Years', icon: 'graduation', description: 'Advanced AI/ML, Research Focus', link: '/courses-offered/pg/me-cse' },
   ],
   showTabs = true,
   primaryColor = '#1e3a5f',

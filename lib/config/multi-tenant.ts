@@ -36,6 +36,22 @@ export interface InstitutionConfig {
   features: FeatureFlag[]
   /** Supabase project reference (for migration scripts) */
   supabaseProjectRef?: string
+  /** Institution-specific contact information */
+  contact?: {
+    phone: string
+    phoneFormatted: string
+    phoneLink: string
+    email: string
+    emailLink: string
+    address: {
+      line1: string
+      line2?: string
+      city: string
+      state: string
+      pincode: string
+      country: string
+    }
+  }
 }
 
 export type FeatureFlag =
@@ -120,6 +136,21 @@ export const INSTITUTION_REGISTRY: InstitutionConfig[] = [
       'faculty-directory', 'course-catalog', 'admissions',
       'research-publications', 'placements',
     ],
+    contact: {
+      phone: '91-9345855001',
+      phoneFormatted: '+91 93458 55001',
+      phoneLink: 'tel:+919345855001',
+      email: 'engg@jkkn.ac.in',
+      emailLink: 'mailto:engg@jkkn.ac.in',
+      address: {
+        line1: 'Natarajapuram',
+        line2: 'NH-544 (Salem To Coimbatore National Highway)',
+        city: 'Kumarapalayam (TK), Namakkal (DT)',
+        state: 'Tamil Nadu',
+        pincode: '638183',
+        country: 'India',
+      },
+    },
   },
   {
     id: 'pharmacy',

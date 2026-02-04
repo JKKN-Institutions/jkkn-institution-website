@@ -14,15 +14,15 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   heroSubtitle: 'Transform your passion for technology into a rewarding career. Our AICTE-approved, NAAC-accredited program combines cutting-edge curriculum with industry-ready skills to shape tomorrow\'s tech leaders.',
   heroStats: [
     { icon: '', label: 'Years Duration', value: '4' },
-    { icon: '', label: 'Seats Available', value: '120' },
+    { icon: '', label: 'Seats Available', value: '60' },
     { icon: '', label: 'Placement Rate', value: '95%' },
     { icon: '', label: 'Highest Package', value: '₹12L' },
   ],
   heroCTAs: [
-    { label: 'Apply Now for 2025-26', link: '/apply', variant: 'primary' },
+    { label: 'Apply Now for 2026-27', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
     { label: 'Explore Curriculum', link: '#curriculum', variant: 'secondary' },
   ],
-  affiliatedTo: 'Affiliated to Anna University, Chennai',
+  affiliatedTo: '',
 
   // ==========================================
   // Course Overview
@@ -284,7 +284,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   // ==========================================
   // Fee Structure
   // ==========================================
-  feeTitle: 'Fee Structure 2025-26',
+  feeTitle: 'Fee Structure 2026-27',
   feeDescription: 'Affordable quality education with multiple scholarship opportunities and flexible payment options.',
   feeTable: {
     headers: ['Fee Component', 'Government Quota', 'Management Quota', 'NRI Quota'],
@@ -317,11 +317,10 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     { label: 'Placement Rate', value: '95%' },
     { label: 'Highest Package', value: '₹12 LPA' },
     { label: 'Average Package', value: '₹4.5 LPA' },
-    { label: 'Recruiting Companies', value: '20+' },
+    { label: 'Recruiting Companies', value: '6' },
   ],
   recruiters: [
-    'TCS', 'Infosys', 'Wipro', 'Cognizant', 'HCL', 'Tech Mahindra',
-    'Accenture', 'Capgemini', 'IBM', 'Amazon', 'Zoho', 'Freshworks',
+    'LGB', 'Foxconn', 'TVS Group', 'Sourcesys', 'Infinix', 'Pronoia Insurance',
   ],
 
   // ==========================================
@@ -381,25 +380,25 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     {
       name: 'Programming Lab',
       description: 'Equipped with 100+ high-performance workstations running the latest IDEs and development tools.',
-      image: 'https://source.unsplash.com/800x600/?programming,computer,lab',
+      image: '/images/courses/be-cse/labs/programming-lab.png',
       features: ['Visual Studio', 'Eclipse', 'PyCharm', 'VS Code'],
     },
     {
       name: 'Networks & Security Lab',
       description: 'Cisco-certified lab with routers, switches, and security appliances for hands-on networking experience.',
-      image: 'https://source.unsplash.com/800x600/?network,server,datacenter',
+      image: '/images/courses/be-cse/labs/networks-security-lab.png',
       features: ['Cisco Devices', 'Wireshark', 'Firewalls'],
     },
     {
       name: 'AI & Machine Learning Lab',
       description: 'GPU-powered systems with TensorFlow, PyTorch, and specialized AI development environment.',
-      image: 'https://source.unsplash.com/800x600/?artificial,intelligence,technology',
+      image: '/images/courses/be-cse/labs/ai-ml-lab.png',
       features: ['NVIDIA GPUs', 'TensorFlow', 'Jupyter'],
     },
     {
       name: 'Cloud Computing Lab',
       description: 'Access to AWS, Azure, and Google Cloud platforms for cloud-native development and deployment.',
-      image: 'https://source.unsplash.com/800x600/?cloud,computing,technology',
+      image: '/images/courses/be-cse/labs/cloud-computing-lab.png',
       features: ['AWS Academy', 'Azure Lab', 'Docker'],
     },
   ],
@@ -414,72 +413,118 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
       designation: 'Assistant Professor',
       qualification: 'M.Tech., (Ph.D)',
       specialization: 'Computer Science & Engineering',
-      image: 'https://source.unsplash.com/400x400/?professor,male,indian',
+      image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. V. Deepika',
       designation: 'Assistant Professor',
       qualification: 'M.Tech-IT',
       specialization: 'Information Technology',
-      image: 'https://source.unsplash.com/400x400/?professor,female,indian',
+      image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mr. K.T. Mikelraj',
       designation: 'Assistant Professor',
       qualification: 'M.Tech-IT',
       specialization: 'Information Technology',
-      image: 'https://source.unsplash.com/400x400/?professor,male,indian',
+      image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. N. Sunmathi',
       designation: 'Assistant Professor',
       qualification: 'M.E-CSE',
       specialization: 'Computer Science & Engineering',
-      image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
+      image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. B. Sharmila',
       designation: 'Assistant Professor',
       qualification: 'M.E-CSE',
       specialization: 'Computer Science & Engineering',
-      image: 'https://source.unsplash.com/400x400/?professor,female,indian',
+      image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. G. Porkodi',
       designation: 'Assistant Professor',
       qualification: 'M.E.',
       specialization: 'Computer Science & Engineering',
-      image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
+      image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. S. Suji',
       designation: 'Assistant Professor',
       qualification: 'M.E-CSE',
       specialization: 'Computer Science & Engineering',
-      image: 'https://source.unsplash.com/400x400/?professor,female,indian',
+      image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. L. Lavanya',
       designation: 'Assistant Professor',
       qualification: 'M.E-CSE',
       specialization: 'Computer Science & Engineering',
-      image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
+      image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. M. Gokilavani',
       designation: 'Assistant Professor',
       qualification: 'M.E-CSE',
       specialization: 'Computer Science & Engineering',
-      image: 'https://source.unsplash.com/400x400/?professor,female,indian',
+      image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. R. Dharsinapriya',
       designation: 'Assistant Professor',
       qualification: 'M.E-CSE',
       specialization: 'Computer Science & Engineering',
-      image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
+      image: '/images/faculty/placeholder-avatar.jpg',
     },
   ],
+
+  // ==========================================
+  // MOUs (Memorandum of Understanding)
+  // ==========================================
+  mous: {
+    title: 'MOUs',
+    description: 'Our industry partnerships through Memorandums of Understanding (MOUs) provide students with valuable internship opportunities, industry exposure, and placement support.',
+    data: [
+      {
+        sno: 1,
+        company: 'SBM Software',
+        address: 'SBM Software Solutions Bus Stand Opp., Sellappa Lodge Near, Velur-638 182, Namakkal(Dt) Tamilnadu, India.',
+        validUpto: '2025',
+      },
+      {
+        sno: 2,
+        company: 'New Technologies',
+        address: '25, SRK Complex, bus stand, near Indusind bank, opposite Singanallur, TNHB Housing Unit, Singanallur, Tamil Nadu 641005',
+        validUpto: '2025',
+      },
+      {
+        sno: 3,
+        company: 'Smart Reach',
+        address: '450/526 First Floor , Trichy Main Road, Gate, near Sakthi Kaali Amman Temple, Dadagapatty, Salem, Tamil Nadu 636010',
+        validUpto: '2025',
+      },
+      {
+        sno: 4,
+        company: 'Effyies smart Technology',
+        address: '10-62/7 (214-8B), South Street, Authivilai Eraniel Village,Kalkulam Taluk, Neyyoor, Tamil Nadu 629802',
+        validUpto: '2025',
+      },
+      {
+        sno: 5,
+        company: 'ETS Acdacdy',
+        address: ',Amman Complex,2nd Floor, Mettur Rd, Erode, Tamil Nadu 638011',
+        validUpto: '2026',
+      },
+      {
+        sno: 6,
+        company: 'Connect Infy system',
+        address: 'No 4/290, 1st Main Rd, MMDA Colony, Maduravoyal, Chennai, Tamil Nadu 600095',
+        validUpto: '2025',
+      },
+    ],
+  },
 
   // ==========================================
   // FAQ
@@ -524,14 +569,14 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   // CTA Section
   // ==========================================
   ctaTitle: 'Ready to Shape Your Future in Technology?',
-  ctaDescription: 'Join thousands of successful alumni who launched their tech careers from JKKN. Applications for 2025-26 batch are now open!',
+  ctaDescription: 'Join thousands of successful alumni who launched their tech careers from JKKN. Applications for 2026-27 batch are now open!',
   ctaButtons: [
-    { label: 'Apply Now', link: '/apply', variant: 'primary' },
+    { label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
     { label: 'Talk to Counselor', link: '/contact', variant: 'secondary' },
   ],
   ctaContact: [
-    { icon: 'Phone', label: 'Call Us', value: '+91 4288 235636', link: 'tel:+914288235636' },
-    { icon: 'Mail', label: 'Email Us', value: 'admissions@jkkn.ac.in', link: 'mailto:admissions@jkkn.ac.in' },
+    { icon: 'Phone', label: 'Call Us', value: '+91 9345855001', link: 'tel:+91-9345855001' },
+    { icon: 'Mail', label: 'Email Us', value: ' engg@jkkn.ac.in', link: 'mailto: engg@jkkn.ac.in' },
     { icon: 'MapPin', label: 'Visit Us', value: 'Kumarapalayam, Namakkal - 638183', link: '#' },
   ],
 }

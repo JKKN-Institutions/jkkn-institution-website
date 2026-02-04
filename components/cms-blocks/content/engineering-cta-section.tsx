@@ -230,7 +230,7 @@ export default function EngineeringCTASection({
               transitionDelay: '300ms'
             }}
           >
-            Admissions Open for 2026-27 Academic Year
+            Admissions Open for 2025-26 Academic Year
           </p>
         </div>
       </div>

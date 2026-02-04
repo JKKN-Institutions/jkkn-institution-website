@@ -107,7 +107,7 @@ export default function AdmissionHero({
     { icon: 'check', label: 'NAAC Accredited' },
     { icon: 'check', label: 'AICTE Approved' },
     { icon: 'check', label: 'UGC Recognized' },
-    { icon: 'check', label: 'NBA Accredited' },
+    { icon: 'check', label: 'NAAC Accredited' },
   ],
   backgroundColor = 'gradient-light',
   showAnimations = true,
