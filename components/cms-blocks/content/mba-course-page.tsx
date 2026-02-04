@@ -1279,31 +1279,26 @@ function FinalCTASection({
   accentColor: string
 }) {
   return (
-    <section
-      className="py-20 md:py-24 text-white relative overflow-hidden"
-      style={{
-        background: `linear-gradient(135deg, ${accentColor} 0%, ${accentColor}dd 100%)`,
-      }}
-    >
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l8-8h2L40 10V8zm0 4L52 0h2L40 14v-2zm0 4L56 0h2L40 18v-2zm0 4L60 0h2L40 22v-2zm0 4L64 0h2L40 26v-2zm0 4L68 0h2L40 30v-2zm0 4L72 0h2L40 34v-2zm0 4L76 0h2L40 38v-2zm0 4L80 0v2L42 40h-2zm4 0L80 4v2L46 40h-2zm4 0L80 8v2L50 40h-2zm4 0l28-28v2L54 40h-2zm4 0l24-24v2L58 40h-2zm4 0l20-20v2L62 40h-2zm4 0l16-16v2L66 40h-2zm4 0l12-12v2L70 40h-2zm4 0l8-8v2l-6 6h-2zm4 0l4-4v2l-2 2h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section className="py-20 md:py-24 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          {title && <h2 className="text-3xl md:text-4xl font-bold">{title}</h2>}
+          {title && (
+            <h2 className="text-3xl md:text-4xl font-bold" style={{ color: primaryColor }}>
+              {title}
+            </h2>
+          )}
 
-          {description && <p className="text-lg md:text-xl opacity-95">{description}</p>}
+          {description && (
+            <p className="text-lg md:text-xl text-gray-700">{description}</p>
+          )}
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap justify-center gap-4">
             {primaryButtonLabel && primaryButtonLink && (
               <a
                 href={primaryButtonLink}
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105"
-                style={{ backgroundColor: primaryColor, color: 'white' }}
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-white transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105"
+                style={{ backgroundColor: primaryColor }}
               >
                 {primaryButtonLabel}
                 <ArrowRight className="w-5 h-5" />
@@ -1313,7 +1308,8 @@ function FinalCTASection({
             {secondaryButtonLabel && secondaryButtonLink && (
               <a
                 href={secondaryButtonLink}
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-all duration-200"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold bg-transparent border-2 hover:bg-gray-50 transition-all duration-200"
+                style={{ borderColor: primaryColor, color: primaryColor }}
               >
                 {secondaryButtonLabel}
               </a>
@@ -1322,25 +1318,25 @@ function FinalCTASection({
 
           {/* Contact Information */}
           {(phone || email || address) && (
-            <div className="border-t border-white/20 pt-8 mt-8">
-              <div className="flex flex-wrap justify-center gap-6 text-sm">
+            <div className="border-t border-gray-200 pt-8 mt-8">
+              <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600">
                 {phone && (
                   <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4" />
+                    <Phone className="w-4 h-4" style={{ color: primaryColor }} />
                     <span>{phone}</span>
                   </div>
                 )}
 
                 {email && (
                   <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4" />
+                    <Mail className="w-4 h-4" style={{ color: primaryColor }} />
                     <span>{email}</span>
                   </div>
                 )}
 
                 {address && (
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4" />
+                    <MapPin className="w-4 h-4" style={{ color: primaryColor }} />
                     <span>{address}</span>
                   </div>
                 )}

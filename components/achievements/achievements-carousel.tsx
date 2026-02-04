@@ -169,7 +169,7 @@ function AchievementCarouselCard({ achievement, type }: AchievementCarouselCardP
   const student = !isFaculty ? (achievement as StudentAchievementWithRelations) : null
 
   return (
-    <article className="group relative bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 h-full">
+    <article className="group relative bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 h-full flex flex-col">
       {/* Featured Badge */}
       {achievement.is_featured && (
         <div className="absolute top-4 right-4 z-10">
@@ -180,7 +180,7 @@ function AchievementCarouselCard({ achievement, type }: AchievementCarouselCardP
         </div>
       )}
 
-      <div className="p-6 space-y-4">
+      <div className="p-6 space-y-4 flex-1">
         {/* Category Badge */}
         {achievement.category && (
           <div>
@@ -201,7 +201,7 @@ function AchievementCarouselCard({ achievement, type }: AchievementCarouselCardP
         )}
 
         {/* Title */}
-        <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+        <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-3">
           {achievement.title}
         </h3>
 
@@ -210,7 +210,7 @@ function AchievementCarouselCard({ achievement, type }: AchievementCarouselCardP
           {/* Person */}
           <div className="flex items-center gap-1.5">
             <User className="h-4 w-4 flex-shrink-0" />
-            <span className="line-clamp-1">
+            <span className="font-medium">
               {isFaculty ? faculty?.faculty_name : student?.student_name}
             </span>
           </div>
@@ -233,9 +233,9 @@ function AchievementCarouselCard({ achievement, type }: AchievementCarouselCardP
         <div className="flex items-center gap-1.5 text-sm text-gray-500">
           <BookOpen className="h-4 w-4 flex-shrink-0" />
           <span className="line-clamp-1">
-            {isFaculty && faculty?.faculty_designation
-              ? faculty.faculty_designation
-              : student?.student_roll_number || 'Student'}
+            {isFaculty
+              ? (faculty?.faculty_designation || 'Faculty')
+              : (student?.student_roll_number || 'Student')}
           </span>
         </div>
 
@@ -249,7 +249,7 @@ function AchievementCarouselCard({ achievement, type }: AchievementCarouselCardP
         )}
 
         {/* Description (Markdown) - Limited height */}
-        <div className="prose prose-sm max-w-none text-gray-700 line-clamp-3">
+        <div className="prose prose-sm max-w-none text-gray-700 line-clamp-4">
           <ReactMarkdown
             components={{
               p: ({ children }) => <p className="mb-1">{children}</p>,
@@ -269,9 +269,6 @@ function AchievementCarouselCard({ achievement, type }: AchievementCarouselCardP
 
       {/* Hover Effect Border */}
       <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-300 rounded-lg pointer-events-none transition-colors"></div>
-
-      {/* Gradient Overlay at Bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none"></div>
     </article>
   )
 }
