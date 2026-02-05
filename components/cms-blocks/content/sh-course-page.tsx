@@ -431,11 +431,11 @@ function HeroSection({
             {/* Main Image */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="/images/courses/sh-hero.jpg"
+                src="/images/courses/s&h/JKKN S & H.png"
                 alt="Science and Humanities laboratory at JKKN"
                 className="w-full h-[500px] object-cover"
                 onError={(e) => {
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=600&fit=crop&q=80'
+                  e.currentTarget.src = ''
                 }}
               />
             </div>

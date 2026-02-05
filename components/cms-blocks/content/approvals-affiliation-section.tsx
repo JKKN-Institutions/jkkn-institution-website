@@ -113,12 +113,12 @@ const defaultSections: ApprovalSection[] = [
       {
         id: '1-1',
         buttonLabel: 'AICTE EOA 2008-2023',
-        pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_1/view',
+        pdfUrl: '/pdfs/approvals/Anna-University-Affiliation-order-2008-2023.pdf',
       },
       {
         id: '1-2',
         buttonLabel: 'AICTE EOA 2024-2025',
-        pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_2/view',
+        pdfUrl: '/pdfs/approvals/EOA-Report-2024-2025.pdf',
       },
     ],
   },
@@ -130,12 +130,12 @@ const defaultSections: ApprovalSection[] = [
       {
         id: '2-1',
         buttonLabel: 'Anna-University-Affiliation-order-2023-2024',
-        pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_3/view',
+        pdfUrl: '/pdfs/approvals/AU-Aff-23-24.pdf',
       },
       {
         id: '2-2',
         buttonLabel: 'Anna-University-Affiliation-order-2008-2023',
-        pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_4/view',
+        pdfUrl: '/pdfs/approvals/Anna-University-Affiliation-order-2008-2023.pdf',
       },
     ],
   },
@@ -147,7 +147,7 @@ const defaultSections: ApprovalSection[] = [
       {
         id: '3-1',
         buttonLabel: 'Section 4(1)(b) of the RTI Act-2005',
-        pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_5/view',
+        pdfUrl: '/pdfs/approvals/RTI-Final.pdf',
       },
     ],
   },
