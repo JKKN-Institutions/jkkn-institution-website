@@ -140,31 +140,34 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
         },
       ],
     },
+  ],
+
+  // Course-wise Curriculum PDFs (Regulation 2025)
+  courseTabs: [
     {
-      year: 2,
-      semesters: [
-        {
-          semester: 3,
-          credits: 21,
-          subjects: [
-            { code: 'MA3354', name: 'Discrete Mathematics', credits: 4 },
-            { code: 'MA3391', name: 'Probability and Statistics', credits: 4 },
-            { code: 'PH3301', name: 'Advanced Physics for Engineers', credits: 3 },
-            { code: 'CY3301', name: 'Environmental Science and Engineering', credits: 3 },
-            { code: 'HS3301', name: 'Technical Communication', credits: 3 },
-          ],
-        },
-        {
-          semester: 4,
-          credits: 21,
-          subjects: [
-            { code: 'MA3451', name: 'Numerical Methods', credits: 4 },
-            { code: 'MA3492', name: 'Applied Statistics', credits: 4 },
-            { code: 'HS3401', name: 'Professional Ethics', credits: 3 },
-            { code: 'HS3402', name: 'Soft Skills Development', credits: 3 },
-          ],
-        },
-      ],
+      code: 'EEE',
+      name: 'Electrical and Electronics Engineering',
+      pdfUrl: 'https://cac.annauniv.edu/aidetails/afug_2025_fu/EEE/B.E.%20EEE.pdf',
+    },
+    {
+      code: 'MECH',
+      name: 'Mechanical Engineering',
+      pdfUrl: 'https://cac.annauniv.edu/aidetails/afug_2025_fu/Mech/B.E.%20Mechanical%20Engineering.pdf',
+    },
+    {
+      code: 'ECE',
+      name: 'Electronics and Communication Engineering',
+      pdfUrl: 'https://cac.annauniv.edu/aidetails/afug_2025_fu/ECE/B.E%20ECE.pdf',
+    },
+    {
+      code: 'IT',
+      name: 'Information Technology',
+      pdfUrl: 'https://cac.annauniv.edu/aidetails/afug_2025_fu/CSIE/B.Tech.%20IT%20.pdf',
+    },
+    {
+      code: 'CSE',
+      name: 'Computer Science and Engineering',
+      pdfUrl: 'https://cac.annauniv.edu/aidetails/afug_2025_fu/CSIE/BE%20CSE.pdf',
     },
   ],
 

@@ -102,9 +102,6 @@ export function BottomNavSubmenu({
                             />
                           </div>
                           <span className="font-medium text-sm">{group.label}</span>
-                          <span className="text-xs text-muted-foreground">
-                            {group.items.length}
-                          </span>
                         </div>
                         <motion.div
                           animate={{ rotate: isGroupExpanded ? 180 : 0 }}

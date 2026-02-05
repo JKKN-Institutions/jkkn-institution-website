@@ -342,7 +342,7 @@ export function AdminBottomNav({ userPermissions }: AdminBottomNavProps) {
         />
 
         {/* Nav items with semantic IDs */}
-        <div className="flex items-center justify-around">
+        <div className="flex items-center justify-around px-2 py-3">
           {primaryItems.map((item) => {
             const navId = toNavId(item.label);
             return (

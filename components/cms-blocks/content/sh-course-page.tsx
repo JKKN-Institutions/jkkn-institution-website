@@ -71,6 +71,12 @@ const CurriculumYearSchema = z.object({
   semesters: z.array(SemesterSchema),
 })
 
+const CourseTabSchema = z.object({
+  code: z.string(),
+  name: z.string(),
+  pdfUrl: z.string(),
+})
+
 const AdmissionStepSchema = z.object({
   step: z.number(),
   title: z.string(),
@@ -167,6 +173,7 @@ export const SHCoursePagePropsSchema = z.object({
   // Curriculum
   curriculumTitle: z.string(),
   curriculumYears: z.array(CurriculumYearSchema),
+  courseTabs: z.array(CourseTabSchema).optional(),
 
   // Admission Process
   admissionTitle: z.string(),
@@ -224,6 +231,7 @@ export function SHCoursePage(props: SHCoursePageProps) {
     benefits,
     curriculumTitle,
     curriculumYears,
+    courseTabs,
     admissionTitle,
     admissionSteps,
     feeTitle,
@@ -277,6 +285,7 @@ export function SHCoursePage(props: SHCoursePageProps) {
       <CurriculumSection
         title={curriculumTitle}
         years={curriculumYears}
+        courseTabs={courseTabs}
         primaryColor={primaryColor}
       />
 
@@ -544,6 +553,7 @@ function WhyChooseSection({
 function CurriculumSection({
   title,
   years,
+  courseTabs,
   primaryColor,
 }: {
   title: string
@@ -555,9 +565,11 @@ function CurriculumSection({
       subjects: Array<{ code?: string; name: string; credits?: number }>
     }>
   }>
+  courseTabs?: Array<{ code: string; name: string; pdfUrl: string }>
   primaryColor: string
 }) {
   const [selectedYear, setSelectedYear] = React.useState(1)
+  const [selectedCourse, setSelectedCourse] = React.useState(courseTabs?.[0]?.code || '')
 
   return (
     <section id="curriculum" className="py-16 md:py-20 bg-white">
@@ -574,61 +586,113 @@ function CurriculumSection({
           </p>
         </div>
 
-        {/* Year Tabs */}
-        <div className="flex justify-center mb-8 gap-2 flex-wrap">
-          {years.map((yearData) => (
-            <button
-              key={yearData.year}
-              onClick={() => setSelectedYear(yearData.year)}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                selectedYear === yearData.year
-                  ? 'text-white shadow-lg'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-              style={selectedYear === yearData.year ? { backgroundColor: primaryColor } : {}}
-            >
-              Year {yearData.year}
-            </button>
-          ))}
-        </div>
-
-        {/* Semester Content */}
-        {years
-          .filter((y) => y.year === selectedYear)
-          .map((yearData) => (
-            <div key={yearData.year} className="grid lg:grid-cols-2 gap-8">
-              {yearData.semesters.map((semester) => (
-                <div key={semester.semester} className="bg-[#fbfbee] rounded-xl p-6 shadow-md">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-2xl font-bold text-gray-800">Semester {semester.semester}</h3>
-                    <span className="text-sm font-medium px-4 py-2 rounded-full bg-white" style={{ color: primaryColor }}>
-                      {semester.credits} Credits
-                    </span>
-                  </div>
-
-                  <div className="space-y-3">
-                    {semester.subjects.map((subject, index) => (
-                      <div key={index} className="bg-white rounded-lg p-4 hover:shadow-md transition-shadow duration-300">
-                        <div className="flex justify-between items-start gap-2">
-                          <div className="flex-1">
-                            <p className="font-semibold text-gray-800 text-sm">{subject.name}</p>
-                            {subject.code && (
-                              <p className="text-xs text-gray-500 mt-1">{subject.code}</p>
-                            )}
-                          </div>
-                          {subject.credits !== undefined && (
-                            <span className="text-xs font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded">
-                              {subject.credits}C
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+        {/* Course Tabs - Only show if courseTabs exist */}
+        {courseTabs && courseTabs.length > 0 && (
+          <>
+            <div className="flex justify-center mb-8 gap-2 flex-wrap">
+              {courseTabs.map((course) => (
+                <button
+                  key={course.code}
+                  onClick={() => setSelectedCourse(course.code)}
+                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                    selectedCourse === course.code
+                      ? 'text-white shadow-lg'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                  style={selectedCourse === course.code ? { backgroundColor: primaryColor } : {}}
+                >
+                  {course.name}
+                </button>
               ))}
             </div>
-          ))}
+
+            {/* Course PDF Download */}
+            <div className="mb-12">
+              {courseTabs
+                .filter((c) => c.code === selectedCourse)
+                .map((course) => (
+                  <div key={course.code} className="bg-[#fbfbee] rounded-xl p-8 shadow-md">
+                    <h3 className="text-2xl font-bold text-center mb-6" style={{ color: primaryColor }}>
+                      REGULATION 2025 CURRICULUM - {course.name}
+                    </h3>
+                    <div className="text-center">
+                      <a
+                        href={course.pdfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-white transition-all duration-300 hover:opacity-90 shadow-lg hover:shadow-xl"
+                        style={{ backgroundColor: primaryColor }}
+                      >
+                        Download PDF
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </>
+        )}
+
+        {/* Year Tabs - Only show if no courseTabs */}
+        {(!courseTabs || courseTabs.length === 0) && (
+          <div className="flex justify-center mb-8 gap-2 flex-wrap">
+            {years.map((yearData) => (
+              <button
+                key={yearData.year}
+                onClick={() => setSelectedYear(yearData.year)}
+                className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                  selectedYear === yearData.year
+                    ? 'text-white shadow-lg'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+                style={selectedYear === yearData.year ? { backgroundColor: primaryColor } : {}}
+              >
+                Year {yearData.year}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Semester Content - Only show if no courseTabs */}
+        {(!courseTabs || courseTabs.length === 0) &&
+          years
+            .filter((y) => y.year === selectedYear)
+            .map((yearData) => (
+              <div key={yearData.year} className="grid lg:grid-cols-2 gap-8">
+                {yearData.semesters.map((semester) => (
+                  <div key={semester.semester} className="bg-[#fbfbee] rounded-xl p-6 shadow-md">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-2xl font-bold text-gray-800">Semester {semester.semester}</h3>
+                      <span className="text-sm font-medium px-4 py-2 rounded-full bg-white" style={{ color: primaryColor }}>
+                        {semester.credits} Credits
+                      </span>
+                    </div>
+
+                    <div className="space-y-3">
+                      {semester.subjects.map((subject, index) => (
+                        <div key={index} className="bg-white rounded-lg p-4 hover:shadow-md transition-shadow duration-300">
+                          <div className="flex justify-between items-start gap-2">
+                            <div className="flex-1">
+                              <p className="font-semibold text-gray-800 text-sm">{subject.name}</p>
+                              {subject.code && (
+                                <p className="text-xs text-gray-500 mt-1">{subject.code}</p>
+                              )}
+                            </div>
+                            {subject.credits !== undefined && (
+                              <span className="text-xs font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded">
+                                {subject.credits}C
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
       </div>
     </section>
   )

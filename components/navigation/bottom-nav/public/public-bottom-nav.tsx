@@ -257,7 +257,7 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
         />
 
         {/* Nav items */}
-        <div className="flex items-center justify-around">
+        <div className="flex items-center justify-around px-2 py-3">
           {primaryItems.map((item, index) => (
             <BottomNavItem
               key={item.href}

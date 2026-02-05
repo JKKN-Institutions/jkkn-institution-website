@@ -21,8 +21,9 @@ const MOBILE_LABEL_MAP: Record<string, string> = {
   'ABOUT': 'About',
   'OUR COLLEGES': 'Colleges',
   'OUR SCHOOLS': 'Schools',
-  'B.E. Mechanical Engineering': 'BE MECH',
-  'BE MECHANICAL': 'BE MECH',
+  'B.E. Mechanical Engineering': 'MECH',
+  'BE MECHANICAL': 'MECH',
+  'BE Mechanical': 'MECH',
 };
 
 // Get mobile-friendly label
