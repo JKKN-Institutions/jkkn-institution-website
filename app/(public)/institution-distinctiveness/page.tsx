@@ -1,4 +1,7 @@
-import { InstitutionDistinctivenessPage } from '@/components/cms-blocks/content/institution-distinctiveness-page'
+import {
+  InstitutionDistinctivenessPage,
+  InstitutionDistinctivenessPagePropsSchema,
+} from '@/components/cms-blocks/content/institution-distinctiveness-page'
 import { getInstitutionId } from '@/lib/config/multi-tenant'
 import type { Metadata } from 'next'
 
@@ -60,10 +63,8 @@ async function getInstitutionDistinctivenessData() {
 export default async function InstitutionDistinctivenessPageRoute() {
   const data = await getInstitutionDistinctivenessData()
 
-  // If data exists, use it; otherwise render component with defaults
-  if (data) {
-    return <InstitutionDistinctivenessPage {...data} />
-  }
+  // Parse data through schema to apply defaults and ensure type safety
+  const parsedData = InstitutionDistinctivenessPagePropsSchema.parse(data || {})
 
-  // For institutions without data, render the component which will use its default props
-  return <InstitutionDistinctivenessPage />
+  return <InstitutionDistinctivenessPage {...parsedData} />
+}

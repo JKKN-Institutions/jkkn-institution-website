@@ -367,7 +367,7 @@ export const DENTAL_NAAC_DATA: NAACPageProps = {
           title: 'View Detailed DVV Clarifications',
           description: 'Complete DVV findings and responses for all 7 criteria organized by metrics',
           fileUrl: '/naac/dvv',
-          fileType: 'webpage',
+          fileType: 'link',
           size: '',
           uploadDate: '2024-02-05',
         },
