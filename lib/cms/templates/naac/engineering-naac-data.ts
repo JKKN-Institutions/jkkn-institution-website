@@ -385,8 +385,16 @@ export const ENGINEERING_NAAC_DATA: NAACPageProps = {
       id: 'dvv',
       heading: 'Data Validation and Verification (DVV)',
       overview:
-        'Verified and authenticated data submitted for NAAC assessment with comprehensive supporting documentation and clarifications.',
+        'Verified and authenticated data submitted for NAAC assessment with comprehensive supporting documentation and clarifications.\n\nFor detailed DVV clarifications with findings and responses for all criteria and metrics, please visit our comprehensive DVV Clarifications page.',
       documents: [
+        {
+          title: 'View Detailed DVV Clarifications',
+          description: 'Complete DVV findings and responses for all 7 criteria organized by metrics',
+          fileUrl: '/naac/dvv',
+          fileType: 'webpage',
+          size: '',
+          uploadDate: '2024-02-05',
+        },
         {
           title: 'DVV Clarification Report',
           description: 'Responses to data validation queries',

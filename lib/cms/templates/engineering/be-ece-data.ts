@@ -13,10 +13,10 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   heroTitle: 'B.E. Electronics & Communication Engineering',
   heroSubtitle: 'Shape the future of communication technology with expertise in embedded systems, VLSI, wireless communication, and IoT. Our AICTE-approved, NAAC-accredited program prepares you to design, develop, and innovate in the rapidly evolving world of electronics and communication.',
   heroStats: [
-    { icon: '', label: 'Years Duration', value: '4' },
-    { icon: '', label: 'Seats Available', value: '60' },
-    { icon: '', label: 'Placement Rate', value: '95%' },
-    { icon: '', label: 'Highest Package', value: '₹10L' },
+    { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
+    { icon: 'Users', label: 'Seats Available', value: '60' },
+    { icon: 'TrendingUp', label: 'Placement Rate', value: '95%' },
+    { icon: 'Trophy', label: 'Highest Package', value: '₹10L' },
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
@@ -30,13 +30,13 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   overviewTitle: 'Course Overview',
   overviewCards: [
     {
-      icon: '📡',
+      icon: 'Antenna',
       title: 'About the Program',
       value: 'Communication Engineering',
       description: 'Our B.E. Electronics & Communication Engineering program covers embedded systems, VLSI design, wireless communication, signal processing, IoT, and network security technologies.',
     },
     {
-      icon: '⏱️',
+      icon: 'GraduationCap',
       title: 'Duration & Credits',
       value: '4 Years | 8 Semesters',
       description: 'The program spans 4 years with 8 semesters totaling 160 credits. Comprehensive curriculum balancing theory, laboratory work, and industrial training.',
@@ -48,7 +48,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
       description: 'Our program is approved by AICTE (All India Council for Technical Education) and accredited by NAAC, ensuring quality education standards.',
     },
     {
-      icon: '📚',
+      icon: 'BookOpen',
       title: 'Eligibility',
       value: '10+2 with PCM',
       description: 'Candidates must have passed 10+2 with Physics, Chemistry & Mathematics with minimum 50% aggregate (45% for reserved categories).',

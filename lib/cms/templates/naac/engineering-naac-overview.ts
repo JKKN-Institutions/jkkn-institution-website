@@ -824,10 +824,16 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
         'JKKN College of Engineering\'s distinctive performance in areas that set it apart from peer institutions, reflecting our commitment to innovation, quality, and societal impact.',
       documents: [
         {
-          title: 'Institution Distinctiveness Document',
-          description: 'Complete documentation of institutional unique strengths',
-          fileUrl: 'https://engg.jkkn.ac.in/institution-distinctiveness/',
+          title: 'Institution Distinctiveness',
+          description: 'Comprehensive documentation of institutional unique features including programmes efficiency, entrepreneurship initiatives, social responsibility, and civic engagement',
+          fileUrl: '/institution-distinctiveness',
           fileType: 'link',
+        },
+        {
+          title: 'Institution Distinctiveness PDF',
+          description: 'Download the complete document in PDF format',
+          fileUrl: '/pdfs/naac/criterion-7/criteria7-7.3.1-Institution-distinctiveness.pdf',
+          fileType: 'pdf',
         },
       ],
     },

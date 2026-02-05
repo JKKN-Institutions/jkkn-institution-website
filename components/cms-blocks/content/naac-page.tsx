@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Menu, X, FileText, Download, ChevronRight } from 'lucide-react'
 import type { NAACPageProps, Document, SubSection } from '@/lib/cms/templates/naac/types'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
@@ -339,11 +340,18 @@ function ContactCard({ contactInfo }: { contactInfo: any }) {
 // =============================================================================
 
 export function NAACPage(props: NAACPageProps) {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState(
     props.navigationSections[0]?.id || ''
   )
 
   const handleTabChange = (tabId: string) => {
+    // If DVV tab is clicked, navigate to dedicated DVV page
+    if (tabId === 'dvv') {
+      router.push('/naac/dvv')
+      return
+    }
+
     setActiveTab(tabId)
     // Smooth scroll to top of content when tab changes
     window.scrollTo({ top: 0, behavior: 'smooth' })

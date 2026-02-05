@@ -35,10 +35,10 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   heroTitle: 'B.E. Computer Science & Engineering',
   heroSubtitle: 'Transform your passion for technology into a rewarding career. Our AICTE-approved, NAAC-accredited program combines cutting-edge curriculum with industry-ready skills to shape tomorrow\'s tech leaders.',
   heroStats: [
-    { icon: '', label: 'Years Duration', value: '4' },
-    { icon: '', label: 'Seats Available', value: '60' },
-    { icon: '', label: 'Placement Rate', value: '95%' },
-    { icon: '', label: 'Highest Package', value: '₹12L' },
+    { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
+    { icon: 'Users', label: 'Seats Available', value: '60' },
+    { icon: 'TrendingUp', label: 'Placement Rate', value: '95%' },
+    { icon: 'Trophy', label: 'Highest Package', value: '₹12L' },
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },

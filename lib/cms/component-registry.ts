@@ -4730,7 +4730,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       title: "Principal's Message",
       name: 'Dr. C. Kathirvel',
       role: 'Principal',
-      messagePart1: "J.K.K Nataraja College of Engineering and Technology is an emerging AI Powered institute, dedicated to providing top-tier education since its establishment in 2008.",
+      messagePart1: "JKKN College of Engineering and Technology is an emerging AI Powered institute, dedicated to providing top-tier education since its establishment in 2008.",
       showPattern: true,
     },
     supportsChildren: false,

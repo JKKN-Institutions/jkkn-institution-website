@@ -361,8 +361,16 @@ export const DENTAL_NAAC_DATA: NAACPageProps = {
       id: 'dvv',
       heading: 'Data Validation and Verification (DVV)',
       overview:
-        'Verified institutional data with supporting documentation for patient statistics, clinical procedures, research output, and academic performance metrics.',
+        'Verified institutional data with supporting documentation for patient statistics, clinical procedures, research output, and academic performance metrics.\n\nFor detailed DVV clarifications with findings and responses for all criteria and metrics, please visit our comprehensive DVV Clarifications page.',
       documents: [
+        {
+          title: 'View Detailed DVV Clarifications',
+          description: 'Complete DVV findings and responses for all 7 criteria organized by metrics',
+          fileUrl: '/naac/dvv',
+          fileType: 'webpage',
+          size: '',
+          uploadDate: '2024-02-05',
+        },
         {
           title: 'DVV Clarification Report',
           description: 'Responses to data validation queries',

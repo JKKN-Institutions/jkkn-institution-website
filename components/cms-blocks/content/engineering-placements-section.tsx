@@ -125,12 +125,12 @@ export const EngineeringPlacementsSectionPropsSchema = z.object({
   showCategoryTabs: z.boolean().default(false),
 
   // Logo marquee settings
-  marqueeSpeed: z.number().default(15),
+  marqueeSpeed: z.number().default(8),
   showGrayscale: z.boolean().default(true),
   enableDrag: z.boolean().default(true),
   pauseOnHover: z.boolean().default(true),
-  dragSensitivity: z.number().min(0.1).max(2).default(1),
-  speedPreset: z.enum(['slow', 'medium', 'fast', 'custom']).default('medium'),
+  dragSensitivity: z.number().min(0.1).max(2).default(1.2),
+  speedPreset: z.enum(['slow', 'medium', 'fast', 'ultra-fast', 'custom']).default('fast'),
 
   // Colors (updated to JKKN brand colors)
   primaryColor: z.string().default('#0b6d41'),
@@ -187,17 +187,17 @@ function StatCard({
 
   return (
     <div
-      className="relative p-6 rounded-2xl bg-white shadow-lg border border-gray-100 text-center"
+      className="relative p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl bg-white shadow-lg border border-gray-100 text-center"
       style={{
         animationDelay: `${index * 100}ms`,
       }}
     >
       {/* Icon */}
       <div
-        className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4"
+        className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg sm:rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4"
         style={{ backgroundColor: `${accentColor}15` }}
       >
-        <StatIcon icon={stat.icon} />
+        <StatIcon icon={stat.icon} className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6" />
         <style jsx>{`
           div :global(svg) {
             color: ${accentColor};
@@ -207,14 +207,14 @@ function StatCard({
 
       {/* Value */}
       <div
-        className="text-3xl sm:text-4xl font-bold mb-2"
+        className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2"
         style={{ color: primaryColor }}
       >
         {stat.prefix}{count}{stat.suffix}
       </div>
 
       {/* Label */}
-      <div className="text-sm text-gray-600 font-medium">
+      <div className="text-xs sm:text-sm text-gray-600 font-medium">
         {stat.label}
       </div>
     </div>
@@ -288,7 +288,11 @@ function LogoMarquee({
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging || !enableDrag) return
 
-    const deltaX = (e.clientX - lastDragX) * dragSensitivity
+    // Increase sensitivity for touch events (mobile)
+    const isTouchEvent = e.pointerType === 'touch'
+    const sensitivity = isTouchEvent ? dragSensitivity * 1.5 : dragSensitivity
+
+    const deltaX = (e.clientX - lastDragX) * sensitivity
     setScrollOffset((prev) => prev + deltaX)
 
     // Calculate velocity for momentum
@@ -378,7 +382,10 @@ function LogoMarquee({
 
   return (
     <div
-      className="relative overflow-hidden"
+      className={cn(
+        "relative overflow-hidden rounded-xl transition-all duration-300",
+        enableDrag && "hover:shadow-lg hover:bg-gray-50/50"
+      )}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onWheel={handleWheel}
@@ -393,12 +400,12 @@ function LogoMarquee({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
-        className="relative"
+        className="relative py-4"
       >
         <div
           ref={contentRef}
           className={cn(
-            'flex gap-8',
+            'flex gap-4 sm:gap-6 md:gap-8',
             !isDragging && !isPaused && 'animate-marquee'
           )}
           style={{
@@ -415,8 +422,8 @@ function LogoMarquee({
             <div
               key={index}
               className={cn(
-                'flex-shrink-0 w-32 h-16 bg-white rounded-lg shadow-sm border border-gray-100 p-3 flex items-center justify-center transition-all duration-300',
-                showGrayscale && 'grayscale hover:grayscale-0',
+                'flex-shrink-0 w-24 sm:w-28 md:w-32 h-12 sm:h-14 md:h-16 bg-white rounded-lg shadow-sm border border-gray-100 p-2 sm:p-3 flex items-center justify-center transition-all duration-300',
+                showGrayscale && 'grayscale hover:grayscale-0 active:grayscale-0',
                 'pointer-events-none' // Prevent image drag
               )}
             >
@@ -426,7 +433,7 @@ function LogoMarquee({
                   alt={company.name}
                   width={100}
                   height={40}
-                  className="object-contain max-h-10"
+                  className="object-contain max-h-8 sm:max-h-9 md:max-h-10"
                   draggable={false}
                 />
               ) : (
@@ -437,9 +444,9 @@ function LogoMarquee({
         </div>
       </div>
 
-      {/* Gradient overlays */}
-      <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-gray-50 to-transparent pointer-events-none z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none z-10" />
+      {/* Gradient overlays - smaller on mobile */}
+      <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-16 md:w-20 bg-gradient-to-r from-gray-50 to-transparent pointer-events-none z-10" />
+      <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-16 md:w-20 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none z-10" />
     </div>
   )
 }
@@ -459,12 +466,12 @@ export default function EngineeringPlacementsSection({
   ],
   companies = [],
   showCategoryTabs = true,
-  marqueeSpeed = 15,
+  marqueeSpeed = 8,
   showGrayscale = true,
   enableDrag = true,
   pauseOnHover = true,
-  dragSensitivity = 1,
-  speedPreset = 'medium',
+  dragSensitivity = 1.2,
+  speedPreset = 'fast',
   primaryColor = '#1e3a5f',
   accentColor = '#f97316',
   backgroundColor = '#f9fafb',
@@ -476,13 +483,26 @@ export default function EngineeringPlacementsSection({
   const sectionRef = useInView(0.1)
   const statsRef = useInView(0.2)
   const [activeCategory, setActiveCategory] = useState<'all' | 'it' | 'core' | 'manufacturing' | 'service'>('all')
+  const [isMobile, setIsMobile] = useState(false)
 
-  // Speed preset mapping
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Speed preset mapping (lower values = faster animation)
+  // Mobile gets 20% faster speed for better visual effect
   const speedMapping = {
-    slow: 20,
-    medium: 15,
-    fast: 10,
-    custom: marqueeSpeed,
+    slow: isMobile ? 12 : 15,
+    medium: isMobile ? 8 : 10,
+    fast: isMobile ? 5 : 6,
+    'ultra-fast': isMobile ? 3 : 4,
+    custom: isMobile ? marqueeSpeed * 0.8 : marqueeSpeed,
   }
   const actualSpeed = speedMapping[speedPreset]
 
@@ -534,12 +554,12 @@ export default function EngineeringPlacementsSection({
         }
       `}</style>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-10 md:mb-14">
+        <div className="text-center mb-8 sm:mb-10 md:mb-14">
           <h2
             className={cn(
-              'text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4',
+              'text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 sm:mb-4 px-2',
               animateClass(0)
             )}
             style={{ color: primaryColor, transitionDelay: '0ms' }}
@@ -548,7 +568,7 @@ export default function EngineeringPlacementsSection({
           </h2>
           <p
             className={cn(
-              'text-base sm:text-lg text-gray-600 max-w-2xl mx-auto',
+              'text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-2',
               animateClass(100)
             )}
             style={{ transitionDelay: '100ms' }}
@@ -561,7 +581,7 @@ export default function EngineeringPlacementsSection({
         <div
           ref={statsRef.ref}
           className={cn(
-            'grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12 md:mb-16',
+            'grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 mb-10 sm:mb-12 md:mb-16',
             animateClass(200)
           )}
           style={{ transitionDelay: '200ms' }}
@@ -582,7 +602,7 @@ export default function EngineeringPlacementsSection({
         {showCategoryTabs && companies.length > 0 && (
           <div
             className={cn(
-              'flex justify-center gap-2 sm:gap-3 mb-8',
+              'flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 px-2',
               animateClass(300)
             )}
             style={{ transitionDelay: '300ms' }}
@@ -592,10 +612,10 @@ export default function EngineeringPlacementsSection({
                 key={cat.key}
                 onClick={() => setActiveCategory(cat.key)}
                 className={cn(
-                  'px-3 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300',
+                  'px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 min-w-[60px] sm:min-w-[70px]',
                   activeCategory === cat.key
-                    ? 'text-white shadow-md'
-                    : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                    ? 'text-white shadow-md scale-105'
+                    : 'bg-white text-gray-600 hover:bg-gray-100 active:bg-gray-200 border border-gray-200'
                 )}
                 style={activeCategory === cat.key ? {
                   backgroundColor: primaryColor,
@@ -610,14 +630,34 @@ export default function EngineeringPlacementsSection({
         {/* Logo Marquee */}
         <div
           className={cn(
-            'rounded-2xl p-6 md:p-8',
+            'rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8',
             animateClass(400)
           )}
           style={{ transitionDelay: '400ms' }}
         >
-          <p className="text-center text-sm text-gray-500 mb-6 font-medium">
-            Our students are placed in leading companies worldwide
-          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mb-6">
+            <p className="text-center text-sm text-gray-500 font-medium">
+              Our students are placed in leading companies worldwide
+            </p>
+            {enableDrag && (
+              <>
+                {/* Desktop drag indicator */}
+                <span className="hidden sm:inline-flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full text-xs text-gray-600">
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                  </svg>
+                  Drag to scroll
+                </span>
+                {/* Mobile swipe indicator */}
+                <span className="inline-flex sm:hidden items-center gap-1 px-2 py-1 bg-gray-100 rounded-full text-xs text-gray-600 animate-pulse">
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                  </svg>
+                  Swipe to explore
+                </span>
+              </>
+            )}
+          </div>
           <LogoMarquee
             companies={filteredCompanies}
             speed={actualSpeed}

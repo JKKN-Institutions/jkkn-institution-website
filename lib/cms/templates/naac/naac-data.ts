@@ -514,8 +514,16 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
       id: 'dvv',
       heading: 'Data Validation and Verification (DVV)',
       overview:
-        'The DVV process ensures accuracy, authenticity, and compliance of data submitted for NAAC assessment. This section contains verified data, supporting documents, and clarifications provided during the data validation and verification process.',
+        'The DVV process ensures accuracy, authenticity, and compliance of data submitted for NAAC assessment. This section contains verified data, supporting documents, and clarifications provided during the data validation and verification process.\n\nFor detailed DVV clarifications with findings and responses for all criteria and metrics, please visit our comprehensive DVV Clarifications page.',
       documents: [
+        {
+          title: 'View Detailed DVV Clarifications',
+          description: 'Complete DVV findings and responses for all 7 criteria organized by metrics',
+          fileUrl: '/naac/dvv',
+          fileType: 'webpage',
+          size: '',
+          uploadDate: '2024-02-05',
+        },
         {
           title: 'DVV Clarification Report',
           description: 'Responses to DVV queries and clarifications',

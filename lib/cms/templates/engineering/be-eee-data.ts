@@ -13,10 +13,10 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   heroTitle: 'B.E. Electrical & Electronics Engineering',
   heroSubtitle: 'Power your future with expertise in electrical systems, power generation, automation, and control systems. Our AICTE-approved, NAAC-accredited program prepares you to design, develop, and maintain the electrical infrastructure that powers the modern world.',
   heroStats: [
-    { icon: '', label: 'Years Duration', value: '4' },
-    { icon: '', label: 'Seats Available', value: '60' },
-    { icon: '', label: 'Placement Rate', value: '95%' },
-    { icon: '', label: 'Highest Package', value: '₹10L' },
+    { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
+    { icon: 'Users', label: 'Seats Available', value: '60' },
+    { icon: 'TrendingUp', label: 'Placement Rate', value: '95%' },
+    { icon: 'Trophy', label: 'Highest Package', value: '₹10L' },
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
@@ -30,13 +30,13 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   overviewTitle: 'Course Overview',
   overviewCards: [
     {
-      icon: '⚡',
+      icon: 'Zap',
       title: 'About the Program',
       value: 'Power Engineering',
       description: 'Our B.E. Electrical & Electronics Engineering program covers power systems, electrical machines, control systems, power electronics, renewable energy, and smart grid technologies.',
     },
     {
-      icon: '⏱️',
+      icon: 'GraduationCap',
       title: 'Duration & Credits',
       value: '4 Years | 8 Semesters',
       description: 'The program spans 4 years with 8 semesters totaling 160 credits. Comprehensive curriculum balancing theory, laboratory work, and industrial training.',
@@ -48,7 +48,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
       description: 'Our program is approved by AICTE (All India Council for Technical Education) and accredited by NAAC, ensuring quality education standards.',
     },
     {
-      icon: '📚',
+      icon: 'BookOpen',
       title: 'Eligibility',
       value: '10+2 with PCM',
       description: 'Candidates must have passed 10+2 with Physics, Chemistry & Mathematics with minimum 50% aggregate (45% for reserved categories).',

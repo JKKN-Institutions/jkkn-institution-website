@@ -2,33 +2,53 @@ import React from 'react'
 import {
   Award,
   BarChart3,
+  Battery,
+  BookMarked,
   BookOpen,
   Bot,
   Briefcase,
   Building2,
+  Calendar,
+  Car,
+  Check,
   CheckCircle,
+  ClipboardList,
+  Clock,
   Cloud,
   DollarSign,
+  Edit2,
+  Factory,
   FileText,
+  Flame,
   Globe,
   GraduationCap,
+  Hammer,
+  Handshake,
   HardDrive,
   Heart,
+  IndianRupee,
   Laptop,
   Lightbulb,
   Lock,
   Mail,
   MapPin,
   Microscope,
+  Palette,
   Phone,
+  Plug,
   Radio,
   ScrollText,
+  Settings,
+  Sun,
   Target,
+  TestTube,
   TrendingUp,
   Trophy,
+  University,
   UserCheck,
   Users,
   Wrench,
+  Zap,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -39,20 +59,32 @@ import {
 export const ICON_MAP: Record<string, LucideIcon> = {
   // Academic & Education
   GraduationCap,
+  graduationCap: GraduationCap, // Alias: camelCase
   Award,
+  award: Award, // Alias: camelCase
   ScrollText,
   Microscope,
   FileText,
   BookOpen,
+  BookMarked,
+  bookMarked: BookMarked, // Alias: camelCase
+  University,
+  university: University, // Alias: camelCase
+  TestTube,
+  testTube: TestTube, // Alias: camelCase
 
   // Business & Professional
   Briefcase,
   Building2,
   Target,
   Trophy,
+  trophy: Trophy, // Alias: camelCase
   BarChart3,
   TrendingUp,
   DollarSign,
+  IndianRupee,
+  indianRupee: IndianRupee, // Alias: camelCase
+  Handshake,
 
   // Technology & Computing
   Laptop,
@@ -61,7 +93,9 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   Lock,
   HardDrive,
   Wrench,
-  Radio, // Using Radio as replacement for Antenna
+  Radio, // Radio icon (also used as Antenna)
+  Antenna: Radio, // Alias: Radio icon used for Antenna
+  Settings,
 
   // Communication & Contact
   Phone,
@@ -71,12 +105,47 @@ export const ICON_MAP: Record<string, LucideIcon> = {
 
   // People & Users
   Users,
+  users: Users, // Alias: camelCase
   UserCheck,
 
   // General & Social
   CheckCircle,
+  Check,
+  check: Check, // Alias: camelCase
+  confirm: CheckCircle, // Alias: CheckCircle for confirm
+  verify: CheckCircle, // Alias: CheckCircle for verify
   Lightbulb,
   Heart,
+  Palette,
+  Flame,
+
+  // Time & Schedule
+  Clock,
+  clock: Clock, // Alias: camelCase
+  Calendar,
+  calendar: Calendar, // Alias: camelCase
+
+  // Forms & Documents
+  ClipboardList,
+  form: ClipboardList, // Alias: ClipboardList for form
+  exam: ClipboardList, // Alias: ClipboardList for exam
+
+  // Electrical & Electronics Engineering
+  Zap,
+  Battery,
+  Plug,
+  Sun,
+
+  // Engineering & Construction
+  Factory,
+  Construction: Hammer, // Alias: Hammer icon used for Construction
+  Hammer,
+  Car,
+  car: Car, // Alias: camelCase
+
+  // Editing & Document
+  FileEdit: Edit2, // Alias: Edit2 icon used for FileEdit
+  Edit2,
 }
 
 /**
