@@ -12,7 +12,7 @@
  */
 
 import { useEffect, useState } from 'react'
-import { Calendar, User, Award, BookOpen } from 'lucide-react'
+import { Calendar, User, Award, BookOpen, ChevronDown, ChevronUp } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import type {
   FacultyAchievementWithRelations,
@@ -119,7 +119,7 @@ export function AchievementList({
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+    <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-2">
       {achievements.map((achievement) => (
         <AchievementCard
           key={achievement.id}
@@ -137,12 +137,13 @@ interface AchievementCardProps {
 }
 
 function AchievementCard({ achievement, type }: AchievementCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false)
   const isFaculty = type === 'faculty'
   const faculty = isFaculty ? (achievement as FacultyAchievementWithRelations) : null
   const student = !isFaculty ? (achievement as StudentAchievementWithRelations) : null
 
   return (
-    <article className="group relative bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100">
+    <article className={`w-full group relative bg-white rounded-lg shadow-sm hover:shadow-md transition-all overflow-hidden border border-gray-100 flex flex-col ${isExpanded ? 'h-auto min-h-[350px] sm:min-h-[400px]' : 'h-[350px] sm:h-[400px]'}`}>
       {/* Featured Badge */}
       {achievement.is_featured && (
         <div className="absolute top-4 right-4 z-10">
@@ -153,12 +154,12 @@ function AchievementCard({ achievement, type }: AchievementCardProps) {
         </div>
       )}
 
-      <div className="p-6 space-y-4">
+      <div className="p-4 sm:p-6 space-y-3 sm:space-y-4 flex-1 overflow-hidden">
         {/* Category Badge */}
         {achievement.category && (
           <div>
             <span
-              className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-full"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 text-xs font-medium rounded-full"
               style={{
                 backgroundColor: `${achievement.category.color}15`,
                 color: achievement.category.color,
@@ -173,44 +174,44 @@ function AchievementCard({ achievement, type }: AchievementCardProps) {
         )}
 
         {/* Title */}
-        <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+        <h3 className="text-base sm:text-xl font-bold text-[#171717] group-hover:text-[#0b6d41] transition-colors line-clamp-2 sm:line-clamp-none">
           {achievement.title}
         </h3>
 
         {/* Meta Information */}
-        <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+        <div className="flex flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600">
           {/* Person */}
-          <div className="flex items-center gap-1.5">
-            <User className="h-4 w-4" />
-            <span>
+          <div className="flex items-center gap-1 sm:gap-1.5">
+            <User className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+            <span className="truncate max-w-[150px] sm:max-w-none">
               {isFaculty ? faculty?.faculty_name : student?.student_name}
             </span>
           </div>
 
           {/* Designation or Roll Number */}
           {isFaculty && faculty?.faculty_designation && (
-            <div className="flex items-center gap-1.5">
-              <BookOpen className="h-4 w-4" />
-              <span>{faculty.faculty_designation}</span>
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+              <span className="truncate max-w-[150px] sm:max-w-none">{faculty.faculty_designation}</span>
             </div>
           )}
 
           {!isFaculty && student?.student_roll_number && (
-            <div className="flex items-center gap-1.5">
-              <BookOpen className="h-4 w-4" />
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
               <span>{student.student_roll_number}</span>
             </div>
           )}
 
           {/* Date */}
           {achievement.achievement_date && (
-            <div className="flex items-center gap-1.5">
-              <Calendar className="h-4 w-4" />
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <Calendar className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
               <span>
                 {new Date(achievement.achievement_date).toLocaleDateString('en-IN', {
                   year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
+                  month: 'short',
+                  day: window.innerWidth < 640 ? undefined : 'numeric',
                 })}
               </span>
             </div>
@@ -220,31 +221,32 @@ function AchievementCard({ achievement, type }: AchievementCardProps) {
         {/* Course Badge */}
         {achievement.course && (
           <div>
-            <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md">
-              {achievement.course.name} ({achievement.course.code})
+            <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md truncate max-w-full">
+              <span className="hidden sm:inline">{achievement.course.name} ({achievement.course.code})</span>
+              <span className="sm:hidden">{achievement.course.code}</span>
             </span>
           </div>
         )}
 
         {/* Description (Markdown) */}
-        <div className="prose prose-sm max-w-none text-gray-700">
+        <div className={`prose prose-sm max-w-none text-gray-700 text-xs sm:text-sm ${isExpanded ? '' : 'line-clamp-2 sm:line-clamp-3'}`}>
           <ReactMarkdown
             components={{
               // Customize markdown rendering
               p: ({ children }) => <p className="mb-2">{children}</p>,
-              ul: ({ children }) => <ul className="list-disc list-inside space-y-1">{children}</ul>,
-              ol: ({ children }) => <ol className="list-decimal list-inside space-y-1">{children}</ol>,
+              ul: ({ children }) => isExpanded ? <ul className="list-disc list-inside space-y-1">{children}</ul> : null,
+              ol: ({ children }) => isExpanded ? <ol className="list-decimal list-inside space-y-1">{children}</ol> : null,
               strong: ({ children }) => <strong className="font-semibold text-gray-900">{children}</strong>,
-              a: ({ children, href }) => (
+              a: ({ children, href }) => isExpanded ? (
                 <a
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
+                  className="text-[#0b6d41] hover:underline hover:text-[#085032]"
                 >
                   {children}
                 </a>
-              ),
+              ) : null,
             }}
           >
             {achievement.description}
@@ -252,8 +254,28 @@ function AchievementCard({ achievement, type }: AchievementCardProps) {
         </div>
       </div>
 
+      {/* Learn More / Show Less Button */}
+      <div className="px-4 sm:px-6 pb-3 sm:pb-4 mt-auto">
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium text-[#0b6d41] hover:text-[#085032] transition-colors group/button"
+        >
+          {isExpanded ? (
+            <>
+              <span>Show Less</span>
+              <ChevronUp className="h-3 w-3 sm:h-4 sm:w-4 group-hover/button:translate-y-[-2px] transition-transform" />
+            </>
+          ) : (
+            <>
+              <span>Learn More</span>
+              <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4 group-hover/button:translate-y-[2px] transition-transform" />
+            </>
+          )}
+        </button>
+      </div>
+
       {/* Hover Effect Border */}
-      <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-200 rounded-lg pointer-events-none transition-colors"></div>
+      <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#0b6d41]/30 rounded-lg pointer-events-none transition-colors"></div>
     </article>
   )
 }

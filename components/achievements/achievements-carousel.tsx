@@ -16,7 +16,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
-import { ChevronLeft, ChevronRight, Calendar, User, Award, BookOpen } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Calendar, User, Award, BookOpen, ChevronDown, ChevronUp } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import type {
   FacultyAchievementWithRelations,
@@ -102,14 +102,14 @@ export function AchievementsCarousel({
   }
 
   return (
-    <div className="relative px-12">
+    <div className="relative px-2 sm:px-8 lg:px-12">
       {/* Carousel Container */}
       <div className="overflow-hidden rounded-xl" ref={emblaRef}>
-        <div className="flex -mx-3">
+        <div className="flex -mx-2 sm:-mx-3 items-stretch">
           {achievements.map((achievement) => (
             <div
               key={achievement.id}
-              className="min-w-0 shrink-0 grow-0 basis-full sm:basis-1/2 lg:basis-1/3 px-3"
+              className="min-w-0 shrink-0 grow-0 basis-full sm:basis-1/2 lg:basis-1/3 px-2 sm:px-3 flex"
             >
               <AchievementCarouselCard achievement={achievement} type={type} />
             </div>
@@ -122,17 +122,17 @@ export function AchievementsCarousel({
         <>
           <button
             onClick={scrollPrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 sm:-translate-x-4 z-10 bg-white rounded-full p-1.5 sm:p-2 shadow-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Previous achievement"
           >
-            <ChevronLeft className="h-6 w-6 text-gray-700" />
+            <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6 text-gray-700" />
           </button>
           <button
             onClick={scrollNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 sm:translate-x-4 z-10 bg-white rounded-full p-1.5 sm:p-2 shadow-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Next achievement"
           >
-            <ChevronRight className="h-6 w-6 text-gray-700" />
+            <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6 text-gray-700" />
           </button>
         </>
       )}
@@ -146,8 +146,8 @@ export function AchievementsCarousel({
               onClick={() => scrollTo(index)}
               className={`h-2 rounded-full transition-all ${
                 index === selectedIndex
-                  ? 'w-8 bg-blue-600'
-                  : 'w-2 bg-gray-300 hover:bg-gray-400'
+                  ? 'w-8 bg-[#0b6d41]'
+                  : 'w-2 bg-gray-300 hover:bg-[#0b6d41]/50'
               }`}
               aria-label={`Go to achievement ${index + 1}`}
             />
@@ -164,12 +164,13 @@ interface AchievementCarouselCardProps {
 }
 
 function AchievementCarouselCard({ achievement, type }: AchievementCarouselCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false)
   const isFaculty = type === 'faculty'
   const faculty = isFaculty ? (achievement as FacultyAchievementWithRelations) : null
   const student = !isFaculty ? (achievement as StudentAchievementWithRelations) : null
 
   return (
-    <article className="group relative bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 h-full flex flex-col">
+    <article className={`w-full group relative bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col ${isExpanded ? 'h-auto min-h-[350px] sm:min-h-[400px]' : 'h-[350px] sm:h-[400px]'}`}>
       {/* Featured Badge */}
       {achievement.is_featured && (
         <div className="absolute top-4 right-4 z-10">
@@ -180,12 +181,12 @@ function AchievementCarouselCard({ achievement, type }: AchievementCarouselCardP
         </div>
       )}
 
-      <div className="p-6 space-y-4 flex-1">
+      <div className="p-4 sm:p-6 space-y-3 sm:space-y-4 flex-1 overflow-hidden">
         {/* Category Badge */}
         {achievement.category && (
           <div>
             <span
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full shadow-sm"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 text-xs font-semibold rounded-full shadow-sm"
               style={{
                 backgroundColor: `${achievement.category.color}20`,
                 color: achievement.category.color,
@@ -193,7 +194,7 @@ function AchievementCarouselCard({ achievement, type }: AchievementCarouselCardP
               }}
             >
               {achievement.category.icon && (
-                <span className="text-base">{achievement.category.icon}</span>
+                <span className="text-sm sm:text-base">{achievement.category.icon}</span>
               )}
               {achievement.category.name}
             </span>
@@ -201,24 +202,24 @@ function AchievementCarouselCard({ achievement, type }: AchievementCarouselCardP
         )}
 
         {/* Title */}
-        <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-3">
+        <h3 className="text-base sm:text-lg font-bold text-[#171717] group-hover:text-[#0b6d41] transition-colors line-clamp-2 sm:line-clamp-3">
           {achievement.title}
         </h3>
 
         {/* Meta Information */}
-        <div className="flex flex-wrap gap-3 text-sm text-gray-600">
+        <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm text-gray-600">
           {/* Person */}
-          <div className="flex items-center gap-1.5">
-            <User className="h-4 w-4 flex-shrink-0" />
-            <span className="font-medium">
+          <div className="flex items-center gap-1 sm:gap-1.5">
+            <User className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+            <span className="font-medium truncate max-w-[150px] sm:max-w-none">
               {isFaculty ? faculty?.faculty_name : student?.student_name}
             </span>
           </div>
 
           {/* Date */}
           {achievement.achievement_date && (
-            <div className="flex items-center gap-1.5">
-              <Calendar className="h-4 w-4 flex-shrink-0" />
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <Calendar className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
               <span>
                 {new Date(achievement.achievement_date).toLocaleDateString('en-IN', {
                   year: 'numeric',
@@ -230,8 +231,8 @@ function AchievementCarouselCard({ achievement, type }: AchievementCarouselCardP
         </div>
 
         {/* Designation or Roll Number */}
-        <div className="flex items-center gap-1.5 text-sm text-gray-500">
-          <BookOpen className="h-4 w-4 flex-shrink-0" />
+        <div className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm text-gray-500">
+          <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
           <span className="line-clamp-1">
             {isFaculty
               ? (faculty?.faculty_designation || 'Faculty')
@@ -242,24 +243,32 @@ function AchievementCarouselCard({ achievement, type }: AchievementCarouselCardP
         {/* Course Badge */}
         {achievement.course && (
           <div>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-xs font-medium rounded-md shadow-sm">
+            <span className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-xs font-medium rounded-md shadow-sm">
               {achievement.course.code}
             </span>
           </div>
         )}
 
-        {/* Description (Markdown) - Limited height */}
-        <div className="prose prose-sm max-w-none text-gray-700 line-clamp-4">
+        {/* Description (Markdown) */}
+        <div className={`prose prose-sm max-w-none text-gray-700 text-xs sm:text-sm ${isExpanded ? '' : 'line-clamp-2 sm:line-clamp-3'}`}>
           <ReactMarkdown
             components={{
               p: ({ children }) => <p className="mb-1">{children}</p>,
               strong: ({ children }) => (
                 <strong className="font-semibold text-gray-900">{children}</strong>
               ),
-              // Remove other elements for compact display
-              ul: () => null,
-              ol: () => null,
-              a: () => null,
+              ul: ({ children }) => isExpanded ? <ul className="list-disc list-inside space-y-1">{children}</ul> : null,
+              ol: ({ children }) => isExpanded ? <ol className="list-decimal list-inside space-y-1">{children}</ol> : null,
+              a: ({ children, href }) => isExpanded ? (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#0b6d41] hover:underline hover:text-[#085032]"
+                >
+                  {children}
+                </a>
+              ) : null,
             }}
           >
             {achievement.description}
@@ -267,8 +276,28 @@ function AchievementCarouselCard({ achievement, type }: AchievementCarouselCardP
         </div>
       </div>
 
+      {/* Learn More / Show Less Button */}
+      <div className="px-4 sm:px-6 pb-3 sm:pb-4 mt-auto">
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium text-[#0b6d41] hover:text-[#085032] transition-colors group/button"
+        >
+          {isExpanded ? (
+            <>
+              <span>Show Less</span>
+              <ChevronUp className="h-3 w-3 sm:h-4 sm:w-4 group-hover/button:translate-y-[-2px] transition-transform" />
+            </>
+          ) : (
+            <>
+              <span>Learn More</span>
+              <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4 group-hover/button:translate-y-[2px] transition-transform" />
+            </>
+          )}
+        </button>
+      </div>
+
       {/* Hover Effect Border */}
-      <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-300 rounded-lg pointer-events-none transition-colors"></div>
+      <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#0b6d41]/30 rounded-lg pointer-events-none transition-colors"></div>
     </article>
   )
 }

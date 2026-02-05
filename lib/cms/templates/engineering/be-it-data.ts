@@ -13,10 +13,10 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
   heroTitle: 'B.Tech Information Technology',
   heroSubtitle: 'Transform your passion for technology into a rewarding career. Our AICTE-approved, NAAC-accredited program combines cutting-edge curriculum with industry-ready skills to shape tomorrow\'s tech leaders.',
   heroStats: [
-    { icon: '🎓', label: 'Years Duration', value: '4' },
-    { icon: '💺', label: 'Seats Available', value: '60' },
-    { icon: '📈', label: 'Placement Rate', value: '95%' },
-    { icon: '💰', label: 'Highest Package', value: '₹12L' },
+    { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
+    { icon: 'Users', label: 'Seats Available', value: '60' },
+    { icon: 'TrendingUp', label: 'Placement Rate', value: '95%' },
+    { icon: 'DollarSign', label: 'Highest Package', value: '₹12L' },
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
@@ -30,25 +30,25 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
   overviewTitle: 'Why Choose B.Tech IT at JKKN?',
   overviewCards: [
     {
-      icon: '🎓',
+      icon: 'GraduationCap',
       title: 'Program Duration',
       value: '4 Years (8 Semesters)',
       description: 'Full-time undergraduate program with structured curriculum spanning 8 semesters of comprehensive learning and skill development.',
     },
     {
-      icon: '📊',
+      icon: 'BarChart3',
       title: 'Total Credits',
       value: '160 Credits',
       description: 'Balanced distribution across core subjects, electives, labs, projects, and internships following Anna University curriculum.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Accreditation',
       value: 'AICTE & NAAC',
       description: 'Approved by AICTE and accredited by NAAC ensuring quality education standards and global recognition.',
     },
     {
-      icon: '🏢',
+      icon: 'Building2',
       title: 'Industry Connect',
       value: '50+ Partners',
       description: 'Collaborations with leading tech companies for internships, guest lectures, workshops, and placement opportunities.',
@@ -61,32 +61,32 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
   whyChooseTitle: 'What Sets Our Program Apart',
   benefits: [
     {
-      icon: '🎯',
+      icon: 'Target',
       title: 'Outcome-Based Education',
       description: 'Program designed with clearly defined Learning Outcomes aligned with industry requirements and global engineering standards.',
     },
     {
-      icon: '💻',
+      icon: 'Laptop',
       title: 'Hands-on Learning',
       description: 'Extensive practical sessions, real-world projects, hackathons, and coding challenges ensure strong programming fundamentals.',
     },
     {
-      icon: '🌐',
+      icon: 'Globe',
       title: 'Industry-Ready Curriculum',
       description: 'Latest technologies including Data Science, Full Stack Development, UI/UX Design, Cloud Computing, and IoT integrated into curriculum.',
     },
     {
-      icon: '📜',
+      icon: 'ScrollText',
       title: 'Certification Programs',
       description: 'Free industry certifications from Microsoft, AWS, Oracle, and Google integrated with the curriculum.',
     },
     {
-      icon: '🏆',
+      icon: 'Trophy',
       title: 'Experiential Learning',
       description: 'Mandatory internships, industry visits, tech fests, and participation in national-level competitions enhance practical exposure.',
     },
     {
-      icon: '🎓',
+      icon: 'GraduationCap',
       title: 'Expert Faculty',
       description: 'Learn from highly qualified faculty with Ph.D. degrees and extensive industry experience in emerging technologies.',
     },
@@ -226,37 +226,37 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
   careerTitle: 'Career Opportunities After B.Tech IT',
   careerPaths: [
     {
-      icon: '💻',
+      icon: 'Laptop',
       title: 'Software Developer',
       description: 'Design, develop, and maintain software applications and systems for various industries using cutting-edge technologies.',
       avgSalary: '₹4-15 LPA',
     },
     {
-      icon: '📊',
+      icon: 'BarChart3',
       title: 'Data Scientist',
       description: 'Analyze complex data sets to derive actionable insights and drive business decisions using advanced analytics.',
       avgSalary: '₹6-20 LPA',
     },
     {
-      icon: '🤖',
+      icon: 'Bot',
       title: 'AI/ML Engineer',
       description: 'Build intelligent systems and models that can learn, predict, and automate complex tasks.',
       avgSalary: '₹8-25 LPA',
     },
     {
-      icon: '🌐',
+      icon: 'Globe',
       title: 'Full Stack Developer',
       description: 'Develop complete web applications handling both frontend and backend components with modern frameworks.',
       avgSalary: '₹5-18 LPA',
     },
     {
-      icon: '🎨',
+      icon: 'Palette',
       title: 'UI/UX Designer',
       description: 'Create intuitive and engaging user interfaces and experiences for digital products and services.',
       avgSalary: '₹5-15 LPA',
     },
     {
-      icon: '☁️',
+      icon: 'Cloud',
       title: 'Cloud Solutions Architect',
       description: 'Design and implement scalable cloud infrastructure and solutions for enterprise applications.',
       avgSalary: '₹10-30 LPA',

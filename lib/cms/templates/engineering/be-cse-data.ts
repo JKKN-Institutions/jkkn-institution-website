@@ -1,4 +1,26 @@
 import type { BECSECoursePageProps } from '@/components/cms-blocks/content/be-cse-course-page'
+import {
+  GraduationCap,
+  BarChart3,
+  CheckCircle,
+  Building2,
+  Microscope,
+  Briefcase,
+  Target,
+  Laptop,
+  Globe,
+  ScrollText,
+  Trophy,
+  Bot,
+  Cloud,
+  Lock,
+  UserCheck,
+  FileText,
+  Award,
+  Phone,
+  Mail,
+  MapPin
+} from 'lucide-react'
 
 /**
  * Comprehensive B.E. Computer Science & Engineering Course Data
@@ -30,37 +52,37 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   overviewTitle: 'Why Choose B.E. CSE at JKKN?',
   overviewCards: [
     {
-      icon: '🎓',
+      icon: 'GraduationCap',
       title: 'Program Duration',
       value: '4 Years (8 Semesters)',
       description: 'Full-time undergraduate program with structured curriculum spanning 8 semesters of comprehensive learning and skill development.',
     },
     {
-      icon: '📊',
+      icon: 'BarChart3',
       title: 'Total Credits',
       value: '160 Credits',
       description: 'Balanced distribution across core subjects, electives, labs, projects, and internships following Anna University curriculum.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Accreditation',
       value: 'AICTE & NAAC',
       description: 'Approved by AICTE and accredited by NAAC ensuring quality education standards and global recognition.',
     },
     {
-      icon: '🏢',
+      icon: 'Building2',
       title: 'Industry Connect',
       value: '50+ Partners',
       description: 'Collaborations with leading tech companies for internships, guest lectures, workshops, and placement opportunities.',
     },
     {
-      icon: '🔬',
+      icon: 'Microscope',
       title: 'Research Focus',
       value: 'AI, ML & IoT',
       description: 'Active research centers in Artificial Intelligence, Machine Learning, Data Science, Cybersecurity, and IoT.',
     },
     {
-      icon: '💼',
+      icon: 'Briefcase',
       title: 'Career Support',
       value: 'Dedicated Cell',
       description: 'Comprehensive training, certification programs, mock interviews, and dedicated placement assistance throughout the program.',
@@ -73,32 +95,32 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   whyChooseTitle: 'What Sets Our Program Apart',
   benefits: [
     {
-      icon: '🎯',
+      icon: 'Target',
       title: 'Outcome-Based Education',
       description: 'Program designed with clearly defined Learning Outcomes aligned with industry requirements and global engineering standards.',
     },
     {
-      icon: '💻',
+      icon: 'Laptop',
       title: 'Hands-on Learning',
       description: 'Extensive practical sessions, real-world projects, hackathons, and coding challenges ensure strong programming fundamentals.',
     },
     {
-      icon: '🌐',
+      icon: 'Globe',
       title: 'Industry-Ready Curriculum',
       description: 'Latest technologies including Cloud Computing, DevOps, Blockchain, AI/ML, and Full Stack Development integrated into curriculum.',
     },
     {
-      icon: '📜',
+      icon: 'ScrollText',
       title: 'Certification Programs',
       description: 'Free industry certifications from Microsoft, AWS, Oracle, and Google integrated with the curriculum.',
     },
     {
-      icon: '🏆',
+      icon: 'Trophy',
       title: 'Experiential Learning',
       description: 'Mandatory internships, industry visits, tech fests, and participation in national-level competitions enhance practical exposure.',
     },
     {
-      icon: '🎓',
+      icon: 'GraduationCap',
       title: 'Expert Faculty',
       description: 'Learn from highly qualified faculty with Ph.D. degrees and extensive industry experience in emerging technologies.',
     },
@@ -329,42 +351,42 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   careerTitle: 'Career Opportunities After B.E. CSE',
   careerPaths: [
     {
-      icon: '💻',
+      icon: 'Laptop',
       title: 'Software Engineer',
       salary: '₹4-15 LPA',
       description: 'Design, develop, and maintain software applications and systems for various industries.',
       skills: ['Java', 'Python', 'DSA', 'System Design'],
     },
     {
-      icon: '📊',
+      icon: 'BarChart3',
       title: 'Data Scientist',
       salary: '₹6-20 LPA',
       description: 'Analyze complex data sets to derive actionable insights and drive business decisions.',
       skills: ['Python', 'ML', 'Statistics', 'SQL'],
     },
     {
-      icon: '🤖',
+      icon: 'Bot',
       title: 'AI/ML Engineer',
       salary: '₹8-25 LPA',
       description: 'Build intelligent systems and models that can learn, predict, and automate tasks.',
       skills: ['TensorFlow', 'PyTorch', 'NLP', 'Deep Learning'],
     },
     {
-      icon: '🌐',
+      icon: 'Globe',
       title: 'Full Stack Developer',
       salary: '₹5-18 LPA',
       description: 'Develop complete web applications handling both frontend and backend components.',
       skills: ['React', 'Node.js', 'MongoDB', 'AWS'],
     },
     {
-      icon: '☁️',
+      icon: 'Cloud',
       title: 'Cloud Architect',
       salary: '₹10-30 LPA',
       description: 'Design and implement scalable cloud infrastructure and solutions.',
       skills: ['AWS', 'Azure', 'GCP', 'DevOps'],
     },
     {
-      icon: '🔐',
+      icon: 'Lock',
       title: 'Cybersecurity Analyst',
       salary: '₹6-20 LPA',
       description: 'Protect organizations from cyber threats and ensure data security.',

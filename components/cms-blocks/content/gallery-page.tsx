@@ -30,6 +30,18 @@ export const GalleryItemSchema = z.object({
 export type GalleryItem = z.infer<typeof GalleryItemSchema>
 
 /**
+ * Category item schema with optional icon support
+ */
+export const CategoryItemSchema = z.object({
+  name: z.string().describe('Category name'),
+  icon: z.string().optional().describe('Category icon/image URL'),
+  slug: z.string().optional().describe('Category slug for filtering'),
+  color: z.string().optional().describe('Category color (hex)'),
+})
+
+export type CategoryItem = z.infer<typeof CategoryItemSchema>
+
+/**
  * GalleryPage props schema
  */
 export const GalleryPagePropsSchema = z.object({
@@ -43,8 +55,14 @@ export const GalleryPagePropsSchema = z.object({
   // Gallery Items
   items: z.array(GalleryItemSchema).default([]).describe('Gallery items'),
 
-  // Categories
-  categories: z.array(z.string()).default(['All', 'Events', 'Campus', 'Students', 'Faculty']).describe('Filter categories'),
+  // Categories (now supports objects with images, but backward compatible with strings)
+  categories: z.array(z.union([z.string(), CategoryItemSchema])).default([
+    { name: 'All', icon: '', slug: 'all' },
+    { name: 'Events', icon: '', slug: 'events' },
+    { name: 'Campus', icon: '', slug: 'campus' },
+    { name: 'Students', icon: '', slug: 'students' },
+    { name: 'Faculty', icon: '', slug: 'faculty' },
+  ]).describe('Gallery categories with optional icons'),
   showCategoryFilter: z.boolean().default(true).describe('Show category filter tabs'),
 
   // Layout
@@ -84,6 +102,17 @@ const defaultGalleryItems: GalleryItem[] = [
   { id: '11', type: 'image', title: 'Faculty Meet 2024', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Faculty', date: '' },
   { id: '12', type: 'image', title: 'Research Symposium', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Faculty', date: '' },
 ]
+
+/**
+ * Migrate legacy string categories to object format
+ */
+function migrateCategories(categories: (string | CategoryItem)[]): CategoryItem[] {
+  return categories.map(cat =>
+    typeof cat === 'string'
+      ? { name: cat, icon: '', slug: cat.toLowerCase().replace(/\s+/g, '-') }
+      : cat
+  )
+}
 
 /**
  * Intersection Observer hook
@@ -142,7 +171,10 @@ export function GalleryPage({
   className,
   isEditing,
 }: GalleryPageProps) {
-  const [activeCategory, setActiveCategory] = useState('All')
+  // Migrate categories to object format for backward compatibility
+  const categoriesData = migrateCategories(categories)
+
+  const [activeCategory, setActiveCategory] = useState(categoriesData[0]?.slug || categoriesData[0]?.name || 'all')
   const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null)
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const headerRef = useInView()
@@ -151,10 +183,13 @@ export function GalleryPage({
   const isDark = variant === 'modern-dark'
   const displayItems = items.length > 0 ? items : defaultGalleryItems
 
-  // Filter items by category
-  const filteredItems = activeCategory === 'All'
+  // Filter items by category (support both slug and name matching)
+  const filteredItems = activeCategory === 'all'
     ? displayItems
-    : displayItems.filter(item => item.category === activeCategory)
+    : displayItems.filter(item => {
+        const categoryMatch = categoriesData.find(c => (c.slug || c.name) === activeCategory)
+        return item.category === activeCategory || item.category === categoryMatch?.name
+      })
 
   // Gap classes
   const gapClasses = {
@@ -307,29 +342,48 @@ export function GalleryPage({
                 </div>
 
                 {/* Filter Tabs - Horizontal Scroll on Mobile */}
-                <div className="flex justify-start sm:justify-center overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-                  <div className="flex gap-2 sm:gap-3">
-                    {categories.map((category) => (
-                      <button
-                        key={category}
-                        onClick={() => setActiveCategory(category)}
-                        className={cn(
-                          'px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300',
-                          activeCategory === category
-                            ? 'bg-[#ffde59] text-gray-900 shadow-lg'
-                            : isDark
-                              ? 'bg-white/10 backdrop-blur-sm text-white hover:bg-white/20'
-                              : 'bg-white/80 backdrop-blur-sm text-brand-primary hover:bg-white border border-brand-primary/20'
-                        )}
-                      >
-                        {category}
-                        {activeCategory === category && (
-                          <span className="ml-2 text-xs bg-gray-900/20 px-2 py-0.5 rounded-full">
-                            {category === 'All' ? displayItems.length : displayItems.filter(i => i.category === category).length}
-                          </span>
-                        )}
-                      </button>
-                    ))}
+                <div className="-mx-4 sm:mx-0">
+                  <div className="overflow-x-auto pb-2 px-4 sm:px-0 scrollbar-hide">
+                    <div className="flex justify-start sm:justify-center gap-2 sm:gap-3 w-max sm:w-auto">
+                      {categoriesData.map((category) => {
+                      const categorySlug = category.slug || category.name
+                      const isActive = activeCategory === categorySlug
+                      const itemCount = categorySlug === 'all'
+                        ? displayItems.length
+                        : displayItems.filter(i => i.category === category.name || i.category === categorySlug).length
+
+                      return (
+                        <button
+                          key={categorySlug}
+                          onClick={() => setActiveCategory(categorySlug)}
+                          className={cn(
+                            'px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 flex items-center gap-2 flex-shrink-0',
+                            isActive
+                              ? 'bg-[#ffde59] text-gray-900 shadow-lg'
+                              : isDark
+                                ? 'bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 active:bg-white/30'
+                                : 'bg-white/80 backdrop-blur-sm text-brand-primary hover:bg-white active:bg-white/90 border border-brand-primary/20'
+                          )}
+                        >
+                          {category.icon && (
+                            <Image
+                              src={category.icon}
+                              alt={category.name}
+                              width={20}
+                              height={20}
+                              className="rounded"
+                            />
+                          )}
+                          {category.name}
+                          {isActive && (
+                            <span className="ml-2 text-xs bg-gray-900/20 px-2 py-0.5 rounded-full">
+                              {itemCount}
+                            </span>
+                          )}
+                        </button>
+                      )
+                    })}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -516,7 +570,8 @@ function GalleryCard({
         </div>
       </div>
 
-      {/* Content */}
+      {/* Content - HIDDEN: Title and date removed to show only images */}
+      {/*
       <div className="p-4">
         <h3 className={cn(
           'font-semibold text-sm sm:text-base line-clamp-2 mb-1',
@@ -535,7 +590,6 @@ function GalleryCard({
           </p>
         )}
 
-        {/* Gold accent line on hover */}
         <div
           className={cn(
             'h-0.5 rounded-full mt-3 transition-all duration-500',
@@ -544,6 +598,7 @@ function GalleryCard({
           style={{ backgroundColor: '#ffde59' }}
         />
       </div>
+      */}
     </div>
   )
 }

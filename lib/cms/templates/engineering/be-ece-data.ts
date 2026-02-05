@@ -42,7 +42,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
       description: 'The program spans 4 years with 8 semesters totaling 160 credits. Comprehensive curriculum balancing theory, laboratory work, and industrial training.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Accreditation',
       value: 'AICTE & NAAC',
       description: 'Our program is approved by AICTE (All India Council for Technical Education) and accredited by NAAC, ensuring quality education standards.',
@@ -61,32 +61,32 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   whyChooseTitle: 'Why Choose Electronics & Communication Engineering?',
   benefits: [
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Industry-Aligned Curriculum',
       description: 'Our curriculum is designed to meet current industry standards covering embedded systems, IoT, VLSI design, 4G/5G wireless communication, and smart systems used globally.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Expert Faculty',
       description: 'Learn from highly qualified professors with Ph.D. degrees and extensive industry experience in embedded systems, VLSI, communication systems, and signal processing.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'State-of-the-Art Laboratories',
       description: 'Access advanced laboratories for digital electronics, microprocessors, communication systems, VLSI design, embedded systems, and IoT with modern equipment including FPGA boards and EDA tools.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Excellent Placements',
       description: 'Strong placement record with recruitment from TCS, Infosys, Wipro, Bosch, Samsung, LG, Airtel, Jio, Nokia, and other leading electronics and IT companies.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Research Opportunities',
       description: 'Engage in cutting-edge research in wireless communication, IoT systems, VLSI design, signal processing, embedded systems, and network security.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Industry Collaboration',
       description: 'Gain practical experience through internships and industrial visits to electronics manufacturing units, telecom companies, R&D centers, and semiconductor fabrication facilities.',
     },
@@ -244,32 +244,32 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   specializationsTitle: 'Specialization Areas',
   specializations: [
     {
-      icon: '🔧',
+      icon: 'Wrench',
       title: 'Embedded Systems & Microcontrollers',
       description: 'Master ARM processors, Arduino, Raspberry Pi, real-time operating systems (RTOS), firmware development, and embedded C programming for smart device applications.',
     },
     {
-      icon: '💾',
+      icon: 'HardDrive',
       title: 'VLSI Design',
       description: 'Learn digital and analog VLSI design, chip architecture, physical design, EDA tools (Cadence, Xilinx), FPGA programming, and ASIC verification techniques.',
     },
     {
-      icon: '📡',
+      icon: 'Antenna',
       title: 'Wireless Communication',
       description: 'Explore 4G/5G technologies, RF and microwave engineering, antenna design, mobile communication systems, and next-generation wireless networks.',
     },
     {
-      icon: '🌐',
+      icon: 'Globe',
       title: 'IoT & Smart Systems',
       description: 'Design sensor networks, cloud integration, edge computing, smart home automation, industrial IoT applications, and machine-to-machine communication systems.',
     },
     {
-      icon: '📊',
+      icon: 'BarChart3',
       title: 'Signal & Image Processing',
       description: 'Study DSP algorithms, audio/video processing, computer vision, image enhancement, pattern recognition, and MATLAB-based signal analysis.',
     },
     {
-      icon: '🔒',
+      icon: 'Lock',
       title: 'Network Security',
       description: 'Understand cryptography, secure communication protocols, network defense mechanisms, ethical hacking, and cybersecurity for communication systems.',
     },
@@ -281,37 +281,37 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   careerTitle: 'Career Opportunities',
   careerPaths: [
     {
-      icon: '💼',
+      icon: 'Briefcase',
       title: 'Electronics Design Engineer',
       description: 'Design and develop electronic circuits, PCB layouts, and hardware systems for consumer electronics, automotive, and industrial applications.',
       avgSalary: '₹4-8 LPA',
     },
     {
-      icon: '💼',
+      icon: 'Briefcase',
       title: 'VLSI Design Engineer',
       description: 'Work on chip design, verification, and testing using advanced EDA tools for semiconductor companies and R&D organizations.',
       avgSalary: '₹5-10 LPA',
     },
     {
-      icon: '💼',
+      icon: 'Briefcase',
       title: 'Embedded Systems Engineer',
       description: 'Develop firmware and software for embedded devices in automotive, aerospace, consumer electronics, and medical equipment industries.',
       avgSalary: '₹4-9 LPA',
     },
     {
-      icon: '💼',
+      icon: 'Briefcase',
       title: 'Network Engineer',
       description: 'Design, implement, and maintain communication networks, routers, switches, and network security infrastructure for enterprises.',
       avgSalary: '₹4-7 LPA',
     },
     {
-      icon: '💼',
+      icon: 'Briefcase',
       title: 'Telecommunications Engineer',
       description: 'Work with telecom service providers on network optimization, 4G/5G deployment, RF engineering, and wireless infrastructure.',
       avgSalary: '₹4-8 LPA',
     },
     {
-      icon: '💼',
+      icon: 'Briefcase',
       title: 'IoT Solutions Architect',
       description: 'Design end-to-end IoT ecosystems, sensor networks, cloud platforms, and smart device integration for industry 4.0 applications.',
       avgSalary: '₹6-12 LPA',
@@ -338,19 +338,19 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   admissionSteps: [
     {
       step: 1,
-      icon: '📝',
+      icon: 'FileEdit',
       title: 'Application Submission',
       description: 'Complete the online application form with academic documents including 10th, 12th mark sheets, transfer certificate, and community certificate if applicable.',
     },
     {
       step: 2,
-      icon: '📊',
+      icon: 'BarChart3',
       title: 'Entrance Exam / Merit',
       description: 'Selection based on TNEA (Tamil Nadu Engineering Admissions) rank or 10+2 merit-based marks in Physics, Chemistry, and Mathematics.',
     },
     {
       step: 3,
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Counseling & Enrollment',
       description: 'Attend counseling session, complete document verification, pay admission fee, and complete enrollment formalities to confirm your seat.',
     },

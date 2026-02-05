@@ -11,6 +11,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import Autoplay from 'embla-carousel-autoplay'
+import { renderIcon } from '@/lib/utils/icon-mapper'
 
 // ============================================
 // Zod Schemas for Type Safety
@@ -482,7 +483,7 @@ function CourseOverviewSection({
               key={index}
               className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100"
             >
-              <div className="text-4xl mb-4">{card.icon}</div>
+              <div className="text-4xl mb-4" style={{ color: primaryColor }}>{renderIcon(card.icon, 'w-10 h-10')}</div>
               <h3 className="text-xl font-bold mb-2" style={{ color: primaryColor }}>{card.title}</h3>
               <p className="text-2xl font-bold mb-2" style={{ color: primaryColor }}>
                 {card.value}
@@ -523,14 +524,7 @@ function WhyChooseSection({
               style={{ borderLeftColor: primaryColor }}
             >
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center text-white text-xl"
-                    style={{ backgroundColor: primaryColor }}
-                  >
-                    {benefit.icon}
-                  </div>
-                </div>
+                <div className="flex-shrink-0" style={{ color: primaryColor }}>{renderIcon(benefit.icon, 'w-8 h-8')}</div>
                 <div>
                   <h3 className="text-xl font-bold mb-2" style={{ color: primaryColor }}>{benefit.title}</h3>
                   <p className="text-gray-600 leading-relaxed">{benefit.description}</p>
@@ -707,14 +701,7 @@ function CareerOpportunitiesSection({
               className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
             >
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center text-white"
-                    style={{ backgroundColor: primaryColor }}
-                  >
-                    <Briefcase className="w-6 h-6" />
-                  </div>
-                </div>
+                <div className="mb-4" style={{ color: primaryColor }}>{renderIcon(career.icon, 'w-10 h-10')}</div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold mb-2" style={{ color: primaryColor }}>{career.title}</h3>
                   <p className="text-gray-600 text-sm mb-3 leading-relaxed">

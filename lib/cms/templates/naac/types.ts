@@ -56,6 +56,7 @@ export const ContactInfoSchema = z.object({
   role: z.string(),
   email: z.string().email(),
   phone: z.string(),
+  office: z.string().optional(),
   officeHours: z.string().optional(),
 })
 

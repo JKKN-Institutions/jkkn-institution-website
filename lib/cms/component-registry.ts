@@ -3470,7 +3470,36 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         name: 'categories',
         type: 'array',
         label: 'Categories',
-        itemType: 'string',
+        itemType: 'object',
+        itemSchema: {
+          properties: {
+            name: {
+              type: 'string',
+              label: 'Category Name',
+              required: true,
+              placeholder: 'e.g., Events',
+            },
+            icon: {
+              type: 'image',
+              label: 'Category Icon',
+              required: false,
+              placeholder: 'Optional icon/image URL',
+            },
+            slug: {
+              type: 'string',
+              label: 'Slug',
+              required: false,
+              placeholder: 'e.g., events (auto-generated from name if empty)',
+            },
+            color: {
+              type: 'string',
+              label: 'Color',
+              required: false,
+              placeholder: '#hexcode (optional)',
+            },
+          },
+          required: ['name'],
+        },
       },
       { name: 'showCategoryFilter', type: 'boolean', label: 'Show Category Filter' },
       { name: 'columns', type: 'enum', label: 'Grid Columns', options: ['2', '3', '4'] },

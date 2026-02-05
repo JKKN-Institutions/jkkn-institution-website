@@ -11,6 +11,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import Autoplay from 'embla-carousel-autoplay'
+import { renderIcon } from '@/lib/utils/icon-mapper'
 
 // ============================================
 // Zod Schemas for Type Safety
@@ -466,7 +467,7 @@ function CourseOverviewSection({
               key={index}
               className="bg-[#FFFBF5] rounded-2xl p-6 border-2 border-gray-100 hover:shadow-lg transition-all duration-300"
             >
-              <div className="text-4xl mb-4">{card.icon}</div>
+              <div className="text-4xl mb-4" style={{ color: primaryColor }}>{renderIcon(card.icon, 'w-10 h-10')}</div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 {card.title}
               </h3>
@@ -507,12 +508,7 @@ function WhyChooseSection({
               className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300"
             >
               <div className="flex items-start gap-4">
-                <div
-                  className="w-12 h-12 rounded-lg flex items-center justify-center text-white text-2xl flex-shrink-0"
-                  style={{ backgroundColor: primaryColor }}
-                >
-                  {benefit.icon}
-                </div>
+                <div className="flex-shrink-0" style={{ color: primaryColor }}>{renderIcon(benefit.icon, 'w-8 h-8')}</div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">
                     {benefit.title}
@@ -689,7 +685,7 @@ function CareerOpportunitiesSection({
               key={index}
               className="bg-[#FFFBF5] rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200"
             >
-              <div className="text-4xl mb-4">{career.icon}</div>
+              <div className="mb-4" style={{ color: primaryColor }}>{renderIcon(career.icon, 'w-10 h-10')}</div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
                 {career.title}
               </h3>

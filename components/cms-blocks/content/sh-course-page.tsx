@@ -23,6 +23,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import Autoplay from 'embla-carousel-autoplay'
+import { renderIcon } from '@/lib/utils/icon-mapper'
 
 // ============================================
 // Zod Schemas for Type Safety
@@ -129,6 +130,17 @@ const FAQSchema = z.object({
   answer: z.string(),
 })
 
+const StudentAchievementSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  date: z.string(),
+  venue: z.string().optional(),
+  students: z.array(z.string()),
+  department: z.string().optional(),
+  achievement_type: z.string().optional(),
+})
+
 const CTAContactSchema = z.object({
   icon: z.string(),
   label: z.string(),
@@ -177,6 +189,10 @@ export const SHCoursePagePropsSchema = z.object({
   // Faculty
   facultyTitle: z.string(),
   faculty: z.array(FacultySchema),
+
+  // Student Achievements
+  achievementsTitle: z.string().optional(),
+  studentAchievements: z.array(StudentAchievementSchema).optional(),
 
   // FAQ
   faqTitle: z.string(),
@@ -465,7 +481,9 @@ function CourseOverviewSection({
               className="bg-[#fbfbee] rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border-l-4 hover:-translate-y-2"
               style={{ borderLeftColor: primaryColor }}
             >
-              <div className="text-4xl mb-4">{card.icon}</div>
+              <div className="text-4xl mb-4" style={{ color: primaryColor }}>
+                {renderIcon(card.icon, 'w-10 h-10')}
+              </div>
               <h3 className="text-xl font-bold mb-2 text-gray-800">{card.title}</h3>
               <p className="text-2xl font-bold mb-3" style={{ color: primaryColor }}>
                 {card.value}
@@ -507,7 +525,9 @@ function WhyChooseSection({
               className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300"
             >
               <div className="flex items-start gap-4">
-                <div className="text-3xl">{benefit.icon}</div>
+                <div className="flex-shrink-0" style={{ color: primaryColor }}>
+                  {renderIcon(benefit.icon, 'w-8 h-8')}
+                </div>
                 <div>
                   <h3 className="text-lg font-bold mb-2 text-gray-800">{benefit.title}</h3>
                   <p className="text-gray-600 text-sm leading-relaxed">{benefit.description}</p>
@@ -623,12 +643,6 @@ function AdmissionProcessSection({
   steps: Array<{ step: number; title: string; description: string; icon: string; details: string[] }>
   primaryColor: string
 }) {
-  const iconMap: Record<string, React.ReactNode> = {
-    UserCheck: <UserCheck className="w-6 h-6" />,
-    FileText: <FileText className="w-6 h-6" />,
-    Award: <Award className="w-6 h-6" />,
-  }
-
   return (
     <section className="py-16 md:py-20 bg-[#eaf1e2]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -780,7 +794,9 @@ function CareerOpportunitiesSection({
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {careers.map((career, idx) => (
             <div key={idx} className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
-              <div className="text-4xl mb-4">{career.icon}</div>
+              <div className="mb-4" style={{ color: primaryColor }}>
+                {renderIcon(career.icon, 'w-10 h-10')}
+              </div>
               <h3 className="text-xl font-bold mb-2 text-gray-800">{career.title}</h3>
               <p className="text-lg font-bold mb-3" style={{ color: primaryColor }}>
                 {career.salary}
@@ -1012,12 +1028,6 @@ function FinalCTASection({
   primaryColor: string
   accentColor: string
 }) {
-  const iconMap: Record<string, React.ReactNode> = {
-    Phone: <Phone className="w-5 h-5" />,
-    Mail: <Mail className="w-5 h-5" />,
-    MapPin: <MapPin className="w-5 h-5" />,
-  }
-
   return (
     <section className="py-20 md:py-24 bg-[#fbfbee]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -1057,7 +1067,7 @@ function FinalCTASection({
               className="flex items-center gap-3 text-gray-700 hover:text-gray-900 transition-colors duration-300"
             >
               <span style={{ color: primaryColor }}>
-                {iconMap[item.icon]}
+                {renderIcon(item.icon, 'w-5 h-5')}
               </span>
               <span className="text-sm font-medium">{item.value}</span>
             </a>

@@ -21,10 +21,10 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   affiliatedTo: 'Affiliated to Anna University | Approved by AICTE | NAAC Accredite',
 
   heroStats: [
-    { icon: '🎓', label: 'Years Duration', value: '4' },
-    { icon: '💺', label: 'Seats Available', value: '60' },
-    { icon: '📈', label: 'Placement Rate', value: '95%' },
-    { icon: '💰', label: 'Highest Package', value: '₹12L' },
+    { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
+    { icon: 'Users', label: 'Seats Available', value: '60' },
+    { icon: 'TrendingUp', label: 'Placement Rate', value: '95%' },
+    { icon: 'DollarSign', label: 'Highest Package', value: '₹12L' },
 
   ],
 
@@ -48,25 +48,25 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
 
   overviewCards: [
     {
-      icon: '⏱️',
+      icon: 'Clock',
       title: 'Duration',
       value: '4 Years',
       description: '8 semesters of comprehensive mechanical engineering education with industry exposure',
     },
     {
-      icon: '📋',
+      icon: 'ClipboardList',
       title: 'Eligibility',
       value: '10+2 PCM',
       description: 'Physics, Chemistry, and Mathematics with minimum 50% aggregate marks',
     },
     {
-      icon: '💼',
+      icon: 'Briefcase',
       title: 'Mode',
       value: 'Full-time',
       description: 'Campus-based program with hands-on laboratory sessions and industrial training',
     },
     {
-      icon: '🌐',
+      icon: 'Globe',
       title: 'Medium',
       value: 'English',
       description: 'All courses taught in English with comprehensive study materials and resources',
@@ -80,32 +80,32 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
 
   benefits: [
     {
-      icon: '📚',
+      icon: 'BookOpen',
       title: 'Industry-Relevant Curriculum',
       description: 'Updated syllabus aligned with current industry standards, covering traditional mechanical engineering fundamentals and emerging technologies like additive manufacturing, Industry 4.0, and sustainable energy systems.',
     },
     {
-      icon: '👨‍🏫',
+      icon: 'UserCheck',
       title: 'Expert Faculty',
       description: 'Learn from experienced professors with Ph.D. qualifications, extensive industry experience, and active research in areas like thermal engineering, design optimization, and advanced manufacturing technologies.',
     },
     {
-      icon: '🔧',
+      icon: 'Wrench',
       title: 'Hands-on Learning',
       description: 'State-of-the-art laboratories including CAD/CAM, CNC machining, thermal engineering, fluid mechanics, manufacturing processes, and robotics labs with latest equipment and software tools.',
     },
     {
-      icon: '💡',
+      icon: 'Lightbulb',
       title: 'Research Opportunities',
       description: 'Active research culture with projects funded by government agencies. Students participate in conferences, publish papers, and work on cutting-edge technologies in renewable energy, automotive systems, and smart manufacturing.',
     },
     {
-      icon: '🤝',
+      icon: 'Handshake',
       title: 'Industry Collaborations',
       description: 'Strong partnerships with leading automotive, aerospace, manufacturing, and energy companies. Regular industry visits, guest lectures, internships, and live projects provide real-world exposure and networking opportunities.',
     },
     {
-      icon: '🎯',
+      icon: 'Target',
       title: 'Placement Support',
       description: 'Dedicated placement cell with 95% placement record. Training in aptitude, soft skills, technical interviews, and resume building. Top recruiters include Tata Motors, Ashok Leyland, TVS, Mahindra, L&T, and MNCs.',
     },
@@ -263,32 +263,32 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
 
   specializations: [
     {
-      icon: '🔥',
+      icon: 'Flame',
       title: 'Thermal Engineering',
       description: 'Focus on heat transfer, refrigeration and air conditioning, power plant engineering, combustion technology, and sustainable energy systems. Ideal for careers in energy sector, HVAC industry, and power generation companies.',
     },
     {
-      icon: '🎨',
+      icon: 'Palette',
       title: 'Design Engineering',
       description: 'Specialize in machine design, finite element analysis, CAD/CAM/CAE tools, product development, and optimization techniques. Pursue careers in automotive design, aerospace engineering, and product development companies.',
     },
     {
-      icon: '⚙️',
+      icon: 'Settings',
       title: 'Manufacturing Engineering',
       description: 'Advanced manufacturing processes, CNC machining, automation, quality control, production planning, and Industry 4.0 technologies. Opportunities in manufacturing industries, production management, and operations.',
     },
     {
-      icon: '🚗',
+      icon: 'Car',
       title: 'Automobile Engineering',
       description: 'Vehicle dynamics, engine design, automotive electronics, electric vehicles, hybrid technology, and autonomous systems. Career paths in automotive companies, EV startups, and vehicle testing facilities.',
     },
     {
-      icon: '🤖',
+      icon: 'Bot',
       title: 'Robotics & Automation',
       description: 'Industrial robotics, programmable logic controllers, mechatronics, sensors and actuators, and intelligent manufacturing systems. Work in automation companies, robotics startups, and smart manufacturing units.',
     },
     {
-      icon: '⚡',
+      icon: 'Zap',
       title: 'Energy Systems',
       description: 'Renewable energy technologies, solar thermal systems, wind energy, energy management, green building systems, and sustainable engineering solutions. Careers in renewable energy sector and environmental consulting.',
     },
@@ -301,49 +301,49 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
 
   careerPaths: [
     {
-      icon: '🎨',
+      icon: 'Palette',
       title: 'Mechanical Design Engineer',
       description: 'Design and develop mechanical systems, components, and products using advanced CAD software. Work on innovative solutions for automotive, aerospace, and industrial machinery applications.',
       avgSalary: '4-8 LPA',
     },
     {
-      icon: '🏭',
+      icon: 'Factory',
       title: 'Production Engineer',
       description: 'Manage manufacturing processes, optimize production lines, implement quality control measures, and improve efficiency. Essential role in automotive, FMCG, and heavy industries.',
       avgSalary: '3.5-7 LPA',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Quality Control Engineer',
       description: 'Ensure product quality through testing, inspection, and adherence to standards. Implement quality management systems and continuous improvement methodologies in manufacturing environments.',
       avgSalary: '3-6 LPA',
     },
     {
-      icon: '🚗',
+      icon: 'Car',
       title: 'Automotive Engineer',
       description: 'Design, develop, and test vehicles and vehicle systems. Work on engine design, vehicle dynamics, safety systems, and emerging technologies like electric and autonomous vehicles.',
       avgSalary: '5-10 LPA',
     },
     {
-      icon: '💻',
+      icon: 'Laptop',
       title: 'CAD/CAM Engineer',
       description: 'Develop 3D models, engineering drawings, and manufacturing programs using advanced software. Bridge the gap between design and manufacturing in product development companies.',
       avgSalary: '4-8 LPA',
     },
     {
-      icon: '🔧',
+      icon: 'Wrench',
       title: 'Maintenance Engineer',
       description: 'Plan and execute preventive and corrective maintenance of industrial equipment. Minimize downtime, extend equipment life, and ensure smooth operations in manufacturing facilities.',
       avgSalary: '3.5-7 LPA',
     },
     {
-      icon: '🔬',
+      icon: 'Microscope',
       title: 'R&D Engineer',
       description: 'Conduct research, develop new technologies, and innovate products. Work in advanced technology domains like additive manufacturing, materials science, and sustainable engineering.',
       avgSalary: '5-12 LPA',
     },
     {
-      icon: '💼',
+      icon: 'Briefcase',
       title: 'Project Manager',
       description: 'Lead engineering projects from conception to completion. Manage teams, budgets, timelines, and stakeholders in manufacturing, construction, and infrastructure projects.',
       avgSalary: '8-15 LPA',
@@ -595,25 +595,25 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
 
   placementStats: [
     {
-      icon: '📈',
+      icon: 'TrendingUp',
       label: 'Placement Rate',
       value: '95.2%',
       description: 'Students placed in reputed companies',
     },
     {
-      icon: '💰',
+      icon: 'DollarSign',
       label: 'Average Package',
       value: '₹5.8 LPA',
       description: 'Competitive salary packages',
     },
     {
-      icon: '🏆',
+      icon: 'Trophy',
       label: 'Highest Package',
       value: '₹24 LPA',
       description: 'Offered by leading MNC',
     },
     {
-      icon: '🏢',
+      icon: 'Building2',
       label: 'Top Recruiters',
       value: '75+',
       description: 'Companies participated',

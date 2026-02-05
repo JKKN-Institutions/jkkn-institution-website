@@ -13,10 +13,10 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   heroTitle: 'Department of Science and Humanities',
   heroSubtitle: 'Building the foundation for engineering excellence through comprehensive education in Physics, Chemistry, Mathematics, and English. Established in 2008, we nurture aspiring engineers with strong fundamentals and outcome-based learning.',
   heroStats: [
-    { icon: '', label: 'Years Duration', value: '4' },
-    { icon: '', label: 'Total Seats', value: '60' },
-    { icon: '', label: 'Faculty Members', value: '10' },
-    { icon: '', label: 'Semesters', value: '8' },
+    { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
+    { icon: 'BarChart3', label: 'Total Seats', value: '60' },
+    { icon: 'Users', label: 'Faculty Members', value: '13' },
+    { icon: 'CheckCircle', label: 'Semesters', value: '8' },
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
@@ -30,37 +30,37 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   overviewTitle: 'Why Choose Science and Humanities at JKKN?',
   overviewCards: [
     {
-      icon: '🎓',
+      icon: 'GraduationCap',
       title: 'Program Duration',
       value: '4 Years (8 Semesters)',
       description: 'Full-time undergraduate program with structured curriculum spanning 8 semesters of comprehensive learning and skill development. Lateral entry available for diploma holders (3 years).',
     },
     {
-      icon: '📊',
+      icon: 'BarChart3',
       title: 'Total Seats',
       value: '60 Seats',
       description: 'Limited intake ensuring personalized attention and quality education with excellent faculty-student ratio for effective learning.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Accreditation',
       value: 'AICTE & NAAC',
       description: 'Approved by AICTE and accredited by NAAC ensuring quality education standards and global recognition.',
     },
     {
-      icon: '👥',
+      icon: 'Users',
       title: 'Expert Faculty',
-      value: '10 Members',
+      value: '13 Members',
       description: 'Energetic and consummate faculty members with Ph.D. qualifications and extensive teaching experience.',
     },
     {
-      icon: '🔬',
+      icon: 'Microscope',
       title: 'Laboratory Facilities',
       value: 'State-of-the-Art',
       description: 'Excellent infrastructural and laboratory facilities for Physics, Chemistry, and interdisciplinary research.',
     },
     {
-      icon: '💼',
+      icon: 'Briefcase',
       title: 'Career Prospects',
       value: 'Higher Studies',
       description: 'Strong foundation for pursuing M.E/M.Tech./MS/M.B.A. with comprehensive knowledge of fundamental sciences.',
@@ -73,32 +73,32 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   whyChooseTitle: 'What Sets Our Department Apart',
   benefits: [
     {
-      icon: '🎯',
+      icon: 'Target',
       title: 'Outcome-Based Education',
       description: 'Our teaching and learning process is based on Outcome Based Education (OBE) with clearly defined learning outcomes aligned with engineering requirements.',
     },
     {
-      icon: '💻',
+      icon: 'Laptop',
       title: 'Hands-on Learning',
       description: 'In addition to theoretical lecturing, we give more significance to practical sessions with state-of-the-art laboratory facilities.',
     },
     {
-      icon: '🌐',
+      icon: 'Globe',
       title: 'Interdisciplinary Support',
       description: 'Faculty members provide support for final year engineering projects and interdisciplinary research with laboratory facilities.',
     },
     {
-      icon: '📜',
+      icon: 'ScrollText',
       title: 'Strong Fundamentals',
       description: 'Deeper and thorough knowledge about basic facts and fundamentals of science to excel in engineering disciplines.',
     },
     {
-      icon: '🏆',
+      icon: 'Trophy',
       title: 'Co-Curricular Activities',
       description: 'Students participate in various co-curricular activities throughout the year to develop their overall personality.',
     },
     {
-      icon: '🎓',
+      icon: 'GraduationCap',
       title: 'Research Opportunities',
       description: 'Faculty members pursuing research provide opportunities for students to engage in cutting-edge scientific investigations.',
     },
@@ -246,28 +246,28 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   careerTitle: 'Career Opportunities After Science & Humanities',
   careerPaths: [
     {
-      icon: '🎓',
+      icon: 'GraduationCap',
       title: 'M.E / M.Tech',
       salary: 'Higher Studies',
       description: 'Pursue advanced engineering degrees with strong foundation in mathematics, physics, and chemistry.',
       skills: ['Research', 'Analysis', 'Problem Solving'],
     },
     {
-      icon: '📊',
+      icon: 'BarChart3',
       title: 'M.S (Master of Science)',
       salary: 'International Studies',
       description: 'Pursue master\'s programs abroad with excellent grounding in fundamental sciences.',
       skills: ['Scientific Research', 'Data Analysis'],
     },
     {
-      icon: '💼',
+      icon: 'Briefcase',
       title: 'M.B.A',
       salary: 'Management Studies',
       description: 'Combine technical knowledge with business management for leadership roles.',
       skills: ['Leadership', 'Strategy', 'Management'],
     },
     {
-      icon: '🔬',
+      icon: 'Microscope',
       title: 'Research Scholar',
       salary: 'Academic Career',
       description: 'Pursue Ph.D. and contribute to scientific research and innovation.',
@@ -311,33 +311,103 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   // ==========================================
   facultyTitle: 'Experienced Faculty Members',
   faculty: [
+    // Department of Physics
     {
-      name: 'Dr. Physics Faculty',
-      designation: 'Professor - Physics',
-      qualification: 'Ph.D. in Physics',
-      specialization: 'Applied Physics, Material Science',
+      name: 'Dr. K.M. Rajendiran',
+      designation: 'Associate Professor - Physics',
+      qualification: 'M.Sc., M.Phil., Ph.D.',
+      specialization: 'Physics',
       image: 'https://source.unsplash.com/400x400/?professor,male,indian',
     },
     {
-      name: 'Dr. Chemistry Faculty',
-      designation: 'Associate Professor - Chemistry',
-      qualification: 'Ph.D. in Chemistry',
-      specialization: 'Organic Chemistry, Environmental Chemistry',
+      name: 'Dr. N. Latha',
+      designation: 'Associate Professor - Physics',
+      qualification: 'M.Sc., M.Phil., Ph.D.',
+      specialization: 'Physics',
       image: 'https://source.unsplash.com/400x400/?professor,female,indian',
     },
     {
-      name: 'Dr. Mathematics Faculty',
-      designation: 'Professor - Mathematics',
-      qualification: 'Ph.D. in Mathematics',
-      specialization: 'Applied Mathematics, Numerical Methods',
-      image: 'https://source.unsplash.com/400x400/?teacher,male,indian',
+      name: 'Mrs. M. Baby',
+      designation: 'Assistant Professor - Physics',
+      qualification: 'M.Sc., M.Phil.',
+      specialization: 'Physics',
+      image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
     },
     {
-      name: 'Ms. English Faculty',
-      designation: 'Assistant Professor - English',
-      qualification: 'M.A, M.Phil in English',
-      specialization: 'Technical Communication, Soft Skills',
+      name: 'Mrs. R. Deepika',
+      designation: 'Assistant Professor - Physics',
+      qualification: 'M.Sc., M.Phil.',
+      specialization: 'Physics',
       image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
+    },
+
+    // Department of Mathematics
+    {
+      name: 'Mrs. M. Muthulakshmi',
+      designation: 'Assistant Professor - Mathematics',
+      qualification: 'M.Sc., M.Phil.',
+      specialization: 'Mathematics',
+      image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
+    },
+    {
+      name: 'Mrs. N. Sathya',
+      designation: 'Assistant Professor - Mathematics',
+      qualification: 'M.Sc., M.Phil.',
+      specialization: 'Mathematics',
+      image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
+    },
+    {
+      name: 'Mrs. M. Bharathipriya',
+      designation: 'Assistant Professor - Mathematics',
+      qualification: 'M.Sc., M.Phil.',
+      specialization: 'Mathematics',
+      image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
+    },
+    {
+      name: 'Mrs. R. Kasthuri',
+      designation: 'Assistant Professor - Mathematics',
+      qualification: 'M.Sc., B.Ed., M.Phil.',
+      specialization: 'Mathematics',
+      image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
+    },
+    {
+      name: 'Mrs. M. Saraswathi',
+      designation: 'Assistant Professor - Mathematics',
+      qualification: 'M.Sc., M.Phil.',
+      specialization: 'Mathematics',
+      image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
+    },
+
+    // Department of Chemistry
+    {
+      name: 'Mrs. S. Narmatha S',
+      designation: 'Assistant Professor - Chemistry',
+      qualification: 'M.Sc., M.Phil.',
+      specialization: 'Chemistry',
+      image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
+    },
+    {
+      name: 'Mrs. D. Panjami',
+      designation: 'Assistant Professor - Chemistry',
+      qualification: 'M.Sc., M.Phil.',
+      specialization: 'Chemistry',
+      image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
+    },
+
+    // Department of English
+    {
+      name: 'Dr. A.D. Sasikala',
+      designation: 'Assistant Professor - English',
+      qualification: 'M.A., M.Phil., Ph.D.',
+      specialization: 'English',
+      image: 'https://source.unsplash.com/400x400/?teacher,female,indian',
+    },
+    {
+      name: 'Mr. R. Rajaratnam',
+      designation: 'Assistant Professor - English',
+      qualification: 'M.A., M.Phil.',
+      specialization: 'English',
+      image: 'https://source.unsplash.com/400x400/?teacher,male,indian',
     },
   ],
 
@@ -376,7 +446,7 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
     },
     {
       question: 'What is the student-faculty ratio?',
-      answer: 'With 10 energetic and well-qualified faculty members and an intake of 60 students, we maintain an excellent faculty-student ratio ensuring personalized attention and quality education. This allows for better interaction and mentoring of students.',
+      answer: 'With 13 energetic and well-qualified faculty members and an intake of 60 students, we maintain an excellent faculty-student ratio ensuring personalized attention and quality education. This allows for better interaction and mentoring of students.',
     },
   ],
 

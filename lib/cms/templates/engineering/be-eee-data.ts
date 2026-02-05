@@ -42,7 +42,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
       description: 'The program spans 4 years with 8 semesters totaling 160 credits. Comprehensive curriculum balancing theory, laboratory work, and industrial training.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Accreditation',
       value: 'AICTE & NAAC',
       description: 'Our program is approved by AICTE (All India Council for Technical Education) and accredited by NAAC, ensuring quality education standards.',
@@ -61,32 +61,32 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   whyChooseTitle: 'Why Choose Electrical & Electronics Engineering?',
   benefits: [
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Industry-Aligned Curriculum',
       description: 'Our curriculum is designed to meet current industry standards covering power systems, renewable energy, smart grids, electric vehicles, and automation technologies used globally.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Expert Faculty',
       description: 'Learn from highly qualified professors with Ph.D. degrees and extensive industry experience in power systems, electrical machines, control systems, and power electronics.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Advanced Laboratories',
       description: 'Access state-of-the-art laboratories for electrical machines, power systems, power electronics, control systems, renewable energy, and high voltage engineering with modern equipment.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Placement Opportunities',
       description: 'Strong placement record with recruitment from TNEB, BHEL, Siemens, ABB, L&T, Schneider Electric, and other leading power and automation companies.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Research & Innovation',
       description: 'Engage in cutting-edge research in renewable energy systems, smart grids, electric vehicles, power quality, and energy management systems.',
     },
     {
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Industry Partnerships',
       description: 'Gain practical experience through internships and industrial visits to thermal power plants, substations, manufacturing units, and renewable energy installations.',
     },
@@ -237,32 +237,32 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   specializationsTitle: 'Specializations Offered',
   specializations: [
     {
-      icon: '⚡',
+      icon: 'Zap',
       title: 'Power Systems Engineering',
       description: 'Master power generation, transmission, distribution, grid management, smart grid technologies, and power system protection and control.',
     },
     {
-      icon: '🔌',
+      icon: 'Plug',
       title: 'Power Electronics & Drives',
       description: 'Learn advanced power electronic converters, motor drives, electric vehicle technology, and industrial automation systems.',
     },
     {
-      icon: '🌞',
+      icon: 'Sun',
       title: 'Renewable Energy Systems',
       description: 'Develop expertise in solar power, wind energy, hydroelectric systems, energy storage technologies, and microgrid design.',
     },
     {
-      icon: '🤖',
+      icon: 'Bot',
       title: 'Industrial Automation',
       description: 'Gain proficiency in PLC programming, SCADA systems, industrial robotics, process control, and factory automation.',
     },
     {
-      icon: '🔋',
+      icon: 'Battery',
       title: 'Electric Vehicles',
       description: 'Explore EV technology, battery management systems, charging infrastructure, motor control, and sustainable transportation.',
     },
     {
-      icon: '📡',
+      icon: 'Antenna',
       title: 'Embedded Systems',
       description: 'Master microcontrollers, IoT devices, embedded C programming, real-time operating systems, and industrial embedded applications.',
     },
@@ -274,37 +274,37 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   careerTitle: 'Career Opportunities',
   careerPaths: [
     {
-      icon: '⚡',
+      icon: 'Zap',
       title: 'Electrical Engineer',
       description: 'Design, develop, and maintain electrical systems for power generation plants, substations, transmission networks, and industrial facilities.',
       avgSalary: '₹3.5-8 LPA',
     },
     {
-      icon: '🔌',
+      icon: 'Plug',
       title: 'Power Systems Engineer',
       description: 'Work on power system planning, operation, control, and protection. Analyze power flow, stability, and optimize grid performance.',
       avgSalary: '₹4-9 LPA',
     },
     {
-      icon: '🏭',
+      icon: 'Factory',
       title: 'Automation Engineer',
       description: 'Design and implement automation solutions using PLCs, SCADA, DCS, and robotics for manufacturing and process industries.',
       avgSalary: '₹3.5-8 LPA',
     },
     {
-      icon: '🔋',
+      icon: 'Battery',
       title: 'Power Electronics Engineer',
       description: 'Develop power electronic converters, inverters, motor drives, and control systems for renewable energy and electric vehicles.',
       avgSalary: '₹4-10 LPA',
     },
     {
-      icon: '🌞',
+      icon: 'Sun',
       title: 'Renewable Energy Engineer',
       description: 'Design and implement solar power plants, wind farms, and hybrid renewable energy systems. Work on energy storage and microgrid projects.',
       avgSalary: '₹3.5-9 LPA',
     },
     {
-      icon: '🏗️',
+      icon: 'Construction',
       title: 'Project Engineer',
       description: 'Manage electrical projects including design, procurement, installation, testing, and commissioning of electrical systems and equipment.',
       avgSalary: '₹3-7 LPA',
@@ -331,19 +331,19 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   admissionSteps: [
     {
       step: 1,
-      icon: '📝',
+      icon: 'FileEdit',
       title: 'Apply Online',
       description: 'Fill out the online application form with your academic details, personal information, and upload required documents through our official admission portal.',
     },
     {
       step: 2,
-      icon: '✅',
+      icon: 'CheckCircle',
       title: 'Document Verification',
       description: 'Submit required documents including mark sheets, certificates, and ID proof for verification. Our admission team will review and validate your documents.',
     },
     {
       step: 3,
-      icon: '🎓',
+      icon: 'GraduationCap',
       title: 'Admission Confirmation',
       description: 'Pay the admission fees online or offline, confirm your seat, and attend the orientation program to begin your engineering journey with us.',
     },
