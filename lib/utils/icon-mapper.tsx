@@ -2,6 +2,7 @@ import React from 'react'
 import {
   Award,
   BarChart3,
+  BookOpen,
   Bot,
   Briefcase,
   Building2,
@@ -12,7 +13,9 @@ import {
   Globe,
   GraduationCap,
   HardDrive,
+  Heart,
   Laptop,
+  Lightbulb,
   Lock,
   Mail,
   MapPin,
@@ -40,6 +43,7 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   ScrollText,
   Microscope,
   FileText,
+  BookOpen,
 
   // Business & Professional
   Briefcase,
@@ -69,8 +73,10 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   Users,
   UserCheck,
 
-  // General
+  // General & Social
   CheckCircle,
+  Lightbulb,
+  Heart,
 }
 
 /**
@@ -142,4 +148,15 @@ export function isValidIcon(iconName: string): iconName is IconName {
  */
 export function getAvailableIcons(): IconName[] {
   return Object.keys(ICON_MAP) as IconName[]
+}
+
+/**
+ * Maps an icon name string to a Lucide icon component
+ * Used for dynamic icon rendering in components
+ *
+ * @param iconName - Name of the icon
+ * @returns Lucide icon component (defaults to BookOpen if not found)
+ */
+export function iconMapper(iconName: string): LucideIcon {
+  return ICON_MAP[iconName as IconName] || BookOpen
 }
