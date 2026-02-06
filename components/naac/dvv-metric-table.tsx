@@ -63,15 +63,21 @@ export function DVVMetricTable({
                   {clarification.finding}
                 </td>
                 <td className="px-4 py-4 text-center">
-                  <a
-                    href={clarification.responseLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium"
-                  >
-                    View
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
+                  {clarification.responseLink && clarification.responseLink !== '#' ? (
+                    <a
+                      href={clarification.responseLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium"
+                    >
+                      View PDF
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  ) : (
+                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-gray-300 text-gray-600 rounded-md cursor-not-allowed text-sm font-medium">
+                      Not Available
+                    </span>
+                  )}
                 </td>
               </tr>
             ))}

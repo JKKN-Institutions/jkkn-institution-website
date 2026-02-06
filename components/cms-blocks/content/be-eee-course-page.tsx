@@ -647,7 +647,9 @@ function SpecializationsSection({
               className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200"
             >
               {spec.icon && (
-                <div className="text-3xl mb-4">{spec.icon}</div>
+                <div className="mb-4" style={{ color: primaryColor }}>
+                  {renderIcon(spec.icon, 'w-10 h-10')}
+                </div>
               )}
               <h3 className="text-lg font-bold text-gray-900 mb-3">
                 {spec.title}

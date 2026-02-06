@@ -712,10 +712,10 @@ function SpecializationsSection({
             >
               {spec.icon && (
                 <div
-                  className="text-4xl mb-4"
+                  className="mb-4"
                   style={{ color: accentColor }}
                 >
-                  {spec.icon}
+                  {renderIcon(spec.icon, 'w-10 h-10')}
                 </div>
               )}
               <h3 className="text-xl font-bold mb-3 text-gray-800">{spec.title}</h3>

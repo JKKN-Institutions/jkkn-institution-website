@@ -22,12 +22,7 @@ export function EmergencyContactCard({
   return (
     <div className="w-full max-w-2xl mx-auto">
       <div
-        className="relative overflow-hidden rounded-2xl p-8 md:p-10"
-        style={{
-          background: 'rgba(255, 255, 255, 0.1)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-        }}
+        className="relative overflow-hidden rounded-2xl p-8 md:p-10 bg-white border border-gray-200"
       >
         {/* Decorative accent bar */}
         <div
@@ -45,11 +40,11 @@ export function EmergencyContactCard({
 
         {/* Contact Person */}
         <div className="text-center mb-6">
-          <p className="text-white text-xl md:text-2xl font-bold mb-1">
+          <p className="text-black text-xl md:text-2xl font-bold mb-1">
             {name}
           </p>
           {designation && (
-            <p className="text-white/80 text-base md:text-lg">
+            <p className="text-gray-700 text-base md:text-lg">
               {designation}
             </p>
           )}
@@ -66,7 +61,7 @@ export function EmergencyContactCard({
           >
             <Phone className="w-6 h-6 text-gray-900" />
           </div>
-          <span className="text-white text-xl md:text-2xl font-semibold group-hover:underline">
+          <span className="text-black text-xl md:text-2xl font-semibold group-hover:underline">
             {mobile}
           </span>
         </a>
@@ -78,12 +73,11 @@ export function EmergencyContactCard({
             className="flex items-center justify-center gap-3 mb-4 group"
           >
             <div
-              className="p-2 rounded-full transition-transform group-hover:scale-110"
-              style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
+              className="p-2 rounded-full transition-transform group-hover:scale-110 bg-gray-100"
             >
-              <Phone className="w-5 h-5 text-white" />
+              <Phone className="w-5 h-5 text-gray-900" />
             </div>
-            <span className="text-white text-lg md:text-xl font-medium group-hover:underline">
+            <span className="text-black text-lg md:text-xl font-medium group-hover:underline">
               {alternateContact}
             </span>
           </a>
@@ -94,7 +88,7 @@ export function EmergencyContactCard({
           <div className="text-center mt-4">
             <a
               href={`mailto:${email}`}
-              className="text-white/80 hover:text-white text-sm md:text-base underline"
+              className="text-gray-700 hover:text-black text-sm md:text-base underline"
             >
               {email}
             </a>
@@ -102,8 +96,8 @@ export function EmergencyContactCard({
         )}
 
         {/* Emergency Note */}
-        <div className="mt-6 pt-6 border-t border-white/20">
-          <p className="text-white/90 text-center text-sm md:text-base">
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <p className="text-gray-700 text-center text-sm md:text-base">
             Available 24/7 for emergency services
           </p>
         </div>

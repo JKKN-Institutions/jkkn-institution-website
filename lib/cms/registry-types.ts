@@ -1909,10 +1909,10 @@ export const ModernTrustSectionPropsSchema = z.object({
   founderImage: z.string().default('/images/founder.webp').describe('Founder image URL'),
   founderStory: z.string().default("In the sixties, female children in Kumarapalayam had to walk 2.5 km for their schooling to the nearby town of Bhavani. Realizing the need for women's education, a visionary philanthropist of the zone, Shri J.K.K. Natarajah, initiated a girls' school in the town in 1965.").describe('Short bio about the founder'),
   storyTitle: z.string().default('A Legacy of Service').describe('Story section title'),
-  storyContent: z.string().default("The J.K.K. Rangammal Charitable Trust was established in 1969 with the motto of providing literacy and women's empowerment. Walking in the footsteps of her father, Smt. N. Sendamaraai, Managing Trustee, expanded the service by providing multi-disciplinary education to both genders. Now, under the umbrella, there are ten institutions, including Dental, Pharmacy, Nursing, Education, Engineering, Arts, and Science colleges.").describe('Main trust story'),
+  storyContent: z.string().default("The J.K.K. Rangammal Charitable Trust was established in 1969 with the motto of providing literacy and women's empowerment. Walking in the footsteps of her father, Smt. N. Sendamaraai, Managing Trustee, expanded the service by providing multi-disciplinary education to both genders. Now, under the umbrella, there are nine institutions, including Dental, Pharmacy, Nursing, Education, Engineering, Arts, and Science colleges.").describe('Main trust story'),
   stats: z.array(TrustStatItemSchema).default([
     { icon: 'Calendar', value: '1969', label: 'Year Established' },
-    { icon: 'Building2', value: '10+', label: 'Institutions' },
+    { icon: 'Building2', value: '9', label: 'Institutions' },
     { icon: 'GraduationCap', value: '50000+', label: 'Alumni' },
     { icon: 'Users', value: '5000+', label: 'Current Students' },
   ]).describe('Trust statistics'),

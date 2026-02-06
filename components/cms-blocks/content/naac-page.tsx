@@ -227,15 +227,22 @@ function SectionContent({ section }: { section: any }) {
           <ul className="space-y-2">
             {section.documents.map((doc: Document, index: number) => (
               <li key={index}>
-                <a
-                  href={doc.fileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#7db247] hover:underline font-medium inline-flex items-center gap-2"
-                >
-                  <FileText className="h-4 w-4" />
-                  {doc.title}
-                </a>
+                {doc.fileUrl && doc.fileUrl !== '#' ? (
+                  <a
+                    href={doc.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#7db247] hover:underline font-medium inline-flex items-center gap-2"
+                  >
+                    <FileText className="h-4 w-4" />
+                    {doc.title}
+                  </a>
+                ) : (
+                  <span className="text-gray-500 font-medium inline-flex items-center gap-2">
+                    <FileText className="h-4 w-4" />
+                    {doc.title} <span className="text-xs">(Not Available)</span>
+                  </span>
+                )}
                 {doc.description && (
                   <span className="text-sm text-gray-600 ml-2">- {doc.description}</span>
                 )}
@@ -262,15 +269,22 @@ function SectionContent({ section }: { section: any }) {
                 <ul className="mt-3 space-y-1">
                   {subsection.documents.map((doc: Document, docIndex: number) => (
                     <li key={docIndex}>
-                      <a
-                        href={doc.fileUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#7db247] hover:underline font-medium inline-flex items-center gap-2"
-                      >
-                        <Download className="h-4 w-4" />
-                        {doc.title}
-                      </a>
+                      {doc.fileUrl && doc.fileUrl !== '#' ? (
+                        <a
+                          href={doc.fileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#7db247] hover:underline font-medium inline-flex items-center gap-2"
+                        >
+                          <Download className="h-4 w-4" />
+                          {doc.title}
+                        </a>
+                      ) : (
+                        <span className="text-gray-500 font-medium inline-flex items-center gap-2">
+                          <Download className="h-4 w-4" />
+                          {doc.title} <span className="text-xs">(Not Available)</span>
+                        </span>
+                      )}
                     </li>
                   ))}
                 </ul>

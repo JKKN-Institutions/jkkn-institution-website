@@ -76,8 +76,8 @@ function FeatureCard({
     <div
       ref={ref}
       className={`
-        bg-gray-900 backdrop-blur-sm rounded-2xl p-6 md:p-8
-        border border-gray-700
+        bg-white backdrop-blur-sm rounded-2xl p-6 md:p-8
+        border border-gray-200
         transition-all duration-700 ease-out
         hover:shadow-xl hover:scale-[1.02]
         ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
@@ -94,7 +94,7 @@ function FeatureCard({
 
       {/* Feature Description */}
       <div
-        className="text-base md:text-lg leading-relaxed prose max-w-none text-gray-300"
+        className="text-base md:text-lg leading-relaxed prose max-w-none text-black"
         dangerouslySetInnerHTML={{ __html: description }}
       />
     </div>
@@ -203,9 +203,9 @@ export function AmbulanceServicePage({
               ${introInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
             `}
           >
-            <div className="bg-gray-900 backdrop-blur-sm rounded-3xl p-6 md:p-10 border border-gray-700">
+            <div className="bg-white backdrop-blur-sm rounded-3xl p-6 md:p-10 border border-gray-200">
               <div
-                className="text-lg md:text-xl leading-relaxed prose max-w-none text-gray-300"
+                className="text-lg md:text-xl leading-relaxed prose max-w-none text-black"
                 dangerouslySetInnerHTML={{ __html: introduction }}
               />
             </div>
@@ -281,11 +281,11 @@ export function AmbulanceServicePage({
             `}
           >
             <div
-              className="bg-gray-900 backdrop-blur-sm rounded-3xl p-6 md:p-10 border-2"
+              className="bg-white backdrop-blur-sm rounded-3xl p-6 md:p-10 border-2"
               style={{ borderColor: `${accentColor}40` }}
             >
               <div
-                className="text-lg md:text-xl leading-relaxed font-medium prose max-w-none text-gray-300"
+                className="text-lg md:text-xl leading-relaxed font-medium prose max-w-none text-black"
                 dangerouslySetInnerHTML={{ __html: conclusion }}
               />
             </div>

@@ -38,7 +38,13 @@ import {
   Wifi,
   Monitor,
   Briefcase,
-  Shield
+  Shield,
+  // Additional icons for menu items
+  UsersRound,
+  ClipboardCheck,
+  FolderOpen,
+  UserCircle,
+  Zap
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -163,6 +169,15 @@ const CMS_ICON_MAP: Record<string, LucideIcon> = {
   // More section
   'careers': Briefcase,
   'privacy-policy': Shield,
+
+  // JKKN-specific menu items
+  'committee': UsersRound,
+  'committees': UsersRound,
+  'iqac': ClipboardCheck,
+  'others': FolderOpen,
+  'alumni': UserCircle,
+  'quick-access': Zap,
+  'quick access': Zap,
 };
 
 /**

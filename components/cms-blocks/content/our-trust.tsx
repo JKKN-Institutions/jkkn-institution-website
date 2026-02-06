@@ -57,14 +57,14 @@ export const OurTrustPropsSchema = z.object({
   storyTitle: z.string().default('Our Story').describe('Story section title'),
   storyContent: z.string().default(`In the 1960s, female children in Kumarapalayam had to walk 2.5 km to the nearby town of Bhavani for schooling. Some parents hesitated to send their daughters, while others ceased their children's education altogether, resulting in them staying at home or working in handlooms and dyeing industries. Recognizing the need for women's education, Shri J.K.K. Natarajah, a visionary philanthropist of the area, initiated a girls' school in the town in 1965, four years before the inception of the trust.
 
-The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 1969 with the mission of providing literacy and empowering women, aiming to upgrade the socio-economic status of the community. Following in her father's footsteps, Smt. N. Sendamaraai, Managing Trustee, expanded the service to offer multi-disciplinary education to both genders. Now, under the umbrella of the Trust, there are ten institutions, including Dental, Pharmacy, Nursing, Education, Engineering, Arts, and Science colleges, as well as Government-Aided Girls' School and Matriculation schools.
+The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 1969 with the mission of providing literacy and empowering women, aiming to upgrade the socio-economic status of the community. Following in her father's footsteps, Smt. N. Sendamaraai, Managing Trustee, expanded the service to offer multi-disciplinary education to both genders. Now, under the umbrella of the Trust, there are nine institutions, including Dental, Pharmacy, Nursing, Education, Engineering, Arts, and Science colleges, as well as Government-Aided Girls' School and Matriculation schools.
 
 The Trust actively engages in various social service activities, including health-oriented services like free dental camps, treatments, surgeries, blood donation drives, and motivational and entrepreneurship awareness camps. It also extends its charitable efforts to provide medical support to the impoverished, assist the destitute, offer natural calamity support, grant educational scholarships to underprivileged students, and foster cultural enrichment. A pioneering establishment of the region since its inception, the Trust's grand service to society remains immense, not only in terms of education but also in community welfare.`).describe('Trust story content'),
 
   // Stats
   stats: z.array(TrustStatItemSchema).default([
     { icon: 'Calendar', value: '1969', label: 'Year Established' },
-    { icon: 'Building2', value: '10+', label: 'Institutions' },
+    { icon: 'Building2', value: '9', label: 'Institutions' },
     { icon: 'GraduationCap', value: '50000+', label: 'Alumni' },
     { icon: 'Users', value: '5000+', label: 'Current Students' },
   ]).describe('Trust statistics'),
@@ -75,7 +75,7 @@ The Trust actively engages in various social service activities, including healt
     { year: '1965', title: 'Girls School Founded', description: 'Started the first girls school in Kumarapalayam' },
     { year: '1969', title: 'Trust Established', description: 'J.K.K. Rangammal Charitable Trust officially registered' },
     { year: '1985', title: 'College Expansion', description: 'First professional college established' },
-    { year: '2000', title: 'Multi-Disciplinary Growth', description: 'Expanded to 10+ institutions' },
+    { year: '2000', title: 'Multi-Disciplinary Growth', description: 'Expanded to 9 institutions' },
   ]).describe('Key milestones in trust history'),
 
   // Styling
@@ -300,7 +300,7 @@ export function OurTrust({
 
   const defaultStats: TrustStatItem[] = [
     { icon: 'Calendar', value: '1969', label: 'Year Established' },
-    { icon: 'Building2', value: '10+', label: 'Institutions' },
+    { icon: 'Building2', value: '9', label: 'Institutions' },
     { icon: 'GraduationCap', value: '50000+', label: 'Alumni' },
     { icon: 'Users', value: '5000+', label: 'Current Students' },
   ]
@@ -309,7 +309,7 @@ export function OurTrust({
     { year: '1965', title: 'Girls School Founded', description: 'Started the first girls school in Kumarapalayam' },
     { year: '1969', title: 'Trust Established', description: 'J.K.K. Rangammal Charitable Trust officially registered' },
     { year: '1985', title: 'College Expansion', description: 'First professional college established' },
-    { year: '2000', title: 'Multi-Disciplinary Growth', description: 'Expanded to 10+ institutions' },
+    { year: '2000', title: 'Multi-Disciplinary Growth', description: 'Expanded to 9 institutions' },
   ]
 
   const displayStats = stats.length > 0 ? stats : defaultStats
@@ -317,7 +317,7 @@ export function OurTrust({
 
   const defaultStoryContent = `In the 1960s, female children in Kumarapalayam had to walk 2.5 km to the nearby town of Bhavani for schooling. Some parents hesitated to send their daughters, while others ceased their children's education altogether, resulting in them staying at home or working in handlooms and dyeing industries. Recognizing the need for women's education, Shri J.K.K. Natarajah, a visionary philanthropist of the area, initiated a girls' school in the town in 1965, four years before the inception of the trust.
 
-The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 1969 with the mission of providing literacy and empowering women, aiming to upgrade the socio-economic status of the community. Following in her father's footsteps, Smt. N. Sendamaraai, Managing Trustee, expanded the service to offer multi-disciplinary education to both genders. Now, under the umbrella of the Trust, there are ten institutions, including Dental, Pharmacy, Nursing, Education, Engineering, Arts, and Science colleges, as well as Government-Aided Girls' School and Matriculation schools.
+The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 1969 with the mission of providing literacy and empowering women, aiming to upgrade the socio-economic status of the community. Following in her father's footsteps, Smt. N. Sendamaraai, Managing Trustee, expanded the service to offer multi-disciplinary education to both genders. Now, under the umbrella of the Trust, there are nine institutions, including Dental, Pharmacy, Nursing, Education, Engineering, Arts, and Science colleges, as well as Government-Aided Girls' School and Matriculation schools.
 
 The Trust actively engages in various social service activities, including health-oriented services like free dental camps, treatments, surgeries, blood donation drives, and motivational and entrepreneurship awareness camps. It also extends its charitable efforts to provide medical support to the impoverished, assist the destitute, offer natural calamity support, grant educational scholarships to underprivileged students, and foster cultural enrichment. A pioneering establishment of the region since its inception, the Trust's grand service to society remains immense, not only in terms of education but also in community welfare.`
 

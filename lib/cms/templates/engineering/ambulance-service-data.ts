@@ -32,7 +32,7 @@ export const AMBULANCE_SERVICE_DATA: AmbulanceServicePageProps = {
 
   features: [],
 
-  backgroundColor: '#0a0a0a',
+  backgroundColor: '#f8f8f8',
   accentColor: '#10b981',
-  textColor: '#ffffff',
+  textColor: '#1a1a1a',
 }

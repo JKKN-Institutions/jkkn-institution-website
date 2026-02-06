@@ -54,7 +54,7 @@ export function ModernOrganogramSection({
                     </div>
                     <div className="text-center">
                         <h1 className="text-lg md:text-xl font-bold text-[#0b6d41] uppercase">
-                            J.K.K. NATARAJA COLLEGE OF ENGINEERING AND TECHNOLOGY
+                            JKKN COLLEGE OF ENGINEERING AND TECHNOLOGY
                         </h1>
                         <p className="text-xs md:text-sm text-[#0b6d41]">
                             (Managed by J.K.K. Rangammal Charitable Trust)

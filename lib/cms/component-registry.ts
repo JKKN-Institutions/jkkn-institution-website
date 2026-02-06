@@ -4475,7 +4475,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       storyContent: '',
       stats: [
         { icon: 'Calendar', value: '1969', label: 'Year Established' },
-        { icon: 'Building2', value: '10+', label: 'Institutions' },
+        { icon: 'Building2', value: '9', label: 'Institutions' },
         { icon: 'GraduationCap', value: '50000+', label: 'Alumni' },
         { icon: 'Users', value: '5000+', label: 'Current Students' },
       ],
@@ -4484,7 +4484,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         { year: '1965', title: 'Girls School Founded', description: 'Started the first girls school in Kumarapalayam' },
         { year: '1969', title: 'Trust Established', description: 'J.K.K. Rangammal Charitable Trust officially registered' },
         { year: '1985', title: 'College Expansion', description: 'First professional college established' },
-        { year: '2000', title: 'Multi-Disciplinary Growth', description: 'Expanded to 10+ institutions' },
+        { year: '2000', title: 'Multi-Disciplinary Growth', description: 'Expanded to 9 institutions' },
       ],
       backgroundColor: '#0b6d41',
       accentColor: '#ffde59',

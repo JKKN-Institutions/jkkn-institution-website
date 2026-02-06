@@ -410,11 +410,8 @@ function HeroSection({
               {stats.map((stat, index) => (
                 <div key={index} className="text-left">
                   <div className="flex items-center gap-2 mb-1">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xl" style={{ backgroundColor: primaryColor }}>
-                      {index === 0 && '⏱️'}
-                      {index === 1 && '📊'}
-                      {index === 2 && '📈'}
-                      {index === 3 && '₹'}
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: primaryColor }}>
+                      {renderIcon(stat.icon, 'w-5 h-5')}
                     </div>
                   </div>
                   <div className="text-3xl font-bold mb-1" style={{ color: primaryColor }}>
