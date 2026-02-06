@@ -1054,14 +1054,24 @@ function FinalCTASection({
               {description}
             </p>
           )}
-          <a
-            href={buttonLink}
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-base text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
-            style={{ backgroundColor: primaryColor }}
-          >
-            {buttonLabel}
-            <ArrowRight className="w-5 h-5" />
-          </a>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href={buttonLink}
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-base text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+              style={{ backgroundColor: primaryColor }}
+            >
+              {buttonLabel}
+              <ArrowRight className="w-5 h-5" />
+            </a>
+            <a
+              href="tel:+919345855001"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent border-2 rounded-lg font-semibold text-base hover:opacity-80 transition-all duration-300"
+              style={{ borderColor: primaryColor, color: primaryColor }}
+            >
+              Talk to Counselor
+              <Phone className="w-5 h-5" />
+            </a>
+          </div>
         </div>
       </div>
     </section>

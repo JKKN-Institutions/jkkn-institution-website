@@ -18,7 +18,7 @@ export const meCSECourseData: MECSECoursePageProps = {
   // ===========================================
   hero: {
     badge: 'AICTE Approved | NAAC Accredited',
-    title: 'Master of Engineering in',
+    title: 'M.E',
     highlightedText: 'Computer Science & Engineering',
     subtitle: 'Elevate your career with cutting-edge expertise in AI, Machine Learning, Data Science, and advanced computing technologies. Join our research-oriented postgraduate program designed for innovation and industry leadership.',
     features: [
@@ -73,9 +73,9 @@ export const meCSECourseData: MECSECoursePageProps = {
   // ===========================================
   overview: {
     label: 'Program Overview',
-    title: 'Why Choose ME Computer Science and Engineering at JKKN?',
+    title: 'Why Choose M.E Computer Science and Engineering at JKKN?',
     content: [
-      'The Master of Engineering (M.E.) in Computer Science and Engineering at JKKN College of Engineering is a premier postgraduate program designed to develop advanced expertise in cutting-edge computing technologies. Our curriculum focuses on emerging areas such as Artificial Intelligence, Machine Learning, Data Science, Cybersecurity, Cloud Computing, and IoT.',
+      'The Master of Engineering (M.E) in Computer Science and Engineering at JKKN College of Engineering is a premier postgraduate program designed to develop advanced expertise in cutting-edge computing technologies. Our curriculum focuses on emerging areas such as Artificial Intelligence, Machine Learning, Data Science, Cybersecurity, Cloud Computing, and IoT.',
       'With a perfect blend of theoretical knowledge and practical research, our program prepares students for leadership roles in technology organizations, research institutions, and academia. Students work on real-world projects, publish research papers in international journals, and collaborate with industry partners on innovative solutions.',
       'Our state-of-the-art laboratories, experienced faculty with PhD qualifications, and strong industry connections ensure that graduates are well-equipped to tackle complex technological challenges and drive innovation in their respective domains.',
       'The program emphasizes research methodology, advanced problem-solving skills, and independent thinking, making it ideal for aspiring researchers, technology leaders, and innovators who want to make a significant impact in the field of computer science and engineering.'
@@ -106,19 +106,19 @@ export const meCSECourseData: MECSECoursePageProps = {
     importantDates: [
       {
         label: 'Applications Open',
-        value: 'April 2024'
+        value: 'April 2026'
       },
       {
         label: 'Last Date to Apply',
-        value: 'June 30, 2024'
+        value: 'June 30, 2026'
       },
       {
         label: 'Counselling',
-        value: 'July 2024'
+        value: 'July 2026'
       },
       {
         label: 'Classes Commence',
-        value: 'August 2024'
+        value: 'August 2026'
       }
     ]
   },
@@ -129,7 +129,7 @@ export const meCSECourseData: MECSECoursePageProps = {
   highlights: {
     label: 'Program Highlights',
     title: 'Excellence in Postgraduate Education',
-    description: 'Our ME CSE program stands out for its research focus, industry relevance, and commitment to academic excellence',
+    description: 'Our M.E CSE program stands out for its research focus, industry relevance, and commitment to academic excellence',
     cards: [
       {
         icon: 'award',
@@ -607,8 +607,8 @@ export const meCSECourseData: MECSECoursePageProps = {
         variant: 'primary'
       },
       {
-        label: 'Request Callback',
-        link: '/contact',
+        label: 'Talk to Counselor',
+        link: 'tel:+919345855001',
         variant: 'secondary'
       }
     ]

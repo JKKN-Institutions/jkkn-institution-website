@@ -460,7 +460,7 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   ctaDescription: 'Join JKKN College of Engineering & Technology and gain comprehensive knowledge in fundamental sciences. Applications for 2026-27 batch are now open!',
   ctaButtons: [
     { label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
-    { label: 'Talk to Counselor', link: '/contact', variant: 'secondary' },
+    { label: 'Talk to Counselor', link: 'tel:+919345855001', variant: 'secondary' },
   ],
   ctaContact: [
     { icon: 'Phone', label: 'Call Us', value: '+91 9345855001', link: 'tel:+91 9345855001' },
