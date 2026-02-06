@@ -644,8 +644,8 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   ctaPrimaryButtonLink: '/apply',
   ctaSecondaryButtonLabel: 'Contact Admissions',
   ctaSecondaryButtonLink: '/contact',
-  contactPhone: '+91 98765 43210',
-  contactEmail: 'admissions@jkkn.edu.in',
+  contactPhone: '+91 9345855001',
+  contactEmail: 'engg@jkkn.edu.in',
   contactAddress: 'JKKN Campus, Komarapalayam, Namakkal District, Tamil Nadu - 638183',
 
   // ==========================================

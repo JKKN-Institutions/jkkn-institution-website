@@ -641,17 +641,6 @@ function CurriculumSection({
                     </span>
                   </div>
 
-                  {/* Syllabus Image - Display if available */}
-                  {semester.syllabusImage && (
-                    <div className="mb-6 rounded-lg overflow-hidden shadow-md">
-                      <img
-                        src={semester.syllabusImage}
-                        alt={`Semester ${semester.semester} Syllabus`}
-                        className="w-full h-auto object-contain bg-white"
-                      />
-                    </div>
-                  )}
-
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {semester.subjects.map((subject, index) => (
                       <div

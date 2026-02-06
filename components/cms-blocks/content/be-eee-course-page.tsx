@@ -776,7 +776,9 @@ function AdmissionProcessSection({
               </div>
 
               {/* Icon */}
-              <div className="text-3xl mb-4">{step.icon}</div>
+              <div className="mb-4" style={{ color: primaryColor }}>
+                {renderIcon(step.icon, 'w-10 h-10')}
+              </div>
 
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 {step.title}
