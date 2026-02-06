@@ -21,9 +21,9 @@ const MOBILE_LABEL_MAP: Record<string, string> = {
   'ABOUT': 'About',
   'OUR COLLEGES': 'Colleges',
   'OUR SCHOOLS': 'Schools',
-  'B.E. Mechanical Engineering': 'MECH',
-  'BE MECHANICAL': 'MECH',
-  'BE Mechanical': 'MECH',
+  'B.E. Mechanical Engineering': 'BE MECH',
+  'BE MECHANICAL': 'BE MECH',
+  'BE Mechanical': 'BE MECH',
 };
 
 // Get mobile-friendly label
@@ -118,7 +118,7 @@ export function usePublicNavData({ cmsNavigation }: UsePublicNavDataProps = {}) 
               cmsItem.children.forEach((grandchild) => {
                 flattenedSubmenus.push({
                   href: grandchild.href,
-                  label: grandchild.label,
+                  label: getMobileLabel(grandchild.label),
                   icon: mapCmsIconToLucide(grandchild.label, grandchild.href),
                   active: pathname === grandchild.href || pathname.startsWith(grandchild.href + '/'),
                   parentLabel: sub.label, // Store parent label for grouping

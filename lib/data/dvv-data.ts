@@ -154,15 +154,15 @@ export const dvvData = {
       metric221: [
         {
           finding: 'HEI is requested to provide following supporting documents: 1. Certified list of full time teachers along with the departmental affiliation in the latest completed academic year.',
-          responseLink: '#',
+          responseLink: '/pdfs/naac/dvv/2.1-Extended-profile-the-list-of-full-time-teachers-indicating-the-departmental-affiliation-index-page-dvv.pdf',
         },
         {
           finding: 'List showing the number of students across all year in each of the programs in the latest completed academic year. No. of students should match total enrolled no. of students at extended ID 1.1.',
-          responseLink: '#',
+          responseLink: '/pdfs/naac/dvv/1.1-Extended-Profile-year-wise-and-program-wise-dvv.pdf',
         },
         {
           finding: 'Please also refer DVV findings provided at extended id 2.1 & 2.2 for librarian/physical director.',
-          responseLink: '#',
+          responseLink: '/pdfs/naac/dvv/2.1-Extended-profile-list-of-total-full-time-teachers-in-block-five-years-Without-repeat-count-index-page-dvv.pdf',
         },
       ],
     },
@@ -450,7 +450,7 @@ export const dvvData = {
         },
         {
           finding: 'Please provide the Photographs with date and caption for each scheme or event, with sealed and singed by the head of the institute.',
-          responseLink: '#',
+          responseLink: '/pdfs/naac/dvv/Criteria-5-5.1.2-Event-Report-DVV-1.pdf',
         },
         {
           finding: 'Please provide List of programs conducted and the number of students enrolled for each of the events for the last five years with sealed and singed by the head of the institute.',
@@ -568,7 +568,7 @@ export const dvvData = {
         },
         {
           finding: 'Kindly note that without e-copies of award letters and certificates claim would not be considered.',
-          responseLink: '#',
+          responseLink: '/pdfs/naac/dvv/Criteria5-5.3.1-DVV3-Award-Winners.pdf',
         },
       ],
       metric532: [
@@ -578,7 +578,7 @@ export const dvvData = {
         },
         {
           finding: 'Kindly note that Events cannot be split into activities and Multiple activities on the relatively closer dates to be considered as one only.',
-          responseLink: '#',
+          responseLink: '/pdfs/naac/dvv/Criteria5-5.3.2-DVV1-Yearwise-List-of-Events-List-of-Participants-1.pdf',
         },
         {
           finding: 'Please provide revised reports of the events/along with photographs appropriately date and caption year- wise for the last five year with sealed and singed by the head of the institute.',
@@ -726,7 +726,7 @@ export const dvvData = {
         },
         {
           finding: 'Kindly provide any other relevant data or documents related in this metrics (if available).',
-          responseLink: '#',
+          responseLink: '/pdfs/naac/dvv/criteria6-6.5.2.1-supporting-documents-as-per-sop-dvv.pdf',
         },
       ],
     },
