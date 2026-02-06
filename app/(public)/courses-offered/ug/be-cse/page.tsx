@@ -3,15 +3,15 @@ import { BE_CSE_SAMPLE_DATA } from '@/lib/cms/templates/engineering/be-cse-data'
 import type { Metadata } from 'next'
 
 /**
- * B.E. Computer Science & Engineering Course Page
+ * B.E Computer Science & Engineering Course Page
  * JKKN College of Engineering & Technology
  * Route: /courses-offered/ug/be-cse
  */
 
 export const metadata: Metadata = {
-  title: 'B.E. Computer Science and Engineering | JKKN College of Engineering',
+  title: 'B.E Computer Science and Engineering | JKKN College of Engineering',
   description:
-    'Pursue B.E. in Computer Science and Engineering at JKKN College of Engineering & Technology. AICTE approved, NAAC accredited 4-year program with 95%+ placement record. Industry-aligned curriculum covering AI, ML, Cloud Computing, Cybersecurity, and Full Stack Development.',
+    'Pursue B.E in Computer Science and Engineering at JKKN College of Engineering & Technology. AICTE approved, NAAC accredited 4-year program with 95%+ placement record. Industry-aligned curriculum covering AI, ML, Cloud Computing, Cybersecurity, and Full Stack Development.',
   keywords: [
     'BE CSE',
     'Computer Science Engineering',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     'Namakkal engineering college',
   ],
   openGraph: {
-    title: 'B.E. Computer Science and Engineering | JKKN College',
+    title: 'B.E Computer Science and Engineering | JKKN College',
     description:
       'Launch your tech career with B.E. CSE at JKKN. Industry-aligned curriculum, cutting-edge labs, expert faculty, and exceptional placement support with 95%+ placement rate.',
     type: 'website',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'B.E. Computer Science and Engineering | JKKN',
+    title: 'B.E Computer Science and Engineering | JKKN',
     description:
       'AICTE approved, NAAC accredited CSE program with 95%+ placement success. Transform your future with cutting-edge technology education.',
     images: ['https://source.unsplash.com/1200x630/?computer,science,engineering'],
