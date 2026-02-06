@@ -146,27 +146,27 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   courseTabs: [
     {
       code: 'EEE',
-      name: 'Electrical and Electronics Engineering',
+      name: 'EEE',
       pdfUrl: 'https://cac.annauniv.edu/aidetails/afug_2025_fu/EEE/B.E.%20EEE.pdf',
     },
     {
       code: 'MECH',
-      name: 'Mechanical Engineering',
+      name: 'MECH',
       pdfUrl: 'https://cac.annauniv.edu/aidetails/afug_2025_fu/Mech/B.E.%20Mechanical%20Engineering.pdf',
     },
     {
       code: 'ECE',
-      name: 'Electronics and Communication Engineering',
+      name: 'ECE',
       pdfUrl: 'https://cac.annauniv.edu/aidetails/afug_2025_fu/ECE/B.E%20ECE.pdf',
     },
     {
       code: 'IT',
-      name: 'Information Technology',
+      name: 'IT',
       pdfUrl: 'https://cac.annauniv.edu/aidetails/afug_2025_fu/CSIE/B.Tech.%20IT%20.pdf',
     },
     {
       code: 'CSE',
-      name: 'Computer Science and Engineering',
+      name: 'CSE',
       pdfUrl: 'https://cac.annauniv.edu/aidetails/afug_2025_fu/CSIE/BE%20CSE.pdf',
     },
   ],

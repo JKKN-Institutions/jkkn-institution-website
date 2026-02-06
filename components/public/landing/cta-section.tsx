@@ -92,7 +92,7 @@ export function CTASection() {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                href="/admissions/brochure"
+                href="#"
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-white bg-gray-800/90 border-2 border-white/30 hover:border-secondary hover:bg-gray-800 hover:shadow-lg hover:shadow-secondary/30 transition-all duration-300"
               >
                 Download Brochure

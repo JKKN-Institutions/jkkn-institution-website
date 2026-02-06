@@ -103,7 +103,7 @@ export const EngineeringAdmissionSectionPropsSchema = z.object({
   // Secondary CTA
   secondaryCtaButton: z.object({
     label: z.string().default('Download Brochure'),
-    link: z.string().default('/brochure'),
+    link: z.string().default('#'),
   }).optional(),
 
   // Colors

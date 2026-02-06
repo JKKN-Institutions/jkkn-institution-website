@@ -32,7 +32,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   // ==========================================
   // Hero Section
   // ==========================================
-  heroTitle: 'B.E. Computer Science & Engineering',
+  heroTitle: 'B.E Computer Science & Engineering',
   heroSubtitle: 'Transform your passion for technology into a rewarding career. Our AICTE-approved, NAAC-accredited program combines cutting-edge curriculum with industry-ready skills to shape tomorrow\'s tech leaders.',
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
@@ -49,7 +49,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   // ==========================================
   // Course Overview
   // ==========================================
-  overviewTitle: 'Why Choose B.E. CSE at JKKN?',
+  overviewTitle: 'Why Choose B.E CSE at JKKN?',
   overviewCards: [
     {
       icon: 'GraduationCap',
@@ -136,7 +136,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
       semesters: [
         {
           semester: 1,
-          credits: 20,
+          credits: 22,
           subjects: [
             { code: 'MA25C01', name: 'Applied Calculus', credits: 3 },
             { code: 'EN25C01', name: 'English Essentials – I', credits: 2 },
@@ -152,7 +152,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
         },
         {
           semester: 2,
-          credits: 20,
+          credits: 25,
           subjects: [
             { code: 'MA25C02', name: 'Linear Algebra', credits: 3 },
             { code: 'EE25C01', name: 'Basic Electrical and Electronics Engineering', credits: 3 },
@@ -173,7 +173,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
       semesters: [
         {
           semester: 3,
-          credits: 21,
+          credits: 24,
           subjects: [
             { code: '', name: 'Discrete Mathematics', credits: 3 },
             { code: '', name: 'Operating Systems', credits: 3 },
@@ -186,7 +186,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
         },
         {
           semester: 4,
-          credits: 21,
+          credits: 23,
           subjects: [
             { code: '', name: 'Probability and Statistics', credits: 4 },
             { code: '', name: 'Algorithms', credits: 3 },
@@ -205,7 +205,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
       semesters: [
         {
           semester: 5,
-          credits: 22,
+          credits: 25,
           subjects: [
             { code: '', name: 'Computer Networks', credits: 3 },
             { code: '', name: 'Compiler Design', credits: 3 },
@@ -219,7 +219,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
         },
         {
           semester: 6,
-          credits: 22,
+          credits: 20,
           subjects: [
             { code: '', name: 'Large Language Models', credits: 3 },
             { code: '', name: 'Programme Elective – II', credits: 3 },
@@ -238,7 +238,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
       semesters: [
         {
           semester: 7,
-          credits: 18,
+          credits: 15,
           subjects: [
             { code: '', name: 'Climate Change and Sustainability', credits: 2 },
             { code: '', name: 'Programme Elective – IV', credits: 3 },
@@ -348,7 +348,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   // ==========================================
   // Career Paths
   // ==========================================
-  careerTitle: 'Career Opportunities After B.E. CSE',
+  careerTitle: 'Career Opportunities After B.E CSE',
   careerPaths: [
     {
       icon: 'Laptop',
@@ -594,11 +594,10 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   ctaDescription: 'Join thousands of successful alumni who launched their tech careers from JKKN. Applications for 2026-27 batch are now open!',
   ctaButtons: [
     { label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
-    { label: 'Talk to Counselor', link: '/contact', variant: 'secondary' },
+    { label: 'Talk to Counselor', link: 'tel:+919345855001', variant: 'secondary' },
   ],
   ctaContact: [
-    { icon: 'Phone', label: 'Call Us', value: '+91 9345855001', link: 'tel:+91-9345855001' },
-    { icon: 'Mail', label: 'Email Us', value: ' engg@jkkn.ac.in', link: 'mailto: engg@jkkn.ac.in' },
-    { icon: 'MapPin', label: 'Visit Us', value: 'Kumarapalayam, Namakkal - 638183', link: '#' },
+    { icon: 'Phone', label: 'Call Us', value: '+91 93458 55001', link: 'tel:+919345855001' },
+    { icon: 'Mail', label: 'Email Us', value: 'engg@jkkn.ac.in', link: 'mailto:engg@jkkn.ac.in' },
   ],
 }

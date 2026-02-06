@@ -36,7 +36,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     },
     {
       label: 'Download Brochure',
-      link: '/downloads/be-mechanical-brochure.pdf',
+      link: '#',
       variant: 'secondary',
     },
   ],
@@ -122,7 +122,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
       semesters: [
         {
           semester: 1,
-          credits: 25,
+          credits: 26,
           syllabusImage: '/images/courses/be-mech/syllabus/sem1.png',
           subjects: [
             { code: 'MA25C01', name: 'Applied Calculus', credits: 4 },
@@ -140,7 +140,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
         },
         {
           semester: 2,
-          credits: 25,
+          credits: 22,
           syllabusImage: '/images/courses/be-mech/syllabus/sem2.png',
           subjects: [
             { code: 'MA25C02', name: 'Linear Algebra', credits: 4 },
@@ -177,7 +177,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
         },
         {
           semester: 4,
-          credits: 25,
+          credits: 27,
           syllabusImage: '/images/courses/be-mech/syllabus/sem4.png',
           subjects: [
             { code: '', name: 'Applied Data Science', credits: 4 },
@@ -198,7 +198,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
       semesters: [
         {
           semester: 5,
-          credits: 23,
+          credits: 22,
           syllabusImage: '/images/courses/be-mech/syllabus/sem5.png',
           subjects: [
             { code: '', name: 'Design of Machine Elements', credits: 4 },
@@ -213,7 +213,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
         },
         {
           semester: 6,
-          credits: 24,
+          credits: 22,
           syllabusImage: '/images/courses/be-mech/syllabus/sem6.png',
           subjects: [
             { code: '', name: 'Design of Transmission Systems', credits: 4 },
@@ -233,7 +233,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
       semesters: [
         {
           semester: 7,
-          credits: 20,
+          credits: 22,
           syllabusImage: '/images/courses/be-mech/syllabus/sem7.png',
           subjects: [
             { code: '', name: 'Climate Change and Sustainability', credits: 3 },
@@ -246,7 +246,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
         },
         {
           semester: 8,
-          credits: 15,
+          credits: 3,
           syllabusImage: '/images/courses/be-mech/syllabus/sem8.png',
           subjects: [
             { code: '', name: 'Project Work / Internship cum Project Work', credits: 15 },

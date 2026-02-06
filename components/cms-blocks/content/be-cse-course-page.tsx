@@ -390,11 +390,8 @@ function HeroSection({
 
             {/* Title */}
             <div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight" style={{ color: primaryColor }}>
-                B.E. Computer Science
-              </h1>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight" style={{ color: primaryColor }}>
-                & Engineering
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight" style={{ color: primaryColor }}>
+                B.E. Computer Science & Engineering
               </h1>
             </div>
 

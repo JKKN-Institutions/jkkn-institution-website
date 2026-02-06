@@ -102,7 +102,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
       semesters: [
         {
           semester: 1,
-          credits: 20,
+          credits: 23,
           subjects: [
             { code: 'MA25C01', name: 'Applied Calculus', credits: 3 },
             { code: 'EN25C01', name: 'English Essentials – I', credits: 2 },
@@ -118,7 +118,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
         },
         {
           semester: 2,
-          credits: 20,
+          credits: 26,
           subjects: [
             { code: 'MA25C02', name: 'Linear Algebra', credits: 3 },
             { code: 'UC25H02', name: 'தமிழரும் தொழில்நுட்பம் / Tamils and Technology', credits: 1 },
@@ -134,7 +134,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
       semesters: [
         {
           semester: 3,
-          credits: 21,
+          credits: 24,
           subjects: [
             { code: '', name: 'Discrete Mathematics', credits: 3 },
             { code: '', name: 'Computer Organization and Architecture', credits: 3 },
@@ -165,7 +165,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
       semesters: [
         {
           semester: 5,
-          credits: 22,
+          credits: 24,
           subjects: [
             { code: '', name: 'Programme Elective- I', credits: 3 },
             { code: '', name: 'Programme Elective- II', credits: 3 },
@@ -199,7 +199,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
       semesters: [
         {
           semester: 7,
-          credits: 18,
+          credits: 15,
           subjects: [
             { code: '', name: 'Engineering Entrepreneurship Development', credits: 2 },
             { code: '', name: 'Climate Change and Sustainability', credits: 2 },
@@ -211,7 +211,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
         },
         {
           semester: 8,
-          credits: 16,
+          credits: 8,
           subjects: [
             { code: '', name: 'Project Work / Internship cum Project Work', credits: 16 },
           ],

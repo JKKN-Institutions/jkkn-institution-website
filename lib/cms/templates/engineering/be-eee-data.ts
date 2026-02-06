@@ -10,7 +10,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   // ==========================================
   // Hero Section
   // ==========================================
-  heroTitle: 'B.E. Electrical & Electronics Engineering',
+  heroTitle: 'B.E Electrical & Electronics Engineering',
   heroSubtitle: 'Power your future with expertise in electrical systems, power generation, automation, and control systems. Our AICTE-approved, NAAC-accredited program prepares you to design, develop, and maintain the electrical infrastructure that powers the modern world.',
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },

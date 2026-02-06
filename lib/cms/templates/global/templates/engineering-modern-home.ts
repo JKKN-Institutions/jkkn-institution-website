@@ -367,7 +367,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
           { step: 5, title: 'Enrollment', description: 'Complete registration and begin your journey', icon: 'badge' },
         ],
         ctaButton: { label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8' },
-        secondaryCtaButton: { label: 'Download Brochure', link: '/brochure' },
+        secondaryCtaButton: { label: 'Download Brochure', link: '#' },
         primaryColor: '#0b6d41',
         accentColor: '#ffde59',
         backgroundColor: '#fbfbee',

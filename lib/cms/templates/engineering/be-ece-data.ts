@@ -10,7 +10,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   // ==========================================
   // Hero Section
   // ==========================================
-  heroTitle: 'B.E. Electronics & Communication Engineering',
+  heroTitle: 'B.E Electronics & Communication Engineering',
   heroSubtitle: 'Shape the future of communication technology with expertise in embedded systems, VLSI, wireless communication, and IoT. Our AICTE-approved, NAAC-accredited program prepares you to design, develop, and innovate in the rapidly evolving world of electronics and communication.',
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
@@ -47,6 +47,9 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
       value: 'AICTE & NAAC',
       description: 'Our program is approved by AICTE (All India Council for Technical Education) and accredited by NAAC, ensuring quality education standards.',
     },
+
+
+    
     {
       icon: 'BookOpen',
       title: 'Eligibility',
@@ -102,8 +105,8 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
       semesters: [
         {
           semester: 1,
-          credits: 20,
-          image: 'C:/Users/Admin/Pictures/Screenshots/ecesem1.png',
+          credits: 23,
+         
           subjects: [
             { code: 'MA25C01', name: 'Applied Calculus' },
             { code: 'EN25C01', name: 'English Essentials – I' },
@@ -119,8 +122,8 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
         },
         {
           semester: 2,
-          credits: 20,
-          image: 'C:/Users/Admin/Pictures/Screenshots/ecesem2.png',
+          credits: 24,
+         
           subjects: [
             { code: 'MA25C02', name: 'Linear Algebra' },
             { code: 'UC25H02', name: 'தமிழ்தகவல் தொழில்நுட்பம் / Tamils and Technology' },
@@ -141,8 +144,8 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
       semesters: [
         {
           semester: 3,
-          credits: 21,
-          image: 'C:/Users/Admin/Pictures/Screenshots/ecesem3.png',
+          credits: 24,
+        
           subjects: [
             { code: '', name: 'Transforms and its Applications' },
             { code: '', name: 'Signals and Systems' },
@@ -157,8 +160,8 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
         },
         {
           semester: 4,
-          credits: 20,
-          image: 'C:/Users/Admin/Pictures/Screenshots/ecesem4.png',
+          credits: 24,
+         
           subjects: [
             { code: '', name: 'Probability and Random Processes' },
             { code: '', name: 'Electro Magnetic Fields and Transmission Lines' },
@@ -177,8 +180,8 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
       semesters: [
         {
           semester: 5,
-          credits: 19,
-          image: 'C:/Users/Admin/Pictures/Screenshots/ecesem5.png',
+          credits: 24,
+          
           subjects: [
             { code: '', name: 'Control Systems' },
             { code: '', name: 'Programme Elective – I' },
@@ -192,8 +195,8 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
         },
         {
           semester: 6,
-          credits: 19,
-          image: 'C:/Users/Admin/Pictures/Screenshots/ecesem6.png',
+          credits: 24,
+        
           subjects: [
             { code: '', name: 'Programme Elective – II' },
             { code: '', name: 'Programme Elective – III' },
@@ -212,9 +215,8 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
       semesters: [
         {
           semester: 7,
-          credits: 18,
-          image: 'C:/Users/Admin/Pictures/Screenshots/ecesem7.png',
-          subjects: [
+          credits: 25,
+           subjects: [
             { code: '', name: 'Engineering Entrepreneurship Development' },
             { code: '', name: 'Climate Change and Sustainability' },
             { code: '', name: 'RF and Microwave Engineering' },
@@ -228,8 +230,8 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
         },
         {
           semester: 8,
-          credits: 10,
-          image: 'C:/Users/Admin/Pictures/Screenshots/ecesem8.png',
+          credits: 8,
+         
           subjects: [
             { code: '', name: 'Project Work / Internship cum Project Work' },
           ],

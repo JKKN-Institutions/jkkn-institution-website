@@ -71,7 +71,7 @@ export function ModernOrganogramSection({
                 {/* Title Box */}
                 <div className="flex justify-center mb-8">
                     <div className="border-2 border-gray-400 rounded-lg px-8 py-3">
-                        <h2 className="text-xl font-semibold text-gray-700">{title}</h2>
+                        <h2 className="text-xl font-semibold text-gray-700 text-center">{title}</h2>
                     </div>
                 </div>
 
