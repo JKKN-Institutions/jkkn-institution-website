@@ -133,15 +133,15 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
         title: 'Comprehensive Engineering & Technology Programs',
         subtitle: 'Choose from our wide range of AICTE approved programs designed for industry readiness',
         programs: [
-          { name: 'B.E. Computer Science & Engineering', type: 'ug', duration: '4 Years', seats: 60, icon: 'cpu', description: 'AI, Data Structures, Software Development', link: '/courses-offered/ug/be-cse', tags: ['Popular'] },
+          { name: 'B.E Computer Science & Engineering', type: 'ug', duration: '4 Years', seats: 60, icon: 'cpu', description: 'AI, Data Structures, Software Development', link: '/courses-offered/ug/be-cse', tags: ['Popular'] },
           { name: 'B.Tech AI & Machine Learning', type: 'ug', duration: '4 Years', seats: 60, icon: 'cpu', description: 'Deep Learning, Neural Networks, Data Science', link: '/courses-offered/ug/be-ai-ml', tags: ['New', 'Trending'] },
-          { name: 'B.E. Electronics & Communication', type: 'ug', duration: '4 Years', seats: 60, icon: 'cpu', description: 'Embedded Systems, IoT, VLSI Design', link: '/courses-offered/ug/be-ece' },
-          { name: 'B.E. Mechanical Engineering', type: 'ug', duration: '4 Years', seats: 120, icon: 'settings', description: 'Robotics, CAD/CAM, Automation', link: '/courses-offered/ug/be-mechanical' },
-          { name: 'B.E. Civil Engineering', type: 'ug', duration: '4 Years', seats: 60, icon: 'settings', description: 'Structural Design, Construction Management', link: '/courses-offered/ug/be-civil' },
-          { name: 'B.E. Electrical & Electronics', type: 'ug', duration: '4 Years', seats: 60, icon: 'zap', description: 'Power Systems, Renewable Energy', link: '/courses-offered/ug/be-eee' },
+          { name: 'B.E Electronics & Communication', type: 'ug', duration: '4 Years', seats: 60, icon: 'cpu', description: 'Embedded Systems, IoT, VLSI Design', link: '/courses-offered/ug/be-ece' },
+          { name: 'B.E Mechanical Engineering', type: 'ug', duration: '4 Years', seats: 120, icon: 'settings', description: 'Robotics, CAD/CAM, Automation', link: '/courses-offered/ug/be-mechanical' },
+          { name: 'B.E Civil Engineering', type: 'ug', duration: '4 Years', seats: 60, icon: 'settings', description: 'Structural Design, Construction Management', link: '/courses-offered/ug/be-civil' },
+          { name: 'B.E Electrical & Electronics', type: 'ug', duration: '4 Years', seats: 60, icon: 'zap', description: 'Power Systems, Renewable Energy', link: '/courses-offered/ug/be-eee' },
           { name: 'B.Tech Information Technology', type: 'ug', duration: '4 Years', seats: 60, icon: 'wifi', description: 'Cloud Computing, Cybersecurity, DevOps', link: '/courses-offered/ug/btech-it' },
           { name: 'MBA - Business Administration', type: 'pg', duration: '2 Years', seats: 120, icon: 'briefcase', description: 'Business Analytics, Marketing, Finance', link: '/courses-offered/pg/mba' },
-          { name: 'M.E. Computer Science & Engineering', type: 'pg', duration: '2 Years', seats: 60, icon: 'graduation', description: 'Advanced Computing, Research Focus', link: '/courses-offered/pg/me-cse' },
+          { name: 'M.E Computer Science & Engineering', type: 'pg', duration: '2 Years', seats: 60, icon: 'graduation', description: 'Advanced Computing, Research Focus', link: '/courses-offered/pg/me-cse' },
         ],
         showTabs: true,
         primaryColor: '#0b6d41',
@@ -342,7 +342,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
         subtitle: 'Simple admission process with transparent eligibility criteria',
         eligibility: [
           {
-            program: 'B.E. / B.Tech Programs',
+            program: 'B.E / B.Tech Programs',
             criteria: [
               'Passed 10+2 with Physics, Chemistry, and Mathematics',
               'Minimum 45% aggregate marks (40% for reserved categories)',
@@ -351,7 +351,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
             ],
           },
           {
-            program: 'MBA / ME Programs',
+            program: 'MBA / M.E Programs',
             criteria: [
               "Bachelor's degree in any discipline with 50% marks",
               'Valid TANCET / CAT / MAT / XAT score',
