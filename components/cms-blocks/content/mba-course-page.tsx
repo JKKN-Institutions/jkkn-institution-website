@@ -417,7 +417,7 @@ function HeroSection({
   accentColor: string
 }) {
   return (
-    <section className="relative py-20 md:py-24 lg:py-28 bg-gradient-to-br from-[#fbfbee] to-[#fff0a3] overflow-hidden">
+    <section className="relative py-20 md:py-24 lg:py-28 bg-gradient-to-br from-[#fbfbee] to-[#ffffff] overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left: Content */}
@@ -698,7 +698,7 @@ function CurriculumSection({
   const currentYearData = years.find((y) => y.year === activeYear)
 
   return (
-    <section className="py-16 md:py-20 bg-gradient-to-br from-[#fbfbee] to-[#ffffff]">
+    <section id="curriculum" className="py-16 md:py-20 bg-gradient-to-br from-[#fbfbee] to-[#ffffff]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-900">{title}</h2>
 

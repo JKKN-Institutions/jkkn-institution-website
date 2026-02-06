@@ -615,42 +615,6 @@ export const meCSECourseData: MECSECoursePageProps = {
   },
 
   // ===========================================
-  // Contact Section
-  // ===========================================
-  contact: {
-    label: 'Get in Touch',
-    title: 'Have Questions? Contact Us',
-    description: 'Our admissions team is here to help you with any queries about the ME CSE program',
-    info: [
-      {
-        type: 'phone',
-        title: 'Call Us',
-        details: [
-          '+91 93458 55001',
-         
-        ]
-      },
-      {
-        type: 'email',
-        title: 'Email Us',
-        details: [
-          'engg@jkkn.ac.in',
-         
-          'We reply within 24 hours'
-        ]
-      },
-      {
-        type: 'address',
-        title: 'Visit Us',
-        details: [
-          'JKKN College of Engineering and Technology',
-          'Natarajapuram, NH-544 (Salem To Coimbatore National Highway), Kumarapalayam (TK), Namakkal (DT). Tamil Nadu. 638183.',
-        ]
-      }
-    ]
-  },
-
-  // ===========================================
   // Color Theme
   // ===========================================
   colors: {

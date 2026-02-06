@@ -4,7 +4,7 @@ import React from 'react'
 import { z } from 'zod'
 import {
   ArrowRight, BookOpen, Calendar, Check, ChevronDown, Settings, Users, Award,
-  Briefcase, Building2, Mail, Phone, MapPin, Clock, UserCheck, FileText,
+  Briefcase, Building2, Clock, UserCheck, FileText,
   IndianRupee, GraduationCap, Brain, Database, Shield, Cloud, Eye, Cpu,
   CheckCircle, Laptop, Trophy, TrendingUp, TestTube, Server, NetworkIcon,
   BookMarked, Search, Target
@@ -101,12 +101,6 @@ const FAQSchema = z.object({
   answer: z.string(),
 })
 
-const ContactInfoSchema = z.object({
-  type: z.enum(['phone', 'email', 'address']),
-  title: z.string(),
-  details: z.array(z.string()),
-})
-
 // ============================================
 // Main Props Schema
 // ============================================
@@ -184,12 +178,6 @@ export const MECSECoursePagePropsSchema = z.object({
     title: z.string(),
     description: z.string(),
     buttons: z.array(HeroCTASchema),
-  }),
-  contact: z.object({
-    label: z.string(),
-    title: z.string(),
-    description: z.string(),
-    info: z.array(ContactInfoSchema),
   }),
   colors: z.object({
     primaryColor: z.string(),
@@ -294,23 +282,30 @@ function HeroSection({
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-4 pt-4">
-              {ctaButtons.map((button, index) => (
-                <a
-                  key={index}
-                  href={button.link}
-                  className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
-                    button.variant === 'primary'
-                      ? `bg-[${colors.accentColor}] hover:bg-[${colors.accentColor}]/90 text-white shadow-lg hover:shadow-xl`
-                      : 'bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-300 shadow-sm'
-                  }`}
-                  style={button.variant === 'primary' ? {
-                    backgroundColor: colors.accentColor
-                  } : undefined}
-                >
-                  {button.label}
-                  <ArrowRight className="h-5 w-5" />
-                </a>
-              ))}
+              {ctaButtons.map((button, index) => {
+                const isExternal = button.link.startsWith('http')
+                return (
+                  <a
+                    key={index}
+                    href={button.link}
+                    {...(isExternal && {
+                      target: '_blank',
+                      rel: 'noopener noreferrer'
+                    })}
+                    className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+                      button.variant === 'primary'
+                        ? `bg-[${colors.accentColor}] hover:bg-[${colors.accentColor}]/90 text-white shadow-lg hover:shadow-xl`
+                        : 'bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-300 shadow-sm'
+                    }`}
+                    style={button.variant === 'primary' ? {
+                      backgroundColor: colors.accentColor
+                    } : undefined}
+                  >
+                    {button.label}
+                    <ArrowRight className="h-5 w-5" />
+                  </a>
+                )
+              })}
             </div>
           </div>
 
@@ -913,61 +908,6 @@ function CTASection({
   )
 }
 
-function ContactSection({
-  label,
-  title,
-  description,
-  info,
-  colors
-}: MECSECoursePageProps['contact'] & { colors: MECSECoursePageProps['colors'] }) {
-  const contactIcons = {
-    phone: <Phone className="h-6 w-6" />,
-    email: <Mail className="h-6 w-6" />,
-    address: <MapPin className="h-6 w-6" />
-  }
-
-  return (
-    <section className="py-16 lg:py-24 bg-[#fbfbee]">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="text-sm font-semibold text-[#0b6d41] mb-2">{label}</div>
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">{title}</h2>
-          <p className="text-lg text-gray-600">{description}</p>
-        </div>
-
-        {/* Contact Cards */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {info.map((contact, index) => (
-            <div
-              key={index}
-              className="bg-[#f8f9fa] rounded-xl p-6 text-center hover:shadow-md transition-shadow"
-            >
-              <div
-                className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center"
-                style={{
-                  backgroundColor: `${colors.accentColor}20`,
-                  color: colors.primaryColor
-                }}
-              >
-                {contactIcons[contact.type]}
-              </div>
-              <h3 className="font-bold text-gray-900 mb-3">{contact.title}</h3>
-              <div className="space-y-2">
-                {contact.details.map((detail, idx) => (
-                  <p key={idx} className="text-sm text-gray-600">
-                    {detail}
-                  </p>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
 // ============================================
 // Main Component Export
 // ============================================
@@ -986,7 +926,6 @@ export function MECSECoursePage(props: MECSECoursePageProps) {
       <FacultySection {...props.faculty} colors={props.colors} />
       <FAQSection {...props.faqs} colors={props.colors} />
       <CTASection {...props.cta} colors={props.colors} />
-      <ContactSection {...props.contact} colors={props.colors} />
     </div>
   )
 }

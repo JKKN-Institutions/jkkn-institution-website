@@ -423,23 +423,30 @@ function HeroSection({
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4">
-              {ctas.map((cta, index) => (
-                <a
-                  key={index}
-                  href={cta.link}
-                  className={`
-                    inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-base transition-all duration-300
-                    ${
-                      cta.variant === 'primary'
-                        ? 'text-white shadow-lg hover:shadow-xl hover:opacity-90'
-                        : 'bg-white border-2 hover:border-gray-400 shadow-md'
-                    }
-                  `}
-                  style={cta.variant === 'primary' ? { backgroundColor: primaryColor } : { color: primaryColor, borderColor: primaryColor }}
-                >
-                  {cta.label}
-                </a>
-              ))}
+              {ctas.map((cta, index) => {
+                const isExternal = cta.link.startsWith('http')
+                return (
+                  <a
+                    key={index}
+                    href={cta.link}
+                    {...(isExternal && {
+                      target: '_blank',
+                      rel: 'noopener noreferrer'
+                    })}
+                    className={`
+                      inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-base transition-all duration-300
+                      ${
+                        cta.variant === 'primary'
+                          ? 'text-white shadow-lg hover:shadow-xl hover:opacity-90'
+                          : 'bg-white border-2 hover:border-gray-400 shadow-md'
+                      }
+                    `}
+                    style={cta.variant === 'primary' ? { backgroundColor: primaryColor } : { color: primaryColor, borderColor: primaryColor }}
+                  >
+                    {cta.label}
+                  </a>
+                )
+              })}
             </div>
           </div>
 
@@ -1198,24 +1205,31 @@ function FinalCTASection({
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          {buttons.map((button, idx) => (
-            <a
-              key={idx}
-              href={button.link}
-              className={`
-                inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-base transition-all duration-300 shadow-lg hover:shadow-xl
-                ${
-                  button.variant === 'primary'
-                    ? 'text-white hover:opacity-90'
-                    : 'bg-white border-2 text-gray-800 hover:bg-gray-50'
-                }
-              `}
-              style={button.variant === 'primary' ? { backgroundColor: primaryColor, borderColor: primaryColor } : { borderColor: primaryColor }}
-            >
-              {button.label}
-              <ArrowRight className="w-5 h-5" />
-            </a>
-          ))}
+          {buttons.map((button, idx) => {
+            const isExternal = button.link.startsWith('http')
+            return (
+              <a
+                key={idx}
+                href={button.link}
+                {...(isExternal && {
+                  target: '_blank',
+                  rel: 'noopener noreferrer'
+                })}
+                className={`
+                  inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-base transition-all duration-300 shadow-lg hover:shadow-xl
+                  ${
+                    button.variant === 'primary'
+                      ? 'text-white hover:opacity-90'
+                      : 'bg-white border-2 text-gray-800 hover:bg-gray-50'
+                  }
+                `}
+                style={button.variant === 'primary' ? { backgroundColor: primaryColor, borderColor: primaryColor } : { borderColor: primaryColor }}
+              >
+                {button.label}
+                <ArrowRight className="w-5 h-5" />
+              </a>
+            )
+          })}
         </div>
 
         {/* Contact Info */}
