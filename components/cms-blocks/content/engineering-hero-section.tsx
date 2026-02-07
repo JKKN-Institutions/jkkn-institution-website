@@ -245,7 +245,7 @@ export default function EngineeringHeroSection({
       />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh] pt-4 pb-12 lg:pt-6 lg:pb-20">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[calc(100vh-5rem)] pt-2 pb-6 lg:pt-4 lg:pb-10">
           {/* Left Content */}
           <div>
             {/* Badge */}
@@ -267,7 +267,7 @@ export default function EngineeringHeroSection({
             {/* Title */}
             <h1
               className={cn(
-                'text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6',
+                'text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] xl:text-5xl 2xl:text-6xl font-bold leading-tight mb-6',
                 animateClass(100)
               )}
               style={{ color: primaryColor, transitionDelay: '100ms' }}

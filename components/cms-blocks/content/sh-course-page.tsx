@@ -358,7 +358,7 @@ function HeroSection({
   primaryColor: string
 }) {
   return (
-    <section className="relative py-16 md:py-20 lg:py-24 bg-[#fff9ee] overflow-hidden">
+    <section className="relative py-6 md:py-8 lg:py-10 bg-[#fff9ee] overflow-hidden min-h-[calc(100vh-5rem)] flex items-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Content */}

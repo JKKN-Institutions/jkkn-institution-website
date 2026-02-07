@@ -235,7 +235,7 @@ function HeroSection({
 }: MECSECoursePageProps['hero'] & { colors: MECSECoursePageProps['colors'] }) {
   return (
     <section
-      className="relative min-h-[90vh] flex items-center overflow-hidden"
+      className="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden"
       style={{
         background: '#fbfbee' // Brand cream color
       }}
@@ -248,7 +248,7 @@ function HeroSection({
         }} />
       </div>
 
-      <div className="container mx-auto px-4 py-16 lg:py-24">
+      <div className="container mx-auto px-4 py-6 lg:py-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
           <div className="text-gray-900 space-y-6">

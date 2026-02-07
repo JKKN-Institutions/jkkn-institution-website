@@ -361,7 +361,7 @@ function HeroSection({
   primaryColor: string
 }) {
   return (
-    <section className="relative py-12 md:py-16 lg:py-20 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6] overflow-hidden min-h-[90vh] flex items-center">
+    <section className="relative py-6 md:py-8 lg:py-10 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6] overflow-hidden min-h-[calc(100vh-5rem)] flex items-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Content */}

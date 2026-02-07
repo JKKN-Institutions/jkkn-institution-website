@@ -1,15 +1,14 @@
 'use client'
 
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { chunkArray } from '@/lib/utils/array'
+// chunkArray removed - navigation now uses flex-wrap instead of fixed row chunking
 import { NavDropdownItem } from './nav-dropdown-item'
 import { NavMobileItem } from './nav-mobile-item'
 import {
-  ChevronDown,
   Phone,
   Mail,
   Facebook,
@@ -72,83 +71,12 @@ const getSocialIcon = (platform: string) => {
   return iconMap[platform.toLowerCase()] || Globe
 }
 
-// Helper functions for dynamic layout scaling based on row count
-const getLogoWidth = (rows: number): string => {
-  if (rows === 1) return 'lg:w-[15%]'
-  if (rows === 2) return 'lg:w-[20%]'
-  return 'lg:w-[22%]' // 3+ rows
+// Logo size helper
+const getLogoSize = (logoSizes: SiteHeaderProps['logoSizes'] = {}): number => {
+  return logoSizes.desktop || 110
 }
 
-const getLogoSize = (rows: number, logoSizes: SiteHeaderProps['logoSizes'] = {}): number => {
-  if (rows === 1) return logoSizes.desktop || 110
-  if (rows === 2) return logoSizes.desktopLarge || 130
-  return 140 // 3+ rows
-}
-
-const getNavWidth = (rows: number): string => {
-  if (rows === 1) return 'w-[85%]'
-  if (rows === 2) return 'w-[80%]'
-  return 'w-[78%]' // 3+ rows
-}
-
-const getHeaderPadding = (rows: number): string => {
-  if (rows === 1) return 'py-1 md:py-1.5 lg:py-3'
-  if (rows === 2) return 'py-1 md:py-1 lg:py-2'
-  return 'py-0.5 md:py-1 lg:py-1.5' // 3+ rows
-}
-
-// Navigation Row Component for dynamic row rendering
-interface NavigationRowProps {
-  items: NavItem[]
-  rowIndex: number
-  rowCount: number
-  pathname: string
-  openDropdownPath: string[]
-  setOpenDropdownPath: (path: string[]) => void
-  isActive: (href: string) => boolean
-  handleDropdownHover: (itemId: string | null, parentPath?: string[]) => void
-  isActiveOrHasActiveChild: (item: NavItem) => boolean
-}
-
-function NavigationRow({
-  items,
-  rowIndex,
-  rowCount,
-  pathname,
-  openDropdownPath,
-  setOpenDropdownPath,
-  isActive,
-  handleDropdownHover,
-  isActiveOrHasActiveChild
-}: NavigationRowProps) {
-  // Adjust spacing for 3+ rows
-  const textSize = rowCount <= 2 ? 'text-xs xl:text-sm' : 'text-[10px] xl:text-xs'
-  const gap = rowCount <= 2 ? 'gap-1 lg:gap-2 xl:gap-4' : 'gap-0.5 lg:gap-1 xl:gap-2'
-
-  return (
-    <nav className={cn(
-      'flex items-center justify-start',
-      gap,
-      rowIndex > 0 && (rowCount <= 2 ? 'mt-1' : 'mt-0.5')
-    )}>
-      {items.map((item) => (
-        <NavDropdownItem
-          key={item.id}
-          item={item}
-          level={0}
-          parentPath={[]}
-          onPathChange={setOpenDropdownPath}
-          onHover={handleDropdownHover}
-          pathname={pathname}
-          isActive={isActive}
-          isActiveOrHasActiveChild={isActiveOrHasActiveChild}
-          textSize={textSize}
-          openDropdownPath={openDropdownPath}
-        />
-      ))}
-    </nav>
-  )
-}
+// Navigation Row component removed - using flex-wrap layout instead
 
 // Fallback navigation when CMS is empty
 const fallbackNavigation: NavItem[] = [
@@ -205,14 +133,6 @@ export function SiteHeader({
 
   // Use CMS navigation if available, otherwise fallback
   const mainNavigation = navigation && navigation.length > 0 ? navigation : fallbackNavigation
-
-  // Dynamic row calculation - support unlimited rows (8 items per row)
-  const ITEMS_PER_ROW = 8
-  const navRows = useMemo(
-    () => chunkArray(mainNavigation, ITEMS_PER_ROW),
-    [mainNavigation]
-  )
-  const rowCount = navRows.length
 
   // Utility: Check if a specific path is currently open
   const isPathOpen = useCallback((itemId: string, parentPath: string[] = []) => {
@@ -333,56 +253,45 @@ export function SiteHeader({
         )}
       >
         <div className="container mx-auto px-4 lg:px-6">
-          <div className={cn(
-            'flex items-center',
-            getHeaderPadding(rowCount),
-            // Mobile: center logo, Desktop: space-between for logo + nav
-            'justify-center lg:justify-between'
-          )}>
-            {/* Logo - Centered on mobile, left-aligned on desktop */}
-            <Link href="/" className={cn(
-              'flex-shrink-0 flex items-center group relative z-10',
-              // Mobile: no width constraint (centered), Desktop: fixed width
-              getLogoWidth(rowCount)
-            )}>
+          <div className="flex items-center justify-center lg:justify-start py-1 md:py-1.5 lg:py-3 max-w-full">
+            {/* Logo */}
+            <Link href="/" className="flex-shrink-0 flex items-center group relative z-10">
               <div
                 className="relative transition-transform duration-300 group-hover:scale-105"
                 style={{
-                  width: `clamp(${logoSizes.mobile}px, 8vw, ${getLogoSize(rowCount, logoSizes)}px)`,
-                  height: `clamp(${logoSizes.mobile}px, 8vw, ${getLogoSize(rowCount, logoSizes)}px)`,
+                  width: `clamp(${logoSizes.mobile}px, 8vw, ${getLogoSize(logoSizes)}px)`,
+                  height: `clamp(${logoSizes.mobile}px, 8vw, ${getLogoSize(logoSizes)}px)`,
                 }}
               >
                 <Image
                   src={logoUrl}
                   alt={logoAltText}
                   fill
-                  sizes={`(max-width: 640px) ${logoSizes.mobile}px, (max-width: 1024px) ${logoSizes.tablet}px, ${getLogoSize(rowCount, logoSizes)}px`}
+                  sizes={`(max-width: 640px) ${logoSizes.mobile}px, (max-width: 1024px) ${logoSizes.tablet}px, ${getLogoSize(logoSizes)}px`}
                   className="object-contain"
                   priority
                 />
               </div>
             </Link>
 
-            {/* Desktop Navigation - Dynamic Rows */}
-            <div className={cn(
-              'hidden lg:flex flex-col justify-center py-1',
-              getNavWidth(rowCount)
-            )}>
-              {navRows.map((rowItems, index) => (
-                <NavigationRow
-                  key={`nav-row-${index}`}
-                  items={rowItems}
-                  rowIndex={index}
-                  rowCount={rowCount}
+            {/* Desktop Navigation - Flex wrap, fills remaining space */}
+            <nav className="hidden lg:flex flex-wrap items-center justify-end gap-x-2 xl:gap-x-4 gap-y-1 flex-1 min-w-0 pl-4">
+              {mainNavigation.map((item) => (
+                <NavDropdownItem
+                  key={item.id}
+                  item={item}
+                  level={0}
+                  parentPath={[]}
+                  onPathChange={setOpenDropdownPath}
+                  onHover={handleDropdownHover}
                   pathname={pathname}
-                  openDropdownPath={openDropdownPath}
-                  setOpenDropdownPath={setOpenDropdownPath}
                   isActive={isActive}
-                  handleDropdownHover={handleDropdownHover}
                   isActiveOrHasActiveChild={isActiveOrHasActiveChild}
+                  textSize="text-xs xl:text-sm"
+                  openDropdownPath={openDropdownPath}
                 />
               ))}
-            </div>
+            </nav>
 
             {/* Mobile Menu Button - Hidden on mobile (using bottom nav instead) */}
             {/* Keeping the component but hidden for potential tablet use */}

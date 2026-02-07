@@ -417,7 +417,7 @@ function HeroSection({
   accentColor: string
 }) {
   return (
-    <section className="relative py-20 md:py-24 lg:py-28 bg-gradient-to-br from-[#fbfbee] to-[#ffffff] overflow-hidden">
+    <section className="relative py-6 md:py-8 lg:py-10 bg-gradient-to-br from-[#fbfbee] to-[#ffffff] overflow-hidden min-h-[calc(100vh-5rem)] flex items-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left: Content */}
