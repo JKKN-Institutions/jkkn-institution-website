@@ -15,21 +15,21 @@ import { PdfLinkConfig } from '@/lib/utils/google-drive-pdf'
 export const COMMITTEE_PDFS: Record<string, PdfLinkConfig[]> = {
   'anti-ragging-committee': [
     {
-      title: 'Anti Ragging Committee Members',
+      title: 'Anti-Ragging Committee Members',
       driveUrl: 'YOUR_GOOGLE_DRIVE_LINK_HERE', // Replace with actual link
       description: 'List of committee members and their responsibilities',
       category: 'Committee Information',
       year: '2024-2025',
     },
     {
-      title: 'Anti Ragging Policy',
+      title: 'Anti-Ragging Policy',
       driveUrl: 'YOUR_GOOGLE_DRIVE_LINK_HERE',
       description: 'Complete anti-ragging policy and procedures',
       category: 'Policies',
       year: '2024-2025',
     },
     {
-      title: 'Anti Ragging Affidavit Form',
+      title: 'Anti-Ragging Affidavit Form',
       driveUrl: 'YOUR_GOOGLE_DRIVE_LINK_HERE',
       description: 'Affidavit form to be filled by students',
       category: 'Forms',
@@ -37,7 +37,7 @@ export const COMMITTEE_PDFS: Record<string, PdfLinkConfig[]> = {
   ],
   'anti-ragging-squad': [
     {
-      title: 'Anti Ragging Squad Members',
+      title: 'Anti-Ragging Squad Members',
       driveUrl: 'YOUR_GOOGLE_DRIVE_LINK_HERE',
       description: 'List of squad members and contact information',
       category: 'Committee Information',
@@ -82,7 +82,7 @@ export const COMMITTEE_PDFS: Record<string, PdfLinkConfig[]> = {
       year: '2024-2025',
     },
   ],
-  'internal-compliant-committee': [
+  'internal-complaint-committee': [
     {
       title: 'ICC Members',
       driveUrl: 'YOUR_GOOGLE_DRIVE_LINK_HERE',

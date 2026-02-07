@@ -156,10 +156,10 @@ export default function EngineeringAccreditationsBar({
           </span>
         </div>
 
-        {/* Accreditations Grid - 3 columns on mobile, 5 columns on desktop */}
+        {/* Accreditations - centered row */}
         <div
           className={cn(
-            'grid grid-cols-3 md:grid-cols-5 gap-6 md:gap-8 lg:gap-12 justify-items-center',
+            'flex flex-nowrap justify-center gap-4 md:gap-8 lg:gap-12',
             animateClass(100)
           )}
           style={{ transitionDelay: '100ms' }}
@@ -174,7 +174,7 @@ export default function EngineeringAccreditationsBar({
             >
               {/* Icon or Logo */}
               <div
-                className="w-16 h-16 rounded-xl flex items-center justify-center mb-3 transition-all duration-300 group-hover:scale-110"
+                className="w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center mb-2 md:mb-3 transition-all duration-300 group-hover:scale-110"
                 style={{
                   backgroundColor: `${primaryColor}10`,
                 }}
@@ -199,7 +199,7 @@ export default function EngineeringAccreditationsBar({
 
               {/* Short Name */}
               <div
-                className="font-bold text-sm"
+                className="font-bold text-xs md:text-sm"
                 style={{ color: primaryColor }}
               >
                 {accreditation.shortName}
@@ -207,7 +207,7 @@ export default function EngineeringAccreditationsBar({
 
               {/* Description */}
               {accreditation.description && (
-                <div className="text-xs text-gray-500 mt-0.5">
+                <div className="text-[10px] md:text-xs text-gray-500 mt-0.5">
                   {accreditation.description}
                 </div>
               )}

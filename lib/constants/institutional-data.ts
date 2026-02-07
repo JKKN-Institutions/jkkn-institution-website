@@ -87,11 +87,11 @@ export const INSTITUTIONAL_DATA = {
       'JKKN College of Allied Health Sciences',
       'JKKN College of Arts & Science (Autonomous)',
       'JKKN College of Education',
-      'Sresakthimayeil Institute Of Nursing And Research',
+      'Sresakthimayeil Institute of Nursing and Research',
     ],
     schools: [
       'JKKN Matriculation School',
-      'Nattraja Vidhyalya',
+      'Nattraja Vidhyalaya',
       'JKKN Elementary School',
       'JKKN Girls Higher Secondary School',
     ],

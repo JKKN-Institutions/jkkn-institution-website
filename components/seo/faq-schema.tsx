@@ -29,7 +29,7 @@ export function FAQSchema() {
     {
       question: 'How many colleges are under JKKN?',
       answer:
-        'JKKN comprises 11 institutions: Dental College, Pharmacy College, Engineering College, Allied Health Sciencess, Arts & Science College (Autonomous), Education College, Nursing College, Matriculation School, Nattraja Vidhyalya, Elementary School and Girls Higher Secondary School \u2014all located on one integrated residential campus in Komarapalayam.',
+        'JKKN comprises 11 institutions: Dental College, Pharmacy College, Engineering College, Allied Health Sciencess, Arts & Science College (Autonomous), Education College, Nursing College, Matriculation School, Nattraja Vidhyalaya, Elementary School and Girls Higher Secondary School \u2014all located on one integrated residential campus in Komarapalayam.',
     },
     {
       question: 'What courses does JKKN offer?',

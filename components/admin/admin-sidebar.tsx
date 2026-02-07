@@ -318,7 +318,7 @@ export function AdminSidebar({
       <nav className="flex-1 p-4 space-y-6 overflow-y-auto overflow-x-hidden">
         {/* Overview Section */}
         <div>
-          <div className="text-xs font-bold text-foreground uppercase tracking-wider px-3 mb-3">
+          <div className="text-xs font-bold text-foreground tracking-wider px-3 mb-3">
             Overview
           </div>
           <div className="space-y-1">
@@ -330,7 +330,7 @@ export function AdminSidebar({
 
         {/* Access Management Section */}
         <div>
-          <div className="text-xs font-bold text-foreground uppercase tracking-wider px-3 mb-3">
+          <div className="text-xs font-bold text-foreground tracking-wider px-3 mb-3">
             Access Management
           </div>
           <div className="space-y-1">
@@ -342,7 +342,7 @@ export function AdminSidebar({
 
         {/* Activities Section */}
         <div>
-          <div className="text-xs font-bold text-foreground uppercase tracking-wider px-3 mb-3">
+          <div className="text-xs font-bold text-foreground tracking-wider px-3 mb-3">
             Activities
           </div>
           <div className="space-y-1">
@@ -354,7 +354,7 @@ export function AdminSidebar({
 
         {/* Content Management Section */}
         <div>
-          <div className="text-xs font-bold text-foreground uppercase tracking-wider px-3 mb-3">
+          <div className="text-xs font-bold text-foreground tracking-wider px-3 mb-3">
             Content Management
           </div>
           <div className="space-y-1">
@@ -369,7 +369,7 @@ export function AdminSidebar({
 
         {/* System Section */}
         <div>
-          <div className="text-xs font-bold text-foreground uppercase tracking-wider px-3 mb-3">
+          <div className="text-xs font-bold text-foreground tracking-wider px-3 mb-3">
             System
           </div>
           <div className="space-y-1">

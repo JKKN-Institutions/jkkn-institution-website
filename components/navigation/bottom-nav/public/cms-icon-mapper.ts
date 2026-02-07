@@ -44,7 +44,30 @@ import {
   ClipboardCheck,
   FolderOpen,
   UserCircle,
-  Zap
+  Zap,
+  // Engineering college course icons
+  Cpu,
+  Laptop,
+  Cog,
+  Radio,
+  FlaskConical,
+  // Committee icons
+  ShieldAlert,
+  ShieldCheck,
+  ShieldOff,
+  Scale,
+  MessageSquare,
+  // IQAC & quality icons
+  BarChart3,
+  // Others / misc icons
+  CalendarDays,
+  ClipboardList,
+  Flag,
+  ScrollText,
+  FileCheck,
+  MessageCircle,
+  GitBranch,
+  BadgeCheck,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -178,6 +201,75 @@ const CMS_ICON_MAP: Record<string, LucideIcon> = {
   'alumni': UserCircle,
   'quick-access': Zap,
   'quick access': Zap,
+
+  // ========================================
+  // Engineering College - Course icons
+  // ========================================
+  'ug': BookOpen,
+  'pg': GraduationCap,
+  'be-cse': Cpu,
+  'btech-it': Laptop,
+  'b-e-mech': Cog,
+  'be-mech': Cog,
+  'be-eee': Zap,
+  'be-ece': Radio,
+  'sh': FlaskConical,
+  'me-cse': Cpu,
+  'mba': Briefcase,
+
+  // ========================================
+  // Engineering College - Committee icons
+  // ========================================
+  'anti-ragging-committee': ShieldAlert,
+  'anti-ragging-squad': ShieldCheck,
+  'anti-drug-club': ShieldOff,
+  'anti-drug-committee': ShieldOff,
+  'internal-compliant-committee': Scale,
+  'grievance-and-redressal': MessageSquare,
+  'sc-st-committee': Users,
+  'library-committee': BookOpen,
+  'library-advisory-committee': BookOpen,
+
+  // ========================================
+  // Engineering College - IQAC icons
+  // ========================================
+  'naac': Award,
+  'nirf': BarChart3,
+  'nirf-2024': BarChart3,
+  'nirf-2025': BarChart3,
+
+  // ========================================
+  // Engineering College - Others icons
+  // ========================================
+  'academic-calendar': CalendarDays,
+  'examination': ClipboardList,
+  'examination-manual': FileText,
+  'minority-committee': Users,
+  'nss': Flag,
+  'drug-free-tamilnadu-orientation-program': ShieldCheck,
+  'online-grievance-and-redressal': MessageSquare,
+  'research-and-development-cell': FlaskConical,
+
+  // ========================================
+  // Engineering College - Alumni icons
+  // ========================================
+  'alumni-constitution': ScrollText,
+
+  // ========================================
+  // Engineering College - Quick Access icons
+  // ========================================
+  'policy': ScrollText,
+  'mandatory-disclosure': FileCheck,
+  'principals-message': MessageCircle,
+  'institution-rules': ClipboardList,
+  'organogram': GitBranch,
+  'approvals-and-affiliation': BadgeCheck,
+  'class-room': School,
+  'food-court-stationery-shop': UtensilsCrossed,
+  'allied-health-sciences-courses': HeartPulse,
+  'vision-and-mission': Award,
+  'terms--conditions': FileText,
+  'terms-and-conditions': FileText,
 };
 
 /**

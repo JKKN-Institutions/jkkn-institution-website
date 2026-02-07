@@ -8,9 +8,9 @@ import { LocalPdfLinkConfig } from '@/lib/utils/local-pdf'
 
 export const LOCAL_OTHERS_PDFS: LocalPdfLinkConfig[] = [
   {
-    title: 'Drug Free Tamil Nadu Orientation Program',
+    title: 'Drug-Free Tamil Nadu Orientation Programme',
     pdfPath: 'others/09.07.2025-Drug-Free-Tamil-Nadu-Orientation-Program-1.pdf',
-    description: 'Drug Free Tamil Nadu orientation program details and schedule',
+    description: 'Drug-Free Tamil Nadu Orientation Programme details and schedule',
     category: 'Events',
     year: '2025',
     fileSize: '23 MB',

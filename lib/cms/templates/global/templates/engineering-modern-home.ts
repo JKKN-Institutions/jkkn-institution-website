@@ -386,6 +386,8 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
       props: {
         searchEnabled: false,
         allowMultiple: false,
+        primaryColor: '#0b6d41',
+        accentColor: '#ffde59',
         faqs: [
           {
             question: 'What engineering courses are offered at JKKN Engineering College?',

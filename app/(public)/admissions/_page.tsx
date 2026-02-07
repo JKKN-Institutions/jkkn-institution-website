@@ -122,7 +122,7 @@ export default function AdmissionsPage() {
             { id: 'pharmacy', name: 'JKKN College of Pharmacy', courses: ['B.Pharm', 'M.Pharm', 'Pharm.D'] },
             { id: 'engineering', name: 'JKKN College of Engineering & Technology', courses: ['B.E. CSE', 'B.E. ECE', 'B.E. Mechanical'] },
             { id: 'arts', name: 'JKKN College of Arts & Science', courses: ['B.Sc', 'M.Sc', 'BBA', 'BCA'] },
-            { id: 'nursing', name: 'Sresakthimayeil Institute Of Nursing', courses: ['B.Sc Nursing', 'GNM'] },
+            { id: 'nursing', name: 'Sresakthimayeil Institute of Nursing', courses: ['B.Sc Nursing', 'GNM'] },
           ]}
           qualificationOptions={['10th / SSLC', '12th / HSC', 'Diploma', 'Undergraduate', 'Postgraduate', 'Other']}
           contactTimeOptions={['Morning (9 AM - 12 PM)', 'Afternoon (12 PM - 3 PM)', 'Evening (3 PM - 6 PM)', 'Any Time']}

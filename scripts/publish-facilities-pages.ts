@@ -281,10 +281,10 @@ const FACILITIES: Facility[] = [
     }
   },
 
-  // 4. Class Room
+  // 4. Classroom
   {
-    title: 'Class Room',
-    slug: 'facilities/class-room',
+    title: 'Classroom',
+    slug: 'facilities/classroom',
     componentName: 'FacilityPage',
     sortOrder: 4,
     description: 'Modern smart classrooms with advanced teaching aids and comfortable learning environment',

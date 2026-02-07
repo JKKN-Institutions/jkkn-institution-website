@@ -91,11 +91,10 @@ const getNavWidth = (rows: number): string => {
   return 'w-[78%]' // 3+ rows
 }
 
-const getHeaderHeight = (rows: number): string => {
-  if (rows === 1) return 'h-20 sm:h-24 lg:h-28'
-  if (rows === 2) return 'h-24 sm:h-28 lg:h-36'
-  if (rows === 3) return 'h-28 sm:h-32 lg:h-40'
-  return 'h-32 sm:h-36 lg:h-44' // 4+ rows
+const getHeaderPadding = (rows: number): string => {
+  if (rows === 1) return 'py-1 md:py-1.5 lg:py-3'
+  if (rows === 2) return 'py-1 md:py-1 lg:py-2'
+  return 'py-0.5 md:py-1 lg:py-1.5' // 3+ rows
 }
 
 // Navigation Row Component for dynamic row rendering
@@ -186,8 +185,8 @@ export function SiteHeader({
   navigation,
   isPreview = false,
   logoSizes = {
-    mobile: 80,
-    tablet: 100,
+    mobile: 56,
+    tablet: 70,
     desktop: 110,
     desktopLarge: 130
   },
@@ -200,6 +199,8 @@ export function SiteHeader({
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [openDropdownPath, setOpenDropdownPath] = useState<string[]>([])
+  const [headerHeight, setHeaderHeight] = useState(0)
+  const headerRef = useRef<HTMLElement>(null)
   const hoverTimeoutsRef = useRef<Map<string, NodeJS.Timeout>>(new Map())
 
   // Use CMS navigation if available, otherwise fallback
@@ -234,6 +235,16 @@ export function SiteHeader({
       setOpenDropdownPath(fullPath)
     }
   }, [openDropdownPath])
+
+  // Measure header height dynamically for the spacer
+  useEffect(() => {
+    if (!headerRef.current || isPreview) return
+    const observer = new ResizeObserver(([entry]) => {
+      setHeaderHeight(entry.contentRect.height)
+    })
+    observer.observe(headerRef.current)
+    return () => observer.disconnect()
+  }, [isPreview])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -310,6 +321,7 @@ export function SiteHeader({
     <>
       {/* Full Width Navigation - Fixed on live site, static in preview */}
       <header
+        ref={headerRef}
         className={cn(
           'z-50 transition-all duration-300',
           isPreview
@@ -322,8 +334,8 @@ export function SiteHeader({
       >
         <div className="container mx-auto px-4 lg:px-6">
           <div className={cn(
-            'flex items-center', // Fixed height prevents CLS
-            getHeaderHeight(rowCount),
+            'flex items-center',
+            getHeaderPadding(rowCount),
             // Mobile: center logo, Desktop: space-between for logo + nav
             'justify-center lg:justify-between'
           )}>
@@ -336,8 +348,8 @@ export function SiteHeader({
               <div
                 className="relative transition-transform duration-300 group-hover:scale-105"
                 style={{
-                  width: `clamp(${logoSizes.mobile}px, 12vw, ${getLogoSize(rowCount, logoSizes)}px)`,
-                  height: `clamp(${logoSizes.mobile}px, 12vw, ${getLogoSize(rowCount, logoSizes)}px)`,
+                  width: `clamp(${logoSizes.mobile}px, 8vw, ${getLogoSize(rowCount, logoSizes)}px)`,
+                  height: `clamp(${logoSizes.mobile}px, 8vw, ${getLogoSize(rowCount, logoSizes)}px)`,
                 }}
               >
                 <Image
@@ -515,9 +527,8 @@ export function SiteHeader({
       </div>
 
       {/* Spacer for fixed header - only needed on live site, not in preview */}
-      {/* Fixed height prevents CLS from dynamic height changes */}
-      {!isPreview && (
-        <div className={getHeaderHeight(rowCount)} />
+      {!isPreview && headerHeight > 0 && (
+        <div style={{ height: headerHeight }} />
       )}
     </>
   )

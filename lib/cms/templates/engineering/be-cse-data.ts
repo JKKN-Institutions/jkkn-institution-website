@@ -596,8 +596,5 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     { label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
     { label: 'Talk to Counselor', link: 'tel:+919345855001', variant: 'secondary' },
   ],
-  ctaContact: [
-    { icon: 'Phone', label: 'Call Us', value: '+91 93458 55001', link: 'tel:+919345855001' },
-    { icon: 'Mail', label: 'Email Us', value: 'engg@jkkn.ac.in', link: 'mailto:engg@jkkn.ac.in' },
-  ],
+  ctaContact: [],
 }

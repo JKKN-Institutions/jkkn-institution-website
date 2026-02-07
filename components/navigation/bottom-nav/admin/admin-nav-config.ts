@@ -52,7 +52,7 @@ export const GROUP_ICONS: Record<string, LucideIcon> = {
   'Profile': User,
   'Access Management': Shield,
   'User Management': Users,
-  'Role Management': Shield,
+  'Roles & Permissions': Shield,
   'Activities': Activity,
   'Content Management': FileText,
   'System': Settings
@@ -110,7 +110,7 @@ export const ADMIN_PRIMARY_ITEMS: NavMenuItemConfig[] = [
       },
       {
         id: 'role-management',
-        label: 'Role Management',
+        label: 'Roles & Permissions',
         icon: Shield,
         items: [
           { href: '/admin/roles', label: 'All Roles', icon: Shield },
@@ -133,7 +133,7 @@ export const ADMIN_PRIMARY_ITEMS: NavMenuItemConfig[] = [
           { href: '/admin/content/pages', label: 'Pages', icon: FileText },
           { href: '/admin/content/components', label: 'Components', icon: Puzzle },
           { href: '/admin/content/templates', label: 'Templates', icon: Layers },
-          { href: '/admin/content/media', label: 'Media', icon: Image },
+          { href: '/admin/content/media', label: 'Media Library', icon: Image },
           { href: '/admin/content/videos', label: 'Videos', icon: Video }
         ]
       },
@@ -142,7 +142,7 @@ export const ADMIN_PRIMARY_ITEMS: NavMenuItemConfig[] = [
         label: 'Blog',
         icon: PenLine,
         items: [
-          { href: '/admin/content/blog', label: 'Posts', icon: PenLine },
+          { href: '/admin/content/blog', label: 'All Posts', icon: PenLine },
           { href: '/admin/content/blog/categories', label: 'Categories', icon: FolderOpen },
           { href: '/admin/content/blog/tags', label: 'Tags', icon: Tags },
           { href: '/admin/content/blog/comments', label: 'Comments', icon: MessageSquare }
@@ -162,7 +162,7 @@ export const ADMIN_PRIMARY_ITEMS: NavMenuItemConfig[] = [
   },
   {
     href: '/',
-    label: 'View Site',
+    label: 'View Website',
     icon: ExternalLink,
     submenus: [],
     external: true

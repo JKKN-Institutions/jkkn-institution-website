@@ -34,7 +34,7 @@ const COMMITTEES = [
     description: 'Overseeing drug prevention policies and initiatives',
   },
   {
-    slug: 'internal-compliant-committee',
+    slug: 'internal-complaint-committee',
     title: 'Internal Complaints Committee',
     description: 'Addressing internal complaints and ensuring fair resolution',
   },

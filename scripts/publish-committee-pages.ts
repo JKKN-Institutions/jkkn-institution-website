@@ -48,27 +48,27 @@ interface CommitteePage {
 // Committee pages data
 const COMMITTEE_PAGES: CommitteePage[] = [
   {
-    title: 'Anti Ragging Committee',
+    title: 'Anti-Ragging Committee',
     slug: 'committees/anti-ragging-committee',
     sortOrder: 1,
-    description: 'Anti Ragging Committee at JKKN College of Engineering ensuring a ragging-free campus environment.',
+    description: 'Anti-Ragging Committee at JKKN College of Engineering ensuring a ragging-free campus environment.',
     seo: {
-      meta_title: 'Anti Ragging Committee - JKKN College of Engineering',
-      meta_description: 'Anti Ragging Committee at JKKN Engineering College. Committed to maintaining a safe and ragging-free campus environment for all students.',
-      og_title: 'Anti Ragging Committee - JKKN Engineering College',
-      og_description: 'Learn about our Anti Ragging Committee and its role in ensuring student safety and welfare.'
+      meta_title: 'Anti-Ragging Committee - JKKN College of Engineering',
+      meta_description: 'Anti-Ragging Committee at JKKN Engineering College. Committed to maintaining a safe and ragging-free campus environment for all students.',
+      og_title: 'Anti-Ragging Committee - JKKN Engineering College',
+      og_description: 'Learn about our Anti-Ragging Committee and its role in ensuring student safety and welfare.'
     }
   },
   {
-    title: 'Anti Ragging Squad',
+    title: 'Anti-Ragging Squad',
     slug: 'committees/anti-ragging-squad',
     sortOrder: 2,
-    description: 'Anti Ragging Squad at JKKN College of Engineering for immediate action against ragging incidents.',
+    description: 'Anti-Ragging Squad at JKKN College of Engineering for immediate action against ragging incidents.',
     seo: {
-      meta_title: 'Anti Ragging Squad - JKKN College of Engineering',
-      meta_description: 'Anti Ragging Squad at JKKN Engineering College. Quick response team for preventing and addressing ragging incidents on campus.',
-      og_title: 'Anti Ragging Squad - JKKN Engineering College',
-      og_description: 'Our dedicated Anti Ragging Squad ensures immediate action against any form of ragging.'
+      meta_title: 'Anti-Ragging Squad - JKKN College of Engineering',
+      meta_description: 'Anti-Ragging Squad at JKKN Engineering College. Quick response team for preventing and addressing ragging incidents on campus.',
+      og_title: 'Anti-Ragging Squad - JKKN Engineering College',
+      og_description: 'Our dedicated Anti-Ragging Squad ensures immediate action against any form of ragging.'
     }
   },
   {
@@ -96,15 +96,15 @@ const COMMITTEE_PAGES: CommitteePage[] = [
     }
   },
   {
-    title: 'Internal Compliant Committee',
-    slug: 'committees/internal-compliant-committee',
+    title: 'Internal Complaint Committee',
+    slug: 'committees/internal-complaint-committee',
     sortOrder: 5,
-    description: 'Internal Compliant Committee for addressing grievances and complaints at JKKN Engineering College.',
+    description: 'Internal Complaint Committee for addressing grievances and complaints at JKKN Engineering College.',
     seo: {
-      meta_title: 'Internal Compliant Committee - JKKN College of Engineering',
-      meta_description: 'Internal Compliant Committee at JKKN Engineering College. Addressing internal complaints and ensuring fair resolution.',
-      og_title: 'Internal Compliant Committee - JKKN Engineering College',
-      og_description: 'Our Internal Compliant Committee ensures transparent and fair handling of all complaints.'
+      meta_title: 'Internal Complaint Committee - JKKN College of Engineering',
+      meta_description: 'Internal Complaint Committee at JKKN Engineering College. Addressing internal complaints and ensuring fair resolution.',
+      og_title: 'Internal Complaint Committee - JKKN Engineering College',
+      og_description: 'Our Internal Complaint Committee ensures transparent and fair handling of all complaints.'
     }
   },
   {

@@ -464,7 +464,7 @@ function HeroSection({
                     key={index}
                     href={cta.link}
                     className="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-white transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105"
-                    style={{ backgroundColor: accentColor }}
+                    style={{ backgroundColor: primaryColor }}
                   >
                     {cta.label}
                     <ArrowRight className="w-5 h-5" />

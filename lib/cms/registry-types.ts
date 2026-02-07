@@ -439,6 +439,8 @@ export const FAQAccordionPropsSchema = z.object({
   faqs: z.array(FAQItemSchema).default([]),
   searchEnabled: z.boolean().default(true),
   allowMultiple: z.boolean().default(false),
+  primaryColor: z.string().optional(),
+  accentColor: z.string().optional(),
 })
 export type FAQAccordionProps = z.infer<typeof FAQAccordionPropsSchema> & BaseBlockProps
 
@@ -978,7 +980,7 @@ export const AccreditationsSectionPropsSchema = z.object({
     {
       icon: 'CheckCircle',
       name: 'INC Approved',
-      description: 'Indian Nursing Council approval for all Nursing programs at Sresakthimayeil Institute Of Nursing And Research.',
+      description: 'Indian Nursing Council approval for all Nursing programs at Sresakthimayeil Institute of Nursing and Research.',
       order: 7,
     },
     {

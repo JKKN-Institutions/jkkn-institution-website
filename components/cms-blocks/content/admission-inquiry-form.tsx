@@ -124,7 +124,7 @@ export const AdmissionInquiryFormPropsSchema = z.object({
     },
     {
       id: 'nursing',
-      name: 'Sresakthimayeil Institute Of Nursing And Research',
+      name: 'Sresakthimayeil Institute of Nursing and Research',
       courses: ['B.Sc Nursing', 'M.Sc Nursing', 'GNM', 'ANM'],
     },
     {
@@ -553,7 +553,7 @@ export default function AdmissionInquiryForm({
     { id: 'pharmacy', name: 'JKKN College of Pharmacy', courses: ['B.Pharm', 'M.Pharm', 'Pharm.D', 'D.Pharm'] },
     { id: 'engineering', name: 'JKKN College of Engineering & Technology', courses: ['B.E. CSE', 'B.E. ECE', 'B.E. Mechanical'] },
     { id: 'arts', name: 'JKKN College of Arts & Science', courses: ['B.Sc', 'M.Sc', 'BBA', 'BCA', 'B.Com'] },
-    { id: 'nursing', name: 'Sresakthimayeil Institute Of Nursing And Research', courses: ['B.Sc Nursing', 'M.Sc Nursing', 'GNM'] },
+    { id: 'nursing', name: 'Sresakthimayeil Institute of Nursing and Research', courses: ['B.Sc Nursing', 'M.Sc Nursing', 'GNM'] },
     { id: 'allied', name: 'JKKN College of Allied Health Sciencess', courses: ['BPT', 'BMLT', 'B.Sc Radiology'] },
     { id: 'education', name: 'JKKN College of Education', courses: ['B.Ed', 'M.Ed', 'D.El.Ed'] },
     { id: 'school', name: 'JKKN Matriculation Higher Secondary School', courses: ['Pre-KG to 12th Standard'] },

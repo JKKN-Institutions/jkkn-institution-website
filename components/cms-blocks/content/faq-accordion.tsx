@@ -10,6 +10,8 @@ export default function FAQAccordion({
   faqs = [],
   searchEnabled = true,
   allowMultiple = false,
+  primaryColor,
+  accentColor,
   className,
   isEditing,
 }: FAQAccordionProps) {
@@ -57,11 +59,14 @@ export default function FAQAccordion({
       <div className="container mx-auto max-w-3xl">
         {/* Title and Subtitle */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+          <h2
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4"
+            style={primaryColor ? { color: primaryColor } : undefined}
+          >
             {title}
           </h2>
           {subtitle && (
-            <p className="text-lg text-muted-foreground">
+            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
               {subtitle}
             </p>
           )}

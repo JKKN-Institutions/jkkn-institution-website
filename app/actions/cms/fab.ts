@@ -46,7 +46,7 @@ export async function getGlobalFabConfig(): Promise<GlobalFabConfig> {
   try {
     const supabase = createPublicSupabaseClient()
 
-    // Try to get FAB config from "home" page first
+    // Try to get FAB config from homepage first (check both slug='home' and is_homepage=true)
     const { data: homePageConfig, error: homeError } = await supabase
       .from('cms_page_fab_config')
       .select(`
@@ -65,9 +65,10 @@ export async function getGlobalFabConfig(): Promise<GlobalFabConfig> {
         animation,
         delay_ms,
         hide_on_scroll,
-        cms_pages!inner(slug)
+        cms_pages!inner(slug, is_homepage)
       `)
-      .eq('cms_pages.slug', 'home')
+      .or('slug.eq.home,is_homepage.eq.true', { referencedTable: 'cms_pages' })
+      .limit(1)
       .single()
 
     if (!homeError && homePageConfig) {

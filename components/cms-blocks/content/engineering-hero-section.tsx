@@ -245,7 +245,7 @@ export default function EngineeringHeroSection({
       />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-screen py-12 lg:py-20">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh] pt-4 pb-12 lg:pt-6 lg:pb-20">
           {/* Left Content */}
           <div>
             {/* Badge */}

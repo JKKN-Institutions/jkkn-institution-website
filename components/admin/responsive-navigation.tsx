@@ -90,7 +90,7 @@ const navigationGroups: NavGroup[] = [
       },
       {
         id: 'roles',
-        label: 'Role Management',
+        label: 'Roles & Permissions',
         href: '/admin/roles',
         icon: Shield,
         color: 'bg-purple-500',
@@ -104,7 +104,7 @@ const navigationGroups: NavGroup[] = [
     items: [
       {
         id: 'activity',
-        label: 'Activities',
+        label: 'Activity Logs',
         href: '/admin/activity',
         icon: Activity,
         color: 'bg-orange-500',
@@ -417,7 +417,7 @@ function DesktopSidebar({
           <div key={group.id}>
             {/* Group Header */}
             {!collapsed && (
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 mb-2">
+              <div className="text-xs font-semibold text-muted-foreground tracking-wider px-3 mb-2">
                 {group.label}
               </div>
             )}
@@ -604,7 +604,7 @@ function MobileSidebar({
           {groups.map((group) => (
             <div key={group.id}>
               {/* Group Header */}
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 mb-2">
+              <div className="text-xs font-semibold text-muted-foreground tracking-wider px-3 mb-2">
                 {group.label}
               </div>
               {/* Group Items */}

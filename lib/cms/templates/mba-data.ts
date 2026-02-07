@@ -506,73 +506,45 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   facultyTitle: 'Our Distinguished Faculty',
   faculty: [
     {
-      name: 'Dr. Rajesh Kumar',
-      designation: 'Professor & HOD',
-      qualification: 'Ph.D., MBA',
-      specialization: 'Strategic Management & Marketing',
-      image: '/images/faculty/placeholder-avatar.jpg',
-    },
-    {
-      name: 'Dr. Priya Sharma',
+      name: 'Dr.G.MOHANRAJ',
       designation: 'Associate Professor',
-      qualification: 'Ph.D., M.Com, MBA',
-      specialization: 'Financial Management & Accounting',
+      qualification: 'MBA., Ph.D',
+      specialization: 'HR & Marketing',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
-      name: 'Dr. Arun Patel',
-      designation: 'Associate Professor',
-      qualification: 'Ph.D., MBA',
-      specialization: 'Human Resource Management',
-      image: '/images/faculty/placeholder-avatar.jpg',
-    },
-    {
-      name: 'Dr. Meera Reddy',
+      name: 'Mrs.C.VIMALA',
       designation: 'Assistant Professor',
-      qualification: 'Ph.D., MBA',
-      specialization: 'Operations & Supply Chain Management',
+      qualification: 'MBA., M.Phil',
+      specialization: 'Finance and Systems',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
-      name: 'Prof. Sanjay Verma',
+      name: 'Mr.V.P.ARUN',
       designation: 'Assistant Professor',
-      qualification: 'MBA, FCA',
-      specialization: 'Corporate Finance & Taxation',
+      qualification: 'MBA',
+      specialization: 'HR & Marketing',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
-      name: 'Dr. Anjali Desai',
+      name: 'Mrs.G.SARANYA',
       designation: 'Assistant Professor',
-      qualification: 'Ph.D., MBA',
-      specialization: 'Digital Marketing & Analytics',
+      qualification: 'MBA',
+      specialization: 'HR and Finance',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
-      name: 'Prof. Vikram Singh',
-      designation: 'Visiting Faculty',
-      qualification: 'MBA, CFA',
-      specialization: 'Investment Banking & Portfolio Management',
-      image: '/images/faculty/placeholder-avatar.jpg',
-    },
-    {
-      name: 'Dr. Kavita Joshi',
+      name: 'Mrs.V.RAJESWARI',
       designation: 'Assistant Professor',
-      qualification: 'Ph.D., MBA',
-      specialization: 'Organizational Behavior & Leadership',
+      qualification: 'MBA',
+      specialization: 'HR and Finance',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
-      name: 'Prof. Rahul Mehta',
+      name: 'Mrs.B.RAMYA',
       designation: 'Assistant Professor',
-      qualification: 'MBA, PGDM',
-      specialization: 'Entrepreneurship & Innovation',
-      image: '/images/faculty/placeholder-avatar.jpg',
-    },
-    {
-      name: 'Dr. Sneha Gupta',
-      designation: 'Assistant Professor',
-      qualification: 'Ph.D., MBA',
-      specialization: 'Business Analytics & Research',
+      qualification: 'MBA',
+      specialization: 'HR & Marketing',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
   ],
@@ -641,13 +613,13 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   ctaDescription:
     'Transform your career with our comprehensive MBA program. Apply now for 2025-26 admissions and join a community of future business leaders.',
   ctaPrimaryButtonLabel: 'Apply Now',
-  ctaPrimaryButtonLink: '/apply',
+  ctaPrimaryButtonLink: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8',
   ctaSecondaryButtonLabel: 'Talk to Counselor',
   ctaSecondaryButtonLink: 'tel:+919345855001',
 
   // ==========================================
   // Styling (JKKN Brand Colors)
   // ==========================================
-  primaryColor: '#0b6d41', // JKKN Green
+  primaryColor: '#16a34a', // JKKN Bright Green
   accentColor: '#ffde59', // JKKN Yellow
 }
