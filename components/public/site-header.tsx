@@ -129,7 +129,6 @@ export function SiteHeader({
   const [openDropdownPath, setOpenDropdownPath] = useState<string[]>([])
   const [headerHeight, setHeaderHeight] = useState(0)
   const headerRef = useRef<HTMLElement>(null)
-  const navRef = useRef<HTMLElement>(null)
   const hoverTimeoutsRef = useRef<Map<string, NodeJS.Timeout>>(new Map())
 
   // Use CMS navigation if available, otherwise fallback
@@ -230,46 +229,6 @@ export function SiteHeader({
     }
   }, [])
 
-  // Detect wrapped nav items and align them to the left (justify-start)
-  // First row stays justify-end, wrapped rows get pushed left via margin-right: auto
-  useEffect(() => {
-    const nav = navRef.current
-    if (!nav) return
-
-    const updateWrappedAlignment = () => {
-      const children = Array.from(nav.children) as HTMLElement[]
-      if (children.length === 0) return
-
-      // Reset all margins
-      children.forEach(child => { child.style.marginRight = '' })
-
-      // Group items by their row (offsetTop)
-      const rows = new Map<number, number[]>()
-      children.forEach((child, i) => {
-        const top = child.offsetTop
-        if (!rows.has(top)) rows.set(top, [])
-        rows.get(top)!.push(i)
-      })
-
-      // Skip first row (stays justify-end), push last item of each wrapped row left
-      let isFirstRow = true
-      for (const [, indices] of rows) {
-        if (isFirstRow) {
-          isFirstRow = false
-          continue
-        }
-        const lastIdx = indices[indices.length - 1]
-        children[lastIdx].style.marginRight = 'auto'
-      }
-    }
-
-    const observer = new ResizeObserver(updateWrappedAlignment)
-    observer.observe(nav)
-    updateWrappedAlignment()
-
-    return () => observer.disconnect()
-  }, [mainNavigation])
-
   // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
@@ -316,7 +275,7 @@ export function SiteHeader({
             </Link>
 
             {/* Desktop Navigation - Flex wrap, fills remaining space */}
-            <nav ref={navRef} className="hidden lg:flex flex-wrap items-center justify-end gap-x-2 xl:gap-x-4 gap-y-1 flex-1 min-w-0 pl-4">
+            <nav className="hidden lg:flex flex-wrap items-center justify-start gap-x-2 xl:gap-x-4 gap-y-1 flex-1 min-w-0 pl-8 lg:pl-10 xl:pl-12">
               {mainNavigation.map((item) => (
                 <NavDropdownItem
                   key={item.id}
