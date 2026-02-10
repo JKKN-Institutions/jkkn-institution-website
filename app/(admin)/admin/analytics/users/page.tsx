@@ -1,6 +1,5 @@
 import { Suspense } from 'react'
-import { UserGrowthChart, UserGrowthChartSkeleton } from '@/components/analytics/charts/user-growth-chart'
-import { RoleDistributionChart, RoleDistributionChartSkeleton } from '@/components/analytics/charts/role-distribution-chart'
+import { UserGrowthChart, UserGrowthChartSkeleton, RoleDistributionChart, RoleDistributionChartSkeleton } from '@/components/analytics/charts-lazy'
 import { RecentUsersTable, RecentUsersTableSkeleton } from '@/components/analytics/tables/recent-users-table'
 import { TopContributorsTable, TopContributorsTableSkeleton } from '@/components/analytics/tables/top-contributors-table'
 import { ChartGrid } from '@/components/analytics/analytics-card'

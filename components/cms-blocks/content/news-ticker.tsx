@@ -84,11 +84,25 @@ export function NewsTicker({
   const contentRef = useRef<HTMLDivElement>(null)
   const [contentWidth, setContentWidth] = useState(0)
 
-  // Measure content width for animation
+  // Measure content width for animation (debounced to prevent forced reflows)
   useEffect(() => {
-    if (contentRef.current) {
-      setContentWidth(contentRef.current.scrollWidth / 2)
+    if (!contentRef.current) return
+
+    const measureWidth = () => {
+      if (contentRef.current) {
+        // Use rAF to batch layout read with render cycle
+        requestAnimationFrame(() => {
+          if (contentRef.current) {
+            setContentWidth(contentRef.current.scrollWidth / 2)
+          }
+        })
+      }
     }
+
+    // Initial measurement with delay to ensure DOM is ready
+    const timer = setTimeout(measureWidth, 100)
+
+    return () => clearTimeout(timer)
   }, [items])
 
   // Icon mapping

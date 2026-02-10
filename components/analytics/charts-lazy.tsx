@@ -126,3 +126,10 @@ export const VisitorStatsCards = dynamic(
     ssr: true,
   }
 )
+
+export const VisitorStatsCardsSkeleton = dynamic(
+  () => import('./charts/visitor-stats-cards').then((mod) => ({ default: mod.VisitorStatsCardsSkeleton })),
+  {
+    ssr: true,
+  }
+)

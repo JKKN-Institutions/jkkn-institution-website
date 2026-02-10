@@ -1,8 +1,6 @@
 import { Suspense } from 'react'
-import { VisitorStatsCards, VisitorStatsCardsSkeleton } from '@/components/analytics/charts/visitor-stats-cards'
-import { PageviewsChart, PageviewsChartSkeleton } from '@/components/analytics/charts/pageviews-chart'
+import { VisitorStatsCards, VisitorStatsCardsSkeleton, PageviewsChart, PageviewsChartSkeleton, TrafficSourcesChart, TrafficSourcesChartSkeleton } from '@/components/analytics/charts-lazy'
 import { TopPublicPagesTable, TopPublicPagesTableSkeleton } from '@/components/analytics/tables/top-public-pages-table'
-import { TrafficSourcesChart, TrafficSourcesChartSkeleton } from '@/components/analytics/charts/traffic-sources-chart'
 import { ChartGrid } from '@/components/analytics/analytics-card'
 
 export default function VisitorAnalyticsPage() {

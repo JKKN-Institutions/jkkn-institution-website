@@ -1,6 +1,5 @@
 import { Suspense } from 'react'
-import { ActivityHeatmap, ActivityHeatmapSkeleton } from '@/components/analytics/charts/activity-heatmap'
-import { KPICards, KPICardsSkeleton } from '@/components/analytics/charts/kpi-cards'
+import { ActivityHeatmap, ActivityHeatmapSkeleton, KPICards, KPICardsSkeleton } from '@/components/analytics/charts-lazy'
 import { TopContributorsTable, TopContributorsTableSkeleton } from '@/components/analytics/tables/top-contributors-table'
 import { ChartGrid } from '@/components/analytics/analytics-card'
 

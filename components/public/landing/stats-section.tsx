@@ -227,9 +227,11 @@ export function StatsSection() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Use requestAnimationFrame to prevent forced reflow
+          // Batch state update to prevent multiple reflows
           requestAnimationFrame(() => {
-            setIsVisible(true)
+            requestAnimationFrame(() => {
+              setIsVisible(true)
+            })
           })
         }
       },

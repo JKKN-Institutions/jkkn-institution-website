@@ -270,6 +270,7 @@ export function SiteHeader({
                   sizes={`(max-width: 640px) ${logoSizes.mobile}px, (max-width: 1024px) ${logoSizes.tablet}px, ${getLogoSize(logoSizes)}px`}
                   className="object-contain"
                   priority
+                  fetchPriority="high"
                 />
               </div>
             </Link>
@@ -353,6 +354,8 @@ export function SiteHeader({
                   fill
                   sizes="56px"
                   className="object-contain"
+                  priority
+                  fetchPriority="high"
                 />
               </div>
             </Link>

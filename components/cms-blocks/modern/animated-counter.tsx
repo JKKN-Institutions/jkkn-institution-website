@@ -291,7 +291,10 @@ export function AnimatedCounter({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setIsVisible(true)
+            // Delay state update to next frame to batch reflows
+            requestAnimationFrame(() => {
+              setIsVisible(true)
+            })
             observer.disconnect()
           }
         })
@@ -299,7 +302,9 @@ export function AnimatedCounter({
       { threshold: 0.2 }
     )
 
-    observer.observe(containerRef.current)
+    if (containerRef.current) {
+      observer.observe(containerRef.current)
+    }
 
     return () => observer.disconnect()
   }, [animateOnScroll])

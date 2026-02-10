@@ -367,11 +367,41 @@ function LogoMarquee({
     }
   }, [momentum])
 
-  // Normalize scroll offset for seamless loop
+  // Cache content width to prevent forced reflows
+  const contentWidthRef = useRef<number>(0)
+
+  // Measure once on mount and on resize only
   useEffect(() => {
     if (!contentRef.current) return
 
-    const contentWidth = contentRef.current.scrollWidth / 4 // Divide by 4 because we duplicated 4 times
+    const measureWidth = () => {
+      if (contentRef.current) {
+        contentWidthRef.current = contentRef.current.scrollWidth / 4
+      }
+    }
+
+    // Initial measurement
+    measureWidth()
+
+    // Update on resize (debounced)
+    let resizeTimer: NodeJS.Timeout
+    const handleResize = () => {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(measureWidth, 150)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      clearTimeout(resizeTimer)
+    }
+  }, [])
+
+  // Normalize scroll offset for seamless loop (using cached value)
+  useEffect(() => {
+    if (!contentWidthRef.current) return
+
+    const contentWidth = contentWidthRef.current
 
     if (scrollOffset > 0) {
       setScrollOffset((prev) => prev - contentWidth)

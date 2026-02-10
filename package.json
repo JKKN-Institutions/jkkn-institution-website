@@ -27,7 +27,9 @@
     "db:migrate:dry": "tsx scripts/sync-migrations.ts --dry-run",
     "db:migrate": "tsx scripts/sync-migrations.ts",
     "publish:homepage": "npx tsx scripts/publish-engineering-homepage.ts",
-    "rollback:homepage": "npx tsx scripts/publish-engineering-homepage.ts --rollback"
+    "rollback:homepage": "npx tsx scripts/publish-engineering-homepage.ts --rollback",
+    "migrate:lazy": "tsx scripts/migrate-lazy-imports.ts",
+    "migrate:lazy:apply": "tsx scripts/migrate-lazy-imports.ts --apply"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.0",

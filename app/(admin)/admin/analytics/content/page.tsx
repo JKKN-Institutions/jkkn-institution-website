@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { ContentPerformanceChart, ContentStatsCards } from '@/components/analytics/charts/content-performance-chart'
+import { ContentPerformanceChart, ContentStatsCards } from '@/components/analytics/charts-lazy'
 import { TopPagesTable, TopPagesTableSkeleton } from '@/components/analytics/tables/top-pages-table'
 import { ChartGrid } from '@/components/analytics/analytics-card'
 import { Skeleton } from '@/components/ui/skeleton'

@@ -245,13 +245,14 @@ function StatCard({
 
     const duration = 2000
     const startTime = Date.now() + delay
+    let rafId: number
 
     const animateCount = () => {
       const now = Date.now()
       const elapsed = now - startTime
 
       if (elapsed < 0) {
-        requestAnimationFrame(animateCount)
+        rafId = requestAnimationFrame(animateCount)
         return
       }
 
@@ -262,11 +263,17 @@ function StatCard({
       setDisplayValue(currentNum.toLocaleString() + suffix)
 
       if (progress < 1) {
-        requestAnimationFrame(animateCount)
+        rafId = requestAnimationFrame(animateCount)
       }
     }
 
-    requestAnimationFrame(animateCount)
+    rafId = requestAnimationFrame(animateCount)
+
+    return () => {
+      if (rafId) {
+        cancelAnimationFrame(rafId)
+      }
+    }
   }, [animate, isVisible, stat.value, delay])
 
   return (

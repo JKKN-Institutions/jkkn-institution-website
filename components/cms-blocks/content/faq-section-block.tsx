@@ -264,9 +264,14 @@ function FAQAccordionItem({
   const [height, setHeight] = useState(0)
 
   useEffect(() => {
-    if (contentRef.current) {
-      setHeight(isOpen ? contentRef.current.scrollHeight : 0)
-    }
+    if (!contentRef.current) return
+
+    // Batch layout read with next paint to prevent forced reflow
+    requestAnimationFrame(() => {
+      if (contentRef.current) {
+        setHeight(isOpen ? contentRef.current.scrollHeight : 0)
+      }
+    })
   }, [isOpen])
 
   return (
