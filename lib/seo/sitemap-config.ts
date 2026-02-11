@@ -3,7 +3,9 @@
  * Defines URL priorities and change frequencies for the dynamic sitemap
  */
 
-export const SITE_URL = 'https://jkkn.ac.in'
+import { getSiteUrl } from '@/lib/utils/site-url'
+
+export const SITE_URL = getSiteUrl()
 
 /**
  * Change frequency hints for search engines

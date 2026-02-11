@@ -6,6 +6,7 @@ import { logActivity } from '@/lib/utils/activity-logger'
 import { checkPermission } from '../permissions'
 import { randomBytes } from 'crypto'
 import bcrypt from 'bcryptjs'
+import { buildAbsoluteUrl } from '@/lib/utils/site-url'
 
 // Type definitions
 export type FormState = {
@@ -406,6 +407,5 @@ export async function deletePreviewLink(linkId: string): Promise<FormState> {
  * but can be called from client components as well.
  */
 export async function getPreviewUrl(token: string): Promise<string> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-  return `${baseUrl}/preview/${token}`
+  return buildAbsoluteUrl(`/preview/${token}`)
 }

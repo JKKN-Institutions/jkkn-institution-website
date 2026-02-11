@@ -90,6 +90,8 @@ export default function ModernHeroSection({
                         className="object-cover"
                         style={{ transform: `translateY(${scrollY}px) scale(1.05)` }}
                         priority
+                        quality={80}
+                        sizes="100vw"
                     />
                 ) : (
                     <div className="w-full h-full bg-gradient-to-br from-white to-[#F9F7F2]" />

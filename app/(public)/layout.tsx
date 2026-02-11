@@ -12,7 +12,6 @@ import { getFooterSettings } from '@/app/actions/cms/footer'
 import { getContactInfo } from '@/app/actions/cms/contact'
 import { getSocialLinks } from '@/app/actions/cms/social'
 import { PublicThemeProvider } from '@/components/providers/public-theme-provider'
-import { EventsCalendarSchema } from '@/components/seo/events-calendar-schema'
 import { getCurrentInstitution } from '@/lib/config/multi-tenant'
 import { filterNavigationByFeatures } from '@/lib/utils/navigation-filter'
 
@@ -59,9 +58,6 @@ export default async function PublicLayout({
 
   return (
     <PublicThemeProvider>
-      {/* SEO Schema - Events Calendar 2025-26 */}
-      <EventsCalendarSchema />
-
       <div className='min-h-screen bg-cream flex flex-col relative'>
         {/* Site Header with CMS Navigation and Logo Settings - Fixed glassmorphic */}
         <SiteHeader

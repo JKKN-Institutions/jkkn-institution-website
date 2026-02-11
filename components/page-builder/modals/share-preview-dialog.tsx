@@ -50,8 +50,14 @@ import { toast } from 'sonner'
 
 // Client-side utility to generate preview URL
 function getPreviewUrl(token: string): string {
+  // Use environment variable first, then fallback to current origin (for development)
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ||
-    (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000')
+    (typeof window !== 'undefined' ? window.location.origin : '')
+
+  if (!baseUrl) {
+    console.warn('⚠️  NEXT_PUBLIC_SITE_URL not set and window.location unavailable')
+  }
+
   return `${baseUrl}/preview/${token}`
 }
 

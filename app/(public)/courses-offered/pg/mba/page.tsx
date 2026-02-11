@@ -1,5 +1,6 @@
 import { MBACoursePage } from '@/components/cms-blocks/content/mba-course-page'
 import { MBA_SAMPLE_DATA } from '@/lib/cms/templates/mba-data'
+import { MBACourseSchema } from '@/lib/seo/course-schema-generator'
 import type { Metadata } from 'next'
 
 /**
@@ -57,8 +58,11 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <main>
-      <MBACoursePage {...MBA_SAMPLE_DATA} />
-    </main>
+    <>
+      <MBACourseSchema />
+      <main>
+        <MBACoursePage {...MBA_SAMPLE_DATA} />
+      </main>
+    </>
   )
 }

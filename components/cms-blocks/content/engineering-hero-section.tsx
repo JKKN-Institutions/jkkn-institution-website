@@ -175,7 +175,10 @@ function StatCard({
         <StatIcon icon={stat.icon} className="text-gray-900" />
       </div>
       <div>
-        <div className="text-2xl font-bold" style={{ color: primaryColor }}>
+        <div
+          className="text-2xl font-bold tabular-nums"
+          style={{ color: primaryColor, minWidth: '4.5rem' }}
+        >
           {count}{stat.suffix}
         </div>
         <div className="text-sm text-gray-600">
@@ -363,6 +366,7 @@ export default function EngineeringHeroSection({
                     className="object-cover"
                     priority
                     sizes="(max-width: 1024px) 100vw, 50vw"
+                    quality={80}
                   />
                 </div>
 

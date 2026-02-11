@@ -35,6 +35,9 @@ export async function generateMetadata(): Promise<Metadata> {
     // Base metadata from site settings
     ...siteMetadata,
 
+    // Metadata base for proper relative URL resolution
+    metadataBase: new URL(siteUrl),
+
     // Enhanced robots configuration
     robots: {
       index: true,
@@ -46,11 +49,6 @@ export async function generateMetadata(): Promise<Metadata> {
         'max-image-preview': 'large',
         'max-snippet': -1,
       },
-    },
-
-    // Alternates (canonical URL is institution-specific)
-    alternates: {
-      canonical: '/',
     },
 
     // OpenGraph enhancements

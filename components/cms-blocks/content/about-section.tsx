@@ -354,14 +354,15 @@ The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 19
                 <div className={cn('relative', isReversed && 'lg:col-start-1 lg:row-start-1')}>
                   {image ? (
                     <div className="relative">
-                      {/* Main Image Container */}
-                      <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                      {/* Main Image Container with Aspect Ratio */}
+                      <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
                         <Image
                           src={image}
                           alt={imageAlt}
-                          width={600}
-                          height={450}
-                          className="w-full h-auto object-cover"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          quality={80}
                         />
 
                         {/* Badge (top-right) */}
@@ -441,14 +442,15 @@ The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 19
               {/* Founder Image with Gold Ring */}
               <div className="flex justify-center mb-6">
                 <GoldRing size="xl" glowEffect>
-                  <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden bg-[#064d2e]">
+                  <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden bg-[#064d2e] relative">
                     {founderImage ? (
                       <Image
                         src={founderImage}
                         alt={founderName}
-                        width={160}
-                        height={160}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 128px, 160px"
+                        quality={85}
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">

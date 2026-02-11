@@ -26,6 +26,8 @@
 import { createClient } from '@supabase/supabase-js'
 import { v4 as uuidv4 } from 'uuid'
 import * as dotenv from 'dotenv'
+import { buildAbsoluteUrl, getSiteUrl } from '../lib/utils/site-url'
+import { requireProductionEnvironment, displayEnvironmentSummary } from './utils/validate-environment'
 
 // Load environment variables
 dotenv.config({ path: '.env.local' })
@@ -917,7 +919,7 @@ async function publishFacilitiesPages() {
           og_description: facility.seo.og_description,
           og_image: facility.seo.og_image,
           twitter_card: 'summary_large_image',
-          canonical_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/${facility.slug}`,
+          canonical_url: buildAbsoluteUrl(`/${facility.slug}`),
         })
 
       if (seoError) {
@@ -991,7 +993,7 @@ async function publishFacilitiesPages() {
   console.log('')
   console.log('')
   log('🌐', 'Pages are now live at:', colors.bright)
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  const baseUrl = getSiteUrl()
   FACILITIES.forEach(f => {
     log('  ├─', `${baseUrl}/${f.slug}`, colors.cyan)
   })
@@ -1011,6 +1013,10 @@ async function publishFacilitiesPages() {
 // Main execution
 async function main() {
   try {
+    // Validate environment to prevent localhost URLs in database
+    displayEnvironmentSummary()
+    await requireProductionEnvironment('publish-facilities-pages.ts')
+
     if (isRollback) {
       await rollbackFacilitiesPages()
     } else {

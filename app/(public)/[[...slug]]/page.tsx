@@ -10,8 +10,10 @@ import { LandingPage } from '@/components/public/landing-page'
 import { PasswordProtectedPage, PrivatePageGate } from '@/components/public/password-protected-page'
 import { OrganizationSchema } from '@/components/seo/organization-schema'
 import { CourseCatalogSchema } from '@/components/seo/course-catalog-schema'
+import { EventsCalendarSchema } from '@/components/seo/events-calendar-schema'
 import { WebsiteSchema } from '@/components/seo/website-schema'
 import { FAQSchema } from '@/components/seo/faq-schema'
+import { FAQSchemaAdmissions, FAQSchemaPlacements, FAQSchemaAbout } from '@/components/seo/faq-schema-admissions'
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from '@/lib/seo'
 
@@ -262,9 +264,21 @@ export default async function DynamicPage({ params }: PageProps) {
   // Check if this is the courses-offered page for schema inclusion
   const isCoursesPage = slugPath === 'courses-offered'
 
+  // Check if this is an events page for schema inclusion (events or any subpage)
+  const isEventsPage = slugPath === 'events' || slugPath.startsWith('events/')
+
+  // Check if this page should have FAQ schema
+  const isAdmissionsPage = slugPath === 'admissions' || slugPath.startsWith('admissions/')
+  const isPlacementsPage = slugPath === 'placements' || slugPath.startsWith('placements/')
+  const isAboutPage = slugPath === 'about' || slugPath.startsWith('about/')
+
   return (
     <>
       {isCoursesPage && <CourseCatalogSchema />}
+      {isEventsPage && <EventsCalendarSchema />}
+      {isAdmissionsPage && <FAQSchemaAdmissions />}
+      {isPlacementsPage && <FAQSchemaPlacements />}
+      {isAboutPage && <FAQSchemaAbout />}
       <article>
         <Suspense fallback={<BlocksSkeleton />}>
           <CustomComponentRegistrar components={customComponents}>

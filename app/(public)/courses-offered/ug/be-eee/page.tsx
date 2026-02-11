@@ -1,5 +1,6 @@
 import { BEEEECoursePage } from '@/components/cms-blocks/content/be-eee-course-page'
 import { BE_EEE_SAMPLE_DATA } from '@/lib/cms/templates/engineering/be-eee-data'
+import { BEEEECourseSchema } from '@/lib/seo/course-schema-generator'
 import type { Metadata } from 'next'
 
 /**
@@ -55,8 +56,11 @@ export const metadata: Metadata = {
 
 export default function EEECoursePage() {
   return (
-    <main>
-      <BEEEECoursePage {...BE_EEE_SAMPLE_DATA} />
-    </main>
+    <>
+      <BEEEECourseSchema />
+      <main>
+        <BEEEECoursePage {...BE_EEE_SAMPLE_DATA} />
+      </main>
+    </>
   )
 }

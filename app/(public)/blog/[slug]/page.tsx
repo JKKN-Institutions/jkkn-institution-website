@@ -36,13 +36,21 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     }
   }
 
+  // Get site URL from environment (institution-specific)
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://jkkn.ac.in'
+  const canonical = `${siteUrl}/blog/${slug}`
+
   return {
     title: `${post.seo_title || post.title} | JKKN Blog`,
     description: post.seo_description || post.excerpt || '',
+    alternates: {
+      canonical,
+    },
     openGraph: {
       title: post.seo_title || post.title,
       description: post.seo_description || post.excerpt || '',
       type: 'article',
+      url: canonical,
       publishedTime: post.published_at || undefined,
       authors: post.author?.full_name ? [post.author.full_name] : undefined,
       images: post.og_image || post.featured_image ? [post.og_image || post.featured_image || ''] : undefined,

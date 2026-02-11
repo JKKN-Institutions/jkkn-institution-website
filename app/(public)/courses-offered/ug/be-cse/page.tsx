@@ -1,5 +1,6 @@
 import { BECSECoursePage } from '@/components/cms-blocks/content/be-cse-course-page'
 import { BE_CSE_SAMPLE_DATA } from '@/lib/cms/templates/engineering/be-cse-data'
+import { BECSECourseSchema } from '@/lib/seo/course-schema-generator'
 import type { Metadata } from 'next'
 
 /**
@@ -54,8 +55,11 @@ export const metadata: Metadata = {
 
 export default function CSECoursePage() {
   return (
-    <main>
-      <BECSECoursePage {...BE_CSE_SAMPLE_DATA} />
-    </main>
+    <>
+      <BECSECourseSchema />
+      <main>
+        <BECSECoursePage {...BE_CSE_SAMPLE_DATA} />
+      </main>
+    </>
   )
 }

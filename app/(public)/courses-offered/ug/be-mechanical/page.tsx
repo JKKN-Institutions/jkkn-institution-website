@@ -1,5 +1,6 @@
 import { BEMechanicalCoursePage } from '@/components/cms-blocks/content/be-mechanical-course-page'
 import { beMechanicalCourseData } from '@/lib/cms/templates/engineering/be-mechanical-data'
+import { BEMechanicalCourseSchema } from '@/lib/seo/course-schema-generator'
 import type { Metadata } from 'next'
 
 /**
@@ -54,8 +55,11 @@ export const metadata: Metadata = {
 
 export default function MechanicalCoursePage() {
   return (
-    <main>
-      <BEMechanicalCoursePage {...beMechanicalCourseData} />
-    </main>
+    <>
+      <BEMechanicalCourseSchema />
+      <main>
+        <BEMechanicalCoursePage {...beMechanicalCourseData} />
+      </main>
+    </>
   )
 }

@@ -26,6 +26,8 @@ import { v4 as uuidv4 } from 'uuid'
 import * as dotenv from 'dotenv'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
+import { getSiteUrl } from '../lib/utils/site-url'
+import { requireProductionEnvironment, displayEnvironmentSummary } from './utils/validate-environment'
 
 // Load environment variables
 const envPath = path.resolve(process.cwd(), '.env.local')
@@ -48,7 +50,7 @@ const SEO_CONFIG = {
   og_image: 'https://images.unsplash.com/photo-1581092921461-eab62e97a783?q=80&w=1200',
   og_type: 'website',
   twitter_card: 'summary_large_image',
-  canonical_url: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+  canonical_url: getSiteUrl(),
   robots_directive: 'index, follow'
 }
 
@@ -359,7 +361,7 @@ async function publishEngineeringHomepage() {
   success('🎉', 'Engineering Homepage Published Successfully!')
   console.log('')
   log('🌐', 'Homepage is now live at:', colors.bright)
-  log('  └─', `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/`, colors.cyan)
+  log('  └─', `${getSiteUrl()}/`, colors.cyan)
   console.log('')
   log('📋', 'Next steps:', colors.bright)
   log('  1.', 'Visit the homepage to verify all sections render correctly')
@@ -376,6 +378,10 @@ async function publishEngineeringHomepage() {
 // Main execution
 async function main() {
   try {
+    // Validate environment to prevent localhost URLs in database
+    displayEnvironmentSummary()
+    await requireProductionEnvironment('publish-engineering-homepage.ts')
+
     if (isRollback) {
       await rollbackHomepage()
     } else {

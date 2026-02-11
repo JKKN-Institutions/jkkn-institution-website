@@ -12,43 +12,115 @@ import type {
   SchemaGraph,
   WebPage,
 } from './types'
+import { getSiteUrl } from '@/lib/utils/site-url'
+import { getCurrentInstitution } from '@/lib/config/multi-tenant'
 
-// Site configuration
-const SITE_URL = 'https://jkkn.ac.in'
+/**
+ * Get organization configuration dynamically based on current institution
+ */
+function getOrganizationConfig(): OrganizationConfig {
+  const institution = getCurrentInstitution()
+  const SITE_URL = getSiteUrl()
 
-// Organization configuration
-const ORGANIZATION_CONFIG: OrganizationConfig = {
-  name: 'JKKN Group of Institutions',
-  alternateName: 'JKKN',
-  url: SITE_URL,
-  logo: `${SITE_URL}/logo.png`,
-  foundingDate: '1952',
-  description:
-    'Leading educational institution in Tamil Nadu offering quality education since 1952. NAAC A accredited with 50,000+ alumni worldwide.',
-  address: {
-    streetAddress: 'JKKN Educational Institutions',
-    addressLocality: 'Komarapalayam',
-    addressRegion: 'Tamil Nadu',
-    postalCode: '638183',
-    addressCountry: 'IN',
-  },
-  contactPoint: {
-    telephone: '+91-4288-234001',
-    contactType: 'admissions',
-    email: 'info@jkkn.ac.in',
-  },
-  sameAs: [
-    'https://www.facebook.com/jkaboratory',
-    'https://www.instagram.com/jkkn_institutions',
-    'https://www.linkedin.com/company/jkkn-group-of-institutions',
-    'https://www.youtube.com/@jkkngroupofinstitutions',
-  ],
+  // Institution-specific configurations
+  const configs: Record<string, Partial<OrganizationConfig>> = {
+    main: {
+      name: 'JKKN Group of Institutions',
+      alternateName: 'JKKN',
+      foundingDate: '1952',
+      description:
+        'Leading educational institution in Tamil Nadu offering quality education since 1952. NAAC A accredited with 50,000+ alumni worldwide.',
+      address: {
+        streetAddress: 'JKKN Educational Institutions',
+        addressLocality: 'Komarapalayam',
+        addressRegion: 'Tamil Nadu',
+        postalCode: '638183',
+        addressCountry: 'IN',
+      },
+      contactPoint: {
+        telephone: '+91-4288-234001',
+        contactType: 'admissions',
+        email: 'info@jkkn.ac.in',
+      },
+      sameAs: [
+        'https://www.facebook.com/jkaboratory',
+        'https://www.instagram.com/jkkn_institutions',
+        'https://www.linkedin.com/company/jkkn-group-of-institutions',
+        'https://www.youtube.com/@jkkngroupofinstitutions',
+      ],
+    },
+    engineering: {
+      name: 'JKKN College of Engineering and Technology',
+      alternateName: 'JKKN CET',
+      foundingDate: '2008',
+      description:
+        'Premier engineering college in Tamil Nadu affiliated to Anna University. Offers UG and PG programs in Engineering and Technology with excellent placement record.',
+      address: institution.contact ? {
+        streetAddress: institution.contact.address.line1 + (institution.contact.address.line2 ? ', ' + institution.contact.address.line2 : ''),
+        addressLocality: institution.contact.address.city,
+        addressRegion: institution.contact.address.state,
+        postalCode: institution.contact.address.pincode,
+        addressCountry: 'IN',
+      } : undefined,
+      contactPoint: institution.contact ? {
+        telephone: institution.contact.phoneFormatted,
+        contactType: 'admissions',
+        email: institution.contact.email,
+      } : undefined,
+    },
+    dental: {
+      name: 'JKKN Dental College and Hospital',
+      alternateName: 'JKKN DC',
+      foundingDate: '2005',
+      description:
+        'Leading dental college and hospital in Tamil Nadu affiliated to The Tamil Nadu Dr. M.G.R. Medical University. Offers BDS, MDS, and specialized dental care services.',
+    },
+    pharmacy: {
+      name: 'JKKN College of Pharmacy',
+      alternateName: 'JKKN CP',
+      foundingDate: '2008',
+      description:
+        'AICTE approved pharmacy college in Tamil Nadu offering B.Pharm, M.Pharm, and Pharm.D programs with state-of-the-art facilities.',
+    },
+  }
+
+  const specificConfig = configs[institution.id] || {}
+
+  return {
+    name: institution.name,
+    alternateName: institution.shortName,
+    url: SITE_URL,
+    logo: `${SITE_URL}/logo.png`,
+    foundingDate: specificConfig.foundingDate || '1952',
+    description: specificConfig.description || `Official website of ${institution.name}`,
+    address: specificConfig.address || {
+      streetAddress: 'JKKN Educational Institutions',
+      addressLocality: 'Komarapalayam',
+      addressRegion: 'Tamil Nadu',
+      postalCode: '638183',
+      addressCountry: 'IN',
+    },
+    contactPoint: specificConfig.contactPoint || {
+      telephone: '+91-4288-234001',
+      contactType: 'admissions',
+      email: 'info@jkkn.ac.in',
+    },
+    sameAs: specificConfig.sameAs || [
+      'https://www.facebook.com/jkaboratory',
+      'https://www.instagram.com/jkkn_institutions',
+      'https://www.linkedin.com/company/jkkn-group-of-institutions',
+      'https://www.youtube.com/@jkkngroupofinstitutions',
+    ],
+  }
 }
 
 /**
  * Generate EducationalOrganization schema for global use
  */
 export function generateOrganizationSchema(): EducationalOrganization {
+  const SITE_URL = getSiteUrl()
+  const ORGANIZATION_CONFIG = getOrganizationConfig()
+
   return {
     '@context': 'https://schema.org',
     '@type': 'EducationalOrganization',
@@ -81,6 +153,8 @@ export function generateOrganizationSchema(): EducationalOrganization {
  * Generate BreadcrumbList schema from breadcrumb items
  */
 export function generateBreadcrumbSchema(items: BreadcrumbItem[]): BreadcrumbList {
+  const SITE_URL = getSiteUrl()
+
   const itemListElement: ListItem[] = items.map((item, index) => ({
     '@type': 'ListItem',
     position: index + 1,
@@ -104,6 +178,9 @@ export function generateWebPageSchema(
   description?: string,
   breadcrumbs?: BreadcrumbItem[]
 ): WebPage {
+  const SITE_URL = getSiteUrl()
+  const ORGANIZATION_CONFIG = getOrganizationConfig()
+
   const schema: WebPage = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -149,8 +226,6 @@ export function serializeSchema(schema: object): string {
 }
 
 /**
- * Get the site URL constant
+ * Export getSiteUrl from utils for backwards compatibility
  */
-export function getSiteUrl(): string {
-  return SITE_URL
-}
+export { getSiteUrl } from '@/lib/utils/site-url'

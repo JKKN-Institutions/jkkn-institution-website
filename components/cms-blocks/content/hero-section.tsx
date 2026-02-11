@@ -190,21 +190,36 @@ export default function HeroSection({
       )}
       style={{ minHeight }}
     >
-      {/* Parallax Background */}
-      <div
-        className="absolute inset-0 transition-transform duration-100"
-        style={{
-          backgroundImage:
-            backgroundType === 'image' && backgroundImage
-              ? `url(${backgroundImage})`
-              : backgroundType === 'gradient'
-                ? backgroundGradient
-                : undefined,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          transform: `translateY(${scrollY}px) scale(1.1)`,
-        }}
-      />
+      {/* Parallax Background - Image */}
+      {backgroundType === 'image' && backgroundImage && (
+        <div
+          className="absolute inset-0 transition-transform duration-100"
+          style={{
+            transform: `translateY(${scrollY}px) scale(1.1)`,
+          }}
+        >
+          <Image
+            src={backgroundImage}
+            alt={backgroundImageAlt || 'Hero background'}
+            fill
+            className="object-cover"
+            priority
+            quality={80}
+            sizes="100vw"
+          />
+        </div>
+      )}
+
+      {/* Parallax Background - Gradient */}
+      {backgroundType === 'gradient' && (
+        <div
+          className="absolute inset-0 transition-transform duration-100"
+          style={{
+            background: backgroundGradient,
+            transform: `translateY(${scrollY}px) scale(1.1)`,
+          }}
+        />
+      )}
 
       {/* Video Background - Optimized for LCP */}
       {backgroundType === 'video' && backgroundVideo && (
@@ -256,6 +271,8 @@ export default function HeroSection({
                   width={120}
                   height={120}
                   className="w-auto h-20 sm:h-24 md:h-28 object-contain"
+                  quality={90}
+                  sizes="(max-width: 640px) 80px, 110px"
                 />
               </div>
             ) : (
