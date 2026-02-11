@@ -41,41 +41,42 @@ function ChartSkeleton() {
 }
 
 // Lazy load heavy blocks
-// TODO: Create gallery-block component
-// export const LazyGallery = dynamic(
-//   () => import('./media/gallery-block').then(mod => ({ default: mod.GalleryBlock })),
-//   {
-//     loading: () => <GallerySkeleton />,
-//     ssr: true // Keep SSR for SEO
-//   }
-// )
 
-// TODO: Create video-embed-block component
-// export const LazyVideoEmbed = dynamic(
-//   () => import('./media/video-embed-block').then(mod => ({ default: mod.VideoEmbedBlock })),
-//   {
-//     loading: () => <Skeleton className="h-[400px] w-full" />,
-//     ssr: false // Videos don't need SSR
-//   }
-// )
+// Image Gallery - Heavy component with Lightbox
+export const LazyImageGallery = dynamic(
+  () => import('./media/image-gallery'),
+  {
+    loading: () => <GallerySkeleton />,
+    ssr: true // Keep SSR for SEO
+  }
+)
 
-// TODO: Create contact-form-block component
-// export const LazyContactForm = dynamic(
-//   () => import('./forms/contact-form-block').then(mod => ({ default: mod.ContactFormBlock })),
-//   {
-//     loading: () => <FormSkeleton />,
-//     ssr: true
-//   }
-// )
+// Google Drive Video Embed - Heavy iframe embed
+export const LazyGoogleDriveVideo = dynamic(
+  () => import('./media/google-drive-video'),
+  {
+    loading: () => <Skeleton className="h-[400px] w-full" />,
+    ssr: false // Videos don't need SSR
+  }
+)
 
-// TODO: Create data-visualization-block component
-// export const LazyDataVisualization = dynamic(
-//   () => import('./data/data-visualization-block').then(mod => ({ default: mod.DataVisualizationBlock })),
-//   {
-//     loading: () => <ChartSkeleton />,
-//     ssr: false // Charts don't need SSR
-//   }
-// )
+// Progressive Video Player - Heavy video player with controls
+export const LazyProgressiveVideoPlayer = dynamic(
+  () => import('./media/progressive-video-player'),
+  {
+    loading: () => <Skeleton className="h-[400px] w-full" />,
+    ssr: false // Videos don't need SSR
+  }
+)
+
+// Admission Inquiry Form - Heavy form with validation
+export const LazyAdmissionInquiryForm = dynamic(
+  () => import('./content/admission-inquiry-form'),
+  {
+    loading: () => <FormSkeleton />,
+    ssr: true // Forms need SSR for accessibility
+  }
+)
 
 export const LazyModernHeroSection = dynamic(
   () => import('./content/modern-hero-section'),
@@ -95,10 +96,10 @@ export const LazyModernBentoGrid = dynamic(
 
 // Map component names to lazy-loaded components
 export const lazyBlocksRegistry = {
-  // 'GalleryBlock': LazyGallery, // TODO: Create gallery-block component
-  // 'VideoEmbedBlock': LazyVideoEmbed, // TODO: Create video-embed-block component
-  // 'ContactFormBlock': LazyContactForm, // TODO: Create contact-form-block component
-  // 'DataVisualizationBlock': LazyDataVisualization, // TODO: Create data-visualization-block component
+  'ImageGallery': LazyImageGallery,
+  'GoogleDriveVideo': LazyGoogleDriveVideo,
+  'ProgressiveVideoPlayer': LazyProgressiveVideoPlayer,
+  'AdmissionInquiryForm': LazyAdmissionInquiryForm,
   'ModernHeroSection': LazyModernHeroSection,
   'ModernBentoGrid': LazyModernBentoGrid,
 } as const

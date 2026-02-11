@@ -7,7 +7,6 @@ import type { HeroSectionProps } from '@/lib/cms/registry-types'
 import { useEffect, useState, useRef, useMemo } from 'react'
 import { ChevronDown, ArrowRight, Award, TrendingUp, Users, Calendar } from 'lucide-react'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
 
 export const ModernHeroSectionPropsSchema = HeroSectionPropsSchema
 
@@ -106,11 +105,12 @@ export default function ModernHeroSection({
 
             {/* Main Content Card - Glassmorphism */}
             <div className="container relative z-10 mx-auto px-4 py-20 flex flex-col items-center">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.8, ease: 'easeOut' }}
-                    className="max-w-4xl w-full bg-white/70 backdrop-blur-xl border border-white/40 rounded-[2rem] p-10 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.05)] text-center"
+                <div
+                    className={cn(
+                        "max-w-4xl w-full bg-white/70 backdrop-blur-xl border border-white/40 rounded-[2rem] p-10 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.05)] text-center",
+                        "transition-all duration-700 ease-out",
+                        isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                    )}
                 >
                     {/* Badge/Logo Section */}
                     <div className="mb-8 flex justify-center">
@@ -168,7 +168,7 @@ export default function ModernHeroSection({
                             </a>
                         ))}
                     </div>
-                </motion.div>
+                </div>
             </div>
 
             {/* Floating Trust Indicators (Optional Bottom Bar) */}
