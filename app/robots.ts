@@ -1,8 +1,15 @@
 /**
- * Robots.txt Generator
+ * Robots.txt Generator (LEGACY - Main Institution Reference)
  * Dynamic robots.txt using Next.js MetadataRoute API
  * Strategy: ALLOW ALL AI BOTS (Maximum Visibility)
  * Updated: January 2026
+ *
+ * NOTE: This file is now used as a reference for the Main Institution only.
+ * The actual robots.txt is served by app/robots.txt/route.ts which provides
+ * institution-specific content based on NEXT_PUBLIC_INSTITUTION_ID.
+ *
+ * The route handler (route.ts) takes precedence over this file.
+ * This file is kept for backward compatibility and as a reference.
  */
 
 import { MetadataRoute } from 'next'
