@@ -54,10 +54,10 @@ export async function generateStaticParams() {
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { googleVerification: string } }
+  { params }: { params: Promise<{ googleVerification: string }> }
 ) {
   const institutionId = process.env.NEXT_PUBLIC_INSTITUTION_ID || 'main'
-  const filename = params.googleVerification
+  const { googleVerification: filename } = await params
 
   // Check if this filename matches the current institution's verification file
   const content = getVerificationByFilename(filename, institutionId)
