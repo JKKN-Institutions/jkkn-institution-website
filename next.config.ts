@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
   // Public routes can still use static generation via generateStaticParams
   cacheComponents: false,
 
+  // Turbopack config (Next.js 16 default bundler)
+  // Empty config silences the "webpack config without turbopack config" warning
+  turbopack: {},
+
   // Compiler options for modern browser targeting
   // Reduces bundle size by ~14 KiB by removing legacy polyfills
   compiler: {

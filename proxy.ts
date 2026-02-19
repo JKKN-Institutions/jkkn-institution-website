@@ -35,7 +35,7 @@ const compiledRoutePatterns: Array<{ pattern: RegExp; permission: string }> = Ob
 // Routes that guests CAN access (even with pending approval)
 const guestAllowedRoutes = new Set(['/admin', '/auth/access-denied'])
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // CRITICAL: Extract pathname FIRST, before creating any clients
   const pathname = request.nextUrl.pathname
 
