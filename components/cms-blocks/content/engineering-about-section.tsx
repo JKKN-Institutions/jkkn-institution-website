@@ -156,7 +156,8 @@ export default function EngineeringAboutSection({
               alt={imageAlt}
               fill
               className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 50vw"
+              sizes="(max-width: 768px) 88vw, (max-width: 1024px) 85vw, 42vw"
+              quality={45}
             />
           </div>
 

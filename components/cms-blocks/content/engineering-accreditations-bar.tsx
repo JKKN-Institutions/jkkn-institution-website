@@ -186,7 +186,7 @@ export default function EngineeringAccreditationsBar({
                     width={40}
                     height={40}
                     className="object-contain"
-                    quality={85}
+                    quality={50}
                   />
                 ) : (
                   <AccreditationIcon icon={accreditation.icon || 'award'} />

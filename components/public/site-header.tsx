@@ -275,7 +275,7 @@ export function SiteHeader({
                   className="object-contain"
                   priority
                   fetchPriority="high"
-                  quality={90}
+                  quality={55}
                 />
               </div>
             </Link>
@@ -359,9 +359,7 @@ export function SiteHeader({
                   fill
                   sizes="56px"
                   className="object-contain"
-                  quality={90}
-                  priority
-                  fetchPriority="high"
+                  quality={55}
                 />
               </div>
             </Link>
