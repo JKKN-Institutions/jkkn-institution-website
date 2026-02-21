@@ -445,8 +445,15 @@ export function SiteHeader({
       </div>
 
       {/* Spacer for fixed header - only needed on live site, not in preview */}
-      {!isPreview && headerHeight > 0 && (
-        <div style={{ height: headerHeight }} />
+      {/* Render immediately with CSS-estimated height to prevent CLS, then refine with measured value */}
+      {!isPreview && (
+        <div
+          style={{
+            height: headerHeight > 0
+              ? headerHeight
+              : `clamp(${(logoSizes.mobile || 56) + 8}px, calc(8vw + 12px), ${getLogoSize(logoSizes) + 24}px)`,
+          }}
+        />
       )}
     </>
   )

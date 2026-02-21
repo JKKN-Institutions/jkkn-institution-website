@@ -217,6 +217,7 @@ export default function EngineeringHeroSection({
 }: EngineeringHeroSectionProps) {
   const sectionRef = useInView(0.1)
 
+  // Animate only below-the-fold elements to avoid penalizing LCP
   const animateClass = (delay: number) =>
     showAnimations
       ? cn(
@@ -251,18 +252,14 @@ export default function EngineeringHeroSection({
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[calc(100vh-5rem)] pt-2 pb-6 lg:pt-4 lg:pb-10">
-          {/* Left Content */}
+          {/* Left Content - No opacity animation on above-the-fold LCP elements */}
           <div>
             {/* Badge */}
             <div
-              className={cn(
-                'inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6',
-                animateClass(0)
-              )}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
               style={{
                 backgroundColor: primaryColor,
                 color: '#ffffff',
-                transitionDelay: '0ms',
               }}
             >
               <GraduationCap className="w-4 h-4" />
@@ -271,33 +268,23 @@ export default function EngineeringHeroSection({
 
             {/* Title */}
             <h1
-              className={cn(
-                'text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] xl:text-5xl 2xl:text-6xl font-bold leading-tight mb-6',
-                animateClass(100)
-              )}
-              style={{ color: primaryColor, transitionDelay: '100ms' }}
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] xl:text-5xl 2xl:text-6xl font-bold leading-tight mb-6"
+              style={{ color: primaryColor }}
             >
               {title}
             </h1>
 
-            {/* Description */}
+            {/* Description - LCP element, must render immediately */}
             <p
-              className={cn(
-                'text-lg sm:text-xl mb-8 max-w-xl',
-                animateClass(200)
-              )}
-              style={{ color: '#000000', transitionDelay: '200ms' }}
+              className="text-lg sm:text-xl mb-8 max-w-xl"
+              style={{ color: '#000000' }}
             >
               {description}
             </p>
 
             {/* CTAs */}
             <div
-              className={cn(
-                'flex flex-wrap gap-4 mb-10',
-                animateClass(300)
-              )}
-              style={{ transitionDelay: '300ms' }}
+              className="flex flex-wrap gap-4 mb-10"
             >
               <Link
                 href={primaryCta.link}
@@ -341,13 +328,9 @@ export default function EngineeringHeroSection({
             </div>
           </div>
 
-          {/* Right Content - Image */}
+          {/* Right Content - Image - No opacity animation (LCP critical) */}
           <div
-            className={cn(
-              'relative block',
-              animateClass(200)
-            )}
-            style={{ transitionDelay: '200ms' }}
+            className="relative block"
           >
             <div className="relative">
               {/* Decorative frame */}
