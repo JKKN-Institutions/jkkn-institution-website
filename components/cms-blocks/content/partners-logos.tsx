@@ -5,6 +5,7 @@ import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import Image from 'next/image'
 import { useRef, useState, useEffect, useCallback } from 'react'
+import { debounce } from '@/lib/utils/dom-performance'
 import { Handshake, ChevronLeft, ChevronRight, MoveHorizontal } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
 
@@ -134,6 +135,8 @@ export function PartnersLogos({
   const velocityRef = useRef(0)
   const lastMoveTimeRef = useRef(0)
   const lastMoveXRef = useRef(0)
+  // Cache offsetLeft to avoid forced reflows during drag
+  const cachedOffsetLeftRef = useRef(0)
   const headerRef = useInView()
   const contentRef = useInView()
 
@@ -144,10 +147,13 @@ export function PartnersLogos({
 
   // Detect mobile for responsive autoplay speed
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    checkMobile()
+    const checkMobile = debounce(() => setIsMobile(window.innerWidth < 768), 150)
+    setIsMobile(window.innerWidth < 768) // Initial check
     window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    return () => {
+      checkMobile.cancel()
+      window.removeEventListener('resize', checkMobile)
+    }
   }, [])
 
   // Auto-hide swipe hint after 3 seconds
@@ -250,7 +256,9 @@ export function PartnersLogos({
     if (!enableSwipe || !scrollRef.current) return
     setIsDragging(true)
     setShowSwipeHint(false) // Hide swipe hint on first interaction
-    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    // Cache offsetLeft once to avoid forced reflows on every move
+    cachedOffsetLeftRef.current = scrollRef.current.offsetLeft
+    const x = e.touches[0].pageX - cachedOffsetLeftRef.current
     setDragStartX(x)
     setDragScrollLeft(scrollRef.current.scrollLeft)
     setIsPaused(true)
@@ -262,7 +270,7 @@ export function PartnersLogos({
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isDragging || !scrollRef.current) return
-    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const x = e.touches[0].pageX - cachedOffsetLeftRef.current
     const walk = (x - dragStartX) * 1.5 // 1.5x multiplier for natural feel
     scrollRef.current.scrollLeft = dragScrollLeft - walk
 
@@ -316,7 +324,9 @@ export function PartnersLogos({
     if (!scrollRef.current) return
     setIsDragging(true)
     setShowSwipeHint(false)
-    const x = e.pageX - scrollRef.current.offsetLeft
+    // Cache offsetLeft once to avoid forced reflows on every move
+    cachedOffsetLeftRef.current = scrollRef.current.offsetLeft
+    const x = e.pageX - cachedOffsetLeftRef.current
     setDragStartX(x)
     setDragScrollLeft(scrollRef.current.scrollLeft)
     setIsPaused(true)
@@ -329,7 +339,7 @@ export function PartnersLogos({
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging || !scrollRef.current) return
     e.preventDefault()
-    const x = e.pageX - scrollRef.current.offsetLeft
+    const x = e.pageX - cachedOffsetLeftRef.current
     const walk = (x - dragStartX) * 1.5
     scrollRef.current.scrollLeft = dragScrollLeft - walk
 

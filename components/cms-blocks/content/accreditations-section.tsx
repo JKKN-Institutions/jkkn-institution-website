@@ -492,6 +492,7 @@ export default function AccreditationsSection({
   const [isDragging, setIsDragging] = useState(false)
   const [dragStartX, setDragStartX] = useState(0)
   const [dragScrollLeft, setDragScrollLeft] = useState(0)
+  const cachedOffsetLeftRef = useRef(0)
 
   // Card dimensions for calculations
   const cardWidth = 180 // Card width + gap
@@ -500,7 +501,8 @@ export default function AccreditationsSection({
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (!scrollRef.current) return
     setIsDragging(true)
-    setDragStartX(e.pageX - scrollRef.current.offsetLeft)
+    cachedOffsetLeftRef.current = scrollRef.current.offsetLeft
+    setDragStartX(e.pageX - cachedOffsetLeftRef.current)
     setDragScrollLeft(scrollRef.current.scrollLeft)
     setIsPaused(true)
   }, [])
@@ -508,7 +510,7 @@ export default function AccreditationsSection({
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!isDragging || !scrollRef.current) return
     e.preventDefault()
-    const x = e.pageX - scrollRef.current.offsetLeft
+    const x = e.pageX - cachedOffsetLeftRef.current
     const walk = (x - dragStartX) * 1.5 // 1.5x multiplier for natural feel
     scrollRef.current.scrollLeft = dragScrollLeft - walk
   }, [isDragging, dragStartX, dragScrollLeft])
@@ -527,14 +529,15 @@ export default function AccreditationsSection({
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (!scrollRef.current) return
     setIsDragging(true)
-    setDragStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
+    cachedOffsetLeftRef.current = scrollRef.current.offsetLeft
+    setDragStartX(e.touches[0].pageX - cachedOffsetLeftRef.current)
     setDragScrollLeft(scrollRef.current.scrollLeft)
     setIsPaused(true)
   }, [])
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isDragging || !scrollRef.current) return
-    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const x = e.touches[0].pageX - cachedOffsetLeftRef.current
     const walk = (x - dragStartX) * 1.5 // 1.5x multiplier for natural feel
     scrollRef.current.scrollLeft = dragScrollLeft - walk
   }, [isDragging, dragStartX, dragScrollLeft])

@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import { useRef, useState, useEffect } from 'react'
+import { debounce } from '@/lib/utils/dom-performance'
 import { TrendingUp, Award, Users, Building2 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -517,12 +518,15 @@ export default function EngineeringPlacementsSection({
 
   // Detect mobile screen size
   useEffect(() => {
-    const checkMobile = () => {
+    const checkMobile = debounce(() => {
       setIsMobile(window.innerWidth < 768)
-    }
-    checkMobile()
+    }, 150)
+    setIsMobile(window.innerWidth < 768) // Initial check
     window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    return () => {
+      checkMobile.cancel()
+      window.removeEventListener('resize', checkMobile)
+    }
   }, [])
 
   // Speed preset mapping (lower values = faster animation)

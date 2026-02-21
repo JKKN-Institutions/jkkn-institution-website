@@ -59,16 +59,22 @@ export function ResizablePanel({
     }
   }, [width, isResizing, storageKey, collapsed])
 
+  // Cache rect on mousedown to avoid forced reflows on every mousemove
+  const cachedRectRef = useRef<DOMRect | null>(null)
+
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (collapsed) return
     e.preventDefault()
+    if (panelRef.current) {
+      cachedRectRef.current = panelRef.current.getBoundingClientRect()
+    }
     setIsResizing(true)
   }, [collapsed])
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (!isResizing || !panelRef.current || collapsed) return
+    if (!isResizing || !cachedRectRef.current || collapsed) return
 
-    const rect = panelRef.current.getBoundingClientRect()
+    const rect = cachedRectRef.current
     let newWidth: number
 
     if (side === 'left') {

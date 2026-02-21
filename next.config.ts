@@ -223,7 +223,7 @@ const nextConfig: NextConfig = {
             },
             // Analytics specific (only loads on analytics routes)
             analytics: {
-              test: /[\\/]node_modules[\\/](recharts|html2canvas|jspdf)[\\/]/,
+              test: /[\\/]node_modules[\\/](recharts|html2canvas|jspdf|core-js|canvg|rgbcolor|stackblur-canvas|css-line-break)[\\/]/,
               name: 'analytics',
               priority: 35,
               reuseExistingChunk: true,

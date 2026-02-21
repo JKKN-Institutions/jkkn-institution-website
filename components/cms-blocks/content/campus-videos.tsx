@@ -144,17 +144,21 @@ export function CampusVideos({
   const headerRef = useInView()
   const contentRef = useInView()
 
+  // Cache offsetLeft to avoid forced reflows during drag
+  const cachedOffsetLeftRef = useRef(0)
+
   // Touch handlers for mobile swipe
   const handleTouchStart = (e: React.TouchEvent) => {
     if (!scrollRef.current) return
     setIsDragging(true)
-    setStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
+    cachedOffsetLeftRef.current = scrollRef.current.offsetLeft
+    setStartX(e.touches[0].pageX - cachedOffsetLeftRef.current)
     setScrollLeft(scrollRef.current.scrollLeft)
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!isDragging || !scrollRef.current) return
-    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const x = e.touches[0].pageX - cachedOffsetLeftRef.current
     const walk = (x - startX) * 1.5
     scrollRef.current.scrollLeft = scrollLeft - walk
   }

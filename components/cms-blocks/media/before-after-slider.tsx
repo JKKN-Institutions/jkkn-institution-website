@@ -19,11 +19,13 @@ export default function BeforeAfterSlider({
   const [position, setPosition] = useState(startPosition)
   const containerRef = useRef<HTMLDivElement>(null)
   const isDragging = useRef(false)
+  // Cache rect on drag start to avoid forced reflows on every move
+  const cachedRectRef = useRef<DOMRect | null>(null)
 
   const handleMove = (clientX: number) => {
-    if (!containerRef.current || !isDragging.current) return
+    if (!cachedRectRef.current || !isDragging.current) return
 
-    const rect = containerRef.current.getBoundingClientRect()
+    const rect = cachedRectRef.current
     const newPosition = ((clientX - rect.left) / rect.width) * 100
 
     setPosition(Math.max(0, Math.min(100, newPosition)))
@@ -31,6 +33,9 @@ export default function BeforeAfterSlider({
 
   const handleMouseDown = () => {
     isDragging.current = true
+    if (containerRef.current) {
+      cachedRectRef.current = containerRef.current.getBoundingClientRect()
+    }
   }
 
   const handleMouseUp = () => {

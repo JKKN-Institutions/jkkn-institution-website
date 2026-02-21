@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
+import { throttleRAF } from '@/lib/utils/dom-performance'
 import {
   Phone,
   MessageCircle,
@@ -175,32 +176,33 @@ function PageFabInner({ config }: { config: FabConfig }) {
   const [isVisible, setIsVisible] = useState(false)
   const [isHidden, setIsHidden] = useState(false)
 
+  const lastScrollYRef = useRef(0)
+
   useEffect(() => {
+    lastScrollYRef.current = window.scrollY
+
     // Show FAB after delay
     const timer = setTimeout(() => setIsVisible(true), config.delaySeconds * 1000)
 
-    let lastScrollY = window.scrollY
+    const handleScroll = throttleRAF(() => {
+      const scrollY = window.scrollY
 
-    const handleScroll = () => {
       // Always show after scroll threshold
-      if (window.scrollY > 200) {
+      if (scrollY > 200) {
         setIsVisible(true)
       }
 
       // Handle hide on scroll
       if (config.hideOnScroll) {
-        if (window.scrollY > lastScrollY) {
-          setIsHidden(true) // Scrolling down
-        } else {
-          setIsHidden(false) // Scrolling up
-        }
-        lastScrollY = window.scrollY
+        setIsHidden(scrollY > lastScrollYRef.current) // true = down, false = up
+        lastScrollYRef.current = scrollY
       }
-    }
+    })
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => {
       clearTimeout(timer)
+      handleScroll.cancel()
       window.removeEventListener('scroll', handleScroll)
     }
   }, [config.delaySeconds, config.hideOnScroll])

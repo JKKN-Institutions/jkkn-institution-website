@@ -180,6 +180,8 @@ export function EducationStories({
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
+  // Cache offsetLeft to avoid forced reflows during drag
+  const cachedOffsetLeftRef = useRef(0)
 
   // Instagram thumbnails state
   const [instagramThumbnails, setInstagramThumbnails] = useState<Record<string, string | null>>({})
@@ -291,14 +293,15 @@ export function EducationStories({
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!scrollRef.current) return
     setIsDragging(true)
-    setStartX(e.pageX - scrollRef.current.offsetLeft)
+    cachedOffsetLeftRef.current = scrollRef.current.offsetLeft
+    setStartX(e.pageX - cachedOffsetLeftRef.current)
     setScrollLeft(scrollRef.current.scrollLeft)
   }
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging || !scrollRef.current) return
     e.preventDefault()
-    const x = e.pageX - scrollRef.current.offsetLeft
+    const x = e.pageX - cachedOffsetLeftRef.current
     const walk = (x - startX) * 1.5
     scrollRef.current.scrollLeft = scrollLeft - walk
   }
@@ -316,13 +319,14 @@ export function EducationStories({
   const handleTouchStart = (e: React.TouchEvent) => {
     if (!scrollRef.current) return
     setIsDragging(true)
-    setStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
+    cachedOffsetLeftRef.current = scrollRef.current.offsetLeft
+    setStartX(e.touches[0].pageX - cachedOffsetLeftRef.current)
     setScrollLeft(scrollRef.current.scrollLeft)
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!isDragging || !scrollRef.current) return
-    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const x = e.touches[0].pageX - cachedOffsetLeftRef.current
     const walk = (x - startX) * 1.5
     scrollRef.current.scrollLeft = scrollLeft - walk
   }

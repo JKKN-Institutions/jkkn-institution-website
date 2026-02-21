@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
+import { throttleRAF } from '@/lib/utils/dom-performance'
 import {
   Phone,
   MessageCircle,
@@ -40,20 +41,29 @@ export function FloatingActionButton({ config: propConfig }: FloatingActionButto
   const [isOpen, setIsOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
 
+  const isVisibleRef = useRef(false)
+
   useEffect(() => {
     // Show FAB after delay or scroll
     const delayMs = config.delay_ms ?? 2000
-    const timer = setTimeout(() => setIsVisible(true), delayMs)
+    const timer = setTimeout(() => {
+      isVisibleRef.current = true
+      setIsVisible(true)
+    }, delayMs)
 
-    const handleScroll = () => {
+    const handleScroll = throttleRAF(() => {
+      // Once visible, stop checking — no more reflows needed
+      if (isVisibleRef.current) return
       if (window.scrollY > 200) {
+        isVisibleRef.current = true
         setIsVisible(true)
       }
-    }
+    })
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => {
       clearTimeout(timer)
+      handleScroll.cancel()
       window.removeEventListener('scroll', handleScroll)
     }
   }, [config.delay_ms])

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { throttleRAF } from '@/lib/utils/dom-performance'
 
 /**
  * Custom hook for parallax scrolling effect
@@ -18,15 +19,16 @@ export function useParallax() {
   const [offset, setOffset] = useState(0)
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttleRAF(() => {
       setOffset(window.pageYOffset)
-    }
+    })
 
-    // Add scroll event listener
     window.addEventListener('scroll', handleScroll, { passive: true })
 
-    // Cleanup
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      handleScroll.cancel()
+      window.removeEventListener('scroll', handleScroll)
+    }
   }, [])
 
   return offset

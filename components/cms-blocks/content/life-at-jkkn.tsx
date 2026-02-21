@@ -139,6 +139,7 @@ export function LifeAtJKKN({
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
+  const cachedOffsetLeftRef = useRef(0)
   const [fetchedItems, setFetchedItems] = useState<LifeItem[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const headerRef = useInView()
@@ -182,13 +183,14 @@ export function LifeAtJKKN({
   const handleTouchStart = (e: React.TouchEvent) => {
     if (!scrollRef.current) return
     setIsDragging(true)
-    setStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
+    cachedOffsetLeftRef.current = scrollRef.current.offsetLeft
+    setStartX(e.touches[0].pageX - cachedOffsetLeftRef.current)
     setScrollLeft(scrollRef.current.scrollLeft)
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!isDragging || !scrollRef.current) return
-    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const x = e.touches[0].pageX - cachedOffsetLeftRef.current
     const walk = (x - startX) * 1.5
     scrollRef.current.scrollLeft = scrollLeft - walk
   }

@@ -10,7 +10,8 @@
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { throttleRAF } from '@/lib/utils/dom-performance'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
@@ -37,19 +38,22 @@ const defaultItems: NavItem[] = [
 export function OptimizedBottomNav({ items = defaultItems, className }: OptimizedBottomNavProps) {
   const pathname = usePathname()
   const [isVisible, setIsVisible] = useState(true)
-  const [lastScrollY, setLastScrollY] = useState(0)
+  const lastScrollYRef = useRef(0)
 
   // Hide on scroll down, show on scroll up
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttleRAF(() => {
       const currentScrollY = window.scrollY
-      setIsVisible(currentScrollY < lastScrollY || currentScrollY < 10)
-      setLastScrollY(currentScrollY)
-    }
+      setIsVisible(currentScrollY < lastScrollYRef.current || currentScrollY < 10)
+      lastScrollYRef.current = currentScrollY
+    })
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [lastScrollY])
+    return () => {
+      handleScroll.cancel()
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return (
     <nav

@@ -73,10 +73,12 @@ export function EnhancedPreview({
     const container = e.currentTarget.parentElement
     if (!container) return
 
+    // Cache rect once on mousedown to avoid forced reflows on every move
+    const cachedRect = container.getBoundingClientRect()
+
     const handleMove = (moveEvent: MouseEvent) => {
-      const rect = container.getBoundingClientRect()
-      const x = moveEvent.clientX - rect.left
-      const percentage = (x / rect.width) * 100
+      const x = moveEvent.clientX - cachedRect.left
+      const percentage = (x / cachedRect.width) * 100
       setSplitPosition(Math.max(10, Math.min(90, percentage)))
     }
 

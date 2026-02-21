@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { throttleRAF as rafThrottledScroll } from '@/lib/utils/dom-performance'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -167,11 +168,14 @@ export function SiteHeader({
   }, [isPreview])
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = rafThrottledScroll(() => {
       setIsScrolled(window.scrollY > 20)
-    }
+    })
     window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      handleScroll.cancel()
+      window.removeEventListener('scroll', handleScroll)
+    }
   }, [])
 
   useEffect(() => {
