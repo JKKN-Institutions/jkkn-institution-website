@@ -134,8 +134,8 @@ export default function EngineeringAboutSection({
   const animateClass = (delay: number) =>
     showAnimations
       ? cn(
-          'transition-opacity duration-700',
-          sectionRef.isInView ? 'opacity-100' : 'opacity-0'
+          'transition-[transform,opacity] duration-700',
+          sectionRef.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
         )
       : ''
 
