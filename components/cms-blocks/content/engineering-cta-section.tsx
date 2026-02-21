@@ -106,8 +106,8 @@ export default function EngineeringCTASection({
   const animateClass = (delay: number) =>
     showAnimations
       ? cn(
-          'transition-all duration-700',
-          sectionRef.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          'transition-opacity duration-700',
+          sectionRef.isInView ? 'opacity-100' : 'opacity-0'
         )
       : ''
 

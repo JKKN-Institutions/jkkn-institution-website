@@ -73,7 +73,7 @@ export default async function PublicLayout({
         />
 
         {/* Main Content */}
-        <main className="flex-1 overflow-x-hidden">{children}</main>
+        <main className="flex-1 overflow-x-hidden min-h-0">{children}</main>
 
         {/* Analytics Page Tracker */}
         <PageTracker />

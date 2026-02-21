@@ -45,11 +45,13 @@ function useInView(threshold = 0.1) {
 // ==========================================
 
 function useAnimatedCounter(end: number, duration: number = 2000, isInView: boolean) {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(end)
 
   useEffect(() => {
     if (!isInView) return
 
+    // Reset to 0 then animate up
+    setCount(0)
     let startTime: number | null = null
     let animationFrame: number
 
@@ -176,7 +178,7 @@ function StatCard({
       </div>
       <div>
         <div
-          className="text-2xl font-bold tabular-nums"
+          className="text-2xl font-bold tabular-nums inline-block"
           style={{ color: primaryColor, minWidth: '4.5rem' }}
         >
           {count}{stat.suffix}
@@ -218,8 +220,8 @@ export default function EngineeringHeroSection({
   const animateClass = (delay: number) =>
     showAnimations
       ? cn(
-          'transition-all duration-700',
-          sectionRef.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          'transition-opacity duration-700',
+          sectionRef.isInView ? 'opacity-100' : 'opacity-0'
         )
       : ''
 
