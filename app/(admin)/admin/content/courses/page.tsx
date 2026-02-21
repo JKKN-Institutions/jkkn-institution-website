@@ -3,6 +3,8 @@ import { getCoursePages, getCoursePageStats } from '@/app/actions/cms/courses/ge
 import { CourseListClient } from '@/components/admin/courses/course-list-client'
 import { GraduationCap, BookOpen, BarChart3, Clock } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Course Pages | Admin',
   description: 'Manage all UG and PG course pages',
