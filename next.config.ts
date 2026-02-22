@@ -403,9 +403,10 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    qualities: [25, 35, 45, 55, 65, 75, 85, 95],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days cache
     // Note: Image quality is controlled per-component via quality prop
-    // Default Next.js quality is 75, we use 35-55 on components for AVIF optimization
+    // Custom qualities list allows AVIF-optimized values (35-55) alongside standard (75)
     // Allow loading images from Supabase CDN (which may resolve to IPs flagged as private)
     dangerouslyAllowLocalIP: true,
     remotePatterns: [

@@ -275,7 +275,7 @@ export function SiteHeader({
                   className="object-contain"
                   priority
                   fetchPriority="high"
-                  quality={55}
+                  quality={35}
                 />
               </div>
             </Link>
