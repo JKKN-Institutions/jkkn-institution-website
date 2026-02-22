@@ -12,11 +12,16 @@ import Link from 'next/link'
 // Intersection Observer Hook
 // ==========================================
 
-function useInView(threshold = 0.1) {
+function useInView(threshold = 0.1, initialVisible = false) {
   const ref = useRef<HTMLDivElement>(null)
-  const [isInView, setIsInView] = useState(false)
+  const [isInView, setIsInView] = useState(initialVisible)
 
   useEffect(() => {
+    if (initialVisible) {
+      setIsInView(true)
+      return
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -35,7 +40,7 @@ function useInView(threshold = 0.1) {
         observer.unobserve(ref.current)
       }
     }
-  }, [threshold])
+  }, [threshold, initialVisible])
 
   return { ref, isInView }
 }
@@ -215,16 +220,11 @@ export default function EngineeringHeroSection({
   className,
   isEditing,
 }: EngineeringHeroSectionProps) {
-  const sectionRef = useInView(0.1)
+  // Hero is always above the fold - initialize as visible to prevent CLS
+  const sectionRef = useInView(0.1, true)
 
-  // Animate only below-the-fold elements to avoid penalizing LCP
-  const animateClass = (delay: number) =>
-    showAnimations
-      ? cn(
-          'transition-opacity duration-700',
-          sectionRef.isInView ? 'opacity-100' : 'opacity-0'
-        )
-      : ''
+  // No entrance animations for above-the-fold hero content (prevents CLS)
+  const animateClass = (_delay: number) => ''
 
   return (
     <section
@@ -351,7 +351,7 @@ export default function EngineeringHeroSection({
                     className="object-cover"
                     priority
                     sizes="(max-width: 768px) 88vw, (max-width: 1024px) 85vw, 40vw"
-                    quality={75}
+                    quality={45}
                   />
                 </div>
 

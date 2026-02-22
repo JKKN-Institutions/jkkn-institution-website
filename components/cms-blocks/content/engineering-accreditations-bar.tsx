@@ -11,11 +11,16 @@ import Image from 'next/image'
 // Intersection Observer Hook
 // ==========================================
 
-function useInView(threshold = 0.1) {
+function useInView(threshold = 0.1, initialVisible = false) {
   const ref = useRef<HTMLDivElement>(null)
-  const [isInView, setIsInView] = useState(false)
+  const [isInView, setIsInView] = useState(initialVisible)
 
   useEffect(() => {
+    if (initialVisible) {
+      setIsInView(true)
+      return
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -34,7 +39,7 @@ function useInView(threshold = 0.1) {
         observer.unobserve(ref.current)
       }
     }
-  }, [threshold])
+  }, [threshold, initialVisible])
 
   return { ref, isInView }
 }
@@ -117,7 +122,8 @@ export default function EngineeringAccreditationsBar({
   className,
   isEditing,
 }: EngineeringAccreditationsBarProps) {
-  const sectionRef = useInView(0.1)
+  // Accreditations bar is directly below hero (above the fold) - initialize visible to prevent CLS
+  const sectionRef = useInView(0.1, true)
 
   const paddingClasses = {
     sm: 'py-6',
@@ -125,18 +131,13 @@ export default function EngineeringAccreditationsBar({
     lg: 'py-10 md:py-14',
   }
 
-  const animateClass = (delay: number) =>
-    showAnimations
-      ? cn(
-          'transition-[transform,opacity] duration-700',
-          sectionRef.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-        )
-      : ''
+  // No entrance animations for above-the-fold content (prevents CLS of 0.719)
+  const animateClass = (_delay: number) => ''
 
   return (
     <section
       ref={sectionRef.ref}
-      className={cn('relative w-full overflow-hidden', paddingClasses[paddingY], className)}
+      className={cn('relative w-full overflow-hidden min-h-[140px] md:min-h-[160px]', paddingClasses[paddingY], className)}
       style={{ backgroundColor }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -177,6 +178,7 @@ export default function EngineeringAccreditationsBar({
                 className="w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center mb-2 md:mb-3 transition-all duration-300 group-hover:scale-110"
                 style={{
                   backgroundColor: `${primaryColor}10`,
+                  color: primaryColor,
                 }}
               >
                 {accreditation.logo ? (
@@ -191,11 +193,6 @@ export default function EngineeringAccreditationsBar({
                 ) : (
                   <AccreditationIcon icon={accreditation.icon || 'award'} />
                 )}
-                <style jsx>{`
-                  div :global(svg) {
-                    color: ${primaryColor};
-                  }
-                `}</style>
               </div>
 
               {/* Short Name */}
