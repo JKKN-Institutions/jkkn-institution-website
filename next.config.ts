@@ -405,7 +405,7 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days cache
     // Note: Image quality is controlled per-component via quality prop
-    // Default Next.js quality is 75, we use 80-90 on components for optimization
+    // Default Next.js quality is 75, we use 35-55 on components for AVIF optimization
     // Allow loading images from Supabase CDN (which may resolve to IPs flagged as private)
     dangerouslyAllowLocalIP: true,
     remotePatterns: [
