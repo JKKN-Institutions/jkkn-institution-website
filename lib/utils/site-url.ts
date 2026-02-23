@@ -8,16 +8,34 @@
  * - Environment-driven configuration
  */
 
+/** Production fallback URL — used when env var is absent or points to localhost */
+const PRODUCTION_FALLBACK = 'https://jkkn.ac.in'
+
 /**
- * Gets the site URL from environment variables
+ * Gets the site URL from environment variables.
+ * Localhost URLs are always rejected (in both development and production) because
+ * this function is used for JSON-LD @id / url fields which must be canonical
+ * production URLs for search engines and AI crawlers — fixes SW-006.
+ *
  * @returns The site URL without trailing slash
  */
 export function getSiteUrl(): string {
   const url = process.env.NEXT_PUBLIC_SITE_URL
+
   if (!url) {
-    console.warn('⚠️  NEXT_PUBLIC_SITE_URL not set, using fallback')
-    return 'https://jkkn.ac.in'
+    console.warn('⚠️  NEXT_PUBLIC_SITE_URL not set, using fallback:', PRODUCTION_FALLBACK)
+    return PRODUCTION_FALLBACK
   }
+
+  if (url.includes('localhost')) {
+    console.warn(
+      '⚠️  NEXT_PUBLIC_SITE_URL points to localhost — JSON-LD schemas will use:',
+      PRODUCTION_FALLBACK,
+      '\n   Fix: set NEXT_PUBLIC_SITE_URL=https://jkkn.ac.in in Vercel → Settings → Environment Variables'
+    )
+    return PRODUCTION_FALLBACK
+  }
+
   return url.replace(/\/$/, '') // Remove trailing slash
 }
 

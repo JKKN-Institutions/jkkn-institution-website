@@ -595,6 +595,7 @@ Disallow: /api/
 Disallow: /admin/
 
 Sitemap: ${siteUrl}/sitemap.xml
+Host: ${siteUrl}
 `
 }
 

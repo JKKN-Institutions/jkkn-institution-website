@@ -350,8 +350,10 @@ export default function EngineeringHeroSection({
                     fill
                     className="object-cover"
                     priority
+                    fetchPriority="high"
+                    loading="eager"
                     sizes="(max-width: 768px) 88vw, (max-width: 1024px) 85vw, 40vw"
-                    quality={45}
+                    quality={75}
                   />
                 </div>
 

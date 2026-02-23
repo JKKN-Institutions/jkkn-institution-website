@@ -250,10 +250,9 @@ function USPCardComponent({
         'flex items-center gap-4',
         'shadow-[0_4px_20px_rgba(0,0,0,0.08),0_8px_40px_rgba(11,109,65,0.15)]',
         'hover:shadow-[0_8px_30px_rgba(0,0,0,0.12),0_16px_60px_rgba(11,109,65,0.2)]',
-        'hover:-translate-y-1',
         'border border-white/50',
-        'transition-all duration-500 ease-out cursor-default',
-        isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        'transition-opacity duration-500 ease-out cursor-default',
+        isInView ? 'opacity-100' : 'opacity-0'
       )}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
@@ -405,10 +404,10 @@ export default function WhyChooseJKKN({
           ref={sectionRef.ref}
           className={cn(
             'text-center max-w-4xl mx-auto mb-12 md:mb-16',
-            'transition-all duration-700',
+            'transition-opacity duration-700',
             sectionRef.isInView || isEditing
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-8'
+              ? 'opacity-100'
+              : 'opacity-0'
           )}
         >
           {/* Badge */}
@@ -499,10 +498,10 @@ export default function WhyChooseJKKN({
               'shadow-[0_4px_20px_rgba(0,0,0,0.08),0_8px_40px_rgba(11,109,65,0.15)]',
               'hover:shadow-[0_8px_30px_rgba(0,0,0,0.12),0_16px_60px_rgba(11,109,65,0.2)]',
               'border border-white/50',
-              'transition-all duration-700 delay-300',
+              'transition-opacity duration-700 delay-300',
               listRef.isInView || isEditing
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-8'
+                ? 'opacity-100'
+                : 'opacity-0'
             )}
           >
             <h3

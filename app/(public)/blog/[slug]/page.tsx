@@ -363,7 +363,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound()
   }
 
-  const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL || ''}/blog/${slug}`
+  const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://jkkn.ac.in'}/blog/${slug}`
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">

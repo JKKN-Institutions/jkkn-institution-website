@@ -8,6 +8,7 @@
  * Each institution can have:
  * - sitemap.xml (main index)
  * - sitemap-pages.xml (general pages)
+ * - sitemap-institutions.xml (institution/college pages)
  * - sitemap-courses.xml (courses/departments)
  * - sitemap-blog.xml (blog/events/news)
  */
@@ -27,6 +28,7 @@ export interface SitemapIndex {
 export interface InstitutionSitemaps {
   index: SitemapIndex[]
   pages: SitemapEntry[]
+  institutions: SitemapEntry[]
   courses: SitemapEntry[]
   blog: SitemapEntry[]
 }
@@ -43,6 +45,9 @@ export function getSitemapIndex(siteUrl: string, institutionId: string): Sitemap
     ],
     main: [
       { loc: `${siteUrl}/sitemap-pages.xml`, lastmod: '2026-02-16' },
+      { loc: `${siteUrl}/sitemap-institutions.xml`, lastmod: '2026-02-16' },
+      { loc: `${siteUrl}/sitemap-courses.xml`, lastmod: '2026-02-16' },
+      { loc: `${siteUrl}/sitemap-blog.xml`, lastmod: '2026-02-16' },
     ],
   }
 
@@ -61,11 +66,26 @@ export function getPagesSitemap(siteUrl: string, institutionId: string): Sitemap
 }
 
 /**
+ * Get institutions sitemap for an institution
+ */
+export function getInstitutionsSitemap(siteUrl: string, institutionId: string): SitemapEntry[] {
+  if (institutionId === 'main') {
+    return getMainInstitutions(siteUrl)
+  }
+
+  return []
+}
+
+/**
  * Get courses sitemap for an institution
  */
 export function getCoursesSitemap(siteUrl: string, institutionId: string): SitemapEntry[] {
   if (institutionId === 'engineering') {
     return getEngineeringCourses(siteUrl)
+  }
+
+  if (institutionId === 'main') {
+    return getMainCourses(siteUrl)
   }
 
   return []
@@ -77,6 +97,10 @@ export function getCoursesSitemap(siteUrl: string, institutionId: string): Sitem
 export function getBlogSitemap(siteUrl: string, institutionId: string): SitemapEntry[] {
   if (institutionId === 'engineering') {
     return getEngineeringBlog(siteUrl)
+  }
+
+  if (institutionId === 'main') {
+    return getMainBlog(siteUrl)
   }
 
   return []
@@ -187,12 +211,108 @@ function getEngineeringBlog(siteUrl: string): SitemapEntry[] {
 }
 
 /**
- * Main Institution - Pages Sitemap (Placeholder)
+ * Main Institution - Pages Sitemap
  */
 function getMainPages(siteUrl: string): SitemapEntry[] {
   return [
     { loc: `${siteUrl}`, lastmod: '2026-02-16', changefreq: 'daily', priority: 1.0 },
+    { loc: `${siteUrl}/home`, lastmod: '2026-02-16', changefreq: 'daily', priority: 1.0 },
     { loc: `${siteUrl}/about`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.8 },
+    { loc: `${siteUrl}/contact`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/our-trust`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.8 },
+    { loc: `${siteUrl}/our-management`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.8 },
+    { loc: `${siteUrl}/vision-and-mission`, lastmod: '2026-02-16', changefreq: 'yearly', priority: 0.7 },
+    { loc: `${siteUrl}/careers`, lastmod: '2026-02-16', changefreq: 'weekly', priority: 0.8 },
+    { loc: `${siteUrl}/placements`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.8 },
+    { loc: `${siteUrl}/facilities`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.7 },
+    { loc: `${siteUrl}/hostel`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.7 },
+    { loc: `${siteUrl}/transport`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.7 },
+    { loc: `${siteUrl}/auditorium`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/seminar-hall`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/sports`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/facilities/food-court-stationery-shop`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.5 },
+    { loc: `${siteUrl}/emergency-care`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/ambulance-services`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/microsoft-360`, lastmod: '2026-02-16', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/more`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.5 },
+    { loc: `${siteUrl}/privacy-policy`, lastmod: '2026-02-16', changefreq: 'yearly', priority: 0.3 },
+    { loc: `${siteUrl}/terms-and-conditions`, lastmod: '2026-02-16', changefreq: 'yearly', priority: 0.3 },
+  ]
+}
+
+/**
+ * Main Institution - Institutions Sitemap
+ */
+function getMainInstitutions(siteUrl: string): SitemapEntry[] {
+  return [
+    { loc: `${siteUrl}/our-institutions`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/our-colleges`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/our-schools`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.8 },
+    { loc: `${siteUrl}/jkkn-dental-college`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/jkkn-college-of-pharmacy`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/jkkn-college-of-nursing`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/jkkn-college-of-allied-health-sciences`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/jkkn-college-of-engineering`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/jkkn-college-of-arts-and-science`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/jkkn-college-of-education`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/jkkn-matriculation-higher-secondary-school`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.8 },
+    { loc: `${siteUrl}/nattraja-vidhyalya`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.8 },
+  ]
+}
+
+/**
+ * Main Institution - Courses Sitemap
+ */
+function getMainCourses(siteUrl: string): SitemapEntry[] {
+  return [
+    { loc: `${siteUrl}/courses-offered`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/dental-courses`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/pharmacy-courses`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/nursing-courses`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/courses-offered/allied-health-sciences-courses`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/engineering-courses`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/arts-and-science-courses`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/education-courses`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.9 },
+  ]
+}
+
+/**
+ * Main Institution - Blog Sitemap
+ */
+function getMainBlog(siteUrl: string): SitemapEntry[] {
+  return [
+    { loc: `${siteUrl}/blog`, lastmod: '2026-02-16', changefreq: 'daily', priority: 0.7 },
+    { loc: `${siteUrl}/blog/tell-us-how-salt-keeps-dental-problems-away-complete-evidence-based-guide-2026`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/blog/dental-braces-before-and-after-complete-transformation-guide-2026`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/blog/what-is-a-3-way-syringe-in-dentistry-complete-guide-to-the-dental-air-water-syringe-2026`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/blog/bmp-full-form-in-dental-complete-guide-to-bone-morphogenetic-proteins-2026`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/blog/rvg-dental-full-form-complete-guide-to-radiovisiography-rvg-in-modern-dentistry-2026`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/blog/kumarapalayam-bypass-marathon-2025`, lastmod: '2025-01-01', changefreq: 'yearly', priority: 0.5 },
+    { loc: `${siteUrl}/blog/alumni-meet-2025-reconnect-relive`, lastmod: '2025-02-22', changefreq: 'yearly', priority: 0.5 },
+    { loc: `${siteUrl}/blog/onam-celebrations-ahs-campus`, lastmod: '2025-01-01', changefreq: 'yearly', priority: 0.5 },
+    { loc: `${siteUrl}/blog/campus-recruitment-drive-2025-a-step-towards-bright-futures`, lastmod: '2025-01-01', changefreq: 'yearly', priority: 0.6 },
+    { loc: `${siteUrl}/blog/industry-connect-ai-process-consulting-new-engine-of-business-success`, lastmod: '2025-01-01', changefreq: 'yearly', priority: 0.5 },
+    { loc: `${siteUrl}/blog/linkedin-live-webinar-classroom-to-shopfloor-ai-aedp-perspective`, lastmod: '2025-01-01', changefreq: 'yearly', priority: 0.5 },
+    { loc: `${siteUrl}/blog/placement-day-celebration-2025`, lastmod: '2025-04-25', changefreq: 'yearly', priority: 0.6 },
+    { loc: `${siteUrl}/blog/jkkncets-initiative-mental-health-suicide-awareness`, lastmod: '2025-01-01', changefreq: 'yearly', priority: 0.5 },
+    { loc: `${siteUrl}/blog/pongal-2025-celebrations-sresakthimayeil-institute-nursing-research`, lastmod: '2025-01-15', changefreq: 'yearly', priority: 0.5 },
+    { loc: `${siteUrl}/blog/inauguration-senior-internship-program`, lastmod: '2025-01-01', changefreq: 'yearly', priority: 0.5 },
+    { loc: `${siteUrl}/blog/pot-painting-event-2025-at-jkkn-arts-college-event-recap`, lastmod: '2025-01-01', changefreq: 'yearly', priority: 0.5 },
+    { loc: `${siteUrl}/blog/news-2022-04-20-convocation`, lastmod: '2022-04-20', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/blog/news-2022-09-16-periyar-event-1`, lastmod: '2022-09-16', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/blog/news-2022-12-18-top100-award`, lastmod: '2022-12-18', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/blog/news-2023-02-11-dental-camp`, lastmod: '2023-02-11', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/blog/news-2022-09-16-periyar-event`, lastmod: '2022-09-16', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/blog/news-2022-11-26-convocation-makkal-1`, lastmod: '2022-11-26', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/blog/news-2022-11-26-convocation-thanthi`, lastmod: '2022-11-26', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/blog/news-2022-07-31-sports-dinakaran`, lastmod: '2022-07-31', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/blog/news-2022-11-18-cycle-rally`, lastmod: '2022-11-18', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/blog/news-2022-07-31-sports-kaalai`, lastmod: '2022-07-31', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/blog/news-2022-07-31-sports-maalaimalar`, lastmod: '2022-07-31', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/blog/news-2022-11-26-convocation-makkal`, lastmod: '2022-11-26', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/blog/news-2022-07-22-convocation-dinakaran`, lastmod: '2022-07-22', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/blog/news-2022-07-22-convocation-kaalai`, lastmod: '2022-07-22', changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/blog/news-2022-07-22-convocation-maalaimalar`, lastmod: '2022-07-22', changefreq: 'yearly', priority: 0.4 },
   ]
 }
 

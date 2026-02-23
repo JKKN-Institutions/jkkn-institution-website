@@ -14,16 +14,21 @@ import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from
 
 // Generate metadata with breadcrumb schema
 export async function generateMetadata(): Promise<Metadata> {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://jkkn.ac.in'
   const breadcrumbs = getBreadcrumbsForPath('/blog')
   const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbs)
 
   return {
     title: 'Blog | JKKN Institution',
     description: 'Read the latest news, insights, and updates from JKKN Institution.',
+    alternates: {
+      canonical: `${siteUrl}/blog`,
+    },
     openGraph: {
       title: 'Blog | JKKN Institution',
       description: 'Read the latest news, insights, and updates from JKKN Institution.',
       type: 'website',
+      url: `${siteUrl}/blog`,
     },
     other: {
       'script:ld+json:breadcrumb': serializeSchema(breadcrumbSchema),

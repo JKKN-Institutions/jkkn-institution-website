@@ -125,6 +125,7 @@ export function SiteHeader({
   socialLinks = []
 }: SiteHeaderProps) {
   const pathname = usePathname()
+  const isSvgLogo = logoUrl.toLowerCase().endsWith('.svg')
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [openDropdownPath, setOpenDropdownPath] = useState<string[]>([])
@@ -276,6 +277,7 @@ export function SiteHeader({
                   priority
                   fetchPriority="high"
                   quality={35}
+                  unoptimized={isSvgLogo}
                 />
               </div>
             </Link>
@@ -360,6 +362,7 @@ export function SiteHeader({
                   sizes="56px"
                   className="object-contain"
                   quality={55}
+                  unoptimized={isSvgLogo}
                 />
               </div>
             </Link>
