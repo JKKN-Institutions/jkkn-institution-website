@@ -1,3 +1,5 @@
+// Page builder animations — loaded only for admin routes to keep public bundle lean
+import '../../styles/animations.css'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { ResponsiveNavigation } from '@/components/admin/responsive-navigation'

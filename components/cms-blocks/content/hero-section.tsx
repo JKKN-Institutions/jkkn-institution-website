@@ -302,11 +302,10 @@ export default function HeroSection({
         {/* Animated Title with Manual Line Breaks */}
         <h1
           className={cn(
-            'tracking-wide transition-opacity duration-1000 delay-200 will-change-opacity',
+            'tracking-wide',
             fontSizeClasses[titleFontSize] || 'text-5xl',
             fontWeightClasses[titleFontWeight] || 'font-bold',
             titleFontStyle === 'italic' && 'italic',
-            isLoaded ? "opacity-100" : "opacity-0"
           )}
           style={{
             color: titleColor,
@@ -329,15 +328,14 @@ export default function HeroSection({
           }, [title, titleManualBreakPosition, isMobile])}
         </h1>
 
-        {/* Animated Subtitle */}
+        {/* Subtitle */}
         {subtitle && (
           <p
             className={cn(
-              'mt-4 max-w-2xl transition-opacity duration-1000 delay-300 will-change-opacity',
+              'mt-4 max-w-2xl',
               alignment === 'center' && 'mx-auto',
               fontWeightClasses[subtitleFontWeight] || 'font-normal',
               subtitleFontStyle === 'italic' && 'italic',
-              isLoaded ? "opacity-100" : "opacity-0"
             )}
             style={{
               color: subtitleColor,

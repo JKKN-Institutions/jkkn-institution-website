@@ -403,7 +403,7 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    qualities: [25, 35, 45, 55, 65, 75, 85, 95],
+    qualities: [40, 55, 75, 85],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days cache
     // Note: Image quality is controlled per-component via quality prop
     // Custom qualities list allows AVIF-optimized values (35-55) alongside standard (75)

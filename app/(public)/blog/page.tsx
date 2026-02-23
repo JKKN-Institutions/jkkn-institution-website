@@ -72,6 +72,8 @@ function BlogPostCard({ post }: { post: {
             alt={post.title}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            quality={75}
           />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
@@ -114,6 +116,7 @@ function BlogPostCard({ post }: { post: {
                   width={20}
                   height={20}
                   className="rounded-full"
+                  quality={50}
                 />
               ) : (
                 <User className="h-4 w-4" />

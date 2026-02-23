@@ -580,93 +580,594 @@ Host: ${siteUrl}
 }
 
 /**
- * Main Institution robots.txt (Placeholder - uses existing app/robots.ts)
+ * Main Institution robots.txt (Full AI Crawler Support)
  */
 function getMainRobotsTxt(siteUrl: string): string {
-  // This is a fallback - Main institution uses app/robots.ts
-  return `# robots.txt — JKKN Institutions (Main)
+  return generateFullRobotsTxt({
+    siteUrl,
+    institutionName: 'JKKN Group of Institutions',
+    extraAllowPaths: [
+      'Allow: /about-the-institutions/',
+      'Allow: /about-the-trust/',
+      'Allow: /colleges/',
+      'Allow: /courses-offered/',
+    ],
+  })
+}
+
+/**
+ * Dental College robots.txt (Full AI Crawler Support)
+ */
+function getDentalRobotsTxt(siteUrl: string): string {
+  return generateFullRobotsTxt({
+    siteUrl,
+    institutionName: 'JKKN Dental College and Hospital',
+    extraAllowPaths: [
+      'Allow: /departments/',
+      'Allow: /hospital/',
+      'Allow: /specialties/',
+      'Allow: /outreach/',
+    ],
+  })
+}
+
+/**
+ * Pharmacy College robots.txt (Full AI Crawler Support)
+ */
+function getPharmacyRobotsTxt(siteUrl: string): string {
+  return generateFullRobotsTxt({
+    siteUrl,
+    institutionName: 'JKKN College of Pharmacy',
+    extraAllowPaths: [
+      'Allow: /departments/',
+      'Allow: /research/',
+      'Allow: /clinical-pharmacy/',
+    ],
+  })
+}
+
+/**
+ * Arts & Science College robots.txt (Full AI Crawler Support)
+ */
+function getArtsScienceRobotsTxt(siteUrl: string): string {
+  return generateFullRobotsTxt({
+    siteUrl,
+    institutionName: 'JKKN College of Arts and Science',
+    extraAllowPaths: [
+      'Allow: /departments/',
+      'Allow: /research/',
+      'Allow: /cultural/',
+    ],
+  })
+}
+
+/**
+ * Nursing College robots.txt (Full AI Crawler Support)
+ */
+function getNursingRobotsTxt(siteUrl: string): string {
+  return generateFullRobotsTxt({
+    siteUrl,
+    institutionName: 'JKKN College of Nursing',
+    extraAllowPaths: [
+      'Allow: /departments/',
+      'Allow: /clinical-training/',
+      'Allow: /specializations/',
+    ],
+  })
+}
+
+/**
+ * Shared generator for full-featured robots.txt with AI crawler support
+ */
+function generateFullRobotsTxt({
+  siteUrl,
+  institutionName,
+  extraAllowPaths = [],
+}: {
+  siteUrl: string
+  institutionName: string
+  extraAllowPaths?: string[]
+}): string {
+  const extraPaths = extraAllowPaths.length > 0 ? '\n' + extraAllowPaths.join('\n') : ''
+  return `# =============================================================================
+# robots.txt — ${institutionName}
 # Website: ${siteUrl}
-# Note: Main institution uses app/robots.ts (Next.js MetadataRoute API)
+# Framework: Next.js (App Router)
+# Last Updated: 2026-02-16
+# Version: 2.0 (Improved — expanded AI coverage + detailed blocking)
+# =============================================================================
+# Purpose: Control search engine and AI crawler access to maximise SEO, AEO,
+# GEO, LLMO, and AAO visibility while protecting internal/build paths
+# and saving crawl budget.
+# =============================================================================
+# AI Crawler Strategy: ALLOW ALL — maximises brand presence in AI-generated
+# answers across ChatGPT, Gemini, Claude, Perplexity, Grok, Copilot, Siri,
+# Meta AI, and all emerging AI search platforms.
+# =============================================================================
+
+
+# ---------------------------------------------------------------------------
+# 1. GENERAL RULES (All Crawlers)
+# ---------------------------------------------------------------------------
 
 User-agent: *
+
+# --- ALLOW: Important SEO pages (explicit positive signals) ---
+Allow: /
+Allow: /about/
+Allow: /academics/
+Allow: /admissions/
+Allow: /research/
+Allow: /facilities/
+Allow: /contact/
+Allow: /accreditation/
+Allow: /committees/
+Allow: /gallery/
+Allow: /placements/
+Allow: /blog/
+Allow: /news/
+Allow: /events/
+Allow: /sitemap.xml${extraPaths}
+
+# --- DISALLOW: Next.js internal/build paths (zero SEO value) ---
+Disallow: /_next/
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /_error
+Disallow: /_not-found
+
+# --- DISALLOW: Admin, CMS & internal paths ---
+Disallow: /admin/
+Disallow: /admin
+Disallow: /login/
+Disallow: /login
+Disallow: /signin/
+Disallow: /signup/
+Disallow: /register/
+Disallow: /dashboard/
+Disallow: /cms/
+Disallow: /panel/
+Disallow: /preview/
+Disallow: /draft/
+Disallow: /staging/
+Disallow: /test/
+Disallow: /debug/
+Disallow: /tmp/
+Disallow: /temp/
+Disallow: /private/
+Disallow: /internal/
+Disallow: /staff/
+Disallow: /student-portal/
+Disallow: /faculty-portal/
+
+# --- DISALLOW: Duplicate content & parameter pollution ---
+Disallow: /search
+Disallow: /search/
+Disallow: /*?q=
+Disallow: /*?s=
+Disallow: /*?ref=
+Disallow: /*?utm_
+Disallow: /*?utm_source=
+Disallow: /*?utm_medium=
+Disallow: /*?utm_campaign=
+Disallow: /*?fbclid=
+Disallow: /*?gclid=
+Disallow: /*?gad_source=
+Disallow: /*?msclkid=
+Disallow: /*?mc_cid=
+Disallow: /*?mc_eid=
+Disallow: /*?_ga=
+Disallow: /*?_gl=
+Disallow: /*?sort=
+Disallow: /*?filter=
+Disallow: /*?order=
+Disallow: /*?page=0
+Disallow: /*?sessionid=
+Disallow: /*?sid=
+Disallow: /*?preview=
+Disallow: /*?draft=
+Disallow: /*&
+
+# --- DISALLOW: Print, feed & utility pages ---
+Disallow: /print/
+Disallow: /*?print=
+Disallow: /feed/
+Disallow: /feed
+Disallow: /rss/
+Disallow: /atom/
+Disallow: /trackback/
+Disallow: /embed/
+Disallow: /thank-you
+Disallow: /thankyou
+Disallow: /confirmation
+Disallow: /success
+Disallow: /unsubscribe
+Disallow: /redirect/
+Disallow: /go/
+Disallow: /out/
+
+# --- DISALLOW: Error & status pages ---
+Disallow: /404
+Disallow: /500
+Disallow: /403
+Disallow: /error/
+Disallow: /maintenance
+Disallow: /offline
+
+# --- DISALLOW: Source code & sensitive files ---
+Disallow: /.git/
+Disallow: /.git
+Disallow: /.env
+Disallow: /.next/
+Disallow: /node_modules/
+Disallow: /*.sql$
+Disallow: /*.bak$
+Disallow: /*.log$
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /tsconfig.json
+Disallow: /next.config.js
+Disallow: /next.config.mjs
+
+# --- DISALLOW: Legacy CMS paths ---
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /wp-content/
+Disallow: /wp-includes/
+Disallow: /wp-json/
+Disallow: /xmlrpc.php
+Disallow: /cgi-bin/
+Disallow: /phpmyadmin/
+
+
+# ---------------------------------------------------------------------------
+# 2. GOOGLEBOT (Primary Search Engine)
+# ---------------------------------------------------------------------------
+
+User-agent: Googlebot
 Allow: /
 Disallow: /_next/
 Disallow: /api/
 Disallow: /admin/
+Disallow: /preview/
+Disallow: /draft/
+Disallow: /search
+Disallow: /print/
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-Video
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /blog/
+Allow: /news/
+Allow: /events/
+
+
+# ---------------------------------------------------------------------------
+# 3. BINGBOT (Bing Search + Microsoft Copilot + DuckDuckGo)
+# ---------------------------------------------------------------------------
+
+User-agent: Bingbot
+Allow: /
+Disallow: /_next/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /search
+Crawl-delay: 2
+
+
+# ---------------------------------------------------------------------------
+# 4. AI CRAWLERS — ALLOW ALL (AEO + GEO + LLMO + AAO Strategy)
+# ---------------------------------------------------------------------------
+
+# --- Google AI (Gemini, AI Overviews, SGE, Vertex AI) ---
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Google-CloudVertexBot
+Allow: /
+
+User-agent: Gemini-Deep-Research
+Allow: /
+
+User-agent: GoogleAgent-Mariner
+Allow: /
+
+# --- OpenAI (ChatGPT, ChatGPT Search, GPT-4, Operator) ---
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# --- Anthropic (Claude AI, Claude Search) ---
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: claude-web
+Allow: /
+
+# --- Perplexity AI ---
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# --- xAI / Grok ---
+User-agent: GrokBot
+Allow: /
+
+User-agent: xAI-Grok
+Allow: /
+
+User-agent: Grok-DeepSearch
+Allow: /
+
+# --- Meta AI (Llama, WhatsApp AI, Instagram AI) ---
+User-agent: FacebookBot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: meta-externalfetcher
+Allow: /
+
+User-agent: Meta-WebIndexer
+Allow: /
+
+# --- Microsoft / Bing AI ---
+User-agent: DuckAssistBot
+Allow: /
+
+# --- Apple (Siri, Apple Intelligence) ---
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# --- Amazon (Alexa, Amazon Q) ---
+User-agent: Amazonbot
+Allow: /
+
+# --- Mistral AI ---
+User-agent: MistralAI-User
+Allow: /
+
+# --- Cohere AI ---
+User-agent: cohere-ai
+Allow: /
+
+# --- You.com ---
+User-agent: YouBot
+Allow: /
+
+# --- Allen Institute for AI ---
+User-agent: AI2Bot
+Allow: /
+
+User-agent: AI2Bot-Dolma
+Allow: /
+
+# --- Common Crawl ---
+User-agent: CCBot
+Allow: /
+
+# --- ByteDance (TikTok search, Doubao AI) ---
+User-agent: Bytespider
+Allow: /
+
+User-agent: TikTokSpider
+Allow: /
+
+# --- Diffbot ---
+User-agent: Diffbot
+Allow: /
+
+# --- Yandex (YandexGPT AI) ---
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 5
+
+# --- Baidu (Ernie AI) ---
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 5
+
+# --- Naver (HyperCLOVA AI) ---
+User-agent: Yeti
+Allow: /
+Crawl-delay: 5
+
+# --- Huawei (Petal Search) ---
+User-agent: PetalBot
+Allow: /
+Crawl-delay: 3
+
+# --- Webz.io ---
+User-agent: webzio-extended
+Allow: /
+
+# --- ICC Crawler ---
+User-agent: ICC-Crawler
+Allow: /
+
+# --- Timpi ---
+User-agent: Timpibot
+Allow: /
+
+# --- Omgili ---
+User-agent: omgili
+Allow: /
+
+# --- ImagesiftBot ---
+User-agent: ImagesiftBot
+Allow: /
+
+
+# ---------------------------------------------------------------------------
+# 5. SOCIAL MEDIA CRAWLERS (Link Previews & Sharing)
+# ---------------------------------------------------------------------------
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: Slackbot
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+User-agent: Discordbot
+Allow: /
+
+User-agent: PinterestBot
+Allow: /
+
+User-agent: Quora-Bot
+Allow: /
+
+
+# ---------------------------------------------------------------------------
+# 6. SEO TOOL CRAWLERS
+# ---------------------------------------------------------------------------
+
+User-agent: Screaming Frog SEO Spider
+Allow: /
+
+User-agent: SemrushBot
+Allow: /
+Crawl-delay: 3
+
+User-agent: AhrefsBot
+Allow: /
+Crawl-delay: 3
+
+User-agent: DotBot
+Allow: /
+Crawl-delay: 5
+
+User-agent: MJ12bot
+Allow: /
+Crawl-delay: 5
+
+User-agent: SiteAuditBot
+Allow: /
+Crawl-delay: 3
+
+User-agent: Moz
+Allow: /
+Crawl-delay: 3
+
+
+# ---------------------------------------------------------------------------
+# 7. BLOCK KNOWN SPAM / SCRAPER / LOW-VALUE BOTS
+# ---------------------------------------------------------------------------
+
+User-agent: MauiBot
+Disallow: /
+
+User-agent: SeznamBot
+Disallow: /
+
+User-agent: SemrushBot-BA
+Disallow: /
+
+User-agent: SemrushBot-OCOB
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+User-agent: magpie-crawler
+Disallow: /
+
+User-agent: AhrefsSiteAudit
+Disallow: /
+
+User-agent: Sogou
+Disallow: /
+
+User-agent: AspiegelBot
+Disallow: /
+
+User-agent: PanguBot
+Disallow: /
+
+User-agent: Sentibot
+Disallow: /
+
+User-agent: AwarioBot
+Disallow: /
+
+User-agent: AwarioSmartBot
+Disallow: /
+
+User-agent: AwarioRssBot
+Disallow: /
+
+User-agent: VelenPublicWebCrawler
+Disallow: /
+
+User-agent: TurnitinBot
+Disallow: /
+
+User-agent: img2dataset
+Disallow: /
+
+User-agent: Kangaroo Bot
+Disallow: /
+
+User-agent: zoominfobot
+Disallow: /
+
+User-agent: Seekport
+Disallow: /
+
+User-agent: Buck
+Disallow: /
+
+User-agent: newspaper
+Disallow: /
+
+
+# ---------------------------------------------------------------------------
+# 8. SITEMAP & HOST
+# ---------------------------------------------------------------------------
 
 Sitemap: ${siteUrl}/sitemap.xml
 Host: ${siteUrl}
-`
-}
 
-/**
- * Dental College robots.txt (Placeholder - to be customized)
- */
-function getDentalRobotsTxt(siteUrl: string): string {
-  return `# robots.txt — JKKN Dental College
-# Website: ${siteUrl}
-# Last Updated: 2026-02-16
-
-User-agent: *
-Allow: /
-Disallow: /_next/
-Disallow: /api/
-Disallow: /admin/
-
-Sitemap: ${siteUrl}/sitemap.xml
-`
-}
-
-/**
- * Pharmacy College robots.txt (Placeholder - to be customized)
- */
-function getPharmacyRobotsTxt(siteUrl: string): string {
-  return `# robots.txt — JKKN Pharmacy College
-# Website: ${siteUrl}
-# Last Updated: 2026-02-16
-
-User-agent: *
-Allow: /
-Disallow: /_next/
-Disallow: /api/
-Disallow: /admin/
-
-Sitemap: ${siteUrl}/sitemap.xml
-`
-}
-
-/**
- * Arts & Science College robots.txt (Placeholder - to be customized)
- */
-function getArtsScienceRobotsTxt(siteUrl: string): string {
-  return `# robots.txt — JKKN College of Arts and Science
-# Website: ${siteUrl}
-# Last Updated: 2026-02-16
-
-User-agent: *
-Allow: /
-Disallow: /_next/
-Disallow: /api/
-Disallow: /admin/
-
-Sitemap: ${siteUrl}/sitemap.xml
-`
-}
-
-/**
- * Nursing College robots.txt (Placeholder - to be customized)
- */
-function getNursingRobotsTxt(siteUrl: string): string {
-  return `# robots.txt — JKKN Nursing College
-# Website: ${siteUrl}
-# Last Updated: 2026-02-16
-
-User-agent: *
-Allow: /
-Disallow: /_next/
-Disallow: /api/
-Disallow: /admin/
-
-Sitemap: ${siteUrl}/sitemap.xml
+# =============================================================================
+# END OF robots.txt
+# Total: 50+ bot-specific directives | 80+ block rules | 30+ AI crawlers
+# Strategy: Maximum AI/search visibility + zero crawl budget waste
+# =============================================================================
 `
 }

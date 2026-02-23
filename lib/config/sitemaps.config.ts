@@ -204,9 +204,6 @@ function getEngineeringBlog(siteUrl: string): SitemapEntry[] {
     { loc: `${siteUrl}/iot-driven-embedded-systems-from-prototype-to-deployment`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.5 },
     { loc: `${siteUrl}/technical-seminar-on-robotics-in-healthcare`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.5 },
     { loc: `${siteUrl}/suceess-storie-cook-without-fire`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.4 },
-    { loc: `${siteUrl}/web-stories/independence-day-celebration`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.4 },
-    { loc: `${siteUrl}/web-stories/electoral-literacy-club`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.4 },
-    { loc: `${siteUrl}/web-stories/celebrated-26th-republic-day`, lastmod: '2026-02-16', changefreq: 'monthly', priority: 0.4 },
   ]
 }
 

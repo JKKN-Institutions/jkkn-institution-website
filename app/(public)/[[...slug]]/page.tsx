@@ -41,13 +41,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!page) {
     // Default fallback metadata for homepage
     if (!slugPath) {
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://jkkn.ac.in'
       return {
         title: 'JKKN Institution | Excellence in Education',
         description: 'JKKN Group of Institutions - Shaping the future through quality education in Engineering, Medical Sciences, Arts & Science, Pharmacy, Management, and Allied Health.',
+        keywords: ['JKKN', 'JKKN Institution', 'Engineering College Tamil Nadu', 'Dental College Tamil Nadu', 'Pharmacy College', 'Arts Science College', 'Komarapalayam'],
         openGraph: {
           title: 'JKKN Institution | Excellence in Education',
           description: 'Discover world-class education at JKKN Institution. Where tradition meets innovation.',
           type: 'website',
+          url: siteUrl,
+          images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'JKKN Institution' }],
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title: 'JKKN Institution | Excellence in Education',
+          description: 'Discover world-class education at JKKN Institution. Where tradition meets innovation.',
+          images: ['/og-image.png'],
         },
         other: {
           'script:ld+json:breadcrumb': serializeSchema(breadcrumbSchema),

@@ -86,12 +86,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabaseOrigin = (() => {
+    try {
+      return new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://pmqodbfhsejbvfbmsfeq.supabase.co').origin
+    } catch {
+      return 'https://pmqodbfhsejbvfbmsfeq.supabase.co'
+    }
+  })()
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Preconnect to Supabase CDN for faster LCP - with crossOrigin for CORS */}
-        <link rel="preconnect" href="https://pmqodbfhsejbvfbmsfeq.supabase.co" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://pmqodbfhsejbvfbmsfeq.supabase.co" />
+        {/* Preconnect to Supabase CDN for faster LCP - institution-specific */}
+        <link rel="preconnect" href={supabaseOrigin} crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href={supabaseOrigin} />
         {/* Preconnect to Facebook CDN (for deferred Meta Pixel) */}
         <link rel="dns-prefetch" href="https://connect.facebook.net" />
         {/* Preconnect to Google Fonts */}

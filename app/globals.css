@@ -4,10 +4,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Page Builder Animations */
-@import "../styles/animations.css";
-
-/* Glassmorphism Utilities */
+/* Glassmorphism Utilities — used by public & admin components */
 @import "../styles/glass.css";
 
 /* Course Editor Styles */

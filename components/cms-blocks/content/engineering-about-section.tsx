@@ -157,7 +157,7 @@ export default function EngineeringAboutSection({
               fill
               className="object-cover"
               sizes="(max-width: 768px) 88vw, (max-width: 1024px) 85vw, 42vw"
-              quality={45}
+              quality={75}
             />
           </div>
 

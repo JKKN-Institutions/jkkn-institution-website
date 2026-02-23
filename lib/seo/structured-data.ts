@@ -82,6 +82,20 @@ function getOrganizationConfig(): OrganizationConfig {
       description:
         'AICTE approved pharmacy college in Tamil Nadu offering B.Pharm, M.Pharm, and Pharm.D programs with state-of-the-art facilities.',
     },
+    'arts-science': {
+      name: 'JKKN College of Arts and Science',
+      alternateName: 'JKKN CAS',
+      foundingDate: '2005',
+      description:
+        'Premier arts and science college in Tamil Nadu offering UG and PG programs in arts, science, and management disciplines.',
+    },
+    nursing: {
+      name: 'JKKN College of Nursing',
+      alternateName: 'JKKN Nursing',
+      foundingDate: '2010',
+      description:
+        'Leading nursing college in Tamil Nadu affiliated to The Tamil Nadu Dr. M.G.R. Medical University. Offers B.Sc Nursing, M.Sc Nursing programs with excellent clinical training.',
+    },
   }
 
   const specificConfig = configs[institution.id] || {}
