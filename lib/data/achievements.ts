@@ -15,6 +15,12 @@ import type {
   CourseSummary,
 } from '@/types/achievements'
 
+// Tables may not exist yet in all institution databases.
+// Silently return empty results for "table not found" errors (PGRST205).
+function isTableNotFound(error: { code?: string } | null): boolean {
+  return error?.code === 'PGRST205'
+}
+
 // =============================================================================
 // ACHIEVEMENT CATEGORIES
 // =============================================================================
