@@ -77,10 +77,15 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                 </div>
               </div>
               <div>
-                <p className="text-xl font-bold">JKKN Institutions</p>
+                <p className="text-xl font-bold">{settings.collegeName || 'JKKN Institutions'}</p>
                 <p className="text-xs text-white/70 font-medium tracking-wider uppercase">
                   {settings.tagline || 'Excellence in Education'}
                 </p>
+                {settings.autonomousStatus && (
+                  <p className="text-xs text-white/60 mt-1 whitespace-pre-line leading-relaxed">
+                    {settings.autonomousStatus}
+                  </p>
+                )}
               </div>
             </Link>
             <p className="text-white/80 text-sm mb-8 leading-relaxed max-w-md">

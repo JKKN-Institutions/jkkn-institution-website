@@ -27,6 +27,8 @@ export interface FooterSectionsVisibility {
  * Footer settings type
  */
 export interface FooterSettings {
+  collegeName?: string
+  autonomousStatus?: string
   tagline: string
   description: string
   institutions: FooterLink[]
@@ -71,6 +73,8 @@ export async function getFooterSettings(): Promise<FooterSettings> {
     .from('site_settings')
     .select('setting_key, setting_value')
     .in('setting_key', [
+      'footer_college_name',
+      'footer_autonomous_status',
       'footer_tagline',
       'footer_description',
       'footer_institutions',
@@ -97,6 +101,12 @@ export async function getFooterSettings(): Promise<FooterSettings> {
     const value = setting.setting_value
 
     switch (setting.setting_key) {
+      case 'footer_college_name':
+        settings.collegeName = String(value)
+        break
+      case 'footer_autonomous_status':
+        settings.autonomousStatus = String(value)
+        break
       case 'footer_tagline':
         settings.tagline = String(value)
         break

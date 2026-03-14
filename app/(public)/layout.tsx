@@ -14,6 +14,7 @@ import { getSocialLinks } from '@/app/actions/cms/social'
 import { PublicThemeProvider } from '@/components/providers/public-theme-provider'
 import { getCurrentInstitution } from '@/lib/config/multi-tenant'
 import { filterNavigationByFeatures } from '@/lib/utils/navigation-filter'
+import { EngineeringPopup } from '@/components/public/engineering-popup'
 
 /**
  * Cache Components handles revalidation automatically
@@ -92,6 +93,9 @@ export default async function PublicLayout({
 
         {/* Mobile Bottom Navbar */}
         <PublicBottomNav navigation={navigation as any} />
+
+        {/* Engineering College Popup */}
+        <EngineeringPopup />
       </div>
     </PublicThemeProvider>
   );

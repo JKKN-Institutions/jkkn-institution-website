@@ -258,7 +258,7 @@ export function SiteHeader({
         )}
       >
         <div className="container mx-auto px-4 lg:px-6">
-          <div className="flex items-center justify-center lg:justify-start py-1 md:py-1.5 lg:py-3 max-w-full">
+          <div className="flex items-center justify-center py-1 md:py-1.5 lg:py-3 max-w-full">
             {/* Logo */}
             <Link href="/" className="flex-shrink-0 flex items-center group relative z-10">
               <div
@@ -283,7 +283,7 @@ export function SiteHeader({
             </Link>
 
             {/* Desktop Navigation - Flex wrap, fills remaining space */}
-            <nav className="hidden lg:flex flex-wrap items-center justify-start gap-x-2 xl:gap-x-4 gap-y-1 flex-1 min-w-0 pl-8 lg:pl-10 xl:pl-12">
+            <nav className="hidden lg:flex flex-wrap items-center justify-start gap-x-2 xl:gap-x-4 gap-y-1 min-w-0 pl-8 lg:pl-10 xl:pl-12">
               {mainNavigation.map((item) => (
                 <NavDropdownItem
                   key={item.id}
