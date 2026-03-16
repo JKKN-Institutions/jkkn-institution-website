@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { WebVitalsReporter } from "@/components/performance/web-vitals-reporter";
+import { WebMCPProvider } from "@/components/webmcp-provider";
 import { generateOrganizationSchema, serializeSchema } from "@/lib/seo";
 import { generateSiteMetadata } from "@/lib/seo/site-metadata";
 import { VideoSchema } from "@/components/seo/video-schema";
@@ -119,6 +120,7 @@ export default function RootLayout({
         className={`${poppins.variable} antialiased`}
         suppressHydrationWarning
       >
+        <WebMCPProvider />
         <Providers>{children}</Providers>
         <WebVitalsReporter />
       </body>

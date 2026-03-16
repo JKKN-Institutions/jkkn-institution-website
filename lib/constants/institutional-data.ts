@@ -39,9 +39,9 @@ export const INSTITUTIONAL_DATA = {
     coursesOfferedNumeric: 50,
     recruiters: '100+',
     recruitersNumeric: 100,
-    institutionCount: 11,
+    institutionCount: 9,
     collegeCount: 7,
-    schoolCount: 4,
+    schoolCount: 2,
   },
 
   contact: {
@@ -92,8 +92,6 @@ export const INSTITUTIONAL_DATA = {
     schools: [
       'JKKN Matriculation School',
       'Nattraja Vidhyalaya',
-      'JKKN Elementary School',
-      'JKKN Girls Higher Secondary School',
     ],
     /** All institutions combined */
     get all() {
