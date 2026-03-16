@@ -1268,6 +1268,48 @@ USING (is_super_admin(auth.uid()));
 -- ============================================
 
 
+-- ============================================
+-- NEWSLETTER SUBSCRIPTIONS POLICIES
+-- ============================================
+-- Purpose: RLS policies for newsletter_subscriptions table
+-- Created: 2026-03-16
+-- Pattern: Public insert (anon), admin read/update/delete
+-- ============================================
+
+ALTER TABLE public.newsletter_subscriptions ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Anyone can subscribe (public insert)
+CREATE POLICY "Anyone can subscribe to newsletter"
+ON public.newsletter_subscriptions
+FOR INSERT
+TO anon, authenticated
+WITH CHECK (true);
+
+-- Policy: Super admins can view all subscriptions
+CREATE POLICY "Super admins can view newsletter subscriptions"
+ON public.newsletter_subscriptions
+FOR SELECT
+TO authenticated
+USING (is_super_admin(auth.uid()));
+
+-- Policy: Super admins can update subscriptions
+CREATE POLICY "Super admins can update newsletter subscriptions"
+ON public.newsletter_subscriptions
+FOR UPDATE
+TO authenticated
+USING (is_super_admin(auth.uid()));
+
+-- Policy: Super admins can delete subscriptions
+CREATE POLICY "Super admins can delete newsletter subscriptions"
+ON public.newsletter_subscriptions
+FOR DELETE
+TO authenticated
+USING (is_super_admin(auth.uid()));
+
+-- End of newsletter_subscriptions policies
+-- ============================================
+
+
 -- ================================================================
 -- END OF RLS POLICIES DOCUMENTATION
 -- ================================================================

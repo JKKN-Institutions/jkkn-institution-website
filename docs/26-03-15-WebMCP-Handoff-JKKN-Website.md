@@ -593,10 +593,64 @@ This is a real claim once implemented. WebMCP is new enough (Chrome 146 just shi
 > [!warning] EXPERIMENTAL
 > WebMCP requires Chrome 146+ with `chrome://flags/#model-context-protocol` enabled. The W3C spec is not finalized and may change.
 
-**Risk mitigation:** All tools read from static data in `/lib/data.ts` or call simple API endpoints. If WebMCP spec changes, only the registration layer (`lib/webmcp/`) needs updating. No backend changes, no data model changes.
+**Risk mitigation:** Information tools read from static config data. Lead capture tools use Server Actions with Zod validation and rate limiting. If WebMCP spec changes, only the registration layer (`lib/webmcp/`) needs updating.
 
-**Effort estimate for a developer:**
-- Phase 1 (information tools): One file, six tool registrations, static data imports. Straightforward.
-- Phase 2 (lead capture): Three tools, needs backend API endpoints if they do not already exist (`/api/contact/callback`, `/api/newsletter/subscribe`).
+### Implementation Status
 
-The entire implementation is a thin client-side layer. No new databases, no new authentication, no infrastructure changes.
+| Phase | Status | Date Completed |
+|-------|--------|----------------|
+| Phase 1 — Information Tools | **COMPLETE** | 2026-03-15 |
+| Phase 2 — Lead Capture Tools | **COMPLETE** | 2026-03-16 |
+
+### Phase 1 — Information Tools (COMPLETE)
+
+6 tools registered, reading from `INSTITUTIONS` config and `INSTITUTIONAL_DATA` constants:
+
+| Tool | File | Status |
+|------|------|--------|
+| `get_institutions` | `lib/webmcp/tools/institutions.ts` | Done |
+| `get_courses` | `lib/webmcp/tools/institutions.ts` | Done |
+| `get_contact_info` | `lib/webmcp/tools/institutions.ts` | Done |
+| `get_facilities` | `lib/webmcp/tools/campus.ts` | Done |
+| `get_placement_stats` | `lib/webmcp/tools/campus.ts` | Done |
+| `check_eligibility` | `lib/webmcp/tools/campus.ts` | Done |
+
+### Phase 2 — Lead Capture Tools (COMPLETE)
+
+3 tools registered, using Server Actions with Supabase backend:
+
+| Tool | File | Backend | Status |
+|------|------|---------|--------|
+| `request_callback` | `lib/webmcp/tools/lead-capture.ts` | Server Action → `admission_inquiries` table (source: `webmcp-callback`) | Done |
+| `start_application` | `lib/webmcp/tools/lead-capture.ts` | No backend — returns pre-filled admission form URL | Done |
+| `subscribe_newsletter` | `lib/webmcp/tools/lead-capture.ts` | Server Action → `newsletter_subscriptions` table | Done |
+
+**Backend files:**
+- Server Action: `app/actions/webmcp-leads.ts` (Zod validation, rate limiting, admin client)
+- Database: `newsletter_subscriptions` table (created via Supabase migration 2026-03-16)
+
+### File Structure (Final)
+
+```
+lib/webmcp/
+  register-tools.ts              # Main registration (imports all tool modules)
+  tools/
+    institutions.ts              # get_institutions, get_courses, get_contact_info
+    campus.ts                    # get_facilities, get_placement_stats, check_eligibility
+    lead-capture.ts              # request_callback, start_application, subscribe_newsletter
+
+app/actions/
+  webmcp-leads.ts                # Server Actions for callback + newsletter
+
+components/
+  webmcp-provider.tsx            # Client component that registers tools on mount
+```
+
+### Architecture Notes
+
+- **Server Actions over API routes**: Lead capture tools call Server Actions (matching existing codebase pattern) instead of REST endpoints
+- **Reused `admission_inquiries` table**: Callback requests insert into the existing table with `source='webmcp-callback'` — no new table needed
+- **New `newsletter_subscriptions` table**: Created with RLS policies (public insert, admin read/update/delete)
+- **Rate limiting**: 3 callbacks/hour/IP, 5 newsletter subscriptions/hour/IP
+- **User confirmation**: `request_callback` and `subscribe_newsletter` show browser `confirm()` dialog before submitting personal data
+- **Main website only**: All tools gated to `INSTITUTION_ID === 'main'`
