@@ -43,7 +43,7 @@ function getOrganizationConfig(): OrganizationConfig {
         email: 'info@jkkn.ac.in',
       },
       sameAs: [
-        'https://www.facebook.com/jkaboratory',
+        'https://www.facebook.com/myjkkn',
         'https://www.instagram.com/jkkn_institutions',
         'https://www.linkedin.com/company/jkkn-group-of-institutions',
         'https://www.youtube.com/@jkkngroupofinstitutions',
@@ -120,7 +120,7 @@ function getOrganizationConfig(): OrganizationConfig {
       email: 'info@jkkn.ac.in',
     },
     sameAs: specificConfig.sameAs || [
-      'https://www.facebook.com/jkaboratory',
+      'https://www.facebook.com/myjkkn',
       'https://www.instagram.com/jkkn_institutions',
       'https://www.linkedin.com/company/jkkn-group-of-institutions',
       'https://www.youtube.com/@jkkngroupofinstitutions',

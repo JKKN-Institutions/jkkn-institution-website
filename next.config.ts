@@ -376,6 +376,21 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
+      // === SEO: /courses → /courses-offered (C1) ===
+      {
+        source: '/courses',
+        destination: '/courses-offered',
+        permanent: true,
+      },
+
+      // === SEO: Non-www → www canonical (C4) ===
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'jkkn.ac.in' }],
+        destination: 'https://www.jkkn.ac.in/:path*',
+        permanent: true,
+      },
+
       // === Spam URLs (WordPress hack remnants) ===
       {
         source: '/20bet-review-2025-bonus-promo-code-by-bet-experts-30-2',
