@@ -1780,9 +1780,37 @@ CREATE TABLE site_social_links (
 -- ============================================
 
 
+-- ============================================
+-- TABLE: newsletter_subscriptions
+-- ============================================
+-- Purpose: Newsletter email subscriptions from website and WebMCP agents
+-- Created: 2026-03-16
+-- Status: active, unsubscribed
+-- Source: website, webmcp-agent
+-- ============================================
+
+CREATE TABLE newsletter_subscriptions (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  email text NOT NULL,
+  source text NOT NULL DEFAULT 'website'::text,
+  status text NOT NULL DEFAULT 'active'::text,
+  ip_address inet,
+  user_agent text,
+  subscribed_at timestamp with time zone DEFAULT now(),
+  unsubscribed_at timestamp with time zone,
+  created_at timestamp with time zone DEFAULT now(),
+  metadata jsonb DEFAULT '{}'::jsonb,
+  PRIMARY KEY (id),
+  UNIQUE (email)
+);
+
+-- End of newsletter_subscriptions
+-- ============================================
+
+
 -- ================================================================
 -- END OF TABLES DOCUMENTATION
 -- ================================================================
--- Total Tables Documented: 54
--- Last Updated: 2026-01-09
+-- Total Tables Documented: 55
+-- Last Updated: 2026-03-16
 -- ================================================================
