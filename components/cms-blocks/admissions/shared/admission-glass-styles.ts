@@ -91,7 +91,7 @@ export const defaultCollegeColors = [
  * Background gradient classes
  */
 export const backgroundStyles = {
-  'gradient-dark': 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900',
+  'gradient-dark': 'bg-gradient-to-br from-[#0b6d41] via-[#085032] to-[#032816]',
   'gradient-light': 'bg-gradient-to-br from-brand-primary/5 via-white to-brand-primary/5',
   'white-professional': 'bg-gradient-to-br from-white via-slate-50/50 to-white',
   'solid': 'bg-white',

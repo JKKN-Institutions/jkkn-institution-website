@@ -79,6 +79,49 @@ export function FAQSchemaAdmissions() {
 }
 
 /**
+ * Main Institution Admissions FAQ Schema
+ * For /admissions page (main jkkn.ac.in site — covers all 7 colleges)
+ */
+export function FAQSchemaAdmissionsMain() {
+  const faqs: FAQItem[] = [
+    {
+      question: 'How do I apply for admission at JKKN Institutions?',
+      answer: 'You can apply online at jkkn.in/admission-form or visit our campus at Komarapalayam, Namakkal. You may also call +91 93458 55001 for personalized admission guidance. NEET is required for Dental and Nursing programs. TNEA counseling applies for Engineering. Applications are open for the 2026-27 academic year.'
+    },
+    {
+      question: 'Which colleges are part of JKKN Institutions?',
+      answer: 'JKKN Institutions comprises 7 colleges: JKKN Dental College and Hospital, JKKN College of Pharmacy, JKKN College of Engineering and Technology, JKKN College of Allied Health Sciences, JKKN College of Arts and Science, Sresakthimayeil Institute of Nursing and Research, and JKKN College of Education. All are located on a single integrated campus in Komarapalayam.'
+    },
+    {
+      question: 'Is JKKN Institutions NAAC accredited?',
+      answer: 'Yes, JKKN Institutions is NAAC A accredited. All colleges are approved by their respective regulatory bodies including AICTE, UGC, PCI, DCI, and INC. The colleges are affiliated to Anna University (Engineering), TN Dr. M.G.R. Medical University (Dental, Nursing, Allied Health), and Periyar University (Arts & Science).'
+    },
+    {
+      question: 'What is the fee structure at JKKN colleges?',
+      answer: 'Fee structures vary by program. Approximate annual tuition ranges from ₹35,000 for Arts & Science programs to ₹5,00,000 for BDS. Hostel accommodation is available at approximately ₹50,000–₹75,000 per year including mess charges. Exact fees are confirmed during the admission process. Scholarships and fee concessions are available for eligible students.'
+    },
+    {
+      question: 'Are scholarships available at JKKN Institutions?',
+      answer: 'Yes, JKKN offers multiple scholarship types: merit-based scholarships for academic toppers (90%+ in qualifying exams), government scholarships for SC/ST/OBC/MBC/EWS categories, need-based financial aid for economically disadvantaged students, and special scholarships for state/national level sports and cultural achievers.'
+    },
+    {
+      question: 'What is the placement record at JKKN Institutions?',
+      answer: 'JKKN Institutions maintains a 92%+ placement success rate. Top recruiters include Apollo Hospitals, Infosys, TCS, Wipro, HCL, Cipla, Sun Pharma, L&T, Ashok Leyland, Cognizant, Tech Mahindra, and 500+ more companies. A dedicated Placement Cell provides campus drives, skill development, and mock interviews.'
+    },
+    {
+      question: 'Where is JKKN Institutions located?',
+      answer: 'JKKN Institutions is located at Natarajapuram, NH-544 (Salem to Coimbatore National Highway), Komarapalayam (TK), Namakkal (DT), Tamil Nadu 638183. The campus is 15 km from Erode City, well-connected by road and rail, near Salem, Erode, Tiruchengode, and Namakkal.'
+    },
+    {
+      question: 'Does JKKN provide hostel and campus facilities?',
+      answer: 'Yes, JKKN offers separate hostels for boys and girls with 24/7 security, Wi-Fi, and mess facilities. The campus features a 500-bed teaching hospital, 50,000+ book library, state-of-the-art laboratories, sports facilities, college bus transport covering Namakkal, Salem, Erode and surrounding areas, cafeteria, and 24/7 CCTV surveillance.'
+    },
+  ]
+
+  return <FAQSchemaGenerator faqs={faqs} />
+}
+
+/**
  * Placements FAQ Schema
  * For /placements pages
  */
