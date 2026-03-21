@@ -332,6 +332,8 @@ export default function AdmissionsPage() {
         subtitle="We believe financial constraints should never limit your dreams"
         columns="4"
         showCTA={false}
+        ctaText=""
+        ctaLink=""
         scholarships={[
           {
             icon: 'Trophy',
@@ -394,6 +396,8 @@ export default function AdmissionsPage() {
           { text: 'Medical Fitness Certificate', required: true },
         ]}
         showCTA={false}
+        ctaText=""
+        ctaLink=""
         checkIcon="checkbox"
         backgroundColor="gradient-dark"
         showAnimations={true}
