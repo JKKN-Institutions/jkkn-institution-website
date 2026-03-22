@@ -1,5 +1,5 @@
 /**
- * Article JSON-LD Schema Component
+ * Article JSON-LD Schema Component — Multi-Tenant Aware
  *
  * This component renders structured data for blog articles.
  * Enables rich snippets in search results with author, date, and image.
@@ -8,6 +8,8 @@
  */
 
 import type { BlogPostWithRelations } from '@/app/actions/cms/blog'
+import { getSiteUrl } from '@/lib/utils/site-url'
+import { getInstitutionSEOConfig } from '@/lib/seo/institution-seo-config'
 
 interface ArticleSchemaProps {
   post: BlogPostWithRelations
@@ -35,16 +37,19 @@ function estimateWordCount(content: Record<string, unknown> | null): number {
 }
 
 export function ArticleSchema({ post, wordCount }: ArticleSchemaProps) {
-  const baseUrl = 'https://jkkn.ac.in'
+  const baseUrl = getSiteUrl()
+  const config = getInstitutionSEOConfig()
   const articleUrl = `${baseUrl}/blog/${post.slug}`
 
   // Calculate word count if not provided
   const calculatedWordCount = wordCount || estimateWordCount(post.content)
 
   // Build the schema
+  // BlogPosting is more specific than Article — AI engines cite it more readily
+  // for educational institution blog content (GEO: higher citability signal)
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'BlogPosting',
     '@id': `${articleUrl}#article`,
     headline: post.title,
     description: post.excerpt || post.seo_description || undefined,
@@ -57,13 +62,13 @@ export function ArticleSchema({ post, wordCount }: ArticleSchemaProps) {
     dateModified: post.updated_at || post.published_at || post.created_at,
     author: {
       '@type': 'Person',
-      name: post.author?.full_name || 'JKKN Editorial Team',
+      name: post.author?.full_name || `${config.name} Editorial Team`,
       url: baseUrl,
     },
     publisher: {
-      '@type': 'EducationalOrganization',
+      '@type': config.schemaType,
       '@id': `${baseUrl}/#organization`,
-      name: 'JKKN Institutions',
+      name: config.name,
       logo: {
         '@type': 'ImageObject',
         url: `${baseUrl}/images/logo.png`,
@@ -74,13 +79,13 @@ export function ArticleSchema({ post, wordCount }: ArticleSchemaProps) {
     isPartOf: {
       '@type': 'Blog',
       '@id': `${baseUrl}/blog#blog`,
-      name: 'JKKN Blog',
+      name: `${config.name} Blog`,
       url: `${baseUrl}/blog`,
     },
     inLanguage: 'en-IN',
     copyrightHolder: {
       '@type': 'Organization',
-      name: 'JKKN Institutions',
+      name: config.name,
     },
     copyrightYear: new Date(post.published_at || post.created_at || Date.now()).getFullYear(),
   }
@@ -131,7 +136,7 @@ export function ArticleSchema({ post, wordCount }: ArticleSchemaProps) {
       {
         '@type': 'InteractionCounter',
         interactionType: 'https://schema.org/CommentAction',
-        userInteractionCount: 0, // Would need to fetch actual count
+        userInteractionCount: 0,
       },
     ]
   }

@@ -7,6 +7,7 @@ import { WebMCPProvider } from "@/components/webmcp-provider";
 import { generateOrganizationSchema, serializeSchema } from "@/lib/seo";
 import { generateSiteMetadata } from "@/lib/seo/site-metadata";
 import { VideoSchema } from "@/components/seo/video-schema";
+import { getGoogleSiteVerification } from "@/lib/seo/institution-seo-config";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -33,6 +34,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
   // Get site URL from environment (institution-specific)
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://jkkn.ac.in'
+
+  // Get institution-specific Google verification code
+  const googleVerification = getGoogleSiteVerification()
 
   return {
     // Base metadata from site settings
@@ -75,10 +79,8 @@ export async function generateMetadata(): Promise<Metadata> {
       images: siteMetadata.twitter?.images || ['/og-image.png'],
     },
 
-    // Google Search Console verification
-    verification: {
-      google: 'y27BHDBypTLPOsApWrsud0u-UDAAT62rIvfM46VcID8',
-    },
+    // Google Search Console verification — per-institution from config
+    verification: googleVerification ? { google: googleVerification } : undefined,
   }
 }
 
@@ -96,7 +98,7 @@ export default function RootLayout({
   })()
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         {/* Preconnect to Supabase CDN for faster LCP - institution-specific */}
         <link rel="preconnect" href={supabaseOrigin} crossOrigin="anonymous" />
@@ -106,14 +108,14 @@ export default function RootLayout({
         {/* Preconnect to Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Organization Schema (JSON-LD) */}
+        {/* Organization Schema (JSON-LD) — SINGLE source, multi-tenant aware */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: serializeSchema(generateOrganizationSchema()),
           }}
         />
-        {/* Video Schema (JSON-LD) - Campus Overview */}
+        {/* Video Schema (JSON-LD) - Only renders on main institution */}
         <VideoSchema />
       </head>
       <body

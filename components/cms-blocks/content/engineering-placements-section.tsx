@@ -465,6 +465,7 @@ function LogoMarquee({
                   width={100}
                   height={40}
                   className="object-contain max-h-8 sm:max-h-9 md:max-h-10"
+                  style={{ width: 'auto' }}
                   draggable={false}
                 />
               ) : (

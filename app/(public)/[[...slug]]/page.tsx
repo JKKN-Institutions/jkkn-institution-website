@@ -8,14 +8,14 @@ import { CustomComponentRegistrar } from '@/components/cms-blocks/custom-compone
 import { Skeleton } from '@/components/ui/skeleton'
 import { LandingPage } from '@/components/public/landing-page'
 import { PasswordProtectedPage, PrivatePageGate } from '@/components/public/password-protected-page'
-import { OrganizationSchema } from '@/components/seo/organization-schema'
 import { CourseCatalogSchema } from '@/components/seo/course-catalog-schema'
 import { EventsCalendarSchema } from '@/components/seo/events-calendar-schema'
 import { WebsiteSchema } from '@/components/seo/website-schema'
 import { FAQSchema } from '@/components/seo/faq-schema'
-import { FAQSchemaAdmissions, FAQSchemaPlacements, FAQSchemaAbout } from '@/components/seo/faq-schema-admissions'
+import { FAQSchemaAdmissions, FAQSchemaPlacements, FAQSchemaAbout, HowToSchemaAdmissions } from '@/components/seo/faq-schema-admissions'
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from '@/lib/seo'
+import { resolvePageSchemas } from '@/lib/seo/schema-resolver'
 
 // Dynamic rendering for 404 handling - automatically handled with cacheComponents
 // Cache Components ensures proper 404 status codes without force-dynamic
@@ -135,6 +135,27 @@ function LandingPageSkeleton() {
   )
 }
 
+/**
+ * Render the appropriate schemas for a given slug using the schema resolver.
+ * Organization schema is already in the root layout — NOT duplicated here.
+ */
+function PageSchemas({ slug, isHomepage }: { slug: string; isHomepage: boolean }) {
+  const schemas = resolvePageSchemas(slug, isHomepage)
+
+  return (
+    <>
+      {schemas.website && <WebsiteSchema />}
+      {schemas.courseCatalog && <CourseCatalogSchema />}
+      {schemas.eventsCalendar && <EventsCalendarSchema />}
+      {schemas.faqGeneral && <FAQSchema />}
+      {schemas.faqAdmissions && <FAQSchemaAdmissions />}
+      {schemas.howToAdmissions && <HowToSchemaAdmissions />}
+      {schemas.faqPlacements && <FAQSchemaPlacements />}
+      {schemas.faqAbout && <FAQSchemaAbout />}
+    </>
+  )
+}
+
 export default async function DynamicPage({ params }: PageProps) {
   const { slug } = await params
   const slugPath = slug?.join('/') ?? ''
@@ -155,10 +176,7 @@ export default async function DynamicPage({ params }: PageProps) {
     if (result.status === 'not_found') {
       return (
         <>
-          <WebsiteSchema />
-          <OrganizationSchema />
-          <CourseCatalogSchema />
-          <FAQSchema />
+          <PageSchemas slug="" isHomepage />
           <Suspense fallback={<LandingPageSkeleton />}>
             <LandingPage />
           </Suspense>
@@ -178,10 +196,7 @@ export default async function DynamicPage({ params }: PageProps) {
     if (!result.page) {
       return (
         <>
-          <WebsiteSchema />
-          <OrganizationSchema />
-          <CourseCatalogSchema />
-          <FAQSchema />
+          <PageSchemas slug="" isHomepage />
           <Suspense fallback={<LandingPageSkeleton />}>
             <LandingPage />
           </Suspense>
@@ -213,10 +228,7 @@ export default async function DynamicPage({ params }: PageProps) {
 
     return (
       <>
-        <WebsiteSchema />
-        <OrganizationSchema />
-        <CourseCatalogSchema />
-        <FAQSchema />
+        <PageSchemas slug="" isHomepage />
         <article>
           <Suspense fallback={<BlocksSkeleton />}>
             <CustomComponentRegistrar components={customComponents}>
@@ -271,24 +283,9 @@ export default async function DynamicPage({ params }: PageProps) {
   // Extract typography settings from page metadata
   const pageTypography = (page.metadata as Record<string, unknown> | null)?.typography as PageTypographySettings | undefined
 
-  // Check if this is the courses-offered page for schema inclusion
-  const isCoursesPage = slugPath === 'courses-offered'
-
-  // Check if this is an events page for schema inclusion (events or any subpage)
-  const isEventsPage = slugPath === 'events' || slugPath.startsWith('events/')
-
-  // Check if this page should have FAQ schema
-  const isAdmissionsPage = slugPath === 'admissions' || slugPath.startsWith('admissions/')
-  const isPlacementsPage = slugPath === 'placements' || slugPath.startsWith('placements/')
-  const isAboutPage = slugPath === 'about' || slugPath.startsWith('about/')
-
   return (
     <>
-      {isCoursesPage && <CourseCatalogSchema />}
-      {isEventsPage && <EventsCalendarSchema />}
-      {isAdmissionsPage && <FAQSchemaAdmissions />}
-      {isPlacementsPage && <FAQSchemaPlacements />}
-      {isAboutPage && <FAQSchemaAbout />}
+      <PageSchemas slug={slugPath} isHomepage={false} />
       <article>
         <Suspense fallback={<BlocksSkeleton />}>
           <CustomComponentRegistrar components={customComponents}>

@@ -3,19 +3,24 @@
 import Script from 'next/script'
 import { useState, useEffect } from 'react'
 
-const META_PIXEL_ID = '779817005468177'
-
 /**
- * MetaPixel - Optimized for Core Web Vitals (INP)
+ * Meta Pixel — Multi-Tenant Aware, Optimized for Core Web Vitals (INP)
+ *
+ * Reads Pixel ID from environment variable.
+ * Each institution's Vercel deployment can set its own NEXT_PUBLIC_META_PIXEL_ID.
  *
  * Defers loading until user interaction or 5 seconds after page load
  * to reduce main thread blocking during initial page render.
- * Facebook Pixel was causing 252ms main thread time during page load.
  */
+const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || '779817005468177'
+
 export function MetaPixel() {
   const [shouldLoad, setShouldLoad] = useState(false)
 
   useEffect(() => {
+    // Skip if no pixel ID configured
+    if (!META_PIXEL_ID) return
+
     // Load after 5 seconds of idle time
     const timer = setTimeout(() => setShouldLoad(true), 5000)
 
@@ -35,6 +40,11 @@ export function MetaPixel() {
       window.removeEventListener('keydown', handleInteraction)
     }
   }, [])
+
+  // Don't render anything if no pixel ID
+  if (!META_PIXEL_ID) {
+    return null
+  }
 
   // Don't render anything until ready to load
   if (!shouldLoad) {

@@ -995,7 +995,7 @@ export async function updatePage(
   // Get current page state
   const { data: currentPage, error: fetchError } = await supabase
     .from('cms_pages')
-    .select('slug, parent_id, slug_overridden, hierarchical_slug')
+    .select('slug, parent_id, slug_overridden, hierarchical_slug, status, visibility')
     .eq('id', pageId)
     .single()
 
@@ -1114,8 +1114,8 @@ export async function updatePage(
     slug: finalSlug,
     description: descriptionValue !== null ? String(descriptionValue) : undefined,
     parent_id: newParentId || null,
-    status: formData.get('status') || undefined,
-    visibility: formData.get('visibility') || undefined,
+    status: formData.get('status') || currentPage.status,
+    visibility: formData.get('visibility') || currentPage.visibility,
     featured_image: formData.get('featured_image') || null,
     sort_order: sortOrderValue ? parseInt(String(sortOrderValue), 10) : undefined,
     show_in_navigation:

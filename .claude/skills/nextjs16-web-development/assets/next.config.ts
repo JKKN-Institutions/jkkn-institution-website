@@ -1,27 +1,62 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  // Enable Cache Components and PPR
+  // Enable Cache Components for Next.js 16
   cacheComponents: true,
 
-  // Configure cache lifecycle profiles
+  // Production-grade cache profiles (based on data volatility)
+  // Customize these based on your application's needs
   cacheLife: {
-    // Predefined profiles
-    default: { expire: 3600 },           // 1 hour
-    seconds: { expire: 5 },              // 5 seconds
-    minutes: { expire: 60 },             // 1 minute
-    hours: { expire: 3600 },             // 1 hour
-    days: { expire: 86400 },             // 1 day
-    weeks: { expire: 604800 },           // 1 week
-    months: { expire: 2592000 },         // 30 days
-    max: { expire: Number.MAX_SAFE_INTEGER },
+    // Default profile
+    default: {
+      stale: 300,       // 5 minutes - Client considers data stale
+      revalidate: 900,  // 15 minutes - Server background refresh
+      expire: 3600      // 1 hour - Hard expiration
+    },
 
-    // Custom profiles for your application
-    realtime: { expire: 1 },             // Real-time data (1 second)
-    frequent: { expire: 30 },            // Frequently changing (30 seconds)
-    moderate: { expire: 300 },           // Moderate updates (5 minutes)
-    stable: { expire: 3600 },            // Stable data (1 hour)
-    static: { expire: 31536000 },        // Static content (1 year)
+    // Hot data (1 minute) - Real-time data
+    // Use for: payment status, active sessions, real-time notifications
+    hot: {
+      stale: 60,        // 1 minute
+      revalidate: 300,  // 5 minutes
+      expire: 600       // 10 minutes
+    },
+
+    // Warm data (5 minutes) - Moderate freshness
+    // Use for: invoices, bills, receipts, student profiles, staff records
+    warm: {
+      stale: 300,       // 5 minutes
+      revalidate: 900,  // 15 minutes
+      expire: 1800      // 30 minutes
+    },
+
+    // Cold data (1 hour) - Master data
+    // Use for: institutions, departments, programs, degrees, courses
+    cold: {
+      stale: 3600,      // 1 hour
+      revalidate: 7200, // 2 hours
+      expire: 14400     // 4 hours
+    },
+
+    // Static data (1 day) - Configuration data
+    // Use for: academic years, semesters, regulations, system config
+    static: {
+      stale: 86400,     // 1 day
+      revalidate: 172800, // 2 days
+      expire: 604800    // 7 days
+    },
+
+    // Short-hand profiles (for simple cases)
+    seconds: { stale: 5, revalidate: 15, expire: 30 },
+    minutes: { stale: 60, revalidate: 180, expire: 300 },
+    hours: { stale: 3600, revalidate: 7200, expire: 14400 },
+    days: { stale: 86400, revalidate: 172800, expire: 604800 },
+    weeks: { stale: 604800, revalidate: 1209600, expire: 2592000 },
+    max: {
+      stale: Number.MAX_SAFE_INTEGER,
+      revalidate: Number.MAX_SAFE_INTEGER,
+      expire: Number.MAX_SAFE_INTEGER
+    },
   },
 
   // Image optimization
@@ -30,6 +65,7 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: '*.supabase.co',
+        pathname: '/**'
       },
       // Add other remote image sources here
     ],
@@ -37,16 +73,17 @@ const nextConfig: NextConfig = {
   },
 
   // Turbopack configuration (optional)
-  experimental: {
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
-  },
+  // Uncomment if using Turbopack
+  // experimental: {
+  //   turbo: {
+  //     rules: {
+  //       '*.svg': {
+  //         loaders: ['@svgr/webpack'],
+  //         as: '*.js',
+  //       },
+  //     },
+  //   },
+  // },
 
   // Compiler options
   compiler: {

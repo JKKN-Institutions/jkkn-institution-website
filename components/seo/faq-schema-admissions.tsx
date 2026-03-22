@@ -86,11 +86,11 @@ export function FAQSchemaPlacements() {
   const faqs: FAQItem[] = [
     {
       question: 'What is the placement record of JKKN Engineering College?',
-      answer: 'JKKN Engineering College has achieved 95%+ placement success with 500+ students placed annually. Top recruiters include TCS, Infosys, Wipro, Cognizant, HCL, Tech Mahindra, Amazon, and many more.'
+      answer: 'JKKN Engineering College places 500+ students annually through campus recruitment. Placement rates range from 60–70% as reported by education aggregators (Collegedunia, Careers360). Top recruiters include TCS, Infosys, Wipro, Cognizant, HCL, and Tech Mahindra.'
     },
     {
       question: 'What is the highest package offered at JKKN?',
-      answer: 'The highest package offered is ₹12 LPA by top tech companies. Average package is ₹4.5 LPA. Special training programs ensure students are industry-ready from day one.'
+      answer: 'The highest package recorded at JKKN Engineering College is ₹12 LPA. Average salary figures range from ₹2.2 LPA (Careers360 median) to ₹4.5 LPA depending on branch and batch. Dedicated placement training begins from the first year.'
     },
     {
       question: 'Which companies visit JKKN for campus placements?',
@@ -107,6 +107,73 @@ export function FAQSchemaPlacements() {
   ]
 
   return <FAQSchemaGenerator faqs={faqs} />
+}
+
+/**
+ * HowTo Schema — Engineering College Admission Process
+ *
+ * Targets "how to apply" voice queries and People Also Ask boxes.
+ * GEO: HowTo is one of the highest-value AEO schema types for process queries.
+ * Covers the TNEA counselling route (Government quota) + direct admission.
+ *
+ * For /admissions pages
+ */
+export function HowToSchemaAdmissions() {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    'name': 'How to Get Admission in JKKN College of Engineering and Technology',
+    'description': 'Step-by-step guide to applying for B.E./B.Tech admission at JKKN College of Engineering & Technology, Komarapalayam through TNEA counselling or direct admission.',
+    'totalTime': 'P30D',
+    'estimatedCost': {
+      '@type': 'MonetaryAmount',
+      'currency': 'INR',
+      'value': '80000',
+      'description': 'Annual tuition fee (AICTE regulated, 2026-27)',
+    },
+    'step': [
+      {
+        '@type': 'HowToStep',
+        'position': 1,
+        'name': 'Qualify TNEA or Meet Eligibility',
+        'text': 'Ensure you have completed 10+2 with Mathematics, Physics, and Chemistry/Computer Science with minimum 50% aggregate. Obtain your TNEA rank through Tamil Nadu Engineering Admissions (tnea.ac.in) for Government quota seats.',
+        'url': 'https://engg.jkkn.ac.in/admissions',
+      },
+      {
+        '@type': 'HowToStep',
+        'position': 2,
+        'name': 'Fill TNEA Online Application',
+        'text': 'Register and fill the TNEA online application at tnea.ac.in during the counselling window (typically June–August). Select JKKN College of Engineering & Technology (Institution Code) as one of your college preferences.',
+        'url': 'https://www.tnea.ac.in/',
+      },
+      {
+        '@type': 'HowToStep',
+        'position': 3,
+        'name': 'Attend Web Counselling and Confirm Allotment',
+        'text': 'Participate in TNEA web counselling rounds. Once JKKN is allotted, download the allotment order from the TNEA portal and pay the counselling fees online to confirm your seat.',
+      },
+      {
+        '@type': 'HowToStep',
+        'position': 4,
+        'name': 'Report to JKKN Campus for Document Verification',
+        'text': 'Visit JKKN College of Engineering & Technology campus at Kumarapalayam, Namakkal with original documents: 10th & 12th mark sheets, transfer certificate, conduct certificate, community certificate (if applicable), Aadhar card, passport-size photos, and TNEA allotment order.',
+        'url': 'https://engg.jkkn.ac.in/contact',
+      },
+      {
+        '@type': 'HowToStep',
+        'position': 5,
+        'name': 'Pay College Fees and Complete Enrollment',
+        'text': 'Pay the annual tuition fee (₹80,000–₹1,00,000 depending on branch) and hostel/transport fees if required. Collect your student ID and complete the enrollment formalities at the college office.',
+      },
+    ],
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  )
 }
 
 /**

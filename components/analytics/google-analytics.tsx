@@ -2,9 +2,21 @@
 
 import Script from 'next/script'
 
-const GA_MEASUREMENT_ID = 'G-CHXSXSC9YY'
+/**
+ * Google Analytics — Multi-Tenant Aware
+ *
+ * Reads GA measurement ID from environment variable.
+ * Each institution's Vercel deployment can set its own NEXT_PUBLIC_GA_MEASUREMENT_ID.
+ * Falls back to empty (no analytics) if not configured.
+ */
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-CHXSXSC9YY'
 
 export function GoogleAnalytics() {
+  // Skip if no measurement ID configured
+  if (!GA_MEASUREMENT_ID) {
+    return null
+  }
+
   return (
     <>
       <Script

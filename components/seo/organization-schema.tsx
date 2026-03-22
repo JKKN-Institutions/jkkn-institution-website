@@ -24,7 +24,7 @@ export function OrganizationSchema() {
       "JKKN Group of Institutions"
     ],
     "legalName": "J.K.K. Rangammal Charitable Trust",
-    "description": "JKKN Institutions stands for J.K.K. Nattraja Educational Institutions, a premier educational group established in 1952 by the J.K.K. Rangammal Charitable Trust. Located in Komarapalayam, Tamil Nadu, India, JKKN offers 50+ career-focused programs across 7 colleges including Dental, Pharmacy, Nursing, Allied Health Sciencess, Engineering, Arts & Science, and Education with 92%+ placement success rate. NAAC accredited institution with 74+ years of excellence in education.",
+    "description": "JKKN Institutions stands for J.K.K. Nattraja Educational Institutions, a premier educational group established in 1952 by the J.K.K. Rangammal Charitable Trust. Located in Komarapalayam, Tamil Nadu, India, JKKN offers 50+ career-focused programs across 7 colleges including Dental, Pharmacy, Nursing, Allied Health Sciences, Engineering, Arts & Science, and Education with 92%+ placement success rate. NAAC accredited institution with 74+ years of excellence in education.",
     "url": "https://jkkn.ac.in/",
     "logo": {
       "@type": "ImageObject",
@@ -158,7 +158,7 @@ export function OrganizationSchema() {
         "@type": "CollegeOrUniversity",
         "name": "JKKN College of Allied Health Sciences",
         "url": "https://ahs.jkkn.ac.in/",
-        "description": "Allied Health Sciencess college established in 2019, affiliated to Tamil Nadu Dr. M.G.R. Medical University",
+        "description": "Allied Health Sciences college established in 2019, affiliated to Tamil Nadu Dr. M.G.R. Medical University",
         "foundingDate": "2019"
       },
       {
@@ -270,7 +270,7 @@ export function OrganizationSchema() {
       "Pharmacy Education",
       "Engineering Education",
       "Nursing Education",
-      "Allied Health Sciencess",
+      "Allied Health Sciences",
       "Arts and Science Education",
       "Teacher Training",
       "BDS (Bachelor of Dental Surgery)",
@@ -423,7 +423,7 @@ export function OrganizationSchema() {
           "@type": "EducationalOccupationalProgram",
           "name": "Allied Health Sciences Programs",
           "educationalProgramMode": "full-time",
-          "programType": "B.Sc Allied Health Sciencess"
+          "programType": "B.Sc Allied Health Sciences"
         }
       },
       {

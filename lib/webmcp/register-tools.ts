@@ -14,7 +14,15 @@ import { registerLeadCaptureTools } from './tools/lead-capture'
  * IMPORTANT: Only registers on the main website (INSTITUTION_ID === 'main').
  * Other institution deployments (engineering, dental, etc.) are unaffected.
  */
+
+// Module-level singleton guard — ES modules are cached, so this persists
+// across React StrictMode's double-invoke and any SPA re-mounts.
+let toolsRegistered = false
+
 export function registerWebMCPTools() {
+  // Guard: run only once per page load
+  if (toolsRegistered) return
+
   // Gate: only main website
   if (process.env.NEXT_PUBLIC_INSTITUTION_ID !== 'main') return
 
@@ -27,4 +35,6 @@ export function registerWebMCPTools() {
 
   // Phase 2: Lead capture tools
   registerLeadCaptureTools()
+
+  toolsRegistered = true
 }

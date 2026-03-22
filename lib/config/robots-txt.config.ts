@@ -264,155 +264,91 @@ Crawl-delay: 2
 # is now as critical as Google page 1 ranking.
 # =======================================================================
 
-# --- Google AI (Gemini, AI Overviews, SGE, Vertex AI, Project Mariner) ---
+# --- All AI Crawlers (grouped with shared Disallow rules) ---
 User-agent: Google-Extended
-Allow: /
-
 User-agent: Google-CloudVertexBot
-Allow: /
-
 User-agent: Gemini-Deep-Research
-Allow: /
-
 User-agent: GoogleAgent-Mariner
-Allow: /
-
-# --- OpenAI (ChatGPT, ChatGPT Search, GPT-4, Operator, DALL-E) ---
 User-agent: GPTBot
-Allow: /
-
 User-agent: OAI-SearchBot
-Allow: /
-
 User-agent: ChatGPT-User
-Allow: /
-
-# --- Anthropic (Claude AI, Claude Search, Claude Web) ---
 User-agent: ClaudeBot
-Allow: /
-
 User-agent: anthropic-ai
-Allow: /
-
 User-agent: Claude-User
-Allow: /
-
 User-agent: Claude-SearchBot
-Allow: /
-
 User-agent: claude-web
-Allow: /
-
-# --- Perplexity AI (Perplexity Search, Perplexity Browsing) ---
 User-agent: PerplexityBot
-Allow: /
-
 User-agent: Perplexity-User
-Allow: /
-
-# --- xAI / Grok (Grok AI, Grok Search, Grok DeepSearch) ---
 User-agent: GrokBot
-Allow: /
-
 User-agent: xAI-Grok
-Allow: /
-
 User-agent: Grok-DeepSearch
-Allow: /
-
-# --- Meta AI (Llama, Meta AI Assistant, WhatsApp AI, Instagram AI) ---
 User-agent: FacebookBot
-Allow: /
-
 User-agent: meta-externalagent
-Allow: /
-
 User-agent: meta-externalfetcher
-Allow: /
-
 User-agent: Meta-WebIndexer
-Allow: /
-
-# --- Microsoft / Bing AI ---
 User-agent: DuckAssistBot
-Allow: /
-
-# --- Apple (Siri, Safari Suggestions, Apple Intelligence, Spotlight) ---
 User-agent: Applebot
-Allow: /
-
 User-agent: Applebot-Extended
-Allow: /
-
-# --- Amazon (Alexa, Amazon Q, voice search) ---
 User-agent: Amazonbot
-Allow: /
-
-# --- Mistral AI ---
 User-agent: MistralAI-User
-Allow: /
-
-# --- Cohere AI ---
 User-agent: cohere-ai
 Allow: /
+Disallow: /_next/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /preview/
+Disallow: /draft/
+Disallow: /search
+Disallow: /login
 
-# --- You.com (YouChat AI search) ---
+# --- Additional AI crawlers (grouped) ---
 User-agent: YouBot
-Allow: /
-
-# --- Allen Institute for AI (AI2 — academic/research AI) ---
 User-agent: AI2Bot
-Allow: /
-
 User-agent: AI2Bot-Dolma
-Allow: /
-
-# --- Common Crawl (open dataset — trains many AI models) ---
 User-agent: CCBot
-Allow: /
-
-# --- ByteDance (TikTok search, Doubao AI) ---
 User-agent: Bytespider
-Allow: /
-
 User-agent: TikTokSpider
-Allow: /
-
-# --- Diffbot (AI-powered web data extraction — feeds many AI systems) ---
 User-agent: Diffbot
-Allow: /
-
-# --- Yandex (Russian search + YandexGPT AI) ---
-User-agent: YandexBot
-Allow: /
-Crawl-delay: 5
-
-# --- Baidu (Chinese search + Ernie AI — small but growing globally) ---
-User-agent: Baiduspider
-Allow: /
-Crawl-delay: 5
-
-# --- Naver (Korean search + HyperCLOVA AI) ---
-User-agent: Yeti
-Allow: /
-Crawl-delay: 5
-
-# --- Huawei (Petal Search) ---
-User-agent: PetalBot
-Allow: /
-Crawl-delay: 3
-
-# --- Webz.io (Data feeds used by AI platforms) ---
 User-agent: webzio-extended
-Allow: /
-
-# --- ICC Crawler (International Computing Centre — research AI) ---
 User-agent: ICC-Crawler
-Allow: /
-
-# --- Timpi (Decentralised search engine) ---
 User-agent: Timpibot
 Allow: /
+Disallow: /_next/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /preview/
+Disallow: /draft/
+Disallow: /search
+Disallow: /login
+
+# --- International AI crawlers (with crawl-delay) ---
+User-agent: YandexBot
+Allow: /
+Disallow: /_next/
+Disallow: /api/
+Disallow: /admin/
+Crawl-delay: 5
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /_next/
+Disallow: /api/
+Disallow: /admin/
+Crawl-delay: 5
+
+User-agent: Yeti
+Allow: /
+Disallow: /_next/
+Disallow: /api/
+Disallow: /admin/
+Crawl-delay: 5
+
+User-agent: PetalBot
+Allow: /
+Disallow: /_next/
+Disallow: /api/
+Disallow: /admin/
+Crawl-delay: 3
 
 # --- Omgili (Blog/forum indexer — feeds AI aggregators) ---
 User-agent: omgili
@@ -860,166 +796,94 @@ Crawl-delay: 2
 
 
 # ---------------------------------------------------------------------------
-# 4. AI CRAWLERS — ALLOW ALL (AEO + GEO + LLMO + AAO Strategy)
+# 4. AI CRAWLERS — ALLOW PUBLIC CONTENT (AEO + GEO + LLMO + AAO Strategy)
+# ---------------------------------------------------------------------------
+# AI crawlers are explicitly allowed to index public educational content.
+# Disallow rules mirror the general crawler rules to prevent AI from
+# indexing admin panels, API endpoints, and internal pages.
+# Grouping multiple User-agents shares one set of Allow/Disallow rules.
 # ---------------------------------------------------------------------------
 
-# --- Google AI (Gemini, AI Overviews, SGE, Vertex AI) ---
+# --- Major AI Crawlers (Google, OpenAI, Anthropic, Perplexity, xAI, Meta) ---
 User-agent: Google-Extended
-Allow: /
-
 User-agent: Google-CloudVertexBot
-Allow: /
-
 User-agent: Gemini-Deep-Research
-Allow: /
-
 User-agent: GoogleAgent-Mariner
-Allow: /
-
-# --- OpenAI (ChatGPT, ChatGPT Search, GPT-4, Operator) ---
 User-agent: GPTBot
-Allow: /
-
 User-agent: OAI-SearchBot
-Allow: /
-
 User-agent: ChatGPT-User
-Allow: /
-
-# --- Anthropic (Claude AI, Claude Search) ---
 User-agent: ClaudeBot
-Allow: /
-
 User-agent: anthropic-ai
-Allow: /
-
 User-agent: Claude-User
-Allow: /
-
 User-agent: Claude-SearchBot
-Allow: /
-
 User-agent: claude-web
-Allow: /
-
-# --- Perplexity AI ---
 User-agent: PerplexityBot
-Allow: /
-
 User-agent: Perplexity-User
-Allow: /
-
-# --- xAI / Grok ---
 User-agent: GrokBot
-Allow: /
-
 User-agent: xAI-Grok
-Allow: /
-
 User-agent: Grok-DeepSearch
-Allow: /
-
-# --- Meta AI (Llama, WhatsApp AI, Instagram AI) ---
 User-agent: FacebookBot
-Allow: /
-
 User-agent: meta-externalagent
-Allow: /
-
 User-agent: meta-externalfetcher
-Allow: /
-
 User-agent: Meta-WebIndexer
-Allow: /
-
-# --- Microsoft / Bing AI ---
 User-agent: DuckAssistBot
-Allow: /
-
-# --- Apple (Siri, Apple Intelligence) ---
 User-agent: Applebot
-Allow: /
-
 User-agent: Applebot-Extended
-Allow: /
-
-# --- Amazon (Alexa, Amazon Q) ---
 User-agent: Amazonbot
-Allow: /
-
-# --- Mistral AI ---
 User-agent: MistralAI-User
-Allow: /
-
-# --- Cohere AI ---
 User-agent: cohere-ai
-Allow: /
-
-# --- You.com ---
 User-agent: YouBot
-Allow: /
-
-# --- Allen Institute for AI ---
 User-agent: AI2Bot
-Allow: /
-
 User-agent: AI2Bot-Dolma
-Allow: /
-
-# --- Common Crawl ---
 User-agent: CCBot
-Allow: /
-
-# --- ByteDance (TikTok search, Doubao AI) ---
 User-agent: Bytespider
-Allow: /
-
 User-agent: TikTokSpider
-Allow: /
-
-# --- Diffbot ---
 User-agent: Diffbot
-Allow: /
-
-# --- Yandex (YandexGPT AI) ---
-User-agent: YandexBot
-Allow: /
-Crawl-delay: 5
-
-# --- Baidu (Ernie AI) ---
-User-agent: Baiduspider
-Allow: /
-Crawl-delay: 5
-
-# --- Naver (HyperCLOVA AI) ---
-User-agent: Yeti
-Allow: /
-Crawl-delay: 5
-
-# --- Huawei (Petal Search) ---
-User-agent: PetalBot
-Allow: /
-Crawl-delay: 3
-
-# --- Webz.io ---
 User-agent: webzio-extended
-Allow: /
-
-# --- ICC Crawler ---
 User-agent: ICC-Crawler
-Allow: /
-
-# --- Timpi ---
 User-agent: Timpibot
-Allow: /
-
-# --- Omgili ---
 User-agent: omgili
-Allow: /
-
-# --- ImagesiftBot ---
 User-agent: ImagesiftBot
 Allow: /
+Disallow: /_next/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /preview/
+Disallow: /draft/
+Disallow: /search
+Disallow: /login
+Disallow: /signin/
+Disallow: /signup/
+Disallow: /dashboard/
+
+# --- International AI crawlers (with crawl-delay) ---
+User-agent: YandexBot
+Allow: /
+Disallow: /_next/
+Disallow: /api/
+Disallow: /admin/
+Crawl-delay: 5
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /_next/
+Disallow: /api/
+Disallow: /admin/
+Crawl-delay: 5
+
+User-agent: Yeti
+Allow: /
+Disallow: /_next/
+Disallow: /api/
+Disallow: /admin/
+Crawl-delay: 5
+
+User-agent: PetalBot
+Allow: /
+Disallow: /_next/
+Disallow: /api/
+Disallow: /admin/
+Crawl-delay: 3
 
 
 # ---------------------------------------------------------------------------

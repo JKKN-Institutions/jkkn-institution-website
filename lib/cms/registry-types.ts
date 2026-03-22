@@ -458,7 +458,7 @@ export const FAQSectionPropsSchema = z.object({
     },
     {
       question: 'What courses are offered at JKKN Institutions?',
-      answer: 'JKKN offers 50+ programs across multiple disciplines including Dental Sciences (BDS, MDS), Pharmacy (B.Pharm, M.Pharm, Pharm.D), Engineering & Technology (B.E/B.Tech, M.E/M.Tech), Nursing (B.Sc, M.Sc, GNM), Allied Health Sciencess (BPT, BMLT, B.Sc Radiology), Arts & Science (BA, B.Sc, BCA, BBA, M.A, M.Sc), and Education (B.Ed, M.Ed). Each program is designed with industry-integrated curriculum and hands-on learning experiences.',
+      answer: 'JKKN offers 50+ programs across multiple disciplines including Dental Sciences (BDS, MDS), Pharmacy (B.Pharm, M.Pharm, Pharm.D), Engineering & Technology (B.E/B.Tech, M.E/M.Tech), Nursing (B.Sc, M.Sc, GNM), Allied Health Sciences (BPT, BMLT, B.Sc Radiology), Arts & Science (BA, B.Sc, BCA, BBA, M.A, M.Sc), and Education (B.Ed, M.Ed). Each program is designed with industry-integrated curriculum and hands-on learning experiences.',
     },
     {
       question: 'Is JKKN approved by AICTE, UGC, and other regulatory bodies?',
@@ -1229,7 +1229,7 @@ export const CollegesGridPropsSchema = z.object({
     { name: 'JKKN College of Engineering', description: 'AICTE approved programs in emerging technologies', headerColor: '#7c2d12', link: '/colleges/engineering' },
     { name: 'Sresakthimayeil Institute of Nursing', description: 'INC approved nursing programs with clinical training', headerColor: '#0f766e', link: '/colleges/nursing' },
     { name: 'JKKN College of Arts & Science', description: 'UG & PG programs in arts, science & commerce', headerColor: '#6b21a8', link: '/colleges/arts-science' },
-    { name: 'JKKN College of Allied Health Sciencess', description: 'Specialized healthcare professional programs', headerColor: '#b91c1c', link: '/colleges/allied-health' },
+    { name: 'JKKN College of Allied Health Sciences', description: 'Specialized healthcare professional programs', headerColor: '#b91c1c', link: '/colleges/allied-health' },
     { name: 'JKKN Educational Institutions', description: 'CBSE & State Board schools with holistic development', headerColor: '#0369a1', link: '/schools' },
   ]),
 

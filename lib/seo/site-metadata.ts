@@ -3,14 +3,14 @@
  *
  * This module provides site-wide SEO defaults that are:
  * 1. Institution-specific (from environment variables)
- * 2. Database-driven (from settings table)
+ * 2. Database-driven (from site_settings table)
  * 3. Used as fallbacks when page-specific SEO is not set
  *
  * IMPORTANT: SEO content is stored in each institution's Supabase database.
  * The codebase only provides the STRUCTURE for reading and rendering SEO.
  * Actual SEO content (titles, descriptions, keywords) comes from:
  * - cms_seo_metadata table (per-page SEO)
- * - settings table (site-wide SEO defaults)
+ * - site_settings table (site-wide SEO defaults)
  * - Environment variables (institution identity)
  */
 
@@ -87,7 +87,7 @@ function getDefaultSEOSettings(): SiteSEOSettings {
 
   return {
     siteName: identity.name,
-    siteDescription: `Official website of ${identity.name}. Excellence in education since 1994.`,
+    siteDescription: `Official website of ${identity.name}. Excellence in education since 1952.`,
     siteKeywords: [identity.name, identity.shortName, 'Education', 'Tamil Nadu', 'India'],
 
     titleTemplate: `%s | ${identity.shortName}`,
@@ -121,10 +121,10 @@ function getDefaultSEOSettings(): SiteSEOSettings {
  * Fetch SEO settings from the institution's Supabase database.
  * Each institution has its own settings in its own Supabase project.
  *
- * The `settings` table stores:
- * - general: site name, contact info, address
- * - seo: site-wide SEO defaults
- * - appearance: logo, colors
+ * The `site_settings` table stores key-value pairs grouped by category:
+ * - general: site name, contact info, address, social links
+ * - seo: meta defaults, analytics IDs, verification codes
+ * - appearance: logo, colors, favicon
  */
 export async function getSiteSEOSettings(): Promise<SiteSEOSettings> {
   const defaults = getDefaultSEOSettings()
@@ -133,54 +133,73 @@ export async function getSiteSEOSettings(): Promise<SiteSEOSettings> {
     // Use cookie-less client to allow static rendering of routes
     const supabase = createPublicSupabaseClient()
 
-    // Fetch all relevant settings
-    const { data: settings } = await supabase
-      .from('settings')
-      .select('category, data')
+    // Fetch all relevant settings from site_settings (key-value pairs)
+    const { data: rows } = await supabase
+      .from('site_settings')
+      .select('setting_key, setting_value, category')
       .in('category', ['general', 'seo', 'appearance'])
 
-    if (!settings || settings.length === 0) {
+    if (!rows || rows.length === 0) {
       return defaults
     }
 
-    // Parse settings by category
-    const general = settings.find(s => s.category === 'general')?.data as Record<string, any> || {}
-    const seo = settings.find(s => s.category === 'seo')?.data as Record<string, any> || {}
-    const appearance = settings.find(s => s.category === 'appearance')?.data as Record<string, any> || {}
+    // Build lookup maps by category
+    const settings: Record<string, Record<string, unknown>> = {}
+    for (const row of rows) {
+      if (!settings[row.category]) {
+        settings[row.category] = {}
+      }
+      settings[row.category][row.setting_key] = row.setting_value
+    }
+
+    const general = settings.general || {}
+    const seo = settings.seo || {}
+    const appearance = settings.appearance || {}
+
+    // Parse social links (stored as jsonb)
+    const socialLinks = general.social_links as Record<string, string> | undefined
+    // Parse address (stored as jsonb)
+    const address = general.address as Record<string, string> | undefined
 
     // Merge with defaults (database takes precedence)
     return {
       // Basic (from general settings)
-      siteName: general.site_name || defaults.siteName,
-      siteDescription: seo.site_description || general.site_description || defaults.siteDescription,
-      siteKeywords: seo.site_keywords || defaults.siteKeywords,
+      siteName: (general.site_name as string) || defaults.siteName,
+      siteDescription: (seo.default_meta_description as string) || (general.site_description as string) || defaults.siteDescription,
+      siteKeywords: defaults.siteKeywords,
 
       // Templates (from SEO settings)
-      titleTemplate: seo.title_template || defaults.titleTemplate,
-      defaultTitle: seo.default_title || defaults.defaultTitle,
+      titleTemplate: (seo.title_template as string) || defaults.titleTemplate,
+      defaultTitle: (seo.default_meta_title as string) || defaults.defaultTitle,
 
       // Open Graph (from SEO settings + appearance)
-      ogImage: seo.og_image || appearance.hero_background_url || defaults.ogImage,
-      ogType: seo.og_type || defaults.ogType,
+      ogImage: (seo.og_image as string) || (appearance.hero_background_url as string) || defaults.ogImage,
+      ogType: (seo.og_type as string) || defaults.ogType,
 
       // Twitter (from SEO settings)
-      twitterHandle: seo.twitter_handle || general.social_links?.twitter || defaults.twitterHandle,
-      twitterCardType: seo.twitter_card_type || defaults.twitterCardType,
+      twitterHandle: (seo.twitter_handle as string) || socialLinks?.twitter || defaults.twitterHandle,
+      twitterCardType: (seo.twitter_card_type as 'summary' | 'summary_large_image') || defaults.twitterCardType,
 
       // Technical
-      canonicalBase: seo.canonical_base || process.env.NEXT_PUBLIC_SITE_URL || defaults.canonicalBase,
-      robotsDefault: seo.robots_default || defaults.robotsDefault,
+      canonicalBase: (seo.canonical_base as string) || process.env.NEXT_PUBLIC_SITE_URL || defaults.canonicalBase,
+      robotsDefault: (seo.robots_default as string) || defaults.robotsDefault,
 
       // Verification
-      googleSiteVerification: seo.google_site_verification || defaults.googleSiteVerification,
-      bingSiteVerification: seo.bing_site_verification || defaults.bingSiteVerification,
+      googleSiteVerification: (seo.google_site_verification as string) || defaults.googleSiteVerification,
+      bingSiteVerification: (seo.bing_site_verification as string) || defaults.bingSiteVerification,
 
       // Organization (from general settings)
-      organizationType: seo.organization_type || defaults.organizationType,
-      organizationLogo: appearance.logo_url || defaults.organizationLogo,
-      contactEmail: general.contact_email || defaults.contactEmail,
-      contactPhone: general.contact_phone || defaults.contactPhone,
-      address: general.address || defaults.address,
+      organizationType: (seo.organization_type as string) || defaults.organizationType,
+      organizationLogo: (appearance.logo_url as string) || defaults.organizationLogo,
+      contactEmail: (general.contact_email as string) || defaults.contactEmail,
+      contactPhone: (general.contact_phone as string) || defaults.contactPhone,
+      address: address ? {
+        streetAddress: address.line1 || '',
+        addressLocality: address.city || '',
+        addressRegion: address.state || '',
+        postalCode: address.pincode || '',
+        addressCountry: address.country || 'IN',
+      } : defaults.address,
     }
   } catch (error) {
     console.error('Failed to fetch SEO settings:', error)
@@ -288,12 +307,11 @@ export async function generatePageMetadata(options: {
 }
 
 // =============================================================================
-// STRUCTURED DATA HELPERS
+// STRUCTURED DATA HELPERS (deprecated — use lib/seo/structured-data.ts instead)
 // =============================================================================
 
 /**
- * Generate Organization structured data (JSON-LD).
- * This is institution-specific and comes from database.
+ * @deprecated Use generateOrganizationSchema() from lib/seo/structured-data.ts
  */
 export async function generateOrganizationSchema() {
   const seo = await getSiteSEOSettings()
@@ -318,7 +336,7 @@ export async function generateOrganizationSchema() {
 }
 
 /**
- * Generate WebSite structured data (JSON-LD).
+ * @deprecated Use WebsiteSchema component from components/seo/website-schema.tsx
  */
 export async function generateWebsiteSchema() {
   const seo = await getSiteSEOSettings()

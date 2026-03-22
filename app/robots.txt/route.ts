@@ -14,7 +14,8 @@
 import { getRobotsTxt } from '@/lib/config/robots-txt.config'
 import { NextResponse } from 'next/server'
 
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-static'
+export const revalidate = 86400 // Revalidate once per day
 
 export async function GET() {
   const institutionId = process.env.NEXT_PUBLIC_INSTITUTION_ID || 'main'

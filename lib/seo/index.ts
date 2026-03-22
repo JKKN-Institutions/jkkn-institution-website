@@ -45,6 +45,21 @@ export {
   serializeSchema,
 } from './structured-data'
 
+// Institution SEO config
+export {
+  getInstitutionSEOConfig,
+  getInstitutionSEOConfigById,
+  getCopyrightYear,
+  getGAMeasurementId,
+  getMetaPixelId,
+  getGoogleSiteVerification,
+} from './institution-seo-config'
+export type { InstitutionSEOConfig } from './institution-seo-config'
+
+// Schema resolver
+export { resolvePageSchemas } from './schema-resolver'
+export type { PageSchemaSet } from './schema-resolver'
+
 // Breadcrumb configuration
 export {
   BREADCRUMB_CONFIG,

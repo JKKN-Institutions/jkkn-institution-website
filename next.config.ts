@@ -244,6 +244,18 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
+      // === OAuth Code Rescue ===
+      // Supabase sends /?code=… to the Site URL when the redirectTo URL is not
+      // in the Supabase Auth "Allowed redirect URLs" list. This redirect catches
+      // that case and forwards the code to the proper /auth/callback handler
+      // so the session can be established — no middleware required.
+      {
+        source: '/',
+        has: [{ type: 'query', key: 'code', value: '(?<code>.+)' }],
+        destination: '/auth/callback?code=:code',
+        permanent: false,
+      },
+
       // === Legacy Content URLs → Homepage ===
       {
         source: '/the-rise-of-artificial-intelligence-in-healthcare',
@@ -258,6 +270,13 @@ const nextConfig: NextConfig = {
       {
         source: '/design-thinking',
         destination: '/',
+        permanent: true,
+      },
+
+      // === SEO Audit Fix: /courses → /courses-offered (C1) ===
+      {
+        source: '/courses',
+        destination: '/courses-offered',
         permanent: true,
       },
 
@@ -418,7 +437,7 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    qualities: [40, 55, 75, 85],
+    qualities: [40, 50, 55, 75, 85],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days cache
     // Note: Image quality is controlled per-component via quality prop
     // Custom qualities list allows AVIF-optimized values (35-55) alongside standard (75)

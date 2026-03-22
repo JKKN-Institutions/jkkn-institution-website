@@ -281,6 +281,175 @@ async function LiveFeed() {
 }
 ```
 
+## Cache Key Optimization (Production Critical)
+
+### The Golden Rule
+
+**Cache on dimensions with FEW unique values, not MANY.**
+
+This is the MOST IMPORTANT optimization for production applications, especially when using `'use cache: remote'`.
+
+### Why It Matters
+
+```typescript
+// ❌ BAD - 10,000 users = 10,000 cache entries = 0.01% hit rate
+async function getUserDashboard(userId: string) {
+  'use cache: remote'
+  return await fetchUserData(userId)
+}
+
+// ✅ GOOD - 10 languages = 10 cache entries = 10% hit rate (1000x better!)
+async function getCMSContent(language: string) {
+  'use cache: remote'
+  return cms.getContent(language)
+}
+```
+
+### Real-World Examples
+
+#### Example 1: Product Filtering
+
+```typescript
+// ❌ BAD - Creates cache entry for every price filter combination
+// 20 categories × 100 price ranges = 2,000 cache entries
+async function getProducts(category: string, minPrice: number, maxPrice: number) {
+  'use cache: remote'
+  cacheTag('products')
+
+  return db.products.find({
+    where: {
+      category,
+      price: { gte: minPrice, lte: maxPrice }
+    }
+  })
+}
+
+// ✅ GOOD - Cache by category, filter price in memory
+// 20 categories = 20 cache entries (100x better utilization)
+async function ProductsPage({ searchParams }) {
+  const { category, minPrice, maxPrice } = await searchParams
+
+  return (
+    <Suspense fallback={<Loading />}>
+      <ProductList
+        category={category}
+        minPrice={minPrice}
+        maxPrice={maxPrice}
+      />
+    </Suspense>
+  )
+}
+
+async function ProductList({ category, minPrice, maxPrice }) {
+  // Cache only on category (few unique values)
+  const products = await getCachedProducts(category)
+
+  // Filter price ranges in memory (many unique values)
+  const filtered = products.filter(p =>
+    (!minPrice || p.price >= parseFloat(minPrice)) &&
+    (!maxPrice || p.price <= parseFloat(maxPrice))
+  )
+
+  return <ProductGrid products={filtered} />
+}
+
+async function getCachedProducts(category: string) {
+  'use cache: remote'
+  cacheTag('products', `category-${category}`)
+  cacheLife({ expire: 3600 })
+
+  return db.products.findByCategory(category)
+}
+```
+
+#### Example 2: User Preferences
+
+```typescript
+// ❌ BAD - One cache entry per user
+async function getUserPreferences(userId: string) {
+  'use cache: remote'
+  return db.userPreferences.find({ userId })
+}
+
+// ✅ GOOD - Extract preference, cache by language
+async function WelcomeMessage() {
+  // Read cookie outside cache scope
+  const language = (await cookies()).get('language')?.value || 'en'
+
+  // All users with same language share cache entry
+  const content = await getCMSContent(language)
+  return <div>{content.welcome}</div>
+}
+
+async function getCMSContent(language: string) {
+  'use cache: remote'
+  cacheTag(`cms-${language}`)
+  cacheLife({ expire: 3600 })
+
+  // ~10-50 cache entries (one per language)
+  // NOT thousands (one per user)
+  return cms.getContent(language)
+}
+```
+
+#### Example 3: Currency Conversion
+
+```typescript
+// MyJKKN Pattern: Cache by currency, not by user
+async function ProductPrice({ productId }: { productId: string }) {
+  // Read currency from cookie (request-specific)
+  const currency = (await cookies()).get('currency')?.value ?? 'USD'
+
+  // Cache per (productId, currency) combination
+  // 100 products × 5 currencies = 500 cache entries
+  // NOT 100 products × 10,000 users = 1,000,000 entries
+  const price = await getProductPrice(productId, currency)
+
+  return <div>Price: {price} {currency}</div>
+}
+
+async function getProductPrice(productId: string, currency: string) {
+  'use cache: remote'
+  cacheTag(`product-price-${productId}`)
+  cacheLife({ expire: 3600 })
+
+  // Few currencies means high cache utilization
+  return db.products.getPrice(productId, currency)
+}
+```
+
+### Cache Utilization Analysis
+
+| Dimension | Unique Values | Cache Entries | Hit Rate |
+|-----------|---------------|---------------|----------|
+| User ID | 10,000 | 10,000 | 0.01% ❌ |
+| Session ID | 50,000 | 50,000 | 0.002% ❌ |
+| Price filter ($0-$1000) | 1,000+ | 1,000+ | 0.1% ❌ |
+| Category | 20 | 20 | 5% ✅ |
+| Language | 10 | 10 | 10% ✅ |
+| Currency | 5 | 5 | 20% ✅ |
+| Theme (light/dark) | 2 | 2 | 50% ✅ |
+
+**Takeaway**: Always identify the dimension with the FEWEST unique values and cache on that.
+
+### Decision Framework
+
+```
+Can I transform this data?
+├─ Extract user-specific value from many-valued dimension
+│  ├─ language from userId (10,000 → 10 values)
+│  ├─ currency from userId (10,000 → 5 values)
+│  └─ theme from userId (10,000 → 2 values)
+│
+├─ Filter in memory instead of cache key
+│  ├─ Price ranges (1000 values → 0 cache impact)
+│  ├─ Date ranges (infinite values → 0 cache impact)
+│  └─ Search queries (infinite values → 0 cache impact)
+│
+└─ Accept lower cache utilization if unavoidable
+   └─ Document why and monitor cache hit rates
+```
+
 ## Advanced Patterns
 
 ### Pattern 1: Hybrid Caching Strategy

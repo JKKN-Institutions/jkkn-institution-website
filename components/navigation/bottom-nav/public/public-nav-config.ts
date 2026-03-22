@@ -9,9 +9,6 @@ import {
   History,
   Users,
   Target,
-  ClipboardList,
-  FileCheck,
-  FileEdit,
   Scale,
   Shield,
   type LucideIcon
@@ -57,11 +54,7 @@ export const PUBLIC_FALLBACK_PRIMARY_ITEMS: NavMenuItemConfig[] = [
     href: '/admissions',
     label: 'Admissions',
     icon: GraduationCap,
-    submenus: [
-      { href: '/admissions/process', label: 'Process', icon: ClipboardList },
-      { href: '/admissions/requirements', label: 'Requirements', icon: FileCheck },
-      { href: '/admissions/apply', label: 'Apply Now', icon: FileEdit }
-    ]
+    submenus: []
   },
   {
     href: '/contact',

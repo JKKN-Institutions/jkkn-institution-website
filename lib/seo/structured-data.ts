@@ -1,166 +1,222 @@
 /**
  * Structured Data Generation Utilities
  * Generates JSON-LD schemas for SEO
+ *
+ * SINGLE SOURCE OF TRUTH for all Organization schema generation.
+ * Uses centralized config from institution-seo-config.ts.
  */
 
 import type {
   BreadcrumbItem,
   BreadcrumbList,
-  EducationalOrganization,
   ListItem,
-  OrganizationConfig,
   SchemaGraph,
   WebPage,
 } from './types'
 import { getSiteUrl } from '@/lib/utils/site-url'
-import { getCurrentInstitution } from '@/lib/config/multi-tenant'
+import { getInstitutionSEOConfig } from './institution-seo-config'
+import { isMainInstitution } from '@/lib/config/multi-tenant'
 
 /**
- * Get organization configuration dynamically based on current institution
+ * Generate comprehensive EducationalOrganization schema for the root layout.
+ *
+ * This is the SINGLE organization schema — no other component should
+ * emit a competing EducationalOrganization JSON-LD block.
  */
-function getOrganizationConfig(): OrganizationConfig {
-  const institution = getCurrentInstitution()
+export function generateOrganizationSchema(): Record<string, unknown> {
   const SITE_URL = getSiteUrl()
+  const config = getInstitutionSEOConfig()
 
-  // Institution-specific configurations
-  const configs: Record<string, Partial<OrganizationConfig>> = {
-    main: {
-      name: 'JKKN Group of Institutions',
-      alternateName: 'JKKN',
-      foundingDate: '1952',
-      description:
-        'Leading educational institution in Tamil Nadu offering quality education since 1952. NAAC A accredited with 50,000+ alumni worldwide.',
-      address: {
-        streetAddress: 'JKKN Educational Institutions',
-        addressLocality: 'Komarapalayam',
-        addressRegion: 'Tamil Nadu',
-        postalCode: '638183',
-        addressCountry: 'IN',
-      },
-      contactPoint: {
-        telephone: '+91-4288-234001',
-        contactType: 'admissions',
-        email: 'info@jkkn.ac.in',
-      },
-      sameAs: [
-        'https://www.facebook.com/myjkkn',
-        'https://www.instagram.com/jkkn_institutions',
-        'https://www.linkedin.com/company/jkkn-group-of-institutions',
-        'https://www.youtube.com/@jkkngroupofinstitutions',
-      ],
-    },
-    engineering: {
-      name: 'JKKN College of Engineering and Technology',
-      alternateName: 'JKKN CET',
-      foundingDate: '2008',
-      description:
-        'Premier engineering college in Tamil Nadu affiliated to Anna University. Offers UG and PG programs in Engineering and Technology with excellent placement record.',
-      address: institution.contact ? {
-        streetAddress: institution.contact.address.line1 + (institution.contact.address.line2 ? ', ' + institution.contact.address.line2 : ''),
-        addressLocality: institution.contact.address.city,
-        addressRegion: institution.contact.address.state,
-        postalCode: institution.contact.address.pincode,
-        addressCountry: 'IN',
-      } : undefined,
-      contactPoint: institution.contact ? {
-        telephone: institution.contact.phoneFormatted,
-        contactType: 'admissions',
-        email: institution.contact.email,
-      } : undefined,
-    },
-    dental: {
-      name: 'JKKN Dental College and Hospital',
-      alternateName: 'JKKN DC',
-      foundingDate: '2005',
-      description:
-        'Leading dental college and hospital in Tamil Nadu affiliated to The Tamil Nadu Dr. M.G.R. Medical University. Offers BDS, MDS, and specialized dental care services.',
-    },
-    pharmacy: {
-      name: 'JKKN College of Pharmacy',
-      alternateName: 'JKKN CP',
-      foundingDate: '2008',
-      description:
-        'AICTE approved pharmacy college in Tamil Nadu offering B.Pharm, M.Pharm, and Pharm.D programs with state-of-the-art facilities.',
-    },
-    'arts-science': {
-      name: 'JKKN College of Arts and Science',
-      alternateName: 'JKKN CAS',
-      foundingDate: '2005',
-      description:
-        'Premier arts and science college in Tamil Nadu offering UG and PG programs in arts, science, and management disciplines.',
-    },
-    nursing: {
-      name: 'JKKN College of Nursing',
-      alternateName: 'JKKN Nursing',
-      foundingDate: '2010',
-      description:
-        'Leading nursing college in Tamil Nadu affiliated to The Tamil Nadu Dr. M.G.R. Medical University. Offers B.Sc Nursing, M.Sc Nursing programs with excellent clinical training.',
-    },
-  }
-
-  const specificConfig = configs[institution.id] || {}
-
-  return {
-    name: institution.name,
-    alternateName: institution.shortName,
-    url: SITE_URL,
-    logo: `${SITE_URL}/logo.png`,
-    foundingDate: specificConfig.foundingDate || '1952',
-    description: specificConfig.description || `Official website of ${institution.name}`,
-    address: specificConfig.address || {
-      streetAddress: 'JKKN Educational Institutions',
-      addressLocality: 'Komarapalayam',
-      addressRegion: 'Tamil Nadu',
-      postalCode: '638183',
-      addressCountry: 'IN',
-    },
-    contactPoint: specificConfig.contactPoint || {
-      telephone: '+91-4288-234001',
-      contactType: 'admissions',
-      email: 'info@jkkn.ac.in',
-    },
-    sameAs: specificConfig.sameAs || [
-      'https://www.facebook.com/myjkkn',
-      'https://www.instagram.com/jkkn_institutions',
-      'https://www.linkedin.com/company/jkkn-group-of-institutions',
-      'https://www.youtube.com/@jkkngroupofinstitutions',
-    ],
-  }
-}
-
-/**
- * Generate EducationalOrganization schema for global use
- */
-export function generateOrganizationSchema(): EducationalOrganization {
-  const SITE_URL = getSiteUrl()
-  const ORGANIZATION_CONFIG = getOrganizationConfig()
-
-  return {
+  const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
-    '@type': 'EducationalOrganization',
+    '@type': config.schemaType,
     '@id': `${SITE_URL}/#organization`,
-    name: ORGANIZATION_CONFIG.name,
-    alternateName: ORGANIZATION_CONFIG.alternateName,
-    url: ORGANIZATION_CONFIG.url,
-    logo: ORGANIZATION_CONFIG.logo,
-    foundingDate: ORGANIZATION_CONFIG.foundingDate,
-    description: ORGANIZATION_CONFIG.description,
-    address: {
+    'name': config.name,
+    'alternateName': config.alternateName,
+    'url': `${SITE_URL}/`,
+    'logo': {
+      '@type': 'ImageObject',
+      'url': `${SITE_URL}/images/logo.png`,
+      'contentUrl': `${SITE_URL}/images/logo.png`,
+      'caption': `${config.name} Logo`,
+    },
+    'image': [`${SITE_URL}/images/logo.png`],
+    'foundingDate': config.foundingDate,
+    'description': config.description,
+
+    // Address — uses actual street address, NOT org name
+    'address': {
       '@type': 'PostalAddress',
-      streetAddress: ORGANIZATION_CONFIG.address.streetAddress,
-      addressLocality: ORGANIZATION_CONFIG.address.addressLocality,
-      addressRegion: ORGANIZATION_CONFIG.address.addressRegion,
-      postalCode: ORGANIZATION_CONFIG.address.postalCode,
-      addressCountry: ORGANIZATION_CONFIG.address.addressCountry,
+      'streetAddress': config.address.streetAddress,
+      'addressLocality': config.address.addressLocality,
+      'addressRegion': config.address.addressRegion,
+      'postalCode': config.address.postalCode,
+      'addressCountry': config.address.addressCountry,
     },
-    contactPoint: {
+
+    // GeoCoordinates
+    'geo': {
+      '@type': 'GeoCoordinates',
+      'latitude': config.geo.latitude,
+      'longitude': config.geo.longitude,
+    },
+
+    // Area Served — critical for "Best College Near Erode" claim
+    'areaServed': config.areaServed.map(area => ({
+      '@type': area.type,
+      'name': area.name,
+      ...(area.sameAs ? { sameAs: area.sameAs } : {}),
+    })),
+
+    // Contact
+    'contactPoint': [{
       '@type': 'ContactPoint',
-      telephone: ORGANIZATION_CONFIG.contactPoint.telephone,
-      contactType: ORGANIZATION_CONFIG.contactPoint.contactType,
-      email: ORGANIZATION_CONFIG.contactPoint.email,
+      'telephone': config.contactPoint.telephone,
+      'contactType': config.contactPoint.contactType,
+      'areaServed': 'IN',
+      'availableLanguage': config.contactPoint.availableLanguage,
+    }],
+    'email': config.email,
+
+    // Social & identity links
+    'sameAs': config.sameAs,
+
+    // Parent Organization — links child institutions to JKKN trust/main
+    'parentOrganization': {
+      '@type': config.parentOrganization.type,
+      'name': config.parentOrganization.name,
+      '@id': config.parentOrganization.id,
+      ...(config.parentOrganization.foundingDate ? { foundingDate: config.parentOrganization.foundingDate } : {}),
+      ...(config.parentOrganization.description ? { description: config.parentOrganization.description } : {}),
     },
-    sameAs: ORGANIZATION_CONFIG.sameAs,
+
+    // Credentials (NAAC, AICTE, etc.)
+    'hasCredential': config.hasCredential.map(cred => ({
+      '@type': 'EducationalOccupationalCredential',
+      'credentialCategory': cred.credentialCategory,
+      'name': cred.name,
+      'recognizedBy': {
+        '@type': 'Organization',
+        'name': cred.recognizedBy.name,
+        ...(cred.recognizedBy.alternateName ? { alternateName: cred.recognizedBy.alternateName } : {}),
+      },
+    })),
+
+    // University affiliations
+    'memberOf': config.memberOf.map(org => ({
+      '@type': 'Organization',
+      'name': org.name,
+      ...(org.alternateName ? { alternateName: org.alternateName } : {}),
+      ...(org.sameAs ? { sameAs: org.sameAs } : {}),
+    })),
+
+    // Programs offered
+    'makesOffer': config.programs.map(prog => ({
+      '@type': 'Offer',
+      'itemOffered': {
+        '@type': 'EducationalOccupationalProgram',
+        'name': prog.name,
+        'educationalProgramMode': 'full-time',
+        'programType': prog.programType,
+      },
+    })),
+
+    // Amenities
+    'amenityFeature': config.amenityFeature.map(name => ({
+      '@type': 'LocationFeatureSpecification',
+      'name': name,
+      'value': true,
+    })),
+
+    // Awards
+    'award': config.awards,
+
+    // Google Maps link
+    'hasMap': `https://maps.google.com/?q=${config.geo.latitude},${config.geo.longitude}`,
+
+    'isAccessibleForFree': false,
+    'publicAccess': true,
   }
+
+  // Slogan (if set)
+  if (config.slogan) {
+    schema.slogan = config.slogan
+  }
+
+  // Legal name (if set)
+  if (config.legalName) {
+    schema.legalName = config.legalName
+  }
+
+  // Employee count (if set)
+  if (config.numberOfEmployees) {
+    schema.numberOfEmployees = {
+      '@type': 'QuantitativeValue',
+      'minValue': config.numberOfEmployees.min,
+      'maxValue': config.numberOfEmployees.max,
+      'unitText': 'employees',
+    }
+  }
+
+  // Alumni count (if set)
+  if (config.alumniCount) {
+    schema.alumni = {
+      '@type': 'QuantitativeValue',
+      'minValue': config.alumniCount,
+      'unitText': 'alumni worldwide',
+    }
+  }
+
+  // Sub-organizations (main institution only)
+  if (config.subOrganizations && config.subOrganizations.length > 0) {
+    schema.subOrganization = config.subOrganizations.map(sub => ({
+      '@type': sub.type,
+      'name': sub.name,
+      ...(sub.url ? { url: sub.url } : {}),
+      'description': sub.description,
+      'foundingDate': sub.foundingDate,
+    }))
+  }
+
+  // Founder (main institution only)
+  if (isMainInstitution()) {
+    schema.founder = {
+      '@type': 'Person',
+      'name': 'Kodai Vallal Shri. J.K.K. Natarajah',
+      'alternateName': ['J.K.K. Nataraja Chettiar', 'Kodaivallal J.K.K. Nataraja Chettiyar'],
+      'description': "Visionary philanthropist who established the J.K.K. Rangammal Charitable Trust with a strong commitment to advancing girls' education",
+    }
+
+    // Search and Apply actions (main only)
+    schema.potentialAction = [
+      {
+        '@type': 'SearchAction',
+        'target': {
+          '@type': 'EntryPoint',
+          'urlTemplate': `${SITE_URL}/search?q={search_term_string}`,
+        },
+        'query-input': 'required name=search_term_string',
+      },
+      {
+        '@type': 'ApplyAction',
+        'name': 'Apply for Admission',
+        'target': {
+          '@type': 'EntryPoint',
+          'urlTemplate': `${SITE_URL}/admissions`,
+          'actionPlatform': [
+            'http://schema.org/DesktopWebPlatform',
+            'http://schema.org/MobileWebPlatform',
+          ],
+        },
+        'result': {
+          '@type': 'Thing',
+          'name': 'Admission Application',
+        },
+      },
+    ]
+  }
+
+  return schema
 }
 
 /**
@@ -193,7 +249,7 @@ export function generateWebPageSchema(
   breadcrumbs?: BreadcrumbItem[]
 ): WebPage {
   const SITE_URL = getSiteUrl()
-  const ORGANIZATION_CONFIG = getOrganizationConfig()
+  const config = getInstitutionSEOConfig()
 
   const schema: WebPage = {
     '@context': 'https://schema.org',
@@ -204,7 +260,7 @@ export function generateWebPageSchema(
     description,
     isPartOf: {
       '@type': 'WebSite',
-      name: ORGANIZATION_CONFIG.name,
+      name: config.name,
       url: SITE_URL,
     },
   }
