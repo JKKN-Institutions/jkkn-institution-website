@@ -138,10 +138,10 @@ export default function AdmissionHero({
     switch (variant) {
       case 'primary':
         return cn(
-          'bg-brand-accent hover:bg-brand-accent-dark',
-          'text-white font-semibold',
-          'shadow-lg shadow-brand-accent/30',
-          'hover:shadow-xl hover:shadow-brand-accent/40',
+          'bg-[#ffde59] hover:bg-[#f5d442]',
+          'text-[#0b6d41] font-semibold',
+          'shadow-lg shadow-[#ffde59]/30',
+          'hover:shadow-xl hover:shadow-[#ffde59]/40',
           'hover:-translate-y-0.5'
         )
       case 'secondary':
