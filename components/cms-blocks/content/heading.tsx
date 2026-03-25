@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import type { HeadingProps } from '@/lib/cms/registry-types'
 import { InlineEditor } from '@/components/page-builder/elementor/inline-editor'
 import * as LucideIcons from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
 export default function Heading({
   text = 'Heading',
@@ -16,10 +17,10 @@ export default function Heading({
   style,
   ...restProps
 }: HeadingProps) {
-  // Extract custom _styles and _icon from props (comes from database)
-  const customProps = restProps as any
-  const _styles = customProps._styles || {}
-  const _icon = customProps._icon || null
+  // Extract custom _styles and _icon from props (comes from database as dynamic CMS fields)
+  const customProps = restProps as Record<string, unknown>
+  const _styles = (customProps._styles as Record<string, Record<string, string | undefined> | undefined>) || {}
+  const _icon = (customProps._icon as { name?: string; size?: number; color?: string; background?: string; borderRadius?: string; padding?: string; strokeWidth?: number } | null) || null
 
   // Determine if this is a section heading (h2, h3) that should have extra styling
   const isSectionHeading = level === 'h2' || level === 'h3'
@@ -72,7 +73,7 @@ export default function Heading({
   let IconComponent = null
   if (_icon && _icon.name) {
     const iconName = _icon.name as keyof typeof LucideIcons
-    IconComponent = LucideIcons[iconName] as any
+    IconComponent = LucideIcons[iconName] as LucideIcon
   }
 
   const headingContent = (
@@ -83,15 +84,15 @@ export default function Heading({
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: _icon.background || undefined,
-            borderRadius: _icon.borderRadius || undefined,
-            padding: _icon.padding || undefined,
+            backgroundColor: _icon?.background || undefined,
+            borderRadius: _icon?.borderRadius || undefined,
+            padding: _icon?.padding || undefined,
           }}
         >
           <IconComponent
-            size={_icon.size || 24}
-            color={_icon.color || 'currentColor'}
-            strokeWidth={_icon.strokeWidth || 2}
+            size={_icon?.size || 24}
+            color={_icon?.color || 'currentColor'}
+            strokeWidth={_icon?.strokeWidth || 2}
           />
         </span>
       )}

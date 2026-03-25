@@ -11,6 +11,7 @@ import DocumentsChecklist from '@/components/cms-blocks/admissions/documents-che
 import PlacementsHighlights from '@/components/cms-blocks/admissions/placements-highlights'
 import CampusFeaturesGrid from '@/components/cms-blocks/admissions/campus-features-grid'
 import { FAQSchemaAdmissionsMain } from '@/components/seo/faq-schema-admissions'
+import { AdmissionsFAQ } from '@/components/public/admissions/admissions-faq'
 
 export const metadata: Metadata = {
   title: 'Admissions 2026-27 | JKKN Institutions — Apply Now',
@@ -30,12 +31,12 @@ export const metadata: Metadata = {
     'JKKN fee structure',
   ],
   alternates: {
-    canonical: 'https://jkkn.ac.in/admissions',
+    canonical: 'https://www.jkkn.ac.in/admissions',
   },
   openGraph: {
     title: 'Admissions 2026-27 | JKKN Institutions — Apply Now',
     description: 'Apply for JKKN Institutions admission 2026-27. NAAC A accredited, 7 colleges, 92%+ placements, scholarships available.',
-    url: 'https://jkkn.ac.in/admissions',
+    url: 'https://www.jkkn.ac.in/admissions',
     siteName: 'JKKN Institutions',
     type: 'website',
     locale: 'en_IN',
@@ -55,13 +56,13 @@ const breadcrumbJsonLd = {
       '@type': 'ListItem',
       position: 1,
       name: 'Home',
-      item: 'https://jkkn.ac.in/',
+      item: 'https://www.jkkn.ac.in/',
     },
     {
       '@type': 'ListItem',
       position: 2,
       name: 'Admissions 2026-27',
-      item: 'https://jkkn.ac.in/admissions',
+      item: 'https://www.jkkn.ac.in/admissions',
     },
   ],
 }
@@ -295,34 +296,36 @@ export default function AdmissionsPage() {
         ]}
       />
 
-      {/* 7. Fee Structure */}
+      {/* 7. Fee Structure — id="fee-structure" enables /admissions#fee-structure deep-link */}
       {/* [UPDATE] — Fee amounts from schema defaults. Needs finance department verification. */}
-      <FeeStructureTable
-        badge="FEE STRUCTURE"
-        title="Fee Structure Overview"
-        titleAccentWord="Structure"
-        subtitle="Transparent and affordable fee structure for all programs"
-        groupByCategory={true}
-        showHostelFee={true}
-        showOtherFees={false}
-        currencySymbol="₹"
-        currencyLocale="en-IN"
-        fees={[
-          { program: 'BDS', tuitionFee: 500000, hostelFee: 75000, total: 575000, category: 'medical' },
-          { program: 'B.Pharm', tuitionFee: 85000, hostelFee: 60000, total: 145000, category: 'pharmacy' },
-          { program: 'B.Sc Nursing', tuitionFee: 75000, hostelFee: 55000, total: 130000, category: 'nursing' },
-          { program: 'B.E/B.Tech', tuitionFee: 95000, hostelFee: 60000, total: 155000, category: 'engineering' },
-          { program: 'B.Sc/B.Com/BA', tuitionFee: 35000, hostelFee: 50000, total: 85000, category: 'arts-science' },
-        ]}
-        footerNotes={[
-          'Fees are subject to revision as per university/regulatory norms',
-          'Hostel fees are optional and include mess charges',
-          'Scholarships and fee concessions available for eligible students',
-        ]}
-        backgroundColor="gradient-dark"
-        showAnimations={true}
-        accentColor="var(--gold-on-light)"
-      />
+      <div id="fee-structure">
+        <FeeStructureTable
+          badge="FEE STRUCTURE"
+          title="Fee Structure Overview"
+          titleAccentWord="Structure"
+          subtitle="Transparent and affordable fee structure for all programs"
+          groupByCategory={true}
+          showHostelFee={true}
+          showOtherFees={false}
+          currencySymbol="₹"
+          currencyLocale="en-IN"
+          fees={[
+            { program: 'BDS', tuitionFee: 500000, hostelFee: 75000, total: 575000, category: 'medical' },
+            { program: 'B.Pharm', tuitionFee: 85000, hostelFee: 60000, total: 145000, category: 'pharmacy' },
+            { program: 'B.Sc Nursing', tuitionFee: 75000, hostelFee: 55000, total: 130000, category: 'nursing' },
+            { program: 'B.E/B.Tech', tuitionFee: 95000, hostelFee: 60000, total: 155000, category: 'engineering' },
+            { program: 'B.Sc/B.Com/BA', tuitionFee: 35000, hostelFee: 50000, total: 85000, category: 'arts-science' },
+          ]}
+          footerNotes={[
+            'Fees are subject to revision as per university/regulatory norms',
+            'Hostel fees are optional and include mess charges',
+            'Scholarships and fee concessions available for eligible students',
+          ]}
+          backgroundColor="gradient-dark"
+          showAnimations={true}
+          accentColor="var(--gold-on-light)"
+        />
+      </div>
 
       {/* 8. Scholarships */}
       <ScholarshipsSection
@@ -447,7 +450,17 @@ export default function AdmissionsPage() {
         accentColor="var(--gold-on-light)"
       />
 
-      {/* 12. FAQ Schema — JSON-LD only, rendered above */}
+      {/* 12. FAQ — Visible HTML + JSON-LD above */}
+      <section className="py-16 px-4 bg-gray-50">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <span className="inline-block text-xs font-semibold uppercase tracking-widest text-primary mb-3">FAQ</span>
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">Frequently Asked Questions</h2>
+            <p className="text-gray-600 max-w-xl mx-auto">Everything you need to know about admissions at JKKN Institutions.</p>
+          </div>
+          <AdmissionsFAQ />
+        </div>
+      </section>
 
     </main>
   )

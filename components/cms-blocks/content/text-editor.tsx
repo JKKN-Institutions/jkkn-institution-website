@@ -14,9 +14,9 @@ export default function TextEditor({
   style,
   ...restProps
 }: TextEditorProps) {
-  // Extract custom _styles from props (comes from database)
-  const customProps = restProps as any
-  const _styles = customProps._styles || {}
+  // Extract custom _styles from props (comes from database as dynamic CMS fields)
+  const customProps = restProps as Record<string, unknown>
+  const _styles = (customProps._styles as Record<string, Record<string, string | undefined>>) || {}
 
   // Merge custom styles from database
   const mergedStyles: React.CSSProperties = {

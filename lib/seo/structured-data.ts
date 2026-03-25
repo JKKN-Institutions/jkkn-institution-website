@@ -68,15 +68,40 @@ export function generateOrganizationSchema(): Record<string, unknown> {
       ...(area.sameAs ? { sameAs: area.sameAs } : {}),
     })),
 
-    // Contact
-    'contactPoint': [{
-      '@type': 'ContactPoint',
-      'telephone': config.contactPoint.telephone,
-      'contactType': config.contactPoint.contactType,
-      'areaServed': 'IN',
-      'availableLanguage': config.contactPoint.availableLanguage,
-    }],
+    // Contact — multiple contact points for admissions and general enquiry
+    'contactPoint': [
+      {
+        '@type': 'ContactPoint',
+        'telephone': config.contactPoint.telephone,
+        'contactType': 'admissions',
+        'areaServed': 'IN',
+        'availableLanguage': config.contactPoint.availableLanguage,
+        'hoursAvailable': {
+          '@type': 'OpeningHoursSpecification',
+          'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+          'opens': '09:00',
+          'closes': '17:00',
+        },
+      },
+      {
+        '@type': 'ContactPoint',
+        'telephone': config.contactPoint.telephone,
+        'contactType': 'customer support',
+        'areaServed': 'IN',
+        'availableLanguage': config.contactPoint.availableLanguage,
+      },
+    ],
     'email': config.email,
+
+    // Opening hours for the campus
+    'openingHoursSpecification': [
+      {
+        '@type': 'OpeningHoursSpecification',
+        'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        'opens': '09:00',
+        'closes': '17:00',
+      },
+    ],
 
     // Social & identity links
     'sameAs': config.sameAs,

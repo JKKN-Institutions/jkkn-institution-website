@@ -8,6 +8,7 @@ import {
   getSitemapConfig,
   shouldExcludeUrl,
 } from '@/lib/seo/sitemap-config'
+import { CITY_PAGES_CONFIG } from '@/lib/config/city-pages'
 import type { MetadataRoute } from 'next'
 
 /**
@@ -32,14 +33,15 @@ export async function getSitemapUrls(): Promise<SitemapUrl[]> {
     })
   }
 
-  // Fetch dynamic content from database
-  const [cmsPages, blogPosts, careerJobs] = await Promise.all([
+  // Fetch dynamic content from database + code-driven city pages
+  const [cmsPages, blogPosts, careerJobs, cityPages] = await Promise.all([
     getCmsPageUrls(),
     getBlogPostUrls(),
     getCareerJobUrls(),
+    getCityPageUrls(),
   ])
 
-  urls.push(...cmsPages, ...blogPosts, ...careerJobs)
+  urls.push(...cmsPages, ...blogPosts, ...careerJobs, ...cityPages)
 
   return urls
 }
@@ -65,7 +67,11 @@ async function getCmsPageUrls(): Promise<SitemapUrl[]> {
   return (pages || [])
     .filter((page) => {
       // Skip homepage (already in static routes) and excluded paths
-      if (!page.slug || page.slug === '' || page.slug === '/') return false
+      // 'home' slug is a CMS duplicate of '/' — excluded to prevent W7 duplicate
+      // 'blog' slug is in STATIC_ROUTES — excluded to prevent duplicate with CMS nav entry
+      // 'careers' slug is in STATIC_ROUTES — excluded to prevent duplicate
+      const staticSlugs = new Set(['home', 'blog', 'careers'])
+      if (!page.slug || page.slug === '' || page.slug === '/' || staticSlugs.has(page.slug)) return false
       return !shouldExcludeUrl(`/${page.slug}`)
     })
     .map((page) => {
@@ -143,6 +149,26 @@ async function getCareerJobUrls(): Promise<SitemapUrl[]> {
         priority: config.priority,
       }
     })
+}
+
+/**
+ * City landing pages for sitemap (engineering institution only)
+ * These are code-driven pages, not database-driven
+ */
+function getCityPageUrls(): SitemapUrl[] {
+  const institutionId = process.env.NEXT_PUBLIC_INSTITUTION_ID
+  if (institutionId !== 'engineering') return []
+
+  return CITY_PAGES_CONFIG.map((city) => {
+    const path = `/best-engineering-college-in-${city.slug}/`
+    const config = getSitemapConfig(path)
+    return {
+      url: buildSitemapUrl(path),
+      lastModified: new Date(),
+      changeFrequency: config.changeFrequency,
+      priority: config.priority,
+    }
+  })
 }
 
 /**

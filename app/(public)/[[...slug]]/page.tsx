@@ -84,7 +84,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: seo?.og_title || seo?.meta_title || page.title,
       description: seo?.og_description || seo?.meta_description || page.description || undefined,
-      images: seo?.og_image ? [{ url: seo.og_image }] : undefined,
+      images: seo?.og_image
+        ? [{ url: seo.og_image, width: 1200, height: 630 }]
+        : [{ url: '/og-image.png', width: 1200, height: 630, alt: seo?.meta_title || page.title }],
       type: (seo?.og_type as any) || 'website',
     },
 
@@ -93,13 +95,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       card: (seo?.twitter_card as any) || 'summary_large_image',
       title: seo?.twitter_title || seo?.og_title || seo?.meta_title || page.title,
       description: seo?.twitter_description || seo?.og_description || seo?.meta_description || page.description || undefined,
-      images: seo?.twitter_image ? [seo.twitter_image] : (seo?.og_image ? [seo.og_image] : undefined),
+      images: seo?.twitter_image ? [seo.twitter_image] : (seo?.og_image ? [seo.og_image] : ['/og-image.png']),
     },
 
-    // Canonical URL
-    alternates: seo?.canonical_url ? {
-      canonical: seo.canonical_url,
-    } : undefined,
+    // Canonical URL + hreflang alternates
+    alternates: {
+      ...(seo?.canonical_url ? { canonical: seo.canonical_url } : {}),
+      languages: {
+        'en-IN': path,
+        'x-default': path,
+      },
+    },
 
     // Robots directive
     robots: seo?.robots_directive || undefined,

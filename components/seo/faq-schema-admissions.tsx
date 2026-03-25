@@ -199,7 +199,7 @@ export function HowToSchemaAdmissions() {
         '@type': 'HowToStep',
         'position': 4,
         'name': 'Report to JKKN Campus for Document Verification',
-        'text': 'Visit JKKN College of Engineering & Technology campus at Kumarapalayam, Namakkal with original documents: 10th & 12th mark sheets, transfer certificate, conduct certificate, community certificate (if applicable), Aadhar card, passport-size photos, and TNEA allotment order.',
+        'text': 'Visit JKKN College of Engineering & Technology campus at Komarapalayam, Namakkal with original documents: 10th & 12th mark sheets, transfer certificate, conduct certificate, community certificate (if applicable), Aadhar card, passport-size photos, and TNEA allotment order.',
         'url': 'https://engg.jkkn.ac.in/contact',
       },
       {
@@ -231,7 +231,7 @@ export function FAQSchemaAbout() {
     },
     {
       question: 'Where is JKKN College of Engineering located?',
-      answer: 'JKKN College of Engineering & Technology is located in Kumarapalayam, Namakkal District, Tamil Nadu, on the Salem-Coimbatore National Highway (NH-544). Well connected by road and rail.'
+      answer: 'JKKN College of Engineering & Technology is located in Komarapalayam, Namakkal District, Tamil Nadu, on the Salem-Coimbatore National Highway (NH-544). Well connected by road and rail.'
     },
     {
       question: 'Is JKKN Engineering College accredited?',

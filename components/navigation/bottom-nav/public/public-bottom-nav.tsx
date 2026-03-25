@@ -69,7 +69,8 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
 
       if (item && item.submenus.length > 0) {
         // Check if submenus have parentLabel (indicating grouped structure)
-        const hasParentLabels = item.submenus.some((sub: any) => sub.parentLabel);
+        const flatItems = item.submenus as unknown as FlatMenuItem[]
+        const hasParentLabels = flatItems.some((sub) => sub.parentLabel);
 
         console.log(`[PublicBottomNav] Has parent labels: ${hasParentLabels}`);
 
@@ -77,7 +78,7 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
           // Group submenus by parentLabel
           const groupsMap = new Map<string, FlatMenuItem[]>();
 
-          item.submenus.forEach((sub: any) => {
+          flatItems.forEach((sub) => {
             const groupLabel = sub.parentLabel || 'Other';
             if (!groupsMap.has(groupLabel)) {
               groupsMap.set(groupLabel, []);

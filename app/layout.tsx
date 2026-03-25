@@ -79,6 +79,15 @@ export async function generateMetadata(): Promise<Metadata> {
       images: siteMetadata.twitter?.images || ['/og-image.png'],
     },
 
+    // hreflang alternates — signals English (India) as primary language
+    alternates: {
+      canonical: siteUrl,
+      languages: {
+        'en-IN': siteUrl,
+        'x-default': siteUrl,
+      },
+    },
+
     // Google Search Console verification — per-institution from config
     verification: googleVerification ? { google: googleVerification } : undefined,
   }
@@ -105,6 +114,12 @@ export default function RootLayout({
         <link rel="dns-prefetch" href={supabaseOrigin} />
         {/* Preconnect to Facebook CDN (for deferred Meta Pixel) */}
         <link rel="dns-prefetch" href="https://connect.facebook.net" />
+        {/* YouTube image CDN prefetch (used in video thumbnails and embeds) */}
+        <link rel="dns-prefetch" href="https://img.youtube.com" />
+        <link rel="dns-prefetch" href="https://i.ytimg.com" />
+        {/* Instagram CDN prefetch (used in social feeds) */}
+        <link rel="dns-prefetch" href="https://cdninstagram.com" />
+        <link rel="dns-prefetch" href="https://www.instagram.com" />
         {/* Preconnect to Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

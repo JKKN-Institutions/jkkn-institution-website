@@ -31,6 +31,11 @@ export const STATIC_ROUTES: Record<string, SitemapUrlConfig> = {
     priority: 1.0,
     changeFrequency: 'weekly',
   },
+  // High-conversion pages — always present, not CMS-driven
+  '/admissions': {
+    priority: 0.95,
+    changeFrequency: 'weekly',
+  },
   // Main navigation pages
   '/blog': {
     priority: 0.7,
@@ -85,6 +90,24 @@ export const PATTERN_PRIORITIES: PatternPriorityConfig[] = [
     priority: 0.9,
     changeFrequency: 'weekly',
   },
+  // Placements - high priority for prospective students
+  {
+    pattern: /^\/placements\/?$/,
+    priority: 0.9,
+    changeFrequency: 'monthly',
+  },
+  // Rankings & Recognitions
+  {
+    pattern: /^\/rankings-and-recognitions/,
+    priority: 0.8,
+    changeFrequency: 'monthly',
+  },
+  // How to reach
+  {
+    pattern: /^\/how-to-reach/,
+    priority: 0.7,
+    changeFrequency: 'yearly',
+  },
   // Facilities - moderate priority
   {
     pattern: /^\/facilities\/?$/,
@@ -123,6 +146,12 @@ export const PATTERN_PRIORITIES: PatternPriorityConfig[] = [
   {
     pattern: /^\/our-schools/,
     priority: 0.8,
+    changeFrequency: 'monthly',
+  },
+  // City landing pages - high priority for local SEO (engineering institution only)
+  {
+    pattern: /^\/best-engineering-college-in-.+/,
+    priority: 0.85,
     changeFrequency: 'monthly',
   },
   // Legal/Policy pages - low priority

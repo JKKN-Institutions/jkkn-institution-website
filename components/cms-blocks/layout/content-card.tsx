@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import * as LucideIcons from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
 export interface ContentCardProps {
   /**
@@ -69,7 +70,7 @@ export default function ContentCard({
 }: ContentCardProps) {
   // Get icon component
   const IconComponent = icon
-    ? (LucideIcons[icon as keyof typeof LucideIcons] as any)
+    ? (LucideIcons[icon as keyof typeof LucideIcons] as LucideIcon)
     : null
 
   return (

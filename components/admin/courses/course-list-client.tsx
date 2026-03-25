@@ -71,7 +71,7 @@ export function CourseListClient({ initialCourses }: CourseListClientProps) {
           {/* Category Filter */}
           <select
             value={categoryFilter}
-            onChange={e => setCategoryFilter(e.target.value as any)}
+            onChange={e => setCategoryFilter(e.target.value as 'all' | 'undergraduate' | 'postgraduate')}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
           >
             <option value="all">All Categories</option>
@@ -82,7 +82,7 @@ export function CourseListClient({ initialCourses }: CourseListClientProps) {
           {/* Status Filter */}
           <select
             value={statusFilter}
-            onChange={e => setStatusFilter(e.target.value as any)}
+            onChange={e => setStatusFilter(e.target.value as 'all' | 'draft' | 'published' | 'archived')}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
           >
             <option value="all">All Status</option>

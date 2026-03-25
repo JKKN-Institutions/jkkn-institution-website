@@ -1764,13 +1764,13 @@ function ObjectField({ config, value, onChange }: ObjectFieldProps) {
 // Helper function to get nested value using dot notation
 function getNestedValue(obj: Record<string, unknown>, path: string): unknown {
   const keys = path.split('.')
-  let current: any = obj
+  let current: unknown = obj
 
   for (const key of keys) {
     if (current === null || current === undefined) {
       return undefined
     }
-    current = current[key]
+    current = (current as Record<string, unknown>)[key]
   }
 
   return current

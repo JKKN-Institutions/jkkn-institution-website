@@ -11,6 +11,7 @@ import {
   Target,
   Scale,
   Shield,
+  MapPin,
   type LucideIcon
 } from 'lucide-react';
 import type { NavMenuItem, NavMenuGroup, NavSubmenuItem } from '../core/types';
@@ -121,3 +122,16 @@ export const PUBLIC_FALLBACK_MORE_MENU_GROUPS: NavMenuGroupConfig[] = [
     ]
   }
 ];
+
+// Engineering-only: city landing pages for the "More" menu
+export const ENGINEERING_CITY_PAGES_GROUP: NavMenuGroupConfig = {
+  groupLabel: 'Cities',
+  icon: MapPin,
+  menus: [
+    { href: '/best-engineering-college-in-coimbatore', label: 'Coimbatore', icon: MapPin, submenus: [] },
+    { href: '/best-engineering-college-in-erode', label: 'Erode', icon: MapPin, submenus: [] },
+    { href: '/best-engineering-college-in-namakkal', label: 'Namakkal', icon: MapPin, submenus: [] },
+    { href: '/best-engineering-college-in-salem', label: 'Salem', icon: MapPin, submenus: [] },
+    { href: '/best-engineering-college-in-tiruppur', label: 'Tiruppur', icon: MapPin, submenus: [] },
+  ]
+};

@@ -264,7 +264,7 @@ function generateJsxCode(
   return lines.join('\n')
 }
 
-function formatProp(key: string, value: any, isLast: boolean): string {
+function formatProp(key: string, value: unknown, isLast: boolean): string {
   const suffix = isLast ? '' : ''
 
   if (value === null || value === undefined) {
@@ -315,7 +315,7 @@ function generatePropsJson(props: Record<string, any>, responsiveSettings?: Reco
   delete cleanedProps.children
 
   // Add responsive settings if present
-  const output: any = { ...cleanedProps }
+  const output: Record<string, unknown> = { ...cleanedProps }
   if (responsiveSettings && Object.keys(responsiveSettings).length > 0) {
     output.responsive_settings = responsiveSettings
   }
@@ -347,7 +347,7 @@ function generateTypesInterface(componentName: string, props: Record<string, any
   return lines.join('\n')
 }
 
-function inferTypeScriptType(value: any): string {
+function inferTypeScriptType(value: unknown): string {
   if (value === null || value === undefined) {
     return 'any'
   }
@@ -378,7 +378,7 @@ function inferTypeScriptType(value: any): string {
     if (keys.length === 0) {
       return 'Record<string, any>'
     }
-    const lines = keys.map(key => `${key}: ${inferTypeScriptType(value[key])}`)
+    const lines = keys.map(key => `${key}: ${inferTypeScriptType((value as Record<string, unknown>)[key])}`)
     return `{\n    ${lines.join('\n    ')}\n  }`
   }
 

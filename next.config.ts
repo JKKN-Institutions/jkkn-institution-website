@@ -18,10 +18,10 @@ const nextConfig: NextConfig = {
   // Compiler options for modern browser targeting
   // Reduces bundle size by ~14 KiB by removing legacy polyfills
   compiler: {
-    // Remove console.log in production for additional optimization
-    removeConsole: process.env.NODE_ENV === 'production' ? {
-      exclude: ['error', 'warn'],
-    } : false,
+    // Strip ALL console calls in production — prevents user IDs, SQL errors, and
+    // Supabase responses from leaking to the browser console.
+    // In development, all console output remains available for debugging.
+    removeConsole: process.env.NODE_ENV === 'production',
   },
 
   // Server Actions configuration (under experimental in Next.js 16)
@@ -63,9 +63,82 @@ const nextConfig: NextConfig = {
     ]
   },
 
-  // Cache headers for static assets (PageSpeed optimization)
+  // Security + Cache headers
   async headers() {
     return [
+      // ── Security headers applied to ALL routes ──────────────────────────
+      // Protects against clickjacking, MIME sniffing, protocol downgrade, and
+      // data leakage. Applied globally so no route is left unprotected.
+      {
+        source: '/:path*',
+        headers: [
+          // Prevent this site from being embedded in iframes on other origins
+          // Blocks clickjacking attacks where an attacker overlays an invisible iframe
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+
+          // Stop browsers from MIME-sniffing a response away from declared Content-Type
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+
+          // Enforce HTTPS for 2 years — browsers will refuse HTTP connections after first visit
+          // preload: eligible for browser HSTS preload list (https://hstspreload.org)
+          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+
+          // Controls how much referrer info is sent with requests
+          // strict-origin-when-cross-origin: full URL within same origin, only origin cross-origin
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+
+          // Restrict browser feature APIs — disables camera/microphone/USB for untrusted contexts
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), usb=(), payment=(), geolocation=(self)' },
+
+          // Basic Content Security Policy
+          // - default-src 'self': blocks unexpected external content sources
+          // - 'unsafe-inline' for scripts: required for GA4 init, Meta Pixel, and JSON-LD schema tags
+          // - frame-ancestors 'self': secondary clickjacking protection alongside X-Frame-Options
+          // - object-src 'none': blocks Flash/plugins entirely
+          // - base-uri 'self': prevents base tag injection attacks
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "font-src 'self' https://fonts.gstatic.com",
+              "img-src 'self' data: blob: https:",
+              "media-src 'self' https:",
+              "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://analytics.google.com https://www.facebook.com",
+              "frame-src 'self' https://www.youtube.com https://www.google.com",
+              "frame-ancestors 'self'",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+            ].join('; '),
+          },
+        ],
+      },
+
+      // ── Crawler exclusion for non-public routes ──────────────────────────
+      // X-Robots-Tag header prevents search engines from indexing admin/auth pages
+      // even if they somehow discover the URLs (e.g., via server logs or links)
+      {
+        source: '/admin/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+        ],
+      },
+      {
+        source: '/auth/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+        ],
+      },
+      {
+        source: '/api/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+        ],
+      },
+
+      // ── Cache headers for static assets (PageSpeed optimization) ─────────
       // Cache static media assets for 1 year (immutable)
       {
         source: '/media/:path*',
@@ -280,6 +353,23 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
+      // === SEO Audit Fix: /fee-structure → /admissions (C1) ===
+      // Fee structure content lives on the admissions page (section id="fee-structure").
+      // 301 consolidates link equity and fixes the 404. Deep-link via /admissions#fee-structure.
+      {
+        source: '/fee-structure',
+        destination: '/admissions',
+        permanent: true,
+      },
+
+      // === SEO Audit Fix: /admission → /admissions (C1) ===
+      // Audit noted /admission (no 's') as a 404. Redirect to canonical admissions page.
+      {
+        source: '/admission',
+        destination: '/admissions',
+        permanent: true,
+      },
+
       // === About Section Restructuring ===
       {
         source: '/about-the-institutions',
@@ -392,13 +482,6 @@ const nextConfig: NextConfig = {
       {
         source: '/llms.txt',
         destination: '/',
-        permanent: true,
-      },
-
-      // === SEO: /courses → /courses-offered (C1) ===
-      {
-        source: '/courses',
-        destination: '/courses-offered',
         permanent: true,
       },
 

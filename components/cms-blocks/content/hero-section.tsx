@@ -312,7 +312,7 @@ export default function HeroSection({
             textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
             lineHeight: titleLineHeight,
             letterSpacing: `${titleLetterSpacing}px`,
-            textAlign: titleTextAlign as any,
+            textAlign: titleTextAlign as React.CSSProperties['textAlign'],
           }}
         >
           {useMemo(() => {
@@ -342,7 +342,7 @@ export default function HeroSection({
               fontSize: getFontSize(subtitleFontSize),
               lineHeight: subtitleLineHeight,
               letterSpacing: `${subtitleLetterSpacing}px`,
-              textAlign: subtitleTextAlign as any,
+              textAlign: subtitleTextAlign as React.CSSProperties['textAlign'],
             }}
           >
             {subtitle}
