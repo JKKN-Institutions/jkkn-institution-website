@@ -19,7 +19,6 @@ import {
   Youtube,
   Globe,
 } from 'lucide-react'
-import { getAllCitySlugs, getCityConfig } from '@/lib/config/city-pages'
 
 export interface NavItem {
   id: string
@@ -136,26 +135,8 @@ export function SiteHeader({
   // Use CMS navigation if available, otherwise fallback
   const baseNavigation = navigation && navigation.length > 0 ? navigation : fallbackNavigation
 
-  // For engineering institution, inject a "Cities" dropdown with city landing pages
-  const mainNavigation: NavItem[] = (() => {
-    if (process.env.NEXT_PUBLIC_INSTITUTION_ID !== 'engineering') return baseNavigation
-    const citiesItem: NavItem = {
-      id: 'cities',
-      label: 'Cities',
-      href: '#',
-      is_homepage: false,
-      children: getAllCitySlugs().map(({ city }) => ({
-        id: city,
-        label: getCityConfig(city)?.displayName ?? city,
-        href: `/best-engineering-college-in-${city}`,
-        is_homepage: false,
-      })),
-    }
-    const nav = [...baseNavigation]
-    const moreIdx = nav.findIndex(n => n.id === 'more' || n.label === 'More')
-    moreIdx >= 0 ? nav.splice(moreIdx, 0, citiesItem) : nav.push(citiesItem)
-    return nav
-  })()
+  // Navigation is fully dynamic — cities come from cms_pages via getPublicNavigation()
+  const mainNavigation = baseNavigation
 
   // Utility: Check if a specific path is currently open
   const isPathOpen = useCallback((itemId: string, parentPath: string[] = []) => {

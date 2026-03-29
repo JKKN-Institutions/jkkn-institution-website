@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import { mapCmsIconToLucide } from './cms-icon-mapper';
-import { PUBLIC_FALLBACK_PRIMARY_ITEMS, PUBLIC_FALLBACK_MORE_MENU_GROUPS, ENGINEERING_CITY_PAGES_GROUP } from './public-nav-config';
+import { PUBLIC_FALLBACK_PRIMARY_ITEMS, PUBLIC_FALLBACK_MORE_MENU_GROUPS } from './public-nav-config';
 import type { NavMenuItem, NavSubmenuItem, MoreMenuMainItem, FlatNavItem } from '../core/types';
 
 // CMS Navigation structure (from app/actions/cms/navigation.ts)
@@ -200,24 +200,6 @@ export function usePublicNavData({ cmsNavigation }: UsePublicNavDataProps = {}) 
             submenus
           });
         });
-      });
-    }
-
-    // Append city landing pages for engineering institution as a grouped "Cities" item
-    if (process.env.NEXT_PUBLIC_INSTITUTION_ID === 'engineering') {
-      const citySubmenus: FlatNavItem[] = ENGINEERING_CITY_PAGES_GROUP.menus.map((menu) => ({
-        href: menu.href,
-        label: menu.label,
-        icon: menu.icon,
-        active: pathname === menu.href || pathname.startsWith(menu.href + '/'),
-      }));
-      moreItems.push({
-        id: 'cities',
-        href: '#',
-        label: 'Cities',
-        icon: ENGINEERING_CITY_PAGES_GROUP.icon,
-        active: citySubmenus.some((s) => s.active),
-        submenus: citySubmenus,
       });
     }
 
