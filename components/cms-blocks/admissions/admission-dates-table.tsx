@@ -159,20 +159,22 @@ export default function AdmissionDatesTable({
           ref={tableRef.ref}
           className={cn(
             'max-w-4xl mx-auto',
-            glassStyles.tableContainer,
+            isDark ? glassStyles.tableContainer : glassStyles.tableContainerLight,
             showAnimations && 'transition-all duration-700',
             showAnimations && (tableRef.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8')
           )}
         >
           {/* Table Header */}
-          <div className={cn(glassStyles.tableHeader, 'hidden sm:grid sm:grid-cols-3 gap-4 px-6 py-4')}>
-            <div className={cn('font-semibold', isDark ? 'text-white' : 'text-gray-900')}>
-              Event
-            </div>
-            <div className={cn('font-semibold', isDark ? 'text-white' : 'text-gray-900')}>
-              Date
-            </div>
-            <div className={cn('font-semibold text-right', isDark ? 'text-white' : 'text-gray-900')}>
+          <div className={cn(
+            isDark ? glassStyles.tableHeader : glassStyles.tableHeaderLight,
+            'hidden sm:grid sm:grid-cols-3 gap-4 px-6 py-4'
+          )}>
+            {['Event', 'Date'].map((col) => (
+              <div key={col} className="font-semibold text-sm uppercase tracking-wide text-white">
+                {col}
+              </div>
+            ))}
+            <div className="font-semibold text-sm uppercase tracking-wide text-white text-right">
               Status
             </div>
           </div>
@@ -184,8 +186,10 @@ export default function AdmissionDatesTable({
                 key={index}
                 className={cn(
                   'px-6 py-4',
-                  alternatingRows && index % 2 === 0 ? glassStyles.tableRow : glassStyles.tableRowAlt,
-                  glassStyles.tableRowHover,
+                  isDark
+                    ? (alternatingRows && index % 2 === 0 ? glassStyles.tableRow : glassStyles.tableRowAlt)
+                    : (alternatingRows && index % 2 === 0 ? glassStyles.tableRowLight : glassStyles.tableRowAltLight),
+                  isDark ? glassStyles.tableRowHover : glassStyles.tableRowHoverLight,
                   // Mobile: stack layout
                   'flex flex-col gap-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center',
                   // Animation
@@ -200,7 +204,7 @@ export default function AdmissionDatesTable({
               >
                 {/* Event */}
                 <div className="flex items-center gap-2">
-                  <Calendar className={cn('w-4 h-4 sm:hidden', isDark ? 'text-white/50' : 'text-gray-400')} />
+                  <Calendar className={cn('w-4 h-4 sm:hidden', isDark ? 'text-white/50' : 'text-[#0b6d41]')} />
                   <span className={cn('font-medium', isDark ? 'text-white' : 'text-gray-900')}>
                     {item.event}
                   </span>
@@ -208,7 +212,7 @@ export default function AdmissionDatesTable({
 
                 {/* Date */}
                 <div className={cn('text-sm sm:text-base', isDark ? 'text-white/70' : 'text-gray-600')}>
-                  <span className="sm:hidden font-medium mr-2">Date:</span>
+                  <span className={cn('sm:hidden font-medium mr-2', isDark ? 'text-white/50' : 'text-[#0b6d41]')}>Date:</span>
                   {item.date}
                 </div>
 

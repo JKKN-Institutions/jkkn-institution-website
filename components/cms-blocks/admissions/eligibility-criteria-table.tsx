@@ -160,26 +160,22 @@ export default function EligibilityCriteriaTable({
           ref={tableRef.ref}
           className={cn(
             'max-w-6xl mx-auto overflow-x-auto',
-            glassStyles.tableContainer,
+            isDark ? glassStyles.tableContainer : glassStyles.tableContainerLight,
             showAnimations && 'transition-all duration-700',
             showAnimations && (tableRef.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8')
           )}
         >
           {/* Desktop Table Header */}
-          <div className={cn(glassStyles.tableHeader, 'hidden lg:grid lg:grid-cols-5 gap-4 px-6 py-4')}>
-            <div className={cn('font-semibold', isDark ? 'text-white' : 'text-gray-900')}>
-              Program
-            </div>
-            <div className={cn('font-semibold', isDark ? 'text-white' : 'text-gray-900')}>
-              Qualification
-            </div>
-            <div className={cn('font-semibold', isDark ? 'text-white' : 'text-gray-900')}>
-              Age Limit
-            </div>
-            <div className={cn('font-semibold', isDark ? 'text-white' : 'text-gray-900')}>
-              Other Requirements
-            </div>
-            <div className={cn('font-semibold text-right', isDark ? 'text-white' : 'text-gray-900')}>
+          <div className={cn(
+            isDark ? glassStyles.tableHeader : glassStyles.tableHeaderLight,
+            'hidden lg:grid lg:grid-cols-5 gap-4 px-6 py-4'
+          )}>
+            {['Program', 'Qualification', 'Age Limit', 'Other Requirements'].map((col) => (
+              <div key={col} className={cn('font-semibold text-sm uppercase tracking-wide', isDark ? 'text-white' : 'text-white')}>
+                {col}
+              </div>
+            ))}
+            <div className={cn('font-semibold text-sm uppercase tracking-wide text-right', isDark ? 'text-white' : 'text-white')}>
               Category
             </div>
           </div>
@@ -191,8 +187,10 @@ export default function EligibilityCriteriaTable({
                 key={index}
                 className={cn(
                   'px-6 py-4',
-                  index % 2 === 0 ? glassStyles.tableRow : glassStyles.tableRowAlt,
-                  glassStyles.tableRowHover,
+                  isDark
+                    ? (index % 2 === 0 ? glassStyles.tableRow : glassStyles.tableRowAlt)
+                    : (index % 2 === 0 ? glassStyles.tableRowLight : glassStyles.tableRowAltLight),
+                  isDark ? glassStyles.tableRowHover : glassStyles.tableRowHoverLight,
                   // Mobile: card layout
                   'flex flex-col gap-3 lg:grid lg:grid-cols-5 lg:gap-4 lg:items-center',
                   // Animation
@@ -208,7 +206,7 @@ export default function EligibilityCriteriaTable({
                 {/* Program - Mobile header */}
                 <div className="flex items-center justify-between lg:block">
                   <div className="flex items-center gap-2">
-                    <GraduationCap className={cn('w-5 h-5 lg:hidden', isDark ? 'text-white/50' : 'text-gray-400')} />
+                    <GraduationCap className={cn('w-5 h-5 lg:hidden', isDark ? 'text-white/50' : 'text-[#0b6d41]')} />
                     <span className={cn('font-semibold text-lg lg:text-base', isDark ? 'text-white' : 'text-gray-900')}>
                       {item.program}
                     </span>
@@ -220,13 +218,13 @@ export default function EligibilityCriteriaTable({
 
                 {/* Qualification */}
                 <div className={cn('text-sm lg:text-base', isDark ? 'text-white/80' : 'text-gray-700')}>
-                  <span className="lg:hidden font-medium text-white/50 mr-2">Qualification:</span>
+                  <span className={cn('lg:hidden font-medium mr-2', isDark ? 'text-white/50' : 'text-[#0b6d41]')}>Qualification:</span>
                   {item.qualification}
                 </div>
 
                 {/* Age Limit */}
                 <div className={cn('text-sm lg:text-base', isDark ? 'text-white/70' : 'text-gray-600')}>
-                  <span className="lg:hidden font-medium text-white/50 mr-2">Age:</span>
+                  <span className={cn('lg:hidden font-medium mr-2', isDark ? 'text-white/50' : 'text-[#0b6d41]')}>Age:</span>
                   {item.ageLimit}
                 </div>
 
@@ -234,11 +232,11 @@ export default function EligibilityCriteriaTable({
                 <div className={cn('text-sm lg:text-base', isDark ? 'text-white/70' : 'text-gray-600')}>
                   {item.otherRequirements ? (
                     <>
-                      <span className="lg:hidden font-medium text-white/50 mr-2">Requirements:</span>
+                      <span className={cn('lg:hidden font-medium mr-2', isDark ? 'text-white/50' : 'text-[#0b6d41]')}>Requirements:</span>
                       {item.otherRequirements}
                     </>
                   ) : (
-                    <span className={cn('hidden lg:block', isDark ? 'text-white/40' : 'text-gray-400')}>—</span>
+                    <span className={cn('hidden lg:block', isDark ? 'text-white/40' : 'text-gray-300')}>—</span>
                   )}
                 </div>
 

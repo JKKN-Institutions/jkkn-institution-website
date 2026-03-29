@@ -9,12 +9,19 @@ export const glassStyles = {
   cardLight: 'bg-white/80 backdrop-blur-[12px] border border-brand-primary/20 rounded-2xl shadow-lg',
   cardHover: 'hover:bg-white/15 hover:border-white/30 hover:shadow-xl transition-all duration-300',
 
-  // Table styles
+  // Table styles — dark backgrounds (glassmorphism)
   tableContainer: 'bg-white/5 backdrop-blur-[12px] border border-white/15 rounded-2xl overflow-hidden',
   tableHeader: 'bg-white/10 backdrop-blur-md border-b border-white/20',
   tableRow: 'bg-white/5 backdrop-blur-sm border-b border-white/10',
   tableRowAlt: 'bg-white/[0.08] backdrop-blur-sm border-b border-white/10',
   tableRowHover: 'hover:bg-white/[0.12] transition-colors duration-200',
+
+  // Table styles — light backgrounds (solid, brand-colored)
+  tableContainerLight: 'bg-white border border-[#0b6d41]/20 rounded-2xl overflow-hidden shadow-sm',
+  tableHeaderLight: 'bg-[#0b6d41] border-b border-[#0b6d41]',
+  tableRowLight: 'bg-white border-b border-gray-100',
+  tableRowAltLight: 'bg-[#f0faf5] border-b border-gray-100',
+  tableRowHoverLight: 'hover:bg-[#0b6d41]/5 transition-colors duration-150',
 
   // Badge styles
   badge: 'bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5',

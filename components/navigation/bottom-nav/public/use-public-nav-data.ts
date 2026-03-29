@@ -203,17 +203,21 @@ export function usePublicNavData({ cmsNavigation }: UsePublicNavDataProps = {}) 
       });
     }
 
-    // Append city landing pages for engineering institution (always, CMS or fallback)
+    // Append city landing pages for engineering institution as a grouped "Cities" item
     if (process.env.NEXT_PUBLIC_INSTITUTION_ID === 'engineering') {
-      ENGINEERING_CITY_PAGES_GROUP.menus.forEach((menu) => {
-        moreItems.push({
-          id: toId(menu.label),
-          href: menu.href,
-          label: menu.label,
-          icon: menu.icon,
-          active: pathname === menu.href || pathname.startsWith(menu.href + '/'),
-          submenus: []
-        });
+      const citySubmenus: FlatNavItem[] = ENGINEERING_CITY_PAGES_GROUP.menus.map((menu) => ({
+        href: menu.href,
+        label: menu.label,
+        icon: menu.icon,
+        active: pathname === menu.href || pathname.startsWith(menu.href + '/'),
+      }));
+      moreItems.push({
+        id: 'cities',
+        href: '#',
+        label: 'Cities',
+        icon: ENGINEERING_CITY_PAGES_GROUP.icon,
+        active: citySubmenus.some((s) => s.active),
+        submenus: citySubmenus,
       });
     }
 

@@ -1,6 +1,6 @@
 import type { EligibilityCriteriaItem, AdmissionDateItem } from '@/lib/cms/registry-types'
 
-// ─── Trust Stats ────────────────────────────────────────────────────────────
+// ─── Trust Stats (kept for backward-compat) ──────────────────────────────────
 
 export interface TrustStat {
   label: string
@@ -14,7 +14,74 @@ export const TRUST_STATS: TrustStat[] = [
   { label: 'Average Package', value: '₹3.5L', verifiedOn: '2025' },
 ]
 
-// ─── Eligibility Criteria ────────────────────────────────────────────────────
+// ─── Overview ────────────────────────────────────────────────────────────────
+
+export const OVERVIEW =
+  'JKKN College of Engineering and Technology (JKCET) offers admissions to undergraduate (B.E / B.Tech) and postgraduate (M.E & MBA) programmes. Admissions are governed by TNEA counselling administered by Anna University, Chennai, and direct admission under Management Quota as per AICTE and Tamil Nadu Government norms.\n\nThe college is AICTE approved, NAAC A accredited, and Autonomous — affiliated to Anna University. Students benefit from a placement-oriented curriculum, experienced faculty, state-of-the-art laboratories, and fully-residential hostel facilities for boys and girls.'
+
+// ─── Programmes Table ────────────────────────────────────────────────────────
+
+export interface ProgramTableRow {
+  programme: string
+  duration: string
+  intake: number
+  annualFee: number
+  level: 'UG' | 'PG'
+}
+
+export const PROGRAMS_TABLE: ProgramTableRow[] = [
+  {
+    programme: 'B.E Computer Science & Engineering',
+    duration: '4 Years',
+    intake: 60,
+    annualFee: 95000,
+    level: 'UG',
+  },
+  {
+    programme: 'B.E Electrical & Electronics Engineering',
+    duration: '4 Years',
+    intake: 60,
+    annualFee: 95000,
+    level: 'UG',
+  },
+  {
+    programme: 'B.E Electronics & Communication Engineering',
+    duration: '4 Years',
+    intake: 60,
+    annualFee: 95000,
+    level: 'UG',
+  },
+  {
+    programme: 'B.E Mechanical Engineering',
+    duration: '4 Years',
+    intake: 120,
+    annualFee: 95000,
+    level: 'UG',
+  },
+  {
+    programme: 'B.Tech Information Technology',
+    duration: '4 Years',
+    intake: 60,
+    annualFee: 95000,
+    level: 'UG',
+  },
+  {
+    programme: 'M.E Computer Science & Engineering',
+    duration: '2 Years',
+    intake: 60,
+    annualFee: 85000,
+    level: 'PG',
+  },
+  {
+    programme: 'M.B.A — Master of Business Administration',
+    duration: '2 Years',
+    intake: 120,
+    annualFee: 80000,
+    level: 'PG',
+  },
+]
+
+// ─── Eligibility Criteria (CMS block — kept for backward-compat) ──────────────
 
 export const ELIGIBILITY_CRITERIA: EligibilityCriteriaItem[] = [
   {
@@ -46,6 +113,150 @@ export const ELIGIBILITY_CRITERIA: EligibilityCriteriaItem[] = [
   },
 ]
 
+// ─── Detailed Eligibility (pharmacy-style, per programme) ────────────────────
+
+export interface DetailedEligibilityItem {
+  programme: string
+  criteria: string[]
+}
+
+export const DETAILED_ELIGIBILITY: DetailedEligibilityItem[] = [
+  {
+    programme: 'For B.E / B.Tech — All Branches',
+    criteria: [
+      'Passed 10+2 (HSC) with Physics, Chemistry, and Mathematics from a recognized Board',
+      'Minimum 45% aggregate marks (40% for SC / ST / OBC / MBC reserved categories)',
+      'Admission through TNEA counselling (Anna University) or direct Management Quota',
+      'Age: 17–25 years as of July 1 of the admission year',
+    ],
+  },
+  {
+    programme: 'For M.E Computer Science & Engineering',
+    criteria: [
+      'B.E / B.Tech in a relevant Engineering discipline from a recognized university',
+      'Minimum 50% aggregate marks in the qualifying degree',
+      'TANCET score preferred; direct merit-based admission also available',
+      'Must satisfy subject equivalency norms as per Anna University regulations',
+    ],
+  },
+  {
+    programme: 'For M.B.A — Master of Business Administration',
+    criteria: [
+      "Bachelor's degree in any discipline from a recognized university",
+      'Minimum 50% aggregate marks in the qualifying degree',
+      'Valid score in TANCET / CAT / MAT / XAT (any one)',
+      'Shortlisted candidates appear for Group Discussion (GD) + Personal Interview (PI)',
+    ],
+  },
+]
+
+// ─── Admission Steps ─────────────────────────────────────────────────────────
+
+export interface AdmissionStep {
+  number: number
+  title: string
+  description: string
+}
+
+export const ADMISSION_STEPS: AdmissionStep[] = [
+  {
+    number: 1,
+    title: 'Check Eligibility',
+    description:
+      'Review the eligibility criteria for your chosen programme. Confirm you meet the minimum educational qualification, marks percentage, and age requirements before applying.',
+  },
+  {
+    number: 2,
+    title: 'Fill Application Form',
+    description:
+      'Apply online via the JKKN Admissions Portal or collect and submit the printed application form at the campus admissions counter. No application fee is charged.',
+  },
+  {
+    number: 3,
+    title: 'Submit Required Documents',
+    description:
+      'Upload clear scanned copies of all required academic and personal documents with your online application. Physical originals must be produced during in-person verification.',
+  },
+  {
+    number: 4,
+    title: 'Application Screening',
+    description:
+      'The admissions team verifies eligibility and document completeness. You will receive notification of your screening result within 3 working days of submission.',
+  },
+  {
+    number: 5,
+    title: 'Counselling & Selection',
+    description:
+      'UG candidates attend TNEA counselling conducted by Anna University. Management Quota and PG candidates attend direct counselling / GD+PI at the JKKN campus.',
+  },
+  {
+    number: 6,
+    title: 'Fee Payment & Enrolment',
+    description:
+      'Complete fee payment via DD, NEFT, or online transfer. Submit original documents for university verification, collect your enrolment confirmation and student ID card.',
+  },
+]
+
+// ─── Process Guidelines ──────────────────────────────────────────────────────
+
+export const PROCESS_GUIDELINES: string[] = [
+  'The college follows Tamil Nadu Government and AICTE reservation norms and fee regulations strictly. No donation or capitation fee is charged.',
+  'Admission is provisional until Anna University verifies original documents and confirms eligibility for the programme.',
+  'Admissions will be cancelled without notice if submitted documents are found to be forged or incorrect.',
+  'Fees paid are non-refundable after enrolment except as per AICTE / Government guidelines for seat cancellation.',
+  'Under Management Quota, seats are allotted on a merit-cum-preference basis — no assurance of a specific preferred branch.',
+  'Direct admission (Management Quota) windows open concurrently with TNEA counselling. Contact the admissions office for current seat availability.',
+]
+
+// ─── Required Documents ──────────────────────────────────────────────────────
+
+export interface DocumentItem {
+  name: string
+  note?: string
+}
+
+export const REQUIRED_DOCUMENTS: {
+  common: DocumentItem[]
+  ugOnly: DocumentItem[]
+  pgOnly: DocumentItem[]
+} = {
+  common: [
+    { name: '10th Standard Marksheet & Passing Certificate' },
+    { name: 'Transfer Certificate (TC)' },
+    { name: 'Community Certificate' },
+    { name: 'Passport Size Photographs', note: '6 copies, recent' },
+    { name: 'Conduct Certificate', note: 'From last institution attended' },
+    { name: 'Aadhaar Card', note: 'Self + parent' },
+    { name: 'Income Certificate', note: 'Required for scholarship application' },
+  ],
+  ugOnly: [
+    { name: '12th Standard (HSC) Marksheet & Certificate' },
+    { name: 'Eligibility Certificate', note: 'If from a different state Board' },
+    { name: 'TNEA Rank Card / Allotment Order', note: 'For TNEA counselling seats' },
+    { name: 'Special Category Certificate', note: 'Sports / Ex-serviceman / NCC, if applicable' },
+  ],
+  pgOnly: [
+    { name: 'Degree Certificate & Consolidated Marksheet' },
+    { name: 'TANCET / CAT / MAT / XAT Score Card' },
+    { name: 'Character Certificate', note: 'From graduating college' },
+    { name: 'Migration Certificate', note: 'If from outside Tamil Nadu' },
+  ],
+}
+
+// ─── Fee Structure ────────────────────────────────────────────────────────────
+
+export interface FeeEntry {
+  program: string
+  annualTuition: number
+  hostelFee: number
+}
+
+export const FEE_STRUCTURE: FeeEntry[] = [
+  { program: 'B.E / B.Tech (all branches)', annualTuition: 95000, hostelFee: 60000 },
+  { program: 'M.E Computer Science & Engineering', annualTuition: 85000, hostelFee: 60000 },
+  { program: 'M.B.A', annualTuition: 80000, hostelFee: 60000 },
+]
+
 // ─── Admission Dates ─────────────────────────────────────────────────────────
 
 export const ADMISSION_DATES: AdmissionDateItem[] = [
@@ -70,13 +281,187 @@ export const ADMISSION_DATES: AdmissionDateItem[] = [
     status: 'upcoming',
   },
   {
+    event: 'Document Verification',
+    date: 'July – August 2026',
+    status: 'upcoming',
+  },
+  {
+    event: 'Fee Payment Deadline',
+    date: 'August 15, 2026',
+    status: 'upcoming',
+  },
+  {
     event: 'Classes Commence',
-    date: 'August 2026',
+    date: 'August 2026 (as per Anna University)',
     status: 'upcoming',
   },
 ]
 
-// ─── Programs ────────────────────────────────────────────────────────────────
+// ─── Scholarships ────────────────────────────────────────────────────────────
+
+export interface ScholarshipScheme {
+  id: string
+  name: string
+  icon: 'Trophy' | 'Building2' | 'Heart' | 'Award'
+  benefit: string
+  eligibility: string
+  ctaUrl?: string
+}
+
+export const SCHOLARSHIPS: ScholarshipScheme[] = [
+  {
+    id: 'merit',
+    name: 'Merit Scholarship',
+    icon: 'Trophy',
+    benefit: 'Up to 100% tuition fee waiver',
+    eligibility: '90%+ in 10+2 or state / national rank holders',
+    ctaUrl: '/admissions#contact',
+  },
+  {
+    id: 'government',
+    name: 'Government Scholarship',
+    icon: 'Building2',
+    benefit: 'Direct bank transfer — full / partial',
+    eligibility: 'SC / ST / OBC / MBC / EWS / Minority categories',
+    ctaUrl: 'https://www.scholarship.gov.in/',
+  },
+  {
+    id: 'need-based',
+    name: 'Need-Based Financial Aid',
+    icon: 'Heart',
+    benefit: 'Up to 50% tuition fee reduction',
+    eligibility: 'Family annual income below ₹2.5L',
+    ctaUrl: '/admissions#contact',
+  },
+  {
+    id: 'sports-cultural',
+    name: 'Sports & Cultural Scholarship',
+    icon: 'Award',
+    benefit: 'Special seat quota + fee benefit',
+    eligibility: 'State / National level achievers in sports or arts',
+    ctaUrl: '/admissions#contact',
+  },
+]
+
+// ─── Scholarship Sections (pharmacy-style grouped display) ───────────────────
+
+export interface ScholarshipGroup {
+  title: string
+  description: string
+  schemes: { name: string; benefit: string; eligibility: string; ctaUrl?: string }[]
+}
+
+export const SCHOLARSHIP_GROUPS: ScholarshipGroup[] = [
+  {
+    title: 'Government Scholarships',
+    description:
+      'Funded by Tamil Nadu and Central Government schemes, disbursed directly to student bank accounts. Our admissions office assists with the complete application process at no charge.',
+    schemes: [
+      {
+        name: 'BC / MBC / DNC Scholarship',
+        benefit: 'Full / partial tuition fee coverage',
+        eligibility: 'BC, MBC, and Denotified Communities as per TN Government norms',
+      },
+      {
+        name: 'SC / ST Scholarship',
+        benefit: 'Full tuition fee + additional stipend',
+        eligibility: 'Scheduled Castes and Scheduled Tribes (State + Central)',
+      },
+      {
+        name: 'Minority Scholarship (Central)',
+        benefit: 'Up to ₹25,000 per year',
+        eligibility: 'Religious minority students with family income below ₹2L',
+      },
+      {
+        name: 'Post-Matric Scholarship (EBC)',
+        benefit: 'Partial tuition support',
+        eligibility: 'Economically Backward Classes with annual income below ₹1L',
+        ctaUrl: 'https://www.scholarship.gov.in/',
+      },
+    ],
+  },
+  {
+    title: 'Merit-Based Scholarships',
+    description:
+      'Awarded by JKKN Institutions directly to high-achieving students. Applied automatically at the time of admission — no separate application required.',
+    schemes: [
+      {
+        name: 'District / State Rank Holder Scholarship',
+        benefit: 'Up to 100% tuition fee waiver',
+        eligibility: 'State board district or state rank holders in 10+2 examination',
+      },
+      {
+        name: 'Academic Excellence Scholarship',
+        benefit: '25% – 50% tuition fee reduction',
+        eligibility: '90%+ aggregate in qualifying examination',
+      },
+      {
+        name: 'TNEA High-Rank Scholarship',
+        benefit: 'Up to 50% tuition fee reduction',
+        eligibility: 'TNEA cutoff score 190+ (combined PCM)',
+      },
+    ],
+  },
+  {
+    title: 'Special Category Support',
+    description:
+      'Dedicated support for students from specific backgrounds — sports achievers, NCC, and families with genuine financial need.',
+    schemes: [
+      {
+        name: 'Sports & Cultural Achievement',
+        benefit: 'Special seat quota + fee benefit',
+        eligibility: 'State / National level achievers (certificate from competent authority)',
+      },
+      {
+        name: 'NCC / NSS Scholarship',
+        benefit: 'Fee concession up to ₹10,000',
+        eligibility: 'Active NCC / NSS members with relevant participation certificate',
+      },
+      {
+        name: 'Need-Based Financial Aid',
+        benefit: 'Up to 50% tuition fee reduction',
+        eligibility: 'Family annual income below ₹2.5 lakhs (income certificate required)',
+        ctaUrl: '/admissions#contact',
+      },
+    ],
+  },
+]
+
+// ─── Contact Info ────────────────────────────────────────────────────────────
+
+export interface ContactItem {
+  type: 'phone' | 'email' | 'whatsapp'
+  label: string
+  displayValue: string
+  href: string
+  note: string
+}
+
+export const CONTACT_INFO: ContactItem[] = [
+  {
+    type: 'phone',
+    label: 'Call Us',
+    displayValue: '+91 93458 55001',
+    href: 'tel:+919345855001',
+    note: 'Mon – Sat, 9 AM – 5 PM',
+  },
+  {
+    type: 'email',
+    label: 'Email Us',
+    displayValue: 'admissions@jkkn.ac.in',
+    href: 'mailto:admissions@jkkn.ac.in',
+    note: 'Reply within 24 hours',
+  },
+  {
+    type: 'whatsapp',
+    label: 'WhatsApp',
+    displayValue: '+91 93458 55001',
+    href: 'https://wa.me/919345855001',
+    note: 'Quick response, 9 AM – 7 PM',
+  },
+]
+
+// ─── Programs (kept for backward-compat) ─────────────────────────────────────
 
 export interface EngineeringProgram {
   id: string
@@ -154,66 +539,6 @@ export const PROGRAMS: EngineeringProgram[] = [
   },
 ]
 
-// ─── Fee Structure ───────────────────────────────────────────────────────────
-
-export interface FeeEntry {
-  program: string
-  annualTuition: number
-  hostelFee: number
-}
-
-export const FEE_STRUCTURE: FeeEntry[] = [
-  { program: 'B.E / B.Tech (all branches)', annualTuition: 95000, hostelFee: 60000 },
-  { program: 'M.E Computer Science & Engineering', annualTuition: 85000, hostelFee: 60000 },
-  { program: 'M.B.A', annualTuition: 80000, hostelFee: 60000 },
-]
-
-// ─── Scholarships ────────────────────────────────────────────────────────────
-
-export interface ScholarshipScheme {
-  id: string
-  name: string
-  icon: 'Trophy' | 'Building2' | 'Heart' | 'Award'
-  benefit: string
-  eligibility: string
-  ctaUrl?: string
-}
-
-export const SCHOLARSHIPS: ScholarshipScheme[] = [
-  {
-    id: 'merit',
-    name: 'Merit Scholarship',
-    icon: 'Trophy',
-    benefit: 'Up to 100% tuition fee waiver',
-    eligibility: '90%+ in 10+2 or state / national rank holders',
-    ctaUrl: '/admissions/engineering#contact',
-  },
-  {
-    id: 'government',
-    name: 'Government Scholarship',
-    icon: 'Building2',
-    benefit: 'Direct bank transfer — full / partial',
-    eligibility: 'SC / ST / OBC / MBC / EWS / Minority categories',
-    ctaUrl: 'https://www.scholarship.gov.in/',
-  },
-  {
-    id: 'need-based',
-    name: 'Need-Based Financial Aid',
-    icon: 'Heart',
-    benefit: 'Up to 50% tuition fee reduction',
-    eligibility: 'Family annual income below ₹2.5L',
-    ctaUrl: '/admissions/engineering#contact',
-  },
-  {
-    id: 'sports-cultural',
-    name: 'Sports & Cultural Scholarship',
-    icon: 'Award',
-    benefit: 'Special seat quota + fee benefit',
-    eligibility: 'State / National level achievers in sports or arts',
-    ctaUrl: '/admissions/engineering#contact',
-  },
-]
-
 // ─── FAQs ────────────────────────────────────────────────────────────────────
 
 export interface FAQItem {
@@ -224,63 +549,75 @@ export interface FAQItem {
 
 export const FAQS: FAQItem[] = [
   {
+    question: 'What is the application fee for pharmacy programmes?',
+    answer:
+      'There is no application fee. Apply online at the JKKN Admissions Portal or directly at the campus admissions office free of charge.',
+    audience: 'student',
+  },
+  {
     question: 'What is the eligibility for B.E / B.Tech admission?',
     answer:
-      'You must have passed 10+2 with Physics, Chemistry and Mathematics with a minimum of 45% aggregate marks (40% for SC/ST/OBC reserved categories). Admission is through TNEA (Tamil Nadu Engineering Admissions) counselling or direct admission under the Management Quota.',
+      'You must have passed 10+2 with Physics, Chemistry and Mathematics with a minimum of 45% aggregate marks (40% for SC/ST/OBC reserved categories). Admission is through TNEA (Tamil Nadu Engineering Admissions) counselling or direct admission under Management Quota.',
+    audience: 'student',
+  },
+  {
+    question: 'Can I apply for multiple programmes with one application?',
+    answer:
+      'Yes. You may indicate your programme preference order during TNEA counselling. For Management Quota, contact the admissions office to check availability across programmes.',
     audience: 'student',
   },
   {
     question: 'How does TNEA counselling work for engineering seats?',
     answer:
-      'TNEA is conducted by Anna University. After registering on the TNEA portal, a merit rank is generated based on your 10+2 marks. You then participate in online counselling, choose JKKN College of Engineering as your preferred college, and seats are allotted based on rank and availability.',
+      'TNEA is conducted by Anna University. After registering on the TNEA portal, a merit rank is generated based on your 10+2 marks. You participate in online counselling, choose JKKN College of Engineering as your preferred college, and seats are allotted based on rank and availability.',
     audience: 'student',
   },
   {
-    question: 'Is there a management quota for direct admission?',
+    question: 'Is it mandatory to appear for TNEA for UG admission?',
     answer:
-      'Yes. A limited number of seats are available under the Management Quota for direct admission. Candidates must meet the minimum eligibility criteria (10+2 with PCM, 45%+). Contact the admissions office at +91 93458 55001 for seat availability and the direct admission process.',
+      'For government quota seats, TNEA counselling is mandatory. However, Management Quota seats are available for direct admission — contact the admissions office for current availability.',
     audience: 'student',
   },
   {
-    question: 'What entrance exams are accepted for M.E / MBA?',
+    question: 'Can I get admission after the last date?',
     answer:
-      'For M.E, a TANCET score is preferred. For MBA, we accept TANCET, CAT, MAT, or XAT scores. Direct merit-based admission is also available. Shortlisted candidates will be called for a Group Discussion and Personal Interview.',
+      'Late applications may be considered subject to seat availability, especially under Management Quota. Contact the admissions office directly to check if seats are still open.',
     audience: 'student',
   },
   {
-    question: 'Can students from outside Tamil Nadu apply?',
+    question: 'How are case seats allocated for different categories?',
     answer:
-      'Yes, students from all states are welcome. Out-of-state candidates can apply through the Management Quota or NRI quota. TNEA counselling is primarily for Tamil Nadu state students. Contact the admissions office for the complete out-of-state admission procedure.',
+      'Seats are allocated strictly as per Tamil Nadu Government and AICTE reservation norms: General, BC, MBC/DNC, SC/ST, and other categories. Sports, NCC, and Ex-serviceman quotas are also available as per government guidelines.',
+    audience: 'student',
+  },
+  {
+    question: 'What documents are needed for B.E / B.Tech admission?',
+    answer:
+      '10th and 12th marksheets, Transfer Certificate, Community Certificate, 6 passport photos, Conduct Certificate, Aadhaar Card, TNEA Rank Card (for counselling seats), and Income Certificate (for scholarships). PG candidates additionally need Degree Certificate, consolidated marksheet, and entrance score card.',
     audience: 'student',
   },
   {
     question: 'What is the total cost of education including hostel?',
     answer:
-      'For B.E / B.Tech programs, the annual tuition fee is ₹95,000. Hostel accommodation (optional, all-inclusive with meals and utilities) is ₹60,000 per year. Scholarships can significantly reduce the tuition fee — approximately 75% of our students receive some form of financial aid.',
+      'For B.E / B.Tech programs, annual tuition is ₹95,000. Hostel accommodation (optional, all-inclusive with meals and utilities) is ₹60,000 per year — total ₹1,55,000 per year. Scholarships can significantly reduce tuition costs; approximately 75% of students receive some form of financial aid.',
     audience: 'parent',
   },
   {
     question: 'What percentage of students get placed after graduation?',
     answer:
-      'JKKN College of Engineering maintains a 92%+ placement rate (verified by our Placement Committee, 2025). Our top recruiters include TCS, Infosys, Wipro, Cognizant, HCL, and 500+ companies. The average salary package is ₹3.5L per annum with the highest at ₹8.5L+.',
+      'JKKN College of Engineering maintains a 92%+ placement rate (verified 2025). Top recruiters include TCS, Infosys, Wipro, Cognizant, HCL, and 500+ companies. Average package: ₹3.5L per annum; highest: ₹8.5L+.',
     audience: 'parent',
   },
   {
     question: 'Is the campus safe? What are the hostel facilities?',
     answer:
-      'Campus safety is our top priority. The campus has 24/7 CCTV surveillance, security personnel, and a controlled entry gate. Separate hostels for boys and girls include Wi-Fi, hygienic mess (3 meals/day), recreation areas, and regular health check-ups. An on-campus medical clinic is always available.',
+      'The campus has 24/7 CCTV surveillance, security personnel, and controlled entry. Separate hostels for boys and girls include Wi-Fi, hygienic mess (3 meals/day), recreation areas, and health check-ups. An on-campus medical clinic is available at all times.',
     audience: 'parent',
   },
   {
     question: 'Are there scholarships for financially weaker families?',
     answer:
-      'Yes. JKKN offers Need-Based Financial Aid for families with annual income below ₹2.5L, providing up to 50% tuition fee reduction. Government scholarships (SC/ST/OBC/MBC/EWS/Minority) are fully supported with direct bank transfer. Around 75% of our students receive some form of financial aid.',
-    audience: 'parent',
-  },
-  {
-    question: 'How do I contact the admissions office?',
-    answer:
-      'Phone: +91 93458 55001 | Email: admissions@jkkn.ac.in | Campus: Natarajapuram, NH-544 (Salem–Coimbatore Highway), Komarapalayam, Namakkal District, Tamil Nadu — 638183. Office hours: Monday to Saturday, 9 AM to 5 PM.',
+      'Yes. Need-Based Financial Aid is available for families with annual income below ₹2.5L — up to 50% tuition reduction. Government scholarships (SC/ST/OBC/MBC/EWS/Minority) are supported with direct bank transfer. Around 75% of students receive some form of financial aid.',
     audience: 'parent',
   },
 ]

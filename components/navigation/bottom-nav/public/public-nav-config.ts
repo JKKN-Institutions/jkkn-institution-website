@@ -1,7 +1,6 @@
 import {
   Home,
   Info,
-  GraduationCap,
   Mail,
   BookOpen,
   Calendar,
@@ -50,12 +49,6 @@ export const PUBLIC_FALLBACK_PRIMARY_ITEMS: NavMenuItemConfig[] = [
       { href: '/about/leadership', label: 'Leadership', icon: Users },
       { href: '/about/vision-mission', label: 'Vision & Mission', icon: Target }
     ]
-  },
-  {
-    href: '/admissions',
-    label: 'Admissions',
-    icon: GraduationCap,
-    submenus: []
   },
   {
     href: '/contact',

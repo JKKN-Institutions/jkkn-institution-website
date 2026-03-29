@@ -1499,6 +1499,7 @@ export type ScholarshipsSectionProps = z.infer<typeof ScholarshipsSectionPropsSc
 // --- DocumentsChecklist ---
 export const DocumentItemSchema = z.object({
   text: z.string(),
+  note: z.string().optional(),
   required: z.boolean().default(true),
 })
 export type DocumentItem = z.infer<typeof DocumentItemSchema>
@@ -1593,6 +1594,7 @@ export type WhyChooseSectionProps = z.infer<typeof WhyChooseSectionPropsSchema> 
 // --- CampusFeaturesGrid ---
 export const CampusFeatureItemSchema = z.object({
   emoji: z.string().default('🏠'),
+  icon: z.string().optional(),
   title: z.string(),
   description: z.string(),
 })

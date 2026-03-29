@@ -2,6 +2,12 @@
 
 import { useEffect, useRef, useState, useMemo } from 'react'
 import { cn } from '@/lib/utils'
+import {
+  Home, UtensilsCrossed, BookOpen, FlaskConical,
+  Trophy, HeartPulse, Bus, ShieldCheck,
+  Wifi, Music2, GraduationCap, Dumbbell,
+  type LucideIcon,
+} from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
 import type { CampusFeaturesGridProps } from '@/lib/cms/registry-types'
 import {
@@ -10,6 +16,17 @@ import {
   isDarkBackground,
   getStaggerDelay,
 } from './shared/admission-glass-styles'
+
+// Icon map — add more as needed
+const ICON_MAP: Record<string, LucideIcon> = {
+  Home, UtensilsCrossed, BookOpen, FlaskConical,
+  Trophy, HeartPulse, Bus, ShieldCheck,
+  Wifi, Music2, GraduationCap, Dumbbell,
+}
+
+function getIcon(name: string): LucideIcon {
+  return ICON_MAP[name] || Home
+}
 
 // Intersection Observer hook
 function useInView(threshold = 0.1) {
@@ -160,9 +177,30 @@ export default function CampusFeaturesGrid({
                 transitionDelay: showAnimations ? getStaggerDelay(index, 80) : '0ms',
               }}
             >
-              {/* Emoji Icon */}
-              <div className="text-4xl md:text-5xl mb-4 transition-transform duration-300 group-hover:scale-110">
-                {feature.emoji}
+              {/* Icon */}
+              <div className="flex justify-center mb-4">
+                {feature.icon ? (
+                  <div
+                    className={cn(
+                      'w-14 h-14 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110',
+                      isDark ? 'bg-white/15' : 'bg-[#0b6d41]/10'
+                    )}
+                  >
+                    {(() => {
+                      const Icon = getIcon(feature.icon)
+                      return (
+                        <Icon
+                          className="w-7 h-7"
+                          style={{ color: isDark ? '#ffde59' : '#0b6d41' }}
+                        />
+                      )
+                    })()}
+                  </div>
+                ) : (
+                  <div className="text-4xl md:text-5xl transition-transform duration-300 group-hover:scale-110">
+                    {feature.emoji}
+                  </div>
+                )}
               </div>
 
               {/* Title */}

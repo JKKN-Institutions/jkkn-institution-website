@@ -143,7 +143,7 @@ export default function FeeStructureTable({
           ref={tableRef.ref}
           className={cn(
             'max-w-5xl mx-auto overflow-x-auto',
-            glassStyles.tableContainer,
+            isDark ? glassStyles.tableContainer : glassStyles.tableContainerLight,
             showAnimations && 'transition-all duration-700',
             showAnimations && (tableRef.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8')
           )}
@@ -151,29 +151,29 @@ export default function FeeStructureTable({
           {/* Desktop Table Header */}
           <div
             className={cn(
-              glassStyles.tableHeader,
+              isDark ? glassStyles.tableHeader : glassStyles.tableHeaderLight,
               'hidden md:grid gap-4 px-6 py-4'
             )}
             style={{ gridTemplateColumns: `2fr repeat(${columnCount - 1}, 1fr)` }}
           >
-            <div className={cn('font-semibold', isDark ? 'text-white' : 'text-gray-900')}>
+            <div className="font-semibold text-sm uppercase tracking-wide text-white">
               Program
             </div>
-            <div className={cn('font-semibold text-right', isDark ? 'text-white' : 'text-gray-900')}>
+            <div className="font-semibold text-sm uppercase tracking-wide text-white text-right">
               Tuition Fee
             </div>
             {showHostelFee && (
-              <div className={cn('font-semibold text-right', isDark ? 'text-white' : 'text-gray-900')}>
+              <div className="font-semibold text-sm uppercase tracking-wide text-white text-right">
                 Hostel Fee
               </div>
             )}
             {showOtherFees && (
-              <div className={cn('font-semibold text-right', isDark ? 'text-white' : 'text-gray-900')}>
+              <div className="font-semibold text-sm uppercase tracking-wide text-white text-right">
                 Other Fees
               </div>
             )}
-            <div className={cn('font-semibold text-right', isDark ? 'text-white' : 'text-gray-900')}>
-              Total
+            <div className="font-semibold text-sm uppercase tracking-wide text-white text-right">
+              Total / Year
             </div>
           </div>
 
@@ -184,8 +184,10 @@ export default function FeeStructureTable({
                 key={index}
                 className={cn(
                   'px-6 py-4',
-                  index % 2 === 0 ? glassStyles.tableRow : glassStyles.tableRowAlt,
-                  glassStyles.tableRowHover,
+                  isDark
+                    ? (index % 2 === 0 ? glassStyles.tableRow : glassStyles.tableRowAlt)
+                    : (index % 2 === 0 ? glassStyles.tableRowLight : glassStyles.tableRowAltLight),
+                  isDark ? glassStyles.tableRowHover : glassStyles.tableRowHoverLight,
                   // Mobile: card layout
                   'flex flex-col gap-3 md:grid md:gap-4 md:items-center',
                   // Animation
@@ -201,7 +203,7 @@ export default function FeeStructureTable({
               >
                 {/* Program */}
                 <div className="flex items-center gap-2">
-                  <IndianRupee className={cn('w-4 h-4 md:hidden', isDark ? 'text-white/50' : 'text-gray-400')} />
+                  <IndianRupee className={cn('w-4 h-4 md:hidden', isDark ? 'text-white/50' : 'text-[#0b6d41]')} />
                   <span className={cn('font-semibold', isDark ? 'text-white' : 'text-gray-900')}>
                     {item.program}
                   </span>
@@ -233,10 +235,7 @@ export default function FeeStructureTable({
                   )}
 
                   <div className={cn('font-semibold', isDark ? 'text-white' : 'text-gray-900')}>Total:</div>
-                  <div
-                    className="text-right font-bold"
-                    style={{ color: accentColor }}
-                  >
+                  <div className="text-right font-bold text-[#0b6d41]">
                     {formatCurrency(item.total, currencySymbol, currencyLocale)}
                   </div>
                 </div>
@@ -259,8 +258,8 @@ export default function FeeStructureTable({
                 )}
 
                 <div
-                  className="hidden md:block text-right font-bold"
-                  style={{ color: accentColor }}
+                  className={cn('hidden md:block text-right font-bold', isDark ? '' : 'text-[#0b6d41]')}
+                  style={isDark ? { color: accentColor } : undefined}
                 >
                   {formatCurrency(item.total, currencySymbol, currencyLocale)}
                 </div>
@@ -270,9 +269,9 @@ export default function FeeStructureTable({
 
           {/* Footer Notes */}
           {footerNotes.length > 0 && (
-            <div className={cn('px-6 py-4 border-t', isDark ? 'border-white/10' : 'border-gray-200')}>
+            <div className={cn('px-6 py-4 border-t', isDark ? 'border-white/10' : 'border-gray-100')}>
               <div className="flex items-start gap-2">
-                <Info className={cn('w-4 h-4 mt-0.5 flex-shrink-0', isDark ? 'text-white/40' : 'text-gray-400')} />
+                <Info className={cn('w-4 h-4 mt-0.5 flex-shrink-0', isDark ? 'text-white/40' : 'text-[#0b6d41]/60')} />
                 <ul className={cn('text-xs space-y-1', isDark ? 'text-white/50' : 'text-gray-500')}>
                   {footerNotes.map((note, index) => (
                     <li key={index}>{note}</li>

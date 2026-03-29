@@ -19,6 +19,7 @@ import {
   Youtube,
   Globe,
 } from 'lucide-react'
+import { getAllCitySlugs, getCityConfig } from '@/lib/config/city-pages'
 
 export interface NavItem {
   id: string
@@ -84,7 +85,6 @@ const fallbackNavigation: NavItem[] = [
   { id: 'home', label: 'Home', href: '/', is_homepage: true },
   { id: 'about', label: 'About', href: '/about', is_homepage: false },
   { id: 'academics', label: 'Academics', href: '/academics', is_homepage: false },
-  { id: 'admissions', label: 'Admissions', href: '/admissions', is_homepage: false },
   { id: 'blog', label: 'Blog', href: '/blog', is_homepage: false },
   { id: 'contact', label: 'Contact', href: '/contact', is_homepage: false },
   {
@@ -134,7 +134,28 @@ export function SiteHeader({
   const hoverTimeoutsRef = useRef<Map<string, NodeJS.Timeout>>(new Map())
 
   // Use CMS navigation if available, otherwise fallback
-  const mainNavigation = navigation && navigation.length > 0 ? navigation : fallbackNavigation
+  const baseNavigation = navigation && navigation.length > 0 ? navigation : fallbackNavigation
+
+  // For engineering institution, inject a "Cities" dropdown with city landing pages
+  const mainNavigation: NavItem[] = (() => {
+    if (process.env.NEXT_PUBLIC_INSTITUTION_ID !== 'engineering') return baseNavigation
+    const citiesItem: NavItem = {
+      id: 'cities',
+      label: 'Cities',
+      href: '#',
+      is_homepage: false,
+      children: getAllCitySlugs().map(({ city }) => ({
+        id: city,
+        label: getCityConfig(city)?.displayName ?? city,
+        href: `/best-engineering-college-in-${city}`,
+        is_homepage: false,
+      })),
+    }
+    const nav = [...baseNavigation]
+    const moreIdx = nav.findIndex(n => n.id === 'more' || n.label === 'More')
+    moreIdx >= 0 ? nav.splice(moreIdx, 0, citiesItem) : nav.push(citiesItem)
+    return nav
+  })()
 
   // Utility: Check if a specific path is currently open
   const isPathOpen = useCallback((itemId: string, parentPath: string[] = []) => {

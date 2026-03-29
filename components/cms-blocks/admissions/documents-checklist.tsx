@@ -2,22 +2,9 @@
 
 import { useEffect, useRef, useState, useMemo } from 'react'
 import { cn } from '@/lib/utils'
-import Link from 'next/link'
-import {
-  CheckSquare,
-  Square,
-  CheckCircle,
-  Download,
-  FileText,
-} from 'lucide-react'
-import { DecorativePatterns } from '../shared/decorative-patterns'
+import { CheckCircle, FileText } from 'lucide-react'
+import { backgroundStyles, isDarkBackground, getStaggerDelay } from './shared/admission-glass-styles'
 import type { DocumentsChecklistProps } from '@/lib/cms/registry-types'
-import {
-  glassStyles,
-  backgroundStyles,
-  isDarkBackground,
-  getStaggerDelay,
-} from './shared/admission-glass-styles'
 
 // Intersection Observer hook
 function useInView(threshold = 0.1) {
@@ -26,9 +13,7 @@ function useInView(threshold = 0.1) {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsInView(true)
-      },
+      ([entry]) => { if (entry.isIntersecting) setIsInView(true) },
       { threshold }
     )
     if (ref.current) observer.observe(ref.current)
@@ -38,63 +23,24 @@ function useInView(threshold = 0.1) {
   return { ref, isInView }
 }
 
-// Check icon component based on type
-function CheckIcon({
-  type,
-  checked,
-  className,
-}: {
-  type: 'check' | 'checkbox' | 'circle-check'
-  checked: boolean
-  className?: string
-}) {
-  const iconProps = { className: cn('w-5 h-5', className) }
-
-  switch (type) {
-    case 'check':
-      return checked ? (
-        <CheckSquare {...iconProps} className={cn(iconProps.className, 'text-brand-primary')} />
-      ) : (
-        <Square {...iconProps} className={cn(iconProps.className, 'text-white/40')} />
-      )
-    case 'circle-check':
-      return (
-        <CheckCircle
-          {...iconProps}
-          className={cn(
-            iconProps.className,
-            checked ? 'text-brand-primary' : 'text-white/40'
-          )}
-        />
-      )
-    case 'checkbox':
-    default:
-      return checked ? (
-        <CheckSquare {...iconProps} className={cn(iconProps.className, 'text-brand-primary')} />
-      ) : (
-        <Square {...iconProps} className={cn(iconProps.className, 'text-white/40')} />
-      )
-  }
-}
-
 export default function DocumentsChecklist({
-  badge = 'DOCUMENTS',
+  badge,
   title = 'Documents Required',
   titleAccentWord = 'Documents',
-  subtitle = 'Keep these documents ready for a smooth admission process',
-  leftColumnTitle = 'For All Programs',
+  subtitle,
+  leftColumnTitle,
   leftColumnDocuments = [],
-  rightColumnTitle = 'Additional Documents',
+  rightColumnTitle,
   rightColumnDocuments = [],
-  showCTA = true,
-  ctaText = 'Download Complete Checklist',
-  ctaLink = '/downloads/admission-checklist.pdf',
-  backgroundColor = 'gradient-dark',
+  showCTA = false,
+  ctaText,
+  ctaLink,
+  backgroundColor = 'gradient-light',
   showAnimations = true,
-  checkIcon = 'checkbox',
+  checkIcon,
   titleColor,
   subtitleColor,
-  accentColor = '#D4AF37',
+  accentColor = '#0b6d41',
   className,
   isEditing,
 }: DocumentsChecklistProps) {
@@ -103,26 +49,24 @@ export default function DocumentsChecklist({
 
   const isDark = isDarkBackground(backgroundColor)
 
+  // Merge both columns into a single flat list
+  const allDocuments = [...leftColumnDocuments, ...rightColumnDocuments]
+
   // Parse title for accent word styling
   const titleParts = useMemo(() => {
     if (!titleAccentWord || !title.includes(titleAccentWord)) {
       return { before: title, accent: '', after: '' }
     }
     const parts = title.split(titleAccentWord)
-    return {
-      before: parts[0] || '',
-      accent: titleAccentWord,
-      after: parts[1] || '',
-    }
+    return { before: parts[0] || '', accent: titleAccentWord, after: parts[1] || '' }
   }, [title, titleAccentWord])
 
-  // Empty state for editing
-  if (leftColumnDocuments.length === 0 && rightColumnDocuments.length === 0 && isEditing) {
+  if (allDocuments.length === 0 && isEditing) {
     return (
       <section className={cn('py-16 px-4', backgroundStyles[backgroundColor], className)}>
-        <div className="container mx-auto max-w-6xl">
-          <div className="p-8 border-2 border-dashed border-white/25 rounded-lg">
-            <p className="text-white/60 text-center">Click to add documents checklist</p>
+        <div className="container mx-auto max-w-5xl">
+          <div className="p-8 border-2 border-dashed border-[#0b6d41]/30 rounded-lg">
+            <p className="text-gray-400 text-center">Click to add documents checklist</p>
           </div>
         </div>
       </section>
@@ -134,205 +78,118 @@ export default function DocumentsChecklist({
       ref={sectionRef.ref}
       className={cn('relative py-16 md:py-24 overflow-hidden', backgroundStyles[backgroundColor], className)}
     >
-      {/* Decorative Patterns */}
-      <DecorativePatterns variant="default" color={isDark ? 'white' : 'green'} />
-
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+
+        {/* ── Section heading (centered) ── */}
         <div
           className={cn(
-            'max-w-4xl mx-auto text-center mb-12 lg:mb-16',
+            'max-w-5xl mx-auto mb-8 text-center',
             showAnimations && 'transition-all duration-700',
             showAnimations && (sectionRef.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8')
           )}
         >
-          {/* Badge */}
-          {badge && (
-            <div className="flex justify-center mb-4">
-              <span className={isDark ? glassStyles.sectionBadge : glassStyles.sectionBadgeLight}>
-                {badge}
-              </span>
-            </div>
-          )}
-
-          {/* Title */}
-          <h2
-            className="font-serif-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4"
-            style={{ color: titleColor || (isDark ? '#ffffff' : '#0b6d41') }}
-          >
-            {titleParts.before}
-            {titleParts.accent && (
-              <span style={{ color: accentColor }}>{titleParts.accent}</span>
-            )}
-            {titleParts.after}
-          </h2>
-
-          {/* Subtitle */}
+          <div className="flex items-center justify-center gap-3">
+            <FileText
+              className="w-8 h-8 flex-shrink-0"
+              style={{ color: isDark ? '#ffde59' : '#0b6d41' }}
+            />
+            <h2
+              className="text-3xl sm:text-4xl font-bold tracking-tight"
+              style={{ color: titleColor || (isDark ? '#ffffff' : '#0f172a') }}
+            >
+              {titleParts.before}
+              {titleParts.accent && (
+                <span style={{ color: isDark ? '#ffde59' : accentColor }}>{titleParts.accent}</span>
+              )}
+              {titleParts.after}
+            </h2>
+          </div>
           {subtitle && (
             <p
-              className="text-lg md:text-xl max-w-3xl mx-auto"
-              style={{ color: subtitleColor || (isDark ? 'rgba(255,255,255,0.7)' : '#6b7280') }}
+              className="mt-3 text-base md:text-lg"
+              style={{ color: subtitleColor || (isDark ? 'rgba(255,255,255,0.65)' : '#6b7280') }}
             >
               {subtitle}
             </p>
           )}
         </div>
 
-        {/* Two Column Checklist */}
+        {/* ── Main card with brand green left border ── */}
         <div
           ref={contentRef.ref}
           className={cn(
             'max-w-5xl mx-auto',
-            glassStyles.tableContainer,
-            'p-6 md:p-8',
             showAnimations && 'transition-all duration-700',
             showAnimations && (contentRef.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8')
           )}
         >
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
-            {/* Left Column */}
-            <div>
-              <div className="flex items-center gap-2 mb-6">
-                <FileText className={cn('w-5 h-5', isDark ? 'text-white/70' : 'text-gray-500')} />
-                <h3
+          <div
+            className={cn(
+              'rounded-2xl px-6 py-8 md:px-10 md:py-10',
+              isDark
+                ? 'bg-white/8'
+                : 'bg-white shadow-sm'
+            )}
+          >
+            {/* Intro paragraph */}
+            <p
+              className={cn('text-sm md:text-base leading-relaxed mb-8', isDark ? 'text-white/75' : 'text-gray-600')}
+            >
+              Photocopies of the following documents must be submitted along with the completed application.
+              Original documents should be presented during admission for verification:
+            </p>
+
+            {/* 2-column document grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6">
+              {allDocuments.map((doc, index) => (
+                <div
+                  key={index}
                   className={cn(
-                    'font-semibold text-lg',
-                    isDark ? 'text-white' : 'text-gray-900'
+                    'flex items-start gap-3',
+                    showAnimations && 'transition-all duration-500',
+                    showAnimations && contentRef.isInView
+                      ? 'opacity-100 translate-y-0'
+                      : 'opacity-0 translate-y-4'
                   )}
+                  style={{ transitionDelay: showAnimations ? getStaggerDelay(index, 60) : '0ms' }}
                 >
-                  {leftColumnTitle}
-                </h3>
-              </div>
-
-              <ul className="space-y-4">
-                {leftColumnDocuments.map((doc, index) => (
-                  <li
-                    key={index}
-                    className={cn(
-                      'flex items-start gap-3',
-                      showAnimations && 'transition-all duration-500',
-                      showAnimations && contentRef.isInView
-                        ? 'opacity-100 translate-x-0'
-                        : 'opacity-0 -translate-x-4'
-                    )}
-                    style={{
-                      transitionDelay: showAnimations ? getStaggerDelay(index, 50) : '0ms',
-                    }}
-                  >
-                    <CheckIcon type={checkIcon} checked={doc.required} />
-                    <span
-                      className={cn(
-                        'text-sm leading-relaxed',
-                        isDark ? 'text-white/80' : 'text-gray-700',
-                        !doc.required && (isDark ? 'text-white/60' : 'text-gray-500')
-                      )}
-                    >
+                  <CheckCircle
+                    className="w-5 h-5 mt-0.5 flex-shrink-0"
+                    style={{ color: isDark ? '#ffde59' : '#0b6d41' }}
+                  />
+                  <div>
+                    <p className={cn('font-semibold text-sm md:text-base', isDark ? 'text-white' : 'text-gray-900')}>
                       {doc.text}
-                      {doc.required && (
-                        <span className="text-gold ml-1">*</span>
-                      )}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Right Column */}
-            <div>
-              <div className="flex items-center gap-2 mb-6">
-                <FileText className={cn('w-5 h-5', isDark ? 'text-white/70' : 'text-gray-500')} />
-                <h3
-                  className={cn(
-                    'font-semibold text-lg',
-                    isDark ? 'text-white' : 'text-gray-900'
-                  )}
-                >
-                  {rightColumnTitle}
-                </h3>
-              </div>
-
-              <ul className="space-y-4">
-                {rightColumnDocuments.map((doc, index) => (
-                  <li
-                    key={index}
-                    className={cn(
-                      'flex items-start gap-3',
-                      showAnimations && 'transition-all duration-500',
-                      showAnimations && contentRef.isInView
-                        ? 'opacity-100 translate-x-0'
-                        : 'opacity-0 -translate-x-4'
+                    </p>
+                    {doc.note && (
+                      <p className={cn('text-xs md:text-sm mt-0.5 leading-snug', isDark ? 'text-white/60' : 'text-gray-500')}>
+                        {doc.note}
+                      </p>
                     )}
-                    style={{
-                      transitionDelay: showAnimations ? getStaggerDelay(index + leftColumnDocuments.length, 50) : '0ms',
-                    }}
-                  >
-                    <CheckIcon type={checkIcon} checked={doc.required} />
-                    <span
-                      className={cn(
-                        'text-sm leading-relaxed',
-                        isDark ? 'text-white/80' : 'text-gray-700',
-                        !doc.required && (isDark ? 'text-white/60' : 'text-gray-500')
-                      )}
-                    >
-                      {doc.text}
-                      {doc.required && (
-                        <span className="text-gold ml-1">*</span>
-                      )}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Legend */}
+          {/* ── Important notice (amber left border) ── */}
           <div
             className={cn(
-              'mt-8 pt-6 border-t flex flex-wrap items-center justify-center gap-6 text-xs',
-              isDark ? 'border-white/10 text-white/50' : 'border-gray-200 text-gray-500'
+              'mt-4 border-l-4 rounded-r-xl px-5 py-4',
+              isDark
+                ? 'border-[#ffde59]/70 bg-[#ffde59]/8'
+                : 'border-[#ffde59] bg-[#fffdf0]'
             )}
           >
-            <div className="flex items-center gap-2">
-              <CheckSquare className="w-4 h-4 text-brand-primary" />
-              <span>Required Document</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Square className={cn('w-4 h-4', isDark ? 'text-white/40' : 'text-gray-400')} />
-              <span>If Applicable</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-gold">*</span>
-              <span>Mandatory</span>
-            </div>
+            <p className={cn('text-xs md:text-sm leading-relaxed', isDark ? 'text-white/80' : 'text-gray-700')}>
+              <span className="font-bold">Important: </span>
+              All documents should be presented upon demand during admission. If any document is not
+              readily available, grace time may be granted with the principal&apos;s consent. Failure to
+              submit required documents may result in admission cancellation.
+            </p>
           </div>
         </div>
 
-        {/* CTA Button */}
-        {showCTA && (
-          <div
-            className={cn(
-              'flex justify-center mt-8',
-              showAnimations && 'transition-all duration-700 delay-500',
-              showAnimations && (contentRef.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8')
-            )}
-          >
-            <Link
-              href={ctaLink}
-              className={cn(
-                'inline-flex items-center gap-2 px-6 py-3 rounded-full',
-                'font-semibold',
-                'transition-all duration-300',
-                'hover:scale-105 hover:shadow-xl',
-                glassStyles.card,
-                glassStyles.cardHover,
-                isDark ? 'text-white' : 'text-gray-900'
-              )}
-            >
-              <Download className="w-5 h-5" />
-              {ctaText}
-            </Link>
-          </div>
-        )}
       </div>
     </section>
   )
