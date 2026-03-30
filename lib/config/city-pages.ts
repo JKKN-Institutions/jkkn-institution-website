@@ -107,9 +107,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '100-110 km',
     travelTime: '2-2.5 hours',
     heroSubheading:
-      'Better value, better campus, better you — just 2 hours from Coimbatore. JKKN College of Engineering and Technology offers top-tier engineering programmes with 85%+ placement support — world-class education at a fraction of Coimbatore city college fees.',
+      'Better value, better campus, better you — just 2 hours from Coimbatore. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support — world-class education at a fraction of Coimbatore city college fees.',
     heroStats: {
-      placements: '85%+',
+      placements: '95%',
       lpaHighest: '10-12',
       distanceStat: '105km',
       distanceLabel: 'from Coimbatore',
@@ -192,7 +192,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College in Coimbatore | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college near Coimbatore? JKKN College of Engineering and Technology is just 100-110 km away. AICTE, NBA, NAAC approved. 85%+ placements. Apply now for 2026-27!',
+        'Looking for the best engineering college near Coimbatore? JKKN College of Engineering and Technology is just 100-110 km away. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
       canonicalPath: '/best-engineering-college-in-coimbatore/',
       ogImage: '/images/city/coimbatore-og.jpg',
       twitterDescription:
@@ -213,9 +213,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '30-40 km',
     travelTime: '50-70 minutes',
     heroSubheading:
-      'Just 30-40 km from Erode — your gateway to quality engineering education. JKKN College of Engineering and Technology offers top-tier engineering programmes with 85%+ placement support. AICTE, NBA, NAAC approved.',
+      'Just 30-40 km from Erode — your gateway to quality engineering education. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved.',
     heroStats: {
-      placements: '85%+',
+      placements: '95%',
       lpaHighest: '10-12',
       distanceStat: '35km',
       distanceLabel: 'from Erode',
@@ -297,7 +297,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College in Erode | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college near Erode? JKKN College of Engineering and Technology is just 30-40 km away. AICTE, NBA, NAAC approved. 85%+ placements. Apply now for 2026-27!',
+        'Looking for the best engineering college near Erode? JKKN College of Engineering and Technology is just 30-40 km away. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
       canonicalPath: '/best-engineering-college-in-erode/',
       ogImage: '/images/city/erode-og.jpg',
       twitterDescription:
@@ -318,9 +318,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '5-10 km',
     travelTime: '15-20 minutes',
     heroSubheading:
-      'Just 5-10 km from Namakkal — your nearest engineering college! JKKN College of Engineering and Technology offers top-tier engineering programmes with 85%+ placement support. AICTE, NBA, NAAC approved. Located right here in Namakkal district.',
+      'Just 5-10 km from Namakkal — your nearest engineering college! JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved. Located right here in Namakkal district.',
     heroStats: {
-      placements: '85%+',
+      placements: '95%',
       lpaHighest: '10-12',
       distanceStat: '8km',
       distanceLabel: 'from Namakkal',
@@ -402,7 +402,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College in Namakkal | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college in Namakkal? JKKN College of Engineering and Technology is just 5-10 km away in Komarapalayam. AICTE, NBA, NAAC approved. 85%+ placements. Apply now for 2026-27!',
+        'Looking for the best engineering college in Namakkal? JKKN College of Engineering and Technology is just 5-10 km away in Komarapalayam. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
       canonicalPath: '/best-engineering-college-in-namakkal/',
       ogImage: '/images/city/namakkal-og.jpg',
       twitterDescription:
@@ -423,9 +423,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '40-50 km',
     travelTime: '50-60 minutes',
     heroSubheading:
-      'Just 40-50 km from Salem — quality engineering education within easy reach. JKKN College of Engineering and Technology offers top-tier engineering programmes with 85%+ placement support. AICTE, NBA, NAAC approved.',
+      'Just 40-50 km from Salem — quality engineering education within easy reach. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved.',
     heroStats: {
-      placements: '85%+',
+      placements: '95%',
       lpaHighest: '10-12',
       distanceStat: '45km',
       distanceLabel: 'from Salem',
@@ -507,7 +507,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College in Salem | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college near Salem? JKKN College of Engineering and Technology is just 40-50 km away. AICTE, NBA, NAAC approved. 85%+ placements. Apply now for 2026-27!',
+        'Looking for the best engineering college near Salem? JKKN College of Engineering and Technology is just 40-50 km away. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
       canonicalPath: '/best-engineering-college-in-salem/',
       ogImage: '/images/city/salem-og.jpg',
       twitterDescription:
@@ -528,9 +528,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '80-90 km',
     travelTime: '1.5-2 hours',
     heroSubheading:
-      'Just 80-90 km from Tiruppur — quality engineering education within reach. JKKN College of Engineering and Technology offers top-tier engineering programmes with 85%+ placement support. AICTE, NBA, NAAC approved.',
+      'Just 80-90 km from Tiruppur — quality engineering education within reach. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved.',
     heroStats: {
-      placements: '85%+',
+      placements: '95%',
       lpaHighest: '10-12',
       distanceStat: '85km',
       distanceLabel: 'from Tiruppur',
@@ -612,7 +612,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College in Tiruppur | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college near Tiruppur? JKKN College of Engineering and Technology is just 80-90 km away. AICTE, NBA, NAAC approved. 85%+ placements. Apply now for 2026-27!',
+        'Looking for the best engineering college near Tiruppur? JKKN College of Engineering and Technology is just 80-90 km away. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
       canonicalPath: '/best-engineering-college-in-tiruppur/',
       ogImage: '/images/city/tiruppur-og.jpg',
       twitterDescription:

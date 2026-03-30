@@ -97,43 +97,43 @@ export default function MainAdmissionsPage() {
             name: 'JKKN Dental College and Hospital',
             description: 'Premier dental education with 500-bed teaching hospital',
             headerColor: '#0b6d41',
-            link: 'https://dental.jkkn.ac.in/',
+            link: 'https://dental.jkkn.ac.in/admission',
           },
           {
             name: 'JKKN College of Pharmacy',
             description: 'B.Pharm, M.Pharm & Pharm.D programs with PCI approval',
             headerColor: '#0b6d41',
-            link: 'https://pharmacy.jkkn.ac.in/',
+            link: 'https://pharmacy.jkkn.ac.in/admissions',
           },
           {
             name: 'JKKN College of Engineering and Technology (Autonomous)',
             description: 'AICTE approved programs in emerging technologies',
             headerColor: '#0b6d41',
-            link: 'https://engg.jkkn.ac.in/',
+            link: 'https://engg.jkkn.ac.in/admissions',
           },
           {
             name: 'Sresakthimayeil Institute of Nursing and Research',
             description: 'INC approved nursing programs with clinical training',
             headerColor: '#0b6d41',
-            link: 'https://nursing.sresakthimayeil.jkkn.ac.in/',
+            link: 'https://nursing.sresakthimayeil.jkkn.ac.in/admissions',
           },
           {
             name: 'JKKN College of Arts and Science (Autonomous)',
             description: 'UG & PG programs in arts, science & commerce',
             headerColor: '#0b6d41',
-            link: 'https://cas.jkkn.ac.in/',
+            link: 'https://cas.jkkn.ac.in/admissions',
           },
           {
             name: 'JKKN College of Allied Health Sciences',
             description: 'Specialized healthcare professional programs',
             headerColor: '#0b6d41',
-            link: 'https://ahs.jkkn.ac.in/',
+            link: 'https://ahs.jkkn.ac.in/admission',
           },
           {
             name: 'JKKN College of Education',
             description: 'B.Ed programs with NCTE approved curriculum',
             headerColor: '#0b6d41',
-            link: 'https://edu.jkkn.ac.in/',
+            link: 'https://edu.jkkn.ac.in/admission',
           },
         ]}
         backgroundColor="gradient-light"
@@ -325,7 +325,7 @@ export default function MainAdmissionsPage() {
         subtitle="From campus to career — JKKN Learners are recruited by top companies across industries."
         stats={[
           { value: '500', suffix: '+', label: 'Recruiting Companies' },
-          { value: '92', suffix: '%+', label: 'Placement Rate' },
+          { value: '95', suffix: '%+', label: 'Placement Rate' },
           { value: '8.5', prefix: '₹', suffix: ' LPA', label: 'Highest Package' },
           { value: '3.5', prefix: '₹', suffix: ' LPA', label: 'Average Package' },
         ]}

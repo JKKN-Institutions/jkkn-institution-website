@@ -16,6 +16,8 @@ import { FAQSchemaAdmissions, FAQSchemaPlacements, FAQSchemaAbout, HowToSchemaAd
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from '@/lib/seo'
 import { resolvePageSchemas } from '@/lib/seo/schema-resolver'
+import { getCityConfig } from '@/lib/config/city-pages'
+import { CityLandingPage } from '@/components/city-pages/city-landing-page'
 
 // Dynamic rendering for 404 handling - automatically handled with cacheComponents
 // Cache Components ensures proper 404 status codes without force-dynamic
@@ -29,6 +31,34 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params
   const slugPath = slug?.join('/') ?? ''
   const path = slugPath ? `/${slugPath}` : '/'
+
+  // City landing page metadata
+  const cityMetaMatch = slugPath.match(/^best-engineering-college-in-(.+)$/)
+  if (cityMetaMatch) {
+    const cityConfig = getCityConfig(cityMetaMatch[1])
+    if (cityConfig) {
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://engg.jkkn.ac.in'
+      return {
+        title: cityConfig.seo.title,
+        description: cityConfig.seo.description,
+        alternates: { canonical: `${siteUrl}${cityConfig.seo.canonicalPath}` },
+        openGraph: {
+          title: cityConfig.seo.title,
+          description: cityConfig.seo.description,
+          url: `${siteUrl}${cityConfig.seo.canonicalPath}`,
+          siteName: 'JKKN College of Engineering and Technology',
+          type: 'website',
+          locale: 'en_IN',
+          images: [{ url: `${siteUrl}${cityConfig.seo.ogImage}`, width: 1200, height: 630 }],
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title: cityConfig.seo.title,
+          description: cityConfig.seo.twitterDescription,
+        },
+      }
+    }
+  }
 
   // Generate breadcrumb schema for this page
   const breadcrumbs = getBreadcrumbsForPath(path)
@@ -172,6 +202,20 @@ export default async function DynamicPage({ params }: PageProps) {
   // Don't handle admin routes - they should be handled by the (admin) route group
   if (slugPath.startsWith('admin')) {
     notFound()
+  }
+
+  // City landing pages (engineering-only): /best-engineering-college-in-{city}
+  const cityMatch = slugPath.match(/^best-engineering-college-in-(.+)$/)
+  if (cityMatch) {
+    const citySlug = cityMatch[1]
+    const cityConfig = getCityConfig(citySlug)
+    if (cityConfig) {
+      const institutionId = process.env.NEXT_PUBLIC_INSTITUTION_ID
+      if (institutionId && institutionId !== 'engineering') {
+        notFound()
+      }
+      return <CityLandingPage cityConfig={cityConfig} />
+    }
   }
 
   // For homepage (empty slug), first try to get CMS content, otherwise show landing page

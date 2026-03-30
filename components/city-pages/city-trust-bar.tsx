@@ -5,22 +5,19 @@ export default function CityTrustBar() {
   const badges = ['AICTE', 'NBA', 'NAAC'] as const
 
   return (
-    <div className="bg-white border-b border-gray-200 py-3 px-4 flex items-center justify-center gap-4 flex-wrap">
+    <div className="trust-bar">
       {badges.map((badge) => (
-        <span
-          key={badge}
-          className="inline-flex items-center gap-1.5 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full"
-        >
-          <span aria-hidden="true">&#10003;</span>
-          {badge}
-        </span>
+        <div key={badge} className="accred-badge">
+          <span className="accred-icon">&#10003;</span>
+          <span className="accred-name">{badge}</span>
+        </div>
       ))}
 
-      <span className="text-gray-300 text-lg" aria-hidden="true">
+      <span className="trust-sep" aria-hidden="true">
         |
       </span>
 
-      <span className="text-sm text-gray-500 font-medium">
+      <span className="trust-univ">
         Affiliated to Anna University, Chennai
       </span>
     </div>

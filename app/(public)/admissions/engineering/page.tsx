@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'JKKN Engineering Admissions 2026 — Complete Admission Guide',
     description:
-      'NAAC A accredited · 5 UG + 2 PG programmes · 92%+ placement · Eligibility, fee, dates, scholarships.',
+      'NAAC A accredited · 5 UG + 2 PG programmes · 95%+ placement · Eligibility, fee, dates, scholarships.',
     type: 'website',
     images: [
       {

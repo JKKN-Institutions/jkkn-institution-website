@@ -33,6 +33,9 @@ const socialIconMap = {
 export function SiteFooter({ settings }: SiteFooterProps) {
   if (!settings) return null
 
+  // Current site URL for highlighting active institution
+  const currentSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || ''
+
   // Filter visible links
   const visibleInstitutions = settings.institutions.filter(link => link.visible)
 
@@ -45,7 +48,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
       label: platform.charAt(0).toUpperCase() + platform.slice(1)
     }))
   return (
-    <footer className="relative bg-gradient-to-br from-primary via-primary to-emerald-700 text-white overflow-hidden">
+    <footer className="footer-selection relative bg-gradient-to-br from-primary via-primary to-emerald-700 text-white overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-secondary/30 rounded-full blur-3xl" />
@@ -144,19 +147,27 @@ export function SiteFooter({ settings }: SiteFooterProps) {
               {settings.sectionTitles?.institutions || 'Our Institutions'}
             </h2>
             <ul className="flex flex-wrap gap-x-6 gap-y-3">
-              {visibleInstitutions.map((link, index) => (
-                <li key={link.href} className="flex items-center">
-                  <a
-                    href={link.href}
-                    className="text-sm text-white/70 hover:text-white transition-all duration-300 hover:text-secondary"
-                  >
-                    {link.label}
-                  </a>
-                  {index < visibleInstitutions.length - 1 && (
-                    <span className="ml-6 text-white/30">|</span>
-                  )}
-                </li>
-              ))}
+              {visibleInstitutions.map((link, index) => {
+                const isCurrentSite = currentSiteUrl && link.href.replace(/\/+$/, '').includes(currentSiteUrl.replace(/\/+$/, '').replace(/^https?:\/\//, ''))
+                return (
+                  <li key={link.href} className="flex items-center">
+                    <a
+                      href={link.href}
+                      className={cn(
+                        'text-sm transition-all duration-300',
+                        isCurrentSite
+                          ? 'text-secondary font-semibold hover:text-white'
+                          : 'text-white/70 hover:text-secondary'
+                      )}
+                    >
+                      {link.label}
+                    </a>
+                    {index < visibleInstitutions.length - 1 && (
+                      <span className="ml-6 text-white/30">|</span>
+                    )}
+                  </li>
+                )
+              })}
             </ul>
           </div>
 

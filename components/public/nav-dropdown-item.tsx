@@ -129,7 +129,7 @@ export function NavDropdownItem({
         ) : (
           <Link
             href={item.external_url || item.href}
-            {...(item.external_url && { target: '_blank', rel: 'noopener noreferrer' })}
+            {...(item.external_url && !item.external_url.startsWith('/') && { target: '_blank', rel: 'noopener noreferrer' })}
             className={cn(
               'flex items-center gap-1 px-1 xl:px-2 py-2 font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap border-b-2',
               textSize,
@@ -308,16 +308,32 @@ export function NavDropdownItem({
         </button>
       ) : (
         item.external_url ? (
-          <a
-            href={item.external_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block px-3 py-1.5 text-sm text-gray-700 hover:text-primary hover:bg-primary/5 hover:translate-x-0.5 transition-all duration-200 truncate"
-            role="menuitem"
-            tabIndex={0}
-          >
-            {item.label}
-          </a>
+          item.external_url.startsWith('/') ? (
+            <Link
+              href={item.external_url}
+              className={cn(
+                'block px-3 py-1.5 text-sm transition-all duration-200 truncate',
+                isActive(item.external_url)
+                  ? 'text-primary bg-primary/10 font-medium'
+                  : 'text-gray-700 hover:text-primary hover:bg-primary/5 hover:translate-x-0.5'
+              )}
+              role="menuitem"
+              tabIndex={0}
+            >
+              {item.label}
+            </Link>
+          ) : (
+            <a
+              href={item.external_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block px-3 py-1.5 text-sm text-gray-700 hover:text-primary hover:bg-primary/5 hover:translate-x-0.5 transition-all duration-200 truncate"
+              role="menuitem"
+              tabIndex={0}
+            >
+              {item.label}
+            </a>
+          )
         ) : (
           <Link
             href={item.href}

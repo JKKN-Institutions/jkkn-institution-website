@@ -2,6 +2,7 @@
 // Server Component — props: cityConfig
 
 import Link from 'next/link'
+import { MapPin } from 'lucide-react'
 import type { CityPageConfig } from '@/lib/config/city-pages'
 
 interface CityCrossLinksProps {
@@ -10,47 +11,30 @@ interface CityCrossLinksProps {
 
 export default function CityCrossLinks({ cityConfig }: CityCrossLinksProps) {
   return (
-    <section className="py-12 px-4">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="font-poppins text-3xl font-bold text-gray-900 text-center mb-2">
-          Nearby Cities We Serve
-        </h2>
-        <p className="text-center text-gray-500 text-base mb-3 max-w-2xl mx-auto">
-          JKKNCET is well-connected to major cities in the region. Find information for
-          your city below.
+    <section className="section">
+      <div className="section-inner">
+        <h2 className="section-title">Explore More Cities</h2>
+        <p className="section-subtitle">
+          Find the best engineering college near your city
         </p>
-        <span className="block w-12 h-1 bg-secondary rounded mx-auto mt-3 mb-8" aria-hidden="true" />
+        <span className="section-accent" aria-hidden="true" />
+        <div className="section-spacer" />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 max-w-3xl mx-auto">
+        <div className="city-links">
           {cityConfig.crossLinks.map((link) => (
             <Link
               key={link.slug}
               href={`/best-engineering-college-in-${link.slug}/`}
-              className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-primary hover:shadow-md hover:-translate-y-0.5 transition-all"
+              className="city-link-card"
               aria-label={`Best engineering college in ${link.displayName} — ${link.distanceLabel} from JKKNCET`}
             >
-              <span className="text-2xl" aria-hidden="true">
-                {link.emoji}
+              <span className="city-link-emoji" aria-hidden="true">
+                <MapPin size={20} />
               </span>
-              <div className="flex-1 min-w-0">
-                <div className="font-bold text-sm text-gray-900 truncate">
-                  {link.displayName}
-                </div>
-                <div className="text-xs text-gray-400">{link.distanceLabel}</div>
-              </div>
+              <span className="city-link-name">{link.displayName}</span>
+              <span className="city-link-dist">{link.distanceLabel}</span>
             </Link>
           ))}
-        </div>
-
-        {/* View all programmes CTA */}
-        <div className="text-center mt-6">
-          <Link
-            href="/programmes/"
-            className="inline-flex items-center gap-2 bg-secondary text-gray-900 font-bold px-8 py-3 rounded-full hover:bg-secondary/80 transition-colors"
-          >
-            <span aria-hidden="true">📋</span>
-            View All Programmes
-          </Link>
         </div>
       </div>
     </section>

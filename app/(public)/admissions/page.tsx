@@ -15,7 +15,7 @@ export function generateMetadata(): Metadata {
     return {
       title: 'Admissions 2026-27 | JKKN Institutions — Apply Now',
       description:
-        'Apply for JKKN Institutions admission 2026-27. NAAC A accredited, 7 colleges, 92%+ placements, scholarships available. Komarapalayam, Namakkal, Tamil Nadu.',
+        'Apply for JKKN Institutions admission 2026-27. NAAC A accredited, 7 colleges, 95%+ placements, scholarships available. Komarapalayam, Namakkal, Tamil Nadu.',
       keywords: [
         'JKKN admissions 2026',
         'JKKN Institutions admission',
@@ -34,7 +34,7 @@ export function generateMetadata(): Metadata {
       openGraph: {
         title: 'Admissions 2026-27 | JKKN Institutions — Apply Now',
         description:
-          'Apply for JKKN Institutions admission 2026-27. NAAC A accredited, 7 colleges, 92%+ placements, scholarships available.',
+          'Apply for JKKN Institutions admission 2026-27. NAAC A accredited, 7 colleges, 95%+ placements, scholarships available.',
         url: 'https://jkkn.ac.in/admissions',
         siteName: 'JKKN Institutions',
         type: 'website',
@@ -60,7 +60,7 @@ export function generateMetadata(): Metadata {
       openGraph: {
         title: 'JKKN Engineering Admissions 2026 — Complete Admission Guide',
         description:
-          'NAAC A accredited · 5 UG + 2 PG programmes · 92%+ placement · Eligibility, fee, dates, scholarships.',
+          'NAAC A accredited · 5 UG + 2 PG programmes · 95%+ placement · Eligibility, fee, dates, scholarships.',
         type: 'website',
         images: [
           {

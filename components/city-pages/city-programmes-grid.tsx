@@ -1,72 +1,145 @@
 // components/city-pages/city-programmes-grid.tsx
 // Server Component — props: cityConfig
 
+import {
+  Monitor,
+  Radio,
+  Wrench,
+  Zap,
+  Cpu,
+  Briefcase,
+  GraduationCap,
+} from 'lucide-react'
 import type { CityPageConfig } from '@/lib/config/city-pages'
+import type { LucideIcon } from 'lucide-react'
 
 interface CityProgrammesGridProps {
   cityConfig: CityPageConfig
 }
 
-const COURSES = [
-  { icon: '💻', name: 'B.E. Computer Science and Engineering', intake: 120 },
-  { icon: '📡', name: 'B.E. Electronics and Communication Engineering', intake: 60 },
-  { icon: '🔧', name: 'B.E. Mechanical Engineering', intake: 60 },
-  { icon: '⚡', name: 'B.E. Electrical and Electronics Engineering', intake: 60 },
-  { icon: '🏗️', name: 'B.E. Civil Engineering', intake: 60 },
-] as const
+interface Course {
+  icon: LucideIcon
+  name: string
+  intake: number
+  duration: string
+  level: 'UG' | 'PG'
+  annualFee: string
+  eligibility: string
+}
+
+const COURSES: Course[] = [
+  {
+    icon: Monitor,
+    name: 'B.E. Computer Science & Engineering',
+    intake: 60,
+    duration: '4 Years',
+    level: 'UG',
+    annualFee: '₹85,000 – ₹95,000',
+    eligibility: '10+2 with Maths, Physics; TNEA counselling',
+  },
+  {
+    icon: Radio,
+    name: 'B.E. Electronics & Communication Engineering',
+    intake: 60,
+    duration: '4 Years',
+    level: 'UG',
+    annualFee: '₹95,000',
+    eligibility: '10+2 with Maths, Physics; TNEA counselling',
+  },
+  {
+    icon: Wrench,
+    name: 'B.E. Mechanical Engineering',
+    intake: 120,
+    duration: '4 Years',
+    level: 'UG',
+    annualFee: '₹95,000',
+    eligibility: '10+2 with Maths, Physics; TNEA counselling',
+  },
+  {
+    icon: Zap,
+    name: 'B.E. Electrical & Electronics Engineering',
+    intake: 60,
+    duration: '4 Years',
+    level: 'UG',
+    annualFee: '₹95,000',
+    eligibility: '10+2 with Maths, Physics; TNEA counselling',
+  },
+  {
+    icon: Cpu,
+    name: 'B.Tech Information Technology',
+    intake: 60,
+    duration: '4 Years',
+    level: 'UG',
+    annualFee: '₹95,000',
+    eligibility: '10+2 with Maths, Physics; TNEA counselling',
+  },
+  {
+    icon: GraduationCap,
+    name: 'M.E. Computer Science & Engineering',
+    intake: 60,
+    duration: '2 Years',
+    level: 'PG',
+    annualFee: '₹85,000',
+    eligibility: 'B.E./B.Tech in relevant discipline; TANCET/GATE',
+  },
+  {
+    icon: Briefcase,
+    name: 'M.B.A (Master of Business Administration)',
+    intake: 120,
+    duration: '2 Years',
+    level: 'PG',
+    annualFee: '₹80,000',
+    eligibility: 'Any degree; TANCET/MAT/CAT',
+  },
+]
 
 export default function CityProgrammesGrid({ cityConfig }: CityProgrammesGridProps) {
   const whatsappUrl = `https://wa.me/919345855001?text=${cityConfig.whatsappMessage}`
 
   return (
-    <section className="py-12 px-4">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="font-poppins text-3xl font-bold text-gray-900 text-center mb-2">
-          Engineering Programmes at JKKNCET
-        </h2>
-        <p className="text-center text-gray-500 text-base mb-3 max-w-2xl mx-auto">
-          All programmes are AICTE approved and affiliated to Anna University, Chennai.
-          Admissions via TNEA counselling.
+    <section id="programmes" className="section">
+      <div className="section-inner">
+        <h2 className="section-title">Programmes Offered</h2>
+        <p className="section-subtitle">
+          Choose the right programme for your career goals — all AICTE approved, Anna University affiliated
         </p>
-        <span className="block w-12 h-1 bg-secondary rounded mx-auto mt-3 mb-6" aria-hidden="true" />
+        <span className="section-accent" aria-hidden="true" />
+        <div className="section-spacer" />
 
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="course-grid">
           {COURSES.map((course) => (
-            <div
-              key={course.name}
-              className="bg-white rounded-2xl p-7 shadow-sm border border-gray-200 flex flex-col transition-all hover:-translate-y-1 hover:shadow-md hover:border-primary/70"
-            >
-              <div className="text-3xl mb-3" aria-hidden="true">
-                {course.icon}
+            <div key={course.name} className="course-card">
+              <div className="course-icon" aria-hidden="true">
+                <course.icon size={28} />
               </div>
-              <h3 className="font-poppins text-base font-bold text-gray-900 mb-4">
-                {course.name}
-              </h3>
+              <h3 className="course-name">{course.name}</h3>
 
-              <div className="space-y-2 mb-4">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Duration</span>
-                  <span className="font-semibold text-gray-900">4 Years</span>
+              <div className="course-details">
+                <div className="course-detail">
+                  <span className="detail-label">Duration</span>
+                  <span className="detail-value">{course.duration}</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Level</span>
-                  <span className="font-semibold text-gray-900">UG</span>
+                <div className="course-detail">
+                  <span className="detail-label">Level</span>
+                  <span className="detail-value">{course.level}</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Intake</span>
-                  <span className="font-semibold text-gray-900">{course.intake} seats</span>
+                <div className="course-detail">
+                  <span className="detail-label">Intake</span>
+                  <span className="detail-value">{course.intake} seats</span>
+                </div>
+                <div className="course-detail">
+                  <span className="detail-label">Annual Fee</span>
+                  <span className="detail-value">{course.annualFee}</span>
                 </div>
               </div>
 
-              <p className="text-xs text-gray-400 border-t border-gray-100 pt-3 mt-auto mb-4">
-                Eligibility: 10+2 with Maths, Physics; TNEA counselling
-              </p>
+              <p className="course-eligibility">{course.eligibility}</p>
 
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-center bg-primary/10 text-primary font-semibold text-sm py-2.5 rounded-xl hover:bg-primary hover:text-white transition-all"
+                className="course-enquire"
                 aria-label={`Enquire about ${course.name} via WhatsApp`}
               >
                 Enquire About This Course
@@ -74,6 +147,10 @@ export default function CityProgrammesGrid({ cityConfig }: CityProgrammesGridPro
             </div>
           ))}
         </div>
+
+        <p style={{ textAlign: 'center', fontSize: '0.8rem', color: '#94a3b8', marginTop: '16px' }}>
+          * Hostel accommodation (optional, all-inclusive): ₹60,000 per year. Fees subject to revision per TN Govt &amp; AICTE norms.
+        </p>
       </div>
     </section>
   )

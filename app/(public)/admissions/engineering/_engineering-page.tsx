@@ -78,9 +78,9 @@ function Section({
 
 function SectionHeading({ title }: { title: string }) {
   return (
-    <div className="mb-8">
+    <div className="mb-8 text-center">
       <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-900">{title}</h2>
-      <div className="mt-3 h-1 w-10 rounded-full bg-[#0b6d41]" />
+      <div className="mt-3 h-1 w-10 rounded-full bg-[#0b6d41] mx-auto" />
     </div>
   )
 }
@@ -515,7 +515,7 @@ export default async function EngineeringAdmissionsMain() {
       <Section>
         <SectionHeading title="Frequently Asked Questions" />
         <p className="text-sm text-gray-500 -mt-4 mb-8">
-          Separate answers for students and parents
+       
         </p>
         <EngineeringAdmissionsFAQ faqs={faqs} />
       </Section>

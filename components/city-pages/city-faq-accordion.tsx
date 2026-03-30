@@ -10,10 +10,12 @@ interface CityFAQAccordionProps {
 function ChevronIcon() {
   return (
     <svg
+      className="faq-chevron"
+      width="20"
+      height="20"
       viewBox="0 0 20 20"
       fill="none"
       aria-hidden="true"
-      className="w-5 h-5"
     >
       <path
         d="M5 7.5L10 12.5L15 7.5"
@@ -34,49 +36,35 @@ export function CityFAQAccordion({ cityConfig }: CityFAQAccordionProps) {
   }
 
   return (
-    <section className="py-12 px-4 bg-white">
-      <div className="max-w-3xl mx-auto">
-        <h2 className="font-poppins text-3xl font-bold text-gray-900 text-center mb-2">
-          Frequently Asked Questions
-        </h2>
-        <p className="text-center text-gray-500 text-base max-w-2xl mx-auto">
+    <section className="section bg-white">
+      <div className="section-inner">
+        <h2 className="section-title">Frequently Asked Questions</h2>
+        <p className="section-subtitle">
           Common questions from students in {cityConfig.displayName}
         </p>
-        <span className="block w-12 h-1 bg-secondary rounded mx-auto mt-3 mb-6" aria-hidden="true" />
+        <span className="section-accent" aria-hidden="true" />
+        <div className="section-spacer" />
 
-        <div className="space-y-2.5">
+        <div className="faq-list">
           {cityConfig.faqs.map((faq, index) => {
             const isOpen = openIndex === index
             return (
               <div
                 key={index}
-                className={`bg-white rounded-xl shadow-sm border overflow-hidden transition-colors ${
-                  isOpen ? 'border-primary/70' : 'border-gray-200'
-                }`}
+                className={`faq-item${isOpen ? ' active' : ''}`}
               >
                 <button
                   type="button"
                   onClick={() => toggle(index)}
                   aria-expanded={isOpen}
-                  className="w-full flex justify-between items-center px-5 py-4 bg-transparent border-none cursor-pointer text-sm font-semibold text-gray-900 text-left gap-3 hover:text-primary"
+                  className="faq-question"
                 >
                   <span>{faq.question}</span>
-                  <span
-                    className={`flex-shrink-0 text-gray-400 transition-transform duration-300 ${
-                      isOpen ? 'rotate-180' : ''
-                    }`}
-                  >
-                    <ChevronIcon />
-                  </span>
+                  <ChevronIcon />
                 </button>
 
-                <div
-                  className="overflow-hidden transition-all duration-300"
-                  style={{ maxHeight: isOpen ? '400px' : '0px' }}
-                >
-                  <p className="px-5 pb-4 text-sm text-gray-500 leading-relaxed">
-                    {faq.answer}
-                  </p>
+                <div className="faq-answer">
+                  <p>{faq.answer}</p>
                 </div>
               </div>
             )
