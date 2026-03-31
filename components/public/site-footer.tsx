@@ -157,7 +157,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                         'text-sm transition-all duration-300',
                         isCurrentSite
                           ? 'text-secondary font-semibold hover:text-white'
-                          : 'text-white/70 hover:text-secondary'
+                          : 'text-white hover:text-secondary'
                       )}
                     >
                       {link.label}
