@@ -156,7 +156,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
                       className={cn(
                         'text-sm transition-all duration-300',
                         isCurrentSite
-                          ? 'text-secondary font-semibold hover:text-white'
+                          ? 'text-white font-semibold hover:text-secondary'
                           : 'text-white hover:text-secondary'
                       )}
                     >
