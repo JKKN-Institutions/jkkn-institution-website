@@ -218,6 +218,7 @@ export function ImageGalleryView({
                   src={img.src}
                   alt={img.alt || ''}
                   fill
+                  sizes="25vw"
                   className="object-cover"
                 />
 

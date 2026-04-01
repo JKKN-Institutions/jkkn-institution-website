@@ -11,6 +11,9 @@
 /** Production fallback URL — used when env var is absent or points to localhost */
 const PRODUCTION_FALLBACK = 'https://jkkn.ac.in'
 
+/** Tracks whether the localhost/missing URL warning has already been logged */
+let hasWarnedAboutSiteUrl = false
+
 /**
  * Gets the site URL from environment variables.
  * Localhost URLs are always rejected (in both development and production) because
@@ -23,16 +26,22 @@ export function getSiteUrl(): string {
   const url = process.env.NEXT_PUBLIC_SITE_URL
 
   if (!url) {
-    console.warn('⚠️  NEXT_PUBLIC_SITE_URL not set, using fallback:', PRODUCTION_FALLBACK)
+    if (!hasWarnedAboutSiteUrl) {
+      hasWarnedAboutSiteUrl = true
+      console.warn('⚠️  NEXT_PUBLIC_SITE_URL not set, using fallback:', PRODUCTION_FALLBACK)
+    }
     return PRODUCTION_FALLBACK
   }
 
   if (url.includes('localhost')) {
-    console.warn(
-      '⚠️  NEXT_PUBLIC_SITE_URL points to localhost — JSON-LD schemas will use:',
-      PRODUCTION_FALLBACK,
-      '\n   Fix: set NEXT_PUBLIC_SITE_URL=https://jkkn.ac.in in Vercel → Settings → Environment Variables'
-    )
+    if (!hasWarnedAboutSiteUrl) {
+      hasWarnedAboutSiteUrl = true
+      console.warn(
+        '⚠️  NEXT_PUBLIC_SITE_URL points to localhost — JSON-LD schemas will use:',
+        PRODUCTION_FALLBACK,
+        '\n   Fix: set NEXT_PUBLIC_SITE_URL=https://jkkn.ac.in in Vercel → Settings → Environment Variables'
+      )
+    }
     return PRODUCTION_FALLBACK
   }
 

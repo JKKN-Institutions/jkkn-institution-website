@@ -59,20 +59,14 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
 
   // Get active submenu items or groups
   const { activeSubmenus, activeSubmenuGroups } = useMemo(() => {
-    console.log(`[PublicBottomNav] Computing active submenus for navId: ${effectiveActiveNavId}`);
-
     if (effectiveActiveNavId !== null) {
       const index = parseInt(effectiveActiveNavId);
       const item = primaryItems[index];
-
-      console.log(`[PublicBottomNav] Active item:`, item);
 
       if (item && item.submenus.length > 0) {
         // Check if submenus have parentLabel (indicating grouped structure)
         const flatItems = item.submenus as unknown as FlatMenuItem[]
         const hasParentLabels = flatItems.some((sub) => sub.parentLabel);
-
-        console.log(`[PublicBottomNav] Has parent labels: ${hasParentLabels}`);
 
         if (hasParentLabels) {
           // Group submenus by parentLabel
@@ -99,8 +93,6 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
             items
           }));
 
-          console.log(`[PublicBottomNav] Created ${groups.length} groups:`, groups);
-
           return { activeSubmenus: [], activeSubmenuGroups: groups };
         }
 
@@ -112,13 +104,10 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
           active: sub.active
         }));
 
-        console.log(`[PublicBottomNav] Created ${flatSubmenus.length} flat submenus:`, flatSubmenus);
-
         return { activeSubmenus: flatSubmenus, activeSubmenuGroups: [] };
       }
     }
 
-    console.log(`[PublicBottomNav] No active submenus`);
     return { activeSubmenus: [], activeSubmenuGroups: [] };
   }, [effectiveActiveNavId, primaryItems]);
 
@@ -134,12 +123,8 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
     (index: number) => {
       const item = primaryItems[index];
 
-      console.log(`[PublicBottomNav] Clicked on nav item ${index}: ${item.label}`);
-      console.log(`[PublicBottomNav] Item has ${item.submenus.length} submenus:`, item.submenus);
-
       // If this item has no submenus, navigate directly
       if (item.submenus.length === 0) {
-        console.log(`[PublicBottomNav] No submenus, navigating to ${item.href}`);
         router.push(item.href);
         setExpanded(false);
         return;
@@ -147,10 +132,8 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
 
       // Toggle submenu
       if (isExpanded && activeNavId === index.toString()) {
-        console.log(`[PublicBottomNav] Collapsing submenu`);
         setExpanded(false);
       } else {
-        console.log(`[PublicBottomNav] Expanding submenu`);
         switchToNav(index.toString());
       }
     },

@@ -120,13 +120,16 @@ export default function HeroSection({
   className,
   isEditing,
 }: HeroSectionProps) {
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
   const [scrollY, setScrollY] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const heroRef = useRef<HTMLElement>(null)
 
-  // Mobile detection for responsive line breaks
+  // Single mount effect: set mounted flag + mobile detection
+  // isMounted replaces the old isMounted — gates all client-only rendering
+  // to prevent hydration mismatches from window-dependent state
   useEffect(() => {
+    setIsMounted(true)
     const checkMobile = () => setIsMobile(window.innerWidth < 640)
     checkMobile()
     window.addEventListener('resize', checkMobile)
@@ -134,8 +137,6 @@ export default function HeroSection({
   }, [])
 
   useEffect(() => {
-    setIsLoaded(true)
-
     // Throttle scroll handler with RAF for better INP
     let ticking = false
     const handleScroll = () => {
@@ -261,7 +262,7 @@ export default function HeroSection({
           <div
             className={cn(
               "mb-6 transition-opacity duration-1000 will-change-opacity",
-              isLoaded ? "opacity-100" : "opacity-0"
+              isMounted ? "opacity-100" : "opacity-0"
             )}
           >
             {logoImage ? (
@@ -355,7 +356,7 @@ export default function HeroSection({
             className={cn(
               'mt-6 flex flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-4xl transition-opacity duration-1000 delay-400 will-change-opacity',
               alignment === 'center' && 'mx-auto',
-              isLoaded ? "opacity-100" : "opacity-0"
+              isMounted ? "opacity-100" : "opacity-0"
             )}
           >
             {trustBadges.map((badge, index) => {
@@ -413,7 +414,7 @@ export default function HeroSection({
             className={cn(
               'mt-4 mb-6 flex flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-4xl transition-opacity duration-1000 delay-300 will-change-opacity',
               alignment === 'center' && 'mx-auto',
-              isLoaded ? "opacity-100" : "opacity-0"
+              isMounted ? "opacity-100" : "opacity-0"
             )}
           >
             {trustBadges.map((badge, index) => {
@@ -469,7 +470,7 @@ export default function HeroSection({
             alignment === 'center' && 'justify-center',
             alignment === 'left' && 'justify-start',
             alignment === 'right' && 'justify-end',
-            isLoaded ? "opacity-100" : "opacity-0"
+            isMounted ? "opacity-100" : "opacity-0"
           )}
         >
           {buttons.map((btn, index) => (
@@ -498,7 +499,7 @@ export default function HeroSection({
       <div
         className={cn(
           "absolute bottom-8 left-1/2 -translate-x-1/2 transition-opacity duration-1000 delay-700 will-change-opacity",
-          isLoaded ? "opacity-100" : "opacity-0"
+          isMounted ? "opacity-100" : "opacity-0"
         )}
       >
         <div className="flex flex-col items-center gap-2 text-white/60">

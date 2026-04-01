@@ -15,7 +15,7 @@ const poppins = Poppins({
   display: "swap",
   weight: ["400", "600", "700"],
   adjustFontFallback: true,
-  preload: true,
+  preload: false,
 });
 
 /**
@@ -120,9 +120,7 @@ export default function RootLayout({
         {/* Instagram CDN prefetch (used in social feeds) */}
         <link rel="dns-prefetch" href="https://cdninstagram.com" />
         <link rel="dns-prefetch" href="https://www.instagram.com" />
-        {/* Preconnect to Google Fonts */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Google Fonts preconnect removed — next/font self-hosts fonts in /_next/static/media/ */}
         {/* Organization Schema (JSON-LD) — SINGLE source, multi-tenant aware */}
         <script
           type="application/ld+json"

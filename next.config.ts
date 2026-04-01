@@ -106,11 +106,11 @@ const nextConfig: NextConfig = {
               "img-src 'self' data: blob: https:",
               "media-src 'self' https:",
               "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://analytics.google.com https://www.facebook.com",
-              "frame-src 'self' https://www.youtube.com https://www.google.com https://jobs.cvviz.com",
+              "frame-src 'self' https://www.youtube.com https://www.google.com https://jobs.cvviz.com https://www.facebook.com",
               "frame-ancestors 'self'",
               "object-src 'none'",
               "base-uri 'self'",
-              "form-action 'self'",
+              "form-action 'self' https://www.facebook.com",
             ].join('; '),
           },
         ],
@@ -520,7 +520,7 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    qualities: [40, 50, 55, 75, 85],
+    qualities: [35, 40, 50, 55, 75, 80, 85, 90],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days cache
     // Note: Image quality is controlled per-component via quality prop
     // Custom qualities list allows AVIF-optimized values (35-55) alongside standard (75)

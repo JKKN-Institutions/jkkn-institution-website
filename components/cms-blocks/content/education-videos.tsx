@@ -369,6 +369,7 @@ export function EducationVideos({
                         src={video.thumbnail_url}
                         alt={video.title}
                         fill
+                        sizes="(max-width: 1024px) 100vw, 112px"
                         className="object-cover"
                       />
                     ) : (

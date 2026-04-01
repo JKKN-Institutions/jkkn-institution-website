@@ -7,6 +7,26 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ArrowRight, History, Target, ShieldCheck } from 'lucide-react'
 
+/**
+ * Extracts the original image URL from a Next.js /_next/image proxy URL.
+ * CMS data sometimes stores pre-optimized URLs like:
+ *   https://example.vercel.app/_next/image?url=https%3A%2F%2F...&w=1920&q=90
+ * These cause hydration mismatches because server and client encode the
+ * nested query params differently. This function unwraps to the raw URL.
+ */
+function normalizeImageSrc(src: string): string {
+  if (src.includes('/_next/image')) {
+    try {
+      const url = new URL(src)
+      const originalUrl = url.searchParams.get('url')
+      if (originalUrl) return originalUrl
+    } catch {
+      // Not a valid URL, return as-is
+    }
+  }
+  return src
+}
+
 export type ModernAboutSectionProps = z.infer<typeof ModernAboutSectionPropsSchema> & BaseBlockProps
 
 export default function ModernAboutSection({
@@ -27,9 +47,10 @@ export default function ModernAboutSection({
                         <div className="relative aspect-square md:aspect-[4/5] w-full max-w-lg mx-auto">
                             <div className="absolute inset-0 rounded-[3rem] overflow-hidden shadow-2xl z-10 transition-transform duration-700 hover:scale-[1.02]">
                                 <Image
-                                    src={image || '/images/hero/engineering-1.jpg'}
+                                    src={normalizeImageSrc(image || '/images/hero/engineering-1.jpg')}
                                     alt="JKKN Campus"
                                     fill
+                                    sizes="(max-width: 1024px) 100vw, 50vw"
                                     className="object-cover"
                                 />
                             </div>

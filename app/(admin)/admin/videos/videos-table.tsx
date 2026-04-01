@@ -139,6 +139,7 @@ export function VideosTable({ videos: initialVideos }: VideosTableProps) {
                   src={video.thumbnail_url}
                   alt={video.title}
                   fill
+                  sizes="128px"
                   className="object-cover"
                 />
               ) : (

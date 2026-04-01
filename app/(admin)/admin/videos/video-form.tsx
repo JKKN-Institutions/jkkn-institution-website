@@ -157,6 +157,7 @@ export function VideoForm({ video, mode }: VideoFormProps) {
               src={thumbnailUrl}
               alt="Video thumbnail"
               fill
+              sizes="(max-width: 768px) 100vw, 448px"
               className="object-cover"
             />
           </div>
