@@ -189,24 +189,50 @@ export function FacultyForm({ faculty, basePath = '/admin/faculty' }: FacultyFor
     }
   }
 
-  // Photo upload
-  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Pending photo file (for new faculty — uploaded after save)
+  const [pendingPhoto, setPendingPhoto] = useState<File | null>(null)
+  const [photoPreview, setPhotoPreview] = useState<string | null>(form.photo_url || null)
+
+  // Photo selection / upload
+  const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (!file || !faculty?.id) return
+    if (!file) return
 
-    const fd = new FormData()
-    fd.append('photo', file)
+    // Validate
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Photo must be under 5MB')
+      return
+    }
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
+    if (!allowedTypes.includes(file.type)) {
+      setError('Only JPG, PNG, and WebP photos are allowed')
+      return
+    }
 
-    startTransition(async () => {
-      const result = await uploadFacultyPhoto(faculty.id, fd)
-      if (result.success && result.url) {
-        updateField('photo_url', result.url)
-        setSuccess('Photo uploaded successfully')
-        setTimeout(() => setSuccess(''), 3000)
-      } else {
-        setError(result.error || 'Failed to upload photo')
-      }
-    })
+    // Show instant preview
+    const previewUrl = URL.createObjectURL(file)
+    setPhotoPreview(previewUrl)
+
+    if (isEdit && faculty?.id) {
+      // Edit mode — upload immediately
+      const fd = new FormData()
+      fd.append('photo', file)
+      startTransition(async () => {
+        const result = await uploadFacultyPhoto(faculty.id, fd)
+        if (result.success && result.url) {
+          updateField('photo_url', result.url)
+          setPhotoPreview(result.url)
+          setSuccess('Photo uploaded successfully')
+          setTimeout(() => setSuccess(''), 3000)
+        } else {
+          setError(result.error || 'Failed to upload photo')
+          setPhotoPreview(form.photo_url || null)
+        }
+      })
+    } else {
+      // Create mode — store file, upload after save
+      setPendingPhoto(file)
+    }
   }
 
   // Submit
@@ -219,14 +245,25 @@ export function FacultyForm({ faculty, basePath = '/admin/faculty' }: FacultyFor
         ? await updateFaculty(faculty.id, form)
         : await createFaculty(form)
 
-      if (result.success) {
+      if (result.success && result.data) {
+        // Upload pending photo if exists (new faculty)
+        if (pendingPhoto && result.data.id) {
+          const fd = new FormData()
+          fd.append('photo', pendingPhoto)
+          const photoResult = await uploadFacultyPhoto(result.data.id, fd)
+          if (!photoResult.success) {
+            console.error('Photo upload after create failed:', photoResult.error)
+          }
+          setPendingPhoto(null)
+        }
+
         // If publishing, also toggle status
-        if (status === 'published' && result.data) {
+        if (status === 'published') {
           const { toggleFacultyStatus } = await import('@/app/actions/faculty')
           await toggleFacultyStatus(result.data.id, 'published')
         }
         setSuccess(isEdit ? 'Faculty updated successfully!' : 'Faculty created successfully!')
-        if (!isEdit && result.data) {
+        if (!isEdit) {
           router.push(`${basePath}/${result.data.id}`)
         } else {
           router.refresh()
@@ -299,21 +336,22 @@ export function FacultyForm({ faculty, basePath = '/admin/faculty' }: FacultyFor
               <div className="space-y-2">
                 <Label>Photo</Label>
                 <div className="flex items-center gap-4">
-                  <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-xl font-bold overflow-hidden">
-                    {form.photo_url ? (
-                      <img src={form.photo_url} alt={form.full_name} className="w-full h-full object-cover" />
+                  <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-xl font-bold overflow-hidden shrink-0">
+                    {photoPreview ? (
+                      <img src={photoPreview} alt={form.full_name} className="w-full h-full object-cover" />
                     ) : (
                       form.full_name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'FP'
                     )}
                   </div>
-                  {isEdit ? (
-                    <div>
-                      <Input type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoUpload} className="max-w-xs" />
-                      <p className="text-xs text-muted-foreground mt-1">JPG, PNG or WebP up to 5MB. Square photos work best.</p>
-                    </div>
-                  ) : (
-                    <p className="text-xs text-muted-foreground">Save as draft first, then upload photo.</p>
-                  )}
+                  <div className="flex-1">
+                    <label className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-dashed border-gray-300 hover:border-emerald-400 hover:bg-emerald-50/50 cursor-pointer transition-colors max-w-xs">
+                      <Upload className="w-4 h-4 text-gray-400" />
+                      <span className="text-sm text-gray-500">{photoPreview ? 'Change photo' : 'Choose photo'}</span>
+                      <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoChange} className="hidden" />
+                    </label>
+                    <p className="text-xs text-muted-foreground mt-1.5">JPG, PNG or WebP up to 5MB. Square photos work best.</p>
+                    {pendingPhoto && <p className="text-xs text-emerald-600 mt-0.5">Photo selected — will upload when you save.</p>}
+                  </div>
                 </div>
               </div>
 

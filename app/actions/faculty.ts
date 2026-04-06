@@ -329,53 +329,67 @@ export async function toggleFacultyActive(id: string, isActive: boolean): Promis
  * Upload faculty photo to Supabase Storage
  */
 export async function uploadFacultyPhoto(facultyId: string, formData: FormData): Promise<{ success: boolean; url?: string; error?: string }> {
-  const supabase = await createServerSupabaseClient()
+  try {
+    const supabase = await createServerSupabaseClient()
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { success: false, error: 'Unauthorized' }
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return { success: false, error: 'Unauthorized — please sign in again' }
 
-  const file = formData.get('photo') as File
-  if (!file) return { success: false, error: 'No file provided' }
+    const file = formData.get('photo') as File | null
+    if (!file || !file.size) return { success: false, error: 'No file provided' }
 
-  // Validate file
-  if (file.size > 5 * 1024 * 1024) {
-    return { success: false, error: 'File size must be under 5MB' }
+    // Validate file size
+    if (file.size > 5 * 1024 * 1024) {
+      return { success: false, error: 'File size must be under 5MB' }
+    }
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
+    if (!allowedTypes.includes(file.type)) {
+      return { success: false, error: 'Only JPG, PNG, and WebP images are allowed' }
+    }
+
+    // Convert File to Buffer for reliable server-side upload
+    const arrayBuffer = await file.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+
+    const ext = file.name.split('.').pop() || 'jpg'
+    const filePath = `${facultyId}/photo.${ext}`
+
+    const { error: uploadError } = await supabase.storage
+      .from('faculty-photos')
+      .upload(filePath, buffer, {
+        upsert: true,
+        contentType: file.type,
+      })
+
+    if (uploadError) {
+      console.error('Storage upload error:', uploadError)
+      return { success: false, error: `Upload failed: ${uploadError.message}` }
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('faculty-photos')
+      .getPublicUrl(filePath)
+
+    // Update the faculty record with the photo URL
+    const { error: updateError } = await supabase
+      .from('faculty')
+      .update({ photo_url: publicUrl })
+      .eq('id', facultyId)
+
+    if (updateError) {
+      console.error('Error updating photo URL:', updateError)
+      return { success: false, error: updateError.message }
+    }
+
+    revalidatePath('/admin/faculty')
+    revalidatePath('/faculty-admin/manage')
+    revalidatePath('/faculty')
+
+    return { success: true, url: publicUrl }
+  } catch (err) {
+    console.error('Photo upload exception:', err)
+    return { success: false, error: err instanceof Error ? err.message : 'Unexpected error during upload' }
   }
-
-  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
-  if (!allowedTypes.includes(file.type)) {
-    return { success: false, error: 'Only JPG, PNG, and WebP images are allowed' }
-  }
-
-  const ext = file.name.split('.').pop()
-  const filePath = `${facultyId}/photo.${ext}`
-
-  const { error: uploadError } = await supabase.storage
-    .from('faculty-photos')
-    .upload(filePath, file, { upsert: true })
-
-  if (uploadError) {
-    console.error('Error uploading photo:', uploadError)
-    return { success: false, error: uploadError.message }
-  }
-
-  const { data: { publicUrl } } = supabase.storage
-    .from('faculty-photos')
-    .getPublicUrl(filePath)
-
-  // Update the faculty record with the photo URL
-  const { error: updateError } = await supabase
-    .from('faculty')
-    .update({ photo_url: publicUrl })
-    .eq('id', facultyId)
-
-  if (updateError) {
-    console.error('Error updating photo URL:', updateError)
-    return { success: false, error: updateError.message }
-  }
-
-  revalidatePath('/admin/faculty')
-  revalidatePath('/faculty')
-
-  return { success: true, url: publicUrl }
 }
