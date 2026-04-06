@@ -1,0 +1,214 @@
+'use client'
+
+import { useState, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+import { MoreHorizontal, Pencil, Trash2, Eye, EyeOff, Globe, Search } from 'lucide-react'
+import { deleteFaculty, toggleFacultyStatus, toggleFacultyActive } from '@/app/actions/faculty'
+import type { FacultyRow } from '@/lib/schemas/faculty'
+
+interface FacultyTableProps {
+  faculty: FacultyRow[]
+}
+
+export function FacultyTable({ faculty }: FacultyTableProps) {
+  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+  const [search, setSearch] = useState('')
+  const [deleteId, setDeleteId] = useState<string | null>(null)
+
+  const filtered = faculty.filter(f =>
+    f.full_name.toLowerCase().includes(search.toLowerCase()) ||
+    f.department.toLowerCase().includes(search.toLowerCase()) ||
+    f.designation.toLowerCase().includes(search.toLowerCase())
+  )
+
+  const handleDelete = async () => {
+    if (!deleteId) return
+    startTransition(async () => {
+      await deleteFaculty(deleteId)
+      setDeleteId(null)
+      router.refresh()
+    })
+  }
+
+  const handleToggleStatus = (id: string, currentStatus: string) => {
+    startTransition(async () => {
+      await toggleFacultyStatus(id, currentStatus === 'published' ? 'draft' : 'published')
+      router.refresh()
+    })
+  }
+
+  const handleToggleActive = (id: string, isActive: boolean) => {
+    startTransition(async () => {
+      await toggleFacultyActive(id, !isActive)
+      router.refresh()
+    })
+  }
+
+  return (
+    <>
+      {/* Search */}
+      <div className="flex items-center gap-4 mb-4">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Input
+            placeholder="Search faculty..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="rounded-lg border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[50px]">#</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Designation</TableHead>
+              <TableHead>Department</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Active</TableHead>
+              <TableHead className="w-[70px]">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filtered.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                  {search ? 'No faculty found matching your search' : 'No faculty added yet'}
+                </TableCell>
+              </TableRow>
+            ) : (
+              filtered.map((f, index) => (
+                <TableRow key={f.id} className={isPending ? 'opacity-50' : ''}>
+                  <TableCell className="text-muted-foreground">{index + 1}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-xs font-bold shrink-0">
+                        {f.full_name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="font-medium">{f.full_name}</p>
+                        <p className="text-xs text-muted-foreground">{f.email}</p>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-sm">{f.designation}</TableCell>
+                  <TableCell className="text-sm">{f.department}</TableCell>
+                  <TableCell>
+                    <Badge variant={f.status === 'published' ? 'default' : 'secondary'}>
+                      {f.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={f.is_active ? 'default' : 'outline'} className={f.is_active ? 'bg-green-100 text-green-700 hover:bg-green-100' : ''}>
+                      {f.is_active ? 'Active' : 'Inactive'}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem asChild>
+                          <Link href={`/admin/faculty/${f.id}`}>
+                            <Pencil className="mr-2 h-4 w-4" />
+                            Edit
+                          </Link>
+                        </DropdownMenuItem>
+                        {f.status === 'published' && f.is_active && (
+                          <DropdownMenuItem asChild>
+                            <Link href={`/faculty/${f.slug}`} target="_blank">
+                              <Globe className="mr-2 h-4 w-4" />
+                              View Live
+                            </Link>
+                          </DropdownMenuItem>
+                        )}
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => handleToggleStatus(f.id, f.status)}>
+                          {f.status === 'published' ? (
+                            <><EyeOff className="mr-2 h-4 w-4" /> Unpublish</>
+                          ) : (
+                            <><Eye className="mr-2 h-4 w-4" /> Publish</>
+                          )}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleToggleActive(f.id, f.is_active)}>
+                          {f.is_active ? (
+                            <><EyeOff className="mr-2 h-4 w-4" /> Deactivate</>
+                          ) : (
+                            <><Eye className="mr-2 h-4 w-4" /> Activate</>
+                          )}
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          className="text-destructive"
+                          onClick={() => setDeleteId(f.id)}
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Faculty Member</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete this faculty member. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  )
+}

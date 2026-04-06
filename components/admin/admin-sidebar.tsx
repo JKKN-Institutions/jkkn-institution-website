@@ -140,6 +140,11 @@ const navigationItems: NavItem[] = [
     ],
   },
   {
+    title: 'Faculty',
+    href: '/admin/faculty',
+    icon: UserCheck,
+  },
+  {
     title: 'Settings',
     href: '/admin/settings',
     icon: Settings,
@@ -360,7 +365,8 @@ export function AdminSidebar({
           <div className="space-y-1">
             {filteredNavItems.filter(item =>
               item.href === '/admin/content' ||
-              item.href === '/admin/content/blog'
+              item.href === '/admin/content/blog' ||
+              item.href === '/admin/faculty'
             ).map((item) => (
               <NavLink key={item.href} item={item} />
             ))}

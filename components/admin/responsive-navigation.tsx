@@ -215,6 +215,13 @@ const navigationGroups: NavGroup[] = [
           },
         ],
       },
+      {
+        id: 'faculty',
+        label: 'Faculty',
+        href: '/admin/faculty',
+        icon: UserCheck,
+        color: 'bg-teal-500',
+      },
     ],
   },
   {
