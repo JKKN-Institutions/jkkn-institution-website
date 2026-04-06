@@ -89,8 +89,8 @@ export function FacultyTable({ faculty }: FacultyTableProps) {
         </div>
       </div>
 
-      {/* Table */}
-      <div className="rounded-lg border">
+      {/* Desktop Table — hidden on mobile */}
+      <div className="hidden sm:block rounded-lg border">
         <Table>
           <TableHeader>
             <TableRow>
@@ -147,40 +147,26 @@ export function FacultyTable({ faculty }: FacultyTableProps) {
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem asChild>
                           <Link href={`/admin/faculty/${f.id}`}>
-                            <Pencil className="mr-2 h-4 w-4" />
-                            Edit
+                            <Pencil className="mr-2 h-4 w-4" /> Edit
                           </Link>
                         </DropdownMenuItem>
                         {f.status === 'published' && f.is_active && (
                           <DropdownMenuItem asChild>
                             <Link href={`/faculty/${f.slug}`} target="_blank">
-                              <Globe className="mr-2 h-4 w-4" />
-                              View Live
+                              <Globe className="mr-2 h-4 w-4" /> View Live
                             </Link>
                           </DropdownMenuItem>
                         )}
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={() => handleToggleStatus(f.id, f.status)}>
-                          {f.status === 'published' ? (
-                            <><EyeOff className="mr-2 h-4 w-4" /> Unpublish</>
-                          ) : (
-                            <><Eye className="mr-2 h-4 w-4" /> Publish</>
-                          )}
+                          {f.status === 'published' ? <><EyeOff className="mr-2 h-4 w-4" /> Unpublish</> : <><Eye className="mr-2 h-4 w-4" /> Publish</>}
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleToggleActive(f.id, f.is_active)}>
-                          {f.is_active ? (
-                            <><EyeOff className="mr-2 h-4 w-4" /> Deactivate</>
-                          ) : (
-                            <><Eye className="mr-2 h-4 w-4" /> Activate</>
-                          )}
+                          {f.is_active ? <><EyeOff className="mr-2 h-4 w-4" /> Deactivate</> : <><Eye className="mr-2 h-4 w-4" /> Activate</>}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          className="text-destructive"
-                          onClick={() => setDeleteId(f.id)}
-                        >
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Delete
+                        <DropdownMenuItem className="text-destructive" onClick={() => setDeleteId(f.id)}>
+                          <Trash2 className="mr-2 h-4 w-4" /> Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -190,6 +176,66 @@ export function FacultyTable({ faculty }: FacultyTableProps) {
             )}
           </TableBody>
         </Table>
+      </div>
+
+      {/* Mobile Card List — visible only on mobile */}
+      <div className="sm:hidden space-y-3">
+        {filtered.length === 0 ? (
+          <div className="text-center py-10 text-muted-foreground text-sm">
+            {search ? 'No faculty found' : 'No faculty added yet'}
+          </div>
+        ) : (
+          filtered.map((f) => (
+            <div key={f.id} className={`border rounded-xl p-4 bg-card ${isPending ? 'opacity-50' : ''}`}>
+              <div className="flex items-start justify-between gap-3">
+                <Link href={`/admin/faculty/${f.id}`} className="flex items-center gap-3 flex-1 min-w-0">
+                  <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-sm font-bold shrink-0">
+                    {f.full_name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-semibold text-sm truncate">{f.full_name}</p>
+                    <p className="text-xs text-muted-foreground truncate">{f.designation}</p>
+                  </div>
+                </Link>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0">
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild>
+                      <Link href={`/admin/faculty/${f.id}`}><Pencil className="mr-2 h-4 w-4" /> Edit</Link>
+                    </DropdownMenuItem>
+                    {f.status === 'published' && f.is_active && (
+                      <DropdownMenuItem asChild>
+                        <Link href={`/faculty/${f.slug}`} target="_blank"><Globe className="mr-2 h-4 w-4" /> View Live</Link>
+                      </DropdownMenuItem>
+                    )}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => handleToggleStatus(f.id, f.status)}>
+                      {f.status === 'published' ? <><EyeOff className="mr-2 h-4 w-4" /> Unpublish</> : <><Eye className="mr-2 h-4 w-4" /> Publish</>}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleToggleActive(f.id, f.is_active)}>
+                      {f.is_active ? <><EyeOff className="mr-2 h-4 w-4" /> Deactivate</> : <><Eye className="mr-2 h-4 w-4" /> Activate</>}
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="text-destructive" onClick={() => setDeleteId(f.id)}>
+                      <Trash2 className="mr-2 h-4 w-4" /> Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              <div className="mt-3 flex items-center justify-between">
+                <p className="text-xs text-muted-foreground truncate max-w-[50%]">{f.department}</p>
+                <div className="flex items-center gap-1.5">
+                  <Badge variant={f.status === 'published' ? 'default' : 'secondary'} className="text-[10px] px-1.5 py-0">{f.status}</Badge>
+                  <Badge variant={f.is_active ? 'default' : 'outline'} className={`text-[10px] px-1.5 py-0 ${f.is_active ? 'bg-green-100 text-green-700 hover:bg-green-100' : ''}`}>{f.is_active ? 'Active' : 'Inactive'}</Badge>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
       {/* Delete Confirmation */}

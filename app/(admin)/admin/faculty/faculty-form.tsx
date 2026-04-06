@@ -287,33 +287,35 @@ export function FacultyForm({ faculty, basePath = '/admin/faculty' }: FacultyFor
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="glass-card rounded-2xl p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" asChild>
+      <div className="glass-card rounded-2xl p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="icon" className="shrink-0" asChild>
               <Link href={basePath}><ArrowLeft className="w-5 h-5" /></Link>
             </Button>
             <div>
-              <h1 className="text-2xl font-bold">{isEdit ? 'Edit Faculty' : 'Add Faculty'}</h1>
-              <p className="text-sm text-muted-foreground">
+              <h1 className="text-xl sm:text-2xl font-bold">{isEdit ? 'Edit Faculty' : 'Add Faculty'}</h1>
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 {isEdit ? `Editing ${faculty.full_name}` : 'Create a new faculty profile'}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" onClick={() => handleSubmit('draft')} disabled={isPending}>
-              {isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
-              Save Draft
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Button variant="outline" size="sm" className="flex-1 sm:flex-initial" onClick={() => handleSubmit('draft')} disabled={isPending}>
+              {isPending ? <Loader2 className="w-4 h-4 animate-spin mr-1.5" /> : <Save className="w-4 h-4 mr-1.5" />}
+              <span className="sm:hidden">Draft</span>
+              <span className="hidden sm:inline">Save Draft</span>
             </Button>
-            <Button onClick={() => handleSubmit('published')} disabled={isPending}>
-              {isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
-              Save & Publish
+            <Button size="sm" className="flex-1 sm:flex-initial" onClick={() => handleSubmit('published')} disabled={isPending}>
+              {isPending ? <Loader2 className="w-4 h-4 animate-spin mr-1.5" /> : <Eye className="w-4 h-4 mr-1.5" />}
+              <span className="sm:hidden">Publish</span>
+              <span className="hidden sm:inline">Save & Publish</span>
             </Button>
           </div>
         </div>
 
-        {error && <div className="mt-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">{error}</div>}
-        {success && <div className="mt-4 p-3 rounded-lg bg-green-500/10 text-green-700 text-sm">{success}</div>}
+        {error && <div className="mt-3 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">{error}</div>}
+        {success && <div className="mt-3 p-3 rounded-lg bg-green-500/10 text-green-700 text-sm">{success}</div>}
       </div>
 
       {/* Tabbed Form */}
