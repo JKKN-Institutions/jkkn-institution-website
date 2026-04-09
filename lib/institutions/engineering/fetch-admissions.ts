@@ -62,6 +62,21 @@ export async function fetchEngineeringAdmissionsData(): Promise<EngineeringAdmis
       data.map((row) => [row.setting_key, row.setting_value])
     )
 
+    // Validate that fee structure from DB matches the new shape (gqFee/mqFee/category).
+    // If not, fall back to static data to avoid empty tables from legacy rows.
+    const rawFees = map.admissions_fee_structure as unknown
+    const isValidFeeStructure =
+      Array.isArray(rawFees) &&
+      rawFees.length > 0 &&
+      rawFees.every(
+        (f): f is FeeEntry =>
+          f !== null &&
+          typeof f === 'object' &&
+          'gqFee' in f &&
+          'mqFee' in f &&
+          'category' in f
+      )
+
     return {
       overview:          (map.admissions_overview          as string)                                                ?? OVERVIEW,
       programs:          (map.admissions_programs          as ProgramTableRow[])                                     ?? PROGRAMS_TABLE,
@@ -69,7 +84,7 @@ export async function fetchEngineeringAdmissionsData(): Promise<EngineeringAdmis
       steps:             (map.admissions_steps             as AdmissionStep[])                                       ?? ADMISSION_STEPS,
       guidelines:        (map.admissions_guidelines        as string[])                                              ?? PROCESS_GUIDELINES,
       documents:         (map.admissions_documents         as EngineeringAdmissionsData['documents'])                ?? REQUIRED_DOCUMENTS,
-      feeStructure:      (map.admissions_fee_structure     as FeeEntry[])                                            ?? FEE_STRUCTURE,
+      feeStructure:      isValidFeeStructure ? (rawFees as FeeEntry[]) : FEE_STRUCTURE,
       dates:             (map.admissions_dates             as AdmissionDateItem[])                                   ?? ADMISSION_DATES,
       scholarshipGroups: (map.admissions_scholarship_groups as ScholarshipGroup[])                                   ?? SCHOLARSHIP_GROUPS,
       faqs:              (map.admissions_faqs              as FAQItem[])                                             ?? FAQS,

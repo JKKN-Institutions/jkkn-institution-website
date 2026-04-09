@@ -34,49 +34,49 @@ export const PROGRAMS_TABLE: ProgramTableRow[] = [
     programme: 'B.E Computer Science & Engineering',
     duration: '4 Years',
     intake: 60,
-    annualFee: 95000,
+    annualFee: 80000,
     level: 'UG',
   },
   {
     programme: 'B.E Electrical & Electronics Engineering',
     duration: '4 Years',
     intake: 60,
-    annualFee: 95000,
+    annualFee: 45000,
     level: 'UG',
   },
   {
     programme: 'B.E Electronics & Communication Engineering',
     duration: '4 Years',
     intake: 60,
-    annualFee: 95000,
+    annualFee: 70000,
     level: 'UG',
   },
   {
     programme: 'B.E Mechanical Engineering',
     duration: '4 Years',
     intake: 120,
-    annualFee: 95000,
+    annualFee: 45000,
     level: 'UG',
   },
   {
     programme: 'B.Tech Information Technology',
     duration: '4 Years',
     intake: 60,
-    annualFee: 95000,
+    annualFee: 80000,
     level: 'UG',
   },
   {
     programme: 'M.E Computer Science & Engineering',
     duration: '2 Years',
     intake: 60,
-    annualFee: 85000,
+    annualFee: 30000,
     level: 'PG',
   },
   {
     programme: 'M.B.A — Master of Business Administration',
     duration: '2 Years',
     intake: 120,
-    annualFee: 80000,
+    annualFee: 65000,
     level: 'PG',
   },
 ]
@@ -247,14 +247,27 @@ export const REQUIRED_DOCUMENTS: {
 
 export interface FeeEntry {
   program: string
-  annualTuition: number
-  hostelFee: number
+  gqFee: number
+  mqFee: number
+  category: 'UG' | 'PG' | 'Lateral Entry'
 }
 
 export const FEE_STRUCTURE: FeeEntry[] = [
-  { program: 'B.E / B.Tech (all branches)', annualTuition: 95000, hostelFee: 60000 },
-  { program: 'M.E Computer Science & Engineering', annualTuition: 85000, hostelFee: 60000 },
-  { program: 'M.B.A', annualTuition: 80000, hostelFee: 60000 },
+  // Engineering UG
+  { program: 'CSE', gqFee: 65000, mqFee: 80000, category: 'UG' },
+  { program: 'B.Tech IT', gqFee: 65000, mqFee: 80000, category: 'UG' },
+  { program: 'ECE', gqFee: 60000, mqFee: 70000, category: 'UG' },
+  { program: 'EEE', gqFee: 45000, mqFee: 45000, category: 'UG' },
+  { program: 'MECH', gqFee: 45000, mqFee: 45000, category: 'UG' },
+  // Engineering PG
+  { program: 'MBA', gqFee: 65000, mqFee: 65000, category: 'PG' },
+  { program: 'ME CSE', gqFee: 30000, mqFee: 30000, category: 'PG' },
+  // Engineering Lateral Entry
+  { program: 'CSE', gqFee: 50000, mqFee: 60000, category: 'Lateral Entry' },
+  { program: 'B.Tech IT', gqFee: 50000, mqFee: 60000, category: 'Lateral Entry' },
+  { program: 'ECE', gqFee: 50000, mqFee: 60000, category: 'Lateral Entry' },
+  { program: 'EEE', gqFee: 50000, mqFee: 60000, category: 'Lateral Entry' },
+  { program: 'MECH', gqFee: 50000, mqFee: 60000, category: 'Lateral Entry' },
 ]
 
 // ─── Admission Dates ─────────────────────────────────────────────────────────
@@ -448,8 +461,8 @@ export const CONTACT_INFO: ContactItem[] = [
   {
     type: 'email',
     label: 'Email Us',
-    displayValue: 'admissions@jkkn.ac.in',
-    href: 'mailto:admissions@jkkn.ac.in',
+    displayValue: 'engg@jkkn.ac.in',
+    href: 'mailto:engg@jkkn.ac.in',
     note: 'Reply within 24 hours',
   },
   {
@@ -599,7 +612,7 @@ export const FAQS: FAQItem[] = [
   {
     question: 'What is the total cost of education including hostel?',
     answer:
-      'For B.E / B.Tech programs, annual tuition is ₹95,000. Hostel accommodation (optional, all-inclusive with meals and utilities) is ₹60,000 per year — total ₹1,55,000 per year. Scholarships can significantly reduce tuition costs; approximately 75% of students receive some form of financial aid.',
+      'B.E / B.Tech annual tuition ranges from ₹45,000 (EEE / MECH) to ₹80,000 (CSE / IT Management Quota), depending on branch and quota (Government or Management). Hostel accommodation (optional, all-inclusive with meals and utilities) is ₹60,000 per year. Scholarships can significantly reduce tuition costs; approximately 75% of students receive some form of financial aid.',
     audience: 'parent',
   },
   {

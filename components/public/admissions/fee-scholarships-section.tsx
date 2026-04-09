@@ -43,23 +43,47 @@ export function FeeScholarshipsSection({ fees, scholarships }: FeeScholarshipsSe
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-white/10 text-white/60 text-xs uppercase tracking-wider">
-                <th className="text-left px-5 py-3">Program</th>
-                <th className="text-right px-5 py-3">Annual Tuition</th>
-                <th className="text-right px-5 py-3">Hostel (Optional)</th>
+                <th className="text-left px-5 py-3">Course</th>
+                <th className="text-left px-5 py-3">Programme</th>
+                <th className="text-right px-5 py-3">GQ</th>
+                <th className="text-right px-5 py-3">MQ</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/8">
-              {fees.map((fee) => (
-                <tr key={fee.program} className="hover:bg-white/5 transition-colors">
-                  <td className="px-5 py-4 text-white font-medium">{fee.program}</td>
-                  <td className="px-5 py-4 text-right text-[#ffde59] font-bold">
-                    {formatCurrency(fee.annualTuition)}
-                  </td>
-                  <td className="px-5 py-4 text-right text-gray-300">
-                    {formatCurrency(fee.hostelFee)}
-                  </td>
-                </tr>
-              ))}
+              {(['UG', 'PG', 'Lateral Entry'] as const).flatMap((cat) => {
+                const rows = fees.filter((f) => f.category === cat)
+                if (rows.length === 0) return []
+                const label =
+                  cat === 'UG'
+                    ? 'Engineering UG'
+                    : cat === 'PG'
+                      ? 'Engineering PG'
+                      : 'Engineering Lateral Entry'
+                return rows.map((fee, idx) => (
+                  <tr
+                    key={`${cat}-${fee.program}`}
+                    className="hover:bg-white/5 transition-colors"
+                  >
+                    {idx === 0 && (
+                      <td
+                        rowSpan={rows.length}
+                        className="px-5 py-4 text-white font-bold bg-white/5 align-middle"
+                      >
+                        {label}
+                      </td>
+                    )}
+                    <td className="px-5 py-4 text-white font-medium">
+                      {fee.program}
+                    </td>
+                    <td className="px-5 py-4 text-right text-gray-300">
+                      {formatCurrency(fee.gqFee)}
+                    </td>
+                    <td className="px-5 py-4 text-right text-[#ffde59] font-bold">
+                      {formatCurrency(fee.mqFee)}
+                    </td>
+                  </tr>
+                ))
+              })}
             </tbody>
           </table>
         </div>
