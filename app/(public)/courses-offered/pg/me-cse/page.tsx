@@ -21,7 +21,8 @@ export const metadata: Metadata = {
     'AICTE approved',
     'research program',
     'PhD faculty',
-    'placement'
+    'placement',
+    'me computer science and engineering colleges in tamilnadu',
   ],
   openGraph: {
     title: 'ME Computer Science and Engineering (CSE) | JKKN College of Engineering',

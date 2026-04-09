@@ -30,6 +30,11 @@ export const metadata: Metadata = {
     'IoT engineering',
     'Best engineering college Tamil Nadu',
     'Namakkal engineering college',
+    'b tech information technology colleges in tamilnadu',
+    'bsc information technology colleges in tamilnadu',
+    'be information technology colleges in tamilnadu',
+    'information technology colleges in tamilnadu',
+    'top 10 information technology colleges in tamilnadu',
   ],
   openGraph: {
     title: 'B.Tech Information Technology | JKKN College',

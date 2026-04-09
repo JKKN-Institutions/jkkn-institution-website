@@ -30,6 +30,12 @@ export const metadata: Metadata = {
     'Smart Grid Technology',
     'Best engineering college Tamil Nadu',
     'Namakkal engineering college',
+    'best college for eee in tamilnadu',
+    'best eee colleges in tamilnadu',
+    'eee best colleges in tamilnadu',
+    'top eee engineering colleges in tamilnadu',
+    'top 10 engineering colleges in tamilnadu for eee',
+    'top eee colleges in tamilnadu',
   ],
   openGraph: {
     title: 'B.E. Electrical & Electronics Engineering | JKKN College',
