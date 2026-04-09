@@ -46,7 +46,7 @@ export default function CityNavbar() {
               </a>
             ))}
             <a
-              href="https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8"
+              href="https://www.jkkn.ai/apply/jkkn-admission-2026"
               target="_blank"
               rel="noopener noreferrer"
               className="ml-2 px-4 py-2 text-sm font-semibold text-white bg-primary hover:bg-primary/90 rounded-full transition-colors"
@@ -85,7 +85,7 @@ export default function CityNavbar() {
             </a>
           ))}
           <a
-            href="https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8"
+            href="https://www.jkkn.ai/apply/jkkn-admission-2026"
             target="_blank"
             rel="noopener noreferrer"
             className="block text-center mt-2 px-4 py-2.5 text-sm font-semibold text-white bg-primary hover:bg-primary/90 rounded-full transition-colors"

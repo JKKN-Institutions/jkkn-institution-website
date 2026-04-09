@@ -19,7 +19,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
     { icon: 'Trophy', label: 'Highest Package', value: '₹10L' },
   ],
   heroCTAs: [
-    { label: 'Apply Now for 2026-27', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
+    { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
     { label: 'Explore Curriculum', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: 'Affiliated to Anna University, Chennai',
@@ -575,7 +575,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   ctaTitle: 'Ready to Start Your ECE Journey?',
   ctaDescription: 'Join JKKN College of Engineering & Technology and become a skilled electronics and communication engineer. Apply now for 2026-27 admissions!',
   ctaButtonLabel: 'Apply Now',
-  ctaButtonLink: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8',
+  ctaButtonLink: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
 
   // ==========================================
   // Styling

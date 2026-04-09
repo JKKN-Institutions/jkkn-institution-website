@@ -51,8 +51,8 @@ export const EngineeringCTASectionPropsSchema = z.object({
   // Primary CTA
   primaryCta: z.object({
     label: z.string().default('Apply Now'),
-    link: z.string().default('https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8'),
-  }).default({ label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8' }),
+    link: z.string().default('https://www.jkkn.ai/apply/jkkn-admission-2026'),
+  }).default({ label: 'Apply Now', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026' }),
 
   // Secondary CTA - Phone
   phoneNumber: z.string().default('+91 9345855001'),
@@ -82,7 +82,7 @@ export type EngineeringCTASectionProps = z.infer<typeof EngineeringCTASectionPro
 export default function EngineeringCTASection({
   title = 'Ready to Engineer Your Future?',
   subtitle = 'Join JKKN College of Engineering and take the first step towards a successful career in technology',
-  primaryCta = { label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8' },
+  primaryCta = { label: 'Apply Now', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026' },
   phoneNumber = '+91 9345855001',
   showPhone = true,
   email,

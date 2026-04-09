@@ -31,7 +31,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   heroCTAs: [
     {
       label: 'Apply Now',
-      link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8',
+      link: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
       variant: 'primary',
     },
     {
@@ -646,7 +646,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   ctaTitle: 'Ready to Start Your Engineering Journey?',
   ctaDescription: 'Join JKKN College of Engineering and build a successful career in Mechanical Engineering with industry-relevant skills and world-class education.',
   ctaButtonLabel: 'Apply Now',
-  ctaButtonLink: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8',
+  ctaButtonLink: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
 
   // ===========================================
   // Styling

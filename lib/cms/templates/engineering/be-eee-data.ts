@@ -19,7 +19,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
     { icon: 'Trophy', label: 'Highest Package', value: '₹10L' },
   ],
   heroCTAs: [
-    { label: 'Apply Now for 2026-27', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
+    { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
     { label: 'Explore Curriculum', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: 'Affiliated to Anna University, Chennai',
@@ -545,7 +545,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   ctaTitle: 'Ready to Power Your Future?',
   ctaDescription: 'Join our B.E. Electrical & Electronics Engineering program and become part of the team that designs, develops, and maintains the electrical infrastructure powering our nation. Apply now and transform your career in the exciting field of electrical engineering.',
   ctaButtonLabel: 'Apply Now for 2026-27',
-  ctaButtonLink: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8',
+  ctaButtonLink: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
 
   // ==========================================
   // Styling

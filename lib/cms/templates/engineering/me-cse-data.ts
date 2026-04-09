@@ -42,7 +42,7 @@ export const meCSECourseData: MECSECoursePageProps = {
     ctaButtons: [
       {
         label: 'Apply Now',
-        link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8',
+        link: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
         variant: 'primary'
       },
       {
@@ -603,7 +603,7 @@ export const meCSECourseData: MECSECoursePageProps = {
     buttons: [
       {
         label: 'Apply Online',
-        link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8',
+        link: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
         variant: 'primary'
       },
       {

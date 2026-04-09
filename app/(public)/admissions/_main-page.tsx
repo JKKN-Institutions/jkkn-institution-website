@@ -27,7 +27,7 @@ export default function MainAdmissionsPage() {
           emoji: '🎓',
         }}
         ctaButtons={[
-          { label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary', isExternal: true, icon: 'external' },
+          { label: 'Apply Now', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary', isExternal: true, icon: 'external' },
         ]}
         trustBadges={[
           { icon: 'check', label: 'NAAC A Accredited' },

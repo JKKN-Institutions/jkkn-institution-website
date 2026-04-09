@@ -97,8 +97,8 @@ export const EngineeringAdmissionSectionPropsSchema = z.object({
   // CTA Button
   ctaButton: z.object({
     label: z.string().default('Apply Now'),
-    link: z.string().default('https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8'),
-  }).default({ label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8' }),
+    link: z.string().default('https://www.jkkn.ai/apply/jkkn-admission-2026'),
+  }).default({ label: 'Apply Now', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026' }),
 
   // Secondary CTA
   secondaryCtaButton: z.object({
@@ -175,7 +175,7 @@ export default function EngineeringAdmissionSection({
     { step: 4, title: 'Fee Payment', description: 'Pay admission fees online or at campus', icon: 'graduation' },
     { step: 5, title: 'Enrollment', description: 'Complete registration and start classes', icon: 'badge' },
   ],
-  ctaButton = { label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8' },
+  ctaButton = { label: 'Apply Now', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026' },
   secondaryCtaButton,
   primaryColor = '#1e3a5f',
   accentColor = '#f97316',

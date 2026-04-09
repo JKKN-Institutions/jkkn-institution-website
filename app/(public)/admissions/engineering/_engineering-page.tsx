@@ -51,7 +51,7 @@ function EducationalOrgSchema() {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-const APPLY_URL = 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8'
+const APPLY_URL = 'https://www.jkkn.ai/apply/jkkn-admission-2026'
 
 function formatINR(n: number) {
   return `₹${n.toLocaleString('en-IN')}`
@@ -69,7 +69,7 @@ function Section({
   return (
     <section
       id={id}
-      className={`py-12 md:py-16 ${gray ? 'bg-[#f6f8f6]' : 'bg-white'}`}
+      className={`py-12 md:py-16 ${gray ? 'bg-[#f6faf7]' : 'bg-white'}`}
     >
       <div className="max-w-5xl mx-auto px-4 md:px-8">{children}</div>
     </section>
@@ -193,15 +193,14 @@ export default async function EngineeringAdmissionsMain() {
               <tr className="bg-[#0b6d41] text-white text-xs uppercase tracking-wider">
                 <th className="text-left px-5 py-3">Programme</th>
                 <th className="text-center px-4 py-3">Years</th>
-                <th className="text-center px-4 py-3">Intake</th>
-                <th className="text-right px-5 py-3">Annual Fee (per annum)</th>
+                <th className="text-right px-5 py-3">Intake</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 bg-white">
               {/* UG header */}
               <tr className="bg-gray-50">
                 <td
-                  colSpan={4}
+                  colSpan={3}
                   className="px-5 py-2 text-xs font-semibold text-gray-400 uppercase tracking-widest"
                 >
                   Undergraduate Programmes (UG)
@@ -211,16 +210,13 @@ export default async function EngineeringAdmissionsMain() {
                 <tr key={p.programme} className="hover:bg-[#f6faf7] transition-colors">
                   <td className="px-5 py-3.5 text-gray-800 font-medium">{p.programme}</td>
                   <td className="px-4 py-3.5 text-center text-gray-600">{p.duration}</td>
-                  <td className="px-4 py-3.5 text-center text-gray-600">{p.intake}</td>
-                  <td className="px-5 py-3.5 text-right font-semibold text-[#0b6d41]">
-                    {formatINR(p.annualFee)}
-                  </td>
+                  <td className="px-5 py-3.5 text-right text-gray-600">{p.intake}</td>
                 </tr>
               ))}
               {/* PG header */}
               <tr className="bg-gray-50">
                 <td
-                  colSpan={4}
+                  colSpan={3}
                   className="px-5 py-2 text-xs font-semibold text-gray-400 uppercase tracking-widest"
                 >
                   Postgraduate Programmes (PG)
@@ -230,17 +226,14 @@ export default async function EngineeringAdmissionsMain() {
                 <tr key={p.programme} className="hover:bg-[#f6faf7] transition-colors">
                   <td className="px-5 py-3.5 text-gray-800 font-medium">{p.programme}</td>
                   <td className="px-4 py-3.5 text-center text-gray-600">{p.duration}</td>
-                  <td className="px-4 py-3.5 text-center text-gray-600">{p.intake}</td>
-                  <td className="px-5 py-3.5 text-right font-semibold text-[#0b6d41]">
-                    {formatINR(p.annualFee)}
-                  </td>
+                  <td className="px-5 py-3.5 text-right text-gray-600">{p.intake}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
         <p className="mt-4 text-xs text-gray-400">
-          * Fee shown is annual tuition fee per student. Hostel accommodation (optional, all-inclusive) is ₹60,000 per year. Fees are subject to revision as per Tamil Nadu Government and AICTE norms.
+          * Refer to the Fee Structure section below for branch-wise Government Quota (GQ) and Management Quota (MQ) tuition fees.
         </p>
       </Section>
 
@@ -394,32 +387,53 @@ export default async function EngineeringAdmissionsMain() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-[#0b6d41] text-white text-xs uppercase tracking-wider">
-                <th className="text-left px-5 py-3">Programme</th>
-                <th className="text-right px-4 py-3">Annual Tuition</th>
-                <th className="text-right px-4 py-3">Hostel (Optional)</th>
-                <th className="text-right px-5 py-3">Total / Year</th>
+                <th className="text-left px-5 py-3">Course</th>
+                <th className="text-left px-4 py-3">Programme</th>
+                <th className="text-right px-4 py-3">Government Quota (GQ)</th>
+                <th className="text-right px-5 py-3">Management Quota (MQ)</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 bg-white">
-              {feeStructure.map((fee) => (
-                <tr key={fee.program} className="hover:bg-[#f6faf7] transition-colors">
-                  <td className="px-5 py-4 text-gray-800 font-medium">{fee.program}</td>
-                  <td className="px-4 py-4 text-right text-gray-600">
-                    {formatINR(fee.annualTuition)}
-                  </td>
-                  <td className="px-4 py-4 text-right text-gray-600">
-                    {formatINR(fee.hostelFee)}
-                  </td>
-                  <td className="px-5 py-4 text-right font-semibold text-[#0b6d41]">
-                    {formatINR(fee.annualTuition + fee.hostelFee)}
-                  </td>
-                </tr>
-              ))}
+              {(['UG', 'PG', 'Lateral Entry'] as const).flatMap((cat) => {
+                const rows = feeStructure.filter((f) => f.category === cat)
+                if (rows.length === 0) return []
+                const label =
+                  cat === 'UG'
+                    ? 'Engineering UG'
+                    : cat === 'PG'
+                      ? 'Engineering PG'
+                      : 'Engineering Lateral Entry'
+                return rows.map((fee, idx) => (
+                  <tr
+                    key={`${cat}-${fee.program}`}
+                    className="hover:bg-[#f6faf7] transition-colors"
+                  >
+                    {idx === 0 && (
+                      <td
+                        rowSpan={rows.length}
+                        className="px-5 py-4 text-gray-900 font-bold bg-[#f6faf7] border-r border-gray-100 align-middle"
+                      >
+                        {label}
+                      </td>
+                    )}
+                    <td className="px-4 py-4 text-gray-800 font-medium">
+                      {fee.program}
+                    </td>
+                    <td className="px-4 py-4 text-right text-gray-700">
+                      {formatINR(fee.gqFee)}
+                    </td>
+                    <td className="px-5 py-4 text-right font-semibold text-[#0b6d41]">
+                      {formatINR(fee.mqFee)}
+                    </td>
+                  </tr>
+                ))
+              })}
             </tbody>
           </table>
         </div>
         <div className="mt-5 space-y-2 text-xs text-gray-400">
-          <p>* Hostel fee is all-inclusive — meals (3 per day), utilities, Wi-Fi, and laundry. Separate hostels for boys and girls with 24/7 security.</p>
+          <p>* GQ = Government Quota (TNEA counselling). MQ = Management Quota (direct admission). All fees shown are annual tuition in Indian Rupees (₹).</p>
+          <p>* Hostel accommodation is optional and charged separately — all-inclusive (meals, utilities, Wi-Fi, laundry). Separate hostels for boys and girls with 24/7 security.</p>
           <p>* Tuition fee is subject to revision as per Tamil Nadu Government and AICTE norms. Scholarships can significantly reduce the tuition amount.</p>
           <p>* Fee can be paid via Demand Draft (DD), NEFT / RTGS, or online portal. No cash payment accepted for tuition.</p>
         </div>

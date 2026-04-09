@@ -21,7 +21,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     { icon: '', label: 'Top Recruiters', value: '7' },
   ],
   heroCTAs: [
-    { label: 'Apply Now for 2026-27', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
+    { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
     { label: 'View Curriculum', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: 'AICTE Approved',
@@ -613,7 +613,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   ctaDescription:
     'Transform your career with our comprehensive MBA program. Apply now for 2025-26 admissions and join a community of future business leaders.',
   ctaPrimaryButtonLabel: 'Apply Now',
-  ctaPrimaryButtonLink: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8',
+  ctaPrimaryButtonLink: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
   ctaSecondaryButtonLabel: 'Talk to Counselor',
   ctaSecondaryButtonLink: 'tel:+919345855001',
 

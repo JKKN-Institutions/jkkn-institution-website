@@ -114,8 +114,8 @@ export const EngineeringHeroSectionPropsSchema = z.object({
   // CTAs
   primaryCta: z.object({
     label: z.string().default('Apply Now'),
-    link: z.string().default('https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8'),
-  }).default({ label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8' }),
+    link: z.string().default('https://www.jkkn.ai/apply/jkkn-admission-2026'),
+  }).default({ label: 'Apply Now', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026' }),
 
   secondaryCta: z.object({
     label: z.string().default('Explore Programs'),
@@ -211,7 +211,7 @@ export default function EngineeringHeroSection({
     { value: 50, suffix: '+', label: 'Recruiters', icon: 'building' },
     { value: 12, suffix: '+', label: 'Programs', icon: 'users' },
   ],
-  primaryCta = { label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8' },
+  primaryCta = { label: 'Apply Now', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026' },
   secondaryCta = { label: 'Explore Programs', link: '#programs' },
   heroImage = '/images/engineering/campus-hero.jpg',
   primaryColor = '#0b6d41',

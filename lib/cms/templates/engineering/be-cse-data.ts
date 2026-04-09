@@ -41,7 +41,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     { icon: 'Trophy', label: 'Highest Package', value: '₹12L' },
   ],
   heroCTAs: [
-    { label: 'Apply Now for 2026-27', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
+    { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
     { label: 'Explore Curriculum', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: '',
@@ -593,7 +593,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   ctaTitle: 'Ready to Shape Your Future in Technology?',
   ctaDescription: 'Join thousands of successful alumni who launched their tech careers from JKKN. Applications for 2026-27 batch are now open!',
   ctaButtons: [
-    { label: 'Apply Now', link: 'https://admission.jkkn.ac.in/form/jkkn-institution-admission-yxs3w8', variant: 'primary' },
+    { label: 'Apply Now', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
     { label: 'Talk to Counselor', link: 'tel:+919345855001', variant: 'secondary' },
   ],
   ctaContact: [],
