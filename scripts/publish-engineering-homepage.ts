@@ -47,7 +47,7 @@ const SEO_CONFIG = {
   meta_keywords: ['engineering college', 'JKKN', 'technical education', 'engineering programs', 'placement'],
   og_title: 'JKKN Engineering College | Excellence in Engineering',
   og_description: 'Top-ranked engineering institution with 95% placement record and global industry partnerships.',
-  og_image: 'https://images.unsplash.com/photo-1581092921461-eab62e97a783?q=80&w=1200',
+  og_image: '/images/engineering/senthuraja-hall/senthuraja-hall-01.jpg',
   og_type: 'website',
   twitter_card: 'summary_large_image',
   canonical_url: getSiteUrl(),

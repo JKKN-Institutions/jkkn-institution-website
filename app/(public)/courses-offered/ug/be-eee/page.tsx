@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://source.unsplash.com/1200x630/?electrical,engineering,power',
+        url: '/images/engineering/labs/eee/eee-lab-01.jpg',
         width: 1200,
         height: 630,
         alt: 'JKKN EEE Laboratory',
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     title: 'B.E. Electrical & Electronics Engineering | JKKN',
     description:
       'AICTE approved, NAAC accredited EEE program with 95%+ placement success. Transform your future with cutting-edge electrical engineering education.',
-    images: ['https://source.unsplash.com/1200x630/?electrical,engineering,power'],
+    images: ['/images/engineering/labs/eee/eee-lab-01.jpg'],
   },
 }
 

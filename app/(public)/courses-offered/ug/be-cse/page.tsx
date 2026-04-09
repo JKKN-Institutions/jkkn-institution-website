@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://source.unsplash.com/1200x630/?computer,science,engineering',
+        url: '/images/engineering/labs/cse/cse-lab-01.jpg',
         width: 1200,
         height: 630,
         alt: 'JKKN CSE Laboratory',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     title: 'B.E Computer Science and Engineering | JKKN',
     description:
       'AICTE approved, NAAC accredited CSE program with 95%+ placement success. Transform your future with cutting-edge technology education.',
-    images: ['https://source.unsplash.com/1200x630/?computer,science,engineering'],
+    images: ['/images/engineering/labs/cse/cse-lab-01.jpg'],
   },
 }
 

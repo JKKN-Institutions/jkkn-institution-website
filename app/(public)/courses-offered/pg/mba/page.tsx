@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&h=630&fit=crop',
+        url: '/images/engineering/senthuraja-hall/senthuraja-hall-07.jpg',
         width: 1200,
         height: 630,
         alt: 'JKKN MBA Program',
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     title: 'MBA - Master of Business Administration | JKKN',
     description:
       'AICTE approved MBA program with 95%+ placement success. Transform your career with strategic business education and industry exposure.',
-    images: ['https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&h=630&fit=crop'],
+    images: ['/images/engineering/senthuraja-hall/senthuraja-hall-07.jpg'],
   },
 }
 

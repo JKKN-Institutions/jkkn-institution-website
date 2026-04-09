@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://source.unsplash.com/1200x630/?information-technology,computers,programming',
+        url: '/images/engineering/labs/it/it-lab-01.jpg',
         width: 1200,
         height: 630,
         alt: 'JKKN IT Laboratory',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'B.Tech Information Technology | JKKN',
     description: 'NAAC accredited IT program with specializations in AI/ML, Cloud Computing, Cybersecurity. 95%+ placement rate with packages up to ₹18 LPA.',
-    images: ['https://source.unsplash.com/1200x630/?information-technology,computers,programming'],
+    images: ['/images/engineering/labs/it/it-lab-01.jpg'],
   },
 }
 

@@ -459,7 +459,7 @@ function HeroSection({
                 alt="JKKN CSE students in Future-Ready Innovation Hub with AI/ML workstations and hardware"
                 className="w-full h-[500px] object-cover"
                 onError={(e) => {
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop&q=80'
+                  e.currentTarget.src = '/images/engineering/labs/cse/cse-lab-02.jpg'
                 }}
               />
             </div>

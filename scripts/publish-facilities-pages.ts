@@ -141,15 +141,15 @@ const FACILITIES: Facility[] = [
       meta_description: 'Modern auditorium facility with advanced audiovisual systems, comfortable seating, and professional event management for conferences and seminars.',
       og_title: 'Auditorium Facilities - JKKN Engineering College',
       og_description: 'State-of-the-art auditorium for hosting academic events, cultural programs, and professional conferences.',
-      og_image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&h=630'
+      og_image: '/images/engineering/senthuraja-hall/senthuraja-hall-01.jpg'
     },
     props: {
       facilityTitle: 'AUDITORIUM',
       introduction: '<p class="text-lg text-gray-700 leading-relaxed mb-4">Our modern auditorium serves as the centerpiece for academic, cultural, and professional events at JKKN Engineering College. With a seating capacity of over 500 people, the auditorium is equipped with cutting-edge audiovisual technology and professional lighting systems.</p><p class="text-lg text-gray-700 leading-relaxed">The facility hosts guest lectures, technical seminars, cultural programs, placement drives, and international conferences, providing students with exposure to industry leaders and academic experts.</p>',
       images: [
-        'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800',
-        'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=800',
-        'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800'
+        '/images/engineering/senthuraja-hall/senthuraja-hall-01.jpg',
+        '/images/engineering/senthuraja-hall/senthuraja-hall-02.jpg',
+        '/images/engineering/senthuraja-hall/senthuraja-hall-03.jpg'
       ],
       features: [
         {
@@ -295,15 +295,15 @@ const FACILITIES: Facility[] = [
       meta_description: 'Modern smart classrooms equipped with interactive boards, projectors, and audio systems for enhanced learning experience at JKKN Engineering College.',
       og_title: 'Smart Classrooms - JKKN Engineering College',
       og_description: 'Technology-enabled classrooms designed for interactive and effective learning.',
-      og_image: 'https://images.unsplash.com/photo-1562774053-701939374585?w=1200&h=630'
+      og_image: '/images/engineering/classrooms/classroom-01.jpg'
     },
     props: {
       facilityTitle: 'CLASSROOM FACILITIES',
       introduction: '<p class="text-lg text-gray-700 leading-relaxed mb-4">Our classrooms are designed to create an optimal learning environment with modern teaching aids and comfortable infrastructure. Each classroom is equipped with smart boards, high-quality projection systems, and excellent acoustics to enhance the educational experience.</p><p class="text-lg text-gray-700 leading-relaxed">With adequate natural lighting, proper ventilation, and ergonomic furniture, our classrooms ensure that students can focus on learning in a comfortable and conducive atmosphere.</p>',
       images: [
-        'https://images.unsplash.com/photo-1562774053-701939374585?w=800',
-        'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800',
-        'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800'
+        '/images/engineering/classrooms/classroom-01.jpg',
+        '/images/engineering/classrooms/classroom-02.jpg',
+        '/images/engineering/classrooms/classroom-03.jpg'
       ],
       features: [
         {
@@ -487,15 +487,15 @@ const FACILITIES: Facility[] = [
       meta_description: 'Central library with 50,000+ books, e-journals, digital resources, and quiet study areas. Open access system for students and faculty.',
       og_title: 'Library Facilities - JKKN Engineering College',
       og_description: 'Comprehensive library resources supporting academic excellence and research activities.',
-      og_image: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200&h=630'
+      og_image: '/images/engineering/library/library-01.jpg'
     },
     props: {
       facilityTitle: 'LIBRARY',
       introduction: '<p class="text-lg text-gray-700 leading-relaxed mb-4">The JKKN Engineering College Central Library houses an extensive collection of over 50,000 books, national and international journals, magazines, and digital resources. The library follows an open access system, enabling students and faculty to browse and select books directly from shelves.</p><p class="text-lg text-gray-700 leading-relaxed">With dedicated reading rooms, digital library section, and subscription to major online databases, the library serves as the knowledge hub of the institution, supporting academic learning and research activities.</p>',
       images: [
-        'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800',
-        'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800',
-        'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800'
+        '/images/engineering/library/library-01.jpg',
+        '/images/engineering/library/library-02.jpg',
+        '/images/engineering/library/library-03.jpg'
       ],
       features: [
         {
@@ -547,15 +547,15 @@ const FACILITIES: Facility[] = [
       meta_description: 'Modern seminar halls with advanced AV equipment, comfortable seating, and air-conditioning for technical workshops and academic conferences.',
       og_title: 'Seminar Hall Facilities - JKKN Engineering College',
       og_description: 'Well-equipped seminar halls for hosting workshops, guest lectures, and department events.',
-      og_image: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1200&h=630'
+      og_image: '/images/engineering/senthuraja-hall/senthuraja-hall-04.jpg'
     },
     props: {
       facilityTitle: 'SEMINAR HALLS',
       introduction: '<p class="text-lg text-gray-700 leading-relaxed mb-4">JKKN Engineering College is equipped with multiple seminar halls designed to facilitate technical workshops, guest lectures, symposiums, and academic conferences. Each hall is fitted with modern presentation equipment and comfortable seating arrangements.</p><p class="text-lg text-gray-700 leading-relaxed">These venues regularly host industry experts, alumni, and academic professionals who share their knowledge and experience with students, enriching the learning ecosystem beyond regular classroom instruction.</p>',
       images: [
-        'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800',
-        'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=800',
-        'https://images.unsplash.com/photo-1559223607-a43c990c41ee?w=800'
+        '/images/engineering/senthuraja-hall/senthuraja-hall-04.jpg',
+        '/images/engineering/senthuraja-hall/senthuraja-hall-05.jpg',
+        '/images/engineering/senthuraja-hall/senthuraja-hall-06.jpg'
       ],
       features: [
         {

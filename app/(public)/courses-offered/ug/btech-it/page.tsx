@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://source.unsplash.com/1200x630/?information,technology,computer',
+        url: '/images/engineering/labs/it/it-lab-01.jpg',
         width: 1200,
         height: 630,
         alt: 'JKKN IT Laboratory',
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     title: 'B.Tech Information Technology | JKKN',
     description:
       'AICTE approved, NAAC accredited IT program with 95%+ placement success. Transform your future with cutting-edge technology education.',
-    images: ['https://source.unsplash.com/1200x630/?information,technology,computer'],
+    images: ['/images/engineering/labs/it/it-lab-01.jpg'],
   },
 }
 

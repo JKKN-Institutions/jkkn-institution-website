@@ -435,7 +435,7 @@ function HeroSection({
             {/* IT Lab Image */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=800&fit=crop"
+                src="/images/engineering/labs/it/it-lab-01.jpg"
                 alt="Students working in IT laboratory at JKKN"
                 className="w-full h-[500px] object-cover"
               />

@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://source.unsplash.com/1200x630/?science,laboratory,education',
+        url: '/images/engineering/library/library-01.jpg',
         width: 1200,
         height: 630,
         alt: 'JKKN Science and Humanities Laboratory',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     title: 'Science and Humanities Department | JKKN',
     description:
       'AICTE approved, NAAC accredited program providing strong foundation in fundamental sciences. Expert faculty and excellent laboratory facilities.',
-    images: ['https://source.unsplash.com/1200x630/?science,laboratory,education'],
+    images: ['/images/engineering/library/library-01.jpg'],
   },
 }
 
