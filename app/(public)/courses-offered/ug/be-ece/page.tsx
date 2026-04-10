@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/images/engineering/labs/ece/ece-lab-01.jpg',
+        url: '/images/courses/be-ece/labs/ece-lab-33.jpg',
         width: 1200,
         height: 630,
         alt: 'JKKN ECE Laboratory',
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     title: 'B.E. Electronics & Communication Engineering | JKKN',
     description:
       'AICTE approved, NAAC accredited ECE program with 95%+ placement success. Transform your future with cutting-edge electronics and communication education.',
-    images: ['/images/engineering/labs/ece/ece-lab-01.jpg'],
+    images: ['/images/courses/be-ece/labs/ece-lab-33.jpg'],
   },
 }
 

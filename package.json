@@ -102,6 +102,7 @@
     "framer-motion": "^12.23.26",
     "html2canvas": "^1.4.1",
     "input-otp": "^1.4.2",
+    "iobuffer": "^6.0.1",
     "isomorphic-dompurify": "^2.35.0",
     "jspdf": "^3.0.4",
     "lucide-react": "^0.554.0",

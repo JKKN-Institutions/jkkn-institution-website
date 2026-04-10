@@ -12,6 +12,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   // ==========================================
   heroTitle: 'B.E Electrical & Electronics Engineering',
   heroSubtitle: 'Power your future with expertise in electrical systems, power generation, automation, and control systems. Our AICTE-approved, NAAC-accredited program prepares you to design, develop, and maintain the electrical infrastructure that powers the modern world.',
+  heroImage: '/images/courses/be-eee/labs/eee-lab-12.jpg',
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
     { icon: 'Users', label: 'Seats Available', value: '60' },
@@ -371,47 +372,47 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
     {
       name: 'Electrical Machines Laboratory',
       description: 'Well-equipped lab with DC machines, transformers, induction motors, synchronous machines, and testing equipment for comprehensive hands-on training in electrical machine operations.',
-      image: '/images/courses/be-eee/JKKN EEE - Electrical Machines Laboratory.png',
+      image: '/images/courses/be-eee/labs/eee-lab-11.jpg',
     },
     {
       name: 'Power Systems Laboratory',
-      description: 'Advanced lab with power system simulation software (ETAP, PSCAD), protection relays, circuit breakers, and equipment for studying power generation, transmission, and distribution.',
-      image: '/images/courses/be-eee/JKKN EEE - Power Systems Laboratory.png',
+      description: 'Advanced lab with power system simulation software, protection relays, circuit breakers, and equipment for studying power generation, transmission, and distribution.',
+      image: '/images/courses/be-eee/labs/eee-lab-18.jpg',
     },
     {
       name: 'Power Electronics Laboratory',
       description: 'Modern lab featuring converters, inverters, choppers, cycloconverters, motor drives, and DSP-based control systems for practical training in power electronics applications.',
-      image: '/images/courses/be-eee/JKKN EEE - Electrical Machines Laboratory.png',
+      image: '/images/courses/be-eee/labs/eee-lab-07.jpg',
     },
     {
       name: 'Control Systems Laboratory',
       description: 'Equipped with PLC trainers, SCADA systems, servo motors, process control trainers, and simulation software for studying linear and nonlinear control systems.',
-      image: '/images/courses/be-eee/JKKN EEE - Control Systems Laboratory.png',
+      image: '/images/courses/be-eee/labs/eee-lab-04.jpg',
     },
     {
       name: 'High Voltage Engineering Laboratory',
-      description: 'Specialized lab with high voltage testing equipment, impulse generators, transformer testing setups, and insulation testing facilities for understanding HV phenomena.',
-      image: '/images/courses/be-eee/JKKN EEE - High Voltage Engineering Laboratory.png',
+      description: 'Specialized lab with high voltage testing equipment, impulse generators, transformer testing setups, and insulation testing for understanding HV phenomena.',
+      image: '/images/courses/be-eee/labs/eee-lab-17.jpg',
     },
     {
       name: 'Renewable Energy Laboratory',
       description: 'Dedicated lab with solar panels, wind turbines, battery storage systems, charge controllers, and hybrid renewable energy setups for sustainable energy education.',
-      image: '/images/courses/be-eee/JKKN EEE - Renewable Energy Laboratory.png',
+      image: '/images/courses/be-eee/labs/eee-lab-05.jpg',
     },
     {
       name: 'Measurements & Instrumentation Lab',
       description: 'Comprehensive lab with analog and digital measuring instruments, transducers, signal conditioning equipment, and data acquisition systems for precision measurements.',
-      image: '/images/courses/be-eee/JKKN EEE - Measurements & Instrumentation Lab.png',
+      image: '/images/courses/be-eee/labs/eee-lab-13.jpg',
     },
     {
       name: 'Microprocessor & Microcontroller Lab',
       description: 'Advanced lab with 8085, 8086 microprocessor kits, 8051 microcontroller trainers, ARM processors, and embedded development tools for programming and interfacing practice.',
-      image: '/images/courses/be-eee/JKKN EEE - Microprocessor & Microcontroller Laboratory.png',
+      image: '/images/courses/be-eee/labs/eee-lab-06.jpg',
     },
     {
       name: 'Project Laboratory',
       description: 'Dedicated space for final year projects and research work with access to advanced equipment, design software, fabrication facilities, and mentorship from faculty.',
-      image: '/images/courses/be-eee/JKKN EEE - Project Laboratory.png',
+      image: '/images/courses/be-eee/labs/eee-lab-01.jpg',
     },
   ],
 

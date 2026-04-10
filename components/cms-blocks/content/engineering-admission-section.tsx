@@ -124,8 +124,8 @@ export type EngineeringAdmissionSectionProps = z.infer<typeof EngineeringAdmissi
 // Icon Component
 // ==========================================
 
-function StepIcon({ icon, className }: { icon: string; className?: string }) {
-  const iconProps = { className: cn('w-5 h-5', className) }
+function StepIcon({ icon, className, style }: { icon: string; className?: string; style?: React.CSSProperties }) {
+  const iconProps = { className: cn('w-5 h-5', className), style }
 
   switch (icon) {
     case 'graduation':
@@ -330,12 +330,7 @@ export default function EngineeringAdmissionSection({
                       className="flex-1 p-4 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group-hover:translate-x-1"
                     >
                       <div className="flex items-center gap-3 mb-1">
-                        <StepIcon icon={step.icon} />
-                        <style jsx>{`
-                          div :global(svg) {
-                            color: ${accentColor};
-                          }
-                        `}</style>
+                        <StepIcon icon={step.icon} style={{ color: accentColor }} />
                         <h4 className="font-semibold" style={{ color: primaryColor }}>
                           {step.title}
                         </h4>

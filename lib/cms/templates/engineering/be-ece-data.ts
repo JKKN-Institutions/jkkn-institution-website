@@ -12,6 +12,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   // ==========================================
   heroTitle: 'B.E Electronics & Communication Engineering',
   heroSubtitle: 'Shape the future of communication technology with expertise in embedded systems, VLSI, wireless communication, and IoT. Our AICTE-approved, NAAC-accredited program prepares you to design, develop, and innovate in the rapidly evolving world of electronics and communication.',
+  heroImage: '/images/courses/be-ece/labs/ece-lab-25.jpg',
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
     { icon: 'Users', label: 'Seats Available', value: '60' },
@@ -377,48 +378,48 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   facilities: [
     {
       name: 'Digital Electronics Laboratory',
-      image: '/images/courses/be-ece/JKKN ECE - Digital Electronics Laboratory.png',
+      image: '/images/courses/be-ece/labs/ece-lab-10.jpg',
       description: 'Equipped with logic gate trainers, IC testers, digital design kits, breadboards, and multimeters for hands-on learning of digital circuits and logic design.',
     },
     {
       name: 'Analog Electronics Laboratory',
-      image: '/images/courses/be-ece/JKKN ECE - Analog Electronics Laboratory.png',
-      description: 'State-of-the-art facility with oscilloscopes, function generators, power supplies, and electronic components for amplifier and oscillator circuit experiments.',
+      image: '/images/courses/be-ece/labs/ece-lab-01.jpg',
+      description: 'State-of-the-art facility with analog circuit trainers, oscilloscopes, function generators, power supplies, and electronic components for amplifier and oscillator experiments.',
     },
     {
       name: 'Microprocessor & Microcontroller Lab',
-      image: '/images/courses/be-eee/JKKN EEE - Microprocessor & Microcontroller Laboratory.png',
-      description: 'Features 8085, 8086, ARM processor kits, Arduino boards, and assembly language programming tools for embedded systems development.',
+      image: '/images/courses/be-ece/labs/ece-lab-08.jpg',
+      description: 'Features 8085, 8086, ARM processor kits, counter trainers, Arduino boards, and assembly language programming tools for embedded systems development.',
     },
     {
       name: 'Communication Systems Laboratory',
-      image: '/images/courses/be-ece/JKKN ECE - Communication Systems Laboratory.png',
-      description: 'Advanced lab with AM/FM modulation kits, fiber optic communication systems, antenna testing equipment, and signal generators.',
+      image: '/images/courses/be-ece/labs/ece-lab-05.jpg',
+      description: 'Advanced lab with AM/FM modulation kits, digital communication system trainers, fiber optic communication systems, and signal generators.',
     },
     {
       name: 'VLSI Design Laboratory',
-      image: '/images/courses/be-ece/JKKN ECE - VLSI Design Laboratory.png',
+      image: '/images/courses/be-ece/labs/ece-lab-28.jpg',
       description: 'Equipped with Cadence EDA tools, ModelSim, Xilinx ISE, FPGA boards (Spartan, Virtex), and chip design software for VLSI coursework.',
     },
     {
       name: 'Embedded Systems Laboratory',
-      image: '/images/courses/be-ece/Embed systemlab.png',
-      description: 'Contains Arduino, Raspberry Pi, ESP32 boards, IoT sensor kits, RTOS tools, and embedded development environments.',
+      image: '/images/courses/be-ece/labs/ece-lab-25.jpg',
+      description: 'Contains Arduino, Raspberry Pi, ESP32 boards, robotic kits, IoT sensor kits, RTOS tools, and embedded development environments.',
     },
     {
       name: 'Signal Processing Laboratory',
-      image: '/images/courses/be-ece/signal processing.png',
-      description: 'MATLAB-equipped workstations, DSP processors (TMS320 series), audio/video processing kits, and image processing software.',
+      image: '/images/courses/be-ece/labs/ece-lab-16.jpg',
+      description: 'Equipped with oscilloscopes, DSP processors (TMS320 series), MATLAB workstations, audio/video processing kits, and image processing software.',
     },
     {
-      name: 'Network & Security Laboratory',
-      image: '/images/courses/be-cse/labs/networks-security-lab.png',
-      description: 'Cisco routers, switches, network simulators (Packet Tracer, GNS3), firewalls, and network monitoring tools for practical networking experience.',
+      name: 'Network & Communication Lab',
+      image: '/images/courses/be-ece/labs/ece-lab-22.jpg',
+      description: 'Signal testing equipment, antenna apparatus, oscilloscopes, network simulators, and monitoring tools for practical communication and networking experience.',
     },
     {
       name: 'Project Laboratory',
-      image: '/images/courses/be-eee/JKKN EEE - Project Laboratory.png',
-      description: 'Dedicated workspace for final year projects with access to all equipment, 3D printers, PCB fabrication tools, and prototyping resources.',
+      image: '/images/courses/be-ece/labs/ece-lab-35.jpg',
+      description: 'Dedicated workspace for final year projects with access to all equipment, 3D printers, PCB fabrication tools, robotic kits, and prototyping resources.',
     },
   ],
 

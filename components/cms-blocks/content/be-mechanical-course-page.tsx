@@ -128,6 +128,7 @@ export const BEMechanicalCoursePagePropsSchema = z.object({
   // Hero Section
   heroTitle: z.string(),
   heroSubtitle: z.string().optional(),
+  heroImage: z.string().optional(),
   heroStats: z.array(HeroStatSchema),
   heroCTAs: z.array(HeroCTASchema),
   affiliatedTo: z.string(),
@@ -205,6 +206,7 @@ export function BEMechanicalCoursePage(props: BEMechanicalCoursePageProps) {
   const {
     heroTitle,
     heroSubtitle,
+    heroImage,
     heroStats,
     heroCTAs,
     affiliatedTo,
@@ -248,6 +250,7 @@ export function BEMechanicalCoursePage(props: BEMechanicalCoursePageProps) {
       <HeroSection
         title={heroTitle}
         subtitle={heroSubtitle}
+        heroImage={heroImage}
         stats={heroStats}
         ctas={heroCTAs}
         affiliatedTo={affiliatedTo}
@@ -379,6 +382,7 @@ function HeroSection({
   ctas,
   affiliatedTo,
   primaryColor,
+  heroImage,
 }: {
   title: string
   subtitle?: string
@@ -386,6 +390,7 @@ function HeroSection({
   ctas: Array<{ label: string; link: string; variant: 'primary' | 'secondary' }>
   affiliatedTo: string
   primaryColor: string
+  heroImage?: string
 }) {
   return (
     <section className="relative py-6 md:py-8 lg:py-10 bg-gradient-to-br from-[#FFF9F0] to-[#FFF5E6] overflow-hidden min-h-[calc(100vh-5rem)] flex items-center">
@@ -461,7 +466,7 @@ function HeroSection({
             {/* Mechanical Lab Image */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="/images/courses/be-mech/JKKN BE-MECH.png"
+                src={heroImage || '/images/courses/be-mech/labs/mech-lab-05.jpg'}
                 alt="Students working in Mechanical Engineering laboratory at JKKN"
                 className="w-full h-[500px] object-cover"
               />
@@ -808,35 +813,70 @@ function FacilitiesSection({
   facilities: Array<{ name: string; image?: string; description: string }>
   primaryColor: string
 }) {
-  return (
-    <section className="py-16 md:py-20 bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2
-          className="text-3xl md:text-4xl font-bold text-center mb-12"
-          style={{ color: primaryColor }}
-        >
-          {title}
-        </h2>
+  // Split facilities into rows of 3
+  const rows: Array<typeof facilities> = []
+  for (let i = 0; i < facilities.length; i += 3) {
+    rows.push(facilities.slice(i, i + 3))
+  }
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {facilities.map((facility, index) => (
-            <div
-              key={index}
-              className="bg-gradient-to-br from-[#FFF9F0] to-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
-            >
-              {facility.image && (
-                <div className="h-48 overflow-hidden">
-                  <img
-                    src={facility.image}
-                    alt={facility.name}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
+  return (
+    <section className="py-16 md:py-24 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <span
+            className="inline-block text-xs font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full mb-4"
+            style={{ color: primaryColor, backgroundColor: `${primaryColor}14` }}
+          >
+            World-Class Facilities
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold mt-2" style={{ color: primaryColor }}>
+            {title}
+          </h2>
+          <p className="text-gray-600 mt-4 max-w-3xl mx-auto text-lg leading-relaxed">
+            Experience hands-on learning in our modern laboratories equipped with industry-standard machinery and equipment.
+          </p>
+        </div>
+
+        {/* Facilities Grid — 3 per row */}
+        <div className="space-y-10">
+          {rows.map((row, rowIdx) => (
+            <div key={rowIdx} className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+              {row.map((facility, idx) => (
+                <div
+                  key={idx}
+                  className="group bg-gradient-to-br from-[#FFF9F0] to-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gray-100"
+                >
+                  {/* Image */}
+                  {facility.image && (
+                    <div className="relative h-56 overflow-hidden">
+                      <img
+                        src={facility.image}
+                        alt={facility.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      {/* Gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                      {/* Lab name on image */}
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <h3 className="text-lg font-bold text-white drop-shadow-lg">
+                          {facility.name}
+                        </h3>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Content */}
+                  <div className="p-5">
+                    {!facility.image && (
+                      <h3 className="text-lg font-bold mb-2 text-gray-800">{facility.name}</h3>
+                    )}
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {facility.description}
+                    </p>
+                  </div>
                 </div>
-              )}
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-3 text-gray-800">{facility.name}</h3>
-                <p className="text-gray-600 leading-relaxed">{facility.description}</p>
-              </div>
+              ))}
             </div>
           ))}
         </div>

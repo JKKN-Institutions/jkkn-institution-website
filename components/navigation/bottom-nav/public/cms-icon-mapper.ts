@@ -209,7 +209,7 @@ const CMS_ICON_MAP: Record<string, LucideIcon> = {
   'pg': GraduationCap,
   'be-cse': Cpu,
   'btech-it': Laptop,
-  'b-e-mech': Cog,
+  'be-mechanical': Cog,
   'be-mech': Cog,
   'be-eee': Zap,
   'be-ece': Radio,

@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://placehold.co/1200x630/0b6d41/ffffff?text=JKKN+Mechanical+Engineering',
+        url: '/images/courses/be-mech/labs/mech-lab-01.jpg',
         width: 1200,
         height: 630,
         alt: 'JKKN Mechanical Engineering Laboratory',
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     title: 'B.E. Mechanical Engineering | JKKN',
     description:
       'NAAC accredited, AICTE approved Mechanical Engineering program with 95%+ placement success. Transform your future with cutting-edge engineering education.',
-    images: ['https://placehold.co/1200x630/0b6d41/ffffff?text=JKKN+Mechanical+Engineering'],
+    images: ['/images/courses/be-mech/labs/mech-lab-01.jpg'],
   },
 }
 

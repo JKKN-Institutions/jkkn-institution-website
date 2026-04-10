@@ -11,10 +11,9 @@ export function PublicThemeProvider({ children }: PublicThemeProviderProps) {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="light"
+      forcedTheme="light"
       enableSystem={false}
       disableTransitionOnChange
-      storageKey="public-theme"
       enableColorScheme={false}
     >
       {children}

@@ -445,9 +445,22 @@ export async function getPageBySlug(slug: string): Promise<PageWithBlocks | null
   const { data, error } = await query.single()
 
   if (error) {
-    // PGRST116 = "Results contain 0 rows" - this is expected for non-existent pages
-    if (error.code !== 'PGRST116') {
-      console.error('Error fetching page by slug:', error)
+    // PGRST116 = "Results contain 0 rows" — expected for non-CMS routes
+    // An empty error object ({}) typically means a missing joined table or RLS
+    // denial — also treat as "not found" silently so the catch-all [...slug]
+    // route doesn't spam the console for every non-CMS page.
+    const isNotFound =
+      error.code === 'PGRST116' ||
+      (!error.code && !error.message && !error.details)
+
+    if (!isNotFound) {
+      console.error('Error fetching page by slug:', {
+        slug,
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      })
     }
     return null
   }

@@ -919,48 +919,85 @@ function InfrastructureSection({
   facilities: Array<{ name: string; description: string; image?: string; features: string[] }>
   primaryColor: string
 }) {
+  // Split facilities into rows of 3
+  const rows: Array<typeof facilities> = []
+  for (let i = 0; i < facilities.length; i += 3) {
+    rows.push(facilities.slice(i, i + 3))
+  }
+
   return (
-    <section className="py-16 md:py-20 bg-[#fbfbee]">
+    <section className="py-16 md:py-24 bg-[#fbfbee]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: primaryColor }}>
+        {/* Header */}
+        <div className="text-center mb-16">
+          <span
+            className="inline-block text-xs font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full mb-4"
+            style={{ color: primaryColor, backgroundColor: `${primaryColor}14` }}
+          >
             World-Class Facilities
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold mt-2" style={{ color: primaryColor }}>
+          <h2 className="text-3xl md:text-5xl font-bold mt-2" style={{ color: primaryColor }}>
             {title}
           </h2>
-          <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+          <p className="text-gray-600 mt-4 max-w-3xl mx-auto text-lg leading-relaxed">
             Experience hands-on learning in our modern laboratories equipped with the latest technology and software.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {facilities.map((facility, idx) => (
-            <div key={idx} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
-              {facility.image && (
-                <div className="h-48 overflow-hidden">
-                  <img
-                    src={facility.image}
-                    alt={facility.name}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
+        {/* Facilities Grid — 3 per row */}
+        <div className="space-y-10">
+          {rows.map((row, rowIdx) => (
+            <div key={rowIdx} className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+              {row.map((facility, idx) => (
+                <div
+                  key={idx}
+                  className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gray-100"
+                >
+                  {/* Image */}
+                  {facility.image && (
+                    <div className="relative h-56 overflow-hidden">
+                      <img
+                        src={facility.image}
+                        alt={facility.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      {/* Gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                      {/* Lab name on image */}
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <h3 className="text-lg font-bold text-white drop-shadow-lg">
+                          {facility.name}
+                        </h3>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Content */}
+                  <div className="p-5">
+                    {!facility.image && (
+                      <h3 className="text-lg font-bold mb-2 text-gray-800">{facility.name}</h3>
+                    )}
+                    <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                      {facility.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {facility.features.map((feature, fidx) => (
+                        <span
+                          key={fidx}
+                          className="text-xs font-semibold px-3 py-1 rounded-full border transition-colors duration-300"
+                          style={{
+                            color: primaryColor,
+                            borderColor: `${primaryColor}40`,
+                            backgroundColor: `${primaryColor}08`,
+                          }}
+                        >
+                          {feature}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              )}
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-3 text-gray-800">{facility.name}</h3>
-                <p className="text-gray-600 text-sm mb-4 leading-relaxed">{facility.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {facility.features.map((feature, fidx) => (
-                    <span
-                      key={fidx}
-                      className="text-xs font-medium px-3 py-1 rounded-full text-white"
-                      style={{ backgroundColor: primaryColor }}
-                    >
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
           ))}
         </div>

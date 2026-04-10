@@ -18,6 +18,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   // ===========================================
   heroTitle: 'BE Mechanical Engineering',
   heroSubtitle: 'Engineering excellence in mechanical systems, manufacturing, and innovation with 60+ years of academic legacy',
+  heroImage: '/images/courses/be-mech/labs/mech-lab-05.jpg',
   affiliatedTo: 'Affiliated to Anna University | Approved by AICTE | NAAC Accredite',
 
   heroStats: [
@@ -371,34 +372,34 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
 
   facilities: [
     {
-      name: 'CAD/CAM/CAE Laboratory',
-      image: '/images/courses/be-mech/JKKN Mech - CAD CAM CAE Laboratory.png',
-      description: 'State-of-the-art computer lab equipped with AutoCAD, SolidWorks, CATIA, Mastercam, ANSYS, and other industry-standard software for design, analysis, and manufacturing simulation.',
-    },
-    {
-      name: 'Thermal Engineering Laboratory',
-      image: '/images/courses/be-mech/JKKN Mech - Thermal Engineering Laboratory.png',
-      description: 'Advanced lab with multi-cylinder diesel engines, refrigeration systems, air conditioning trainers, boiler setup, and heat transfer equipment for practical thermal engineering experiments.',
-    },
-    {
-      name: 'Fluid Mechanics Laboratory',
-      image: '/images/courses/be-mech/JKKN Mech - Fluid Mechanics Laboratory.png',
-      description: 'Comprehensive fluid mechanics lab featuring various pumps, turbines, flow measurement devices, pipe networks, and hydraulic machines for hands-on learning of fluid dynamics principles.',
-    },
-    {
       name: 'Strength of Materials Laboratory',
-      image: '/images/courses/be-mech/JKKN Mech - Strength of Materials Laboratory.png',
-      description: 'Well-equipped lab with universal testing machine, impact testing machine, hardness testers, torsion apparatus, and beam testing setups for material properties analysis and testing.',
+      image: '/images/courses/be-mech/labs/mech-lab-01.jpg',
+      description: 'Well-equipped lab with Universal Tensile Testing Machine (UTM), impact testing machine, hardness testers, torsion apparatus, and beam testing setups for material properties analysis.',
     },
     {
       name: 'Manufacturing Technology Laboratory',
-      image: '/images/courses/be-mech/JKKN Mech - Manufacturing Technology Laboratory.png',
-      description: 'Modern manufacturing lab with CNC machines, lathe, milling, welding, casting equipment, and precision measuring instruments for practical training in various manufacturing processes.',
+      image: '/images/courses/be-mech/labs/mech-lab-03.jpg',
+      description: 'Hands-on manufacturing lab with lathe, gear-cutting, milling, welding, casting equipment, and precision measuring instruments for practical training in manufacturing processes.',
     },
     {
-      name: 'Mechatronics and IOT Laboratory',
-      image: '/images/courses/be-mech/JKKN Mech (1).png',
-      description: 'Cutting-edge lab with industrial robots, PLC trainers, pneumatic and hydraulic circuits, sensors, actuators, and automation equipment for Industry 4.0 skill development.',
+      name: 'CAD/CAM/CAE Laboratory',
+      image: '/images/courses/be-mech/labs/mech-lab-04.jpg',
+      description: 'State-of-the-art lab equipped with CNC machines, AutoCAD, SolidWorks, CATIA, Mastercam, and ANSYS for design, analysis, and computer-aided manufacturing simulation.',
+    },
+    {
+      name: 'Fluid Mechanics & Machines Laboratory',
+      image: '/images/courses/be-mech/labs/mech-lab-05.jpg',
+      description: 'Comprehensive lab featuring milling machines, drilling machines, hydraulic presses, and precision equipment for hands-on learning of fluid dynamics and machine operations.',
+    },
+    {
+      name: 'Thermal Engineering Laboratory',
+      image: '/images/courses/be-mech/labs/mech-lab-06.jpg',
+      description: 'Advanced lab with lathe machines, engines, heat transfer equipment, and faculty-guided practical sessions for thermal engineering experiments and analysis.',
+    },
+    {
+      name: 'Mechatronics & IoT Laboratory',
+      image: '/images/courses/be-mech/labs/mech-lab-02.jpg',
+      description: 'Cutting-edge lab with industrial testing equipment, PLC trainers, pneumatic and hydraulic circuits, sensors, actuators, and automation equipment for Industry 4.0 skill development.',
     },
   ],
 

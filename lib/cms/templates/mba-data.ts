@@ -25,7 +25,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     { label: 'View Curriculum', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: 'AICTE Approved',
-  admissionBadge: 'Admissions Open 2025-26',
+  admissionBadge: 'Admissions Open 2026-27',
 
   // ==========================================
   // Program Overview
@@ -455,28 +455,28 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
       description:
         'Technology-enabled classrooms with projectors, audio systems, and video conferencing for interactive learning experiences.',
       image:
-        'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&h=400&fit=crop',
+        '/images/engineering/classrooms/classroom-01.jpg',
     },
     {
       name: 'Computer Labs',
       description:
         'State-of-the-art computer labs with latest software for analytics, simulations, and business applications.',
       image:
-        'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&h=400&fit=crop',
+        '/images/engineering/labs/cse/cse-lab-01.jpg',
     },
     {
       name: 'Digital Library',
       description:
         'Extensive collection of books, journals, e-resources, and databases including Harvard Business Review and EBSCO.',
       image:
-        'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&h=400&fit=crop',
+        '/images/engineering/library/library-02.jpg',
     },
     {
       name: 'Seminar Halls',
       description:
         'Spacious auditoriums and seminar halls for guest lectures, conferences, and student presentations.',
       image:
-        'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop',
+        '/images/engineering/senthuraja-hall/senthuraja-hall-02.jpg',
     },
     {
       name: 'Placement Cell',
@@ -611,7 +611,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   // ==========================================
   ctaTitle: 'Ready to Start Your MBA Journey?',
   ctaDescription:
-    'Transform your career with our comprehensive MBA program. Apply now for 2025-26 admissions and join a community of future business leaders.',
+    'Transform your career with our comprehensive MBA program. Apply now for 2026-27 admissions and join a community of future business leaders.',
   ctaPrimaryButtonLabel: 'Apply Now',
   ctaPrimaryButtonLink: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
   ctaSecondaryButtonLabel: 'Talk to Counselor',

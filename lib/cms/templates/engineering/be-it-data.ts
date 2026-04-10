@@ -337,20 +337,34 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
   facilities: [
     {
       name: 'Programming Lab',
-      description: 'Equipped with 100+ high-performance workstations running the latest IDEs including Visual Studio, Eclipse, PyCharm, and VS Code for comprehensive programming practice.',
-        image: '/images/courses/be-cse/labs/programming-lab.png',
-      },
-    {
-      name: 'Data Science Lab',
-      description: 'Advanced analytics lab with Python, R Studio, Tableau, and Power BI for data visualization, machine learning, and statistical analysis.',
-      image: '/images/courses/btech-it/JKKN B.Tech IT - Advanced Computing Laboratory.png',
+      description: 'Equipped with high-performance desktop workstations and the latest IDEs including Visual Studio, Eclipse, PyCharm, and VS Code for hands-on programming practice.',
+      image: '/images/courses/btech-it/labs/it-lab-01.jpg',
     },
     {
       name: 'Web Technologies Lab',
-      description: 'Modern web development lab equipped with latest frameworks and tools including React, Node.js, Angular, and Vue.js for full-stack development.',
-      image: '/images/courses/btech-it/JKKN B.Tech IT - AI & Machine Learning Research Center.png',
+      description: 'Modern web development lab for full-stack development with React, Node.js, Angular, and Vue.js — faculty-guided sessions for real-world project building.',
+      image: '/images/courses/btech-it/labs/it-lab-02.jpg',
     },
-
+    {
+      name: 'Data Science Lab',
+      description: 'Advanced analytics lab with Python, R Studio, Tableau, and Power BI for data visualization, machine learning, and statistical analysis.',
+      image: '/images/courses/btech-it/labs/it-lab-03.jpg',
+    },
+    {
+      name: 'Project & Innovation Lab',
+      description: 'Spacious multipurpose lab for capstone projects, hackathons, and collaborative innovation with laptops and specialized equipment.',
+      image: '/images/courses/btech-it/labs/it-lab-04.jpg',
+    },
+    {
+      name: 'Advanced Computing Lab',
+      description: 'Modern cubicle-style workstations for focused individual practice in cloud computing, cybersecurity, and system administration.',
+      image: '/images/courses/btech-it/labs/it-lab-05.jpg',
+    },
+    {
+      name: 'Software Development Lab',
+      description: 'Dedicated lab for software engineering projects, agile development workflows, version control, and team-based coding sessions.',
+      image: '/images/courses/btech-it/labs/it-lab-06.jpg',
+    },
   ],
 
   // ==========================================
