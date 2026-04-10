@@ -102,8 +102,13 @@ function getAuthorInitials(author: {
   return name.substring(0, 2).toUpperCase()
 }
 
-// Content Renderer - Renders TipTap JSON content with optimizations for large content
+// Content Renderer - Renders TipTap JSON or HTML content
 function ContentRenderer({ content }: { content: Record<string, unknown> }) {
+  // Handle HTML content format from rich text editor
+  if (content?.type === 'html' && typeof content.html === 'string') {
+    return <div dangerouslySetInnerHTML={{ __html: content.html }} />
+  }
+
   const renderNode = (node: Record<string, unknown>, index: number): React.ReactNode => {
     // Guard against undefined or invalid nodes
     if (!node || typeof node !== 'object') return null

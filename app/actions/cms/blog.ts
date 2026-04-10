@@ -514,18 +514,15 @@ export async function createBlogPost(
     return { success: false, message: 'You do not have permission to create blog posts' }
   }
 
-  // Parse content JSON
-  let content = {}
-  try {
-    const contentStr = formData.get('content')
-    if (contentStr && typeof contentStr === 'string') {
+  // Parse content - supports both JSON and HTML from rich text editor
+  let content: unknown = {}
+  const contentStr = formData.get('content')
+  if (contentStr && typeof contentStr === 'string') {
+    try {
       content = JSON.parse(contentStr)
-    }
-  } catch {
-    return {
-      success: false,
-      message: 'Invalid content format',
-      errors: { content: ['Content must be valid JSON'] },
+    } catch {
+      // Content is HTML from the rich text editor, store as-is
+      content = { type: 'html', html: contentStr }
     }
   }
 
@@ -683,18 +680,15 @@ export async function updateBlogPost(
     return { success: false, message: 'Post not found' }
   }
 
-  // Parse content JSON
-  let content
-  try {
-    const contentStr = formData.get('content')
-    if (contentStr && typeof contentStr === 'string') {
+  // Parse content - supports both JSON and HTML from rich text editor
+  let content: unknown
+  const contentStr = formData.get('content')
+  if (contentStr && typeof contentStr === 'string') {
+    try {
       content = JSON.parse(contentStr)
-    }
-  } catch {
-    return {
-      success: false,
-      message: 'Invalid content format',
-      errors: { content: ['Content must be valid JSON'] },
+    } catch {
+      // Content is HTML from the rich text editor, store as-is
+      content = { type: 'html', html: contentStr }
     }
   }
 
