@@ -87,13 +87,24 @@ export function BlogPostForm({ post, categories, tags: initialTags, author }: Bl
   const action = isEdit ? updateBlogPost : createBlogPost
   const [state, formAction] = useActionState(action, {})
 
+  // Normalize post content (DB-stored) into an HTML/JSON string the TipTap editor can render.
+  // Posts saved after commit 50cdeab live as { type: 'html', html: '<p>…</p>' }; unwrap that.
+  const toEditorContent = (raw: unknown): string => {
+    if (!raw) return '<p></p>'
+    if (typeof raw === 'string') return raw
+    if (typeof raw === 'object') {
+      const obj = raw as Record<string, unknown>
+      if (obj.type === 'html' && typeof obj.html === 'string') return obj.html
+      return JSON.stringify(raw, null, 2)
+    }
+    return '<p></p>'
+  }
+
   // Local state
   const [slug, setSlug] = useState(post?.slug || '')
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(!!post?.slug) // Track if user manually edited slug
   const [title, setTitle] = useState(post?.title || '')
-  const [content, setContent] = useState(
-    post?.content ? JSON.stringify(post.content, null, 2) : '{"type": "doc", "content": []}'
-  )
+  const [content, setContent] = useState(toEditorContent(post?.content))
   const [excerpt, setExcerpt] = useState(post?.excerpt || '')
   const [featuredImage, setFeaturedImage] = useState(post?.featured_image || '')
   const [categoryId, setCategoryId] = useState(post?.category_id || '')
@@ -139,7 +150,7 @@ export function BlogPostForm({ post, categories, tags: initialTags, author }: Bl
       getBlogPostContent(post.id)
         .then((contentData) => {
           if (contentData) {
-            setContent(JSON.stringify(contentData, null, 2))
+            setContent(toEditorContent(contentData))
           }
         })
         .catch((error) => {
@@ -297,27 +308,44 @@ export function BlogPostForm({ post, categories, tags: initialTags, author }: Bl
     setIsMediaModalOpen(true)
   }
 
-  // Calculate reading time from content
+  // Calculate reading time from content.
+  // TipTap's onUpdate emits HTML (editor.getHTML()), so content is almost always HTML now.
+  // We still accept legacy ProseMirror JSON for older drafts.
   const calculateReadingTime = () => {
-    try {
-      const contentObj = JSON.parse(content)
-      const extractText = (node: unknown): string => {
-        if (!node || typeof node !== 'object') return ''
-        const n = node as Record<string, unknown>
-        if (n.text && typeof n.text === 'string') return n.text
-        if (Array.isArray(n.content)) {
-          return n.content.map(extractText).join(' ')
+    let text = ''
+
+    // Branch 1: legacy ProseMirror JSON
+    const trimmed = content.trimStart()
+    if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+      try {
+        const contentObj = JSON.parse(content) as unknown
+        const extractText = (node: unknown): string => {
+          if (!node || typeof node !== 'object') return ''
+          const n = node as Record<string, unknown>
+          if (typeof n.text === 'string') return n.text
+          if (Array.isArray(n.content)) return n.content.map(extractText).join(' ')
+          return ''
         }
-        return ''
+        text = extractText(contentObj)
+      } catch {
+        // Malformed JSON - fall through to HTML branch
       }
-      const text = extractText(contentObj)
-      const wordCount = text.split(/\s+/).filter(Boolean).length
-      const time = Math.max(1, Math.ceil(wordCount / 200))
-      setReadingTime(time)
-      toast.success(`Reading time calculated: ${time} min`)
-    } catch {
-      toast.error('Invalid content format')
     }
+
+    // Branch 2: HTML (current TipTap output)
+    if (!text) {
+      try {
+        const doc = new DOMParser().parseFromString(content, 'text/html')
+        text = doc.body.textContent || ''
+      } catch {
+        text = ''
+      }
+    }
+
+    const wordCount = text.split(/\s+/).filter(Boolean).length
+    const time = Math.max(1, Math.ceil(wordCount / 200))
+    setReadingTime(time)
+    toast.success(`Reading time calculated: ${time} min`)
   }
 
   return (

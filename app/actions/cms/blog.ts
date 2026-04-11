@@ -498,6 +498,7 @@ export async function createBlogPost(
   prevState: FormState,
   formData: FormData
 ): Promise<FormState> {
+  try {
   const supabase = await createServerSupabaseClient()
 
   // Check authentication
@@ -609,17 +610,25 @@ export async function createBlogPost(
 
   if (error) {
     console.error('Error creating blog post:', error)
-    return { success: false, message: 'Failed to create post' }
+    return {
+      success: false,
+      message: `Failed to create post: ${error.message || 'unknown error'}${error.code ? ` [${error.code}]` : ''}${error.hint ? ` — ${error.hint}` : ''}`,
+    }
   }
 
-  // Add tags
+  // Add tags (non-fatal — post is already created)
   if (tagIds.length > 0) {
     const tagInserts = tagIds.map((tag_id) => ({ post_id: post.id, tag_id }))
-    await supabase.from('blog_post_tags').insert(tagInserts)
+    const { error: tagError } = await supabase.from('blog_post_tags').insert(tagInserts)
+    if (tagError) console.error('Error attaching tags to new post:', tagError)
   }
 
-  // Create initial version
-  await createPostVersion(post.id, user.id, 'manual', 'Initial version')
+  // Create initial version (non-fatal — versioning shouldn't block the create)
+  try {
+    await createPostVersion(post.id, user.id, 'manual', 'Initial version')
+  } catch (versionError) {
+    console.error('Error creating initial post version:', versionError)
+  }
 
   // Log activity
   await logActivity({
@@ -639,6 +648,11 @@ export async function createBlogPost(
     message: 'Post created successfully',
     data: post,
   }
+  } catch (err) {
+    console.error('Unhandled error in createBlogPost:', err)
+    const message = err instanceof Error ? err.message : String(err)
+    return { success: false, message: `Failed to create post: ${message}` }
+  }
 }
 
 /**
@@ -648,6 +662,7 @@ export async function updateBlogPost(
   prevState: FormState,
   formData: FormData
 ): Promise<FormState> {
+  try {
   const supabase = await createServerSupabaseClient()
 
   // Check authentication
@@ -783,31 +798,38 @@ export async function updateBlogPost(
 
   if (error) {
     console.error('Error updating blog post:', error)
-    return { success: false, message: 'Failed to update post' }
-  }
-
-  // Update tags if provided
-  if (tagIds !== undefined) {
-    // Remove existing tags
-    await supabase.from('blog_post_tags').delete().eq('post_id', id)
-
-    // Add new tags
-    if (tagIds.length > 0) {
-      const tagInserts = tagIds.map((tag_id) => ({ post_id: id, tag_id }))
-      await supabase.from('blog_post_tags').insert(tagInserts)
+    return {
+      success: false,
+      message: `Failed to update post: ${error.message || 'unknown error'}${error.code ? ` [${error.code}]` : ''}${error.hint ? ` — ${error.hint}` : ''}`,
     }
   }
 
-  // Create version on significant changes
+  // Update tags if provided (non-fatal)
+  if (tagIds !== undefined) {
+    const { error: delErr } = await supabase.from('blog_post_tags').delete().eq('post_id', id)
+    if (delErr) console.error('Error clearing tags on update:', delErr)
+
+    if (tagIds.length > 0) {
+      const tagInserts = tagIds.map((tag_id) => ({ post_id: id, tag_id }))
+      const { error: insErr } = await supabase.from('blog_post_tags').insert(tagInserts)
+      if (insErr) console.error('Error reattaching tags on update:', insErr)
+    }
+  }
+
+  // Create version on significant changes (non-fatal — versioning shouldn't block the update)
   const shouldCreateVersion =
     content !== undefined || updateData.title || newStatus === 'published'
   if (shouldCreateVersion) {
-    await createPostVersion(
-      id,
-      user.id,
-      newStatus === 'published' ? 'publish' : 'manual',
-      newStatus === 'published' ? 'Published version' : undefined
-    )
+    try {
+      await createPostVersion(
+        id,
+        user.id,
+        newStatus === 'published' ? 'publish' : 'manual',
+        newStatus === 'published' ? 'Published version' : undefined
+      )
+    } catch (versionError) {
+      console.error('Error creating post version on update:', versionError)
+    }
   }
 
   // Log activity
@@ -829,6 +851,11 @@ export async function updateBlogPost(
     success: true,
     message: 'Post updated successfully',
     data: post,
+  }
+  } catch (err) {
+    console.error('Unhandled error in updateBlogPost:', err)
+    const message = err instanceof Error ? err.message : String(err)
+    return { success: false, message: `Failed to update post: ${message}` }
   }
 }
 
