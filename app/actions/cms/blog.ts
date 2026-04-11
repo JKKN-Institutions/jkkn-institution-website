@@ -568,10 +568,15 @@ export async function createBlogPost(
   const validation = CreatePostSchema.safeParse(rawData)
 
   if (!validation.success) {
+    const fieldErrors = validation.error.flatten().fieldErrors
+    const summary = Object.entries(fieldErrors)
+      .filter(([, msgs]) => msgs && msgs.length > 0)
+      .map(([field, msgs]) => `${field}: ${(msgs as string[]).join(', ')}`)
+      .join(' | ')
     return {
       success: false,
-      message: 'Validation failed',
-      errors: validation.error.flatten().fieldErrors,
+      message: `Validation failed — ${summary || 'see field errors'}`,
+      errors: fieldErrors,
     }
   }
 
