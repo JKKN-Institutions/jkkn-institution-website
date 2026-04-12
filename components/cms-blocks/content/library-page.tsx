@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils'
 import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
-import { useRef, useState, useEffect } from 'react'
+import Image from 'next/image'
 import {
   BookOpen,
   Clock,
@@ -22,92 +22,50 @@ import {
 } from 'lucide-react'
 
 /**
- * Content paragraph schema
+ * Schemas
  */
-export const ContentParagraphSchema = z.object({
-  text: z.string(),
-})
-
+export const ContentParagraphSchema = z.object({ text: z.string() })
 export type ContentParagraph = z.infer<typeof ContentParagraphSchema>
 
-/**
- * Resource item schema
- */
 export const ResourceItemSchema = z.object({
   label: z.string(),
   value: z.string(),
   icon: z.string().optional(),
 })
-
 export type ResourceItem = z.infer<typeof ResourceItemSchema>
 
-/**
- * Section item schema
- */
-export const SectionItemSchema = z.object({
-  title: z.string(),
-  icon: z.string().optional(),
-})
-
+export const SectionItemSchema = z.object({ title: z.string(), icon: z.string().optional() })
 export type SectionItem = z.infer<typeof SectionItemSchema>
 
-/**
- * Service item schema
- */
-export const ServiceItemSchema = z.object({
-  title: z.string(),
-  icon: z.string().optional(),
-})
-
+export const ServiceItemSchema = z.object({ title: z.string(), icon: z.string().optional() })
 export type ServiceItem = z.infer<typeof ServiceItemSchema>
 
-/**
- * Librarian schema
- */
 export const LibrarianSchema = z.object({
   name: z.string(),
   qualification: z.string(),
   phone: z.string(),
 })
-
 export type Librarian = z.infer<typeof LibrarianSchema>
 
-/**
- * LibraryPage props schema
- */
 export const LibraryPagePropsSchema = z.object({
-  // Header
   showHeader: z.boolean().default(true),
   headerTitle: z.string().default('LIBRARY'),
   headerSubtitle: z.string().default('LIBRARY AND INFORMATION RESOURCES CENTRE'),
-
-  // Introduction paragraphs
+  images: z.array(z.object({ src: z.string(), alt: z.string().optional() })).default([]),
   paragraphs: z.array(ContentParagraphSchema).default([]),
-
-  // Operating hours
   timing: z.string().optional(),
-
-  // Resources statistics
   showResources: z.boolean().default(true),
   resourcesTitle: z.string().default('LIBRARY RESOURCES'),
   resources: z.array(ResourceItemSchema).default([]),
-
-  // Library sections
   showSections: z.boolean().default(true),
   sectionsTitle: z.string().default('LIBRARY SECTIONS'),
   sections: z.array(SectionItemSchema).default([]),
-
-  // Other services
   showServices: z.boolean().default(true),
   servicesTitle: z.string().default('OTHER SERVICES'),
   services: z.array(ServiceItemSchema).default([]),
-
-  // Contact information
   showContact: z.boolean().default(true),
   contactTitle: z.string().default('CONTACT US'),
   librarian: LibrarianSchema.optional(),
-
-  // Styling
   variant: z.enum(['modern-light', 'modern-dark']).default('modern-light'),
   cardStyle: z.enum(['glass', 'solid', 'gradient']).default('glass'),
   showDecorations: z.boolean().default(true),
@@ -115,24 +73,12 @@ export const LibraryPagePropsSchema = z.object({
 
 export type LibraryPageProps = z.infer<typeof LibraryPagePropsSchema> & BaseBlockProps
 
-/**
- * Default content paragraphs (Engineering College)
- */
 const defaultParagraphs: ContentParagraph[] = [
-  {
-    text: 'The library covers a wide range of subjects in Science, Humanities, Engineering, Management, Computer Applications, etc. The library is well equipped with infrastructure. With 175 seating capacity, 30 Mbps high-speed internet and CCTV surveillance are available. The library is automated using Koha software.',
-  },
-  {
-    text: 'All the students and faculty can access online catalog, OPAC. The library uses barcode technology for its circulation and stock verification. The central collection represents a relatively small library. Special collection areas include Women\'s Studies, Total Quality Management, Competitive Exams etc., with special emphasis on local area studies.',
-  },
-  {
-    text: 'JKKN library offers 6500 E-Journals through DELNET, E-GATE, NPTEL, NDL, SWAYAM, the online digital library. All books are covered with RFID tag. The library is open from 8:30 A.M. to 6:00 P.M. on all working days.',
-  },
+  { text: 'The library covers a wide range of subjects in Science, Humanities, Engineering, Management, Computer Applications, etc. The library is well equipped with infrastructure. With 175 seating capacity, 30 Mbps high-speed internet and CCTV surveillance are available. The library is automated using Koha software.' },
+  { text: 'All the students and faculty can access online catalog, OPAC. The library uses barcode technology for its circulation and stock verification.' },
+  { text: 'JKKN library offers 6500 E-Journals through DELNET, E-GATE, NPTEL, NDL, SWAYAM, the online digital library. All books are covered with RFID tag. The library is open from 8:30 A.M. to 6:00 P.M. on all working days.' },
 ]
 
-/**
- * Default resources (Engineering College)
- */
 const defaultResources: ResourceItem[] = [
   { label: 'Volumes', value: '26,505', icon: 'BookOpen' },
   { label: 'Titles', value: '4,949', icon: 'BookMarked' },
@@ -145,78 +91,27 @@ const defaultResources: ResourceItem[] = [
   { label: 'E-Resources & Delnet', value: 'Available', icon: 'Globe' },
 ]
 
-/**
- * Default sections (Engineering College)
- */
 const defaultSections: SectionItem[] = [
   { title: 'Reference Books Section', icon: 'BookMarked' },
   { title: 'Circulation Section', icon: 'Library' },
   { title: 'Journals Section', icon: 'Newspaper' },
 ]
 
-/**
- * Default services (Engineering College)
- */
 const defaultServices: ServiceItem[] = [
   { title: 'Reprographic Service', icon: 'Printer' },
   { title: 'Digital Library', icon: 'Monitor' },
 ]
 
-/**
- * Default librarian
- */
 const defaultLibrarian: Librarian = {
   name: 'M. MUHAMMAD NAZAR',
   qualification: 'B.Sc., M.L.I.S., M.Phil.',
   phone: '9443472294',
 }
 
-/**
- * Intersection Observer hook
- */
-function useInView(threshold = 0.1) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [isInView, setIsInView] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true)
-        }
-      },
-      { threshold }
-    )
-
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
-    return () => observer.disconnect()
-  }, [threshold])
-
-  return { ref, isInView }
-}
-
-/**
- * Get icon component by name
- */
 function getIconComponent(iconName: string) {
   const icons: Record<string, typeof BookOpen> = {
-    BookOpen,
-    BookMarked,
-    Newspaper,
-    Globe,
-    Database,
-    Wifi,
-    Library,
-    Printer,
-    Monitor,
-    Clock,
-    Phone,
-    User,
-    GraduationCap,
-    CheckCircle2,
+    BookOpen, BookMarked, Newspaper, Globe, Database, Wifi,
+    Library, Printer, Monitor, Clock, Phone, User, GraduationCap, CheckCircle2,
   }
   return icons[iconName] || CheckCircle2
 }
@@ -228,6 +123,7 @@ export default function LibraryPage({
   showHeader = true,
   headerTitle = 'LIBRARY',
   headerSubtitle = 'LIBRARY AND INFORMATION RESOURCES CENTRE',
+  images = [],
   paragraphs = defaultParagraphs,
   timing,
   showResources = true,
@@ -242,236 +138,116 @@ export default function LibraryPage({
   showContact = true,
   contactTitle = 'CONTACT US',
   librarian = defaultLibrarian,
-  variant = 'modern-light',
-  cardStyle = 'glass',
-  showDecorations = true,
   className,
 }: LibraryPageProps) {
-  const { ref: headerRef, isInView: headerInView } = useInView(0.1)
-  const { ref: contentRef, isInView: contentInView } = useInView(0.1)
-  const { ref: resourcesRef, isInView: resourcesInView } = useInView(0.1)
-  const { ref: sectionsRef, isInView: sectionsInView } = useInView(0.1)
-  const { ref: servicesRef, isInView: servicesInView } = useInView(0.1)
-  const { ref: contactRef, isInView: contactInView } = useInView(0.1)
-  const isDark = variant === 'modern-dark'
-
   const displayParagraphs = paragraphs?.length > 0 ? paragraphs : defaultParagraphs
   const displayResources = resources?.length > 0 ? resources : defaultResources
   const displaySections = sections?.length > 0 ? sections : defaultSections
   const displayServices = services?.length > 0 ? services : defaultServices
   const displayLibrarian = librarian || defaultLibrarian
-
-  const cardStyles = {
-    glass: cn(
-      'backdrop-blur-md border',
-      isDark
-        ? 'bg-white/10 border-white/20'
-        : 'bg-white/80 border-white/40 shadow-lg'
-    ),
-    solid: cn(
-      isDark
-        ? 'bg-gray-800 border border-gray-700'
-        : 'bg-white border border-gray-200 shadow-lg'
-    ),
-    gradient: cn(
-      'border',
-      isDark
-        ? 'bg-gradient-to-br from-gray-800 to-gray-900 border-gray-700'
-        : 'bg-gradient-to-br from-white to-gray-50 border-gray-200 shadow-lg'
-    ),
-  }
+  const filteredImages = images.filter((img) => img.src)
 
   return (
-    <section
-      className={cn(
-        'relative w-full overflow-hidden',
-        isDark ? 'bg-gray-900' : 'bg-[#fbfbee]',
-        className
-      )}
-    >
-      {/* Background Decorations */}
-      {showDecorations && (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* Gradient overlay */}
-          <div
-            className={cn(
-              'absolute top-0 left-0 w-full h-96',
-              'bg-gradient-to-b',
-              isDark
-                ? 'from-[#0b6d41]/20 to-transparent'
-                : 'from-[#0b6d41]/10 to-transparent'
-            )}
-          />
-
-          {/* Decorative circles */}
-          <div className="absolute top-20 right-10 w-64 h-64 rounded-full bg-[#ffde59]/10 blur-3xl" />
-          <div className="absolute top-96 left-10 w-48 h-48 rounded-full bg-[#0b6d41]/10 blur-3xl" />
-          <div className="absolute bottom-40 right-20 w-56 h-56 rounded-full bg-[#ffde59]/5 blur-3xl" />
-        </div>
-      )}
-
-      {/* Hero Header */}
+    <section className={cn('relative w-screen -ml-[calc((100vw-100%)/2)] bg-gray-50/50', className)}>
+      {/* ─── Hero Banner ─────────────────────────────── */}
       {showHeader && (
         <div
-          ref={headerRef}
-          className={cn(
-            'relative py-16 md:py-24',
-            'bg-gradient-to-br from-[#0b6d41] via-[#0a5c37] to-[#084d2d]'
-          )}
+          className="relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, #0b6d41 0%, #064d2e 60%, #032818 100%)' }}
         >
-          {/* Header decorations */}
-          {showDecorations && (
-            <>
-              <div className="absolute top-10 left-10 w-32 h-32 rounded-full bg-white/5" />
-              <div className="absolute bottom-10 right-20 w-24 h-24 rounded-full bg-[#ffde59]/10" />
-              <div className="absolute top-1/2 right-10 w-16 h-16 rounded-full bg-white/5" />
-            </>
-          )}
-
-          <div className="container mx-auto px-4 relative z-10">
-            <div
-              className={cn(
-                'max-w-4xl mx-auto text-center transition-all duration-700',
-                headerInView
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-8'
-              )}
-            >
-              {/* Icon */}
-              <div className="flex justify-center mb-6">
-                <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center">
-                  <BookOpen className="w-10 h-10 text-white" />
-                </div>
-              </div>
-
-              {/* Title */}
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-                {headerTitle}
-              </h1>
-
-              {/* Subtitle */}
-              {headerSubtitle && (
-                <p className="text-lg md:text-xl text-white/80">
-                  {headerSubtitle}
-                </p>
-              )}
+          <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-xs font-semibold tracking-widest text-white/80 uppercase mb-5">
+              <BookOpen className="w-3.5 h-3.5" />
+              Facilities
             </div>
+
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[#ffde59]">
+              {headerTitle}
+            </h1>
+
+            {headerSubtitle && (
+              <p className="mt-4 text-base md:text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
+                {headerSubtitle}
+              </p>
+            )}
+
+            <div className="flex items-center justify-center gap-3 mt-8">
+              <div className="h-px w-12 md:w-20 bg-[#ffde59]/30" />
+              <div className="w-2 h-2 rotate-45 bg-[#ffde59]" />
+              <div className="h-px w-12 md:w-20 bg-[#ffde59]/30" />
+            </div>
+          </div>
+
+          <div className="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 48" fill="none" className="w-full h-8 md:h-12" preserveAspectRatio="none">
+              <path d="M0 48h1440V24C1200 0 960 0 720 24S240 48 0 24v24z" fill="#f9fafb" fillOpacity="0.5" />
+              <path d="M0 48h1440V32C1200 8 960 8 720 32S240 56 0 32v16z" fill="#f9fafb" />
+            </svg>
           </div>
         </div>
       )}
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-12 md:py-16 relative z-10">
-        <div className="max-w-4xl mx-auto space-y-8">
-          {/* Introduction Card */}
-          <div
-            ref={contentRef}
-            className={cn(
-              'p-6 md:p-8 rounded-2xl transition-all duration-700',
-              cardStyles[cardStyle],
-              contentInView
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-8'
-            )}
-          >
-            <div className="space-y-6">
+      {/* ─── Content Area ────────────────────────────── */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 pb-16 md:pb-24">
+        <div className="max-w-5xl mx-auto space-y-10 md:space-y-14">
+          {/* Images Gallery */}
+          {filteredImages.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredImages.map((image, idx) => (
+                <div key={idx} className="relative aspect-[4/3] rounded-2xl overflow-hidden group">
+                  <Image
+                    src={image.src}
+                    alt={image.alt || `Library image ${idx + 1}`}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Introduction */}
+          <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 shadow-sm">
+            <div className="space-y-5">
               {displayParagraphs.map((paragraph, index) => (
-                <p
-                  key={index}
-                  className={cn(
-                    'text-base md:text-lg leading-relaxed',
-                    isDark ? 'text-gray-300' : 'text-gray-700'
-                  )}
-                >
+                <p key={index} className="text-[15px] md:text-base leading-[1.8] text-gray-600">
                   {paragraph.text}
                 </p>
               ))}
 
-              {/* Operating Hours */}
               {timing && (
-                <div className={cn(
-                  'flex items-center gap-3 pt-4 border-t',
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                )}>
-                  <div className="w-10 h-10 rounded-lg bg-[#0b6d41]/10 flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-[#0b6d41]" />
+                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                  <div className="w-9 h-9 rounded-lg bg-[#0b6d41]/10 flex items-center justify-center">
+                    <Clock className="w-[18px] h-[18px] text-[#0b6d41]" />
                   </div>
                   <div>
-                    <p className={cn(
-                      'text-sm font-medium',
-                      isDark ? 'text-white/60' : 'text-gray-500'
-                    )}>
-                      Operating Hours
-                    </p>
-                    <p className={cn(
-                      'text-base font-semibold',
-                      isDark ? 'text-white' : 'text-[#0b6d41]'
-                    )}>
-                      {timing}
-                    </p>
+                    <p className="text-xs text-gray-500 font-medium">Operating Hours</p>
+                    <p className="text-sm font-semibold text-[#0b6d41]">{timing}</p>
                   </div>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Resources Section */}
+          {/* Resources Grid */}
           {showResources && displayResources.length > 0 && (
-            <div
-              ref={resourcesRef}
-              className={cn(
-                'p-6 md:p-8 rounded-2xl transition-all duration-700',
-                cardStyles[cardStyle],
-                resourcesInView
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-8'
-              )}
-              style={{ transitionDelay: '100ms' }}
-            >
-              {/* Resources Title */}
-              <h2
-                className={cn(
-                  'text-xl md:text-2xl font-bold mb-6',
-                  isDark ? 'text-white' : 'text-[#0b6d41]'
-                )}
-              >
+            <div>
+              <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-5">
                 {resourcesTitle}
               </h2>
-
-              {/* Resources Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {displayResources.map((resource, index) => {
-                  const IconComponent = getIconComponent(resource.icon || 'BookOpen')
+                  const Icon = getIconComponent(resource.icon || 'BookOpen')
                   return (
                     <div
                       key={index}
-                      className={cn(
-                        'flex items-center gap-4 p-3 rounded-xl',
-                        isDark ? 'bg-white/5' : 'bg-[#0b6d41]/5'
-                      )}
+                      className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
                     >
-                      <div
-                        className={cn(
-                          'w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0',
-                          'bg-[#0b6d41]/10'
-                        )}
-                      >
-                        <IconComponent className="w-5 h-5 text-[#0b6d41]" />
+                      <div className="flex items-center gap-2 mb-2">
+                        <Icon className="w-4 h-4 text-[#0b6d41]" />
+                        <p className="text-xs text-gray-500 font-medium">{resource.label}</p>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className={cn(
-                          'text-sm',
-                          isDark ? 'text-white/60' : 'text-gray-500'
-                        )}>
-                          {resource.label}
-                        </p>
-                        <p className={cn(
-                          'text-base font-semibold truncate',
-                          isDark ? 'text-white' : 'text-gray-900'
-                        )}>
-                          {resource.value || '—'}
-                        </p>
-                      </div>
+                      <p className="text-lg font-bold text-gray-900">{resource.value || '—'}</p>
                     </div>
                   )
                 })}
@@ -479,188 +255,69 @@ export default function LibraryPage({
             </div>
           )}
 
-          {/* Two Column Layout for Sections and Services */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Sections Card */}
+          {/* Sections + Services side by side */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {showSections && displaySections.length > 0 && (
-              <div
-                ref={sectionsRef}
-                className={cn(
-                  'p-6 md:p-8 rounded-2xl transition-all duration-700',
-                  cardStyles[cardStyle],
-                  sectionsInView
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-8'
-                )}
-                style={{ transitionDelay: '200ms' }}
-              >
-                {/* Sections Title */}
-                <h2
-                  className={cn(
-                    'text-xl md:text-2xl font-bold mb-6',
-                    isDark ? 'text-white' : 'text-[#0b6d41]'
-                  )}
-                >
-                  {sectionsTitle}
-                </h2>
-
-                {/* Sections List */}
-                <ul className="space-y-3">
+              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">{sectionsTitle}</h2>
+                <div className="space-y-3">
                   {displaySections.map((section, index) => {
-                    const IconComponent = getIconComponent(section.icon || 'CheckCircle2')
+                    const Icon = getIconComponent(section.icon || 'CheckCircle2')
                     return (
-                      <li
-                        key={index}
-                        className={cn(
-                          'flex items-center gap-3',
-                          isDark ? 'text-gray-300' : 'text-gray-700'
-                        )}
-                      >
-                        <div
-                          className={cn(
-                            'w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0',
-                            'bg-[#0b6d41]/10'
-                          )}
-                        >
-                          <IconComponent className="w-4 h-4 text-[#0b6d41]" />
+                      <div key={index} className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-[#0b6d41]/10 flex items-center justify-center">
+                          <Icon className="w-4 h-4 text-[#0b6d41]" />
                         </div>
-                        <span className="text-base">{section.title}</span>
-                      </li>
+                        <span className="text-sm md:text-[15px] text-gray-700">{section.title}</span>
+                      </div>
                     )
                   })}
-                </ul>
+                </div>
               </div>
             )}
 
-            {/* Services Card */}
             {showServices && displayServices.length > 0 && (
-              <div
-                ref={servicesRef}
-                className={cn(
-                  'p-6 md:p-8 rounded-2xl transition-all duration-700',
-                  cardStyles[cardStyle],
-                  servicesInView
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-8'
-                )}
-                style={{ transitionDelay: '300ms' }}
-              >
-                {/* Services Title */}
-                <h2
-                  className={cn(
-                    'text-xl md:text-2xl font-bold mb-6',
-                    isDark ? 'text-white' : 'text-[#0b6d41]'
-                  )}
-                >
-                  {servicesTitle}
-                </h2>
-
-                {/* Services List */}
-                <ul className="space-y-3">
+              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">{servicesTitle}</h2>
+                <div className="space-y-3">
                   {displayServices.map((service, index) => {
-                    const IconComponent = getIconComponent(service.icon || 'CheckCircle2')
+                    const Icon = getIconComponent(service.icon || 'CheckCircle2')
                     return (
-                      <li
-                        key={index}
-                        className={cn(
-                          'flex items-center gap-3',
-                          isDark ? 'text-gray-300' : 'text-gray-700'
-                        )}
-                      >
-                        <div
-                          className={cn(
-                            'w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0',
-                            'bg-[#0b6d41]/10'
-                          )}
-                        >
-                          <IconComponent className="w-4 h-4 text-[#0b6d41]" />
+                      <div key={index} className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-[#0b6d41]/10 flex items-center justify-center">
+                          <Icon className="w-4 h-4 text-[#0b6d41]" />
                         </div>
-                        <span className="text-base">{service.title}</span>
-                      </li>
+                        <span className="text-sm md:text-[15px] text-gray-700">{service.title}</span>
+                      </div>
                     )
                   })}
-                </ul>
+                </div>
               </div>
             )}
           </div>
 
           {/* Contact Card */}
           {showContact && displayLibrarian && (
-            <div
-              ref={contactRef}
-              className={cn(
-                'p-6 md:p-8 rounded-2xl transition-all duration-700',
-                cardStyles[cardStyle],
-                contactInView
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-8'
-              )}
-              style={{ transitionDelay: '400ms' }}
-            >
-              {/* Contact Title */}
-              <h2
-                className={cn(
-                  'text-xl md:text-2xl font-bold mb-6',
-                  isDark ? 'text-white' : 'text-[#0b6d41]'
-                )}
-              >
-                {contactTitle}
-              </h2>
-
-              {/* Librarian Details */}
-              <div className={cn(
-                'p-4 rounded-xl',
-                isDark ? 'bg-white/5' : 'bg-[#0b6d41]/5'
-              )}>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  {/* Avatar */}
-                  <div className="w-16 h-16 rounded-full bg-[#0b6d41]/20 flex items-center justify-center flex-shrink-0">
-                    <User className="w-8 h-8 text-[#0b6d41]" />
+            <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 shadow-sm">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">{contactTitle}</h2>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-xl bg-[#0b6d41]/5">
+                <div className="w-14 h-14 rounded-full bg-[#0b6d41]/15 flex items-center justify-center flex-shrink-0">
+                  <User className="w-7 h-7 text-[#0b6d41]" />
+                </div>
+                <div className="flex-1 space-y-1.5">
+                  <div>
+                    <p className="text-xs text-gray-500">Librarian</p>
+                    <p className="text-base font-bold text-gray-900">{displayLibrarian.name}</p>
                   </div>
-
-                  {/* Details */}
-                  <div className="flex-1 space-y-2">
-                    <div>
-                      <p className={cn(
-                        'text-sm',
-                        isDark ? 'text-white/60' : 'text-gray-500'
-                      )}>
-                        Librarian
-                      </p>
-                      <p className={cn(
-                        'text-lg font-bold',
-                        isDark ? 'text-white' : 'text-gray-900'
-                      )}>
-                        {displayLibrarian.name}
-                      </p>
+                  <div className="flex flex-wrap gap-4">
+                    <div className="flex items-center gap-1.5">
+                      <GraduationCap className="w-3.5 h-3.5 text-[#0b6d41]" />
+                      <span className="text-xs text-gray-600">{displayLibrarian.qualification}</span>
                     </div>
-
-                    <div className="flex flex-wrap gap-4">
-                      {/* Qualification */}
-                      <div className="flex items-center gap-2">
-                        <GraduationCap className="w-4 h-4 text-[#0b6d41]" />
-                        <span className={cn(
-                          'text-sm',
-                          isDark ? 'text-gray-300' : 'text-gray-600'
-                        )}>
-                          {displayLibrarian.qualification}
-                        </span>
-                      </div>
-
-                      {/* Phone */}
-                      <div className="flex items-center gap-2">
-                        <Phone className="w-4 h-4 text-[#0b6d41]" />
-                        <a
-                          href={`tel:${displayLibrarian.phone}`}
-                          className={cn(
-                            'text-sm hover:underline',
-                            isDark ? 'text-white' : 'text-[#0b6d41]'
-                          )}
-                        >
-                          {displayLibrarian.phone}
-                        </a>
-                      </div>
-                    </div>
+                    <a href={`tel:${displayLibrarian.phone}`} className="flex items-center gap-1.5 hover:underline">
+                      <Phone className="w-3.5 h-3.5 text-[#0b6d41]" />
+                      <span className="text-xs font-medium text-[#0b6d41]">{displayLibrarian.phone}</span>
+                    </a>
                   </div>
                 </div>
               </div>
