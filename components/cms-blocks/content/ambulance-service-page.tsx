@@ -1,34 +1,18 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { z } from 'zod'
-import { EmergencyContactCard } from '@/components/cms-blocks/shared/emergency-contact-card'
-
-// Custom hook for intersection observer animations
-function useInView(threshold = 0.1) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [isInView, setIsInView] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true)
-        }
-      },
-      { threshold }
-    )
-
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
-    return () => observer.disconnect()
-  }, [threshold])
-
-  return { ref, isInView }
-}
+import {
+  Phone,
+  Ambulance,
+  Clock,
+  Shield,
+  HeartPulse,
+  Stethoscope,
+  Siren,
+  User,
+} from 'lucide-react'
 
 // Schema for the AmbulanceServicePage component
 export const AmbulanceServicePageSchema = z.object({
@@ -40,67 +24,153 @@ export const AmbulanceServicePageSchema = z.object({
     alternateContact: z.string().optional(),
     email: z.string().optional(),
   }),
-  images: z.array(z.object({
-    src: z.string(),
-    alt: z.string().optional()
-  })).default([]),
+  images: z
+    .array(
+      z.object({
+        src: z.string(),
+        alt: z.string().optional(),
+      })
+    )
+    .default([]),
   introduction: z.string().default(''),
-  features: z.array(z.object({
-    title: z.string(),
-    description: z.string()
-  })).default([]),
+  features: z
+    .array(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+      })
+    )
+    .default([]),
   emergencyNote: z.string().optional(),
   conclusion: z.string().optional(),
-  backgroundColor: z.string().default('#0a0a0a'),
+  backgroundColor: z.string().default('#f8f8f8'),
   accentColor: z.string().default('#10b981'),
-  textColor: z.string().default('#ffffff')
+  textColor: z.string().default('#000000'),
 })
 
 export type AmbulanceServicePageProps = z.infer<typeof AmbulanceServicePageSchema>
 
-// Feature Card Component
+// Map feature titles to icons
+function getFeatureIcon(title: string) {
+  const lower = title.toLowerCase()
+  if (lower.includes('24') || lower.includes('round') || lower.includes('clock')) return Clock
+  if (lower.includes('equip') || lower.includes('medical') || lower.includes('aid'))
+    return Stethoscope
+  if (lower.includes('train') || lower.includes('staff') || lower.includes('team'))
+    return HeartPulse
+  if (lower.includes('safe') || lower.includes('secur')) return Shield
+  if (lower.includes('emergency') || lower.includes('rapid') || lower.includes('fast'))
+    return Siren
+  return Ambulance
+}
+
+// ─── Emergency Contact Banner ────────────────────────────
+function EmergencyContactBanner({
+  contact,
+}: {
+  contact: AmbulanceServicePageProps['contact']
+}) {
+  const [pulse, setPulse] = useState(true)
+
+  useEffect(() => {
+    const interval = setInterval(() => setPulse((p) => !p), 2000)
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <div className="bg-red-600 rounded-2xl p-6 md:p-8 text-white shadow-lg">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+        {/* Left: Emergency label */}
+        <div className="flex items-center gap-4">
+          <div
+            className={`relative w-14 h-14 rounded-full bg-white/20 flex items-center justify-center transition-transform duration-1000 ${pulse ? 'scale-110' : 'scale-100'}`}
+          >
+            <Siren className="w-7 h-7 text-white" />
+            <span className="absolute inset-0 rounded-full border-2 border-white/40 animate-ping" />
+          </div>
+          <div>
+            <p className="text-xs font-semibold tracking-widest uppercase text-red-200">
+              24/7 Emergency
+            </p>
+            <h3 className="text-xl md:text-2xl font-bold">Ambulance Service</h3>
+          </div>
+        </div>
+
+        {/* Center: Contact person */}
+        <div className="flex items-center gap-3 text-center md:text-left">
+          <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center">
+            <User className="w-5 h-5" />
+          </div>
+          <div>
+            <p className="font-semibold text-base">{contact.name}</p>
+            {contact.designation && (
+              <p className="text-red-200 text-sm">{contact.designation}</p>
+            )}
+          </div>
+        </div>
+
+        {/* Right: Call button */}
+        <a
+          href={`tel:${contact.mobile.replace(/\s/g, '')}`}
+          className="inline-flex items-center gap-3 bg-white text-red-600 font-bold text-lg md:text-xl px-6 py-3.5 rounded-xl hover:bg-red-50 transition-colors shadow-md hover:shadow-lg"
+        >
+          <Phone className="w-5 h-5" />
+          {contact.mobile}
+        </a>
+      </div>
+
+      {/* Alternate contact / email */}
+      {(contact.alternateContact || contact.email) && (
+        <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-white/20 text-sm text-red-100">
+          {contact.alternateContact && (
+            <a
+              href={`tel:${contact.alternateContact.replace(/\s/g, '')}`}
+              className="hover:text-white hover:underline"
+            >
+              Alt: {contact.alternateContact}
+            </a>
+          )}
+          {contact.email && (
+            <a href={`mailto:${contact.email}`} className="hover:text-white hover:underline">
+              {contact.email}
+            </a>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── Feature Card ────────────────────────────────────────
 function FeatureCard({
   title,
   description,
-  index,
   accentColor,
 }: {
   title: string
   description: string
-  index: number
   accentColor: string
 }) {
-  const { ref, isInView } = useInView(0.1)
+  const Icon = getFeatureIcon(title)
 
   return (
-    <div
-      ref={ref}
-      className={`
-        bg-white backdrop-blur-sm rounded-2xl p-6 md:p-8
-        border border-gray-200
-        transition-all duration-700 ease-out
-        hover:shadow-xl hover:scale-[1.02]
-        ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-      `}
-      style={{ transitionDelay: `${index * 100}ms` }}
-    >
-      {/* Feature Title */}
-      <h3
-        className="text-xl md:text-2xl font-bold mb-4"
-        style={{ color: accentColor }}
-      >
-        {title}
-      </h3>
-
-      {/* Feature Description */}
+    <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
       <div
-        className="text-base md:text-lg leading-relaxed prose max-w-none text-black"
+        className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+        style={{ backgroundColor: `${accentColor}15` }}
+      >
+        <Icon className="w-6 h-6" style={{ color: accentColor }} />
+      </div>
+      <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">{title}</h3>
+      <div
+        className="text-sm md:text-[15px] leading-relaxed text-gray-600 prose max-w-none prose-p:text-gray-600"
         dangerouslySetInnerHTML={{ __html: description }}
       />
     </div>
   )
 }
 
+// ─── Main Component ──────────────────────────────────────
 export function AmbulanceServicePage({
   facilityTitle = 'AMBULANCE SERVICES',
   contact,
@@ -109,139 +179,116 @@ export function AmbulanceServicePage({
   features = [],
   emergencyNote,
   conclusion,
-  backgroundColor = '#0a0a0a',
   accentColor = '#10b981',
-  textColor = '#ffffff',
 }: AmbulanceServicePageProps) {
-  const { ref: titleRef, isInView: titleInView } = useInView(0.1)
-  const { ref: imagesRef, isInView: imagesInView } = useInView(0.1)
-  const { ref: contactRef, isInView: contactInView } = useInView(0.1)
-  const { ref: introRef, isInView: introInView } = useInView(0.1)
-  const { ref: emergencyRef, isInView: emergencyInView } = useInView(0.1)
-  const { ref: conclusionRef, isInView: conclusionInView } = useInView(0.1)
+  const filteredImages = images.filter((img) => img.src)
 
   return (
-    <div
-      className="relative min-h-screen overflow-hidden w-screen -ml-[calc((100vw-100%)/2)]"
-      style={{
-        backgroundColor: backgroundColor,
-        color: textColor
-      }}
-    >
-      {/* Content Container */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-
-        {/* Title Section */}
-        <div
-          ref={titleRef}
-          className={`
-            text-center mb-12 md:mb-16
-            transition-all duration-1000 ease-out
-            ${titleInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-          `}
-        >
-          {/* Title Badge */}
-          <div
-            className="inline-block px-6 py-2 rounded-full text-sm font-semibold tracking-widest mb-6"
-            style={{ backgroundColor: `${accentColor}20`, color: accentColor }}
-          >
-            EMERGENCY SERVICES
+    <div className="relative w-screen -ml-[calc((100vw-100%)/2)] bg-gray-50/50">
+      {/* ─── Hero Banner ─────────────────────────────── */}
+      <div
+        className="relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, #0b6d41 0%, #064d2e 60%, #032818 100%)',
+        }}
+      >
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20 text-center">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-xs font-semibold tracking-widest text-white/80 uppercase mb-5">
+            <Ambulance className="w-3.5 h-3.5" />
+            Emergency Services
           </div>
 
-          {/* Main Title */}
-          <h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
-            style={{ color: accentColor }}
-          >
+          {/* Title */}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[#ffde59]">
             {facilityTitle}
           </h1>
 
-          {/* Decorative Line */}
-          <div className="flex items-center justify-center gap-4">
-            <div className="h-px w-16 md:w-24" style={{ backgroundColor: accentColor }} />
-            <div
-              className="w-3 h-3 rotate-45"
-              style={{ backgroundColor: accentColor }}
+          <p className="mt-4 text-base md:text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
+            Round-the-clock ambulance service for students, staff, and community
+          </p>
+
+          {/* Decorative line */}
+          <div className="flex items-center justify-center gap-3 mt-8">
+            <div className="h-px w-12 md:w-20 bg-[#ffde59]/30" />
+            <div className="w-2 h-2 rotate-45 bg-[#ffde59]" />
+            <div className="h-px w-12 md:w-20 bg-[#ffde59]/30" />
+          </div>
+        </div>
+
+        {/* Bottom curve */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg
+            viewBox="0 0 1440 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-8 md:h-12"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M0 48h1440V24C1200 0 960 0 720 24S240 48 0 24v24z"
+              fill="#f9fafb"
+              fillOpacity="0.5"
             />
-            <div className="h-px w-16 md:w-24" style={{ backgroundColor: accentColor }} />
-          </div>
+            <path d="M0 48h1440V32C1200 8 960 8 720 32S240 56 0 32v16z" fill="#f9fafb" />
+          </svg>
+        </div>
+      </div>
+
+      {/* ─── Content Area ────────────────────────────── */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-2 pb-16 md:pb-24">
+        {/* Emergency Contact Banner */}
+        <div className="max-w-5xl mx-auto mb-10 md:mb-14">
+          <EmergencyContactBanner contact={contact} />
         </div>
 
-        {/* Ambulance Image - Centered */}
-        {images.filter(img => img.src).length > 0 && (
-          <div
-            ref={imagesRef}
-            className={`
-              flex justify-center mb-12 md:mb-16
-              transition-all duration-1000 ease-out
-              ${imagesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-            `}
-          >
+        {/* Image + Introduction — side by side on desktop */}
+        {(filteredImages.length > 0 || introduction) && (
+          <div className="max-w-5xl mx-auto mb-10 md:mb-14">
             <div
-              className="relative aspect-[4/3] w-full max-w-3xl rounded-2xl overflow-hidden border-4 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl"
-              style={{
-                borderColor: accentColor,
-              }}
+              className={`flex flex-col ${filteredImages.length > 0 && introduction ? 'md:flex-row' : ''} gap-6 md:gap-8`}
             >
-              <Image
-                src={images[0].src}
-                alt={images[0].alt || `${facilityTitle} image`}
-                fill
-                className="object-cover"
-              />
+              {/* Ambulance Image */}
+              {filteredImages.length > 0 && (
+                <div
+                  className={`relative rounded-2xl overflow-hidden ${introduction ? 'w-full md:w-1/2' : 'w-full max-w-3xl mx-auto'} aspect-[4/3]`}
+                >
+                  <Image
+                    src={filteredImages[0].src}
+                    alt={filteredImages[0].alt || 'Ambulance service'}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )}
+
+              {/* Introduction */}
+              {introduction && (
+                <div
+                  className={`${filteredImages.length > 0 ? 'w-full md:w-1/2' : 'w-full'} bg-white rounded-2xl p-6 md:p-8 border border-gray-100 shadow-sm flex items-center`}
+                >
+                  <div
+                    className="text-[15px] md:text-base leading-[1.8] text-gray-600 prose max-w-none prose-p:text-gray-600"
+                    dangerouslySetInnerHTML={{ __html: introduction }}
+                  />
+                </div>
+              )}
             </div>
           </div>
         )}
-
-        {/* Introduction Paragraph */}
-        {introduction && (
-          <div
-            ref={introRef}
-            className={`
-              max-w-4xl mx-auto mb-12 md:mb-16
-              transition-all duration-1000 ease-out
-              ${introInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-            `}
-          >
-            <div className="bg-white backdrop-blur-sm rounded-3xl p-6 md:p-10 border border-gray-200">
-              <div
-                className="text-lg md:text-xl leading-relaxed prose max-w-none text-black"
-                dangerouslySetInnerHTML={{ __html: introduction }}
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Emergency Contact Card */}
-        <div
-          ref={contactRef}
-          className={`
-            mb-12 md:mb-16
-            transition-all duration-1000 ease-out
-            ${contactInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-          `}
-        >
-          <EmergencyContactCard
-            title="AMBULANCE CONTACT"
-            name={contact.name}
-            designation={contact.designation}
-            mobile={contact.mobile}
-            alternateContact={contact.alternateContact}
-            email={contact.email}
-            accentColor={accentColor}
-          />
-        </div>
 
         {/* Features Grid */}
         {features.length > 0 && (
-          <div className="max-w-6xl mx-auto mb-12 md:mb-16">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          <div className="max-w-5xl mx-auto mb-10 md:mb-14">
+            <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-5">
+              Our Capabilities
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {features.map((feature, index) => (
                 <FeatureCard
                   key={index}
                   title={feature.title}
                   description={feature.description}
-                  index={index}
                   accentColor={accentColor}
                 />
               ))}
@@ -251,41 +298,27 @@ export function AmbulanceServicePage({
 
         {/* Emergency Note */}
         {emergencyNote && (
-          <div
-            ref={emergencyRef}
-            className={`
-              max-w-4xl mx-auto mb-12 md:mb-16
-              transition-all duration-1000 ease-out
-              ${emergencyInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-            `}
-          >
-            <div
-              className="bg-red-950 backdrop-blur-sm rounded-2xl p-6 md:p-8 border-2 border-red-600"
-            >
-              <div
-                className="text-base md:text-lg leading-relaxed font-medium text-red-200"
-                dangerouslySetInnerHTML={{ __html: emergencyNote }}
-              />
+          <div className="max-w-5xl mx-auto mb-10 md:mb-14">
+            <div className="bg-red-50 border border-red-200 rounded-2xl p-6 md:p-8">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center mt-0.5">
+                  <Siren className="w-5 h-5 text-red-600" />
+                </div>
+                <div
+                  className="text-sm md:text-[15px] leading-relaxed text-red-800 prose max-w-none prose-p:text-red-800"
+                  dangerouslySetInnerHTML={{ __html: emergencyNote }}
+                />
+              </div>
             </div>
           </div>
         )}
 
-        {/* Conclusion Paragraph */}
+        {/* Conclusion */}
         {conclusion && (
-          <div
-            ref={conclusionRef}
-            className={`
-              max-w-4xl mx-auto
-              transition-all duration-1000 ease-out
-              ${conclusionInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-            `}
-          >
-            <div
-              className="bg-white backdrop-blur-sm rounded-3xl p-6 md:p-10 border-2"
-              style={{ borderColor: `${accentColor}40` }}
-            >
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 shadow-sm">
               <div
-                className="text-lg md:text-xl leading-relaxed font-medium prose max-w-none text-black"
+                className="text-[15px] md:text-base leading-[1.8] text-gray-600 prose max-w-none prose-p:text-gray-600"
                 dangerouslySetInnerHTML={{ __html: conclusion }}
               />
             </div>
