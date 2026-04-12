@@ -215,12 +215,18 @@ export function MediaUploader({ folders, onSuccess }: MediaUploaderProps) {
               : f
           )
         )
-      } catch (error) {
+      } catch (error: unknown) {
         console.error('Upload error:', error)
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : typeof error === 'object' && error !== null && 'message' in error
+              ? String((error as { message: unknown }).message)
+              : 'Failed to upload'
         setFiles((prev) =>
           prev.map((f) =>
             f.id === uploadFile.id
-              ? { ...f, status: 'error', error: 'Failed to upload' }
+              ? { ...f, status: 'error', error: errorMessage }
               : f
           )
         )
