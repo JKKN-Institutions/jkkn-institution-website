@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { z } from 'zod'
 import { RichTextInlineEditor } from '@/components/page-builder/elementor/inline-editor'
@@ -16,31 +16,6 @@ import {
   Users,
   Sparkles,
 } from 'lucide-react'
-
-// Custom hook for intersection observer animations
-function useInView(threshold = 0.1) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [isInView, setIsInView] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true)
-        }
-      },
-      { threshold }
-    )
-
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
-    return () => observer.disconnect()
-  }, [threshold])
-
-  return { ref, isInView }
-}
 
 // Map highlight keywords to icons
 function getHighlightIcon(text: string) {
@@ -99,39 +74,28 @@ export const HostelPageSchema = z.object({
 export type HostelPageProps = z.infer<typeof HostelPageSchema>
 
 // ─── Bento Image Gallery ─────────────────────────────────
-function BentoGallery({
-  images,
-  isAnimated,
-}: {
-  images: { src: string; alt?: string }[]
-  isAnimated: boolean
-}) {
+function BentoGallery({ images }: { images: { src: string; alt?: string }[] }) {
   const filtered = images.filter((img) => img.src)
   if (filtered.length === 0) return null
 
-  // 3-image bento: 1 large left + 2 stacked right
   if (filtered.length >= 3) {
     return (
-      <div
-        className={`grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 transition-all duration-700 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-      >
-        {/* Large image */}
-        <div className="relative aspect-[4/3] md:row-span-2 rounded-2xl overflow-hidden group">
+      <div className="flex flex-col md:flex-row gap-3 md:gap-4">
+        {/* Large image — takes 60% width on desktop */}
+        <div className="relative w-full md:w-[60%] aspect-[4/3] rounded-2xl overflow-hidden group">
           <Image
             src={filtered[0].src}
             alt={filtered[0].alt || 'Hostel image'}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
-        {/* Two stacked images */}
-        <div className="grid grid-cols-2 md:grid-cols-1 gap-3 md:gap-4">
+        {/* Two stacked images — takes 40% width on desktop */}
+        <div className="flex flex-row md:flex-col gap-3 md:gap-4 w-full md:w-[40%]">
           {filtered.slice(1, 3).map((image, idx) => (
             <div
               key={idx}
-              className="relative aspect-[4/3] rounded-2xl overflow-hidden group"
-              style={{ transitionDelay: `${(idx + 1) * 100}ms` }}
+              className="relative w-full aspect-[4/3] md:aspect-[3/2] rounded-2xl overflow-hidden group"
             >
               <Image
                 src={image.src}
@@ -139,7 +103,6 @@ function BentoGallery({
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
           ))}
         </div>
@@ -149,9 +112,7 @@ function BentoGallery({
 
   // Fallback: simple grid for fewer images
   return (
-    <div
-      className={`grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 transition-all duration-700 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-    >
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
       {filtered.map((image, idx) => (
         <div key={idx} className="relative aspect-[4/3] rounded-2xl overflow-hidden group">
           <Image
@@ -169,22 +130,15 @@ function BentoGallery({
 // ─── Feature Card ────────────────────────────────────────
 function FeatureCard({
   text,
-  index,
   accentColor,
-  isAnimated,
 }: {
   text: string
-  index: number
   accentColor: string
-  isAnimated: boolean
 }) {
   const Icon = getHighlightIcon(text)
 
   return (
-    <div
-      className={`flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all duration-500 hover:-translate-y-0.5 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-      style={{ transitionDelay: `${index * 60}ms` }}
-    >
+    <div className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
       <div
         className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center"
         style={{ backgroundColor: `${accentColor}18` }}
@@ -218,37 +172,28 @@ function HostelContent({
   isEditing?: boolean
   blockId?: string
 }) {
-  const [isAnimated, setIsAnimated] = useState(false)
-  const { ref: sectionRef, isInView } = useInView(0.05)
+  const [mounted, setMounted] = useState(false)
 
-  // Trigger animation when tab becomes visible
-  // Use isInView OR fresh mount (isVisible just became true) to avoid deadlock
   useEffect(() => {
     if (isVisible) {
-      setIsAnimated(false)
-      const timer = setTimeout(() => setIsAnimated(true), 80)
+      // Small delay for enter animation
+      const timer = setTimeout(() => setMounted(true), 50)
       return () => clearTimeout(timer)
     }
-  }, [isVisible, tabKey])
-
-  // Also trigger when scrolled into view for the first time
-  useEffect(() => {
-    if (isVisible && isInView && !isAnimated) {
-      setIsAnimated(true)
-    }
-  }, [isInView, isVisible, isAnimated])
+    setMounted(false)
+  }, [isVisible])
 
   if (!isVisible) return null
 
   return (
-    <div ref={sectionRef} key={tabKey} className="space-y-10 md:space-y-14">
+    <div
+      className={`space-y-10 md:space-y-14 transition-all duration-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+    >
       {/* Bento Image Gallery */}
-      <BentoGallery images={images} isAnimated={isAnimated} />
+      <BentoGallery images={images} />
 
       {/* Description Paragraphs */}
-      <div
-        className={`space-y-5 transition-all duration-700 delay-200 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-      >
+      <div className="space-y-5">
         {paragraphs.map((paragraph, index) => (
           <div
             key={index}
@@ -275,21 +220,12 @@ function HostelContent({
       {/* Highlights as Feature Cards */}
       {highlights.length > 0 && (
         <div>
-          <h3
-            className={`text-lg md:text-xl font-semibold mb-5 transition-all duration-700 delay-300 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-            style={{ color: '#1a1a1a' }}
-          >
+          <h3 className="text-lg md:text-xl font-semibold mb-5 text-gray-900">
             Facilities & Amenities
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {highlights.map((highlight, index) => (
-              <FeatureCard
-                key={index}
-                text={highlight}
-                index={index}
-                accentColor={accentColor}
-                isAnimated={isAnimated}
-              />
+              <FeatureCard key={index} text={highlight} accentColor={accentColor} />
             ))}
           </div>
         </div>
@@ -297,9 +233,7 @@ function HostelContent({
 
       {/* Hostel Warden Contact */}
       {warden && (
-        <div
-          className={`bg-white rounded-2xl p-6 md:p-8 border border-gray-100 shadow-sm transition-all duration-700 delay-500 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-        >
+        <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 shadow-sm">
           <h3 className="text-lg font-semibold text-gray-900 mb-3">Hostel Warden</h3>
           <div className="space-y-1.5 text-[15px] text-gray-600">
             <p>
@@ -334,22 +268,19 @@ export function HostelPage({
   id,
 }: HostelPageProps & { isEditing?: boolean; id?: string }) {
   const [activeTab, setActiveTab] = useState<'boys' | 'girls'>(defaultTab)
-  const { ref: heroRef, isInView: heroInView } = useInView(0.1)
 
-  // Use the brand green as the primary accent for this redesign
   const primaryGreen = backgroundColor
 
   return (
     <div className="relative w-screen -ml-[calc((100vw-100%)/2)] bg-gray-50/50">
-      {/* ─── Hero Banner ─────────────────────────────── */}
+      {/* ─── Hero Banner (always visible, no animation) ── */}
       <div
-        ref={heroRef}
         className="relative overflow-hidden"
         style={{
           background: `linear-gradient(135deg, ${primaryGreen} 0%, #064d2e 60%, #032818 100%)`,
         }}
       >
-        {/* Subtle pattern overlay */}
+        {/* Subtle dot pattern */}
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -358,9 +289,7 @@ export function HostelPage({
           }}
         />
 
-        <div
-          className={`relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 text-center transition-all duration-1000 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-        >
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20 text-center">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-xs font-semibold tracking-widest text-white/80 uppercase mb-5">
             <Home className="w-3.5 h-3.5" />
@@ -382,10 +311,7 @@ export function HostelPage({
           {/* Decorative line */}
           <div className="flex items-center justify-center gap-3 mt-8">
             <div className="h-px w-12 md:w-20" style={{ backgroundColor: `${accentColor}40` }} />
-            <div
-              className="w-2 h-2 rotate-45"
-              style={{ backgroundColor: accentColor }}
-            />
+            <div className="w-2 h-2 rotate-45" style={{ backgroundColor: accentColor }} />
             <div className="h-px w-12 md:w-20" style={{ backgroundColor: `${accentColor}40` }} />
           </div>
         </div>
@@ -421,11 +347,7 @@ export function HostelPage({
                   ? 'text-white shadow-sm'
                   : 'text-gray-500 hover:text-gray-800'
               }`}
-              style={
-                activeTab === 'boys'
-                  ? { backgroundColor: primaryGreen }
-                  : {}
-              }
+              style={activeTab === 'boys' ? { backgroundColor: primaryGreen } : {}}
             >
               Boys Hostel
             </button>
@@ -436,11 +358,7 @@ export function HostelPage({
                   ? 'text-white shadow-sm'
                   : 'text-gray-500 hover:text-gray-800'
               }`}
-              style={
-                activeTab === 'girls'
-                  ? { backgroundColor: primaryGreen }
-                  : {}
-              }
+              style={activeTab === 'girls' ? { backgroundColor: primaryGreen } : {}}
             >
               Girls Hostel
             </button>
