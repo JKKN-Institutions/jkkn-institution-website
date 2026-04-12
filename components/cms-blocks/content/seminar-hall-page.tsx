@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils'
 import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import Image from 'next/image'
 import {
   Users,
@@ -18,6 +18,7 @@ import {
   CheckCircle2,
   Sparkles,
   Award,
+  MapPin,
 } from 'lucide-react'
 
 /**
@@ -57,10 +58,13 @@ export const SeminarHallPagePropsSchema = z.object({
   // Header
   showHeader: z.boolean().default(true),
   badge: z.string().default('Premium Facility'),
-  headerTitle: z.string().default('SEMINAR HALL'),
+  headerTitle: z.string().default('SENTHURAJA HALL'),
   headerSubtitle: z.string().optional(),
 
-  // Hero Image
+  // Images
+  images: z.array(z.object({ src: z.string(), alt: z.string().optional() })).default([]),
+
+  // Hero Image (legacy support)
   heroImage: z.string().default('/images/facilities/seminar-hall.jpg'),
   heroImageAlt: z.string().default('JKKN Seminar Hall'),
   showHeroImage: z.boolean().default(true),
@@ -220,6 +224,7 @@ function getIconComponent(iconName: string) {
     CheckCircle2,
     Sparkles,
     Award,
+    MapPin,
   }
   return icons[iconName] || CheckCircle2
 }
@@ -227,14 +232,15 @@ function getIconComponent(iconName: string) {
 /**
  * SeminarHallPage Component
  *
- * A modern facility page for seminar hall with hero image, description, and features.
- * Follows the Modern Trust Section design pattern with glassmorphism effects.
+ * A modern facility page for seminar hall with hero banner, image gallery,
+ * description, features grid, and animated stats.
  */
 export default function SeminarHallPage({
   showHeader = true,
   badge = 'Premium Facility',
-  headerTitle = 'SEMINAR HALL',
+  headerTitle = 'SENTHURAJA HALL',
   headerSubtitle,
+  images = [],
   heroImage = '/images/facilities/seminar-hall.jpg',
   heroImageAlt = 'JKKN Seminar Hall',
   showHeroImage = true,
@@ -246,308 +252,195 @@ export default function SeminarHallPage({
   features = defaultFeatures,
   showStats = true,
   stats = defaultStats,
-  variant = 'modern-light',
-  cardStyle = 'glass',
   showDecorations = true,
   className,
 }: SeminarHallPageProps) {
-  const { ref: sectionRef, isInView: sectionInView } = useInView(0.1)
   const { ref: contentRef, isInView: contentInView } = useInView(0.1)
   const { ref: featuresRef, isInView: featuresInView } = useInView(0.1)
   const { ref: statsRef, isInView: statsInView } = useInView(0.1)
-
-  const isDark = variant === 'modern-dark'
 
   const displayParagraphs = paragraphs.length > 0 ? paragraphs : defaultParagraphs
   const displayFeatures = features.length > 0 ? features : defaultFeatures
   const displayStats = stats.length > 0 ? stats : defaultStats
 
-  const cardStyles = {
-    glass: cn(
-      'backdrop-blur-md border',
-      isDark
-        ? 'bg-white/10 border-white/20'
-        : 'bg-white/80 border-white/40 shadow-lg'
-    ),
-    solid: cn(
-      isDark
-        ? 'bg-gray-800 border border-gray-700'
-        : 'bg-white border border-gray-200 shadow-lg'
-    ),
-    gradient: cn(
-      'border',
-      isDark
-        ? 'bg-gradient-to-br from-gray-800 to-gray-900 border-gray-700'
-        : 'bg-gradient-to-br from-white to-gray-50 border-gray-200 shadow-lg'
-    ),
-  }
+  // Build gallery images from `images` prop or fallback to single heroImage
+  const filteredImages = images.filter((img) => img.src)
+  const galleryImages =
+    filteredImages.length > 0
+      ? filteredImages
+      : heroImage
+        ? [{ src: heroImage, alt: heroImageAlt }]
+        : []
 
   return (
-    <section
-      ref={sectionRef}
-      className={cn(
-        'relative py-12 md:py-16 px-4 sm:px-6 lg:px-8 overflow-hidden',
-        isDark ? 'bg-gray-900' : '',
-        className
-      )}
-      style={
-        !isDark
-          ? { background: 'linear-gradient(135deg, #fbfbfb 0%, #f0f0f0 100%)' }
-          : undefined
-      }
-    >
-      {/* Background Decorations */}
-      {showDecorations && (
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          {/* Dot pattern */}
-          <div
-            className="absolute top-0 left-0 w-full h-full opacity-5"
-            style={{
-              backgroundImage: `radial-gradient(${isDark ? '#ffffff' : '#0b6d41'} 1px, transparent 1px)`,
-              backgroundSize: '40px 40px',
-            }}
-          />
+    <section className={cn('relative w-screen -ml-[calc((100vw-100%)/2)] bg-gray-50/50', className)}>
+      {/* ─── Hero Banner ─────────────────────────────── */}
+      {showHeader && (
+        <div
+          className="relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, #0b6d41 0%, #064d2e 60%, #032818 100%)' }}
+        >
+          {/* Decorative blurred gradients (no dots) */}
+          {showDecorations && (
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-[#ffde59]/10 blur-[100px]" />
+              <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-[#0b6d41]/30 blur-[100px]" />
+            </div>
+          )}
 
-          {/* Decorative blurred circles */}
-          <div
-            className={cn(
-              'absolute top-[-10%] left-[-5%] w-[600px] h-[600px] rounded-full filter blur-[100px]',
-              isDark ? 'bg-[#0b6d41] opacity-20' : 'bg-[#0b6d41] opacity-10'
-            )}
-          />
-          <div
-            className={cn(
-              'absolute bottom-[-10%] right-[-5%] w-[600px] h-[600px] rounded-full filter blur-[100px]',
-              isDark ? 'bg-[#ffde59] opacity-20' : 'bg-[#ffde59] opacity-10'
-            )}
-          />
-          <div className="absolute top-1/2 right-10 w-48 h-48 rounded-full bg-[#0b6d41]/5 blur-3xl" />
-        </div>
-      )}
-
-      <div className="relative z-10 max-w-7xl mx-auto w-full space-y-12 md:space-y-16">
-        {/* Header Section */}
-        {showHeader && (
-          <div
-            className={cn(
-              'text-center transition-all duration-1000 transform',
-              sectionInView ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-            )}
-          >
-            {/* Badge */}
-            <div className="inline-flex items-center justify-center p-2 mb-4 bg-white/50 backdrop-blur-sm rounded-full border border-[#0b6d41]/10 shadow-sm">
-              <Presentation className="w-4 h-4 text-[#0b6d41] mr-2" />
-              <span
-                className={cn(
-                  'text-sm font-bold tracking-wider uppercase',
-                  isDark ? 'text-white' : 'text-[#0b6d41]'
-                )}
-              >
-                {badge}
-              </span>
+          <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-xs font-semibold tracking-widest text-white/80 uppercase mb-5">
+              <Presentation className="w-3.5 h-3.5" />
+              {badge}
             </div>
 
-            {/* Title */}
-            <h1
-              className={cn(
-                'text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 tracking-tight font-serif',
-                isDark ? 'text-white' : 'text-[#0b6d41]'
-              )}
-            >
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[#ffde59]">
               {headerTitle}
             </h1>
 
-            {/* Subtitle */}
             {headerSubtitle && (
-              <p
-                className={cn(
-                  'text-xl max-w-2xl mx-auto font-light',
-                  isDark ? 'text-gray-300' : 'text-gray-600'
-                )}
-              >
+              <p className="mt-4 text-base md:text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
                 {headerSubtitle}
               </p>
             )}
-          </div>
-        )}
 
-        {/* Main Content Card */}
-        <div
-          ref={contentRef}
-          className={cn(
-            'rounded-[2.5rem] overflow-hidden transition-all duration-1000 delay-300 transform',
-            cardStyles[cardStyle],
-            contentInView ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-          )}
-        >
-          {/* Hero Image */}
-          {showHeroImage && heroImage && (
-            <div className="relative w-full aspect-video">
-              <Image
-                src={heroImage}
-                alt={heroImageAlt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-              />
-              {/* Gradient overlay on image */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            <div className="flex items-center justify-center gap-3 mt-8">
+              <div className="h-px w-12 md:w-20 bg-[#ffde59]/30" />
+              <div className="w-2 h-2 rotate-45 bg-[#ffde59]" />
+              <div className="h-px w-12 md:w-20 bg-[#ffde59]/30" />
+            </div>
+          </div>
+
+          <div className="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 48" fill="none" className="w-full h-8 md:h-12" preserveAspectRatio="none">
+              <path d="M0 48h1440V24C1200 0 960 0 720 24S240 48 0 24v24z" fill="#f9fafb" fillOpacity="0.5" />
+              <path d="M0 48h1440V32C1200 8 960 8 720 32S240 56 0 32v16z" fill="#f9fafb" />
+            </svg>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Content Area ────────────────────────────── */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 pb-16 md:pb-24">
+        <div className="max-w-5xl mx-auto space-y-10 md:space-y-14">
+          {/* ─── Images Grid ─────────────────────────── */}
+          {showHeroImage && galleryImages.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {galleryImages.map((image, idx) => (
+                <div key={idx} className="relative aspect-[4/3] rounded-2xl overflow-hidden group">
+                  <Image
+                    src={image.src}
+                    alt={image.alt || `Seminar hall image ${idx + 1}`}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+              ))}
             </div>
           )}
 
-          {/* Content Section */}
-          <div className="p-6 md:p-10 lg:p-12">
-            {/* Introduction */}
+          {/* ─── Introduction ─────────────────────────── */}
+          <div
+            ref={contentRef}
+            className={cn(
+              'bg-white rounded-2xl p-6 md:p-8 border border-gray-100 shadow-sm transition-all duration-700',
+              contentInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            )}
+          >
             {introduction && (
-              <p
-                className={cn(
-                  'text-lg md:text-xl leading-relaxed mb-6',
-                  isDark ? 'text-gray-200' : 'text-gray-700'
-                )}
-              >
+              <p className="text-base md:text-lg leading-relaxed text-gray-700 font-medium mb-4">
                 {introduction}
               </p>
             )}
 
-            {/* Paragraphs */}
             <div className="space-y-4">
               {displayParagraphs.map((paragraph, index) => (
-                <p
-                  key={index}
-                  className={cn(
-                    'text-base md:text-lg leading-relaxed',
-                    isDark ? 'text-gray-300' : 'text-gray-600'
-                  )}
-                >
+                <p key={index} className="text-[15px] md:text-base leading-[1.8] text-gray-600">
                   {paragraph.text}
                 </p>
               ))}
             </div>
 
-            {/* Additional Content */}
             {additionalContent && (
-              <p
-                className={cn(
-                  'text-base md:text-lg leading-relaxed mt-4',
-                  isDark ? 'text-gray-300' : 'text-gray-600'
-                )}
-              >
+              <p className="text-[15px] md:text-base leading-[1.8] text-gray-600 mt-4">
                 {additionalContent}
               </p>
             )}
           </div>
-        </div>
 
-        {/* Features Section */}
-        {showFeatures && displayFeatures.length > 0 && (
-          <div
-            ref={featuresRef}
-            className={cn(
-              'transition-all duration-1000 delay-500 transform',
-              featuresInView ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-            )}
-          >
-            {/* Features Title */}
-            {featuresTitle && (
-              <h2
-                className={cn(
-                  'text-2xl md:text-3xl font-bold mb-8 text-center relative inline-block w-full',
-                  isDark ? 'text-white' : 'text-[#0b6d41]'
-                )}
-              >
-                <span className="relative">
-                  {featuresTitle}
-                  <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-[#ffde59] rounded-full" />
-                </span>
-              </h2>
-            )}
-
-            {/* Features Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {displayFeatures.map((feature, index) => {
-                const IconComponent = getIconComponent(feature.icon || 'CheckCircle2')
+          {/* ─── Stats Bar ────────────────────────────── */}
+          {showStats && displayStats.length > 0 && (
+            <div
+              ref={statsRef}
+              className={cn(
+                'grid gap-4 transition-all duration-700 delay-200',
+                displayStats.length === 2 ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-4',
+                statsInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+              )}
+            >
+              {displayStats.map((stat, index) => {
+                const IconComponent = getIconComponent(stat.icon)
                 return (
                   <div
                     key={index}
-                    className={cn(
-                      'p-5 md:p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl',
-                      cardStyles[cardStyle]
-                    )}
-                    style={{ transitionDelay: `${index * 100}ms` }}
+                    className="relative bg-white rounded-2xl p-5 md:p-6 border border-gray-100 shadow-sm text-center overflow-hidden group hover:shadow-md transition-all duration-300"
                   >
-                    <div className="flex items-center gap-4">
-                      <div
-                        className={cn(
-                          'w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0',
-                          'bg-[#0b6d41]/10'
-                        )}
-                      >
-                        <IconComponent className="w-6 h-6 text-[#0b6d41]" />
-                      </div>
-                      <span
-                        className={cn(
-                          'text-base md:text-lg font-medium',
-                          isDark ? 'text-gray-200' : 'text-gray-700'
-                        )}
-                      >
-                        {feature.text}
-                      </span>
+                    {/* Subtle accent bar */}
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0b6d41] to-[#0b6d41]/60" />
+
+                    <div className="w-12 h-12 rounded-xl mx-auto flex items-center justify-center mb-3 bg-[#0b6d41]/10 group-hover:bg-[#0b6d41]/15 transition-colors">
+                      <IconComponent className="w-6 h-6 text-[#0b6d41]" />
+                    </div>
+
+                    <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">
+                      <AnimatedCounter value={stat.value} inView={statsInView} />
+                    </div>
+
+                    <div className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                      {stat.label}
                     </div>
                   </div>
                 )
               })}
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Stats Section */}
-        {showStats && displayStats.length > 0 && (
-          <div
-            ref={statsRef}
-            className={cn(
-              'grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 transition-all duration-1000 delay-700 transform',
-              statsInView ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-            )}
-          >
-            {displayStats.map((stat, index) => {
-              const IconComponent = getIconComponent(stat.icon)
-              return (
-                <div
-                  key={index}
-                  className={cn(
-                    'p-6 rounded-2xl text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-xl',
-                    cardStyles[cardStyle]
-                  )}
-                >
-                  <div
-                    className={cn(
-                      'w-14 h-14 rounded-xl mx-auto flex items-center justify-center mb-4',
-                      'bg-[#0b6d41]/10'
-                    )}
-                  >
-                    <IconComponent className="w-7 h-7 text-[#0b6d41]" />
-                  </div>
-                  <div
-                    className={cn(
-                      'text-3xl md:text-4xl font-bold mb-1',
-                      isDark ? 'text-white' : 'text-[#0f172a]'
-                    )}
-                  >
-                    <AnimatedCounter value={stat.value} inView={statsInView} />
-                  </div>
-                  <div
-                    className={cn(
-                      'text-sm font-medium uppercase tracking-wide',
-                      isDark ? 'text-gray-400' : 'text-gray-500'
-                    )}
-                  >
-                    {stat.label}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        )}
+          {/* ─── Features Grid ────────────────────────── */}
+          {showFeatures && displayFeatures.length > 0 && (
+            <div
+              ref={featuresRef}
+              className={cn(
+                'transition-all duration-700 delay-300',
+                featuresInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+              )}
+            >
+              <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-5">
+                {featuresTitle}
+              </h2>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {displayFeatures.map((feature, index) => {
+                  const IconComponent = getIconComponent(feature.icon || 'CheckCircle2')
+                  return (
+                    <div
+                      key={index}
+                      className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 bg-[#0b6d41]/10 group-hover:bg-[#0b6d41]/15 transition-colors">
+                          <IconComponent className="w-5 h-5 text-[#0b6d41]" />
+                        </div>
+                        <span className="text-sm md:text-[15px] font-medium text-gray-700">
+                          {feature.text}
+                        </span>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   )

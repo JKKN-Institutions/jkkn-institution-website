@@ -455,12 +455,9 @@ function HeroSection({
             {/* Main Image */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="/images/courses/cse-hero.png"
-                alt="JKKN CSE students in Future-Ready Innovation Hub with AI/ML workstations and hardware"
+                src="/images/courses/be-cse/labs/cse-lab-01.jpg"
+                alt="JKKN CSE students working in the computer science laboratory"
                 className="w-full h-[500px] object-cover"
-                onError={(e) => {
-                  e.currentTarget.src = '/images/engineering/labs/cse/cse-lab-02.jpg'
-                }}
               />
             </div>
 

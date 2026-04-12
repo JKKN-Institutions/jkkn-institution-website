@@ -106,7 +106,7 @@ const nextConfig: NextConfig = {
               "img-src 'self' data: blob: https:",
               "media-src 'self' https:",
               "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://analytics.google.com https://www.facebook.com",
-              "frame-src 'self' https://www.youtube.com https://www.google.com https://jobs.cvviz.com https://www.facebook.com",
+              "frame-src 'self' https://www.youtube.com https://www.google.com https://calendar.google.com https://jobs.cvviz.com https://www.facebook.com",
               "frame-ancestors 'self'",
               "object-src 'none'",
               "base-uri 'self'",

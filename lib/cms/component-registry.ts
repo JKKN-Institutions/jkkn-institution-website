@@ -5905,8 +5905,12 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     propsSchema: z.object({
       showHeader: z.boolean().default(true),
       badge: z.string().default('Premium Facility'),
-      headerTitle: z.string().default('SEMINAR HALL'),
+      headerTitle: z.string().default('SENTHURAJA HALL'),
       headerSubtitle: z.string().optional(),
+      images: z.array(z.object({
+        src: z.string(),
+        alt: z.string().optional(),
+      })).default([]),
       heroImage: z.string().default('/images/facilities/seminar-hall.jpg'),
       heroImageAlt: z.string().default('JKKN Seminar Hall'),
       showHeroImage: z.boolean().default(true),
@@ -5934,10 +5938,15 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     defaultProps: {
       showHeader: true,
       badge: 'Premium Facility',
-      headerTitle: 'SEMINAR HALL',
+      headerTitle: 'SENTHURAJA HALL',
       headerSubtitle: 'A modern space for learning and collaboration',
-      heroImage: '/images/facilities/seminar-hall.jpg',
-      heroImageAlt: 'JKKN Seminar Hall',
+      images: [
+        { src: '/images/facilities/seminar-hall/stage-view.jpg', alt: 'Senthuraja Hall stage and dais setup' },
+        { src: '/images/facilities/seminar-hall/audience-capacity.jpg', alt: 'Packed audience in Senthuraja Hall' },
+        { src: '/images/facilities/seminar-hall/event-in-progress.jpg', alt: 'Seminar event in progress at Senthuraja Hall' },
+      ],
+      heroImage: '/images/facilities/seminar-hall/stage-view.jpg',
+      heroImageAlt: 'JKKN Senthuraja Hall',
       showHeroImage: true,
       introduction: 'Our seminar hall is designed to offer a comfortable and engaging learning environment to all attendees, with a generous seating capacity and modern amenities.',
       additionalContent: '',
@@ -5982,9 +5991,22 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'badge', type: 'string', label: 'Badge Text' },
       { name: 'headerTitle', type: 'string', label: 'Header Title' },
       { name: 'headerSubtitle', type: 'string', label: 'Header Subtitle' },
-      { name: 'heroImage', type: 'image', label: 'Hero Image URL' },
+      {
+        name: 'images',
+        type: 'array',
+        label: 'Gallery Images',
+        itemType: 'image',
+        itemSchema: {
+          properties: {
+            src: { type: 'image', label: 'Image URL', required: true },
+            alt: { type: 'string', label: 'Alt Text' },
+          },
+          required: ['src'],
+        },
+      },
+      { name: 'heroImage', type: 'image', label: 'Hero Image URL (Legacy)' },
       { name: 'heroImageAlt', type: 'string', label: 'Hero Image Alt Text' },
-      { name: 'showHeroImage', type: 'boolean', label: 'Show Hero Image' },
+      { name: 'showHeroImage', type: 'boolean', label: 'Show Images' },
       { name: 'introduction', type: 'string', label: 'Introduction Text' },
       { name: 'additionalContent', type: 'string', label: 'Additional Content' },
       {
@@ -6089,6 +6111,11 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       showHeader: true,
       headerTitle: 'LIBRARY',
       headerSubtitle: 'LIBRARY AND INFORMATION RESOURCES CENTRE',
+      images: [
+        { src: '/images/facilities/library/stacks-overview.jpg', alt: 'Library book stacks and collection overview' },
+        { src: '/images/facilities/library/reading-area.jpg', alt: 'Library reading area with students studying' },
+        { src: '/images/facilities/library/students-browsing.jpg', alt: 'Students browsing books in the library' },
+      ],
       paragraphs: [
         {
           text: 'The library covers a wide range of subjects in Science, Humanities, Engineering, Management, Computer Applications, etc. The library is well equipped with infrastructure. With 175 seating capacity, 30 Mbps high-speed internet and CCTV surveillance are available. The library is automated using Koha software.',
@@ -6145,6 +6172,19 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'showHeader', type: 'boolean', label: 'Show Header' },
       { name: 'headerTitle', type: 'string', label: 'Header Title' },
       { name: 'headerSubtitle', type: 'string', label: 'Header Subtitle' },
+      {
+        name: 'images',
+        type: 'array',
+        label: 'Gallery Images',
+        itemType: 'image',
+        itemSchema: {
+          properties: {
+            src: { type: 'image', label: 'Image URL', required: true },
+            alt: { type: 'string', label: 'Alt Text' },
+          },
+          required: ['src'],
+        },
+      },
       {
         name: 'paragraphs',
         type: 'array',
