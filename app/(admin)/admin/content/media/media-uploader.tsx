@@ -49,7 +49,7 @@ interface UploadFile {
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024 // 50MB
 const ACCEPTED_FILE_TYPES = {
-  'image/*': ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'],
+  'image/*': ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.avif'],
   'video/*': ['.mp4', '.webm', '.mov'],
   'audio/*': ['.mp3', '.wav', '.ogg'],
   'application/pdf': ['.pdf'],
@@ -315,7 +315,7 @@ export function MediaUploader({ folders, onSuccess }: MediaUploaderProps) {
                 </div>
               </div>
               <p className="text-xs text-muted-foreground/70 mt-2">
-                Supported: JPG, PNG, GIF, WebP, MP4, WebM, MOV, MP3, WAV, PDF, DOC, DOCX
+                Supported: JPG, PNG, GIF, WebP, AVIF, MP4, WebM, MOV, MP3, WAV, PDF, DOC, DOCX
               </p>
             </>
           )}

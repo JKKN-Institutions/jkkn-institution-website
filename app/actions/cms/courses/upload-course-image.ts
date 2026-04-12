@@ -42,6 +42,7 @@ export async function uploadCourseImage(
       'image/webp',
       'image/gif',
       'image/svg+xml',
+      'image/avif',
     ]
 
     if (!allowedTypes.includes(file.type)) {
