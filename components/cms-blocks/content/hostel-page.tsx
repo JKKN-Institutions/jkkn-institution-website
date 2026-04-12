@@ -78,43 +78,13 @@ function BentoGallery({ images }: { images: { src: string; alt?: string }[] }) {
   const filtered = images.filter((img) => img.src)
   if (filtered.length === 0) return null
 
-  if (filtered.length >= 3) {
-    return (
-      <div className="flex flex-col md:flex-row gap-3 md:gap-4">
-        {/* Large image — takes 60% width on desktop */}
-        <div className="relative w-full md:w-[60%] aspect-[4/3] rounded-2xl overflow-hidden group">
-          <Image
-            src={filtered[0].src}
-            alt={filtered[0].alt || 'Hostel image'}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        </div>
-        {/* Two stacked images — takes 40% width on desktop */}
-        <div className="flex flex-row md:flex-col gap-3 md:gap-4 w-full md:w-[40%]">
-          {filtered.slice(1, 3).map((image, idx) => (
-            <div
-              key={idx}
-              className="relative w-full aspect-[4/3] md:aspect-[3/2] rounded-2xl overflow-hidden group"
-            >
-              <Image
-                src={image.src}
-                alt={image.alt || `Hostel image ${idx + 2}`}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    )
-  }
-
-  // Fallback: simple grid for fewer images
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {filtered.map((image, idx) => (
-        <div key={idx} className="relative aspect-[4/3] rounded-2xl overflow-hidden group">
+        <div
+          key={idx}
+          className="relative aspect-[4/3] rounded-2xl overflow-hidden group"
+        >
           <Image
             src={image.src}
             alt={image.alt || `Hostel image ${idx + 1}`}
