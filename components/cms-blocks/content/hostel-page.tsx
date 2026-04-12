@@ -116,7 +116,7 @@ function BentoGallery({
         className={`grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 transition-all duration-700 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
       >
         {/* Large image */}
-        <div className="relative aspect-[4/3] md:aspect-auto md:row-span-2 rounded-2xl overflow-hidden group">
+        <div className="relative aspect-[4/3] md:row-span-2 rounded-2xl overflow-hidden group">
           <Image
             src={filtered[0].src}
             alt={filtered[0].alt || 'Hostel image'}
@@ -221,13 +221,22 @@ function HostelContent({
   const [isAnimated, setIsAnimated] = useState(false)
   const { ref: sectionRef, isInView } = useInView(0.05)
 
+  // Trigger animation when tab becomes visible
+  // Use isInView OR fresh mount (isVisible just became true) to avoid deadlock
   useEffect(() => {
-    if (isVisible && isInView) {
+    if (isVisible) {
       setIsAnimated(false)
       const timer = setTimeout(() => setIsAnimated(true), 80)
       return () => clearTimeout(timer)
     }
-  }, [isVisible, isInView, tabKey])
+  }, [isVisible, tabKey])
+
+  // Also trigger when scrolled into view for the first time
+  useEffect(() => {
+    if (isVisible && isInView && !isAnimated) {
+      setIsAnimated(true)
+    }
+  }, [isInView, isVisible, isAnimated])
 
   if (!isVisible) return null
 
