@@ -236,7 +236,7 @@ export function AmbulanceServicePage({
       </div>
 
       {/* ─── Content Area ────────────────────────────── */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-4 md:-mt-6 pb-16 md:pb-24">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 pb-16 md:pb-24">
         {/* Image + Introduction — side by side on desktop */}
         {(filteredImages.length > 0 || introduction) && (
           <div className="max-w-5xl mx-auto mb-10 md:mb-14">
