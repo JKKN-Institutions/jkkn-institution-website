@@ -6047,6 +6047,10 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       showHeader: z.boolean().default(true),
       headerTitle: z.string().default('LIBRARY'),
       headerSubtitle: z.string().default('LIBRARY AND INFORMATION RESOURCES CENTRE'),
+      images: z.array(z.object({
+        src: z.string(),
+        alt: z.string().optional(),
+      })).default([]),
       paragraphs: z.array(z.object({
         text: z.string(),
       })).default([]),
@@ -6236,6 +6240,10 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       heroImage: z.string().default('/images/facilities/digital-classroom.jpg'),
       heroImageAlt: z.string().default('JKKN Digital Classroom'),
       showHeroImage: z.boolean().default(true),
+      images: z.array(z.object({
+        src: z.string(),
+        alt: z.string().optional(),
+      })).default([]),
       paragraphs: z.array(z.object({
         text: z.string(),
       })).default([]),
