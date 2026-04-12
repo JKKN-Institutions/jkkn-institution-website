@@ -78,7 +78,7 @@ function EmergencyContactBanner({
   }, [])
 
   return (
-    <div className="bg-red-600 rounded-2xl p-6 md:p-8 text-white shadow-lg">
+    <div className="bg-[#0b6d41] rounded-2xl p-6 md:p-8 text-white shadow-lg">
       <div className="flex flex-col md:flex-row items-center justify-between gap-6">
         {/* Left: Emergency label */}
         <div className="flex items-center gap-4">
@@ -89,7 +89,7 @@ function EmergencyContactBanner({
             <span className="absolute inset-0 rounded-full border-2 border-white/40 animate-ping" />
           </div>
           <div>
-            <p className="text-xs font-semibold tracking-widest uppercase text-red-200">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#ffde59]">
               24/7 Emergency
             </p>
             <h3 className="text-xl md:text-2xl font-bold">Ambulance Service</h3>
@@ -104,7 +104,7 @@ function EmergencyContactBanner({
           <div>
             <p className="font-semibold text-base">{contact.name}</p>
             {contact.designation && (
-              <p className="text-red-200 text-sm">{contact.designation}</p>
+              <p className="text-white/70 text-sm">{contact.designation}</p>
             )}
           </div>
         </div>
@@ -112,7 +112,7 @@ function EmergencyContactBanner({
         {/* Right: Call button */}
         <a
           href={`tel:${contact.mobile.replace(/\s/g, '')}`}
-          className="inline-flex items-center gap-3 bg-white text-red-600 font-bold text-lg md:text-xl px-6 py-3.5 rounded-xl hover:bg-red-50 transition-colors shadow-md hover:shadow-lg"
+          className="inline-flex items-center gap-3 bg-[#ffde59] text-[#0b6d41] font-bold text-lg md:text-xl px-6 py-3.5 rounded-xl hover:bg-[#ffe87a] transition-colors shadow-md hover:shadow-lg"
         >
           <Phone className="w-5 h-5" />
           {contact.mobile}
@@ -121,7 +121,7 @@ function EmergencyContactBanner({
 
       {/* Alternate contact / email */}
       {(contact.alternateContact || contact.email) && (
-        <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-white/20 text-sm text-red-100">
+        <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-white/20 text-sm text-white/70">
           {contact.alternateContact && (
             <a
               href={`tel:${contact.alternateContact.replace(/\s/g, '')}`}
@@ -237,11 +237,6 @@ export function AmbulanceServicePage({
 
       {/* ─── Content Area ────────────────────────────── */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-2 pb-16 md:pb-24">
-        {/* Emergency Contact Banner */}
-        <div className="max-w-5xl mx-auto mb-10 md:mb-14">
-          <EmergencyContactBanner contact={contact} />
-        </div>
-
         {/* Image + Introduction — side by side on desktop */}
         {(filteredImages.length > 0 || introduction) && (
           <div className="max-w-5xl mx-auto mb-10 md:mb-14">
@@ -276,6 +271,11 @@ export function AmbulanceServicePage({
             </div>
           </div>
         )}
+
+        {/* Emergency Contact Banner */}
+        <div className="max-w-5xl mx-auto mb-10 md:mb-14">
+          <EmergencyContactBanner contact={contact} />
+        </div>
 
         {/* Features Grid */}
         {features.length > 0 && (
