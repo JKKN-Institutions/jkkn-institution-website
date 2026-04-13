@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import { X } from 'lucide-react'
@@ -8,15 +9,23 @@ import { useIsInstitution } from '@/lib/hooks/use-institution'
 
 export function EngineeringPopup() {
   const isEngineering = useIsInstitution('engineering')
+  const pathname = usePathname()
+  const isHomePage = pathname === '/'
   const [open, setOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    if (!isEngineering) return
+  }, [])
+
+  useEffect(() => {
+    if (!isEngineering || !mounted || !isHomePage) {
+      setOpen(false)
+      return
+    }
     const timer = setTimeout(() => setOpen(true), 1000)
     return () => clearTimeout(timer)
-  }, [isEngineering])
+  }, [isEngineering, isHomePage, mounted])
 
   if (!isEngineering || !open || !mounted) return null
 
