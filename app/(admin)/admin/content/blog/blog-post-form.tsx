@@ -63,6 +63,8 @@ interface BlogPostFormProps {
     email: string
     avatar_url: string | null
   } | null
+  /** Base path for navigation after create/edit (default: '/admin/content/blog') */
+  basePath?: string
 }
 
 function SubmitButton({ isEdit, isOverLimit }: { isEdit: boolean; isOverLimit: boolean }) {
@@ -79,7 +81,7 @@ function SubmitButton({ isEdit, isOverLimit }: { isEdit: boolean; isOverLimit: b
   )
 }
 
-export function BlogPostForm({ post, categories, tags: initialTags, author }: BlogPostFormProps) {
+export function BlogPostForm({ post, categories, tags: initialTags, author, basePath = '/admin/content/blog' }: BlogPostFormProps) {
   const router = useRouter()
   const isEdit = !!post
 
@@ -179,7 +181,7 @@ export function BlogPostForm({ post, categories, tags: initialTags, author }: Bl
     if (state.success) {
       toast.success(state.message)
       if (!isEdit && state.data) {
-        router.push(`/admin/content/blog/${(state.data as { id: string }).id}/edit`)
+        router.push(`${basePath}/${(state.data as { id: string }).id}/edit`)
       }
     } else if (state.message && !state.success) {
       toast.error(state.message)

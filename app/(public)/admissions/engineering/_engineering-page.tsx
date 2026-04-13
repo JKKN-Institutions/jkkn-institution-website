@@ -419,8 +419,8 @@ export default async function EngineeringAdmissionsMain() {
                     <td className="px-4 py-4 text-gray-800 font-medium">
                       {fee.program}
                     </td>
-                    <td className="px-4 py-4 text-right text-gray-700">
-                      {formatINR(fee.gqFee)}
+                    <td className="px-4 py-4 text-right text-gray-600 text-xs italic">
+                      As per Govt. norms
                     </td>
                     <td className="px-5 py-4 text-right font-semibold text-[#0b6d41]">
                       {formatINR(fee.mqFee)}
