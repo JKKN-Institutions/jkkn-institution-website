@@ -115,13 +115,13 @@ export const PlacementPageSchema = z.object({
     phone: z.string().default('+91 98765 43210'),
     email: z.string().default('placements@jkkn.ac.in'),
     address: z.string().default('JKKN College of Engineering & Technology, Kumarapalayam, Tamil Nadu'),
-  }).default({}),
+  }).prefault({}),
   recruiterCta: z.object({
     title: z.string().default('Hire from JKKN Engineering'),
     description: z.string().default('Partner with us to access a trained, industry-ready talent pool.'),
     buttonLabel: z.string().default('Contact Placement Cell'),
     buttonHref: z.string().default('mailto:placements@jkkn.ac.in'),
-  }).default({}),
+  }).prefault({}),
 })
 
 export type PlacementPageProps = z.infer<typeof PlacementPageSchema>
