@@ -239,7 +239,7 @@ export function HostelPage({
 }: HostelPageProps & { isEditing?: boolean; id?: string }) {
   const [activeTab, setActiveTab] = useState<'boys' | 'girls'>(defaultTab)
 
-  const primaryGreen = backgroundColor
+  const primaryGreen = accentColor || '#0b6d41'
 
   return (
     <div className="relative w-screen -ml-[calc((100vw-100%)/2)] bg-gray-50/50">
@@ -247,7 +247,7 @@ export function HostelPage({
       <div
         className="relative overflow-hidden"
         style={{
-          background: `linear-gradient(135deg, ${primaryGreen} 0%, #064d2e 60%, #032818 100%)`,
+          background: 'linear-gradient(135deg, #0b6d41 0%, #064d2e 60%, #032818 100%)',
         }}
       >
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20 text-center">
@@ -258,10 +258,7 @@ export function HostelPage({
           </div>
 
           {/* Title */}
-          <h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight"
-            style={{ color: accentColor }}
-          >
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[#ffde59]">
             {pageTitle}
           </h1>
 
@@ -269,11 +266,11 @@ export function HostelPage({
             A home away from home — safe, comfortable, and designed for academic excellence
           </p>
 
-          {/* Decorative line */}
+          {/* Decorative divider */}
           <div className="flex items-center justify-center gap-3 mt-8">
-            <div className="h-px w-12 md:w-20" style={{ backgroundColor: `${accentColor}40` }} />
-            <div className="w-2 h-2 rotate-45" style={{ backgroundColor: accentColor }} />
-            <div className="h-px w-12 md:w-20" style={{ backgroundColor: `${accentColor}40` }} />
+            <div className="h-px w-12 md:w-20 bg-[#ffde59]/30" />
+            <div className="w-2 h-2 rotate-45 bg-[#ffde59]" />
+            <div className="h-px w-12 md:w-20 bg-[#ffde59]/30" />
           </div>
         </div>
 

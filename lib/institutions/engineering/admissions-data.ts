@@ -17,7 +17,7 @@ export const TRUST_STATS: TrustStat[] = [
 // ─── Overview ────────────────────────────────────────────────────────────────
 
 export const OVERVIEW =
-  'JKKN College of Engineering and Technology (JKCET) offers admissions to undergraduate (B.E / B.Tech) and postgraduate (M.E & MBA) programmes. Admissions are governed by TNEA counselling administered by Anna University, Chennai, and direct admission under Management Quota as per AICTE and Tamil Nadu Government norms.\n\nThe college is AICTE approved, NAAC A accredited, and Autonomous — affiliated to Anna University. Students benefit from a placement-oriented curriculum, experienced faculty, state-of-the-art laboratories, and fully-residential hostel facilities for boys and girls.'
+  'JKKN College of Engineering and Technology (JKKNCET) offers admissions to undergraduate (B.E / B.Tech) and postgraduate (M.E & MBA) programmes. Admissions are governed by TNEA counselling administered by Anna University, Chennai, and direct admission under Management Quota as per AICTE and Tamil Nadu Government norms.The college is AICTE approved, NAAC A accredited, and Autonomous — affiliated to Anna University. Students benefit from a placement-oriented curriculum, experienced faculty, state-of-the-art laboratories, and fully-residential hostel facilities for boys and girls.'
 
 // ─── Programmes Table ────────────────────────────────────────────────────────
 
@@ -366,69 +366,58 @@ export interface ScholarshipGroup {
 
 export const SCHOLARSHIP_GROUPS: ScholarshipGroup[] = [
   {
-    title: 'Government Scholarships',
+    title: 'Government Scholarships (SC/SCA/ST/BC-CC)',
     description:
-      'Funded by Tamil Nadu and Central Government schemes, disbursed directly to student bank accounts. Our admissions office assists with the complete application process at no charge.',
+      'Funded by Tamil Nadu and Central Government schemes for Government Quota (GQ) students. Our admissions office assists with the complete application process at no charge.',
     schemes: [
       {
-        name: 'BC / MBC / DNC Scholarship',
-        benefit: 'Full / partial tuition fee coverage',
-        eligibility: 'BC, MBC, and Denotified Communities as per TN Government norms',
+        name: 'PMSS (Community Scholarship)',
+        benefit: 'BE/BTech: ₹50,000/Yr · MBA: ₹35,000/Yr · ME: ₹50,000/Yr',
+        eligibility: 'SC/SCA/ST/BC-CC category students admitted under Government Quota (GQ)',
       },
       {
-        name: 'SC / ST Scholarship',
-        benefit: 'Full tuition fee + additional stipend',
-        eligibility: 'Scheduled Castes and Scheduled Tribes (State + Central)',
+        name: 'Maintenance Scholarship',
+        benefit: '₹5,000–₹10,000/Yr (all courses)',
+        eligibility: 'SC/SCA/ST/BC-CC category GQ students for sustenance support',
       },
       {
-        name: 'Minority Scholarship (Central)',
-        benefit: 'Up to ₹25,000 per year',
-        eligibility: 'Religious minority students with family income below ₹2L',
+        name: 'Community Scholarship (BC/MBC/DNC/BCM)',
+        benefit: '₹5,000–₹10,000/Yr (all courses)',
+        eligibility: 'BC, MBC, DNC, and BCM category students under Government Quota',
       },
       {
-        name: 'Post-Matric Scholarship (EBC)',
-        benefit: 'Partial tuition support',
-        eligibility: 'Economically Backward Classes with annual income below ₹1L',
-        ctaUrl: 'https://www.scholarship.gov.in/',
+        name: 'First Graduate Scholarship',
+        benefit: 'BE/BTech: ₹25,000/Yr',
+        eligibility: 'First-generation college graduates admitted under Government Quota',
       },
     ],
   },
   {
-    title: 'Merit-Based Scholarships',
+    title: 'Trust Scholarship (Merit-Based)',
     description:
-      'Awarded by JKKN Institutions directly to high-achieving students. Applied automatically at the time of admission — no separate application required.',
+      'Awarded by JKKN Trust directly to academically outstanding students. Available for both Management Quota (MQ) and Government Quota (GQ) admissions.',
     schemes: [
       {
-        name: 'District / State Rank Holder Scholarship',
-        benefit: 'Up to 100% tuition fee waiver',
-        eligibility: 'State board district or state rank holders in 10+2 examination',
-      },
-      {
-        name: 'Academic Excellence Scholarship',
-        benefit: '25% – 50% tuition fee reduction',
-        eligibility: '90%+ aggregate in qualifying examination',
-      },
-      {
-        name: 'TNEA High-Rank Scholarship',
-        benefit: 'Up to 50% tuition fee reduction',
-        eligibility: 'TNEA cutoff score 190+ (combined PCM)',
+        name: 'JKKN Trust Merit Scholarship',
+        benefit: 'BE/BTech: ₹5,000 to 100% tuition fee waiver/Yr',
+        eligibility: 'High-performing students based on academic merit (MQ & GQ eligible)',
       },
     ],
   },
   {
-    title: 'Special Category Support',
+    title: 'Naan Mudhalvan & Special Category',
     description:
-      'Dedicated support for students from specific backgrounds — sports achievers, NCC, and families with genuine financial need.',
+      'Tamil Nadu Government initiative and dedicated support for students from Govt/Govt-aided schools (Class 6–12, Tamil medium) and other special categories.',
     schemes: [
+      {
+        name: 'Naan Mudhalvan Scholarship',
+        benefit: 'BE/BTech: ₹1,000/month (₹12,000/Yr)',
+        eligibility: 'Boys & Girls from Govt/Govt-aided schools (6th–12th Std), Tamil medium',
+      },
       {
         name: 'Sports & Cultural Achievement',
         benefit: 'Special seat quota + fee benefit',
         eligibility: 'State / National level achievers (certificate from competent authority)',
-      },
-      {
-        name: 'NCC / NSS Scholarship',
-        benefit: 'Fee concession up to ₹10,000',
-        eligibility: 'Active NCC / NSS members with relevant participation certificate',
       },
       {
         name: 'Need-Based Financial Aid',

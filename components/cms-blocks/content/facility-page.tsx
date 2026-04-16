@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { z } from 'zod'
 import { RichTextInlineEditor } from '@/components/page-builder/elementor/inline-editor'
+import { Sparkles } from 'lucide-react'
 
 // Custom hook for intersection observer animations
 function useInView(threshold = 0.1) {
@@ -55,6 +56,7 @@ function FeatureCard({
   title,
   description,
   index,
+  primaryColor,
   accentColor,
   isEditing,
   blockId,
@@ -63,6 +65,7 @@ function FeatureCard({
   title: string
   description: string
   index: number
+  primaryColor: string
   accentColor: string
   isEditing?: boolean
   blockId?: string
@@ -74,18 +77,23 @@ function FeatureCard({
     <div
       ref={ref}
       className={`
-        bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8
-        border border-white/20
-        transition-all duration-700 ease-out
-        hover:bg-white/15 hover:shadow-xl hover:scale-[1.02]
-        ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+        group relative bg-white rounded-2xl p-6 md:p-7
+        border border-gray-100 shadow-sm
+        transition-all duration-500 ease-out
+        hover:shadow-lg hover:-translate-y-1
+        ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
       `}
-      style={{ transitionDelay: `${index * 100}ms` }}
+      style={{ transitionDelay: `${index * 80}ms` }}
     >
+      {/* Accent top border */}
+      <div
+        className="absolute top-0 left-6 right-6 h-[3px] rounded-b-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{ backgroundColor: primaryColor }}
+      />
+
       {/* Feature Title */}
       <h3
-        className="text-xl md:text-2xl font-bold mb-4"
-        style={{ color: accentColor }}
+        className="text-lg md:text-xl font-semibold mb-3 text-gray-900"
       >
         {title}
       </h3>
@@ -96,15 +104,49 @@ function FeatureCard({
           blockId={blockId}
           propName={`features.${featureIndex}.description`}
           value={description || '<p></p>'}
-          className="text-base md:text-lg leading-relaxed prose prose-invert max-w-none"
+          className="text-sm md:text-[15px] leading-relaxed text-gray-600 prose max-w-none"
           placeholder="Click to add feature description..."
         />
       ) : (
         <div
-          className="text-base md:text-lg leading-relaxed prose max-w-none"
+          className="text-sm md:text-[15px] leading-relaxed text-gray-600 prose max-w-none prose-p:text-gray-600"
           dangerouslySetInnerHTML={{ __html: description }}
         />
       )}
+    </div>
+  )
+}
+
+// Simple 3-column image gallery (single row)
+function ImageGallery({
+  images,
+  facilityTitle,
+}: {
+  images: { src: string; alt?: string }[]
+  facilityTitle: string
+}) {
+  const { ref, isInView } = useInView(0.1)
+  const filtered = images.filter(img => img.src)
+
+  if (filtered.length === 0) return null
+
+  return (
+    <div
+      ref={ref}
+      className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 transition-all duration-700 ease-out ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+    >
+      {filtered.map((image, idx) => (
+        <div key={idx} className="relative aspect-[4/3] rounded-2xl overflow-hidden group">
+          <Image
+            src={image.src}
+            alt={image.alt || `${facilityTitle} image ${idx + 1}`}
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </div>
+      ))}
     </div>
   )
 }
@@ -121,179 +163,163 @@ export function FacilityPage({
   isEditing,
   id
 }: FacilityPageProps & { isEditing?: boolean; id?: string }) {
-  const { ref: titleRef, isInView: titleInView } = useInView(0.1)
-  const { ref: imagesRef, isInView: imagesInView } = useInView(0.1)
   const { ref: introRef, isInView: introInView } = useInView(0.1)
   const { ref: conclusionRef, isInView: conclusionInView } = useInView(0.1)
 
+  const primaryColor = backgroundColor
+
   return (
-    <div
-      className="relative min-h-screen overflow-hidden w-screen -ml-[calc((100vw-100%)/2)]"
-      style={{
-        background: `linear-gradient(135deg, ${backgroundColor} 0%, #064d2e 50%, #032818 100%)`,
-        color: textColor
-      }}
-    >
-      {/* Decorative Background Elements - Removed per user request */}
+    <div className="relative w-screen -ml-[calc((100vw-100%)/2)]">
 
-      {/* Content Container */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-
-        {/* Title Section */}
-        <div
-          ref={titleRef}
-          className={`
-            text-center mb-12 md:mb-16
-            transition-all duration-1000 ease-out
-            ${titleInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-          `}
-        >
-          {/* Title Badge */}
-          <div
-            className="inline-block px-6 py-2 rounded-full text-sm font-semibold tracking-widest mb-6"
-            style={{ backgroundColor: `${accentColor}20`, color: accentColor }}
-          >
-            FACILITIES
+      {/* ─── Hero Banner ─────────────────────────────── */}
+      <div
+        className="relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, #0b6d41 0%, #064d2e 60%, #032818 100%)',
+        }}
+      >
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20 text-center">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-xs font-semibold tracking-widest text-white/80 uppercase mb-5">
+            <Sparkles className="w-3.5 h-3.5" />
+            Facilities
           </div>
 
-          {/* Main Title */}
-          <h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
-            style={{ color: accentColor }}
-          >
+          {/* Title */}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[#ffde59]">
             {facilityTitle}
           </h1>
 
-          {/* Decorative Line */}
-          <div className="flex items-center justify-center gap-4">
-            <div className="h-px w-16 md:w-24" style={{ backgroundColor: accentColor }} />
-            <div
-              className="w-3 h-3 rotate-45"
-              style={{ backgroundColor: accentColor }}
-            />
-            <div className="h-px w-16 md:w-24" style={{ backgroundColor: accentColor }} />
+          {/* Decorative divider */}
+          <div className="flex items-center justify-center gap-3 mt-8">
+            <div className="h-px w-12 md:w-20 bg-[#ffde59]/30" />
+            <div className="w-2 h-2 rotate-45 bg-[#ffde59]" />
+            <div className="h-px w-12 md:w-20 bg-[#ffde59]/30" />
           </div>
         </div>
 
-        {/* Images Gallery */}
-        {images.filter(img => img.src).length > 0 && (
-          <div
-            ref={imagesRef}
-            className={`
-              grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16
-              transition-all duration-1000 ease-out
-              ${imagesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-            `}
+        {/* Bottom curve */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg
+            viewBox="0 0 1440 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-8 md:h-12"
+            preserveAspectRatio="none"
           >
-            {images.filter(img => img.src).map((image, index) => (
-              <div
-                key={index}
-                className="relative aspect-[4/3] rounded-2xl overflow-hidden border-4 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl"
-                style={{
-                  borderColor: accentColor,
-                  transitionDelay: `${index * 150}ms`
-                }}
-              >
-                <Image
-                  src={image.src}
-                  alt={image.alt || `${facilityTitle} image ${index + 1}`}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Introduction Paragraph */}
-        {(introduction || isEditing) && (
-          <div
-            ref={introRef}
-            className={`
-              max-w-4xl mx-auto mb-12 md:mb-16
-              transition-all duration-1000 ease-out
-              ${introInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-            `}
-          >
-            <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 md:p-10 border border-white/20">
-              {isEditing && id ? (
-                <RichTextInlineEditor
-                  blockId={id}
-                  propName="introduction"
-                  value={introduction || '<p></p>'}
-                  className="text-lg md:text-xl leading-relaxed prose prose-invert max-w-none"
-                  placeholder="Click to add introduction..."
-                />
-              ) : (
-                <div
-                  className="text-lg md:text-xl leading-relaxed prose max-w-none"
-                  dangerouslySetInnerHTML={{ __html: introduction }}
-                />
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Features Grid */}
-        {features.length > 0 && (
-          <div className="max-w-6xl mx-auto mb-12 md:mb-16">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              {features.map((feature, index) => (
-                <FeatureCard
-                  key={index}
-                  title={feature.title}
-                  description={feature.description}
-                  index={index}
-                  accentColor={accentColor}
-                  isEditing={isEditing}
-                  blockId={id}
-                  featureIndex={index}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Conclusion Paragraph */}
-        {(conclusion || isEditing) && (
-          <div
-            ref={conclusionRef}
-            className={`
-              max-w-4xl mx-auto
-              transition-all duration-1000 ease-out
-              ${conclusionInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-            `}
-          >
-            <div
-              className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 md:p-10 border-2"
-              style={{ borderColor: `${accentColor}40` }}
-            >
-              {isEditing && id ? (
-                <RichTextInlineEditor
-                  blockId={id}
-                  propName="conclusion"
-                  value={conclusion || '<p></p>'}
-                  className="text-lg md:text-xl leading-relaxed font-medium prose prose-invert max-w-none"
-                  placeholder="Click to add conclusion..."
-                />
-              ) : conclusion ? (
-                <div
-                  className="text-lg md:text-xl leading-relaxed font-medium prose max-w-none"
-                  dangerouslySetInnerHTML={{ __html: conclusion }}
-                />
-              ) : null}
-            </div>
-          </div>
-        )}
+            <path
+              d="M0 48h1440V24C1200 0 960 0 720 24S240 48 0 24v24z"
+              fill="#f9fafb"
+              fillOpacity="0.5"
+            />
+            <path d="M0 48h1440V32C1200 8 960 8 720 32S240 56 0 32v16z" fill="#f9fafb" />
+          </svg>
+        </div>
       </div>
 
-      {/* Float Animation Keyframes */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(5deg); }
-        }
-      `}</style>
+      {/* ─── Content Area ────────────────────────────── */}
+      <div className="bg-gray-50/50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 pb-16 md:pb-24">
+          <div className="max-w-5xl mx-auto space-y-10 md:space-y-14">
+
+            {/* ─── Image Gallery (Bento Layout) ────────── */}
+            <ImageGallery images={images} facilityTitle={facilityTitle} />
+
+            {/* ─── Introduction ─────────────────────────── */}
+            {(introduction || isEditing) && (
+              <div
+                ref={introRef}
+                className={`
+                  transition-all duration-700 ease-out
+                  ${introInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
+                `}
+              >
+                <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 shadow-sm">
+                  {isEditing && id ? (
+                    <RichTextInlineEditor
+                      blockId={id}
+                      propName="introduction"
+                      value={introduction || '<p></p>'}
+                      className="text-[15px] md:text-base leading-[1.8] text-gray-600 prose max-w-none"
+                      placeholder="Click to add introduction..."
+                    />
+                  ) : (
+                    <div
+                      className="text-[15px] md:text-base leading-[1.8] text-gray-600 prose max-w-none prose-p:text-gray-600"
+                      dangerouslySetInnerHTML={{ __html: introduction }}
+                    />
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* ─── Features Grid ───────────────────────── */}
+            {features.length > 0 && (
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <div
+                    className="w-1 h-6 rounded-full"
+                    style={{ backgroundColor: primaryColor }}
+                  />
+                  <h2 className="text-lg md:text-xl font-semibold text-gray-900">
+                    Key Features
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+                  {features.map((feature, index) => (
+                    <FeatureCard
+                      key={index}
+                      title={feature.title}
+                      description={feature.description}
+                      index={index}
+                      primaryColor={primaryColor}
+                      accentColor={accentColor}
+                      isEditing={isEditing}
+                      blockId={id}
+                      featureIndex={index}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ─── Conclusion ──────────────────────────── */}
+            {(conclusion || isEditing) && (
+              <div
+                ref={conclusionRef}
+                className={`
+                  transition-all duration-700 ease-out
+                  ${conclusionInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
+                `}
+              >
+                <div
+                  className="rounded-2xl p-6 md:p-8 border shadow-sm"
+                  style={{
+                    backgroundColor: `${primaryColor}08`,
+                    borderColor: `${primaryColor}20`,
+                  }}
+                >
+                  {isEditing && id ? (
+                    <RichTextInlineEditor
+                      blockId={id}
+                      propName="conclusion"
+                      value={conclusion || '<p></p>'}
+                      className="text-[15px] md:text-base leading-[1.8] text-gray-700 font-medium prose max-w-none"
+                      placeholder="Click to add conclusion..."
+                    />
+                  ) : conclusion ? (
+                    <div
+                      className="text-[15px] md:text-base leading-[1.8] text-gray-700 font-medium prose max-w-none prose-p:text-gray-700"
+                      dangerouslySetInnerHTML={{ __html: conclusion }}
+                    />
+                  ) : null}
+                </div>
+              </div>
+            )}
+
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

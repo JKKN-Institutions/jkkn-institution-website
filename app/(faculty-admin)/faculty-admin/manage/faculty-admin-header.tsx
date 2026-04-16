@@ -15,6 +15,10 @@ export function FacultyAdminHeader({ userEmail }: FacultyAdminHeaderProps) {
 
   const isBlogSection = pathname.startsWith('/faculty-admin/manage/blog')
   const isFacultySection = !isBlogSection
+  const isCategoriesSection = pathname.startsWith('/faculty-admin/manage/blog/categories')
+  const isTagsSection = pathname.startsWith('/faculty-admin/manage/blog/tags')
+  const isCommentsSection = pathname.startsWith('/faculty-admin/manage/blog/comments')
+  const isPostsSection = isBlogSection && !isCategoriesSection && !isTagsSection && !isCommentsSection
 
   const handleLogout = async () => {
     const supabase = createClient()
@@ -69,7 +73,7 @@ export function FacultyAdminHeader({ userEmail }: FacultyAdminHeaderProps) {
           {/* Right — Actions + User */}
           <div className="flex items-center gap-1.5 sm:gap-2">
             {/* Context-sensitive action button */}
-            {isBlogSection ? (
+            {isPostsSection ? (
               <Link
                 href="/faculty-admin/manage/blog/new"
                 className="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-lg text-[0.8rem] font-semibold text-white bg-[#0b6d41] hover:bg-[#085533] transition-colors shadow-sm"
@@ -77,7 +81,7 @@ export function FacultyAdminHeader({ userEmail }: FacultyAdminHeaderProps) {
                 <Plus className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">New Post</span>
               </Link>
-            ) : (
+            ) : isCommentsSection ? null : isBlogSection ? null : (
               <Link
                 href="/faculty-admin/manage/new"
                 className="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-lg text-[0.8rem] font-semibold text-white bg-[#0b6d41] hover:bg-[#085533] transition-colors shadow-sm"
