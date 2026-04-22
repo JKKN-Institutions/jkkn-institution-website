@@ -6,6 +6,31 @@ import { z } from 'zod'
 import { logActivity } from '@/lib/utils/activity-logger'
 import { checkPermission } from '../permissions'
 
+// Resolves true if the user holds `permission` OR is the post's author/creator/co-author.
+// Used so faculty-admin users (typically `guest` role) can manage their own posts without
+// the admin-only cms:blog:* permissions. Mirrors the blog_posts_author_* RLS policies.
+async function canActOnBlogPost(
+  userId: string,
+  postId: string,
+  permission: string
+): Promise<boolean> {
+  if (await checkPermission(userId, permission)) return true
+
+  const supabase = await createServerSupabaseClient()
+  const { data: post } = await supabase
+    .from('blog_posts')
+    .select('author_id, created_by, co_authors')
+    .eq('id', postId)
+    .single()
+
+  if (!post) return false
+
+  if (post.author_id === userId || post.created_by === userId) return true
+  if (Array.isArray(post.co_authors) && post.co_authors.includes(userId)) return true
+
+  return false
+}
+
 // Content size validation constants
 const MAX_CONTENT_SIZE_MB = 2.5 // MB (buffer before 3MB Next.js limit)
 
@@ -509,11 +534,10 @@ export async function createBlogPost(
     return { success: false, message: 'Unauthorized' }
   }
 
-  // Check permission
-  const hasPermission = await checkPermission(user.id, 'cms:blog:create')
-  if (!hasPermission) {
-    return { success: false, message: 'You do not have permission to create blog posts' }
-  }
+  // Authors own what they create. RLS (blog_posts_author_insert) enforces that
+  // created_by/author_id must equal the caller, so any authenticated user can
+  // create a post authored by themselves. Admins with cms:blog:create keep the
+  // ability to create posts authored by others (the form sets author_id).
 
   // Parse content - supports both JSON and HTML from rich text editor
   let content: unknown = {}
@@ -678,15 +702,14 @@ export async function updateBlogPost(
     return { success: false, message: 'Unauthorized' }
   }
 
-  // Check permission
-  const hasPermission = await checkPermission(user.id, 'cms:blog:edit')
-  if (!hasPermission) {
-    return { success: false, message: 'You do not have permission to edit blog posts' }
-  }
-
   const id = formData.get('id') as string
   if (!id) {
     return { success: false, message: 'Post ID is required' }
+  }
+
+  // Authorize: admin permission OR post ownership
+  if (!(await canActOnBlogPost(user.id, id, 'cms:blog:edit'))) {
+    return { success: false, message: 'You do not have permission to edit blog posts' }
   }
 
   // Get existing post
@@ -878,9 +901,8 @@ export async function deleteBlogPost(id: string): Promise<FormState> {
     return { success: false, message: 'Unauthorized' }
   }
 
-  // Check permission
-  const hasPermission = await checkPermission(user.id, 'cms:blog:delete')
-  if (!hasPermission) {
+  // Authorize: admin permission OR post ownership
+  if (!(await canActOnBlogPost(user.id, id, 'cms:blog:delete'))) {
     return { success: false, message: 'You do not have permission to delete blog posts' }
   }
 
@@ -936,9 +958,8 @@ export async function publishBlogPost(id: string): Promise<FormState> {
     return { success: false, message: 'Unauthorized' }
   }
 
-  // Check permission
-  const hasPermission = await checkPermission(user.id, 'cms:blog:publish')
-  if (!hasPermission) {
+  // Authorize: admin permission OR post ownership
+  if (!(await canActOnBlogPost(user.id, id, 'cms:blog:publish'))) {
     return { success: false, message: 'You do not have permission to publish blog posts' }
   }
 
@@ -996,9 +1017,8 @@ export async function unpublishBlogPost(id: string): Promise<FormState> {
     return { success: false, message: 'Unauthorized' }
   }
 
-  // Check permission
-  const hasPermission = await checkPermission(user.id, 'cms:blog:publish')
-  if (!hasPermission) {
+  // Authorize: admin permission OR post ownership
+  if (!(await canActOnBlogPost(user.id, id, 'cms:blog:publish'))) {
     return { success: false, message: 'You do not have permission to unpublish blog posts' }
   }
 
@@ -1051,9 +1071,8 @@ export async function archiveBlogPost(id: string): Promise<FormState> {
     return { success: false, message: 'Unauthorized' }
   }
 
-  // Check permission
-  const hasPermission = await checkPermission(user.id, 'cms:blog:edit')
-  if (!hasPermission) {
+  // Authorize: admin permission OR post ownership
+  if (!(await canActOnBlogPost(user.id, id, 'cms:blog:edit'))) {
     return { success: false, message: 'You do not have permission to archive blog posts' }
   }
 
@@ -1106,9 +1125,8 @@ export async function toggleBlogPostFeatured(id: string): Promise<FormState> {
     return { success: false, message: 'Unauthorized' }
   }
 
-  // Check permission
-  const hasPermission = await checkPermission(user.id, 'cms:blog:edit')
-  if (!hasPermission) {
+  // Authorize: admin permission OR post ownership
+  if (!(await canActOnBlogPost(user.id, id, 'cms:blog:edit'))) {
     return { success: false, message: 'You do not have permission to edit blog posts' }
   }
 
@@ -1158,9 +1176,8 @@ export async function toggleBlogPostPinned(id: string): Promise<FormState> {
     return { success: false, message: 'Unauthorized' }
   }
 
-  // Check permission
-  const hasPermission = await checkPermission(user.id, 'cms:blog:edit')
-  if (!hasPermission) {
+  // Authorize: admin permission OR post ownership
+  if (!(await canActOnBlogPost(user.id, id, 'cms:blog:edit'))) {
     return { success: false, message: 'You do not have permission to edit blog posts' }
   }
 
@@ -1394,9 +1411,8 @@ export async function restoreBlogPostVersion(
     return { success: false, message: 'Unauthorized' }
   }
 
-  // Check permission
-  const hasPermission = await checkPermission(user.id, 'cms:blog:edit')
-  if (!hasPermission) {
+  // Authorize: admin permission OR post ownership
+  if (!(await canActOnBlogPost(user.id, postId, 'cms:blog:edit'))) {
     return { success: false, message: 'You do not have permission to restore versions' }
   }
 

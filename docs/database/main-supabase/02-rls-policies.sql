@@ -680,6 +680,55 @@ USING (EXISTS (
     AND rp.permission = ANY(ARRAY['cms:blog:delete', 'cms:blog:*', 'cms:*:*'])
 ));
 
+-- ============================================
+-- blog_posts author-ownership policies
+-- ============================================
+-- Purpose: Allow post authors/creators (e.g. faculty-admin users on /faculty-admin/manage/blog)
+--          to INSERT/UPDATE/DELETE posts they own, even without cms:blog:* permissions.
+-- Created: 2026-04-22
+-- Reason:  Faculty users on the engineering site have the `guest` role (only dashboard:view).
+--          The (faculty-admin) section is meant for them to manage their own blog posts, but
+--          the existing admin_* policies blocked all non-super_admin writes, causing the
+--          "You do not have permission to edit blog posts" toast after create→edit.
+-- Dependencies: auth.uid(), public.blog_posts (author_id, created_by columns)
+-- Security:
+--   - INSERT: must stamp author_id OR created_by with caller's uid — cannot create-as-someone-else
+--   - UPDATE: caller must be the author OR the original creator of the row, both USING and WITH CHECK
+--             (WITH CHECK also prevents a rogue author from transferring ownership away from themselves)
+--   - DELETE: caller must be the author OR the original creator of the row
+--   Admins with cms:blog:* retain full access via the existing admin_* policies (policies OR together).
+-- ============================================
+
+CREATE POLICY "blog_posts_author_insert"
+ON public.blog_posts
+FOR INSERT
+TO authenticated
+WITH CHECK (
+  author_id = auth.uid() OR created_by = auth.uid()
+);
+
+CREATE POLICY "blog_posts_author_update"
+ON public.blog_posts
+FOR UPDATE
+TO authenticated
+USING (
+  author_id = auth.uid() OR created_by = auth.uid()
+)
+WITH CHECK (
+  author_id = auth.uid() OR created_by = auth.uid()
+);
+
+CREATE POLICY "blog_posts_author_delete"
+ON public.blog_posts
+FOR DELETE
+TO authenticated
+USING (
+  author_id = auth.uid() OR created_by = auth.uid()
+);
+
+-- End of blog_posts author-ownership policies
+-- ============================================
+
 -- blog_categories
 CREATE POLICY "blog_categories_public_read"
 ON public.blog_categories
