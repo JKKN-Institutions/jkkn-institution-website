@@ -1,6 +1,6 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { FacultyAdminHeader } from './faculty-admin-header'
+import { FacultyAdminShell } from './faculty-admin-shell'
 
 export default async function FacultyManageLayout({
   children,
@@ -15,11 +15,8 @@ export default async function FacultyManageLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <FacultyAdminHeader userEmail={user.email || ''} />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-        {children}
-      </main>
-    </div>
+    <FacultyAdminShell userEmail={user.email || ''}>
+      {children}
+    </FacultyAdminShell>
   )
 }

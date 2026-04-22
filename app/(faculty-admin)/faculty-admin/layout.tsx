@@ -11,9 +11,7 @@ export default function FacultyAdminLayout({
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <div className="min-h-screen bg-[#f8f9fa]">
-      {children}
-    </div>
-  )
+  // Shell for manage/* provides its own full-height layout + background.
+  // The login page (`/faculty-admin`) has its own full-screen layout.
+  return <>{children}</>
 }

@@ -1,0 +1,24 @@
+-- ============================================
+-- Phase 2 — GEO Trust & E-E-A-T Pages Seed (Main Institution)
+-- ============================================
+-- Purpose: Create 4 GEO-optimised CMS pages to unlock AI citations
+--          (ChatGPT / Perplexity / Gemini) for the Main institution.
+-- Created: 2026-04-17
+-- Dependencies: cms_pages, cms_page_blocks, cms_seo_metadata tables
+-- Schema: Slug-to-schema routing already wired in lib/seo/schema-resolver.ts (Phase 0)
+-- Security: All rows inserted with created_by = existing admin user
+-- ============================================
+-- Pages created:
+--   8. /testimonials             — Review + AggregateRating schema
+--   9. /accreditation            — EducationalOrganization.accreditedBy (via Org schema)
+--  10. /alumni-success-stories   — Article + Person schema
+--  11. /international-placements — Article schema (NHS/UK/UAE/Singapore USP)
+-- ============================================
+-- GEO content rules followed:
+--   - Every testimonial carries name + role + rating + content (~40–80 words)
+--   - Alumni stories are authored with named protagonists (Person schema eligible)
+--   - International placements reference specific employers (sameAs signals)
+-- ============================================
+
+-- (Full SQL applied via execute_sql; this file is the durable documentation.)
+-- See: mcp__Main_Supabase_Project__execute_sql for the actual DO $$ … END $$ blocks.

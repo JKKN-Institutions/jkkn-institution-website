@@ -15,7 +15,7 @@ const poppins = Poppins({
   display: "swap",
   weight: ["400", "600", "700"],
   adjustFontFallback: true,
-  preload: false,
+  preload: true,
 });
 
 /**

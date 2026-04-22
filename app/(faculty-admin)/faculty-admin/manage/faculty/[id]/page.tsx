@@ -14,5 +14,5 @@ export default async function EditFacultyPage({ params }: EditFacultyPageProps) 
     notFound()
   }
 
-  return <FacultyForm faculty={faculty} basePath="/faculty-admin/manage" />
+  return <FacultyForm faculty={faculty} basePath="/faculty-admin/manage/faculty" />
 }

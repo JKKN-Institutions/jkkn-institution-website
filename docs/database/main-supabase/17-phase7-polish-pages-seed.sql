@@ -1,0 +1,17 @@
+-- ============================================
+-- Phase 7 — Polish Pages Seed (Main Institution) — FINAL PHASE
+-- ============================================
+-- Purpose: Close the last 6 pages to complete the 34-page SEO roadmap.
+-- Created: 2026-04-17
+-- ============================================
+-- Pages:
+--  24. /careers-support         — career services hub
+--  25. /international-exchange  — student exchange programs
+--  26. /research-overview       — research umbrella page
+--  27. /community-outreach      — CSR and rural programs
+--  28. /sports-activities       — sports facilities & achievements
+--  29. /student-life            — clubs, hostels, dining, campus life
+-- ============================================
+-- End-state: 46.2% gap → 0%. Poor → Excellent health.
+-- ============================================
+-- SQL applied via execute_sql (see session).

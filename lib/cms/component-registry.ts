@@ -326,6 +326,7 @@ import {
   EligibilityCriteriaTablePropsSchema,
   FeeStructureTablePropsSchema,
   ScholarshipsSectionPropsSchema,
+  ScholarshipMatrixPropsSchema,
   DocumentsChecklistPropsSchema,
   WhyChooseSectionPropsSchema,
   CampusFeaturesGridPropsSchema,
@@ -435,6 +436,7 @@ const AdmissionDatesTable = lazy(() => import('@/components/cms-blocks/admission
 const EligibilityCriteriaTable = lazy(() => import('@/components/cms-blocks/admissions/eligibility-criteria-table'))
 const FeeStructureTable = lazy(() => import('@/components/cms-blocks/admissions/fee-structure-table'))
 const ScholarshipsSection = lazy(() => import('@/components/cms-blocks/admissions/scholarships-section'))
+const ScholarshipMatrix = lazy(() => import('@/components/cms-blocks/admissions/scholarship-matrix'))
 const DocumentsChecklist = lazy(() => import('@/components/cms-blocks/admissions/documents-checklist'))
 const WhyChooseSection = lazy(() => import('@/components/cms-blocks/admissions/why-choose-section'))
 const CampusFeaturesGrid = lazy(() => import('@/components/cms-blocks/admissions/campus-features-grid'))
@@ -1891,6 +1893,66 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'ctaLink', type: 'string', label: 'CTA Button Link' },
       { name: 'columns', type: 'enum', label: 'Columns', options: ['2', '4'] },
       { name: 'backgroundColor', type: 'enum', label: 'Background', options: ['gradient-dark', 'gradient-light', 'solid-dark', 'solid-light', 'transparent'] },
+      { name: 'showAnimations', type: 'boolean', label: 'Show Animations' },
+      { name: 'titleColor', type: 'color', label: 'Title Color' },
+      { name: 'subtitleColor', type: 'color', label: 'Subtitle Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+    ],
+  },
+
+  ScholarshipMatrix: {
+    name: 'ScholarshipMatrix',
+    displayName: 'Scholarship Matrix',
+    category: 'admissions',
+    description: 'Dense table of scholarship entitlements across colleges and courses',
+    icon: 'Table',
+    previewImage: '/cms-previews/ScholarshipMatrix.png',
+    component: ScholarshipMatrix,
+    propsSchema: ScholarshipMatrixPropsSchema,
+    defaultProps: {
+      badge: 'SCHOLARSHIP MATRIX',
+      title: 'Scholarship Amounts by Course',
+      titleAccentWord: 'by Course',
+      subtitle: 'Annual scholarship entitlements across all JKKN colleges — at a glance.',
+      rows: [],
+      backgroundColor: 'gradient-dark',
+      showAnimations: true,
+      accentColor: 'var(--gold-on-light)',
+    },
+    supportsChildren: false,
+    isFullWidth: true,
+    keywords: ['scholarship', 'matrix', 'table', 'pmss', 'maintenance', 'first graduate', 'naan mudhalvan', 'trust'],
+    editableProps: [
+      { name: 'badge', type: 'string', label: 'Badge Text' },
+      { name: 'title', type: 'string', label: 'Section Title' },
+      { name: 'titleAccentWord', type: 'string', label: 'Accent Word' },
+      { name: 'subtitle', type: 'string', label: 'Subtitle' },
+      { name: 'groupLabelSC', type: 'string', label: 'SC/ST Group Label' },
+      { name: 'groupLabelBC', type: 'string', label: 'BC Group Label' },
+      { name: 'groupLabelAllCommunity', type: 'string', label: 'All Community Label' },
+      {
+        name: 'rows',
+        type: 'array',
+        label: 'Matrix Rows',
+        description: 'One row per College × Course combination',
+        itemSchema: {
+          properties: {
+            college: { type: 'string', label: 'College', required: true },
+            course: { type: 'string', label: 'Course', required: true },
+            pmssGQ: { type: 'string', label: 'PMSS (GQ)' },
+            pmssMQ: { type: 'string', label: 'PMSS (MQ)' },
+            pmssMerged: { type: 'boolean', label: 'Merge PMSS columns' },
+            maintenance: { type: 'string', label: 'Maintenance' },
+            firstGraduate: { type: 'string', label: 'First Graduate' },
+            community: { type: 'string', label: 'Community Scholarship' },
+            trust: { type: 'string', label: 'Trust Scholarship' },
+            naanMudhalvan: { type: 'string', label: 'Naan Mudhalvan' },
+          },
+          required: ['college', 'course'],
+        },
+      },
+      { name: 'footerNotes', type: 'array', label: 'Legend / Footer Notes', itemType: 'string' },
+      { name: 'backgroundColor', type: 'enum', label: 'Background', options: ['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent'] },
       { name: 'showAnimations', type: 'boolean', label: 'Show Animations' },
       { name: 'titleColor', type: 'color', label: 'Title Color' },
       { name: 'subtitleColor', type: 'color', label: 'Subtitle Color' },

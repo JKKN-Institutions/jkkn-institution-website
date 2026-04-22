@@ -1,0 +1,21 @@
+-- ============================================
+-- Phase 6 — Authority & Entity Pages Seed (Main Institution)
+-- ============================================
+-- Purpose: 7 entity/authority pages for E-E-A-T and brand credibility.
+-- Created: 2026-04-17
+-- ============================================
+-- Pages:
+--  17. /chairman-message       — E-E-A-T author authority
+--  18. /nirf                   — NIRF rankings hub
+--  19. /recruiters             — 100+ recruiting companies
+--  20. /industry-partnerships  — MoUs & collaborations
+--  21. /events                 — Events hub (freshness signal)
+--  22. /faculty-directory      — Faculty with Person schema eligibility
+--  23. /campus-tour            — Virtual tour landing
+-- ============================================
+-- Schema routing already wired in Phase 0:
+--   /chairman-message → article: true
+--   /events → eventsCalendar: true (existing rule)
+--   others → default
+-- ============================================
+-- SQL applied via execute_sql (see session).

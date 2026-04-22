@@ -208,20 +208,32 @@ export default function FacultyBlogCommentsPage() {
   const totalPages = Math.ceil(total / pageSize)
 
   return (
-    <div className="space-y-6" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-gray-800">Comment Moderation</h1>
-          <p className="text-[0.78rem] text-gray-400">Review and moderate blog comments</p>
+    <div className="space-y-4 sm:space-y-6">
+      {/* Professional Header */}
+      <div className="glass-card rounded-2xl p-6 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="relative flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 sm:gap-6">
+          <div className="flex items-start gap-3 sm:gap-4">
+            <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+              <MessageSquare className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground">Comment Moderation</h1>
+              <p className="text-sm text-muted-foreground mt-1">
+                Review, approve or reject reader comments across all blog posts.
+              </p>
+            </div>
+          </div>
+          <Button
+            variant="outline"
+            onClick={() => fetchComments()}
+            disabled={isLoading}
+            className="shrink-0"
+          >
+            <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
         </div>
-        <button
-          onClick={() => fetchComments()}
-          disabled={isLoading}
-          className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-[0.78rem] font-medium text-gray-500 border border-gray-200 hover:bg-gray-50 transition-colors disabled:opacity-50"
-        >
-          <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-          Refresh
-        </button>
       </div>
 
       {/* Stat cards */}
@@ -236,7 +248,7 @@ export default function FacultyBlogCommentsPage() {
                 setStatusFilter(key)
                 setPage(1)
               }}
-              className={`text-left bg-white rounded-2xl border border-gray-100 p-4 hover:border-gray-200 hover:shadow-sm transition-all ${
+              className={`text-left glass-card rounded-2xl p-4 transition-all hover:shadow-lg ${
                 active ? `ring-2 ${ringColor}` : ''
               }`}
             >
@@ -251,7 +263,7 @@ export default function FacultyBlogCommentsPage() {
       </div>
 
       {/* Filters & bulk actions */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-4">
+      <div className="glass-card rounded-2xl p-4">
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <div className="relative w-full sm:w-72">
@@ -323,7 +335,7 @@ export default function FacultyBlogCommentsPage() {
       </div>
 
       {/* Comments list */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-6">
+      <div className="glass-card rounded-2xl p-4 sm:p-6">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="h-8 w-8 animate-spin text-gray-300" />

@@ -320,6 +320,229 @@ export function serializeSchema(schema: object): string {
   return JSON.stringify(schema, null, 0)
 }
 
+// ============================================
+// Phase 0 — New schema generators for Main Institution gap closure
+// ============================================
+
+/**
+ * Review entry for testimonials / feedback
+ */
+export interface ReviewEntry {
+  author: string
+  /** 1–5 */
+  rating: number
+  body: string
+  /** ISO date string */
+  datePublished?: string
+  role?: string
+}
+
+/**
+ * Generate Review + AggregateRating schema for the /testimonials page.
+ *
+ * GEO signal: Review schema is a primary citation trigger for LLMs
+ * (ChatGPT/Perplexity pull star ratings + author names directly into answers).
+ */
+export function generateReviewSchema(reviews: ReviewEntry[]): Record<string, unknown> {
+  const SITE_URL = getSiteUrl()
+  const config = getInstitutionSEOConfig()
+
+  const ratingValue =
+    reviews.length > 0
+      ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+      : '0'
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'EducationalOrganization',
+    '@id': `${SITE_URL}/testimonials#reviews`,
+    'name': config.name,
+    'url': `${SITE_URL}/testimonials`,
+    'aggregateRating': {
+      '@type': 'AggregateRating',
+      'ratingValue': ratingValue,
+      'bestRating': '5',
+      'worstRating': '1',
+      'ratingCount': String(reviews.length),
+    },
+    'review': reviews.map(r => ({
+      '@type': 'Review',
+      'author': {
+        '@type': 'Person',
+        'name': r.author,
+        ...(r.role ? { jobTitle: r.role } : {}),
+      },
+      'reviewRating': {
+        '@type': 'Rating',
+        'ratingValue': String(r.rating),
+        'bestRating': '5',
+        'worstRating': '1',
+      },
+      'reviewBody': r.body,
+      ...(r.datePublished ? { datePublished: r.datePublished } : {}),
+    })),
+  }
+}
+
+/**
+ * City data for LocalBusiness schema
+ */
+export interface CityLocalBusinessInput {
+  /** Page slug without leading slash, e.g. "salem" */
+  slug: string
+  cityName: string
+  /** ISO region, usually Tamil Nadu */
+  region?: string
+  /** Optional: tagline for the city-specific landing */
+  description?: string
+}
+
+/**
+ * Generate LocalBusiness schema for a city-specific landing page.
+ *
+ * GEO signal: LocalBusiness + areaServed captures "best college in {city}"
+ * and "{course} near {city}" local queries.
+ */
+export function generateLocalBusinessSchema(
+  input: CityLocalBusinessInput
+): Record<string, unknown> {
+  const SITE_URL = getSiteUrl()
+  const config = getInstitutionSEOConfig()
+  const region = input.region ?? 'Tamil Nadu'
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'EducationalOrganization',
+    '@id': `${SITE_URL}/${input.slug}#localbusiness`,
+    'name': `${config.name} — ${input.cityName}`,
+    'url': `${SITE_URL}/${input.slug}`,
+    'description':
+      input.description ??
+      `${config.name} serves students from ${input.cityName} and surrounding areas with UG, PG and doctoral programs.`,
+    'parentOrganization': { '@id': `${SITE_URL}/#organization` },
+    'address': {
+      '@type': 'PostalAddress',
+      'streetAddress': config.address.streetAddress,
+      'addressLocality': config.address.addressLocality,
+      'addressRegion': config.address.addressRegion,
+      'postalCode': config.address.postalCode,
+      'addressCountry': config.address.addressCountry,
+    },
+    'geo': {
+      '@type': 'GeoCoordinates',
+      'latitude': config.geo.latitude,
+      'longitude': config.geo.longitude,
+    },
+    'areaServed': [
+      {
+        '@type': 'City',
+        'name': input.cityName,
+        'containedInPlace': {
+          '@type': 'AdministrativeArea',
+          'name': region,
+        },
+      },
+    ],
+    'hasMap': `https://maps.google.com/?q=${config.geo.latitude},${config.geo.longitude}`,
+  }
+}
+
+/**
+ * Single step in a HowTo schema
+ */
+export interface HowToStep {
+  name: string
+  text: string
+  url?: string
+  image?: string
+}
+
+/**
+ * Generate HowTo schema for step-by-step guides (e.g. /how-to-apply, /admission-guide).
+ *
+ * AEO signal: HowTo powers the "steps" result in Google AI Overviews and voice answers.
+ */
+export function generateHowToSchema(params: {
+  slug: string
+  name: string
+  description: string
+  steps: HowToStep[]
+  totalTime?: string
+  estimatedCost?: { currency: string; value: string }
+}): Record<string, unknown> {
+  const SITE_URL = getSiteUrl()
+
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    '@id': `${SITE_URL}/${params.slug}#howto`,
+    'name': params.name,
+    'description': params.description,
+    'step': params.steps.map((s, i) => ({
+      '@type': 'HowToStep',
+      'position': i + 1,
+      'name': s.name,
+      'text': s.text,
+      ...(s.url ? { url: s.url.startsWith('http') ? s.url : `${SITE_URL}${s.url}` } : {}),
+      ...(s.image ? { image: s.image } : {}),
+    })),
+  }
+
+  if (params.totalTime) schema.totalTime = params.totalTime
+  if (params.estimatedCost) {
+    schema.estimatedCost = {
+      '@type': 'MonetaryAmount',
+      'currency': params.estimatedCost.currency,
+      'value': params.estimatedCost.value,
+    }
+  }
+
+  return schema
+}
+
+/**
+ * Generate Article schema for news / success stories / chairman message / USP pages.
+ *
+ * SEO signal: Article gives Google a clear entity for news-style pages and
+ * improves surfacing in Discover / Top Stories.
+ */
+export function generateArticleSchema(params: {
+  slug: string
+  headline: string
+  description: string
+  image?: string
+  datePublished: string
+  dateModified?: string
+  authorName?: string
+}): Record<string, unknown> {
+  const SITE_URL = getSiteUrl()
+  const config = getInstitutionSEOConfig()
+  const url = `${SITE_URL}/${params.slug}`
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${url}#article`,
+    'headline': params.headline,
+    'description': params.description,
+    'url': url,
+    'datePublished': params.datePublished,
+    'dateModified': params.dateModified ?? params.datePublished,
+    ...(params.image ? { image: params.image } : {}),
+    'author': {
+      '@type': 'Person',
+      'name': params.authorName ?? `${config.name} Editorial Team`,
+    },
+    'publisher': {
+      '@id': `${SITE_URL}/#organization`,
+    },
+    'mainEntityOfPage': {
+      '@type': 'WebPage',
+      '@id': url,
+    },
+  }
+}
+
 /**
  * Export getSiteUrl from utils for backwards compatibility
  */

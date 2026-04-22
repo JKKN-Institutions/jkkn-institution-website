@@ -14,7 +14,6 @@
 
 import { useEffect, useState, useCallback, type ComponentType } from 'react'
 import * as React from 'react'
-import * as Babel from '@babel/standalone'
 import { Loader2, AlertTriangle, Package } from 'lucide-react'
 import * as LucideIcons from 'lucide-react'
 import type { CustomComponentData } from '@/lib/cms/component-registry'
@@ -165,8 +164,58 @@ function parseImports(code: string): {
   return { supportedImports, unsupportedImports }
 }
 
+// `@babel/standalone` (~22 MB) crashes Turbopack's chunk-item JSON serializer,
+// so we load its UMD build from a CDN at runtime instead of bundling it.
+// The UMD build attaches to `window.Babel`.
+type BabelStandalone = {
+  transform: (code: string, options: unknown) => { code?: string | null }
+}
+
+const BABEL_CDN_URL = 'https://unpkg.com/@babel/standalone@7.28.5/babel.min.js'
+
+let babelPromise: Promise<BabelStandalone> | null = null
+
+function loadBabel(): Promise<BabelStandalone> {
+  if (typeof window === 'undefined') {
+    return Promise.reject(new Error('Babel can only load in the browser'))
+  }
+
+  const w = window as unknown as { Babel?: BabelStandalone }
+  if (w.Babel) return Promise.resolve(w.Babel)
+  if (babelPromise) return babelPromise
+
+  babelPromise = new Promise<BabelStandalone>((resolve, reject) => {
+    const finish = () => {
+      const b = (window as unknown as { Babel?: BabelStandalone }).Babel
+      b ? resolve(b) : reject(new Error('Babel loaded but window.Babel is undefined'))
+    }
+
+    const existing = document.querySelector<HTMLScriptElement>('script[data-babel-standalone]')
+    if (existing) {
+      if ((window as unknown as { Babel?: BabelStandalone }).Babel) return finish()
+      existing.addEventListener('load', finish, { once: true })
+      existing.addEventListener('error', () => reject(new Error('Failed to load Babel from CDN')), { once: true })
+      return
+    }
+
+    const script = document.createElement('script')
+    script.src = BABEL_CDN_URL
+    script.async = true
+    script.crossOrigin = 'anonymous'
+    script.dataset.babelStandalone = 'true'
+    script.onload = finish
+    script.onerror = () => {
+      babelPromise = null
+      reject(new Error('Failed to load Babel from CDN'))
+    }
+    document.head.appendChild(script)
+  })
+
+  return babelPromise
+}
+
 // Transform TSX code to render-ready format using Babel
-function transformCode(code: string): { code: string; error: string | null } {
+async function transformCode(code: string): Promise<{ code: string; error: string | null }> {
   try {
     // Step 1: Remove imports and exports
     let cleaned = code
@@ -184,6 +233,7 @@ function transformCode(code: string): { code: string; error: string | null } {
     cleaned = cleaned.trim()
 
     // Step 2: Use Babel to transform TypeScript + JSX to createElement calls
+    const Babel = await loadBabel()
     const result = Babel.transform(cleaned, {
       presets: [
         ['typescript', { isTSX: true, allExtensions: true }],
@@ -286,82 +336,93 @@ function ComponentRenderer({
   const [Component, setComponent] = useState<ComponentType<Record<string, unknown>> | null>(null)
 
   useEffect(() => {
-    try {
-      // Transform JSX code using Babel
-      const { code: transformedCode, error: transformError } = transformCode(code)
+    let cancelled = false
 
-      if (transformError || !transformedCode) {
-        onError(transformError || 'Failed to transform component code')
-        return
-      }
+    ;(async () => {
+      try {
+        // Transform JSX code using Babel (loaded lazily from CDN)
+        const { code: transformedCode, error: transformError } = await transformCode(code)
+        if (cancelled) return
 
-      // Build dependency injection parameters
-      const paramNames = ['React', 'useState', 'useEffect', 'useCallback', 'useMemo', 'useRef', 'useContext', 'useReducer']
-      const paramValues: unknown[] = [React, React.useState, React.useEffect, React.useCallback, React.useMemo, React.useRef, React.useContext, React.useReducer]
+        if (transformError || !transformedCode) {
+          onError(transformError || 'Failed to transform component code')
+          return
+        }
 
-      // Inject external dependencies
-      if (Array.isArray(supportedImports) && supportedImports.length > 0) {
-        for (const importItem of supportedImports) {
-          if (!importItem || !importItem.path || !Array.isArray(importItem.names)) {
-            console.warn('[ComponentRenderer] Invalid import item:', importItem)
-            continue
-          }
+        // Build dependency injection parameters
+        const paramNames = ['React', 'useState', 'useEffect', 'useCallback', 'useMemo', 'useRef', 'useContext', 'useReducer']
+        const paramValues: unknown[] = [React, React.useState, React.useEffect, React.useCallback, React.useMemo, React.useRef, React.useContext, React.useReducer]
 
-          const { path, names } = importItem
-          const dependency = AVAILABLE_DEPENDENCIES[path]
-
-          if (dependency && typeof dependency === 'object') {
-            // Add each named export as a parameter
-            for (const name of names) {
-              if (typeof name !== 'string') {
-                console.warn('[ComponentRenderer] Invalid name type:', typeof name, name)
-                continue
-              }
-
-              if (name.startsWith('* as ')) {
-                // Namespace import: provide the whole module
-                const alias = name.replace('* as ', '')
-                paramNames.push(alias)
-                paramValues.push(dependency)
-              } else if (name in dependency) {
-                // Named import: provide specific export
-                paramNames.push(name)
-                paramValues.push(dependency[name as keyof typeof dependency])
-              } else {
-                console.warn(`[ComponentRenderer] Export "${name}" not found in ${path}`)
-              }
+        // Inject external dependencies
+        if (Array.isArray(supportedImports) && supportedImports.length > 0) {
+          for (const importItem of supportedImports) {
+            if (!importItem || !importItem.path || !Array.isArray(importItem.names)) {
+              console.warn('[ComponentRenderer] Invalid import item:', importItem)
+              continue
             }
-          } else {
-            console.warn(`[ComponentRenderer] Dependency not found for ${path}`)
+
+            const { path, names } = importItem
+            const dependency = AVAILABLE_DEPENDENCIES[path]
+
+            if (dependency && typeof dependency === 'object') {
+              // Add each named export as a parameter
+              for (const name of names) {
+                if (typeof name !== 'string') {
+                  console.warn('[ComponentRenderer] Invalid name type:', typeof name, name)
+                  continue
+                }
+
+                if (name.startsWith('* as ')) {
+                  // Namespace import: provide the whole module
+                  const alias = name.replace('* as ', '')
+                  paramNames.push(alias)
+                  paramValues.push(dependency)
+                } else if (name in dependency) {
+                  // Named import: provide specific export
+                  paramNames.push(name)
+                  paramValues.push(dependency[name as keyof typeof dependency])
+                } else {
+                  console.warn(`[ComponentRenderer] Export "${name}" not found in ${path}`)
+                }
+              }
+            } else {
+              console.warn(`[ComponentRenderer] Dependency not found for ${path}`)
+            }
           }
         }
+
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[ComponentRenderer] Injecting dependencies:', paramNames)
+          console.log('[ComponentRenderer] Transformed code:', transformedCode.substring(0, 500))
+        }
+
+        // Create a function that has access to React and injected dependencies
+        // The transformed code uses React.createElement instead of JSX
+        const functionBody = `
+          "use strict";
+          ${transformedCode}
+          return ${componentName};
+        `
+
+        const createComponent = new Function(
+          ...paramNames,
+          functionBody
+        )
+
+        const ComponentFromCode = createComponent(...paramValues)
+
+        if (cancelled) return
+        setComponent(() => ComponentFromCode)
+      } catch (err) {
+        if (cancelled) return
+        console.error('Component render error:', err)
+        console.error('[ComponentRenderer] Failed code:', code?.substring(0, 500))
+        onError(err instanceof Error ? err.message : 'Failed to render component')
       }
+    })()
 
-      if (process.env.NODE_ENV === 'development') {
-        console.log('[ComponentRenderer] Injecting dependencies:', paramNames)
-        console.log('[ComponentRenderer] Transformed code:', transformedCode.substring(0, 500))
-      }
-
-      // Create a function that has access to React and injected dependencies
-      // The transformed code uses React.createElement instead of JSX
-      const functionBody = `
-        "use strict";
-        ${transformedCode}
-        return ${componentName};
-      `
-
-      const createComponent = new Function(
-        ...paramNames,
-        functionBody
-      )
-
-      const ComponentFromCode = createComponent(...paramValues)
-
-      setComponent(() => ComponentFromCode)
-    } catch (err) {
-      console.error('Component render error:', err)
-      console.error('[ComponentRenderer] Failed code:', code?.substring(0, 500))
-      onError(err instanceof Error ? err.message : 'Failed to render component')
+    return () => {
+      cancelled = true
     }
   }, [code, componentName, supportedImports, onError])
 

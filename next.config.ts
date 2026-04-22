@@ -100,7 +100,9 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net",
+              // unpkg.com hosts @babel/standalone, loaded at runtime by custom-component-wrapper
+              // because its 22 MB UMD bundle breaks Turbopack's chunk-item JSON serializer.
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://unpkg.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https:",
@@ -350,15 +352,6 @@ const nextConfig: NextConfig = {
       {
         source: '/courses',
         destination: '/courses-offered',
-        permanent: true,
-      },
-
-      // === SEO Audit Fix: /fee-structure → /admissions (C1) ===
-      // Fee structure content lives on the admissions page (section id="fee-structure").
-      // 301 consolidates link equity and fixes the 404. Deep-link via /admissions#fee-structure.
-      {
-        source: '/fee-structure',
-        destination: '/admissions',
         permanent: true,
       },
 

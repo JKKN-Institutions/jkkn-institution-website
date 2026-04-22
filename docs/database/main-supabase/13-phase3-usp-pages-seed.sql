@@ -1,0 +1,13 @@
+-- ============================================
+-- Phase 3 — USP Pages Seed (Main Institution)
+-- ============================================
+-- Purpose: Create 2 unique-value pages to own zero-competition keywords.
+-- Created: 2026-04-17
+-- Dependencies: cms_pages, cms_page_blocks, cms_seo_metadata
+-- Schema: /hospital and /ai-campus → `article: true` (wired in Phase 0)
+-- ============================================
+-- Pages:
+--  12. /hospital    — 500-bed teaching hospital (clinical exposure USP)
+--  13. /ai-campus   — India's First AI-Integrated Campus (brand positioning)
+-- ============================================
+-- SQL applied via mcp__Main_Supabase_Project__execute_sql (see session).

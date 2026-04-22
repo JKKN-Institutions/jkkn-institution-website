@@ -47,7 +47,7 @@ export const meCSECourseData: MECSECoursePageProps = {
       },
       {
         label: 'Download Brochure',
-        link: '#',
+        link: '/pdfs/brochure.pdf',
         variant: 'secondary'
       }
     ],

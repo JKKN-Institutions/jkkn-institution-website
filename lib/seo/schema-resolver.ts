@@ -25,6 +25,12 @@ export type PageSchemaSet = {
   faqAbout: boolean
   /** Include HowTo schema for step-by-step admission process (GEO/AEO signal) */
   howToAdmissions: boolean
+  /** Include Review + AggregateRating schema (testimonials page) */
+  testimonialsReview: boolean
+  /** Include LocalBusiness schema (city-specific landing pages) */
+  localBusiness: boolean
+  /** Include Article schema (news, success stories, chairman message) */
+  article: boolean
 }
 
 const EMPTY_SCHEMAS: PageSchemaSet = {
@@ -36,7 +42,22 @@ const EMPTY_SCHEMAS: PageSchemaSet = {
   faqPlacements: false,
   faqAbout: false,
   howToAdmissions: false,
+  testimonialsReview: false,
+  localBusiness: false,
+  article: false,
 }
+
+/**
+ * City slugs that receive LocalBusiness schema for local SEO capture.
+ * Keep in sync with the location landing pages created in Phase 5.
+ */
+const LOCATION_SLUGS = new Set([
+  'salem',
+  'erode',
+  'namakkal',
+  'coimbatore',
+  'tiruppur',
+])
 
 /**
  * Resolve which schemas should be injected for a given page slug.
@@ -51,14 +72,10 @@ export function resolvePageSchemas(slug: string, isHomepage: boolean = false): P
   // Homepage gets the full treatment
   if (isHomepage || slug === '') {
     return {
+      ...EMPTY_SCHEMAS,
       website: true,
       courseCatalog: true,
-      eventsCalendar: false,
       faqGeneral: true,
-      faqAdmissions: false,
-      faqPlacements: false,
-      faqAbout: false,
-      howToAdmissions: false,
     }
   }
 
@@ -113,6 +130,76 @@ export function resolvePageSchemas(slug: string, isHomepage: boolean = false): P
       ...EMPTY_SCHEMAS,
       faqAbout: true,
     }
+  }
+
+  // ============================================
+  // Phase 1 — AEO conversion pages
+  // ============================================
+
+  // Umbrella FAQ — primary AEO lever for PAA / AI Overviews
+  if (slug === 'faq') {
+    return { ...EMPTY_SCHEMAS, faqGeneral: true }
+  }
+
+  // Fee structure & scholarships — admission-intent queries
+  if (slug === 'fee-structure' || slug === 'scholarships') {
+    return { ...EMPTY_SCHEMAS, faqAdmissions: true }
+  }
+
+  // Step-by-step admission guides — HowTo schema for AI snippet capture
+  if (
+    slug === 'how-to-apply' ||
+    slug === 'admission-guide' ||
+    slug === 'counseling-guide'
+  ) {
+    return { ...EMPTY_SCHEMAS, howToAdmissions: true, faqAdmissions: true }
+  }
+
+  // Eligibility — FAQ-style reference content
+  if (slug === 'eligibility-criteria') {
+    return { ...EMPTY_SCHEMAS, faqAdmissions: true }
+  }
+
+  // ============================================
+  // Phase 2 — GEO trust & E-E-A-T pages
+  // ============================================
+
+  if (slug === 'testimonials') {
+    return { ...EMPTY_SCHEMAS, testimonialsReview: true }
+  }
+
+  if (slug === 'alumni-success-stories' || slug === 'international-placements') {
+    return { ...EMPTY_SCHEMAS, article: true }
+  }
+
+  if (slug === 'accreditation') {
+    // Organization schema already in layout includes accreditedBy;
+    // surface FAQ-style answers for "Is JKKN accredited?" queries
+    return { ...EMPTY_SCHEMAS, faqAbout: true }
+  }
+
+  // ============================================
+  // Phase 3–4 — USPs & content hubs
+  // ============================================
+
+  if (slug === 'hospital' || slug === 'ai-campus' || slug === 'chairman-message') {
+    return { ...EMPTY_SCHEMAS, article: true }
+  }
+
+  if (slug === 'why-jkkn') {
+    return { ...EMPTY_SCHEMAS, faqGeneral: true, article: true }
+  }
+
+  if (slug === 'news' || slug.startsWith('news/')) {
+    return { ...EMPTY_SCHEMAS, article: true }
+  }
+
+  // ============================================
+  // Phase 5 — Location landing pages (Local SEO)
+  // ============================================
+
+  if (LOCATION_SLUGS.has(slug)) {
+    return { ...EMPTY_SCHEMAS, localBusiness: true, faqGeneral: true }
   }
 
   // All other pages: no extra schemas (Organization is already in layout)

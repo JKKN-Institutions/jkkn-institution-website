@@ -1,0 +1,12 @@
+-- ============================================
+-- Phase 5 — Location Landing Pages Seed (Main Institution)
+-- ============================================
+-- Purpose: 5 city-specific landing pages for local SEO capture.
+-- Created: 2026-04-17
+-- Schema: LocalBusiness + faqGeneral (slug routed via LOCATION_SLUGS in Phase 0)
+-- Duplicate-content safeguard: each city has unique distance, routes, alumni
+-- context and FAQ answers. Templates reused, content differentiated.
+-- ============================================
+-- Pages: /salem /erode /namakkal /coimbatore /tiruppur
+-- ============================================
+-- SQL applied via execute_sql (see session).

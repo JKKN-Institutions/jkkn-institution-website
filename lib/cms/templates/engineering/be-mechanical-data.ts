@@ -37,7 +37,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     },
     {
       label: 'Download Brochure',
-      link: '#',
+      link: '/pdfs/brochure.pdf',
       variant: 'secondary',
     },
   ],

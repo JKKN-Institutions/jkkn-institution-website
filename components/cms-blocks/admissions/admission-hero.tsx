@@ -119,6 +119,10 @@ export default function AdmissionHero({
 }: AdmissionHeroProps) {
   const sectionRef = useInView()
   const isDark = isDarkBackground(backgroundColor)
+  // When the background is a pure flat surface (#ffffff or transparent),
+  // suppress all decorative layers — dark overlays, gold accent clip-path,
+  // and scattered dot patterns — so the hero reads as true flat white.
+  const needsDecorativeLayers = backgroundColor !== 'solid' && backgroundColor !== 'transparent'
 
   // Parse title for accent word styling
   const titleParts = useMemo(() => {
@@ -172,20 +176,20 @@ export default function AdmissionHero({
         className
       )}
     >
-      {/* Decorative Patterns */}
-      <DecorativePatterns variant="scattered" color={isDark ? 'white' : 'blue'} />
-
-      {/* Gradient overlay for depth */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 pointer-events-none" />
-
-      {/* Accent shape */}
-      <div
-        className="absolute top-0 right-0 w-[40%] h-full opacity-10 pointer-events-none"
-        style={{
-          background: accentColor,
-          clipPath: 'polygon(30% 0, 100% 0, 100% 100%, 0% 100%)',
-        }}
-      />
+      {/* Decorative layers — skipped on pure-white / transparent bgs */}
+      {needsDecorativeLayers && (
+        <>
+          <DecorativePatterns variant="scattered" color={isDark ? 'white' : 'blue'} />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 pointer-events-none" />
+          <div
+            className="absolute top-0 right-0 w-[40%] h-full opacity-10 pointer-events-none"
+            style={{
+              background: accentColor,
+              clipPath: 'polygon(30% 0, 100% 0, 100% 100%, 0% 100%)',
+            }}
+          />
+        </>
+      )}
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div
@@ -323,8 +327,10 @@ export default function AdmissionHero({
         </div>
       </div>
 
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+      {/* Bottom gradient fade — skipped on pure-white / transparent bgs */}
+      {needsDecorativeLayers && (
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+      )}
 
       {/* CSS for pulse animation */}
       <style jsx>{`

@@ -1496,6 +1496,73 @@ export const ScholarshipsSectionPropsSchema = z.object({
 })
 export type ScholarshipsSectionProps = z.infer<typeof ScholarshipsSectionPropsSchema> & BaseBlockProps
 
+// --- ScholarshipMatrix ---
+// Dense matrix table showing scholarship amounts by College / Course against
+// each scholarship scheme (PMSS GQ & MQ, Maintenance, First Graduate, Community,
+// Trust, Naan Mudhalvan). Mirrors the official JKKN scholarship details sheet.
+export const ScholarshipMatrixRowSchema = z.object({
+  college: z.string(),
+  course: z.string(),
+  // SC/SCA/ST/BC-CC group
+  pmssGQ: z.string().default('-'),
+  pmssMQ: z.string().default('-'),
+  pmssMerged: z.boolean().default(false),
+  maintenance: z.string().default('-'),
+  // BC/MBC/DNC/BCM group
+  firstGraduate: z.string().default('-'),
+  community: z.string().default('-'),
+  trust: z.string().default('-'),
+  // All Community group
+  naanMudhalvan: z.string().default('-'),
+})
+export type ScholarshipMatrixRow = z.infer<typeof ScholarshipMatrixRowSchema>
+
+export const ScholarshipMatrixPropsSchema = z.object({
+  // Header
+  badge: z.string().default('SCHOLARSHIP MATRIX'),
+  title: z.string().default('Scholarship Amounts by Course'),
+  titleAccentWord: z.string().optional().default('by Course'),
+  subtitle: z.string().default('Annual scholarship entitlements across all JKKN colleges — at a glance.'),
+
+  // Group headers (spanning columns)
+  groupLabelSC: z.string().default('SC / SCA / ST / BC-CC'),
+  groupLabelBC: z.string().default('BC / MBC / DNC / BCM'),
+  groupLabelAllCommunity: z.string().default('All Community'),
+  groupLabelAllCommunityNote: z.string().default('(Govt / Govt Aided School 6–12, Tamil Medium)'),
+
+  // Column labels
+  pmssLabel: z.string().default('PMSS'),
+  pmssSubLabel: z.string().default('Community Scholarship'),
+  maintenanceLabel: z.string().default('Maintenance Scholarship'),
+  firstGraduateLabel: z.string().default('First Graduate'),
+  communityLabel: z.string().default('Community Scholarship'),
+  trustLabel: z.string().default('Trust Scholarship'),
+  trustSubLabel: z.string().default('(Merit Based)'),
+  naanMudhalvanLabel: z.string().default('Naan Mudhalvan'),
+  naanMudhalvanSubLabel: z.string().default('Boys / Girls'),
+
+  // Data
+  rows: z.array(ScholarshipMatrixRowSchema).default([]),
+
+  // Legend footnotes
+  footerNotes: z.array(z.string()).default([
+    'GQ — Government Quota · MQ — Management Quota · PMSS — Post-Matric Scholarship Scheme.',
+    'Amounts shown are per academic year unless noted; “—” means not applicable for that course.',
+    'Slab values such as “5K<10K / Yr” indicate the disbursed range; confirm exact eligibility with the scholarship cell.',
+    'Scholarships can be combined subject to scheme-specific rules. Our scholarship cell advises the optimal legal mix.',
+  ]),
+
+  // Styling
+  backgroundColor: z.enum(['gradient-dark', 'gradient-light', 'white-professional', 'solid', 'transparent']).default('gradient-dark'),
+  showAnimations: z.boolean().default(true),
+
+  // Typography
+  titleColor: z.string().optional(),
+  subtitleColor: z.string().optional(),
+  accentColor: z.string().default('var(--gold-on-light)'),
+})
+export type ScholarshipMatrixProps = z.infer<typeof ScholarshipMatrixPropsSchema> & BaseBlockProps
+
 // --- DocumentsChecklist ---
 export const DocumentItemSchema = z.object({
   text: z.string(),

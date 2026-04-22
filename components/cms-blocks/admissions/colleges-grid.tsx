@@ -135,90 +135,121 @@ export default function CollegesGrid({
           ref={gridRef.ref}
           className={cn('grid gap-6', gridColClasses[columns])}
         >
-          {colleges.map((college, index) => (
-            <div
-              key={index}
-              className={cn(
-                // Glassmorphism card
-                'group relative overflow-hidden rounded-2xl',
-                isDark ? glassStyles.card : glassStyles.cardLight,
-                isDark ? glassStyles.cardHover : 'hover:shadow-xl hover:scale-[1.02] transition-all duration-300',
-                showAnimations && 'transition-all duration-700',
-                showAnimations && gridRef.isInView
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-8'
-              )}
-              style={{
-                transitionDelay: showAnimations ? getStaggerDelay(index) : '0ms',
-              }}
-            >
-              {/* Colored header band */}
-              <div
-                className="h-2"
-                style={{ backgroundColor: college.headerColor || '#0b6d41' }}
-              />
+          {colleges.map((college, index) => {
+            // Whole card becomes a link when college.link is set. For
+            // absolute URLs (college subdomain fee pages) we render a raw
+            // <a target="_blank"> so the external site opens in a new
+            // tab; for relative URLs we use Next <Link> for client-side
+            // routing. In both cases the full card is one click target,
+            // avoiding the invalid-nested-anchor trap.
+            const isExternalLink = Boolean(
+              college.link && /^https?:\/\//i.test(college.link)
+            )
+            const CardRoot: React.ElementType = !college.link
+              ? 'div'
+              : isExternalLink
+                ? 'a'
+                : Link
+            const cardRootProps = !college.link
+              ? {}
+              : isExternalLink
+                ? {
+                    href: college.link,
+                    target: '_blank',
+                    rel: 'noopener noreferrer',
+                    'aria-label': `View ${college.name} fee structure (opens in a new tab)`,
+                  }
+                : {
+                    href: college.link,
+                    'aria-label': `View ${college.name} — Learn More`,
+                  }
 
-              <div className="p-6">
-                {/* Logo or Icon */}
-                {college.logo ? (
-                  <div className="w-16 h-16 mb-4 rounded-lg overflow-hidden bg-white/10 flex items-center justify-center">
-                    <Image
-                      src={college.logo}
-                      alt={college.name}
-                      width={64}
-                      height={64}
-                      className="object-contain"
-                    />
-                  </div>
-                ) : (
-                  <div
-                    className="w-12 h-12 mb-4 rounded-lg flex items-center justify-center"
-                    style={{ backgroundColor: `${college.headerColor || '#0b6d41'}30` }}
-                  >
-                    <Building2
-                      className="w-6 h-6"
-                      style={{ color: college.headerColor || '#0b6d41' }}
-                    />
-                  </div>
+            return (
+              <CardRoot
+                key={index}
+                {...cardRootProps}
+                className={cn(
+                  // Glassmorphism card
+                  'group relative overflow-hidden rounded-2xl block',
+                  isDark ? glassStyles.card : glassStyles.cardLight,
+                  isDark ? glassStyles.cardHover : 'hover:shadow-xl hover:scale-[1.02] transition-all duration-300',
+                  college.link && 'cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2',
+                  showAnimations && 'transition-all duration-700',
+                  showAnimations && gridRef.isInView
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-8'
                 )}
+                style={{
+                  transitionDelay: showAnimations ? getStaggerDelay(index) : '0ms',
+                }}
+              >
+                {/* Colored header band */}
+                <div
+                  className="h-2"
+                  style={{ backgroundColor: college.headerColor || '#0b6d41' }}
+                />
 
-                {/* Name */}
-                <h3
-                  className={cn(
-                    'font-semibold text-lg mb-2 line-clamp-2',
-                    isDark ? 'text-white' : 'text-gray-900'
+                <div className="p-6">
+                  {/* Logo or Icon */}
+                  {college.logo ? (
+                    <div className="w-16 h-16 mb-4 rounded-lg overflow-hidden bg-white/10 flex items-center justify-center">
+                      <Image
+                        src={college.logo}
+                        alt={college.name}
+                        width={64}
+                        height={64}
+                        className="object-contain"
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      className="w-12 h-12 mb-4 rounded-lg flex items-center justify-center"
+                      style={{ backgroundColor: `${college.headerColor || '#0b6d41'}30` }}
+                    >
+                      <Building2
+                        className="w-6 h-6"
+                        style={{ color: college.headerColor || '#0b6d41' }}
+                      />
+                    </div>
                   )}
-                >
-                  {college.name}
-                </h3>
 
-                {/* Description */}
-                <p
-                  className={cn(
-                    'text-sm mb-4 line-clamp-2',
-                    isDark ? 'text-white/70' : 'text-gray-600'
-                  )}
-                >
-                  {college.description}
-                </p>
-
-                {/* Link */}
-                {college.link && (
-                  <Link
-                    href={college.link}
+                  {/* Name */}
+                  <h3
                     className={cn(
-                      'inline-flex items-center gap-1.5 text-sm font-medium',
-                      'group-hover:translate-x-1 transition-transform duration-300'
+                      'font-semibold text-lg mb-2 line-clamp-2',
+                      isDark ? 'text-white' : 'text-gray-900'
                     )}
-                    style={{ color: accentColor }}
                   >
-                    Learn More
-                    <ExternalLink className="w-4 h-4" />
-                  </Link>
-                )}
-              </div>
-            </div>
-          ))}
+                    {college.name}
+                  </h3>
+
+                  {/* Description */}
+                  <p
+                    className={cn(
+                      'text-sm mb-4 line-clamp-2',
+                      isDark ? 'text-white/70' : 'text-gray-600'
+                    )}
+                  >
+                    {college.description}
+                  </p>
+
+                  {/* Learn More affordance — a span, not a link, since the whole card is already the link */}
+                  {college.link && (
+                    <span
+                      className={cn(
+                        'inline-flex items-center gap-1.5 text-sm font-medium',
+                        'group-hover:translate-x-1 transition-transform duration-300'
+                      )}
+                      style={{ color: accentColor }}
+                    >
+                      Learn More
+                      <ExternalLink className="w-4 h-4" aria-hidden="true" />
+                    </span>
+                  )}
+                </div>
+              </CardRoot>
+            )
+          })}
         </div>
       </div>
     </section>

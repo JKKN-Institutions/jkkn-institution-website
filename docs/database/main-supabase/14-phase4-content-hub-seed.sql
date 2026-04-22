@@ -1,0 +1,13 @@
+-- ============================================
+-- Phase 4 — Content Hub Pages Seed (Main Institution)
+-- ============================================
+-- Purpose: Build decision-stage and freshness-signal pages.
+-- Created: 2026-04-17
+-- Schema: `/why-jkkn` → faqGeneral + article; `/news` → article (Phase 0)
+-- ============================================
+-- Pages:
+--  14. /why-jkkn  — comparison/decision query capture
+--  15. /gallery   — image SEO + engagement signals
+--  16. /news      — freshness signals
+-- ============================================
+-- SQL applied via execute_sql (see session).
