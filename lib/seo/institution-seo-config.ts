@@ -408,7 +408,7 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
     analytics: {
       // Engineering can have its own GA/Pixel IDs; leave undefined to skip
       gaId: undefined,
-      metaPixelId: undefined,
+      metaPixelId: '365029645695967',
     },
   },
 }

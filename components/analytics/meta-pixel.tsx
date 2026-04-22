@@ -2,17 +2,19 @@
 
 import Script from 'next/script'
 import { useState, useEffect } from 'react'
+import { getMetaPixelId } from '@/lib/seo/institution-seo-config'
 
 /**
  * Meta Pixel — Multi-Tenant Aware, Optimized for Core Web Vitals (INP)
  *
- * Reads Pixel ID from environment variable.
- * Each institution's Vercel deployment can set its own NEXT_PUBLIC_META_PIXEL_ID.
+ * Resolves Pixel ID via getMetaPixelId() which reads the per-institution
+ * config (NEXT_PUBLIC_INSTITUTION_ID), then falls back to NEXT_PUBLIC_META_PIXEL_ID.
+ * Returns undefined if neither is set, so the pixel is fully skipped.
  *
  * Defers loading until user interaction or 5 seconds after page load
  * to reduce main thread blocking during initial page render.
  */
-const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || '779817005468177'
+const META_PIXEL_ID = getMetaPixelId()
 
 export function MetaPixel() {
   const [shouldLoad, setShouldLoad] = useState(false)
