@@ -1253,6 +1253,7 @@ export const AdmissionStepSchema = z.object({
   title: z.string(),
   description: z.string(),
   icon: z.string().default('ClipboardCheck'),
+  link: z.string().optional(),
 })
 export type AdmissionStep = z.infer<typeof AdmissionStepSchema>
 
@@ -1261,15 +1262,16 @@ export const AdmissionProcessTimelinePropsSchema = z.object({
   badge: z.string().default('HOW TO APPLY'),
   title: z.string().default('Admission Process'),
   titleAccentWord: z.string().optional().default('Process'),
-  subtitle: z.string().default('Your journey to JKKN in 5 simple steps'),
+  subtitle: z.string().default('Your journey to JKKN in 6 simple steps'),
 
   // Steps
   steps: z.array(AdmissionStepSchema).default([
-    { number: 1, title: 'Choose Your Program', description: 'Explore 50+ programs across 7 colleges', icon: 'Search' },
-    { number: 2, title: 'Apply Online', description: 'Fill the application form with required documents', icon: 'FileText' },
-    { number: 3, title: 'Document Verification', description: 'Submit originals for verification', icon: 'ClipboardCheck' },
-    { number: 4, title: 'Counselling', description: 'Attend counselling session for seat allotment', icon: 'Users' },
-    { number: 5, title: 'Admission Confirmation', description: 'Pay fees and confirm your admission', icon: 'CheckCircle' },
+    { number: 1, title: "Learner's Registration", description: 'Register online to start your admission journey. Create your profile with basic details and your chosen college.', icon: 'UserPlus', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026' },
+    { number: 2, title: 'Online Application Submission', description: 'Complete the application form with personal, academic, and program details.', icon: 'FileText' },
+    { number: 3, title: 'Payment Process', description: 'Pay the application fee securely online to lock your submission.', icon: 'CreditCard' },
+    { number: 4, title: 'Admission Confirmation', description: 'Receive your provisional admission letter after document screening.', icon: 'CheckCircle' },
+    { number: 5, title: 'Certificate Submission', description: 'Submit originals — 10th, 12th, transfer, community certificates — to the admissions office.', icon: 'FileCheck' },
+    { number: 6, title: 'Final Enrollment', description: 'Pay tuition, collect ID card, and join orientation to complete enrollment.', icon: 'GraduationCap' },
   ]),
 
   // Layout

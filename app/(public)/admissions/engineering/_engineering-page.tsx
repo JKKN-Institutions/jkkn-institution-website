@@ -53,10 +53,6 @@ function EducationalOrgSchema() {
 
 const APPLY_URL = 'https://www.jkkn.ai/apply/jkkn-admission-2026'
 
-function formatINR(n: number) {
-  return `₹${n.toLocaleString('en-IN')}`
-}
-
 function Section({
   id,
   gray = false,
@@ -103,9 +99,7 @@ export default async function EngineeringAdmissionsMain() {
     steps,
     guidelines,
     documents,
-    feeStructure,
     dates,
-    scholarshipGroups,
     faqs,
   } = await fetchEngineeringAdmissionsData()
 
@@ -232,9 +226,6 @@ export default async function EngineeringAdmissionsMain() {
             </tbody>
           </table>
         </div>
-        <p className="mt-4 text-xs text-gray-400">
-          * Refer to the Fee Structure section below for branch-wise Government Quota (GQ) and Management Quota (MQ) tuition fees.
-        </p>
       </Section>
 
       {/* ── 03: Eligibility Criteria ──────────────────────────────────────── */}
@@ -380,67 +371,8 @@ export default async function EngineeringAdmissionsMain() {
         </p>
       </Section>
 
-      {/* ── 06: Fee Structure ─────────────────────────────────────────────── */}
-      <Section gray>
-        <SectionHeading title="Fee Structure 2026" />
-        <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-[#0b6d41] text-white text-xs uppercase tracking-wider">
-                <th className="text-left px-5 py-3">Course</th>
-                <th className="text-left px-4 py-3">Programme</th>
-                <th className="text-right px-4 py-3">Government Quota (GQ)</th>
-                <th className="text-right px-5 py-3">Management Quota (MQ)</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100 bg-white">
-              {(['UG', 'PG', 'Lateral Entry'] as const).flatMap((cat) => {
-                const rows = feeStructure.filter((f) => f.category === cat)
-                if (rows.length === 0) return []
-                const label =
-                  cat === 'UG'
-                    ? 'Engineering UG'
-                    : cat === 'PG'
-                      ? 'Engineering PG'
-                      : 'Engineering Lateral Entry'
-                return rows.map((fee, idx) => (
-                  <tr
-                    key={`${cat}-${fee.program}`}
-                    className="hover:bg-[#f6faf7] transition-colors"
-                  >
-                    {idx === 0 && (
-                      <td
-                        rowSpan={rows.length}
-                        className="px-5 py-4 text-gray-900 font-bold bg-[#f6faf7] border-r border-gray-100 align-middle"
-                      >
-                        {label}
-                      </td>
-                    )}
-                    <td className="px-4 py-4 text-gray-800 font-medium">
-                      {fee.program}
-                    </td>
-                    <td className="px-4 py-4 text-right text-gray-600 text-xs italic">
-                      As per Govt. norms
-                    </td>
-                    <td className="px-5 py-4 text-right font-semibold text-[#0b6d41]">
-                      {formatINR(fee.mqFee)}
-                    </td>
-                  </tr>
-                ))
-              })}
-            </tbody>
-          </table>
-        </div>
-        <div className="mt-5 space-y-2 text-xs text-gray-400">
-          <p>* GQ = Government Quota (TNEA counselling). MQ = Management Quota (direct admission). All fees shown are annual tuition in Indian Rupees (₹).</p>
-          <p>* Hostel accommodation is optional and charged separately — all-inclusive (meals, utilities, Wi-Fi, laundry). Separate hostels for boys and girls with 24/7 security.</p>
-          <p>* Tuition fee is subject to revision as per Tamil Nadu Government and AICTE norms. Scholarships can significantly reduce the tuition amount.</p>
-          <p>* Fee can be paid via Demand Draft (DD), NEFT / RTGS, or online portal. No cash payment accepted for tuition.</p>
-        </div>
-      </Section>
-
       {/* ── 07: Important Dates ───────────────────────────────────────────── */}
-      <Section>
+      <Section gray>
         <SectionHeading title="Important Dates 2026" />
         <div className="space-y-0">
           {dates.map((item, idx) => (
@@ -471,57 +403,6 @@ export default async function EngineeringAdmissionsMain() {
             Anna University website
           </Link>{' '}
           for the latest TNEA schedule. Management Quota direct admission is open from May 1 — contact our admissions office for current seat availability.
-        </div>
-      </Section>
-
-      {/* ── 08: Scholarships & Financial Assistance ───────────────────────── */}
-      <Section gray>
-        <SectionHeading title="Scholarships & Financial Assistance" />
-        <p className="text-sm text-gray-500 mb-8 -mt-4">
-          Approximately <span className="font-semibold text-gray-700">75% of our students</span> receive some form of financial aid. Our admissions team actively helps every student apply for the scholarships they qualify for.
-        </p>
-        <div className="space-y-8">
-          {scholarshipGroups.map((group) => (
-            <div key={group.title}>
-              <h3 className="font-semibold tracking-tight text-gray-900 text-base mb-1">{group.title}</h3>
-              <p className="text-sm text-gray-500 mb-4">{group.description}</p>
-              <div className="overflow-x-auto rounded-xl border border-gray-200">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="bg-gray-100 text-gray-500 text-xs uppercase tracking-wider">
-                      <th className="text-left px-4 py-2.5">Scholarship</th>
-                      <th className="text-left px-4 py-2.5">Benefit</th>
-                      <th className="text-left px-4 py-2.5">Who Qualifies</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100 bg-white">
-                    {group.schemes.map((scheme) => (
-                      <tr key={scheme.name} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-4 py-3 font-medium text-gray-800">
-                          {scheme.name}
-                          {scheme.ctaUrl && (
-                            <>
-                              {' '}
-                              <Link
-                                href={scheme.ctaUrl}
-                                target={scheme.ctaUrl.startsWith('http') ? '_blank' : undefined}
-                                rel={scheme.ctaUrl.startsWith('http') ? 'noopener noreferrer' : undefined}
-                                className="text-[#0b6d41] text-xs underline underline-offset-2"
-                              >
-                                Apply →
-                              </Link>
-                            </>
-                          )}
-                        </td>
-                        <td className="px-4 py-3 text-[#0b6d41] font-semibold">{scheme.benefit}</td>
-                        <td className="px-4 py-3 text-gray-500">{scheme.eligibility}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          ))}
         </div>
       </Section>
 

@@ -8,6 +8,10 @@ import {
   ClipboardCheck,
   Users,
   CheckCircle,
+  UserPlus,
+  CreditCard,
+  FileCheck,
+  GraduationCap,
   type LucideIcon,
 } from 'lucide-react'
 import { DecorativePatterns } from '../shared/decorative-patterns'
@@ -21,6 +25,10 @@ const ICON_MAP: Record<string, LucideIcon> = {
   ClipboardCheck,
   Users,
   CheckCircle,
+  UserPlus,
+  CreditCard,
+  FileCheck,
+  GraduationCap,
 }
 
 // Intersection Observer hook
@@ -46,7 +54,7 @@ export default function AdmissionProcessTimeline({
   badge = 'HOW TO APPLY',
   title = 'Admission Process',
   titleAccentWord = 'Process',
-  subtitle = 'Your journey to JKKN in 5 simple steps',
+  subtitle = 'Your journey to JKKN in 6 simple steps',
   steps = [],
   orientation = 'auto',
   backgroundColor = 'gradient-dark',
@@ -169,26 +177,26 @@ export default function AdmissionProcessTimeline({
           {steps.map((step, index) => {
             const Icon = getIcon(step.icon)
             const isFirst = index === 0
+            const hasLink = Boolean(step.link)
+            const isExternal = hasLink && /^https?:\/\//.test(step.link!)
 
-            return (
-              <div
-                key={index}
-                className={cn(
-                  'relative flex',
-                  // Layout based on orientation
-                  orientation === 'auto' && 'flex-col items-center text-center mb-8 last:mb-0 lg:mb-0 lg:flex-1',
-                  orientation === 'horizontal' && 'flex-col items-center text-center flex-shrink-0 px-4 min-w-[180px]',
-                  orientation === 'vertical' && 'flex-row items-start mb-8 last:mb-0',
-                  // Animations
-                  showAnimations && 'transition-all duration-700',
-                  showAnimations && timelineRef.isInView
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-8'
-                )}
-                style={{
-                  transitionDelay: showAnimations ? getStaggerDelay(index, 150) : '0ms',
-                }}
-              >
+            const wrapperClassName = cn(
+              'relative flex',
+              orientation === 'auto' && 'flex-col items-center text-center mb-8 last:mb-0 lg:mb-0 lg:flex-1',
+              orientation === 'horizontal' && 'flex-col items-center text-center flex-shrink-0 px-4 min-w-[180px]',
+              orientation === 'vertical' && 'flex-row items-start mb-8 last:mb-0',
+              showAnimations && 'transition-all duration-700',
+              showAnimations && timelineRef.isInView
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8',
+              hasLink && 'cursor-pointer hover:opacity-90 no-underline'
+            )
+            const wrapperStyle = {
+              transitionDelay: showAnimations ? getStaggerDelay(index, 150) : '0ms',
+            }
+
+            const stepInner = (
+              <>
                 {/* Vertical line for vertical orientation */}
                 {orientation === 'vertical' && index !== steps.length - 1 && (
                   <div
@@ -251,6 +259,27 @@ export default function AdmissionProcessTimeline({
                     {step.description}
                   </p>
                 </div>
+              </>
+            )
+
+            return hasLink ? (
+              <a
+                key={index}
+                href={step.link}
+                target={isExternal ? '_blank' : undefined}
+                rel={isExternal ? 'noopener noreferrer' : undefined}
+                className={wrapperClassName}
+                style={wrapperStyle}
+              >
+                {stepInner}
+              </a>
+            ) : (
+              <div
+                key={index}
+                className={wrapperClassName}
+                style={wrapperStyle}
+              >
+                {stepInner}
               </div>
             )
           })}
