@@ -193,7 +193,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       title: 'Best Engineering College in Coimbatore | JKKNCET — Admissions Open 2026-27',
       description:
         'Looking for the best engineering college near Coimbatore? JKKN College of Engineering and Technology is just 100-110 km away. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
-      canonicalPath: '/best-engineering-college-in-coimbatore/',
+      canonicalPath: '/coimbatore/',
       ogImage: '/images/city/coimbatore-og.jpg',
       twitterDescription:
         'Top engineering college near Coimbatore. Just 100-110 km away. Admissions open 2026-27.',
@@ -298,7 +298,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       title: 'Best Engineering College in Erode | JKKNCET — Admissions Open 2026-27',
       description:
         'Looking for the best engineering college near Erode? JKKN College of Engineering and Technology is just 30-40 km away. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
-      canonicalPath: '/best-engineering-college-in-erode/',
+      canonicalPath: '/erode/',
       ogImage: '/images/city/erode-og.jpg',
       twitterDescription:
         'Top engineering college near Erode. Just 30-40 km away. Admissions open 2026-27.',
@@ -403,7 +403,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       title: 'Best Engineering College in Namakkal | JKKNCET — Admissions Open 2026-27',
       description:
         'Looking for the best engineering college in Namakkal? JKKN College of Engineering and Technology is just 5-10 km away in Komarapalayam. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
-      canonicalPath: '/best-engineering-college-in-namakkal/',
+      canonicalPath: '/namakkal/',
       ogImage: '/images/city/namakkal-og.jpg',
       twitterDescription:
         'Top engineering college in Namakkal. Just 5-10 km away. Admissions open 2026-27.',
@@ -508,7 +508,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       title: 'Best Engineering College in Salem | JKKNCET — Admissions Open 2026-27',
       description:
         'Looking for the best engineering college near Salem? JKKN College of Engineering and Technology is just 40-50 km away. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
-      canonicalPath: '/best-engineering-college-in-salem/',
+      canonicalPath: '/salem/',
       ogImage: '/images/city/salem-og.jpg',
       twitterDescription:
         'Top engineering college near Salem. Just 40-50 km away. Admissions open 2026-27.',
@@ -613,7 +613,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       title: 'Best Engineering College in Tiruppur | JKKNCET — Admissions Open 2026-27',
       description:
         'Looking for the best engineering college near Tiruppur? JKKN College of Engineering and Technology is just 80-90 km away. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
-      canonicalPath: '/best-engineering-college-in-tiruppur/',
+      canonicalPath: '/tiruppur/',
       ogImage: '/images/city/tiruppur-og.jpg',
       twitterDescription:
         'Top engineering college near Tiruppur. Just 80-90 km away. Admissions open 2026-27.',
