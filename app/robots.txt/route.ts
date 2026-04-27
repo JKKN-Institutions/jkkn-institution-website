@@ -14,8 +14,8 @@
 import { getRobotsTxt } from '@/lib/config/robots-txt.config'
 import { NextResponse } from 'next/server'
 
-export const dynamic = 'force-static'
-export const revalidate = 86400 // Revalidate once per day
+export const dynamic = 'force-dynamic'
+export const revalidate = 3600 // 1-hour edge cache; env vars read at request time
 
 export async function GET() {
   const institutionId = process.env.NEXT_PUBLIC_INSTITUTION_ID || 'main'
@@ -28,7 +28,7 @@ export async function GET() {
   return new NextResponse(robotsTxt, {
     headers: {
       'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'public, max-age=86400, s-maxage=86400',
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
     },
   })
 }
