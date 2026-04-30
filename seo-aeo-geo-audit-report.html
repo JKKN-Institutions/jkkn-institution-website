@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JKKN Engineering — SEO / AEO / GEO Audit Report</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #e2e8f0;
+    line-height: 1.7;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    background: #1e293b;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+    padding: 40px;
+    text-align: center;
+    color: white;
+  }
+  header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  header p {
+    font-size: 1.05rem;
+    opacity: 0.95;
+  }
+  header .meta {
+    margin-top: 18px;
+    display: inline-flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  header .meta span {
+    background: rgba(255,255,255,0.15);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+  }
+  .content { padding: 40px; }
+
+  /* Score Ring Section */
+  .scores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  .score-card {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .score-card:hover { border-color: #7c3aed; transform: translateY(-4px); }
+  .score-card .label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #94a3b8;
+    margin-bottom: 10px;
+  }
+  .score-ring {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 12px;
+    position: relative;
+  }
+  .score-ring svg { transform: rotate(-90deg); }
+  .score-ring .score-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+  .score-card .grade {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 6px;
+  }
+  .grade-a { background: #065f46; color: #6ee7b7; }
+  .grade-b { background: #854d0e; color: #fde68a; }
+  .grade-c { background: #7c2d12; color: #fdba74; }
+  .grade-d { background: #7f1d1d; color: #fca5a5; }
+
+  /* Section Styles */
+  h2 {
+    color: #a78bfa;
+    font-size: 1.5rem;
+    margin: 30px 0 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #334155;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  h2 .badge {
+    background: #7c3aed;
+    color: white;
+    font-size: 0.85rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  h3 {
+    color: #c4b5fd;
+    font-size: 1.15rem;
+    margin: 20px 0 10px;
+  }
+
+  /* Issue / Info Boxes */
+  .box {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 14px;
+    border-left-width: 4px;
+  }
+  .box-critical { border-left-color: #ef4444; background: #3f0f0f; }
+  .box-critical h3 { color: #fca5a5; }
+  .box-high { border-left-color: #f97316; background: #3a1c0a; }
+  .box-high h3 { color: #fdba74; }
+  .box-medium { border-left-color: #f59e0b; background: #422006; }
+  .box-medium h3 { color: #fbbf24; }
+  .box-low { border-left-color: #3b82f6; background: #0c1f3d; }
+  .box-low h3 { color: #93c5fd; }
+  .box-good { border-left-color: #10b981; background: #042f1e; }
+  .box-good h3 { color: #6ee7b7; }
+
+  .box p { color: #cbd5e1; margin-bottom: 6px; }
+  .box .fix { color: #a5f3fc; font-size: 0.92rem; margin-top: 10px; }
+  .box .fix strong { color: #67e8f9; }
+
+  /* Metrics Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    background: #0f172a;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #334155;
+  }
+  th {
+    background: #1e293b;
+    color: #a78bfa;
+    font-size: 0.88rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  td { color: #cbd5e1; }
+  tr:last-child td { border-bottom: none; }
+
+  .status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+  .dot-green { background: #10b981; }
+  .dot-yellow { background: #f59e0b; }
+  .dot-red { background: #ef4444; }
+
+  code {
+    background: #0b1120;
+    color: #f472b6;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.88em;
+    border: 1px solid #334155;
+  }
+
+  /* Summary Pill */
+  .summary-bar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .summary-bar .pill {
+    flex: 1;
+    min-width: 140px;
+    background: #0f172a;
+    border: 1px solid #334155;
+    padding: 16px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .summary-bar .pill .n {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .summary-bar .pill .l { font-size: 0.85rem; color: #94a3b8; }
+  .n-red { color: #f87171; }
+  .n-orange { color: #fb923c; }
+  .n-yellow { color: #fbbf24; }
+  .n-blue { color: #60a5fa; }
+  .n-green { color: #34d399; }
+
+  /* Action Plan */
+  .action-list {
+    list-style: none;
+    padding: 0;
+  }
+  .action-list li {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .action-list .num {
+    background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .action-list .body { flex: 1; }
+  .action-list .body strong { color: #e2e8f0; display: block; margin-bottom: 4px; }
+  .action-list .body span { color: #94a3b8; font-size: 0.92rem; }
+  .action-list .impact {
+    background: #1e293b;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .impact-high { color: #fca5a5; }
+  .impact-med { color: #fbbf24; }
+  .impact-low { color: #93c5fd; }
+
+  footer {
+    background: #0f172a;
+    padding: 24px 40px;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.88rem;
+    border-top: 1px solid #334155;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>JKKN Engineering College — SEO / AEO / GEO Audit</h1>
+    <p>Triple-layer visibility score with live data from Website Auditor + PageSpeed Insights</p>
+    <div class="meta">
+      <span>URL: engg.jkkn.ac.in</span>
+      <span>Audited: 2026-04-20</span>
+      <span>Strategy: Mobile</span>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- Overall Health -->
+    <h2>Overall Health Score <span class="badge">78 / 100</span></h2>
+    <div class="summary-bar">
+      <div class="pill"><div class="n n-red">1</div><div class="l">Critical</div></div>
+      <div class="pill"><div class="n n-orange">0</div><div class="l">High</div></div>
+      <div class="pill"><div class="n n-yellow">2</div><div class="l">Medium</div></div>
+      <div class="pill"><div class="n n-blue">1</div><div class="l">Low</div></div>
+      <div class="pill"><div class="n n-green">4</div><div class="l">Info</div></div>
+    </div>
+
+    <!-- 3 Scores -->
+    <h2>Triple-Layer Scores</h2>
+    <div class="scores-grid">
+
+      <div class="score-card">
+        <div class="label">SEO Score</div>
+        <div class="score-ring">
+          <svg width="120" height="120">
+            <circle cx="60" cy="60" r="50" stroke="#334155" stroke-width="10" fill="none"/>
+            <circle cx="60" cy="60" r="50" stroke="#10b981" stroke-width="10" fill="none"
+              stroke-dasharray="314" stroke-dashoffset="47" stroke-linecap="round"/>
+          </svg>
+          <div class="score-text" style="color:#34d399;">85</div>
+        </div>
+        <div class="grade grade-b">Grade B+</div>
+        <p style="margin-top:10px;color:#94a3b8;font-size:0.88rem;">Search Engine Optimization</p>
+      </div>
+
+      <div class="score-card">
+        <div class="label">AEO Score</div>
+        <div class="score-ring">
+          <svg width="120" height="120">
+            <circle cx="60" cy="60" r="50" stroke="#334155" stroke-width="10" fill="none"/>
+            <circle cx="60" cy="60" r="50" stroke="#8b5cf6" stroke-width="10" fill="none"
+              stroke-dasharray="314" stroke-dashoffset="57" stroke-linecap="round"/>
+          </svg>
+          <div class="score-text" style="color:#a78bfa;">82</div>
+        </div>
+        <div class="grade grade-b">Grade B</div>
+        <p style="margin-top:10px;color:#94a3b8;font-size:0.88rem;">Answer Engine Optimization</p>
+      </div>
+
+      <div class="score-card">
+        <div class="label">GEO Score</div>
+        <div class="score-ring">
+          <svg width="120" height="120">
+            <circle cx="60" cy="60" r="50" stroke="#334155" stroke-width="10" fill="none"/>
+            <circle cx="60" cy="60" r="50" stroke="#ec4899" stroke-width="10" fill="none"
+              stroke-dasharray="314" stroke-dashoffset="69" stroke-linecap="round"/>
+          </svg>
+          <div class="score-text" style="color:#f472b6;">78</div>
+        </div>
+        <div class="grade grade-c">Grade C+</div>
+        <p style="margin-top:10px;color:#94a3b8;font-size:0.88rem;">Generative Engine Optimization</p>
+      </div>
+
+    </div>
+
+    <!-- PageSpeed Metrics -->
+    <h2>Core Web Vitals (Mobile)</h2>
+    <table>
+      <thead>
+        <tr><th>Metric</th><th>Value</th><th>Target</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Performance</td><td>40 / 100</td><td>&ge; 90</td><td><span class="status-dot dot-red"></span>Critical</td></tr>
+        <tr><td>Accessibility</td><td>100 / 100</td><td>&ge; 90</td><td><span class="status-dot dot-green"></span>Excellent</td></tr>
+        <tr><td>SEO</td><td>100 / 100</td><td>&ge; 90</td><td><span class="status-dot dot-green"></span>Excellent</td></tr>
+        <tr><td>Best Practices</td><td>100 / 100</td><td>&ge; 90</td><td><span class="status-dot dot-green"></span>Excellent</td></tr>
+        <tr><td>LCP (Largest Contentful Paint)</td><td>11.6s</td><td>&le; 2.5s</td><td><span class="status-dot dot-red"></span>Poor</td></tr>
+        <tr><td>FCP (First Contentful Paint)</td><td>1.5s</td><td>&le; 1.8s</td><td><span class="status-dot dot-green"></span>Good</td></tr>
+        <tr><td>CLS (Cumulative Layout Shift)</td><td>0.048</td><td>&le; 0.1</td><td><span class="status-dot dot-green"></span>Good</td></tr>
+        <tr><td>TBT (Total Blocking Time)</td><td>1,580ms</td><td>&le; 200ms</td><td><span class="status-dot dot-red"></span>Poor</td></tr>
+        <tr><td>Speed Index</td><td>8.4s</td><td>&le; 3.4s</td><td><span class="status-dot dot-red"></span>Poor</td></tr>
+        <tr><td>TTFB</td><td>40ms</td><td>&le; 200ms</td><td><span class="status-dot dot-green"></span>Excellent</td></tr>
+      </tbody>
+    </table>
+
+    <!-- SEO Breakdown -->
+    <h2>SEO Layer Analysis <span class="badge" style="background:#10b981;">85 / 100</span></h2>
+
+    <div class="box box-good">
+      <h3>What's Working</h3>
+      <p>Title tag: 56 chars <code>Best Private Engineering Colleges in Tamilnadu | JKKNCET</code></p>
+      <p>Canonical, robots meta, lang, viewport, charset — all present</p>
+      <p>OG + Twitter cards fully configured</p>
+      <p>HTTPS + HSTS preload + full security headers</p>
+      <p>30 images, <strong>all have alt text</strong> (100%)</p>
+      <p>6,442 words on homepage (very strong content depth)</p>
+      <p>H1 unique, clean H2-H4 hierarchy (44 headings total)</p>
+      <p>75 internal + 17 external links, 0 broken</p>
+    </div>
+
+    <div class="box box-critical">
+      <h3>CRITICAL — Mobile Performance 40/100</h3>
+      <p>LCP is <strong>11.6 seconds</strong> — users abandon before page renders. TBT 1,580ms blocks interaction.</p>
+      <p class="fix"><strong>Fix:</strong> Reduce unused JS (4.95s savings flagged). Code-split with <code>next/dynamic</code>. Optimise hero image with <code>priority</code> + <code>next/image</code>. Defer third-party scripts (GTM, Facebook Pixel).</p>
+    </div>
+
+    <div class="box box-critical">
+      <h3>CRITICAL — Robots.txt / Sitemap Misconfigured</h3>
+      <p>Sitemap URL inside robots.txt points to <code>http://localhost:3000/sitemap.xml</code> — that's a dev URL leaked to production.</p>
+      <p class="fix"><strong>Fix:</strong> Update robots.txt <code>Sitemap:</code> directive to <code>https://engg.jkkn.ac.in/sitemap.xml</code>. Submit sitemap to Google Search Console.</p>
+    </div>
+
+    <div class="box box-medium">
+      <h3>Meta Description Too Long (159 chars)</h3>
+      <p>Will truncate in SERPs. Target is 150-155.</p>
+      <p class="fix"><strong>Fix:</strong> Trim to: <em>"JKKNCET — one of Tamilnadu's best private engineering colleges. NAAC accredited, excellent placements, affordable fees."</em> (120 chars)</p>
+    </div>
+
+    <div class="box box-medium">
+      <h3>4 Images Missing Width/Height</h3>
+      <p>Causes CLS spikes on slower connections.</p>
+      <p class="fix"><strong>Fix:</strong> Add explicit <code>width</code> + <code>height</code> attributes to all <code>&lt;img&gt;</code> tags or use <code>next/image</code>.</p>
+    </div>
+
+    <div class="box box-low">
+      <h3>Repeated Anchor Text (5 instances)</h3>
+      <p>Multiple links use identical anchor, diluting internal link signals.</p>
+      <p class="fix"><strong>Fix:</strong> Diversify anchors — "Engineering Admissions 2026", "Apply for B.E CSE", etc.</p>
+    </div>
+
+    <!-- AEO Breakdown -->
+    <h2>AEO Layer Analysis <span class="badge" style="background:#8b5cf6;">82 / 100</span></h2>
+
+    <div class="box box-good">
+      <h3>Strong AEO Foundation</h3>
+      <p><strong>FAQPage schema</strong> present — Google can pull answers directly</p>
+      <p><strong>Speakable schema</strong> included in WebPage (voice-search ready)</p>
+      <p><strong>7 EducationalOccupationalProgram</strong> schemas (B.E CSE, IT, Mech, EEE, ECE, MBA, M.E)</p>
+      <p>6,442-word content gives AI strong answer surface area</p>
+      <p>Clean Q&amp;A structure in FAQ section</p>
+    </div>
+
+    <div class="box box-medium">
+      <h3>Missing Structured Data for AI Answers</h3>
+      <p>Critical schema types not found on homepage:</p>
+      <p>&bull; <code>BreadcrumbList</code> — hurts navigation context in AI answers</p>
+      <p>&bull; <code>Course</code> schema — course pages won't surface in ChatGPT/Perplexity course queries</p>
+      <p>&bull; <code>EducationalOrganization</code> — weaker entity signal vs <code>CollegeOrUniversity</code> alone</p>
+      <p class="fix"><strong>Fix:</strong> Use the <code>schema</code> skill to generate and deploy these. Add BreadcrumbList on every page, Course on each course page.</p>
+    </div>
+
+    <div class="box box-low">
+      <h3>Content Structure Opportunities</h3>
+      <p>Only 3 lists detected, 0 tables, 0 <code>&lt;strong&gt;</code> tags</p>
+      <p class="fix"><strong>Fix:</strong> Add comparison tables (fees, placements, eligibility), bulleted answer lists, bold key stats — AI engines extract these preferentially.</p>
+    </div>
+
+    <!-- GEO Breakdown -->
+    <h2>GEO Layer Analysis <span class="badge" style="background:#ec4899;">78 / 100</span></h2>
+
+    <div class="box box-good">
+      <h3>AI Crawler Strategy Deployed</h3>
+      <p>Robots.txt explicitly welcomes GPTBot, ClaudeBot, Google-Extended, PerplexityBot, etc.</p>
+      <p><code>CollegeOrUniversity</code> schema has 25 properties including <code>geo</code>, <code>areaServed</code>, <code>foundingDate</code>, <code>hasCredential</code>, <code>memberOf</code></p>
+      <p>Parent organization linkage via <code>parentOrganization</code> (JKKN Trust entity graph)</p>
+      <p><code>sameAs</code> points to Facebook, LinkedIn, Instagram, YouTube (identity resolution)</p>
+    </div>
+
+    <div class="box box-medium">
+      <h3>Missing LocalBusiness Schema</h3>
+      <p>GBP alignment weak — Google Maps + AI local queries won't cite JKKN Engineering confidently.</p>
+      <p class="fix"><strong>Fix:</strong> Add <code>LocalBusiness</code> schema with full NAP, opening hours, price range. Use <code>leo</code> skill for multi-location strategy.</p>
+    </div>
+
+    <div class="box box-medium">
+      <h3>Entity Authority Gaps</h3>
+      <p>No visible <code>knowsAbout</code>, <code>award</code> details, faculty <code>Person</code> schemas, or scholarship entities</p>
+      <p class="fix"><strong>Fix:</strong> Build entity graph — Person schema for principal/HoDs, Scholarship schema for financial aid, EducationalOrganization for department-level entities.</p>
+    </div>
+
+    <div class="box box-low">
+      <h3>GSC Permission Blocked</h3>
+      <p>Could not fetch ChatGPT/Perplexity citation data for <code>engg.jkkn.ac.in</code> — the audit account (aidental@) doesn't have GSC access to this property.</p>
+      <p class="fix"><strong>Fix:</strong> Grant GSC access to run <code>ai-citation-monitor</code> against this domain for true GEO scoring.</p>
+    </div>
+
+    <!-- Schema Inventory -->
+    <h2>Schema Inventory <span class="badge">12 deployed</span></h2>
+    <table>
+      <thead><tr><th>Schema Type</th><th>Status</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>CollegeOrUniversity</td><td><span class="status-dot dot-green"></span>Deployed (25 props)</td><td>Primary entity</td></tr>
+        <tr><td>WebSite</td><td><span class="status-dot dot-green"></span>Deployed (18 props)</td><td>Site identity + search action</td></tr>
+        <tr><td>WebPage</td><td><span class="status-dot dot-green"></span>Deployed</td><td>Page-level context + speakable</td></tr>
+        <tr><td>FAQPage</td><td><span class="status-dot dot-green"></span>Deployed</td><td>AI answer extraction</td></tr>
+        <tr><td>ItemList</td><td><span class="status-dot dot-green"></span>Deployed</td><td>Programs list</td></tr>
+        <tr><td>EducationalOccupationalProgram (&times;7)</td><td><span class="status-dot dot-green"></span>Deployed</td><td>Each course entity</td></tr>
+        <tr><td>BreadcrumbList</td><td><span class="status-dot dot-red"></span>Missing</td><td>Navigation for AI + SERP</td></tr>
+        <tr><td>Course</td><td><span class="status-dot dot-red"></span>Missing</td><td>Course-level rich results</td></tr>
+        <tr><td>LocalBusiness</td><td><span class="status-dot dot-red"></span>Missing</td><td>Local pack + maps</td></tr>
+        <tr><td>EducationalOrganization</td><td><span class="status-dot dot-yellow"></span>Partial (use subtype)</td><td>Entity hierarchy</td></tr>
+        <tr><td>Person (faculty)</td><td><span class="status-dot dot-red"></span>Missing</td><td>E-E-A-T signals</td></tr>
+        <tr><td>Scholarship</td><td><span class="status-dot dot-red"></span>Missing</td><td>Financial aid queries</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Priority Action Plan -->
+    <h2>Priority Action Plan <span class="badge" style="background:#f97316;">Next 30 days</span></h2>
+    <ul class="action-list">
+      <li>
+        <div class="num">1</div>
+        <div class="body">
+          <strong>Fix robots.txt sitemap URL (5 min)</strong>
+          <span>Change <code>localhost:3000</code> &rarr; <code>https://engg.jkkn.ac.in</code>. Submit to GSC.</span>
+        </div>
+        <div class="impact impact-high">HIGH IMPACT</div>
+      </li>
+      <li>
+        <div class="num">2</div>
+        <div class="body">
+          <strong>Performance emergency — reduce JS bundle (2-3 days)</strong>
+          <span>LCP 11.6s &rarr; target &lt;2.5s. Dynamic imports, defer GTM/Pixel, optimise hero image with next/image priority.</span>
+        </div>
+        <div class="impact impact-high">HIGH IMPACT</div>
+      </li>
+      <li>
+        <div class="num">3</div>
+        <div class="body">
+          <strong>Deploy missing schemas (1 day)</strong>
+          <span>BreadcrumbList + LocalBusiness + Course on every course page. Use the <code>schema</code> skill.</span>
+        </div>
+        <div class="impact impact-high">HIGH IMPACT</div>
+      </li>
+      <li>
+        <div class="num">4</div>
+        <div class="body">
+          <strong>Trim meta description to 120 chars (5 min)</strong>
+          <span>Prevents SERP truncation, improves CTR.</span>
+        </div>
+        <div class="impact impact-med">MED IMPACT</div>
+      </li>
+      <li>
+        <div class="num">5</div>
+        <div class="body">
+          <strong>Grant GSC access to audit account</strong>
+          <span>Unlocks query data + AI citation monitoring for real GEO scoring.</span>
+        </div>
+        <div class="impact impact-med">MED IMPACT</div>
+      </li>
+      <li>
+        <div class="num">6</div>
+        <div class="body">
+          <strong>Add fee tables + placement comparison (per course page)</strong>
+          <span>AI engines pull structured tables into answers &mdash; direct citation boost.</span>
+        </div>
+        <div class="impact impact-med">MED IMPACT</div>
+      </li>
+      <li>
+        <div class="num">7</div>
+        <div class="body">
+          <strong>Faculty Person schema + E-E-A-T page</strong>
+          <span>Principal, HoDs with credentials. Boosts trust signals for educational content.</span>
+        </div>
+        <div class="impact impact-low">LOW IMPACT</div>
+      </li>
+      <li>
+        <div class="num">8</div>
+        <div class="body">
+          <strong>Diversify anchor text on 5 repeated links</strong>
+          <span>Distribute internal link equity with descriptive anchors.</span>
+        </div>
+        <div class="impact impact-low">LOW IMPACT</div>
+      </li>
+    </ul>
+
+    <!-- Competitive Note -->
+    <h2>Quick Verdict</h2>
+    <div class="box box-medium">
+      <h3>Summary (Tanglish)</h3>
+      <p><strong>SEO 85 / AEO 82 / GEO 78</strong> — overall healthy foundation, but oru periya performance problem iruku.</p>
+      <p>Technical SEO, schema depth, content volume ellam super. Aana <strong>LCP 11.6s mobile</strong> is a conversion killer &mdash; visitors page load aagardhukulla bounce aagidraanga.</p>
+      <p>Robots.txt la localhost URL production ku vandhurukku &mdash; athu <strong>critical bug</strong>. Immediately fix pannunga.</p>
+      <p>AEO + GEO ku BreadcrumbList, Course, LocalBusiness schema add pannina 10+ points jump aagum.</p>
+      <p class="fix"><strong>Next step:</strong> Action Plan la top 3 items (robots.txt, performance, schemas) mudinjaa overall score 78 &rarr; 90+ ku pogum.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    Generated by Claude Code &middot; Live data from Website Auditor MCP + PageSpeed Insights<br>
+    Report: D:\JKKN Institutions\Main &amp; Engineering\jkkn-institution-website\seo-aeo-geo-audit-report.html
+  </footer>
+</div>
+</body>
+</html>

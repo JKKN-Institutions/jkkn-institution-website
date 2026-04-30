@@ -13,6 +13,8 @@ import { CourseCatalogSchema } from '@/components/seo/course-catalog-schema'
 import { EventsCalendarSchema } from '@/components/seo/events-calendar-schema'
 import { FAQSchema } from '@/components/seo/faq-schema'
 import { FAQSchemaAdmissions, FAQSchemaPlacements, FAQSchemaAbout, HowToSchemaAdmissions } from '@/components/seo/faq-schema-admissions'
+import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
+import { HOME_SPEAKABLE_SELECTORS } from '@/lib/seo/main-institution/page-content'
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from '@/lib/seo'
 import { resolvePageSchemas } from '@/lib/seo/schema-resolver'
@@ -127,6 +129,25 @@ function HomepageSchemas() {
       {schemas.howToAdmissions && <HowToSchemaAdmissions />}
       {schemas.faqPlacements && <FAQSchemaPlacements />}
       {schemas.faqAbout && <FAQSchemaAbout />}
+      {/* GEO/AEO augmentation (main only): homepage WebPage + speakable selectors */}
+      <MainInstitutionPageSchema
+        webpage={{
+          path: '/',
+          name: 'JKKN Institutions | 74+ Years of Educational Excellence',
+          description:
+            'JKKN Institutions — 7 colleges on one 70-acre campus in Komarapalayam, Tamil Nadu. 50+ programmes, 92%+ placements, 50,000+ alumni. NAAC accredited; established 1952 by the J.K.K. Rangammal Charitable Trust.',
+          keywords: [
+            'JKKN Institutions',
+            'JKKN',
+            'Komarapalayam college',
+            'Namakkal college',
+            'best college near Erode',
+            'NAAC accredited college Tamil Nadu',
+          ],
+          speakableSelectors: HOME_SPEAKABLE_SELECTORS,
+          breadcrumbs: [{ name: 'Home', url: '/' }],
+        }}
+      />
     </>
   )
 }

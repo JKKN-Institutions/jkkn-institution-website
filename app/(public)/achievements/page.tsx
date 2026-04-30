@@ -17,6 +17,8 @@ import {
   getAchievementCategories,
   getAchievementYears,
 } from '@/lib/data/achievements'
+import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
+import { ACHIEVEMENTS_FAQS } from '@/lib/seo/main-institution/page-content'
 
 export const metadata: Metadata = {
   title: 'Achievements',
@@ -48,6 +50,30 @@ export default async function AchievementsPage({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      {/* JSON-LD (main only): CollectionPage + BreadcrumbList + FAQ */}
+      <MainInstitutionPageSchema
+        webpage={{
+          path: '/achievements',
+          name: 'Our Achievements | JKKN Institutions',
+          description:
+            'Explore the outstanding achievements of JKKN Institutions faculty and students across research, teaching, competitions, and awards — 74+ years of academic excellence, 92%+ placement success, and 50,000+ alumni.',
+          pageType: 'CollectionPage',
+          keywords: [
+            'JKKN achievements',
+            'faculty achievements',
+            'student achievements',
+            'JKKN awards',
+            'research excellence',
+          ],
+          speakableSelectors: ['h1', '[data-speakable="achievements-intro"]'],
+          breadcrumbs: [
+            { name: 'Home', url: '/' },
+            { name: 'Achievements', url: '/achievements' },
+          ],
+        }}
+        faqs={ACHIEVEMENTS_FAQS}
+      />
+
       {/* Header Section */}
       <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 py-16 text-white">
         <div className="absolute inset-0 bg-black/10"></div>
