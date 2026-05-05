@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
 import ContactPage from '@/components/cms-blocks/content/contact-page'
+import { CONTACT_INFO } from '@/lib/institutions/engineering/admissions-data'
+import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
+import { CONTACT_FAQS } from '@/lib/seo/main-institution/page-content'
 
 export const metadata: Metadata = {
   title: 'Contact Us | JKKN Institutions',
@@ -44,7 +47,31 @@ export default function MainContactPage() {
   ]
 
   return (
-    <ContactPage
+    <>
+      {/* JSON-LD (main only): ContactPage + LocalBusiness + BreadcrumbList + FAQ */}
+      <MainInstitutionPageSchema
+        webpage={{
+          path: '/contact',
+          name: 'Contact JKKN Institutions',
+          description:
+            'Reach JKKN Institutions at +91-9345855001 or info@jkkn.ac.in. Campus: Natarajapuram, NH-544, Komarapalayam, Namakkal District, Tamil Nadu 638183. Open Monday to Saturday, 9:00 AM to 5:00 PM.',
+          pageType: 'ContactPage',
+          keywords: [
+            'JKKN contact',
+            'JKKN phone number',
+            'JKKN address',
+            'Komarapalayam college contact',
+          ],
+          speakableSelectors: ['h1', '[data-speakable="contact-details"]'],
+          breadcrumbs: [
+            { name: 'Home', url: '/' },
+            { name: 'Contact', url: '/contact' },
+          ],
+        }}
+        faqs={CONTACT_FAQS}
+        includeLocalBusiness
+      />
+      <ContactPage
       headerTitle="Contact Us"
       headerSubtitle="Get in touch with JKKN Institutions"
       headerPart1Color="#0b6d41"
@@ -69,5 +96,6 @@ export default function MainContactPage() {
       cardStyle="glass"
       showDecorations
     />
+    </>
   )
 }

@@ -258,19 +258,32 @@
       "mcp__vercel__web_fetch_vercel_url",
       "mcp__vercel__get_deployment_build_logs",
       "mcp__Engineering_College_Supabase_Project__execute_sql",
-      "mcp__Main_Supabase_Project__execute_sql"
+      "mcp__Main_Supabase_Project__execute_sql",
+      "mcp__website-auditor__audit_page",
+      "mcp__website-auditor__check_pagespeed",
+      "mcp__website-auditor__check_robots_sitemap",
+      "mcp__website-auditor__check_security_headers",
+      "mcp__seo-search-console__search_analytics",
+      "mcp__seo-search-console__inspect_url",
+      "mcp__seo-search-console__list_verified_sites",
+      "mcp__website-auditor__audit_institution",
+      "mcp__ai-citation-monitor__citation_stats",
+      "mcp__ai-citation-monitor__bulk_check_citations"
     ],
     "deny": [],
     "ask": []
   },
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
-    "supabase",
+    "Main Supabase Project",
+    "Dental College Supabase Project",
+    "Pharmacy College Supabase Project",
+    "Engineering College Supabase Project",
     "sequential-thinking",
-    "memory",
     "actor-critic-thinking",
+    "next-devtools",
     "chrome-devtools",
-    "next-devtools"
+    "shadcn"
   ],
   "hooks": {},
   "outputStyle": "Explanatory"

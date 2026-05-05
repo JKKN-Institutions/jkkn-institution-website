@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { AcademicCalendarPage } from '@/components/cms-blocks/content/academic-calendar-page'
 import { ACADEMIC_CALENDAR_DATA } from '@/lib/cms/templates/engineering/academic-calendar-data'
+import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
 
 export const metadata: Metadata = {
   title: 'Academic Calendar 2024-2025 | JKKN College of Engineering',
@@ -36,6 +37,28 @@ export const metadata: Metadata = {
 export default function AcademicCalendarRoutePage() {
   return (
     <main>
+      {/* JSON-LD (main only): WebPage + BreadcrumbList */}
+      <MainInstitutionPageSchema
+        webpage={{
+          path: '/others/academic-calendar',
+          name: 'Academic Calendar | JKKN Institutions',
+          description:
+            'Academic calendar for JKKN Institutions — semester schedule, examinations, holidays, and important academic events across the 7 colleges.',
+          keywords: [
+            'academic calendar',
+            'JKKN calendar',
+            'semester schedule',
+            'examination dates',
+            'college holidays',
+          ],
+          speakableSelectors: ['h1'],
+          breadcrumbs: [
+            { name: 'Home', url: '/' },
+            { name: 'Others', url: '/others' },
+            { name: 'Academic Calendar', url: '/others/academic-calendar' },
+          ],
+        }}
+      />
       <AcademicCalendarPage {...ACADEMIC_CALENDAR_DATA} />
     </main>
   )

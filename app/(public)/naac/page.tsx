@@ -1,6 +1,8 @@
 import { NAACPage } from '@/components/cms-blocks/content/naac-page'
 import { getInstitutionId } from '@/lib/config/multi-tenant'
 import type { Metadata } from 'next'
+import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
+import { ACCREDITATION_FAQS } from '@/lib/seo/main-institution/page-content'
 
 /**
  * NAAC Accreditation Page Route
@@ -57,5 +59,33 @@ async function getNAACData() {
 export default async function NAACPageRoute() {
   const data = await getNAACData()
 
-  return <NAACPage {...data} />
+  return (
+    <>
+      {/* JSON-LD (main only): WebPage + BreadcrumbList + FAQ */}
+      <MainInstitutionPageSchema
+        webpage={{
+          path: '/naac',
+          name: 'NAAC Accreditation | JKKN Institutions',
+          description:
+            'Comprehensive NAAC accreditation information for JKKN Institutions including all seven criteria, best practices, self-study reports, and data validation documentation.',
+          keywords: [
+            'NAAC',
+            'accreditation',
+            'IIQA',
+            'SSR',
+            'DVV',
+            'quality assessment',
+            'JKKN NAAC',
+          ],
+          speakableSelectors: ['h1', '[data-speakable="naac-intro"]'],
+          breadcrumbs: [
+            { name: 'Home', url: '/' },
+            { name: 'NAAC', url: '/naac' },
+          ],
+        }}
+        faqs={ACCREDITATION_FAQS}
+      />
+      <NAACPage {...data} />
+    </>
+  )
 }

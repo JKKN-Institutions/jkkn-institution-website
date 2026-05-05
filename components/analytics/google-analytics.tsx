@@ -1,18 +1,19 @@
 'use client'
 
 import Script from 'next/script'
+import { getGAMeasurementId } from '@/lib/seo/institution-seo-config'
 
 /**
- * Google Analytics — Multi-Tenant Aware
+ * Google Analytics 4 — Multi-Tenant Aware
  *
- * Reads GA measurement ID from environment variable.
- * Each institution's Vercel deployment can set its own NEXT_PUBLIC_GA_MEASUREMENT_ID.
- * Falls back to empty (no analytics) if not configured.
+ * Resolves GA measurement ID via getGAMeasurementId() which reads the
+ * per-institution config (NEXT_PUBLIC_INSTITUTION_ID), then falls back
+ * to NEXT_PUBLIC_GA_MEASUREMENT_ID. Returns undefined if neither is set,
+ * so analytics is fully skipped — no cross-institution data pollution.
  */
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-CHXSXSC9YY'
+const GA_MEASUREMENT_ID = getGAMeasurementId()
 
 export function GoogleAnalytics() {
-  // Skip if no measurement ID configured
   if (!GA_MEASUREMENT_ID) {
     return null
   }

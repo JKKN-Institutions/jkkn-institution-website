@@ -4,6 +4,8 @@ import {
 } from '@/components/cms-blocks/content/institution-distinctiveness-page'
 import { getInstitutionId } from '@/lib/config/multi-tenant'
 import type { Metadata } from 'next'
+import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
+import { DISTINCTIVENESS_FAQS } from '@/lib/seo/main-institution/page-content'
 
 /**
  * Institution Distinctiveness Page Route
@@ -66,5 +68,32 @@ export default async function InstitutionDistinctivenessPageRoute() {
   // Parse data through schema to apply defaults and ensure type safety
   const parsedData = InstitutionDistinctivenessPagePropsSchema.parse(data || {})
 
-  return <InstitutionDistinctivenessPage {...parsedData} />
+  return (
+    <>
+      {/* JSON-LD (main only): AboutPage + BreadcrumbList + FAQ */}
+      <MainInstitutionPageSchema
+        webpage={{
+          path: '/institution-distinctiveness',
+          name: 'Institution Distinctiveness | JKKN Institutions',
+          description:
+            "Discover what makes JKKN Institutions distinctive — 74+ years of educational excellence since 1952, a founder's vision for girls' education, NAAC accreditation, 92%+ placements, 50,000+ alumni, and 7 colleges on one 70-acre campus.",
+          pageType: 'AboutPage',
+          keywords: [
+            'JKKN institution distinctiveness',
+            'unique features',
+            'NAAC',
+            'JKKN founder',
+            'JKKN history',
+          ],
+          speakableSelectors: ['h1', '[data-speakable="distinctiveness-intro"]'],
+          breadcrumbs: [
+            { name: 'Home', url: '/' },
+            { name: 'Institution Distinctiveness', url: '/institution-distinctiveness' },
+          ],
+        }}
+        faqs={DISTINCTIVENESS_FAQS}
+      />
+      <InstitutionDistinctivenessPage {...parsedData} />
+    </>
+  )
 }

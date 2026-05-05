@@ -13,12 +13,58 @@ import { PartnersLogos } from '@/components/cms-blocks/content/partners-logos'
 import { FAQSchemaAdmissionsMain } from '@/components/seo/faq-schema-admissions'
 import { Compass } from 'lucide-react'
 import Image from 'next/image'
+import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
+import {
+  ADMISSIONS_HOWTO_NAME,
+  ADMISSIONS_HOWTO_DESCRIPTION,
+  ADMISSIONS_HOWTO_STEPS,
+  ADMISSIONS_SPEAKABLE_SELECTORS,
+} from '@/lib/seo/main-institution/page-content'
 
 export default function MainAdmissionsPage() {
   return (
     <main className="min-h-screen bg-white">
-      {/* JSON-LD: FAQPage */}
+      {/* JSON-LD: FAQPage (existing — admissions-specific FAQs) */}
       <FAQSchemaAdmissionsMain />
+
+      {/* JSON-LD: @graph — WebPage + BreadcrumbList + HowTo + Offer (fee) */}
+      <MainInstitutionPageSchema
+        webpage={{
+          path: '/admissions',
+          name: 'Admissions 2026-27 | JKKN Institutions',
+          description:
+            'Apply for JKKN Institutions admission 2026-27 — NAAC accredited, 7 colleges, 92%+ placements, scholarships available. Komarapalayam, Namakkal, Tamil Nadu.',
+          keywords: [
+            'JKKN admissions 2026',
+            'JKKN Institutions admission',
+            'Komarapalayam college admission',
+            'Namakkal college admission',
+            'NAAC accredited college Tamil Nadu',
+          ],
+          speakableSelectors: ADMISSIONS_SPEAKABLE_SELECTORS,
+          breadcrumbs: [
+            { name: 'Home', url: '/' },
+            { name: 'Admissions', url: '/admissions' },
+          ],
+        }}
+        howTo={{
+          name: ADMISSIONS_HOWTO_NAME,
+          description: ADMISSIONS_HOWTO_DESCRIPTION,
+          steps: ADMISSIONS_HOWTO_STEPS,
+        }}
+        offers={[
+          {
+            name: 'Admission 2026-27 Application',
+            description:
+              'Online admission application to UG and PG programmes across JKKN Institutions 7 colleges. Scholarships and education loans available for eligible students.',
+            url: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
+            priceCurrency: 'INR',
+            priceValidUntil: '2027-06-30',
+            availability: 'https://schema.org/InStock',
+            category: 'EducationalApplication',
+          },
+        ]}
+      />
 
       {/* 1. Hero */}
       <AdmissionHero

@@ -5,6 +5,7 @@ import { getContactInfo } from '@/app/actions/cms/contact'
 import { PageRenderer } from '@/components/cms-blocks/page-renderer'
 import { PrivacyPolicyContent } from '@/components/public/privacy-policy-content'
 import { getCurrentInstitution } from '@/lib/config/multi-tenant'
+import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPageBySlug('privacy-policy')
@@ -65,6 +66,22 @@ export default async function PrivacyPolicyPage() {
     contactInfo.find((c) => c.contact_type === 'address' && c.is_primary)?.contact_value ||
     'JKKN College of Engineering and Technology, Kumarapalayam, Namakkal District, Tamil Nadu - 638183, India'
 
+  const privacySchema = (
+    <MainInstitutionPageSchema
+      webpage={{
+        path: '/privacy-policy',
+        name: 'Privacy Policy | JKKN Institutions',
+        description:
+          'The Privacy Policy of JKKN Institutions explains how we collect, use, share, and protect personal information submitted through our website, admissions forms, and communication channels.',
+        keywords: ['privacy policy', 'data protection', 'JKKN privacy'],
+        breadcrumbs: [
+          { name: 'Home', url: '/' },
+          { name: 'Privacy Policy', url: '/privacy-policy' },
+        ],
+      }}
+    />
+  )
+
   // If CMS page exists, render it
   if (page && page.cms_page_blocks && page.cms_page_blocks.length > 0) {
     // Inject contact info into block props
@@ -83,15 +100,23 @@ export default async function PrivacyPolicyPage() {
       return block
     })
 
-    return <PageRenderer blocks={blocksWithContactInfo} />
+    return (
+      <>
+        {privacySchema}
+        <PageRenderer blocks={blocksWithContactInfo} />
+      </>
+    )
   }
 
   // Fallback to static component with dynamic contact info
   return (
-    <PrivacyPolicyContent
-      contactEmail={primaryEmail}
-      contactPhone={primaryPhone}
-      contactAddress={primaryAddress}
-    />
+    <>
+      {privacySchema}
+      <PrivacyPolicyContent
+        contactEmail={primaryEmail}
+        contactPhone={primaryPhone}
+        contactAddress={primaryAddress}
+      />
+    </>
   )
 }
