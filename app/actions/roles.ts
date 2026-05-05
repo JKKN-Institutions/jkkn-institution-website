@@ -11,8 +11,7 @@ const CreateRoleSchema = z.object({
   name: z
     .string()
     .min(1, 'Role name is required')
-    .max(50, 'Role name is too long')
-    .regex(/^[a-z_]+$/, 'Role name must be lowercase with underscores only'),
+    .max(50, 'Role name is too long'),
   display_name: z.string().min(1, 'Display name is required').max(100),
   description: z.string().optional(),
 })

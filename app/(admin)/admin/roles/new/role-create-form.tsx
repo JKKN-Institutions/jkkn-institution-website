@@ -72,19 +72,15 @@ export function RoleCreateForm() {
           type="text"
           placeholder="content_editor"
           required
-          pattern="[a-z_]+"
           className="bg-background/50 border-border/50 focus:border-primary/30 focus:ring-primary/20 font-mono"
           aria-invalid={!!state.errors?.name}
-          aria-describedby={state.errors?.name ? 'name-error' : 'name-help'}
+          aria-describedby={state.errors?.name ? 'name-error' : undefined}
         />
         {state.errors?.name && (
           <p id="name-error" className="text-sm text-red-600 dark:text-red-400">
             {state.errors.name[0]}
           </p>
         )}
-        <p id="name-help" className="text-xs text-muted-foreground">
-          Lowercase letters and underscores only (e.g., content_editor, department_head)
-        </p>
       </div>
 
       {/* Display Name Field */}

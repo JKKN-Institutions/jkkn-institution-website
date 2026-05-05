@@ -74,7 +74,7 @@ const NAV_GROUPS: NavGroup[] = [
           {
             id: 'faculty-new',
             label: 'Add Faculty',
-            href: '/faculty-admin/manage/new',
+            href: '/faculty-admin/manage/faculty/new',
             icon: UserPlus,
           },
         ],
@@ -128,15 +128,12 @@ function getActiveIds(pathname: string): { moduleId: string; subId: string } {
   }
 
   // Faculty add
-  if (pathname === '/faculty-admin/manage/new') {
+  if (pathname === '/faculty-admin/manage/faculty/new') {
     return { moduleId: 'faculty', subId: 'faculty-new' }
   }
 
-  // Faculty edit — /manage/[id]
-  if (
-    pathname.startsWith('/faculty-admin/manage/') &&
-    !pathname.startsWith('/faculty-admin/manage/blog')
-  ) {
+  // Faculty list and edit — /manage/faculty and /manage/faculty/[id]
+  if (pathname.startsWith('/faculty-admin/manage/faculty')) {
     return { moduleId: 'faculty', subId: 'faculty-members' }
   }
 

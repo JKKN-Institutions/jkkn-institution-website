@@ -73,7 +73,7 @@ export default async function FacultyManagePage() {
                   asChild
                   className="flex-1 sm:flex-initial bg-primary hover:bg-primary/90 shadow-brand"
                 >
-                  <Link href="/faculty-admin/manage/new">
+                  <Link href="/faculty-admin/manage/faculty/new">
                     <Plus className="mr-2 h-4 w-4" />
                     Add Faculty
                   </Link>
@@ -143,7 +143,7 @@ export default async function FacultyManagePage() {
             </div>
           </div>
           <Button asChild size="sm" className="bg-primary hover:bg-primary/90 shadow-brand">
-            <Link href="/faculty-admin/manage/new">
+            <Link href="/faculty-admin/manage/faculty/new">
               <UserPlus className="mr-2 h-4 w-4" />
               Add Faculty
             </Link>

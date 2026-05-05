@@ -16,7 +16,8 @@ import { createClient } from '@/lib/supabase/client'
 
 const PAGE_TITLES: Record<string, string> = {
   '/faculty-admin/manage': 'Dashboard',
-  '/faculty-admin/manage/new': 'Add Faculty',
+  '/faculty-admin/manage/faculty': 'Faculty Members',
+  '/faculty-admin/manage/faculty/new': 'Add Faculty',
   '/faculty-admin/manage/blog': 'Blog Posts',
   '/faculty-admin/manage/blog/new': 'New Blog Post',
   '/faculty-admin/manage/blog/categories': 'Blog Categories',
@@ -28,13 +29,7 @@ function getPageTitle(pathname: string): string {
   if (PAGE_TITLES[pathname]) return PAGE_TITLES[pathname]
 
   if (pathname.match(/^\/faculty-admin\/manage\/blog\/[^/]+\/edit$/)) return 'Edit Blog Post'
-  if (
-    pathname.startsWith('/faculty-admin/manage/') &&
-    !pathname.startsWith('/faculty-admin/manage/blog') &&
-    pathname !== '/faculty-admin/manage/new'
-  ) {
-    return 'Edit Faculty'
-  }
+  if (pathname.match(/^\/faculty-admin\/manage\/faculty\/[^/]+$/)) return 'Edit Faculty'
 
   return 'Faculty Portal'
 }
