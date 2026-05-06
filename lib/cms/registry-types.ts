@@ -1565,6 +1565,47 @@ export const ScholarshipMatrixPropsSchema = z.object({
 })
 export type ScholarshipMatrixProps = z.infer<typeof ScholarshipMatrixPropsSchema> & BaseBlockProps
 
+// --- ProgrammeFeeMatrix ---
+// Programme-by-quota fee table grouped into categories (UG, PG, Lateral Entry…).
+// Each category has its own table with Government Quota / Management Quota
+// columns and an optional Remarks column. Used on engineering/main fee pages.
+export const ProgrammeFeeMatrixRowSchema = z.object({
+  program: z.string(),
+  programLabel: z.string().optional(),
+  governmentQuota: z.union([z.string(), z.number()]).default('-'),
+  managementQuota: z.union([z.string(), z.number()]).default(0),
+  remarks: z.string().optional(),
+})
+export type ProgrammeFeeMatrixRow = z.infer<typeof ProgrammeFeeMatrixRowSchema>
+
+export const ProgrammeFeeMatrixCategorySchema = z.object({
+  id: z.string().optional(),
+  label: z.string(),
+  sublabel: z.string().optional(),
+  icon: z.enum(['graduation', 'book', 'layers']).optional(),
+  showRemarks: z.boolean().optional(),
+  rows: z.array(ProgrammeFeeMatrixRowSchema).default([]),
+})
+export type ProgrammeFeeMatrixCategory = z.infer<typeof ProgrammeFeeMatrixCategorySchema>
+
+export const ProgrammeFeeMatrixPropsSchema = z.object({
+  // Optional intro header
+  badge: z.string().optional(),
+  title: z.string().optional(),
+  subtitle: z.string().optional(),
+
+  // Data
+  categories: z.array(ProgrammeFeeMatrixCategorySchema).default([]),
+
+  // Display
+  currencySymbol: z.string().default('₹'),
+  showQuotaExplainer: z.boolean().default(true),
+
+  // Footer notes (HTML allowed)
+  footerNotes: z.array(z.string()).default([]),
+})
+export type ProgrammeFeeMatrixProps = z.infer<typeof ProgrammeFeeMatrixPropsSchema> & BaseBlockProps
+
 // --- DocumentsChecklist ---
 export const DocumentItemSchema = z.object({
   text: z.string(),

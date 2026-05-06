@@ -17,7 +17,7 @@ export const TRUST_STATS: TrustStat[] = [
 // ─── Overview ────────────────────────────────────────────────────────────────
 
 export const OVERVIEW =
-  'JKKN College of Engineering and Technology (JKKNCET) offers admissions to undergraduate (B.E / B.Tech) and postgraduate (M.E & MBA) programmes. Admissions are governed by TNEA counselling administered by Anna University, Chennai, and direct admission under Management Quota as per AICTE and Tamil Nadu Government norms.The college is AICTE approved, NAAC A accredited, and Autonomous — affiliated to Anna University. Students benefit from a placement-oriented curriculum, experienced faculty, state-of-the-art laboratories, and fully-residential hostel facilities for boys and girls.'
+  'JKKN College of Engineering and Technology (JKKNCET) offers admissions to undergraduate (B.E / B.Tech) and postgraduate (M.E & MBA) programmes. Admissions are governed by TNEA counselling administered by Anna University, Chennai, and direct admission under Management Quota as per AICTE and Tamil Nadu Government norms.The college is AICTE approved, NAAC Accredited, and Autonomous — affiliated to Anna University. Students benefit from a placement-oriented curriculum, experienced faculty, state-of-the-art laboratories, and fully-residential hostel facilities for boys and girls.'
 
 // ─── Programmes Table ────────────────────────────────────────────────────────
 
@@ -54,7 +54,7 @@ export const PROGRAMS_TABLE: ProgramTableRow[] = [
   {
     programme: 'B.E Mechanical Engineering',
     duration: '4 Years',
-    intake: 120,
+    intake: 60,
     annualFee: 45000,
     level: 'UG',
   },
@@ -68,14 +68,14 @@ export const PROGRAMS_TABLE: ProgramTableRow[] = [
   {
     programme: 'M.E Computer Science & Engineering',
     duration: '2 Years',
-    intake: 60,
+    intake: 12,
     annualFee: 30000,
     level: 'PG',
   },
   {
     programme: 'M.B.A — Master of Business Administration',
     duration: '2 Years',
-    intake: 120,
+    intake: 60,
     annualFee: 65000,
     level: 'PG',
   },
@@ -508,7 +508,7 @@ export const PROGRAMS: EngineeringProgram[] = [
     name: 'B.E Mechanical Engineering',
     level: 'UG',
     duration: '4 Years (8 Semesters)',
-    seats: 120,
+    seats: 60,
     specializations: ['CAD/CAM', 'Thermal Engineering', 'Manufacturing Technology'],
     coursePageUrl: '/courses-offered/ug/be-mechanical',
   },
@@ -526,7 +526,7 @@ export const PROGRAMS: EngineeringProgram[] = [
     name: 'M.E Computer Science & Engineering',
     level: 'PG',
     duration: '2 Years (4 Semesters)',
-    seats: 60,
+    seats: 12,
     specializations: ['Advanced Algorithms', 'Data Science', 'Network Security'],
     coursePageUrl: '/courses-offered/pg/me-cse',
   },
@@ -535,7 +535,7 @@ export const PROGRAMS: EngineeringProgram[] = [
     name: 'M.B.A — Master of Business Administration',
     level: 'PG',
     duration: '2 Years (4 Semesters)',
-    seats: 120,
+    seats: 60,
     specializations: ['Finance', 'Marketing', 'Human Resource Management'],
     coursePageUrl: '/courses-offered/pg/mba',
   },
