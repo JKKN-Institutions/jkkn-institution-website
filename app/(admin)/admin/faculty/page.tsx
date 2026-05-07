@@ -1,8 +1,7 @@
 import { getAllFaculty } from '@/app/actions/faculty'
-import { Button } from '@/components/ui/button'
-import { Plus, Users } from 'lucide-react'
-import Link from 'next/link'
+import { Users, Cloud } from 'lucide-react'
 import { FacultyTable } from './faculty-table'
+import { SyncFromMyJKKNButton } from './sync-button'
 
 export default async function FacultyPage() {
   const faculty = await getAllFaculty()
@@ -27,12 +26,7 @@ export default async function FacultyPage() {
               </p>
             </div>
           </div>
-          <Button asChild className="gap-2">
-            <Link href="/admin/faculty/new">
-              <Plus className="w-4 h-4" />
-              Add Faculty
-            </Link>
-          </Button>
+          <SyncFromMyJKKNButton />
         </div>
       </div>
 

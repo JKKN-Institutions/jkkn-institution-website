@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import {
   Users,
   UserPlus,
@@ -6,9 +5,7 @@ import {
   BarChart3,
   Eye,
   FileText,
-  Plus,
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { getAllFaculty } from '@/app/actions/faculty'
 import { FacultyManageTable } from '../faculty-manage-table'
 
@@ -47,17 +44,11 @@ export default async function FacultyMembersPage() {
               </div>
             </div>
 
-            {/* Action button */}
-            <div className="flex items-center gap-2 sm:flex-shrink-0">
-              <Button
-                asChild
-                className="flex-1 sm:flex-initial bg-primary hover:bg-primary/90 shadow-brand"
-              >
-                <Link href="/faculty-admin/manage/faculty/new">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Faculty
-                </Link>
-              </Button>
+            {/* Action area: faculty data is managed in MyJKKN now */}
+            <div className="flex items-center gap-2 sm:flex-shrink-0 max-w-md">
+              <div className="text-xs text-muted-foreground bg-blue-50 border border-blue-100 rounded-md px-3 py-2">
+                Faculty data is now managed in <strong>MyJKKN</strong>. Edits there sync to this site every 15 minutes.
+              </div>
             </div>
           </div>
 
@@ -121,12 +112,6 @@ export default async function FacultyMembersPage() {
               </p>
             </div>
           </div>
-          <Button asChild size="sm" className="bg-primary hover:bg-primary/90 shadow-brand">
-            <Link href="/faculty-admin/manage/faculty/new">
-              <UserPlus className="mr-2 h-4 w-4" />
-              Add Faculty
-            </Link>
-          </Button>
         </div>
         <FacultyManageTable faculty={faculty} />
       </div>

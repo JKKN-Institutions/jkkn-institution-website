@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useTransition } from 'react'
-import { useRouter } from 'next/navigation'
+// Read-only faculty table. Faculty data is managed in MyJKKN; this admin
+// shows current state + deep-links to MyJKKN for edits.
+
+import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -14,36 +16,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { MoreHorizontal, Pencil, Trash2, Eye, EyeOff, Globe, Search } from 'lucide-react'
-import { deleteFaculty, toggleFacultyStatus, toggleFacultyActive } from '@/app/actions/faculty'
+import { ExternalLink, Globe, Search, Cloud, Archive } from 'lucide-react'
 import type { FacultyRow } from '@/lib/schemas/faculty'
 
 interface FacultyTableProps {
   faculty: FacultyRow[]
 }
 
+const MYJKKN_STAFF_EDIT_URL = (id: string) => `https://www.jkkn.ai/admin/staff/${id}`
+
 export function FacultyTable({ faculty }: FacultyTableProps) {
-  const router = useRouter()
-  const [isPending, startTransition] = useTransition()
   const [search, setSearch] = useState('')
-  const [deleteId, setDeleteId] = useState<string | null>(null)
 
   const filtered = faculty.filter(f =>
     f.full_name.toLowerCase().includes(search.toLowerCase()) ||
@@ -51,32 +34,8 @@ export function FacultyTable({ faculty }: FacultyTableProps) {
     f.designation.toLowerCase().includes(search.toLowerCase())
   )
 
-  const handleDelete = async () => {
-    if (!deleteId) return
-    startTransition(async () => {
-      await deleteFaculty(deleteId)
-      setDeleteId(null)
-      router.refresh()
-    })
-  }
-
-  const handleToggleStatus = (id: string, currentStatus: string) => {
-    startTransition(async () => {
-      await toggleFacultyStatus(id, currentStatus === 'published' ? 'draft' : 'published')
-      router.refresh()
-    })
-  }
-
-  const handleToggleActive = (id: string, isActive: boolean) => {
-    startTransition(async () => {
-      await toggleFacultyActive(id, !isActive)
-      router.refresh()
-    })
-  }
-
   return (
     <>
-      {/* Search */}
       <div className="flex items-center gap-4 mb-4">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -87,9 +46,11 @@ export function FacultyTable({ faculty }: FacultyTableProps) {
             className="pl-9"
           />
         </div>
+        <p className="text-xs text-muted-foreground">
+          Faculty data is read-only. Edits happen in MyJKKN; sync runs every 15 min.
+        </p>
       </div>
 
-      {/* Desktop Table — hidden on mobile */}
       <div className="hidden sm:block rounded-lg border">
         <Table>
           <TableHeader>
@@ -98,21 +59,21 @@ export function FacultyTable({ faculty }: FacultyTableProps) {
               <TableHead>Name</TableHead>
               <TableHead>Designation</TableHead>
               <TableHead>Department</TableHead>
+              <TableHead>Source</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Active</TableHead>
-              <TableHead className="w-[70px]">Actions</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
-                  {search ? 'No faculty found matching your search' : 'No faculty added yet'}
+                  {search ? 'No faculty found matching your search' : 'No faculty yet — sync from MyJKKN to populate.'}
                 </TableCell>
               </TableRow>
             ) : (
               filtered.map((f, index) => (
-                <TableRow key={f.id} className={isPending ? 'opacity-50' : ''}>
+                <TableRow key={f.id}>
                   <TableCell className="text-muted-foreground">{index + 1}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-3">
@@ -128,48 +89,45 @@ export function FacultyTable({ faculty }: FacultyTableProps) {
                   <TableCell className="text-sm">{f.designation}</TableCell>
                   <TableCell className="text-sm">{f.department}</TableCell>
                   <TableCell>
-                    <Badge variant={f.status === 'published' ? 'default' : 'secondary'}>
-                      {f.status}
-                    </Badge>
+                    {f.synced_from_api ? (
+                      <Badge variant="default" className="gap-1 bg-blue-100 text-blue-700 hover:bg-blue-100">
+                        <Cloud className="w-3 h-3" /> MyJKKN
+                      </Badge>
+                    ) : (
+                      <Badge variant="outline" className="gap-1 text-muted-foreground">
+                        <Archive className="w-3 h-3" /> Legacy
+                      </Badge>
+                    )}
                   </TableCell>
                   <TableCell>
-                    <Badge variant={f.is_active ? 'default' : 'outline'} className={f.is_active ? 'bg-green-100 text-green-700 hover:bg-green-100' : ''}>
-                      {f.is_active ? 'Active' : 'Inactive'}
-                    </Badge>
+                    <div className="flex flex-col gap-1">
+                      <Badge variant={f.status === 'published' ? 'default' : 'secondary'} className="w-fit">
+                        {f.status}
+                      </Badge>
+                      {!f.is_active && (
+                        <Badge variant="outline" className="w-fit text-[10px]">Inactive</Badge>
+                      )}
+                    </div>
                   </TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem asChild>
-                          <Link href={`/admin/faculty/${f.id}`}>
-                            <Pencil className="mr-2 h-4 w-4" /> Edit
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      {f.status === 'published' && f.is_active && f.slug && (
+                        <Button variant="ghost" size="sm" asChild>
+                          <Link href={`/faculty/${f.slug}`} target="_blank" rel="noopener noreferrer">
+                            <Globe className="w-4 h-4" />
                           </Link>
-                        </DropdownMenuItem>
-                        {f.status === 'published' && f.is_active && (
-                          <DropdownMenuItem asChild>
-                            <Link href={`/faculty/${f.slug}`} target="_blank">
-                              <Globe className="mr-2 h-4 w-4" /> View Live
-                            </Link>
-                          </DropdownMenuItem>
-                        )}
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={() => handleToggleStatus(f.id, f.status)}>
-                          {f.status === 'published' ? <><EyeOff className="mr-2 h-4 w-4" /> Unpublish</> : <><Eye className="mr-2 h-4 w-4" /> Publish</>}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleToggleActive(f.id, f.is_active)}>
-                          {f.is_active ? <><EyeOff className="mr-2 h-4 w-4" /> Deactivate</> : <><Eye className="mr-2 h-4 w-4" /> Activate</>}
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-destructive" onClick={() => setDeleteId(f.id)}>
-                          <Trash2 className="mr-2 h-4 w-4" /> Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                        </Button>
+                      )}
+                      {f.synced_from_api ? (
+                        <Button variant="outline" size="sm" asChild>
+                          <a href={MYJKKN_STAFF_EDIT_URL(f.id)} target="_blank" rel="noopener noreferrer">
+                            Edit in MyJKKN <ExternalLink className="ml-1 w-3 h-3" />
+                          </a>
+                        </Button>
+                      ) : (
+                        <span className="text-xs text-muted-foreground italic px-2">read-only</span>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               ))
@@ -178,17 +136,17 @@ export function FacultyTable({ faculty }: FacultyTableProps) {
         </Table>
       </div>
 
-      {/* Mobile Card List — visible only on mobile */}
+      {/* Mobile card list */}
       <div className="sm:hidden space-y-3">
         {filtered.length === 0 ? (
           <div className="text-center py-10 text-muted-foreground text-sm">
-            {search ? 'No faculty found' : 'No faculty added yet'}
+            {search ? 'No faculty found' : 'No faculty yet'}
           </div>
         ) : (
           filtered.map((f) => (
-            <div key={f.id} className={`border rounded-xl p-4 bg-card ${isPending ? 'opacity-50' : ''}`}>
+            <div key={f.id} className="border rounded-xl p-4 bg-card">
               <div className="flex items-start justify-between gap-3">
-                <Link href={`/admin/faculty/${f.id}`} className="flex items-center gap-3 flex-1 min-w-0">
+                <div className="flex items-center gap-3 flex-1 min-w-0">
                   <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-sm font-bold shrink-0">
                     {f.full_name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
                   </div>
@@ -196,65 +154,32 @@ export function FacultyTable({ faculty }: FacultyTableProps) {
                     <p className="font-semibold text-sm truncate">{f.full_name}</p>
                     <p className="text-xs text-muted-foreground truncate">{f.designation}</p>
                   </div>
-                </Link>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem asChild>
-                      <Link href={`/admin/faculty/${f.id}`}><Pencil className="mr-2 h-4 w-4" /> Edit</Link>
-                    </DropdownMenuItem>
-                    {f.status === 'published' && f.is_active && (
-                      <DropdownMenuItem asChild>
-                        <Link href={`/faculty/${f.slug}`} target="_blank"><Globe className="mr-2 h-4 w-4" /> View Live</Link>
-                      </DropdownMenuItem>
-                    )}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => handleToggleStatus(f.id, f.status)}>
-                      {f.status === 'published' ? <><EyeOff className="mr-2 h-4 w-4" /> Unpublish</> : <><Eye className="mr-2 h-4 w-4" /> Publish</>}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleToggleActive(f.id, f.is_active)}>
-                      {f.is_active ? <><EyeOff className="mr-2 h-4 w-4" /> Deactivate</> : <><Eye className="mr-2 h-4 w-4" /> Activate</>}
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-destructive" onClick={() => setDeleteId(f.id)}>
-                      <Trash2 className="mr-2 h-4 w-4" /> Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-              <div className="mt-3 flex items-center justify-between">
-                <p className="text-xs text-muted-foreground truncate max-w-[50%]">{f.department}</p>
-                <div className="flex items-center gap-1.5">
-                  <Badge variant={f.status === 'published' ? 'default' : 'secondary'} className="text-[10px] px-1.5 py-0">{f.status}</Badge>
-                  <Badge variant={f.is_active ? 'default' : 'outline'} className={`text-[10px] px-1.5 py-0 ${f.is_active ? 'bg-green-100 text-green-700 hover:bg-green-100' : ''}`}>{f.is_active ? 'Active' : 'Inactive'}</Badge>
                 </div>
               </div>
+              <div className="mt-3 flex items-center justify-between">
+                <p className="text-xs text-muted-foreground truncate max-w-[40%]">{f.department}</p>
+                <div className="flex items-center gap-1.5">
+                  {f.synced_from_api ? (
+                    <Badge variant="default" className="text-[10px] px-1.5 py-0 bg-blue-100 text-blue-700 hover:bg-blue-100">MyJKKN</Badge>
+                  ) : (
+                    <Badge variant="outline" className="text-[10px] px-1.5 py-0">Legacy</Badge>
+                  )}
+                  <Badge variant={f.status === 'published' ? 'default' : 'secondary'} className="text-[10px] px-1.5 py-0">{f.status}</Badge>
+                </div>
+              </div>
+              {f.synced_from_api && (
+                <div className="mt-3">
+                  <Button variant="outline" size="sm" asChild className="w-full">
+                    <a href={MYJKKN_STAFF_EDIT_URL(f.id)} target="_blank" rel="noopener noreferrer">
+                      Edit in MyJKKN <ExternalLink className="ml-1 w-3 h-3" />
+                    </a>
+                  </Button>
+                </div>
+              )}
             </div>
           ))
         )}
       </div>
-
-      {/* Delete Confirmation */}
-      <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete Faculty Member</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will permanently delete this faculty member. This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </>
   )
 }

@@ -1,21 +1,24 @@
 'use server'
 
+// app/actions/faculty.ts
+//
+// As of 2026-05-07, faculty data is managed exclusively in MyJKKN. Writes from
+// this site have been removed; only reads remain. The sync engine
+// (lib/sync/faculty-sync.ts) keeps the local `faculty` table mirrored from the
+// API on a 15-min cron + manual trigger. The legacy admin module is now
+// read-only and deep-links to MyJKKN for edits.
+
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { createPublicSupabaseClient } from '@/lib/supabase/server'
-import { revalidatePath } from 'next/cache'
-import { FacultyFormSchema, type FacultyFormData, type FacultyRow } from '@/lib/schemas/faculty'
-import { z } from 'zod'
+import type { FacultyRow } from '@/lib/schemas/faculty'
 
 // ============================================
-// READ operations
+// READ operations only
 // ============================================
 
-/**
- * Get all faculty (admin - includes drafts)
- */
+/** Get all faculty (admin — includes drafts + inactive). */
 export async function getAllFaculty(): Promise<FacultyRow[]> {
   const supabase = await createServerSupabaseClient()
-
   const { data, error } = await supabase
     .from('faculty')
     .select('*')
@@ -25,16 +28,12 @@ export async function getAllFaculty(): Promise<FacultyRow[]> {
     console.error('Error fetching faculty:', error)
     return []
   }
-
   return (data || []) as FacultyRow[]
 }
 
-/**
- * Get published faculty (public pages)
- */
+/** Get published faculty (public pages). */
 export async function getPublishedFaculty(department?: string): Promise<FacultyRow[]> {
   const supabase = createPublicSupabaseClient()
-
   let query = supabase
     .from('faculty')
     .select('*')
@@ -42,26 +41,19 @@ export async function getPublishedFaculty(department?: string): Promise<FacultyR
     .eq('status', 'published')
     .order('display_order', { ascending: true })
 
-  if (department) {
-    query = query.eq('department', department)
-  }
+  if (department) query = query.eq('department', department)
 
   const { data, error } = await query
-
   if (error) {
     console.error('Error fetching published faculty:', error)
     return []
   }
-
   return (data || []) as FacultyRow[]
 }
 
-/**
- * Get a single faculty by ID (admin)
- */
+/** Get a single faculty by ID (admin). */
 export async function getFacultyById(id: string): Promise<FacultyRow | null> {
   const supabase = await createServerSupabaseClient()
-
   const { data, error } = await supabase
     .from('faculty')
     .select('*')
@@ -72,16 +64,12 @@ export async function getFacultyById(id: string): Promise<FacultyRow | null> {
     console.error('Error fetching faculty:', error)
     return null
   }
-
   return data as FacultyRow
 }
 
-/**
- * Get a single faculty by slug (public)
- */
+/** Get a single faculty by slug (public). */
 export async function getFacultyBySlug(slug: string): Promise<FacultyRow | null> {
   const supabase = createPublicSupabaseClient()
-
   const { data, error } = await supabase
     .from('faculty')
     .select('*')
@@ -94,16 +82,12 @@ export async function getFacultyBySlug(slug: string): Promise<FacultyRow | null>
     console.error('Error fetching faculty by slug:', error)
     return null
   }
-
   return data as FacultyRow
 }
 
-/**
- * Get unique departments from published faculty
- */
+/** Get unique departments from published faculty. */
 export async function getFacultyDepartments(): Promise<string[]> {
   const supabase = createPublicSupabaseClient()
-
   const { data, error } = await supabase
     .from('faculty')
     .select('department')
@@ -115,17 +99,12 @@ export async function getFacultyDepartments(): Promise<string[]> {
     console.error('Error fetching departments:', error)
     return []
   }
-
-  const departments = [...new Set((data || []).map(d => d.department))]
-  return departments
+  return [...new Set((data || []).map(d => d.department))]
 }
 
-/**
- * Get related faculty (same department, excluding current)
- */
+/** Get related faculty (same department, excluding current). */
 export async function getRelatedFaculty(department: string, excludeSlug: string, limit = 4): Promise<FacultyRow[]> {
   const supabase = createPublicSupabaseClient()
-
   const { data, error } = await supabase
     .from('faculty')
     .select('*')
@@ -140,256 +119,5 @@ export async function getRelatedFaculty(department: string, excludeSlug: string,
     console.error('Error fetching related faculty:', error)
     return []
   }
-
   return (data || []) as FacultyRow[]
-}
-
-// ============================================
-// WRITE operations
-// ============================================
-
-type ActionResult = { success: boolean; error?: string; data?: FacultyRow }
-
-/**
- * Create a new faculty member
- */
-export async function createFaculty(payload: FacultyFormData): Promise<ActionResult> {
-  const supabase = await createServerSupabaseClient()
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { success: false, error: 'Unauthorized' }
-
-  try {
-    const validated = FacultyFormSchema.parse(payload)
-
-    // Check slug uniqueness
-    const { data: existing } = await supabase
-      .from('faculty')
-      .select('id')
-      .eq('slug', validated.slug)
-      .maybeSingle()
-
-    if (existing) {
-      return { success: false, error: 'A faculty member with this URL slug already exists' }
-    }
-
-    const { data, error } = await supabase
-      .from('faculty')
-      .insert({
-        ...validated,
-        status: 'draft',
-      })
-      .select()
-      .single()
-
-    if (error) {
-      console.error('Error creating faculty:', error)
-      return { success: false, error: error.message }
-    }
-
-    revalidatePath('/admin/faculty')
-    revalidatePath('/faculty')
-
-    return { success: true, data: data as FacultyRow }
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      const firstError = error.issues[0]
-      return { success: false, error: `${firstError.path.join('.')}: ${firstError.message}` }
-    }
-    return { success: false, error: 'Failed to create faculty' }
-  }
-}
-
-/**
- * Update an existing faculty member
- */
-export async function updateFaculty(id: string, payload: FacultyFormData): Promise<ActionResult> {
-  const supabase = await createServerSupabaseClient()
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { success: false, error: 'Unauthorized' }
-
-  try {
-    const validated = FacultyFormSchema.parse(payload)
-
-    // Check slug uniqueness (excluding current record)
-    const { data: existing } = await supabase
-      .from('faculty')
-      .select('id')
-      .eq('slug', validated.slug)
-      .neq('id', id)
-      .maybeSingle()
-
-    if (existing) {
-      return { success: false, error: 'A faculty member with this URL slug already exists' }
-    }
-
-    const { data, error } = await supabase
-      .from('faculty')
-      .update(validated)
-      .eq('id', id)
-      .select()
-      .single()
-
-    if (error) {
-      console.error('Error updating faculty:', error)
-      return { success: false, error: error.message }
-    }
-
-    revalidatePath('/admin/faculty')
-    revalidatePath('/faculty')
-    revalidatePath(`/faculty/${validated.slug}`)
-
-    return { success: true, data: data as FacultyRow }
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      const firstError = error.issues[0]
-      return { success: false, error: `${firstError.path.join('.')}: ${firstError.message}` }
-    }
-    return { success: false, error: 'Failed to update faculty' }
-  }
-}
-
-/**
- * Delete a faculty member
- */
-export async function deleteFaculty(id: string): Promise<{ success: boolean; error?: string }> {
-  const supabase = await createServerSupabaseClient()
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { success: false, error: 'Unauthorized' }
-
-  const { error } = await supabase
-    .from('faculty')
-    .delete()
-    .eq('id', id)
-
-  if (error) {
-    console.error('Error deleting faculty:', error)
-    return { success: false, error: error.message }
-  }
-
-  revalidatePath('/admin/faculty')
-  revalidatePath('/faculty')
-
-  return { success: true }
-}
-
-/**
- * Toggle faculty publish status (draft/published)
- */
-export async function toggleFacultyStatus(id: string, status: 'draft' | 'published'): Promise<{ success: boolean; error?: string }> {
-  const supabase = await createServerSupabaseClient()
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { success: false, error: 'Unauthorized' }
-
-  const { error } = await supabase
-    .from('faculty')
-    .update({ status })
-    .eq('id', id)
-
-  if (error) {
-    console.error('Error toggling faculty status:', error)
-    return { success: false, error: error.message }
-  }
-
-  revalidatePath('/admin/faculty')
-  revalidatePath('/faculty')
-
-  return { success: true }
-}
-
-/**
- * Toggle faculty active/inactive
- */
-export async function toggleFacultyActive(id: string, isActive: boolean): Promise<{ success: boolean; error?: string }> {
-  const supabase = await createServerSupabaseClient()
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { success: false, error: 'Unauthorized' }
-
-  const { error } = await supabase
-    .from('faculty')
-    .update({ is_active: isActive })
-    .eq('id', id)
-
-  if (error) {
-    console.error('Error toggling faculty active:', error)
-    return { success: false, error: error.message }
-  }
-
-  revalidatePath('/admin/faculty')
-  revalidatePath('/faculty')
-
-  return { success: true }
-}
-
-/**
- * Upload faculty photo to Supabase Storage
- */
-export async function uploadFacultyPhoto(facultyId: string, formData: FormData): Promise<{ success: boolean; url?: string; error?: string }> {
-  try {
-    const supabase = await createServerSupabaseClient()
-
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return { success: false, error: 'Unauthorized — please sign in again' }
-
-    const file = formData.get('photo') as File | null
-    if (!file || !file.size) return { success: false, error: 'No file provided' }
-
-    // Validate file size
-    if (file.size > 5 * 1024 * 1024) {
-      return { success: false, error: 'File size must be under 5MB' }
-    }
-
-    // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
-    if (!allowedTypes.includes(file.type)) {
-      return { success: false, error: 'Only JPG, PNG, and WebP images are allowed' }
-    }
-
-    // Convert File to Buffer for reliable server-side upload
-    const arrayBuffer = await file.arrayBuffer()
-    const buffer = Buffer.from(arrayBuffer)
-
-    const ext = file.name.split('.').pop() || 'jpg'
-    const filePath = `${facultyId}/photo.${ext}`
-
-    const { error: uploadError } = await supabase.storage
-      .from('faculty-photos')
-      .upload(filePath, buffer, {
-        upsert: true,
-        contentType: file.type,
-      })
-
-    if (uploadError) {
-      console.error('Storage upload error:', uploadError)
-      return { success: false, error: `Upload failed: ${uploadError.message}` }
-    }
-
-    const { data: { publicUrl } } = supabase.storage
-      .from('faculty-photos')
-      .getPublicUrl(filePath)
-
-    // Update the faculty record with the photo URL
-    const { error: updateError } = await supabase
-      .from('faculty')
-      .update({ photo_url: publicUrl })
-      .eq('id', facultyId)
-
-    if (updateError) {
-      console.error('Error updating photo URL:', updateError)
-      return { success: false, error: updateError.message }
-    }
-
-    revalidatePath('/admin/faculty')
-    revalidatePath('/faculty-admin/manage')
-    revalidatePath('/faculty')
-
-    return { success: true, url: publicUrl }
-  } catch (err) {
-    console.error('Photo upload exception:', err)
-    return { success: false, error: err instanceof Error ? err.message : 'Unexpected error during upload' }
-  }
 }

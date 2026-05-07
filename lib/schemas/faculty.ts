@@ -157,6 +157,10 @@ export interface FacultyRow extends FacultyFormData {
   status: 'draft' | 'published'
   created_at: string
   updated_at: string
+  // Sync metadata (added 2026-05-07 for MyJKKN API sync)
+  synced_from_api: boolean
+  staff_id: string | null
+  last_synced_at: string | null
 }
 
 // ============================================
