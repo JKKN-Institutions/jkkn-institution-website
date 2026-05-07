@@ -106,6 +106,37 @@ export async function syncFacultyFromMyJKKN(): Promise<SyncReport> {
         }
       }
 
+      // ── Slug-collision guard ────────────────────────────────────────
+      // The faculty table has a UNIQUE constraint on slug. If a non-API
+      // local row already holds the slug we want, we have to free it first
+      // (rename + soft-delete) — the upsert ON CONFLICT (id) clause won't
+      // resolve a slug collision because the ID is different.
+      if (formData.slug) {
+        const { data: collision } = await sb
+          .from('faculty')
+          .select('id, slug, synced_from_api')
+          .eq('slug', formData.slug)
+          .neq('id', meta.apiId)
+          .maybeSingle()
+        if (collision && !collision.synced_from_api) {
+          const newLegacySlug = `${collision.slug}-legacy-${(collision.id as string).slice(0, 8)}`
+          const { error: renameErr } = await sb
+            .from('faculty')
+            .update({
+              slug: newLegacySlug,
+              is_active: false,
+              status: 'draft',
+            })
+            .eq('id', collision.id as string)
+          if (renameErr) {
+            throw new Error(`free slug "${formData.slug}" from legacy ${collision.id}: ${renameErr.message}`)
+          }
+          console.log(
+            `[faculty-sync] freed slug "${formData.slug}" by renaming legacy ${collision.id} -> "${newLegacySlug}" (soft-deleted)`
+          )
+        }
+      }
+
       // Upsert into faculty (id == API UUID = stable identity)
       const row = {
         id: meta.apiId,
