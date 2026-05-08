@@ -1,6 +1,16 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
 import { createMiddlewareClient } from '@/lib/supabase/middleware'
+
+// Lightweight anon client for faculty slug-history lookups.
+// Public-read RLS on faculty_slug_history makes the anon key sufficient,
+// and the module-level instance avoids re-initialising on every request.
+const slugLookupClient = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  { auth: { persistSession: false } }
+)
 
 // Route permission mapping
 const routePermissions: Record<string, string> = {
@@ -38,6 +48,32 @@ const guestAllowedRoutes = new Set(['/admin', '/auth/access-denied'])
 export async function proxy(request: NextRequest) {
   // CRITICAL: Extract pathname FIRST, before creating any clients
   const pathname = request.nextUrl.pathname
+
+  // Faculty slug-rename redirect.
+  // When MyJKKN admins rename a faculty slug, the sync engine records the
+  // old->new mapping in public.faculty_slug_history. Run this BEFORE any
+  // auth work so public faculty pages don't pay the cost of a session check.
+  const facultySlugMatch = pathname.match(/^\/faculty\/([^/]+)\/?$/)
+  if (facultySlugMatch) {
+    const oldSlug = decodeURIComponent(facultySlugMatch[1])
+    try {
+      const { data } = await slugLookupClient
+        .from('faculty_slug_history')
+        .select('new_slug')
+        .eq('old_slug', oldSlug)
+        .maybeSingle()
+      if (data?.new_slug) {
+        const url = request.nextUrl.clone()
+        url.pathname = `/faculty/${data.new_slug}`
+        return NextResponse.redirect(url, 301)
+      }
+    } catch {
+      // Lookup failure — fall through to normal handling so we never
+      // block a valid request because of a transient DB error.
+    }
+    // No history match: faculty pages are public, skip auth pipeline.
+    return NextResponse.next()
+  }
 
   // CRITICAL: Skip ALL middleware logic for OAuth callback
   // Must happen BEFORE creating Supabase client to avoid cookie interference
