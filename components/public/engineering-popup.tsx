@@ -70,15 +70,24 @@ export function EngineeringPopup() {
           <X size={18} color="#111" />
         </button>
 
-        {/* Popup Image */}
-        <Image
-          src="/images/engineering/popup-image-engineering.jpg"
-          alt="JKKN Engineering College"
-          width={600}
-          height={400}
-          style={{ width: '100%', height: 'auto', borderRadius: '10px', display: 'block', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
-          priority
-        />
+        {/* Popup Image — clicking opens the JKKN online application form in a new tab */}
+        <a
+          href="https://www.jkkn.ai/apply/jkkn-admission-2026"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => setOpen(false)}
+          aria-label="Apply for JKKN Engineering admissions 2026-27"
+          style={{ display: 'block', cursor: 'pointer', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
+        >
+          <Image
+            src="/images/engineering/campaign-2026.jpg"
+            alt="JKKN Engineering — Admissions Open 2026-27. Click to apply online."
+            width={1080}
+            height={1080}
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+            priority
+          />
+        </a>
       </div>
     </div>,
     document.body

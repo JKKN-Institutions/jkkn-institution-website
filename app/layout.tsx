@@ -107,7 +107,7 @@ export default function RootLayout({
   })()
 
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+    <html lang="en" className="light" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         {/* Preconnect to Supabase CDN for faster LCP - institution-specific */}
         <link rel="preconnect" href={supabaseOrigin} crossOrigin="anonymous" />

@@ -11,7 +11,6 @@ import { getLogoSizes, getLogoUrl, getLogoAltText } from '@/app/actions/cms/appe
 import { getFooterSettings } from '@/app/actions/cms/footer'
 import { getContactInfo } from '@/app/actions/cms/contact'
 import { getSocialLinks } from '@/app/actions/cms/social'
-import { PublicThemeProvider } from '@/components/providers/public-theme-provider'
 import { getCurrentInstitution } from '@/lib/config/multi-tenant'
 import { filterNavigationByFeatures } from '@/lib/utils/navigation-filter'
 import { EngineeringPopup } from '@/components/public/engineering-popup'
@@ -58,8 +57,7 @@ export default async function PublicLayout({
   const primaryEmail = contactInfo.find(c => c.contact_type === 'email' && c.is_primary)
 
   return (
-    <PublicThemeProvider>
-      <div className='min-h-screen bg-cream flex flex-col relative'>
+    <div className='min-h-screen bg-cream flex flex-col relative'>
         {/* Site Header with CMS Navigation and Logo Settings - Fixed glassmorphic */}
         <SiteHeader
           navigation={navigation}
@@ -97,6 +95,5 @@ export default async function PublicLayout({
         {/* Engineering College Popup */}
         <EngineeringPopup />
       </div>
-    </PublicThemeProvider>
   );
 }
