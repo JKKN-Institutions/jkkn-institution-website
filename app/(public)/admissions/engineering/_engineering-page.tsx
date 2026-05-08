@@ -164,7 +164,7 @@ export default async function EngineeringAdmissionsMain() {
           {[
             'AICTE Approved',
             'Anna University Affiliated',
-            'NAAC A Accredited',
+            'NAAC Accredited',
             'Autonomous College',
             'UGC Recognized',
           ].map((badge) => (
