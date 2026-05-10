@@ -363,6 +363,36 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
+      // === City Landing Pages: /best-engineering-college-in-{city} → /{city} ===
+      // Old URLs were indexed by Google and linked externally. 301-redirect each
+      // long-form city URL to the new short district-only URL to preserve SEO equity.
+      // Also covers trailing-slash variant since canonical pages historically had it.
+      {
+        source: '/best-engineering-college-in-coimbatore',
+        destination: '/coimbatore',
+        permanent: true,
+      },
+      {
+        source: '/best-engineering-college-in-erode',
+        destination: '/erode',
+        permanent: true,
+      },
+      {
+        source: '/best-engineering-college-in-namakkal',
+        destination: '/namakkal',
+        permanent: true,
+      },
+      {
+        source: '/best-engineering-college-in-salem',
+        destination: '/salem',
+        permanent: true,
+      },
+      {
+        source: '/best-engineering-college-in-tiruppur',
+        destination: '/tiruppur',
+        permanent: true,
+      },
+
       // === About Section Restructuring ===
       {
         source: '/about-the-institutions',

@@ -160,7 +160,7 @@ function getCityPageUrls(): SitemapUrl[] {
   if (institutionId !== 'engineering') return []
 
   return CITY_PAGES_CONFIG.map((city) => {
-    const path = `/best-engineering-college-in-${city.slug}/`
+    const path = `/${city.slug}/`
     const config = getSitemapConfig(path)
     return {
       url: buildSitemapUrl(path),

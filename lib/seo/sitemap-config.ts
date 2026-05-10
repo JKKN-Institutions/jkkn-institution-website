@@ -150,7 +150,7 @@ export const PATTERN_PRIORITIES: PatternPriorityConfig[] = [
   },
   // City landing pages - high priority for local SEO (engineering institution only)
   {
-    pattern: /^\/best-engineering-college-in-.+/,
+    pattern: /^\/(coimbatore|erode|namakkal|salem|tiruppur)\/?$/,
     priority: 0.85,
     changeFrequency: 'monthly',
   },

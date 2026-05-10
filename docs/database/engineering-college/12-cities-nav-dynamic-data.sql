@@ -72,11 +72,11 @@ SELECT
   now()
 FROM parent,
 (VALUES
-  ('Coimbatore', 'nav-cities-coimbatore', '/best-engineering-college-in-coimbatore', 1),
-  ('Erode',      'nav-cities-erode',      '/best-engineering-college-in-erode',      2),
-  ('Namakkal',   'nav-cities-namakkal',   '/best-engineering-college-in-namakkal',   3),
-  ('Salem',      'nav-cities-salem',      '/best-engineering-college-in-salem',      4),
-  ('Tiruppur',   'nav-cities-tiruppur',   '/best-engineering-college-in-tiruppur',   5)
+  ('Coimbatore', 'nav-cities-coimbatore', '/coimbatore', 1),
+  ('Erode',      'nav-cities-erode',      '/erode',      2),
+  ('Namakkal',   'nav-cities-namakkal',   '/namakkal',   3),
+  ('Salem',      'nav-cities-salem',      '/salem',      4),
+  ('Tiruppur',   'nav-cities-tiruppur',   '/tiruppur',   5)
 ) AS city(title, slug, external_url, sort_order)
 ON CONFLICT (slug) DO UPDATE SET
   show_in_navigation = true,

@@ -23,7 +23,6 @@ interface Course {
   intake: number
   duration: string
   level: 'UG' | 'PG'
-  annualFee: string
   eligibility: string
 }
 
@@ -34,7 +33,6 @@ const COURSES: Course[] = [
     intake: 60,
     duration: '4 Years',
     level: 'UG',
-    annualFee: '₹85,000 – ₹95,000',
     eligibility: '10+2 with Maths, Physics; TNEA counselling',
   },
   {
@@ -43,7 +41,6 @@ const COURSES: Course[] = [
     intake: 60,
     duration: '4 Years',
     level: 'UG',
-    annualFee: '₹95,000',
     eligibility: '10+2 with Maths, Physics; TNEA counselling',
   },
   {
@@ -52,7 +49,6 @@ const COURSES: Course[] = [
     intake: 120,
     duration: '4 Years',
     level: 'UG',
-    annualFee: '₹95,000',
     eligibility: '10+2 with Maths, Physics; TNEA counselling',
   },
   {
@@ -61,7 +57,6 @@ const COURSES: Course[] = [
     intake: 60,
     duration: '4 Years',
     level: 'UG',
-    annualFee: '₹95,000',
     eligibility: '10+2 with Maths, Physics; TNEA counselling',
   },
   {
@@ -70,25 +65,22 @@ const COURSES: Course[] = [
     intake: 60,
     duration: '4 Years',
     level: 'UG',
-    annualFee: '₹95,000',
     eligibility: '10+2 with Maths, Physics; TNEA counselling',
   },
   {
     icon: GraduationCap,
     name: 'M.E. Computer Science & Engineering',
-    intake: 60,
+    intake: 12,
     duration: '2 Years',
     level: 'PG',
-    annualFee: '₹85,000',
     eligibility: 'B.E./B.Tech in relevant discipline; TANCET/GATE',
   },
   {
     icon: Briefcase,
     name: 'M.B.A (Master of Business Administration)',
-    intake: 120,
+    intake: 60,
     duration: '2 Years',
     level: 'PG',
-    annualFee: '₹80,000',
     eligibility: 'Any degree; TANCET/MAT/CAT',
   },
 ]
@@ -126,10 +118,6 @@ export default function CityProgrammesGrid({ cityConfig }: CityProgrammesGridPro
                 <div className="course-detail">
                   <span className="detail-label">Intake</span>
                   <span className="detail-value">{course.intake} seats</span>
-                </div>
-                <div className="course-detail">
-                  <span className="detail-label">Annual Fee</span>
-                  <span className="detail-value">{course.annualFee}</span>
                 </div>
               </div>
 

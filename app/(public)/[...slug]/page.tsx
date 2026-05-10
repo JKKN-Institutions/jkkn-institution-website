@@ -31,31 +31,28 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const slugPath = slug.join('/')
   const path = `/${slugPath}`
 
-  // City landing page metadata
-  const cityMetaMatch = slugPath.match(/^best-engineering-college-in-(.+)$/)
-  if (cityMetaMatch) {
-    const cityConfig = getCityConfig(cityMetaMatch[1])
-    if (cityConfig) {
-      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://engg.jkkn.ac.in'
-      return {
-        title: cityConfig.seo.title,
-        description: cityConfig.seo.description,
-        alternates: { canonical: `${siteUrl}${cityConfig.seo.canonicalPath}` },
-        openGraph: {
-          title: cityConfig.seo.title,
-          description: cityConfig.seo.description,
-          url: `${siteUrl}${cityConfig.seo.canonicalPath}`,
-          siteName: 'JKKN College of Engineering and Technology',
-          type: 'website',
-          locale: 'en_IN',
-          images: [{ url: `${siteUrl}${cityConfig.seo.ogImage}`, width: 1200, height: 630 }],
-        },
-        twitter: {
-          card: 'summary_large_image',
-          title: cityConfig.seo.title,
-          description: cityConfig.seo.twitterDescription,
-        },
-      }
+  // City landing page metadata — short URLs like /salem/, /coimbatore/
+  const cityConfigMeta = slug.length === 1 ? getCityConfig(slug[0]) : undefined
+  if (cityConfigMeta) {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://engg.jkkn.ac.in'
+    return {
+      title: cityConfigMeta.seo.title,
+      description: cityConfigMeta.seo.description,
+      alternates: { canonical: `${siteUrl}${cityConfigMeta.seo.canonicalPath}` },
+      openGraph: {
+        title: cityConfigMeta.seo.title,
+        description: cityConfigMeta.seo.description,
+        url: `${siteUrl}${cityConfigMeta.seo.canonicalPath}`,
+        siteName: 'JKKN College of Engineering and Technology',
+        type: 'website',
+        locale: 'en_IN',
+        images: [{ url: `${siteUrl}${cityConfigMeta.seo.ogImage}`, width: 1200, height: 630 }],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: cityConfigMeta.seo.title,
+        description: cityConfigMeta.seo.twitterDescription,
+      },
     }
   }
 
@@ -169,18 +166,14 @@ export default async function DynamicPage({ params }: PageProps) {
     notFound()
   }
 
-  // City landing pages (engineering-only): /best-engineering-college-in-{city}
-  const cityMatch = slugPath.match(/^best-engineering-college-in-(.+)$/)
-  if (cityMatch) {
-    const citySlug = cityMatch[1]
-    const cityConfig = getCityConfig(citySlug)
-    if (cityConfig) {
-      const institutionId = process.env.NEXT_PUBLIC_INSTITUTION_ID
-      if (institutionId && institutionId !== 'engineering') {
-        notFound()
-      }
-      return <CityLandingPage cityConfig={cityConfig} />
+  // City landing pages (engineering-only): /{city} — e.g. /salem/, /coimbatore/
+  const cityConfig = slug.length === 1 ? getCityConfig(slug[0]) : undefined
+  if (cityConfig) {
+    const institutionId = process.env.NEXT_PUBLIC_INSTITUTION_ID
+    if (institutionId && institutionId !== 'engineering') {
+      notFound()
     }
+    return <CityLandingPage cityConfig={cityConfig} />
   }
 
   // Fetch the page with visibility check

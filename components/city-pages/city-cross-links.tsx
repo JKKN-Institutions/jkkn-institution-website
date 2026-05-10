@@ -24,7 +24,7 @@ export default function CityCrossLinks({ cityConfig }: CityCrossLinksProps) {
           {cityConfig.crossLinks.map((link) => (
             <Link
               key={link.slug}
-              href={`/best-engineering-college-in-${link.slug}/`}
+              href={`/${link.slug}/`}
               className="city-link-card"
               aria-label={`Best engineering college in ${link.displayName} — ${link.distanceLabel} from JKKNCET`}
             >
