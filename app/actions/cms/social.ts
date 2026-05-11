@@ -13,43 +13,62 @@ export interface SocialLink {
   display_order: number
 }
 
-/**
- * Get all active social links, ordered by display_order
- */
-export async function getSocialLinks(): Promise<SocialLink[]> {
-  const supabase = await createServerSupabaseClient()
-
-  const { data, error } = await supabase
-    .from('site_social_links')
-    .select('*')
-    .eq('is_active', true)
-    .order('display_order', { ascending: true })
-
-  if (error) {
-    console.error('Error fetching social links:', error)
-    return []
+function logSupabaseError(context: string, error: unknown) {
+  if (error && typeof error === 'object') {
+    const e = error as { message?: string; code?: string; hint?: string; details?: string }
+    if (e.code === '42P01') return
+    console.error(`[${context}]`, {
+      message: e.message,
+      code: e.code,
+      hint: e.hint,
+      details: e.details,
+    })
+  } else {
+    console.error(`[${context}]`, error)
   }
-
-  return data || []
 }
 
-/**
- * Get all social links (including inactive), for admin use
- */
-export async function getAllSocialLinks(): Promise<SocialLink[]> {
-  const supabase = await createServerSupabaseClient()
+export async function getSocialLinks(): Promise<SocialLink[]> {
+  try {
+    const supabase = await createServerSupabaseClient()
 
-  const { data, error } = await supabase
-    .from('site_social_links')
-    .select('*')
-    .order('display_order', { ascending: true })
+    const { data, error } = await supabase
+      .from('site_social_links')
+      .select('*')
+      .eq('is_active', true)
+      .order('display_order', { ascending: true })
 
-  if (error) {
-    console.error('Error fetching all social links:', error)
+    if (error) {
+      logSupabaseError('getSocialLinks', error)
+      return []
+    }
+
+    return data || []
+  } catch (err) {
+    logSupabaseError('getSocialLinks:throw', err)
     return []
   }
+}
 
-  return data || []
+export async function getAllSocialLinks(): Promise<SocialLink[]> {
+  try {
+    const supabase = await createServerSupabaseClient()
+
+    const { data, error } = await supabase
+      .from('site_social_links')
+      .select('*')
+      .order('display_order', { ascending: true })
+
+    if (error) {
+      logSupabaseError('getAllSocialLinks', error)
+      return []
+    }
+
+    return data || []
+  } catch (err) {
+    logSupabaseError('getAllSocialLinks:throw', err)
+    return []
+  }
 }
 
 /**
