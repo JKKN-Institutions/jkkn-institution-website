@@ -14,6 +14,7 @@ import { getSocialLinks } from '@/app/actions/cms/social'
 import { getCurrentInstitution } from '@/lib/config/multi-tenant'
 import { filterNavigationByFeatures } from '@/lib/utils/navigation-filter'
 import { EngineeringPopup } from '@/components/public/engineering-popup'
+import { UChatWidget } from '@/components/public/uchat-widget'
 
 /**
  * Cache Components handles revalidation automatically
@@ -82,6 +83,9 @@ export default async function PublicLayout({
 
         {/* Google Analytics 4 */}
         <GoogleAnalytics />
+
+        {/* uChat Webchat — Main + Engineering institutions only */}
+        <UChatWidget />
 
         {/* Site Footer with CMS Settings */}
         <SiteFooter settings={footerSettings} />
