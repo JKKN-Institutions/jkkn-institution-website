@@ -102,13 +102,13 @@ const nextConfig: NextConfig = {
               "default-src 'self'",
               // unpkg.com hosts @babel/standalone, loaded at runtime by custom-component-wrapper
               // because its 22 MB UMD bundle breaks Turbopack's chunk-item JSON serializer.
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://unpkg.com https://www.uchat.com.au https://*.uchat.com.au https://*.dfktv2.com https://js.stripe.com https://m.stripe.network",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.uchat.com.au https://*.dfktv2.com",
-              "font-src 'self' https://fonts.gstatic.com https://*.uchat.com.au https://*.dfktv2.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://unpkg.com https://js.stripe.com https://m.stripe.network",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https:",
               "media-src 'self' https:",
-              "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://analytics.google.com https://www.facebook.com https://*.uchat.com.au wss://*.uchat.com.au https://*.dfktv2.com wss://*.dfktv2.com https://api.stripe.com https://m.stripe.network",
-              "frame-src 'self' https://www.youtube.com https://www.google.com https://calendar.google.com https://jobs.cvviz.com https://www.facebook.com https://*.uchat.com.au https://*.dfktv2.com https://js.stripe.com https://hooks.stripe.com https://m.stripe.network",
+              "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://analytics.google.com https://www.facebook.com https://api.stripe.com https://m.stripe.network",
+              "frame-src 'self' https://www.youtube.com https://www.google.com https://calendar.google.com https://jobs.cvviz.com https://www.facebook.com https://js.stripe.com https://hooks.stripe.com https://m.stripe.network",
               "frame-ancestors 'self'",
               "object-src 'none'",
               "base-uri 'self'",
