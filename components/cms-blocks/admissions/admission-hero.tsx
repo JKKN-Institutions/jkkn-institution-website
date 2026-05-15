@@ -230,11 +230,18 @@ export default function AdmissionHero({
             {titleParts.before}
             {titleParts.accent && (
               <span
-                className="bg-gradient-to-r from-brand-accent via-gold to-brand-accent bg-clip-text text-transparent"
-                style={{
-                  WebkitBackgroundClip: 'text',
-                  backgroundSize: '200% auto',
-                }}
+                className={cn(
+                  !isDark &&
+                    'bg-gradient-to-r from-brand-accent via-gold to-brand-accent bg-clip-text text-transparent'
+                )}
+                style={
+                  isDark
+                    ? undefined
+                    : {
+                        WebkitBackgroundClip: 'text',
+                        backgroundSize: '200% auto',
+                      }
+                }
               >
                 {titleParts.accent}
               </span>

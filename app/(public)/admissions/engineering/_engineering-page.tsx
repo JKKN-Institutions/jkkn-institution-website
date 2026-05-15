@@ -226,6 +226,13 @@ export default async function EngineeringAdmissionsMain() {
             </tbody>
           </table>
         </div>
+        <p className="mt-4 text-xs text-gray-400">
+          * Refer to the{' '}
+          <Link href="/admissions/fee-structure" className="text-[#0b6d41] underline underline-offset-2">
+            Fee Structure page
+          </Link>{' '}
+          for branch-wise Government Quota (GQ) and Management Quota (MQ) tuition fees.
+        </p>
       </Section>
 
       {/* ── 03: Eligibility Criteria ──────────────────────────────────────── */}
@@ -371,7 +378,7 @@ export default async function EngineeringAdmissionsMain() {
         </p>
       </Section>
 
-      {/* ── 07: Important Dates ───────────────────────────────────────────── */}
+      {/* ── 06: Important Dates ───────────────────────────────────────────── */}
       <Section gray>
         <SectionHeading title="Important Dates 2026" />
         <div className="space-y-0">
@@ -406,16 +413,16 @@ export default async function EngineeringAdmissionsMain() {
         </div>
       </Section>
 
-      {/* ── 09: FAQ ───────────────────────────────────────────────────────── */}
+      {/* ── 07: FAQ ───────────────────────────────────────────────────────── */}
       <Section>
         <SectionHeading title="Frequently Asked Questions" />
         <p className="text-sm text-gray-500 -mt-4 mb-8">
-       
+
         </p>
         <EngineeringAdmissionsFAQ faqs={faqs} />
       </Section>
 
-      {/* ── 10: Contact ───────────────────────────────────────────────────── */}
+      {/* ── 08: Contact ───────────────────────────────────────────────────── */}
       <Section gray id="contact">
         <SectionHeading title="Contact for Campus Queries" />
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">

@@ -91,54 +91,121 @@ function CategoryHeading({
   subtitle: string
 }) {
   return (
-    <div className="flex items-start gap-4 mb-6">
-      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#0b6d41]/10 text-[#0b6d41] flex items-center justify-center">
-        <Icon className="w-6 h-6" />
+    <div className="mb-8">
+      <div className="flex items-center gap-4 mb-3">
+        <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0b6d41] to-[#0a5634] text-white flex items-center justify-center shadow-md shadow-[#0b6d41]/20">
+          <Icon className="w-7 h-7" />
+        </div>
+        <div className="flex-1">
+          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#0b6d41] leading-tight">
+            {title}
+          </h2>
+          <p className="text-sm md:text-base text-gray-600 mt-1">{subtitle}</p>
+        </div>
       </div>
-      <div>
-        <h2 className="text-xl md:text-2xl font-semibold tracking-tight text-gray-900">
-          {title}
-        </h2>
-        <p className="text-sm text-gray-600 mt-1">{subtitle}</p>
-      </div>
+      <div className="h-1 w-20 bg-gradient-to-r from-[#0b6d41] to-[#ffde59] rounded-full ml-[72px]" />
     </div>
   )
 }
 
 function FeeTable({ rows }: { rows: FeeEntry[] }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="bg-[#0b6d41] text-white text-xs uppercase tracking-wider">
-            <th className="text-left px-5 py-3">Programme</th>
-            <th className="text-right px-4 py-3 whitespace-nowrap">Government Quota (GQ)</th>
-            <th className="text-right px-5 py-3 whitespace-nowrap">Management Quota (MQ)</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-100 bg-white">
-          {rows.map((fee) => (
-            <tr key={`${fee.category}-${fee.program}`} className="hover:bg-[#f6faf7] transition-colors">
-              <td className="px-5 py-4 text-gray-900 font-medium">
-                <div className="flex flex-col">
-                  <span>{programLabel(fee.program)}</span>
-                  <span className="text-xs text-gray-500 mt-0.5">{fee.program}</span>
-                </div>
-              </td>
-              <td className="px-4 py-4 text-right whitespace-nowrap">
-                {fee.gqFee === fee.mqFee ? (
-                  <span className="font-semibold text-[#0b6d41]">{formatINR(fee.gqFee)}</span>
-                ) : (
-                  <span className="text-gray-600 text-xs italic">As per Govt. norms</span>
-                )}
-              </td>
-              <td className="px-5 py-4 text-right font-semibold text-[#0b6d41] whitespace-nowrap">
-                {formatINR(fee.mqFee)}
-              </td>
+    <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-lg shadow-gray-900/5 bg-white">
+      {/* Desktop / tablet table */}
+      <div className="hidden md:block overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="bg-gradient-to-r from-[#0b6d41] via-[#0a5634] to-[#0b6d41] text-white">
+              <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-[0.08em]">
+                Programme
+              </th>
+              <th className="text-right px-5 py-4 text-xs font-bold uppercase tracking-[0.08em] whitespace-nowrap">
+                Government Quota
+                <span className="block text-[10px] font-normal text-white/70 normal-case tracking-normal mt-0.5">via TNEA counselling</span>
+              </th>
+              <th className="text-right px-6 py-4 text-xs font-bold uppercase tracking-[0.08em] whitespace-nowrap bg-[#ffde59]/15">
+                Management Quota
+                <span className="block text-[10px] font-normal text-white/70 normal-case tracking-normal mt-0.5">direct admission</span>
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {rows.map((fee, idx) => (
+              <tr
+                key={`${fee.category}-${fee.program}`}
+                className={`group transition-colors ${idx % 2 === 1 ? 'bg-gray-50/50' : 'bg-white'} hover:bg-[#f6faf7]`}
+              >
+                <td className="px-6 py-4 text-gray-900">
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-[15px] group-hover:text-[#0b6d41] transition-colors">
+                      {programLabel(fee.program)}
+                    </span>
+                    <span className="text-xs text-gray-500 mt-0.5 font-medium tracking-wide">
+                      {fee.program}
+                    </span>
+                  </div>
+                </td>
+                <td className="px-5 py-4 text-right whitespace-nowrap">
+                  {fee.gqFee === fee.mqFee ? (
+                    <span className="font-semibold text-gray-800 text-[15px]">
+                      {formatINR(fee.gqFee)}
+                    </span>
+                  ) : (
+                    <span className="inline-block text-gray-600 text-xs italic bg-gray-100 px-2.5 py-1 rounded-md">
+                      As per Govt. norms
+                    </span>
+                  )}
+                </td>
+                <td className="px-6 py-4 text-right whitespace-nowrap bg-[#ffde59]/5 group-hover:bg-[#ffde59]/15 transition-colors">
+                  <span className="font-bold text-[#0b6d41] text-base tabular-nums">
+                    {formatINR(fee.mqFee)}
+                  </span>
+                  <span className="block text-[10px] text-gray-500 mt-0.5 uppercase tracking-wider">
+                    per year
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile card layout */}
+      <div className="md:hidden divide-y divide-gray-100">
+        <div className="px-5 py-3 bg-gradient-to-r from-[#0b6d41] to-[#0a5634] text-white text-xs font-bold uppercase tracking-wider">
+          Programme Fees
+        </div>
+        {rows.map((fee) => (
+          <div key={`m-${fee.category}-${fee.program}`} className="px-5 py-4">
+            <div className="flex items-baseline justify-between gap-3 mb-3">
+              <div className="min-w-0">
+                <p className="font-semibold text-gray-900 leading-tight">
+                  {programLabel(fee.program)}
+                </p>
+                <p className="text-xs text-gray-500 mt-0.5 font-medium">{fee.program}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="rounded-lg border border-gray-200 px-3 py-2.5">
+                <div className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold">
+                  Govt. Quota
+                </div>
+                <div className="mt-1 text-sm font-semibold text-gray-800 tabular-nums">
+                  {fee.gqFee === fee.mqFee ? formatINR(fee.gqFee) : 'As per Govt.'}
+                </div>
+              </div>
+              <div className="rounded-lg border border-[#0b6d41]/25 bg-[#ffde59]/10 px-3 py-2.5">
+                <div className="text-[10px] uppercase tracking-wider text-[#0b6d41] font-bold">
+                  Mgmt. Quota
+                </div>
+                <div className="mt-1 text-base font-bold text-[#0b6d41] tabular-nums">
+                  {formatINR(fee.mqFee)}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

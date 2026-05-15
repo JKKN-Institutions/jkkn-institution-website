@@ -429,6 +429,67 @@ export const SCHOLARSHIP_GROUPS: ScholarshipGroup[] = [
   },
 ]
 
+// ─── Scholarship Details Table (flat row-per-course shape) ───────────────────
+// Used by app/(public)/scholarships/_engineering-scholarship.tsx to render the
+// grouped-header comparison table. Source: JKKN Trust scholarship details PDF
+// (2026-27). Values are approximate and may be revised by government norms.
+
+export interface ScholarshipTableRow {
+  sNo: number
+  course: string
+  courseFull: string
+  // SC/SCA/ST/BC-CC → PMSS (Community Scholarship)
+  pmssGQ: string | null
+  maintenanceMQ: string | null
+  // BC/MBC/DNC/BCM
+  bcFirstGraduate: string | null
+  bcCommunity: string | null
+  // Merit (MQ/GQ)
+  trustMerit: string | null
+  // All Community
+  ghssGovtAided: string | null
+  naanMudhalvan: string | null
+}
+
+export const SCHOLARSHIP_TABLE: ScholarshipTableRow[] = [
+  {
+    sNo: 1,
+    course: 'BE / B.Tech',
+    courseFull: 'Bachelor of Engineering / Bachelor of Technology',
+    pmssGQ: '₹50,000 / Yr',
+    maintenanceMQ: '₹5K – ₹10K / Yr',
+    bcFirstGraduate: '₹25,000 / Yr',
+    bcCommunity: '₹5K – ₹10K / Yr',
+    trustMerit: '₹5K — up to 100%',
+    ghssGovtAided: null,
+    naanMudhalvan: '₹1,000 / month',
+  },
+  {
+    sNo: 2,
+    course: 'MBA',
+    courseFull: 'Master of Business Administration',
+    pmssGQ: '₹35,000 / Yr',
+    maintenanceMQ: '₹5K – ₹10K / Yr',
+    bcFirstGraduate: null,
+    bcCommunity: '₹5K – ₹10K / Yr',
+    trustMerit: null,
+    ghssGovtAided: null,
+    naanMudhalvan: null,
+  },
+  {
+    sNo: 3,
+    course: 'M.E',
+    courseFull: 'Master of Engineering',
+    pmssGQ: '₹50,000 / Yr',
+    maintenanceMQ: '₹5K – ₹10K / Yr',
+    bcFirstGraduate: null,
+    bcCommunity: '₹5K – ₹10K / Yr',
+    trustMerit: null,
+    ghssGovtAided: null,
+    naanMudhalvan: null,
+  },
+]
+
 // ─── Contact Info ────────────────────────────────────────────────────────────
 
 export interface ContactItem {
@@ -445,7 +506,7 @@ export const CONTACT_INFO: ContactItem[] = [
     label: 'Call Us',
     displayValue: '+91 93458 55001',
     href: 'tel:+919345855001',
-    note: 'Mon – Sat, 9 AM – 5 PM',
+    note: 'Mon – Sat, 9 AM – 6 PM',
   },
   {
     type: 'email',
