@@ -283,6 +283,145 @@
     @apply text-sm sm:text-base lg:text-lg;
   }
 
+  /* ─── Branded headings inside rich-text (TextEditor) blocks ─── */
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4 {
+    color: #0b6d41;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .prose h2 {
+    border-bottom: 2px solid rgba(11, 109, 65, 0.15);
+    padding-bottom: 0.5rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose h3::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 24px;
+    border-radius: 2px;
+    background: linear-gradient(to bottom, #0b6d41 0%, #ffde59 100%);
+    flex-shrink: 0;
+  }
+
+  .prose a {
+    color: #0b6d41;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .prose a:hover {
+    text-decoration: underline;
+  }
+
+  .prose strong {
+    color: #111827;
+    font-weight: 700;
+  }
+
+  /* ─── Branded fee-style tables inside rich-text (TextEditor) blocks ─── */
+  .prose table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background-color: #fefcf5;
+    border: 1px solid rgba(11, 109, 65, 0.15);
+    box-shadow: 0 4px 20px -8px rgba(11, 109, 65, 0.18);
+    font-size: 0.9rem;
+  }
+
+  .prose thead {
+    background-color: #0b6d41;
+  }
+
+  .prose thead th {
+    color: #ffffff;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7rem;
+    padding: 1rem;
+    text-align: center;
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .prose thead th:first-child {
+    text-align: left;
+  }
+
+  .prose thead th:last-child {
+    text-align: right;
+  }
+
+  .prose tbody tr {
+    border-bottom: 1px solid rgba(11, 109, 65, 0.08);
+    transition: background-color 0.15s ease;
+  }
+
+  .prose tbody tr:hover {
+    background-color: rgba(11, 109, 65, 0.05);
+  }
+
+  .prose tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  .prose tbody td {
+    padding: 0.875rem 1rem;
+    font-size: 0.875rem;
+    color: #1f2937;
+    vertical-align: middle;
+    text-align: center;
+    border: 0;
+  }
+
+  .prose tbody td:first-child {
+    text-align: left;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .prose tbody td:last-child {
+    text-align: right;
+    font-weight: 700;
+    color: #111827;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.95rem;
+  }
+
+  /* Emphasized notes inside cells (e.g. "As Per Govt Norms") render in brand green */
+  .prose tbody td em {
+    font-style: normal;
+    color: #0b6d41;
+    font-weight: 500;
+    font-size: 0.8rem;
+  }
+
+  /* Responsive: horizontal scroll for narrow viewports */
+  @media (max-width: 640px) {
+    .prose table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+  }
+
   /* Custom scrollbar */
   ::-webkit-scrollbar {
     @apply w-2 h-2;

@@ -69,7 +69,7 @@ export const ADMISSIONS_FAQS: FAQ[] = [
   },
   {
     q: 'How can I contact the JKKN admission office?',
-    a: 'Call +91-9345855001 or email info@jkkn.ac.in. The admissions office is open Monday to Saturday, 9:00 AM to 5:00 PM at Natarajapuram, Komarapalayam, Namakkal District, Tamil Nadu — 638183.',
+    a: 'Call +91-9345855001 or email info@jkkn.ac.in. The admissions office is open Monday to Saturday, 9:00 AM to 6:00 PM at Natarajapuram, Komarapalayam, Namakkal District, Tamil Nadu — 638183.',
   },
   {
     q: 'Is hostel accommodation available at JKKN?',
@@ -118,7 +118,7 @@ export const ALUMNI_FAQS: FAQ[] = [
 export const CONTACT_FAQS: FAQ[] = [
   {
     q: 'What is the phone number of JKKN Institutions?',
-    a: 'The main admissions helpline is +91-9345855001. For general queries, email info@jkkn.ac.in. Lines are open Monday to Saturday between 9:00 AM and 5:00 PM Indian Standard Time.',
+    a: 'The main admissions helpline is +91-9345855001. For general queries, email info@jkkn.ac.in. Lines are open Monday to Saturday between 9:00 AM and 6:00 PM Indian Standard Time.',
   },
   {
     q: 'Where is JKKN Institutions located?',

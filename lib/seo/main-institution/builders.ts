@@ -440,7 +440,7 @@ export function buildLocalBusiness() {
         '@type': 'OpeningHoursSpecification',
         dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         opens: '09:00',
-        closes: '17:00',
+        closes: '18:00',
       },
     ],
     hasMap: `https://maps.google.com/?q=${config.geo.latitude},${config.geo.longitude}`,

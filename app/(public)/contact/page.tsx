@@ -54,7 +54,7 @@ export default function MainContactPage() {
           path: '/contact',
           name: 'Contact JKKN Institutions',
           description:
-            'Reach JKKN Institutions at +91-9345855001 or info@jkkn.ac.in. Campus: Natarajapuram, NH-544, Komarapalayam, Namakkal District, Tamil Nadu 638183. Open Monday to Saturday, 9:00 AM to 5:00 PM.',
+            'Reach JKKN Institutions at +91-9345855001 or info@jkkn.ac.in. Campus: Natarajapuram, NH-544, Komarapalayam, Namakkal District, Tamil Nadu 638183. Open Monday to Saturday, 9:00 AM to 6:00 PM.',
           pageType: 'ContactPage',
           keywords: [
             'JKKN contact',
@@ -86,8 +86,7 @@ export default function MainContactPage() {
       showOfficeHours
       officeHoursTitle="Office Hours"
       officeHours={[
-        { day: 'Monday – Friday', hours: '9:00 AM – 5:00 PM' },
-        { day: 'Saturday', hours: '9:00 AM – 1:00 PM' },
+        { day: 'Monday – Saturday', hours: '9:00 AM – 6:00 PM' },
         { day: 'Sunday', hours: 'Closed' },
       ]}
       showMap

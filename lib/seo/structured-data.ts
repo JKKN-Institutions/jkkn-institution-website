@@ -80,7 +80,7 @@ export function generateOrganizationSchema(): Record<string, unknown> {
           '@type': 'OpeningHoursSpecification',
           'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
           'opens': '09:00',
-          'closes': '17:00',
+          'closes': '18:00',
         },
       },
       {
@@ -99,7 +99,7 @@ export function generateOrganizationSchema(): Record<string, unknown> {
         '@type': 'OpeningHoursSpecification',
         'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         'opens': '09:00',
-        'closes': '17:00',
+        'closes': '18:00',
       },
     ],
 
