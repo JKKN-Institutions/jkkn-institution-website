@@ -441,6 +441,7 @@ export const FAQAccordionPropsSchema = z.object({
   allowMultiple: z.boolean().default(false),
   primaryColor: z.string().optional(),
   accentColor: z.string().optional(),
+  backgroundColor: z.string().optional().describe('Custom CSS background color for the section (e.g. #ffffff)'),
 })
 export type FAQAccordionProps = z.infer<typeof FAQAccordionPropsSchema> & BaseBlockProps
 

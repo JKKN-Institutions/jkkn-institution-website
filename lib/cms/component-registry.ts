@@ -4171,8 +4171,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       showOfficeHours: true,
       officeHoursTitle: 'Office Hours',
       officeHours: [
-        { day: 'Monday - Friday', hours: '9:00 AM - 5:00 PM' },
-        { day: 'Saturday', hours: '9:00 AM - 1:00 PM' },
+        { day: 'Monday - Saturday', hours: '9:00 AM - 6:00 PM' },
         { day: 'Sunday', hours: 'Closed' },
       ],
       showMap: true,

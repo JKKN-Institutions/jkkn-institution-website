@@ -60,6 +60,9 @@ export const LatestBuzzPropsSchema = z.object({
   viewAllLink: z.string().default('/blog/category/latest-buzz').describe('Link for View All button'),
   viewAllText: z.string().default('View All Buzz').describe('Text for View All button'),
   showViewAllButton: z.boolean().default(true).describe('Show/hide the View All button'),
+
+  // Custom background color (overrides the variant background when set)
+  backgroundColor: z.string().optional().describe('Custom CSS background color (e.g. #ffffff). Overrides the variant background.'),
 })
 
 export type LatestBuzzProps = z.infer<typeof LatestBuzzPropsSchema> & BaseBlockProps
@@ -123,6 +126,7 @@ export function LatestBuzz({
   viewAllLink = '/blog/category/latest-buzz',
   viewAllText = 'View All Buzz',
   showViewAllButton = true,
+  backgroundColor,
   className,
   isEditing,
 }: LatestBuzzProps) {
@@ -156,7 +160,8 @@ export function LatestBuzz({
     fetchDynamicData()
   }, [fetchDynamicData])
 
-  const isDark = variant === 'modern-dark'
+  const hasCustomBg = typeof backgroundColor === 'string' && backgroundColor.trim().length > 0
+  const isDark = hasCustomBg ? false : variant === 'modern-dark'
   const isModern = variant !== 'classic'
 
   const defaultBuzz: BuzzItem[] = [
@@ -182,9 +187,10 @@ export function LatestBuzz({
     <section
       className={cn(
         'relative py-16 md:py-20 lg:py-24 w-full overflow-hidden',
-        isDark ? 'section-green-gradient' : 'bg-brand-cream',
+        !hasCustomBg && (isDark ? 'section-green-gradient' : 'bg-brand-cream'),
         className
       )}
+      style={hasCustomBg ? { backgroundColor } : undefined}
     >
       {/* Decorative Patterns */}
       {showDecorations && isModern && (

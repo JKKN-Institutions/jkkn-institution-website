@@ -70,7 +70,10 @@ export default function FAQSectionBlock({
     return () => observer.disconnect()
   }, [showAnimations, isEditing])
 
-  const isDark = backgroundColor !== 'gradient-light'
+  const isCustomBgColor =
+    typeof backgroundColor === 'string' &&
+    (backgroundColor.startsWith('#') || backgroundColor.startsWith('rgb'))
+  const isDark = !isCustomBgColor && backgroundColor !== 'gradient-light'
 
   // If no FAQs and in editing mode, show placeholder
   if (faqs.length === 0 && isEditing) {
@@ -96,8 +99,9 @@ export default function FAQSectionBlock({
       ref={sectionRef}
       className={cn(
         'relative w-full overflow-hidden py-16 md:py-20 lg:py-28',
-        isDark ? 'section-green-gradient' : 'bg-brand-cream'
+        !isCustomBgColor && (isDark ? 'section-green-gradient' : 'bg-brand-cream')
       )}
+      style={isCustomBgColor ? { backgroundColor } : undefined}
     >
       {/* Decorative Patterns */}
       <DecorativePatterns variant="minimal" color={isDark ? 'white' : 'green'} />

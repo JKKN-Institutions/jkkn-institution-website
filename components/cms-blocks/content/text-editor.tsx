@@ -54,10 +54,7 @@ export default function TextEditor({
   )
 
   const proseClasses = cn(
-    // Base prose styling with enhanced typography
-    'prose prose-slate dark:prose-invert prose-lg max-w-none',
-    // Better spacing (removed text-gray-700 to allow inline color styles from Tiptap)
-    'leading-relaxed'
+    'prose max-w-none leading-relaxed'
   )
 
   if (isEditing && id) {

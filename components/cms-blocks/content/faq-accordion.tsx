@@ -12,6 +12,7 @@ export default function FAQAccordion({
   allowMultiple = false,
   primaryColor,
   accentColor,
+  backgroundColor,
   className,
   isEditing,
 }: FAQAccordionProps) {
@@ -40,9 +41,11 @@ export default function FAQAccordion({
       )
     : faqs
 
+  const sectionStyle = backgroundColor ? { backgroundColor } : undefined
+
   if (faqs.length === 0 && isEditing) {
     return (
-      <section className={cn('py-16 px-4', className)}>
+      <section className={cn('py-16 px-4', className)} style={sectionStyle}>
         <div className="container mx-auto max-w-3xl">
           <div className="p-8 border-2 border-dashed border-muted-foreground/25 rounded-lg">
             <p className="text-muted-foreground text-center">Click to add FAQ items</p>
@@ -55,7 +58,7 @@ export default function FAQAccordion({
   if (faqs.length === 0) return null
 
   return (
-    <section className={cn('py-16 px-4', className)}>
+    <section className={cn('py-16 px-4', className)} style={sectionStyle}>
       <div className="container mx-auto max-w-3xl">
         {/* Title and Subtitle */}
         <div className="text-center mb-12">
