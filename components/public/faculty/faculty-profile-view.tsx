@@ -95,10 +95,10 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
       `}</style>
 
       <div className="faculty-page" ref={containerRef}>
-        <div className="max-w-[1100px] mx-auto px-6 pb-20">
+        <div className="max-w-[1100px] mx-auto px-4 sm:px-6 pb-14 sm:pb-20">
 
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 py-6 text-[0.78rem] text-[#7a8f80]">
+          <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 py-6 max-[480px]:py-4 text-[0.78rem] text-[#7a8f80]">
             <Link href="/" className="hover:text-[#0b6d41] transition-colors">Home</Link>
             <span className="opacity-30">/</span>
             <Link href="/faculty" className="hover:text-[#0b6d41] transition-colors">Faculty</Link>
@@ -116,15 +116,15 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
               <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
             </div>
 
-            <div className="relative z-10 grid grid-cols-[auto_1fr] gap-10 p-8 sm:p-12 items-center max-[768px]:grid-cols-1 max-[768px]:text-center max-[768px]:gap-6">
+            <div className="relative z-10 grid grid-cols-[auto_1fr] gap-10 p-6 sm:p-10 lg:p-12 items-center max-[768px]:grid-cols-1 max-[768px]:text-center max-[768px]:gap-6 max-[480px]:p-5 max-[480px]:gap-5">
               {/* Avatar */}
               <div className="max-[768px]:mx-auto">
-                <div className="w-[190px] h-[190px] rounded-full p-1 max-[768px]:w-[150px] max-[768px]:h-[150px]" style={{ background: 'linear-gradient(135deg, #ffde59 0%, #fff 50%, #ffde59 100%)', boxShadow: '0 0 30px rgba(255,222,89,0.3)' }}>
+                <div className="w-[190px] h-[190px] max-[768px]:w-[150px] max-[768px]:h-[150px] max-[480px]:w-[120px] max-[480px]:h-[120px] rounded-full p-1" style={{ background: 'linear-gradient(135deg, #ffde59 0%, #fff 50%, #ffde59 100%)', boxShadow: '0 0 30px rgba(255,222,89,0.3)' }}>
                   <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden shadow-inner">
                     {faculty.photo_url ? (
                       <img src={faculty.photo_url} alt={faculty.full_name} className="w-full h-full object-cover" />
                     ) : (
-                      <span className="text-[3.5rem] max-[768px]:text-[2.5rem] font-bold text-[#0b6d41]" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>{initials}</span>
+                      <span className="text-[3.5rem] max-[768px]:text-[2.5rem] max-[480px]:text-[2rem] font-bold text-[#0b6d41]" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>{initials}</span>
                     )}
                   </div>
                 </div>
@@ -132,14 +132,14 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
 
               {/* Info */}
               <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-1.5 text-[0.72rem] font-bold uppercase tracking-[2.5px] text-[#ffde59]">
+                <div className="flex items-center gap-1.5 text-[0.72rem] max-[480px]:text-[0.62rem] font-bold uppercase tracking-[2.5px] max-[480px]:tracking-[1.5px] text-[#ffde59] break-words max-[768px]:justify-center">
                   <span className="inline-block w-6 h-0.5 bg-[#ffde59] rounded" />
                   {institutionName}
                 </div>
-                <h1 className="text-[2.75rem] max-[768px]:text-[2rem] leading-[1.15] tracking-[-0.5px] text-white" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>
+                <h1 className="text-[clamp(1.1rem,5.5vw,2.75rem)] leading-[1.15] max-[480px]:leading-tight tracking-[-0.5px] text-white break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>
                   {faculty.full_name}
                 </h1>
-                <p className="text-[1.05rem] text-white/80">
+                <p className="text-[clamp(0.8rem,2.6vw,1.05rem)] text-white/80 break-words">
                   {faculty.designation} &mdash; {faculty.department}
                 </p>
                 {badges.length > 0 && (
@@ -180,10 +180,10 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
 
           {/* ===== PROFESSIONAL SUMMARY ===== */}
           {faculty.professional_summary && (
-            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-8 mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
+            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-5 sm:p-8 mb-5 sm:mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
               <div className="flex items-center gap-3.5 mb-6">
-                <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center" style={{ background: 'rgba(26,115,167,0.08)', color: '#1a73a7' }}><User className="w-5 h-5" /></div>
-                <h2 className="text-[1.45rem] text-[#1a2a1e]" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Professional Summary</h2>
+                <div className="w-[42px] h-[42px] max-[480px]:w-[36px] max-[480px]:h-[36px] rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(26,115,167,0.08)', color: '#1a73a7' }}><User className="w-5 h-5" /></div>
+                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Professional Summary</h2>
               </div>
               <p className="text-base leading-[1.9] text-[#3d5443] pl-5 border-l-[3px] border-[#0b6d41] bg-[rgba(11,109,65,0.05)] rounded-r-[10px] p-5">
                 {faculty.professional_summary}
@@ -193,10 +193,10 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
 
           {/* ===== QUALIFICATIONS ===== */}
           {qualifications.length > 0 && (
-            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-8 mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
+            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-5 sm:p-8 mb-5 sm:mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
               <div className="flex items-center gap-3.5 mb-6">
-                <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center" style={{ background: 'rgba(255,222,89,0.25)', color: '#a88c00' }}><GraduationCap className="w-5 h-5" /></div>
-                <h2 className="text-[1.45rem] text-[#1a2a1e]" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Academic Qualifications</h2>
+                <div className="w-[42px] h-[42px] max-[480px]:w-[36px] max-[480px]:h-[36px] rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(255,222,89,0.25)', color: '#a88c00' }}><GraduationCap className="w-5 h-5" /></div>
+                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Academic Qualifications</h2>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse text-[0.88rem]">
@@ -224,10 +224,10 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
 
           {/* ===== SPECIALISATIONS ===== */}
           {specialisations.length > 0 && (
-            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-8 mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
+            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-5 sm:p-8 mb-5 sm:mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
               <div className="flex items-center gap-3.5 mb-6">
-                <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center" style={{ background: '#e8f5ee', color: '#0b6d41' }}><Sparkles className="w-5 h-5" /></div>
-                <h2 className="text-[1.45rem] text-[#1a2a1e]" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Areas of Specialisation</h2>
+                <div className="w-[42px] h-[42px] max-[480px]:w-[36px] max-[480px]:h-[36px] rounded-xl flex items-center justify-center shrink-0" style={{ background: '#e8f5ee', color: '#0b6d41' }}><Sparkles className="w-5 h-5" /></div>
+                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Areas of Specialisation</h2>
               </div>
               <div className="flex flex-wrap gap-2">
                 {specialisations.map((s, i) => (
@@ -241,10 +241,10 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
 
           {/* ===== EXPERIENCE TIMELINE ===== */}
           {experienceEntries.length > 0 && (
-            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-8 mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
+            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-5 sm:p-8 mb-5 sm:mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
               <div className="flex items-center gap-3.5 mb-6">
-                <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center" style={{ background: 'rgba(11,109,65,0.08)', color: '#0b6d41' }}><Briefcase className="w-5 h-5" /></div>
-                <h2 className="text-[1.45rem] text-[#1a2a1e]" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Experience</h2>
+                <div className="w-[42px] h-[42px] max-[480px]:w-[36px] max-[480px]:h-[36px] rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(11,109,65,0.08)', color: '#0b6d41' }}><Briefcase className="w-5 h-5" /></div>
+                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Experience</h2>
               </div>
 
               {[
@@ -278,10 +278,10 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
 
           {/* ===== RESEARCH & PUBLICATIONS ===== */}
           {(researchFocusAreas.length > 0 || publications.length > 0 || fundedProjects.length > 0) && (
-            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-8 mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
+            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-5 sm:p-8 mb-5 sm:mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
               <div className="flex items-center gap-3.5 mb-6">
-                <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center" style={{ background: 'rgba(26,115,167,0.08)', color: '#1a73a7' }}><BookOpen className="w-5 h-5" /></div>
-                <h2 className="text-[1.45rem] text-[#1a2a1e]" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Research & Publications</h2>
+                <div className="w-[42px] h-[42px] max-[480px]:w-[36px] max-[480px]:h-[36px] rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(26,115,167,0.08)', color: '#1a73a7' }}><BookOpen className="w-5 h-5" /></div>
+                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Research & Publications</h2>
               </div>
 
               {researchFocusAreas.length > 0 && (
@@ -391,10 +391,10 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
 
           {/* ===== CERTIFICATIONS ===== */}
           {certifications.length > 0 && (
-            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-8 mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
+            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-5 sm:p-8 mb-5 sm:mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
               <div className="flex items-center gap-3.5 mb-6">
-                <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center" style={{ background: 'rgba(11,109,65,0.08)', color: '#0b6d41' }}><ShieldCheck className="w-5 h-5" /></div>
-                <h2 className="text-[1.45rem] text-[#1a2a1e]" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Certifications & Training</h2>
+                <div className="w-[42px] h-[42px] max-[480px]:w-[36px] max-[480px]:h-[36px] rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(11,109,65,0.08)', color: '#0b6d41' }}><ShieldCheck className="w-5 h-5" /></div>
+                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Certifications & Training</h2>
               </div>
               <div className="grid grid-cols-2 max-[768px]:grid-cols-1 gap-2.5">
                 {certifications.map((c, i) => (
@@ -412,10 +412,10 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
 
           {/* ===== AWARDS ===== */}
           {awards.length > 0 && (
-            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-8 mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
+            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-5 sm:p-8 mb-5 sm:mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
               <div className="flex items-center gap-3.5 mb-6">
-                <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center" style={{ background: 'rgba(255,222,89,0.25)', color: '#a88c00' }}><Trophy className="w-5 h-5" /></div>
-                <h2 className="text-[1.45rem] text-[#1a2a1e]" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Awards & Recognitions</h2>
+                <div className="w-[42px] h-[42px] max-[480px]:w-[36px] max-[480px]:h-[36px] rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(255,222,89,0.25)', color: '#a88c00' }}><Trophy className="w-5 h-5" /></div>
+                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Awards & Recognitions</h2>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse text-[0.88rem]">
@@ -442,10 +442,10 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
 
           {/* ===== MEMBERSHIPS ===== */}
           {memberships.length > 0 && (
-            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-8 mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
+            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-5 sm:p-8 mb-5 sm:mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
               <div className="flex items-center gap-3.5 mb-6">
-                <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center" style={{ background: 'rgba(197,125,32,0.08)', color: '#c57d20' }}><Users className="w-5 h-5" /></div>
-                <h2 className="text-[1.45rem] text-[#1a2a1e]" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Professional Memberships</h2>
+                <div className="w-[42px] h-[42px] max-[480px]:w-[36px] max-[480px]:h-[36px] rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(197,125,32,0.08)', color: '#c57d20' }}><Users className="w-5 h-5" /></div>
+                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Professional Memberships</h2>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse text-[0.88rem]">
@@ -472,10 +472,10 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
 
           {/* ===== MENTORING ===== */}
           {(faculty.mentoring_description || phdScholars.length > 0 || faculty.pg_dissertations_guided > 0 || faculty.ug_projects_guided > 0) && (
-            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-8 mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
+            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-5 sm:p-8 mb-5 sm:mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
               <div className="flex items-center gap-3.5 mb-6">
-                <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center" style={{ background: '#e8f5ee', color: '#0b6d41' }}><GraduationCap className="w-5 h-5" /></div>
-                <h2 className="text-[1.45rem] text-[#1a2a1e]" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Student Mentoring & Guidance</h2>
+                <div className="w-[42px] h-[42px] max-[480px]:w-[36px] max-[480px]:h-[36px] rounded-xl flex items-center justify-center shrink-0" style={{ background: '#e8f5ee', color: '#0b6d41' }}><GraduationCap className="w-5 h-5" /></div>
+                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Student Mentoring & Guidance</h2>
               </div>
 
               {faculty.mentoring_description && (
@@ -526,14 +526,14 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
                     {faculty.pg_dissertations_guided > 0 && (
                       <div className="bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-6 text-center">
                         <div className="w-12 h-12 rounded-[14px] flex items-center justify-center mx-auto mb-3" style={{ background: '#e8f5ee', color: '#0b6d41' }}><BookMarked className="w-6 h-6" /></div>
-                        <div className="text-[2.2rem] font-extrabold text-[#0b6d41]">{faculty.pg_dissertations_guided}</div>
+                        <div className="text-[2.2rem] max-[480px]:text-[1.5rem] font-extrabold text-[#0b6d41]">{faculty.pg_dissertations_guided}</div>
                         <div className="text-[0.78rem] text-[#7a8f80] font-medium">PG Dissertations Guided</div>
                       </div>
                     )}
                     {faculty.ug_projects_guided > 0 && (
                       <div className="bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-6 text-center">
                         <div className="w-12 h-12 rounded-[14px] flex items-center justify-center mx-auto mb-3" style={{ background: 'rgba(26,115,167,0.08)', color: '#1a73a7' }}><Monitor className="w-6 h-6" /></div>
-                        <div className="text-[2.2rem] font-extrabold text-[#0b6d41]">{faculty.ug_projects_guided}</div>
+                        <div className="text-[2.2rem] max-[480px]:text-[1.5rem] font-extrabold text-[#0b6d41]">{faculty.ug_projects_guided}</div>
                         <div className="text-[0.78rem] text-[#7a8f80] font-medium">UG Projects Guided</div>
                       </div>
                     )}
@@ -545,21 +545,21 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
 
           {/* ===== FAQs ===== */}
           {faqs.length > 0 && (
-            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-8 mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
+            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-5 sm:p-8 mb-5 sm:mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
               <div className="flex items-center gap-3.5 mb-6">
-                <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center" style={{ background: 'rgba(196,69,105,0.08)', color: '#c44569' }}><HelpCircle className="w-5 h-5" /></div>
-                <h2 className="text-[1.45rem] text-[#1a2a1e]" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Frequently Asked Questions</h2>
+                <div className="w-[42px] h-[42px] max-[480px]:w-[36px] max-[480px]:h-[36px] rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(196,69,105,0.08)', color: '#c44569' }}><HelpCircle className="w-5 h-5" /></div>
+                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Frequently Asked Questions</h2>
               </div>
               <div className="flex flex-col gap-2">
                 {faqs.map((faq, i) => (
                   <details key={i} className="border border-[rgba(11,109,65,0.08)] rounded-[10px] overflow-hidden transition-all bg-white hover:border-[rgba(11,109,65,0.18)] open:border-[rgba(11,109,65,0.22)] open:shadow-md group">
-                    <summary className="px-5 py-4 cursor-pointer font-semibold text-[0.9rem] text-[#1a2a1e] list-none flex justify-between items-center transition-colors hover:bg-[rgba(11,109,65,0.05)]">
-                      {faq.question}
+                    <summary className="px-5 py-4 max-[480px]:px-4 max-[480px]:py-3.5 cursor-pointer font-semibold text-[0.9rem] max-[480px]:text-[0.83rem] text-[#1a2a1e] list-none flex justify-between items-center gap-3 transition-colors hover:bg-[rgba(11,109,65,0.05)]">
+                      <span className="break-words min-w-0 flex-1">{faq.question}</span>
                       <span className="w-7 h-7 rounded-lg flex items-center justify-center bg-[rgba(11,109,65,0.05)] text-[#7a8f80] shrink-0 transition-all group-open:bg-[#e8f5ee] group-open:text-[#0b6d41]">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-3.5 h-3.5 transition-transform group-open:rotate-180"><path d="M6 9l6 6 6-6" /></svg>
                       </span>
                     </summary>
-                    <div className="px-5 pb-5 text-[#3d5443] text-[0.88rem] leading-[1.8] border-t border-[rgba(11,109,65,0.08)] pt-4">
+                    <div className="px-5 pb-5 max-[480px]:px-4 max-[480px]:pb-4 text-[#3d5443] text-[0.88rem] max-[480px]:text-[0.82rem] leading-[1.8] max-[480px]:leading-[1.7] border-t border-[rgba(11,109,65,0.08)] pt-4 break-words">
                       {faq.answer}
                     </div>
                   </details>
@@ -573,11 +573,11 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
             <div className="absolute inset-0" style={{ background: 'var(--gradient-hero)' }}>
               <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(255,222,89,0.2) 0%, transparent 60%)' }} />
             </div>
-            <div className="relative z-10 p-12 text-center">
-              <h2 className="text-[1.6rem] text-white mb-2" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>
+            <div className="relative z-10 p-6 sm:p-10 lg:p-12 text-center">
+              <h2 className="text-[1.6rem] max-[480px]:text-[1.2rem] text-white mb-2 break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>
                 Interested in {faculty.department.replace('Department of ', '')}?
               </h2>
-              <p className="text-white/70 mb-7 text-[0.95rem]">
+              <p className="text-white/70 mb-7 text-[0.95rem] max-[480px]:text-[0.82rem] break-words">
                 Explore the {faculty.department} at {institutionName} and learn from faculty like {faculty.full_name}.
               </p>
               <div className="flex gap-3 justify-center flex-wrap max-[768px]:flex-col max-[768px]:items-center">
@@ -593,10 +593,10 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
 
           {/* ===== RELATED FACULTY ===== */}
           {relatedFaculty.length > 0 && (
-            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-8 mb-6 shadow-sm">
+            <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-5 sm:p-8 mb-5 sm:mb-6 shadow-sm">
               <div className="flex items-center gap-3.5 mb-6">
-                <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center" style={{ background: 'rgba(26,115,167,0.08)', color: '#1a73a7' }}><Users className="w-5 h-5" /></div>
-                <h2 className="text-[1.45rem] text-[#1a2a1e]" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>{faculty.department} &mdash; Faculty</h2>
+                <div className="w-[42px] h-[42px] max-[480px]:w-[36px] max-[480px]:h-[36px] rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(26,115,167,0.08)', color: '#1a73a7' }}><Users className="w-5 h-5" /></div>
+                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>{faculty.department} &mdash; Faculty</h2>
               </div>
               <div className="grid grid-cols-4 max-[768px]:grid-cols-2 max-[480px]:grid-cols-2 gap-4">
                 {relatedFaculty.map(f => {
