@@ -268,7 +268,9 @@
       "mcp__seo-search-console__list_verified_sites",
       "mcp__website-auditor__audit_institution",
       "mcp__ai-citation-monitor__citation_stats",
-      "mcp__ai-citation-monitor__bulk_check_citations"
+      "mcp__ai-citation-monitor__bulk_check_citations",
+      "PowerShell(Join-Path *)",
+      "PowerShell(Get-NetTCPConnection *)"
     ],
     "deny": [],
     "ask": []

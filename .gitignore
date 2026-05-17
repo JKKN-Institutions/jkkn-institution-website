@@ -38,6 +38,9 @@ yarn-error.log*
 !.env.example
 !.env.institutions.example
 
+# MCP server config — contains live Supabase access tokens, must stay local
+.mcp.json
+
 # vercel
 .vercel
 

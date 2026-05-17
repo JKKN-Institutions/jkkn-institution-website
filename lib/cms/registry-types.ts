@@ -1213,6 +1213,7 @@ export const CollegeItemSchema = z.object({
   headerColor: z.string().default('#0b6d41'),
   link: z.string().optional(),
   logo: z.string().optional(),
+  badge: z.string().optional(),
 })
 export type CollegeItem = z.infer<typeof CollegeItemSchema>
 

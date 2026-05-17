@@ -150,6 +150,9 @@ export default function CollegesGrid({
               : isExternalLink
                 ? 'a'
                 : Link
+            const ariaName = college.badge
+              ? `${college.name} (${college.badge})`
+              : college.name
             const cardRootProps = !college.link
               ? {}
               : isExternalLink
@@ -157,11 +160,11 @@ export default function CollegesGrid({
                     href: college.link,
                     target: '_blank',
                     rel: 'noopener noreferrer',
-                    'aria-label': `View ${college.name} fee structure (opens in a new tab)`,
+                    'aria-label': `View ${ariaName} fee structure (opens in a new tab)`,
                   }
                 : {
                     href: college.link,
-                    'aria-label': `View ${college.name} — Learn More`,
+                    'aria-label': `View ${ariaName} — Learn More`,
                   }
 
             return (
@@ -188,6 +191,16 @@ export default function CollegesGrid({
                   className="h-2"
                   style={{ backgroundColor: college.headerColor || '#0b6d41' }}
                 />
+
+                {/* Status pill (e.g. Autonomous) — gold on green per brand triad */}
+                {college.badge && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute top-3 right-3 z-10 inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-primary shadow-sm ring-1 ring-primary/20"
+                  >
+                    {college.badge}
+                  </span>
+                )}
 
                 <div className="p-6">
                   {/* Logo or Icon */}

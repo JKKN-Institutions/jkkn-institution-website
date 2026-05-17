@@ -266,8 +266,8 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
                           i === 0 ? 'border-[#0b6d41] bg-[#0b6d41] shadow-[0_0_0_4px_#e8f5ee]' : 'border-[#e8f5ee] hover:border-[#0b6d41]'
                         }`} />
                         <div className="text-[0.72rem] font-bold text-[#0b6d41] uppercase tracking-[0.5px]">{entry.start_year} &ndash; {entry.end_year || 'Present'}</div>
-                        <div className="text-base font-semibold text-[#1a2a1e] mt-0.5">{entry.role}</div>
-                        <div className="text-[0.85rem] text-[#7a8f80]">{entry.institution}{entry.description ? ` — ${entry.description}` : ''}</div>
+                        <div className="text-base font-semibold text-[#1a2a1e] mt-0.5 break-words">{entry.role}</div>
+                        <div className="text-[0.85rem] text-[#7a8f80] break-words">{entry.institution}{entry.description ? ` — ${entry.description}` : ''}</div>
                       </div>
                     ))}
                   </div>
@@ -306,9 +306,9 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
                     {publications.map((pub, i) => (
                       <div key={i} className="grid grid-cols-[40px_1fr] max-[768px]:grid-cols-1 gap-4 p-5 rounded-[10px] bg-[rgba(11,109,65,0.05)] border border-[rgba(11,109,65,0.08)] transition-all hover:border-[rgba(11,109,65,0.22)] hover:bg-[#e8f5ee] hover:translate-x-1 hover:shadow-sm items-start">
                         <div className="w-9 h-9 rounded-[10px] flex items-center justify-center text-[0.78rem] font-extrabold text-white max-[768px]:hidden" style={{ background: 'var(--gradient-brand)' }}>{i + 1}</div>
-                        <div>
-                          <div className="font-semibold text-[#1a2a1e] text-[0.92rem] leading-[1.5] mb-1">{pub.title}</div>
-                          <div className="text-[0.8rem] text-[#7a8f80]">
+                        <div className="min-w-0">
+                          <div className="font-semibold text-[#1a2a1e] text-[0.92rem] leading-[1.5] mb-1 break-words">{pub.title}</div>
+                          <div className="text-[0.8rem] text-[#7a8f80] break-words">
                             {pub.authors} &middot; <em className="text-[#3d5443]">{pub.journal}</em>{pub.year ? `, ${pub.year}` : ''}
                           </div>
                           {(pub.doi_url || pub.pubmed_url) && (
@@ -400,9 +400,9 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
                 {certifications.map((c, i) => (
                   <div key={i} className="flex items-start gap-3 p-3.5 rounded-[10px] bg-[rgba(11,109,65,0.05)] border border-[rgba(11,109,65,0.08)] transition-all hover:border-[rgba(11,109,65,0.22)] hover:bg-[#e8f5ee] hover:shadow-sm">
                     <span className="w-2 h-2 rounded-full bg-[#0b6d41] shrink-0 mt-1.5" />
-                    <div>
-                      <div className="text-[0.85rem] font-medium text-[#3d5443]">{c.name}</div>
-                      <div className="text-[0.75rem] text-[#7a8f80]">{c.organisation}{c.year ? ` · ${c.year}` : ''}</div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-[0.85rem] font-medium text-[#3d5443] break-words">{c.name}</div>
+                      <div className="text-[0.75rem] text-[#7a8f80] break-words">{c.organisation}{c.year ? ` · ${c.year}` : ''}</div>
                     </div>
                   </div>
                 ))}
@@ -607,8 +607,8 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
                       <div className="w-[60px] h-[60px] rounded-full mx-auto mb-3 flex items-center justify-center text-white text-sm font-bold overflow-hidden" style={{ background: 'linear-gradient(135deg, #0b6d41, #12a863)' }}>
                         {f.photo_url ? <img src={f.photo_url} alt={f.full_name} className="w-full h-full object-cover" /> : fi}
                       </div>
-                      <div className="text-[0.88rem] font-semibold text-[#1a2a1e]">{f.full_name}</div>
-                      <div className="text-[0.75rem] text-[#7a8f80]">{f.designation}</div>
+                      <div className="text-[0.88rem] font-semibold text-[#1a2a1e] break-words">{f.full_name}</div>
+                      <div className="text-[0.75rem] text-[#7a8f80] break-words">{f.designation}</div>
                     </Link>
                   )
                 })}
