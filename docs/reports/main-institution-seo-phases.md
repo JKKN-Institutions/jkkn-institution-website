@@ -57,9 +57,9 @@
 ## Phase 1 — AEO Conversion Pages (7 pages)
 
 **Status:** ✅ Complete (2026-04-17)
-**Total FAQ entries created:** 50 (all 40–60 words, AEO-optimised)
-**Total blocks inserted:** 23 across 7 pages
-**SQL documented:** `docs/database/main-supabase/11-phase1-aeo-pages-seed.sql`
+**Total FAQ entries created:** 43 (all 40–60 words, AEO-optimised) — originally 50 across 7 pages; the `/eligibility-criteria` page (7 FAQs) was removed on 2026-05-19 (see migration 38).
+**Total blocks inserted:** 20 across 6 pages (originally 23 across 7; 3 blocks dropped with `/eligibility-criteria`).
+**SQL documented:** `docs/database/main-supabase/11-phase1-aeo-pages-seed.sql` (initial seed) and `38-remove-eligibility-criteria-page.sql` (removal).
 
 | # | Slug | Schema Flag Routed | Blocks | FAQs | Status |
 |---|------|---------------------|--------|------|--------|
@@ -68,10 +68,10 @@
 | 3 | `/scholarships` | `faqAdmissions` | 4 | 7 | ✅ Live |
 | 4 | `/how-to-apply` | `howToAdmissions` + `faqAdmissions` | 4 | 6 | ✅ Live |
 | 5 | `/admission-guide` | `howToAdmissions` + `faqAdmissions` | 4 | 6 | ✅ Live |
-| 6 | `/eligibility-criteria` | `faqAdmissions` | 3 | 7 | ✅ Live |
+| 6 | `/eligibility-criteria` | `faqAdmissions` | 3 | 7 | ❌ Removed 2026-05-19 (migration 38) |
 | 7 | `/counseling-guide` | `howToAdmissions` + `faqAdmissions` | 4 | 6 | ✅ Live |
 
-**Blocks used:** FAQSectionBlock (7×), AdmissionHero (6×), AdmissionProcessTimeline (3×), ScholarshipsSection (1×), CallToAction (6×). All component names verified present in `cms_page_blocks` from existing published pages.
+**Blocks used:** FAQSectionBlock (6×), AdmissionHero (5×), AdmissionProcessTimeline (3×), ScholarshipsSection (1×), CallToAction (5×). All component names verified present in `cms_page_blocks` from existing published pages.
 
 ---
 

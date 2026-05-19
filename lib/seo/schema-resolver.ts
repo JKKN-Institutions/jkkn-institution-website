@@ -155,11 +155,6 @@ export function resolvePageSchemas(slug: string, isHomepage: boolean = false): P
     return { ...EMPTY_SCHEMAS, howToAdmissions: true, faqAdmissions: true }
   }
 
-  // Eligibility — FAQ-style reference content
-  if (slug === 'eligibility-criteria') {
-    return { ...EMPTY_SCHEMAS, faqAdmissions: true }
-  }
-
   // ============================================
   // Phase 2 — GEO trust & E-E-A-T pages
   // ============================================
