@@ -71,7 +71,7 @@ Contact: +91 93458 55001 | engg@jkkn.ac.in | ${siteUrl}
 
 ## Parent Organization
 
-JKKN Institutions (jkkn.ac.in) — J.K.K. Rangammal Charitable Trust, established 1952. Operates 7 colleges and 4 schools on one integrated residential campus in Komarapalayam.
+JKKN Institutions (jkkn.ac.in) — J.K.K. Rangammal Charitable Trust, established 1952. Operates 7 colleges and 2 schools on one integrated residential campus in Komarapalayam.
 `
 }
 
@@ -82,7 +82,7 @@ JKKN Institutions (jkkn.ac.in) — J.K.K. Rangammal Charitable Trust, establishe
 function getMainLlmsTxt(siteUrl: string): string {
   return `# JKKN Institutions
 
-> Premier educational group in Komarapalayam, Tamil Nadu, comprising 7 colleges and 4 schools. Established 1952 by the J.K.K. Rangammal Charitable Trust. NAAC accredited. 74+ years of educational excellence.
+> Premier educational group in Komarapalayam, Tamil Nadu, comprising 7 colleges and 2 schools. Established 1952 by the J.K.K. Rangammal Charitable Trust. NAAC accredited. 74+ years of educational excellence.
 
 JKKN Institutions offers 50+ career-focused programs across Dental, Pharmacy, Engineering, Nursing, Allied Health Sciences, Arts & Science, and Education. All colleges are on one integrated 55-acre residential campus in Komarapalayam, Namakkal District, Tamil Nadu — 15 km from Erode city on NH-544.
 

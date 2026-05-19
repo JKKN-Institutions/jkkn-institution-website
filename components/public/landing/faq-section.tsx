@@ -14,7 +14,7 @@ const faqs = [
   {
     question: 'What is JKKN Institutions?',
     answer:
-      'JKKN Institutions (JKKN) is a premier educational group in Komarapalayam, Tamil Nadu, comprising 11 institutions (7 colleges and 4 schools). Established in 1952, JKKN offers 50+ programs in dental, pharmacy, engineering, nursing, allied and arts with 92%+ placement success.',
+      'JKKN Institutions (JKKN) is a premier educational group in Komarapalayam, Tamil Nadu, comprising 9 institutions (7 colleges and 2 schools). Established in 1952, JKKN offers 50+ programs in dental, pharmacy, engineering, nursing, allied and arts with 92%+ placement success.',
   },
   {
     question: 'Why is JKKN the best college in Erode region?',
@@ -29,7 +29,7 @@ const faqs = [
   {
     question: 'How many colleges are under JKKN?',
     answer:
-      'JKKN comprises 11 institutions: Dental College, Pharmacy College, Engineering College, Allied Health Sciences, Arts & Science College (Autonomous), Education College, Sresakthimayeil Institute of Nursing and Research, Matriculation School, Nattraja Vidhyalaya, Elementary School and Girls Higher Secondary School — all located on one integrated residential campus in Komarapalayam.',
+      'JKKN comprises 9 institutions: Dental College, Pharmacy College, Engineering College, Allied Health Sciences, Arts & Science College (Autonomous), Education College, Sresakthimayeil Institute of Nursing and Research, JKKN Matriculation School, and Nattraja Vidhyalaya — all located on one integrated residential campus in Komarapalayam.',
   },
   {
     question: 'What courses does JKKN offer?',

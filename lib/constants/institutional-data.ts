@@ -78,7 +78,7 @@ export const INSTITUTIONAL_DATA = {
     nextYear: '2026-27',
   },
 
-  /** All institutions under JKKN (7 colleges + 4 schools = 11 total) */
+  /** All institutions under JKKN (7 colleges + 2 schools = 9 total) */
   institutions: {
     colleges: [
       'JKKN Dental College',

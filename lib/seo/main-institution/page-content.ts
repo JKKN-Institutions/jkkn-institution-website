@@ -186,7 +186,7 @@ export const ACCREDITATION_FAQS: FAQ[] = [
 export const DISTINCTIVENESS_FAQS: FAQ[] = [
   {
     q: 'What makes JKKN Institutions unique?',
-    a: 'JKKN was founded in 1952 to advance girls\' education in rural Tamil Nadu. 74+ years later it runs 7 colleges and 4 schools on a single campus, produces 50,000+ alumni, and keeps a 92%+ placement rate with NAAC-accredited quality.',
+    a: 'JKKN was founded in 1952 to advance girls\' education in rural Tamil Nadu. 74+ years later it runs 7 colleges and 2 schools on a single campus, produces 50,000+ alumni, and keeps a 92%+ placement rate with NAAC-accredited quality.',
   },
   {
     q: 'Who founded JKKN Institutions?',
