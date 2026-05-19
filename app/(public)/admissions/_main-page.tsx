@@ -301,7 +301,7 @@ export default function MainAdmissionsPage() {
             name: 'JKKN College of Education',
             description: 'B.Ed programs with NCTE approved curriculum',
             headerColor: '#0b6d41',
-            link: 'https://edu.jkkn.ac.in/admission',
+            link: 'https://edu.jkkn.ac.in/admissions',
           },
         ]}
         backgroundColor="gradient-light"

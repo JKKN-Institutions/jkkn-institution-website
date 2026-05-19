@@ -401,7 +401,12 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/about-the-trust',
-        destination: '/about/our-trust',
+        destination: '/our-trust',
+        permanent: true,
+      },
+      {
+        source: '/about/our-trust',
+        destination: '/our-trust',
         permanent: true,
       },
 

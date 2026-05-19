@@ -183,7 +183,7 @@ export function AboutSection() {
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         )}>
           <Link
-            href="/about"
+            href="/our-trust"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-semibold text-white bg-gray-800/90 border-2 border-white/30 hover:border-secondary hover:bg-gray-800 hover:shadow-lg hover:shadow-secondary/30 transition-all duration-300"
           >
             Learn More About Us

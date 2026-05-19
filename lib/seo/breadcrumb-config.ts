@@ -14,18 +14,18 @@ export const BREADCRUMB_CONFIG: BreadcrumbConfig = {
   '/': [{ name: 'Home', url: '/' }],
 
   // About Section
-  '/about/our-trust': [
+  '/our-trust': [
     { name: 'Home', url: '/' },
-    { name: 'About Us', url: '/about/our-trust' },
+    { name: 'About Us', url: '/our-trust' },
   ],
   '/about/vision-mission': [
     { name: 'Home', url: '/' },
-    { name: 'About Us', url: '/about/our-trust' },
+    { name: 'About Us', url: '/our-trust' },
     { name: 'Vision & Mission', url: '/about/vision-mission' },
   ],
   '/about/leadership': [
     { name: 'Home', url: '/' },
-    { name: 'About Us', url: '/about/our-trust' },
+    { name: 'About Us', url: '/our-trust' },
     { name: 'Leadership', url: '/about/leadership' },
   ],
 

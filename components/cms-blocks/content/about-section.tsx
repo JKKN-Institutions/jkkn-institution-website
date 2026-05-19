@@ -341,7 +341,7 @@ The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 19
                   {/* Learn More Link */}
                   <div className="mt-8">
                     <a
-                      href="/about/our-trust"
+                      href="/our-trust"
                       className="group inline-flex items-center gap-2 text-gold font-semibold hover:gap-3 transition-all duration-300"
                     >
                       Learn More About Our Journey
@@ -577,7 +577,7 @@ The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 19
               {/* Learn More Link */}
               <div className="text-center mt-8">
                 <a
-                  href="/about/our-trust"
+                  href="/our-trust"
                   className="group inline-flex items-center gap-2 text-gold font-semibold hover:gap-3 transition-all duration-300"
                 >
                   Journey Through Time

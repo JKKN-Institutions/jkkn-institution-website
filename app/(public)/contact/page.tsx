@@ -82,7 +82,7 @@ export default function MainContactPage() {
       admissionTitle="Ready to Apply?"
       admissionSubtitle="Start your journey with JKKN — apply online for 2026 admissions today."
       admissionButtonText="Apply Now"
-      admissionButtonLink="/admissions"
+      admissionButtonLink="https://jkkn.in/admission-form"
       showOfficeHours
       officeHoursTitle="Office Hours"
       officeHours={[
