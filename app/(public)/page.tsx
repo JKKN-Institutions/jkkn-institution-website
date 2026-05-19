@@ -14,6 +14,7 @@ import { EventsCalendarSchema } from '@/components/seo/events-calendar-schema'
 import { FAQSchema } from '@/components/seo/faq-schema'
 import { FAQSchemaAdmissions, FAQSchemaPlacements, FAQSchemaAbout, HowToSchemaAdmissions } from '@/components/seo/faq-schema-admissions'
 import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
+import { HomepageInstitutionsItemListSchema } from '@/components/seo/main-institution/homepage-institutions-itemlist-schema'
 import { HOME_SPEAKABLE_SELECTORS } from '@/lib/seo/main-institution/page-content'
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from '@/lib/seo'
@@ -135,10 +136,12 @@ function HomepageSchemas() {
           path: '/',
           name: 'JKKN Institutions | 74+ Years of Educational Excellence',
           description:
-            'JKKN Institutions — 7 colleges on one 70-acre campus in Komarapalayam, Tamil Nadu. 50+ programmes, 92%+ placements, 50,000+ alumni. NAAC accredited; established 1952 by the J.K.K. Rangammal Charitable Trust.',
+            'JKKN Institutions — 7 colleges and 2 schools on one 70-acre campus in Komarapalayam, Tamil Nadu. 50+ programmes, 92%+ placements, 50,000+ alumni. NAAC accredited; established 1952 by the J.K.K. Rangammal Charitable Trust.',
           keywords: [
             'JKKN Institutions',
             'JKKN',
+            '9 JKKN institutions',
+            'JKKN colleges list',
             'Komarapalayam college',
             'Namakkal college',
             'best college near Erode',
@@ -148,6 +151,7 @@ function HomepageSchemas() {
           breadcrumbs: [{ name: 'Home', url: '/' }],
         }}
       />
+      <HomepageInstitutionsItemListSchema />
     </>
   )
 }
