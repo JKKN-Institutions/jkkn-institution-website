@@ -141,6 +141,15 @@ function getEngineeringPages(siteUrl: string): SitemapEntry[] {
     { loc: `${siteUrl}/institutional-plan`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
     { loc: `${siteUrl}/academic-calendar`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
     { loc: `${siteUrl}/others/academic-calendar`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/admissions/engineering`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/admissions/fee-structure`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
+    { loc: `${siteUrl}/admissions/be-cse`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/admissions/be-eee`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/admissions/be-ece`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/admissions/be-mechanical`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/admissions/btech-it`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/admissions/me-cse`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    { loc: `${siteUrl}/admissions/mba`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
   ]
 }
 
