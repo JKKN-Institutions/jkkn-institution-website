@@ -91,7 +91,7 @@ const CAMPUS_ADDRESS =
   'JKKN Institutions, Natarajapuram, NH-544 (Salem To Coimbatore National Highway), Komarapalayam (TK), Namakkal (DT), Tamil Nadu - 638183'
 
 const GOOGLE_MAPS_URL =
-  'https://maps.google.com/?q=JKKN+Institutions+Komarapalayam'
+  'https://www.google.com/maps/search/?api=1&query=JKKN+College+of+Engineering+and+Technology%2C+Komarapalayam'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // All 5 City Configurations

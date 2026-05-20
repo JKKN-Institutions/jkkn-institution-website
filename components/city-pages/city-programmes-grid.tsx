@@ -100,7 +100,14 @@ export default function CityProgrammesGrid({ cityConfig }: CityProgrammesGridPro
 
         <div className="course-grid">
           {COURSES.map((course) => (
-            <div key={course.name} className="course-card">
+            <a
+              key={course.name}
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="course-card course-card-link"
+              aria-label={`Enquire about ${course.name} via WhatsApp`}
+            >
               <div className="course-icon" aria-hidden="true">
                 <course.icon size={28} />
               </div>
@@ -123,16 +130,10 @@ export default function CityProgrammesGrid({ cityConfig }: CityProgrammesGridPro
 
               <p className="course-eligibility">{course.eligibility}</p>
 
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="course-enquire"
-                aria-label={`Enquire about ${course.name} via WhatsApp`}
-              >
+              <span className="course-enquire" aria-hidden="true">
                 Enquire About This Course
-              </a>
-            </div>
+              </span>
+            </a>
           ))}
         </div>
 

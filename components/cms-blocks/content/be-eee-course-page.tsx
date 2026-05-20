@@ -442,10 +442,14 @@ function HeroSection({
 
       {/* Decorative Elements */}
       <div
-        className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-10"
+        aria-hidden="true"
+        className="pointer-events-none absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-10"
         style={{ backgroundColor: primaryColor }}
       ></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl"></div>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-0 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl"
+      ></div>
     </section>
   )
 }
@@ -552,7 +556,7 @@ function CurriculumSection({
   const currentYear = years.find(y => y.year === activeYear) || years[0]
 
   return (
-    <section className="py-16 md:py-20 bg-white">
+    <section id="curriculum" className="scroll-mt-24 py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">
           {title}

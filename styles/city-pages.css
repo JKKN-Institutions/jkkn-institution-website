@@ -433,6 +433,12 @@
   flex-direction: column;
 }
 
+.city-page .course-card-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
 .city-page .course-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow);
