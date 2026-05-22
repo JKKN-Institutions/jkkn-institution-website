@@ -150,6 +150,13 @@ function getEngineeringPages(siteUrl: string): SitemapEntry[] {
     { loc: `${siteUrl}/admissions/btech-it`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/admissions/me-cse`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
     { loc: `${siteUrl}/admissions/mba`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    // City landing pages — served programmatically via [...slug] + getCityConfig,
+    // not stored in cms_pages so the dynamic overlay can't surface them.
+    { loc: `${siteUrl}/coimbatore`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    { loc: `${siteUrl}/erode`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    { loc: `${siteUrl}/namakkal`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    { loc: `${siteUrl}/salem`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    { loc: `${siteUrl}/tiruppur`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
   ]
 }
 
@@ -161,20 +168,26 @@ function getEngineeringCourses(siteUrl: string): SitemapEntry[] {
     { loc: `${siteUrl}/courses-offered`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/department-of-ece`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/department-of-master-of-business-administration`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    // UG programmes — all 5 BE/BTech branches at parity priority
+    { loc: `${siteUrl}/courses-offered/ug/be-cse`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/courses-offered/ug/be-ece`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/courses-offered/ug/be-eee`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/courses-offered/ug/be-mechanical`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/courses-offered/ug/btech-it`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/courses-offered/ug/sh`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
+    // PG programmes
     { loc: `${siteUrl}/courses-offered/pg/mba`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/courses-offered/pg/me-cse`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    // Accreditation / institutional pages
     { loc: `${siteUrl}/naac`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
-    { loc: `${siteUrl}/nirf-2`, lastmod: TODAY, changefreq: 'yearly', priority: 0.6 },
-    { loc: `${siteUrl}/nirf2024`, lastmod: TODAY, changefreq: 'yearly', priority: 0.6 },
-    { loc: `${siteUrl}/nirf-2025`, lastmod: TODAY, changefreq: 'yearly', priority: 0.6 },
+    // Canonical NIRF location is /iqac/nirf/nirf-<year>. Bare /nirf-2, /nirf2024,
+    // /nirf-2025 dropped as duplicates that confused Google about the canonical.
+    { loc: `${siteUrl}/iqac/nirf/nirf-2024`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
     { loc: `${siteUrl}/program-outcomes-pos`, lastmod: TODAY, changefreq: 'yearly', priority: 0.6 },
     { loc: `${siteUrl}/program-specific-outcomes-psos`, lastmod: TODAY, changefreq: 'yearly', priority: 0.6 },
-    { loc: `${siteUrl}/demo1`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
     { loc: `${siteUrl}/student-support-and-progression`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
     { loc: `${siteUrl}/criterion-5-student-support-and-progression-140`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
     { loc: `${siteUrl}/electoral-literacy-club`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
-    { loc: `${siteUrl}/iqac/nirf/nirf-2024`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
   ]
 }
 

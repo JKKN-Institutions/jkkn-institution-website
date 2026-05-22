@@ -83,6 +83,12 @@ export async function GET() {
           const normalized = p.slug.replace(/^\//, '').replace(/\/$/, '')
           if (RESERVED_CMS_SLUGS.has(normalized)) return false
           if (otherSitemapSlugs.has(normalized)) return false
+          // Engineering: legacy long-form city URLs are 301-redirected to short
+          // canonicals (/{city}) by next.config.ts. Sitemap must never advertise
+          // redirected URLs — wastes crawl budget and dilutes the short-URL signal.
+          if (institutionId === 'engineering' && normalized.startsWith('best-engineering-college-in-')) {
+            return false
+          }
           return !staticSlugs.has(normalized)
             && !normalized.startsWith('admin')
             && !normalized.startsWith('blog/')
