@@ -335,6 +335,7 @@ export default function ContactPage({
                   </p>
                   <a
                     href={admissionButtonLink}
+                    {...(admissionButtonLink?.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                     className="inline-flex items-center gap-2 px-8 py-4 rounded-lg text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
                     style={{ backgroundColor: headerPart1Color }}
                   >

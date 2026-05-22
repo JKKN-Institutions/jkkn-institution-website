@@ -367,8 +367,11 @@ export default function EngineeringAdmissionSection({
               </Link>
 
               {secondaryCtaButton && (
-                <Link
+                <a
                   href={secondaryCtaButton.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
                   className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold border-2 transition-all duration-300 hover:scale-105"
                   style={{
                     borderColor: primaryColor,
@@ -376,7 +379,7 @@ export default function EngineeringAdmissionSection({
                   }}
                 >
                   <span>{secondaryCtaButton.label}</span>
-                </Link>
+                </a>
               )}
             </div>
           </div>

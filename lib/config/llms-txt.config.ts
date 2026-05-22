@@ -101,7 +101,7 @@ Contact: +91 93458 55001 | info@jkkn.ac.in | ${siteUrl}
 ## Admissions
 
 - [Admissions 2026-27](${siteUrl}/admissions): Programs across all 7 colleges. NEET required for Dental/Nursing/Allied Health; TNEA counselling for Engineering; merit-based for Arts & Science/Pharmacy.
-- Online application: jkkn.in/admission-form.
+- Online application: jkkn.ai/apply/jkkn-admission-2026.
 - Contact admissions: +91 93458 55001.
 
 ## Accreditations

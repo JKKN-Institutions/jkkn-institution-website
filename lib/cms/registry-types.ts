@@ -471,7 +471,7 @@ export const FAQSectionPropsSchema = z.object({
     },
     {
       question: 'How can I apply for admission at JKKN for 2025-26?',
-      answer: 'Admission to JKKN for the academic year 2025-26 is now open. You can apply through our online admission portal at jkkn.in/admission-form. The process includes online application, document verification, counselling (where applicable), fee payment, and admission confirmation. For direct assistance, call +91 422 266 1100 or email info@jkkn.ac.in.',
+      answer: 'Admission to JKKN for the academic year 2025-26 is now open. You can apply through our online admission portal at jkkn.ai/apply/jkkn-admission-2026. The process includes online application, document verification, counselling (where applicable), fee payment, and admission confirmation. For direct assistance, call +91 422 266 1100 or email info@jkkn.ac.in.',
     },
     {
       question: 'Does JKKN offer hostel and transportation facilities?',

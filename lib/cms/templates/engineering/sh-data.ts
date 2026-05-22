@@ -465,6 +465,6 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   ctaContact: [
     { icon: 'Phone', label: 'Call Us', value: '+91 9345855001', link: 'tel:+91 9345855001' },
     { icon: 'Mail', label: 'Email Us', value: 'engg@jkkn.ac.in', link: 'mailto:engg@jkkn.ac.in' },
-    { icon: 'MapPin', label: 'Visit Us', value: 'Kumarapalayam, Namakkal - 638183', link: '#' },
+    { icon: 'MapPin', label: 'Visit Us', value: 'Kumarapalayam, Namakkal - 638183', link: 'https://www.google.com/maps/place/JKKN+Educational+Institutions/@11.26611,77.58373,17z' },
   ],
 }

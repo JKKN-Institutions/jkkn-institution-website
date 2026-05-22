@@ -513,6 +513,21 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
+      // === Pharmacy College URLs → Homepage ===
+      // /pharmacy-college: CMS row exists but has zero content blocks (renders empty).
+      // /jkkn-college-of-pharmacy: listed in sitemap but never created in the CMS.
+      // Both are retired on the Main institution site — route to homepage.
+      {
+        source: '/pharmacy-college',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/jkkn-college-of-pharmacy',
+        destination: '/',
+        permanent: true,
+      },
+
       // === SEO: Non-www → www canonical (C4) ===
       {
         source: '/:path*',

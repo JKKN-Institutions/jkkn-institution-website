@@ -986,6 +986,30 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     ],
   },
 
+  // Alias: TextBlock → TextEditor (used by committee pages seeded via publish-committee-pages.ts)
+  TextBlock: {
+    name: 'TextBlock',
+    displayName: 'Text Block',
+    category: 'content',
+    description: 'Rich text block with HTML content rendering',
+    icon: 'Type',
+    previewImage: '/cms-previews/TextEditor.png',
+    component: TextEditor,
+    propsSchema: TextEditorPropsSchema,
+    defaultProps: {
+      content: '',
+      alignment: 'left',
+      maxWidth: 'full',
+    },
+    supportsChildren: false,
+    keywords: ['text', 'block', 'content', 'html'],
+    editableProps: [
+      { name: 'content', type: 'string', label: 'Content', multiline: true, required: true },
+      { name: 'alignment', type: 'enum', label: 'Alignment', options: ['left', 'center', 'right', 'justify'] },
+      { name: 'maxWidth', type: 'enum', label: 'Max Width', options: ['sm', 'md', 'lg', 'xl', 'full', 'prose'] },
+    ],
+  },
+
   Heading: {
     name: 'Heading',
     displayName: 'Heading',

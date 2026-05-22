@@ -44,7 +44,7 @@ const faqs = [
   {
     question: 'How do I apply for JKKN admission 2026-27?',
     answer:
-      "Apply online at jkkn.in/admission-form for 2026-27 admissions. Submit required documents, complete fee payment, and attend counseling if applicable. For Dental/Nursing, NEET scores are required; for Engineering, TNEA counseling applies. Early bird discounts available for early applicants.",
+      "Apply online at jkkn.ai/apply/jkkn-admission-2026 for 2026-27 admissions. Submit required documents, complete fee payment, and attend counseling if applicable. For Dental/Nursing, NEET scores are required; for Engineering, TNEA counseling applies. Early bird discounts available for early applicants.",
   },
   {
     question: 'What is the BDS admission process at JKKN Dental College?',

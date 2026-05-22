@@ -113,7 +113,7 @@ export function registerLeadCaptureTools() {
     execute: async (input) => {
       const d = typeof input === 'string' ? JSON.parse(input) : input
 
-      const baseUrl = 'https://jkkn.in/admission-form'
+      const baseUrl = 'https://www.jkkn.ai/apply/jkkn-admission-2026'
       const params = new URLSearchParams()
       if (d.name) params.set('name', d.name)
       if (d.email) params.set('email', d.email)

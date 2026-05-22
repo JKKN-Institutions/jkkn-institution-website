@@ -1125,6 +1125,7 @@ function FinalCTASection({
             <a
               key={idx}
               href={item.link}
+              {...(item.link.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               className="flex items-center gap-3 text-gray-700 hover:text-gray-900 transition-colors duration-300"
             >
               <span style={{ color: primaryColor }}>

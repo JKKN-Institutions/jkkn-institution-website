@@ -225,12 +225,22 @@ function getMainPages(siteUrl: string): SitemapEntry[] {
   return [
     { loc: `${siteUrl}`, lastmod: TODAY, changefreq: 'daily', priority: 1.0 },
     { loc: `${siteUrl}/about`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
+    { loc: `${siteUrl}/admissions`, lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: `${siteUrl}/how-to-apply`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
     { loc: `${siteUrl}/contact`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/our-trust`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
     { loc: `${siteUrl}/our-management`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
     { loc: `${siteUrl}/vision-and-mission`, lastmod: TODAY, changefreq: 'yearly', priority: 0.7 },
+    { loc: `${siteUrl}/chairman-message`, lastmod: TODAY, changefreq: 'yearly', priority: 0.6 },
     { loc: `${siteUrl}/careers`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
     { loc: `${siteUrl}/placements`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
+    { loc: `${siteUrl}/recruiters`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
+    { loc: `${siteUrl}/industry-partnerships`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
+    { loc: `${siteUrl}/student-life`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/rankings-and-recognitions`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
+    { loc: `${siteUrl}/nirf`, lastmod: TODAY, changefreq: 'yearly', priority: 0.6 },
+    { loc: `${siteUrl}/ai-campus`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
+    { loc: `${siteUrl}/faculty-directory`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
     { loc: `${siteUrl}/facilities`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
     { loc: `${siteUrl}/hostel`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
     { loc: `${siteUrl}/transport`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
@@ -240,7 +250,10 @@ function getMainPages(siteUrl: string): SitemapEntry[] {
     { loc: `${siteUrl}/facilities/food-court-stationery-shop`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
     { loc: `${siteUrl}/emergency-care`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
     { loc: `${siteUrl}/ambulance-services`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/hospital`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
+    { loc: `${siteUrl}/digital-classroom`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
     { loc: `${siteUrl}/microsoft-360`, lastmod: TODAY, changefreq: 'yearly', priority: 0.4 },
+    { loc: `${siteUrl}/events`, lastmod: TODAY, changefreq: 'weekly', priority: 0.6 },
     { loc: `${siteUrl}/more`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
     { loc: `${siteUrl}/privacy-policy`, lastmod: TODAY, changefreq: 'yearly', priority: 0.3 },
     { loc: `${siteUrl}/terms-and-conditions`, lastmod: TODAY, changefreq: 'yearly', priority: 0.3 },
@@ -252,18 +265,24 @@ function getMainPages(siteUrl: string): SitemapEntry[] {
  */
 function getMainInstitutions(siteUrl: string): SitemapEntry[] {
   return [
-    { loc: `${siteUrl}/our-institutions`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/our-institutions`, lastmod: TODAY, changefreq: 'monthly', priority: 0.95 },
     { loc: `${siteUrl}/our-colleges`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/our-schools`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
     { loc: `${siteUrl}/jkkn-dental-college`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
-    { loc: `${siteUrl}/jkkn-college-of-pharmacy`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
-    { loc: `${siteUrl}/jkkn-college-of-nursing`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    // /jkkn-college-of-pharmacy removed — slug is 301-redirected to homepage (no CMS page exists).
+    { loc: `${siteUrl}/jkkn-college-of-nursing`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
     { loc: `${siteUrl}/jkkn-college-of-allied-health-sciences`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/jkkn-college-of-engineering`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/jkkn-college-of-arts-and-science`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
-    { loc: `${siteUrl}/jkkn-college-of-education`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
-    { loc: `${siteUrl}/jkkn-matriculation-higher-secondary-school`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
-    { loc: `${siteUrl}/nattraja-vidhyalya`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
+    { loc: `${siteUrl}/jkkn-college-of-education`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
+    { loc: `${siteUrl}/jkkn-matriculation-higher-secondary-school`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    { loc: `${siteUrl}/nattraja-vidhyalya`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    // Cross-domain canonical institution URLs (subdomain deployments)
+    { loc: `https://dental.jkkn.ac.in/`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
+    { loc: `https://pharmacy.jkkn.ac.in/`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
+    { loc: `https://engg.jkkn.ac.in/`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
+    { loc: `https://ahs.jkkn.ac.in/`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
+    { loc: `https://cas.jkkn.ac.in/`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
   ]
 }
 
@@ -280,6 +299,8 @@ function getMainCourses(siteUrl: string): SitemapEntry[] {
     { loc: `${siteUrl}/engineering-courses`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/arts-and-science-courses`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/education-courses`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
+    { loc: `${siteUrl}/fee-structure/nursing`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
+    { loc: `${siteUrl}/courses-offered/pg/me-cse`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
   ]
 }
 
@@ -305,6 +326,10 @@ function getMainBlog(siteUrl: string): SitemapEntry[] {
     { loc: `${siteUrl}/blog/pongal-2025-celebrations-sresakthimayeil-institute-nursing-research`, lastmod: '2025-01-15', changefreq: 'yearly', priority: 0.5 },
     { loc: `${siteUrl}/blog/inauguration-senior-internship-program`, lastmod: '2025-01-01', changefreq: 'yearly', priority: 0.5 },
     { loc: `${siteUrl}/blog/pot-painting-event-2025-at-jkkn-arts-college-event-recap`, lastmod: '2025-01-01', changefreq: 'yearly', priority: 0.5 },
+    { loc: `${siteUrl}/blog/sarvam-galatta-day-1-highlights-jkkn-institutions`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
+    { loc: `${siteUrl}/blog/jkkn-sports-day-2026-recap-five-days-that-proved-jkkncet-builds-champions`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/blog/smileathon-2026-recap-jkkn-dental-college`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
+    { loc: `${siteUrl}/blog/yugantar-26-ai-arena-human-vs-ai-art-jkkn`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
     { loc: `${siteUrl}/blog/news-2022-04-20-convocation`, lastmod: '2022-04-20', changefreq: 'yearly', priority: 0.4 },
     { loc: `${siteUrl}/blog/news-2022-09-16-periyar-event-1`, lastmod: '2022-09-16', changefreq: 'yearly', priority: 0.4 },
     { loc: `${siteUrl}/blog/news-2022-12-18-top100-award`, lastmod: '2022-12-18', changefreq: 'yearly', priority: 0.4 },

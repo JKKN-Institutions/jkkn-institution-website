@@ -241,14 +241,14 @@ function HeroSection({
       }}
     >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
+      <div aria-hidden className="pointer-events-none absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
           backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(11, 109, 65, 0.3) 1px, transparent 0)',
           backgroundSize: '40px 40px'
         }} />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
           <div className="text-gray-900 space-y-6">

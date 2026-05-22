@@ -86,7 +86,7 @@ export function FAQSchemaAdmissionsMain() {
   const faqs: FAQItem[] = [
     {
       question: 'How do I apply for admission at JKKN Institutions?',
-      answer: 'You can apply online at jkkn.in/admission-form or visit our campus at Komarapalayam, Namakkal. You may also call +91 93458 55001 for personalized admission guidance. NEET is required for Dental and Nursing programs. TNEA counseling applies for Engineering. Applications are open for the 2026-27 academic year.'
+      answer: 'You can apply online at jkkn.ai/apply/jkkn-admission-2026 or visit our campus at Komarapalayam, Namakkal. You may also call +91 93458 55001 for personalized admission guidance. NEET is required for Dental and Nursing programs. TNEA counseling applies for Engineering. Applications are open for the 2026-27 academic year.'
     },
     {
       question: 'Which colleges are part of JKKN Institutions?',

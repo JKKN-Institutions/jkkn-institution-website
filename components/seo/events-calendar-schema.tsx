@@ -311,7 +311,7 @@ export function EventsCalendarSchema() {
         },
         "offers": {
           "@type": "Offer",
-          "url": "https://jkkn.in/admission-form",
+          "url": "https://www.jkkn.ai/apply/jkkn-admission-2026",
           "price": "0",
           "priceCurrency": "INR",
           "availability": "https://schema.org/InStock",
@@ -442,7 +442,7 @@ export function EventsCalendarSchema() {
           "@type": "RegisterAction",
           "target": {
             "@type": "EntryPoint",
-            "urlTemplate": "https://jkkn.in/admission-form",
+            "urlTemplate": "https://www.jkkn.ai/apply/jkkn-admission-2026",
             "actionPlatform": [
               "http://schema.org/DesktopWebPlatform",
               "http://schema.org/MobileWebPlatform"

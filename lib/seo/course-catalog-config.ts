@@ -74,7 +74,7 @@ export const courseCatalogConfig = {
   /** Site configuration */
   site: {
     url: 'https://jkkn.ac.in',
-    admissionFormUrl: 'https://jkkn.in/admission-form',
+    admissionFormUrl: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
   },
 
   /** Geo coordinates for all institutions */
