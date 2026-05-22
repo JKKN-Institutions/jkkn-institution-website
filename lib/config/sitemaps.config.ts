@@ -226,6 +226,11 @@ function getMainPages(siteUrl: string): SitemapEntry[] {
     { loc: `${siteUrl}`, lastmod: TODAY, changefreq: 'daily', priority: 1.0 },
     { loc: `${siteUrl}/about`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
     { loc: `${siteUrl}/admissions`, lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    // /fee-structure and /scholarships are also surfaced by CMS, but hardcoded here
+    // as belt-and-suspenders: high-funnel conversion pages must survive a Supabase
+    // outage during a Google crawl. Priority just below /admissions intentionally.
+    { loc: `${siteUrl}/fee-structure`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    { loc: `${siteUrl}/scholarships`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
     { loc: `${siteUrl}/how-to-apply`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
     { loc: `${siteUrl}/contact`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/our-trust`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
