@@ -70,20 +70,3 @@ export {
 // Course Catalog configuration
 export { courseCatalogConfig } from './course-catalog-config'
 export type { CourseCatalogConfig } from './course-catalog-config'
-
-// Sitemap configuration
-export {
-  SITE_URL,
-  STATIC_ROUTES,
-  PATTERN_PRIORITIES,
-  DEFAULT_CONFIG,
-  getSitemapConfig,
-  formatSitemapDate,
-  buildSitemapUrl,
-  shouldExcludeUrl,
-} from './sitemap-config'
-export type {
-  ChangeFrequency,
-  SitemapUrlConfig,
-  PatternPriorityConfig,
-} from './sitemap-config'

@@ -16,7 +16,7 @@ export const revalidate = 3600 // 1-hour edge cache; env vars read at request ti
 
 export async function GET() {
   const institutionId = process.env.NEXT_PUBLIC_INSTITUTION_ID || 'main'
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://jkkn.ac.in'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.jkkn.ac.in'
 
   let entries: SitemapEntry[] = []
 

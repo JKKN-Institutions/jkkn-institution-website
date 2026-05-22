@@ -269,7 +269,8 @@ function getMainInstitutions(siteUrl: string): SitemapEntry[] {
     { loc: `${siteUrl}/our-colleges`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/our-schools`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
     { loc: `${siteUrl}/jkkn-dental-college`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
-    // /jkkn-college-of-pharmacy removed — slug is 301-redirected to homepage (no CMS page exists).
+    // /jkkn-college-of-pharmacy intentionally omitted — currently 301-redirects to /.
+    // Restore this entry once a real Pharmacy College hub page exists at that path.
     { loc: `${siteUrl}/jkkn-college-of-nursing`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
     { loc: `${siteUrl}/jkkn-college-of-allied-health-sciences`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/jkkn-college-of-engineering`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },

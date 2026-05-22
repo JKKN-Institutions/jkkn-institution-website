@@ -7,19 +7,40 @@
  * URL: /sitemap-pages.xml
  */
 
-import { getPagesSitemap, generateSitemapXML, type SitemapEntry } from '@/lib/config/sitemaps.config'
+import {
+  getPagesSitemap,
+  getInstitutionsSitemap,
+  getCoursesSitemap,
+  generateSitemapXML,
+  type SitemapEntry,
+} from '@/lib/config/sitemaps.config'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 3600 // 1-hour edge cache; env vars read at request time
 
+// CMS slugs that duplicate canonical routes — must never appear as separate URLs
+// 'home' is a common CMS draft slug for '/' and would otherwise create a W7 duplicate
+const RESERVED_CMS_SLUGS = new Set(['home'])
+
 export async function GET() {
   const institutionId = process.env.NEXT_PUBLIC_INSTITUTION_ID || 'main'
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://jkkn.ac.in'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.jkkn.ac.in'
 
   // Start with static config entries (known routes)
   const staticEntries = getPagesSitemap(siteUrl, institutionId)
+
+  // Build a unified exclusion set: pages already in this sitemap PLUS slugs that
+  // live in the other sub-sitemaps (institutions, courses) so we never emit the
+  // same URL across two child sitemaps in the same index.
+  const slugFromLoc = (loc: string) =>
+    loc.replace(siteUrl, '').replace(/^\//, '').replace(/\/$/, '')
+
+  const otherSitemapSlugs = new Set([
+    ...getInstitutionsSitemap(siteUrl, institutionId).map(e => slugFromLoc(e.loc)),
+    ...getCoursesSitemap(siteUrl, institutionId).map(e => slugFromLoc(e.loc)),
+  ])
 
   // Fetch CMS pages from database for real lastmod dates
   let dynamicEntries: SitemapEntry[] = []
@@ -46,22 +67,22 @@ export async function GET() {
 
       // Update static entries with real lastmod dates where available
       for (const entry of staticEntries) {
-        const slug = entry.loc.replace(siteUrl, '').replace(/^\//, '')
+        const slug = slugFromLoc(entry.loc)
         const realDate = dbDateMap.get(slug) || dbDateMap.get(slug + '/')
         if (realDate) {
           entry.lastmod = realDate
         }
       }
 
-      // Add CMS pages that aren't already in static config
-      const staticSlugs = new Set(staticEntries.map(e =>
-        e.loc.replace(siteUrl, '').replace(/^\//, '').replace(/\/$/, '')
-      ))
+      // Add CMS pages that aren't already in static config or a sibling sitemap
+      const staticSlugs = new Set(staticEntries.map(e => slugFromLoc(e.loc)))
 
       dynamicEntries = pages
         .filter(p => {
           if (!p.slug || p.slug === '' || p.slug === '/') return false
           const normalized = p.slug.replace(/^\//, '').replace(/\/$/, '')
+          if (RESERVED_CMS_SLUGS.has(normalized)) return false
+          if (otherSitemapSlugs.has(normalized)) return false
           return !staticSlugs.has(normalized)
             && !normalized.startsWith('admin')
             && !normalized.startsWith('blog/')

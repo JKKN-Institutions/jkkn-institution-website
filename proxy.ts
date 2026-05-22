@@ -45,9 +45,51 @@ const compiledRoutePatterns: Array<{ pattern: RegExp; permission: string }> = Ob
 // Routes that guests CAN access (even with pending approval)
 const guestAllowedRoutes = new Set(['/admin', '/auth/access-denied'])
 
+// Engineering-only routes that live in the shared codebase but should 404 on
+// non-Engineering deployments (e.g. Main jkkn.ac.in). These page files live
+// under app/(public)/admissions/be-*, app/(public)/admissions/{mba,engineering,
+// fee-structure,me-cse,btech-it} and app/(public)/courses/{ece,it,me-cse}.
+// Matching is done against the leading path segment so deeper subpaths are
+// caught too (e.g. /admissions/be-cse/syllabus).
+const engineeringOnlyPathPrefixes = [
+  '/admissions/be-cse',
+  '/admissions/be-ece',
+  '/admissions/be-eee',
+  '/admissions/be-mechanical',
+  '/admissions/btech-it',
+  '/admissions/me-cse',
+  '/admissions/mba',
+  '/admissions/engineering',
+  '/admissions/fee-structure',
+  '/courses/ece',
+  '/courses/it',
+  '/courses/me-cse',
+]
+
+function isEngineeringOnlyPath(pathname: string): boolean {
+  const normalized = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname
+  return engineeringOnlyPathPrefixes.some(
+    prefix => normalized === prefix || normalized.startsWith(prefix + '/')
+  )
+}
+
 export async function proxy(request: NextRequest) {
   // CRITICAL: Extract pathname FIRST, before creating any clients
   const pathname = request.nextUrl.pathname
+
+  // Engineering-only route guard.
+  // On non-Engineering deployments (Main, Dental, etc.) these page paths must
+  // return 404 instead of rendering Engineering content. Engineering's own
+  // deployment passes through (institutionId === 'engineering'). Runs before
+  // any auth work so we don't pay session-check costs to 404 a public route.
+  // Rewrites to a synthetic non-existent path so the framework renders the
+  // global app/not-found.tsx UI with proper branding instead of a blank 404.
+  const institutionId = process.env.NEXT_PUBLIC_INSTITUTION_ID || 'main'
+  if (institutionId !== 'engineering' && isEngineeringOnlyPath(pathname)) {
+    const rewriteUrl = request.nextUrl.clone()
+    rewriteUrl.pathname = '/__engineering_only_404'
+    return NextResponse.rewrite(rewriteUrl)
+  }
 
   // Faculty slug-rename redirect.
   // When MyJKKN admins rename a faculty slug, the sync engine records the

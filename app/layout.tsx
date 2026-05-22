@@ -33,7 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const siteMetadata = await generateSiteMetadata()
 
   // Get site URL from environment (institution-specific)
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://jkkn.ac.in'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.jkkn.ac.in'
 
   // Get institution-specific Google verification code
   const googleVerification = getGoogleSiteVerification()
