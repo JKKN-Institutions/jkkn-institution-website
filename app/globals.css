@@ -251,12 +251,17 @@
   }
 
   /* Responsive prose (Typography plugin) overrides */
+  /* Tailwind Preflight resets all element margins to 0. Since @tailwindcss/typography
+     is not installed, we manually restore proper spacing for HTML blog content. */
   .prose {
     @apply text-sm sm:text-base lg:text-lg;
+    line-height: 1.75;
   }
 
   .prose h1 {
     @apply text-2xl sm:text-3xl md:text-4xl;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
   }
 
   .prose h2 {
@@ -269,18 +274,62 @@
 
   .prose h4 {
     @apply text-base sm:text-lg md:text-xl;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
   }
 
   .prose p {
     @apply text-sm sm:text-base lg:text-lg;
+    margin-bottom: 1.25rem;
+    line-height: 1.75;
+  }
+
+  .prose p:empty {
+    margin-bottom: 0.5rem;
   }
 
   .prose li {
     @apply text-sm sm:text-base lg:text-lg;
   }
 
+  .prose ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .prose ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .prose li {
+    margin-bottom: 0.25rem;
+  }
+
+  .prose li > p {
+    margin-bottom: 0.25rem;
+  }
+
   .prose blockquote {
     @apply text-sm sm:text-base lg:text-lg;
+    border-left: 4px solid #0b6d41;
+    padding-left: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    color: #374151;
+  }
+
+  .prose hr {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    border-color: rgba(11, 109, 65, 0.15);
+  }
+
+  .prose > :first-child {
+    margin-top: 0;
   }
 
   /* ─── Branded headings inside rich-text (TextEditor) blocks ─── */
@@ -349,24 +398,22 @@
     background-color: #0b6d41;
   }
 
-  .prose thead th {
+  .prose thead th,
+  .prose tbody th {
+    background-color: #0b6d41;
     color: #ffffff;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
     font-size: 0.7rem;
-    padding: 1rem;
-    text-align: center;
-    white-space: nowrap;
-    border: 0;
-  }
-
-  .prose thead th:first-child {
+    padding: 0.875rem 1rem;
+    /* Left-align every header. This works for content tables (Feature | Details),
+       multi-column tables (Fee Component | Amount | Remarks), and fee tables alike.
+       The previous first-child=left / last-child=right scheme only fit a 2-column
+       label|amount fee table and misaligned every other table shape on the site. */
     text-align: left;
-  }
-
-  .prose thead th:last-child {
-    text-align: right;
+    vertical-align: middle;
+    border: 0;
   }
 
   .prose tbody tr {
@@ -387,22 +434,25 @@
     font-size: 0.875rem;
     color: #1f2937;
     vertical-align: middle;
-    text-align: center;
+    /* Left-align body cells by default. tabular-nums keeps numeric columns
+       (fees, dates, packages) neatly column-aligned while text reads naturally
+       left-to-right — no more values hugging the right edge. */
+    text-align: left;
+    font-variant-numeric: tabular-nums;
     border: 0;
   }
 
+  /* First column reads as the row label: slightly heavier weight, darker ink. */
   .prose tbody td:first-child {
-    text-align: left;
     font-weight: 600;
     color: #111827;
   }
 
-  .prose tbody td:last-child {
-    text-align: right;
-    font-weight: 700;
-    color: #111827;
-    font-variant-numeric: tabular-nums;
-    font-size: 0.95rem;
+  /* Remove paragraph margins inside table cells */
+  .prose thead th p,
+  .prose tbody th p,
+  .prose tbody td p {
+    margin-bottom: 0;
   }
 
   /* Emphasized notes inside cells (e.g. "As Per Govt Norms") render in brand green */
