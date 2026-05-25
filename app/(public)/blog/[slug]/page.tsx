@@ -118,6 +118,9 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
     const text = node.text as string | undefined
     const marks = node.marks as { type: string; attrs?: Record<string, unknown> }[] | undefined
 
+    // Check if this node is inside a listItem (paragraph inside list should not have bottom margin)
+    const isInsideList = (parentType?: string) => parentType === 'listItem'
+
     switch (type) {
       case 'doc':
         // For very large content, render in batches to avoid stack overflow
@@ -165,7 +168,7 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
 
       case 'listItem':
         return (
-          <li key={index} className="text-gray-900">
+          <li key={index} className="text-gray-900 [&>p]:mb-1 [&>p:last-child]:mb-0">
             {nodeContent?.map((child, i) => renderNode(child, i))}
           </li>
         )
@@ -220,8 +223,66 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
           />
         )
 
+      case 'table':
+        return (
+          <div key={index} className="my-6 overflow-x-auto rounded-xl">
+            <table className="w-full border-collapse">
+              {nodeContent?.map((child, i) => renderNode(child, i))}
+            </table>
+          </div>
+        )
+
+      case 'tableRow': {
+        // Detect if this is a header row (contains tableHeader cells)
+        const isHeaderRow = nodeContent?.some(
+          (child) => (child as Record<string, unknown>).type === 'tableHeader'
+        )
+        const row = (
+          <tr key={index}>
+            {nodeContent?.map((child, i) => renderNode(child, i))}
+          </tr>
+        )
+        // Wrap header rows in thead, data rows in tbody
+        if (isHeaderRow) {
+          return <thead key={index}>{row}</thead>
+        }
+        return row
+      }
+
+      case 'tableHeader': {
+        const thAttrs = node.attrs as { colspan?: number; rowspan?: number; colwidth?: number[] | null } | undefined
+        return (
+          <th
+            key={index}
+            colSpan={thAttrs?.colspan || 1}
+            rowSpan={thAttrs?.rowspan || 1}
+            className="text-left"
+            style={thAttrs?.colwidth ? { minWidth: `${thAttrs.colwidth[0]}px` } : undefined}
+          >
+            {nodeContent?.map((child, i) => renderNode(child, i))}
+          </th>
+        )
+      }
+
+      case 'tableCell': {
+        const tdAttrs = node.attrs as { colspan?: number; rowspan?: number; colwidth?: number[] | null } | undefined
+        return (
+          <td
+            key={index}
+            colSpan={tdAttrs?.colspan || 1}
+            rowSpan={tdAttrs?.rowspan || 1}
+            style={tdAttrs?.colwidth ? { minWidth: `${tdAttrs.colwidth[0]}px` } : undefined}
+          >
+            {nodeContent?.map((child, i) => renderNode(child, i))}
+          </td>
+        )
+      }
+
       case 'horizontalRule':
         return <hr key={index} className="my-8 border-gray-300" />
+
+      case 'hardBreak':
+        return <br key={index} />
 
       case 'text':
         let textContent: React.ReactNode = text
@@ -240,6 +301,30 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
               break
             case 'italic':
               textContent = <em key={`${index}-${markIndex}`}>{textContent}</em>
+              break
+            case 'underline':
+              textContent = <u key={`${index}-${markIndex}`}>{textContent}</u>
+              break
+            case 'strike':
+              textContent = <s key={`${index}-${markIndex}`}>{textContent}</s>
+              break
+            case 'subscript':
+              textContent = <sub key={`${index}-${markIndex}`}>{textContent}</sub>
+              break
+            case 'superscript':
+              textContent = <sup key={`${index}-${markIndex}`}>{textContent}</sup>
+              break
+            case 'highlight':
+              const highlightColor = (mark.attrs as { color?: string })?.color
+              textContent = (
+                <mark
+                  key={`${index}-${markIndex}`}
+                  style={highlightColor ? { backgroundColor: highlightColor } : undefined}
+                  className={!highlightColor ? 'bg-yellow-200' : undefined}
+                >
+                  {textContent}
+                </mark>
+              )
               break
             case 'link':
               const href = (mark.attrs as { href: string })?.href
@@ -264,9 +349,19 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
               break
             case 'textStyle':
               // Apply non-default text styles
-              const color = (mark.attrs as { color?: string })?.color
-              if (color && color !== '#000000') {
-                textContent = <span key={`${index}-${markIndex}`} style={{ color }}>{textContent}</span>
+              const styleAttrs = mark.attrs as { color?: string; fontSize?: string; fontFamily?: string } | undefined
+              const inlineStyle: React.CSSProperties = {}
+              if (styleAttrs?.color && styleAttrs.color !== '#000000') {
+                inlineStyle.color = styleAttrs.color
+              }
+              if (styleAttrs?.fontSize) {
+                inlineStyle.fontSize = styleAttrs.fontSize
+              }
+              if (styleAttrs?.fontFamily) {
+                inlineStyle.fontFamily = styleAttrs.fontFamily
+              }
+              if (Object.keys(inlineStyle).length > 0) {
+                textContent = <span key={`${index}-${markIndex}`} style={inlineStyle}>{textContent}</span>
               }
               break
           }
@@ -275,6 +370,18 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
         return textContent
 
       default:
+        // Log unhandled node types in development for debugging
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(`Unhandled TipTap node type: ${type}`)
+        }
+        // Attempt to render children even for unknown types
+        if (nodeContent && nodeContent.length > 0) {
+          return (
+            <div key={index}>
+              {nodeContent.map((child, i) => renderNode(child, i))}
+            </div>
+          )
+        }
         return null
     }
   }
@@ -282,19 +389,15 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
   // Wrap rendering in error handling for malformed content
   try {
     return (
-      <div className="prose prose-lg max-w-none">
-        {renderNode(content, 0)}
-      </div>
+      <>{renderNode(content, 0)}</>
     )
   } catch (error) {
     console.error('Error rendering blog content:', error)
     return (
-      <div className="prose prose-lg max-w-none">
-        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-          <p className="text-yellow-700">
-            There was an error rendering some content. Please contact support if this issue persists.
-          </p>
-        </div>
+      <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+        <p className="text-yellow-700">
+          There was an error rendering some content. Please contact support if this issue persists.
+        </p>
       </div>
     )
   }
@@ -497,7 +600,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             {/* Content - Light card for white background */}
             <article className="bg-gray-50 rounded-2xl p-6 md:p-8 shadow-lg border border-gray-200">
-              <div className="prose prose-lg max-w-none prose-headings:text-primary prose-p:text-gray-900 prose-strong:text-gray-900 prose-a:text-secondary prose-li:text-gray-900 prose-ul:text-gray-900 prose-ol:text-gray-900">
+              <div className="prose prose-lg max-w-none">
                 <ContentRenderer content={post.content} />
               </div>
             </article>
