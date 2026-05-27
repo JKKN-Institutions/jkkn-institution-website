@@ -199,6 +199,14 @@ Disallow: /xmlrpc.php         # WordPress XML-RPC (security risk if exposed)
 Disallow: /cgi-bin/           # Legacy CGI scripts
 Disallow: /phpmyadmin/        # phpMyAdmin (if exposed)
 
+# --- DISALLOW: WordPress legacy archive pages (old site remnants) ---
+# These thin-content archive pages waste crawl budget. The new site uses
+# /blog/tag/ and /blog/category/ (different paths, unaffected by these rules).
+Disallow: /author/
+Disallow: /tag/
+Disallow: /category/
+Disallow: /account/
+
 
 # ---------------------------------------------------------------------------
 # 2. GOOGLEBOT (Primary Search Engine — #1 Traffic Source)
@@ -753,6 +761,14 @@ Disallow: /wp-json/
 Disallow: /xmlrpc.php
 Disallow: /cgi-bin/
 Disallow: /phpmyadmin/
+
+# --- DISALLOW: WordPress legacy archive pages (old site remnants) ---
+# These thin-content archive pages waste crawl budget. The new site uses
+# /blog/tag/ and /blog/category/ (different paths, unaffected by these rules).
+Disallow: /author/
+Disallow: /tag/
+Disallow: /category/
+Disallow: /account/
 
 
 # ---------------------------------------------------------------------------

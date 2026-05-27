@@ -331,20 +331,20 @@ const nextConfig: NextConfig = {
         permanent: false,
       },
 
-      // === Legacy Content URLs → Homepage ===
+      // === Legacy Blog Content → /blog ===
       {
         source: '/the-rise-of-artificial-intelligence-in-healthcare',
-        destination: '/',
+        destination: '/blog',
         permanent: true,
       },
       {
         source: '/latest-news',
-        destination: '/',
+        destination: '/blog',
         permanent: true,
       },
       {
         source: '/design-thinking',
-        destination: '/',
+        destination: '/blog',
         permanent: true,
       },
 
@@ -536,27 +536,222 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
-      // === Spam URLs (WordPress hack remnants) ===
+      // =================================================================
+      // OLD SITE URL AUDIT (2026-05): Legitimate Page Migrations
+      // =================================================================
+      // These URLs were indexed on the old WordPress jkkn.ac.in site and
+      // carry SEO equity (backlinks, rankings). 301 redirects preserve
+      // that equity by transferring it to the new equivalent pages.
+      // Spam/junk URLs are handled by middleware.ts (410 Gone).
+      // =================================================================
+
+      // --- Academic / Course pages ---
       {
-        source: '/20bet-review-2025-bonus-promo-code-by-bet-experts-30-2',
-        destination: '/',
+        source: '/academics/programs/engineering',
+        destination: '/courses-offered',
         permanent: true,
       },
       {
-        source: '/20bet-review-2025-bonus-promo-code-by-bet-experts-30-2/',
-        destination: '/',
+        source: '/allied-health-science-courses',
+        destination: '/courses-offered',
         permanent: true,
       },
       {
-        source: '/20bet-review-2025-bonus-promo-code-by-bet-experts-30-3',
-        destination: '/',
+        source: '/dental-nanotechnology-course',
+        destination: '/courses-offered',
+        permanent: true,
+      },
+
+      // --- Institution hub pages ---
+      {
+        source: '/institutions/nursing',
+        destination: '/our-institutions',
         permanent: true,
       },
       {
-        source: '/20bet-review-2025-bonus-promo-code-by-bet-experts-30-3/',
-        destination: '/',
+        source: '/our-institutions-old',
+        destination: '/our-institutions',
         permanent: true,
       },
+      {
+        source: '/jkkn-college-of-allied-health-science',
+        destination: '/our-institutions',
+        permanent: true,
+      },
+      {
+        source: '/jkkn-college-of-allied-health',
+        destination: '/our-institutions',
+        permanent: true,
+      },
+      {
+        source: '/jkkn-college-of-allied-health-sciences-7',
+        destination: '/our-institutions',
+        permanent: true,
+      },
+      {
+        source: '/jkkn-college-of-allied-health-sciences-3',
+        destination: '/our-institutions',
+        permanent: true,
+      },
+      {
+        source: '/sresakthimayeil-institute-of-nursing-and-research',
+        destination: '/our-institutions',
+        permanent: true,
+      },
+      {
+        source: '/alumni-of-jkkn-dental-college-and-hospital',
+        destination: '/alumni',
+        permanent: true,
+      },
+
+      // --- Calendar ---
+      {
+        source: '/academic-calendar',
+        destination: '/others/academic-calendar',
+        permanent: true,
+      },
+      {
+        source: '/calendar',
+        destination: '/others/academic-calendar',
+        permanent: true,
+      },
+
+      // --- Accreditation / Governance ---
+      {
+        source: '/curricular-aspects',
+        destination: '/iqac',
+        permanent: true,
+      },
+      {
+        source: '/student-support-and-progression',
+        destination: '/iqac',
+        permanent: true,
+      },
+      {
+        source: '/governance-leadership-and-management',
+        destination: '/iqac',
+        permanent: true,
+      },
+
+      // --- Admission announcement posts → /admissions ---
+      {
+        source: '/jkkn-dental-college-hospital-bds-mds-admissions-open-apply-now',
+        destination: '/admissions',
+        permanent: true,
+      },
+      {
+        source: '/jkkn-college-of-allied-health-science-bsc-allied-technology-admissions-open-apply-now',
+        destination: '/admissions',
+        permanent: true,
+      },
+      {
+        source: '/jkkn-college-of-arts-and-science-admissions-open-for-ug-courses-apply-now',
+        destination: '/admissions',
+        permanent: true,
+      },
+      {
+        source: '/jkkn-college-of-education-admissions-open-apply-now',
+        destination: '/admissions',
+        permanent: true,
+      },
+      {
+        source: '/jkkn-college-of-nursing-research-b-sc-nursingm-sc-p-b-b-sc-nursing-admissions-open-apply-now',
+        destination: '/admissions',
+        permanent: true,
+      },
+      {
+        source: '/jkkn-matriculation-higher-secondary-school-2023-2024-admissions-open-apply-now',
+        destination: '/admissions',
+        permanent: true,
+      },
+      {
+        source: '/nattraja-vidhyalya-2023-2024-admissions-open-apply-now',
+        destination: '/admissions',
+        permanent: true,
+      },
+
+      // --- Educational blog content → /blog ---
+      {
+        source: '/the-future-of-pharmacy-how-an-m-pharm-degree-can-help-you-succeed',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/from-student-to-dental-professional-how-a-bds-degree-can-help-you-succeed',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/innovation-and-expertise-why-pursuing-a-dental-mds-degree-is-a-smart-choice',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/the-role-of-creativity-in-engineering-problem-solving',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/oral-maxillofacial-surgery-at-jkkn-dental-college-and-hospital',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/mastering-the-csat-paper-for-upsc-cse-2024-8-proven-tips-for-a-successful-civil-services-exam',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/score-your-dream-job-with-appsc-group-2-hall-ticket-for-897-vacancies-exam-on-feb-25-direct-link-inside',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/unlocking-global-potential-inside-the-impactful-world-bank-supported-vidya-samiksha-kendra-in-gujarat',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/unlock-your-nift-score-with-the-latest-answer-key-2024-at-nta-ac-in-dont-miss-out',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/dont-miss-out-on-mahacet-2024-register-by-today-for-mca-mba-and-more-apply-now',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/unlocking-the-benefits-exploring-the-proposed-changes-to-cbse-credit-system-for-classes-9-12',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/empowering-awareness-celebrating-ivf-advancements-support',
+        destination: '/blog',
+        permanent: true,
+      },
+
+      // --- Misc pages ---
+      {
+        source: '/careers2',
+        destination: '/careers',
+        permanent: true,
+      },
+      // Blog/event content → /blog (NOT homepage)
+      {
+        source: '/linkdin-live-classroom-to-shopfloor-ai-aedp-perspective',
+        destination: '/blog',
+        permanent: true,
+      },
+      // Facility/institutional pages — removed from redirects, served by CMS
+      // catch-all instead. If the slug exists in CMS, the page loads normally.
+      // If not, it returns 404 (correct SEO signal).
+      // Removed: /digital-campus, /digital-campus1, /our-vision-and-mission, /seminor-hall
+
+      // =================================================================
+      // END OF OLD SITE URL AUDIT REDIRECTS
+      // =================================================================
     ]
   },
   images: {
