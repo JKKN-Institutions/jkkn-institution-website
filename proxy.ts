@@ -3,6 +3,107 @@ import type { NextRequest } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { createMiddlewareClient } from '@/lib/supabase/middleware'
 
+// ==========================================================================
+// SEO CLEANUP: WordPress Hack Remediation (2026-05)
+// ==========================================================================
+// The old jkkn.ac.in WordPress site was compromised with gambling/betting
+// spam injection. These patterns return 410 Gone or 301 redirects BEFORE
+// any auth work to avoid wasting Supabase calls on spam/legacy URLs.
+// ==========================================================================
+
+const SPAM_REGEX = /^\/(megapari|dafabet|download-dafabet|download-megapari|download-helabet|download-the-latest-version-of-20bet|20bet|22bet|stake-bet|stake-casino|stake-com|stake-online|batery-|1xbit|access-online-casino|exceptional-casino|unrivaled-gaming|available-deposit|100-first-deposit|official-20bet|best-betting|welcome-offer-games|actual-link-to-download|win-in-real-time|how-to-download-dafabet|app-download-\d|minecraft-beta-preview|types-of-batteries-and-cells|ai-process-consulting-the-new-engine)/
+
+const WP_ARCHIVE_REGEX = /^\/(author|tag|category|account)\//
+
+const WP_SYSTEM_REGEX = /^\/(wp-content|wp-includes|wp-json|wp-admin|xmlrpc\.php)/
+
+const FEED_SUFFIX_REGEX = /\/feed\/?$/
+
+const JUNK_URLS = new Set([
+  '/;l',
+  '/__trashed-9__trashed',
+  '/test-career-page',
+  '/test-careers',
+  '/test-3',
+  '/test-latest',
+  '/psychometric-career-test',
+  '/info',
+  '/camu',
+  '/canva',
+  '/outlook',
+  '/excel',
+  '/access',
+])
+
+const OLD_BLOG_POSTS = new Set([
+  '/sresakthimayeil-institute-of-nursing-and-research-conducted-earth-day',
+  '/world-kidney-cancer-day',
+  '/workshop-on-corticobasal-implants',
+  '/e-library-orientation-program',
+  '/placement-day-celebration-2025',
+  '/resuscitation-india-sumit-2023',
+  '/onam-celebrations-ahs-campus',
+  '/celebrating-the-98th-birthday-of-jkk-nattaraja-sir-founders-day-at-jkk-nattaraja-college',
+  '/kumarapalayam-bypass-marathon',
+  '/25th-ips-pg-convention',
+  '/national-vaccination-day',
+  '/15th-sports-day-event',
+  '/world-hepatitis-day',
+  '/2-board-examination-in-2022-2023',
+  '/road-safety-awareness',
+  '/intellectual-property-rights-day-2',
+  '/curtain-raiser-jkkn-global-alumni-utsav',
+  '/jkkn-college-of-engineering-and-technology-sports-day-2023',
+  '/cbct-inauguration',
+  '/national-service-scheme',
+  '/international-plastic-bag-free-day-2',
+  '/world-health-days',
+  '/jkkncets-initiative-on-mental-health-and-suicide-awareness',
+  '/national-level-technical-symposium-technovation-23',
+  '/world-malaria-day',
+  '/anti-ragging-seminar-program',
+  '/best-poster-award-at-a-national-level-seminar-organized-by-psg-college-of-pharmacy',
+  '/world-homeopathy-day',
+  '/jkk-nataraja-colleges-first-year-commencement-ceremony-2023',
+  '/onam-celebration-at-ahs-campus',
+  '/national-conference-race-2k23',
+  '/faculty-development-program',
+  '/national-level-poster-presentation',
+  '/field-visit-day-by-ssm-group-of-schools-to-our-jkkn-dental-college',
+  '/national-level-seminar-conducted-by-psg-college-of-pharmacy',
+  '/electoral-literacy-club',
+  '/world-health-day-celebration',
+  '/world-health-day-2',
+  '/the-national-level-symposium-technovation-23',
+  '/campus-recruitment-drive-2025-a-step-towards-bright-futures',
+  '/happy-labour-day',
+  '/world-breastfeeding-week-celebration-promoting-maternal-child-health',
+  '/alumni-meet-2025-reconnect-relive',
+  '/alumni-meet',
+  '/internship-workshop-orientation-for-our-final-year-students',
+  '/environmental-talks',
+  '/jkkn-college-of-engineering-and-technology-15th-annual-day',
+])
+
+const GONE_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>410 Gone</title>
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body style="font-family:system-ui,sans-serif;max-width:500px;margin:80px auto;text-align:center;color:#333;padding:0 20px">
+  <h1 style="font-size:48px;margin-bottom:8px">410</h1>
+  <p style="font-size:18px;color:#666;margin-bottom:24px">This page has been permanently removed.</p>
+  <a href="/" style="color:#16a34a;text-decoration:underline;font-size:16px">Go to Homepage</a>
+</body>
+</html>`
+
+// ==========================================================================
+// END SEO CLEANUP CONSTANTS
+// ==========================================================================
+
 // Lightweight anon client for faculty slug-history lookups.
 // Public-read RLS on faculty_slug_history makes the anon key sufficient,
 // and the module-level instance avoids re-initialising on every request.
@@ -76,6 +177,36 @@ function isEngineeringOnlyPath(pathname: string): boolean {
 export async function proxy(request: NextRequest) {
   // CRITICAL: Extract pathname FIRST, before creating any clients
   const pathname = request.nextUrl.pathname
+
+  // ── SEO: Normalize trailing slashes ─────────────────────────────────────
+  if (pathname.length > 1 && pathname.endsWith('/')) {
+    const url = request.nextUrl.clone()
+    url.pathname = pathname.slice(0, -1)
+    return NextResponse.redirect(url, 301)
+  }
+
+  // ── SEO: Redirect old blog/event posts to /blog ─────────────────────────
+  if (OLD_BLOG_POSTS.has(pathname)) {
+    return NextResponse.redirect(new URL('/blog', request.url), 301)
+  }
+
+  // ── SEO: Return 410 Gone for spam and WordPress legacy URLs ─────────────
+  if (
+    SPAM_REGEX.test(pathname) ||
+    WP_ARCHIVE_REGEX.test(pathname) ||
+    WP_SYSTEM_REGEX.test(pathname) ||
+    FEED_SUFFIX_REGEX.test(pathname) ||
+    JUNK_URLS.has(pathname)
+  ) {
+    return new NextResponse(GONE_HTML, {
+      status: 410,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'X-Robots-Tag': 'noindex',
+        'Cache-Control': 'public, max-age=86400',
+      },
+    })
+  }
 
   // Engineering-only route guard.
   // On non-Engineering deployments (Main, Dental, etc.) these page paths must
