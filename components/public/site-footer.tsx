@@ -197,7 +197,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4 text-sm text-white/70 text-center md:text-left">
               <p suppressHydrationWarning>
-                © {new Date().getFullYear()} JKKN Institutions. All rights reserved.
+                © {new Date().getFullYear()} JKKN Institutions. All Rights Reserved.
               </p>
               <span className="hidden md:inline text-white/30">|</span>
               <Link
