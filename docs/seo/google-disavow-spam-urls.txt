@@ -1,0 +1,63 @@
+# Google Disavow File — JKKN Institution (jkkn.ac.in)
+# ================================================================
+# Submit this file at: https://search.google.com/search-console/disavow-links
+# Select the property: https://www.jkkn.ac.in/ (or https://jkkn.ac.in/)
+#
+# Purpose: Disavow backlinks pointing to gambling/betting spam pages that were
+# injected into the old WordPress site via a hack. These toxic backlinks may be
+# harming domain authority.
+#
+# Instructions:
+# 1. Go to Google Search Console → Links → External Links
+# 2. Identify any domains linking to the spam URLs listed below
+# 3. Add those domains as "domain:" entries below
+# 4. Upload this file at the Disavow Links tool
+#
+# Date: 2026-05-27
+# ================================================================
+
+# ── SPAM URL PATTERNS TO DISAVOW ──────────────────────────────────
+# If external sites link to ANY of these URLs, disavow those domains.
+# Use the "domain:" prefix to disavow all links from an entire domain.
+
+# Example (add real spam-linking domains discovered in GSC):
+# domain:spam-casino-links.com
+# domain:betting-directory.net
+# domain:gambling-seo-network.com
+
+# ── HOW TO FIND SPAM-LINKING DOMAINS ──────────────────────────────
+# 1. In GSC, go to Links → External Links → Top Linking Sites
+# 2. Click each linking domain to see which of YOUR pages they link to
+# 3. If they link to any gambling/betting URLs (megapari, dafabet, 20bet,
+#    stake, batery, 1xbit, 22bet, helabet), add that domain below
+# 4. Also check: Links → Top Linked Pages — sort and look for gambling URLs
+
+# ── KNOWN SPAM URL PATTERNS FROM OLD SITE ─────────────────────────
+# These are the hacked pages (now returning 410 Gone via middleware):
+#
+# /megapari-*           (22 URLs — casino, betting, app downloads)
+# /dafabet-*            (5 URLs — betting app downloads)
+# /download-dafabet-*   (variant)
+# /download-megapari-*  (variant)
+# /20bet-*              (5 URLs — betting reviews, app downloads)
+# /stake-*              (5 URLs — casino reviews)
+# /batery-*             (3 URLs — casino, aviator game)
+# /1xbit-*              (1 URL — crypto gambling)
+# /22bet-*              (1 URL — betting app)
+# /download-helabet-*   (1 URL — betting app)
+# /access-online-casino-*
+# /exceptional-casino-*
+# /unrivaled-gaming-*
+# /available-deposit-*
+# /100-first-deposit-*
+# /official-20bet-*
+# /best-betting-*
+# /welcome-offer-games*
+# /win-in-real-time-*
+# /app-download-*
+# /minecraft-beta-preview-*
+# /types-of-batteries-and-cells-*
+
+# ── ADD SPAM-LINKING DOMAINS BELOW THIS LINE ──────────────────────
+# Format: domain:example.com (one per line, no http/https prefix)
+
