@@ -85,6 +85,35 @@ const OLD_BLOG_POSTS = new Set([
   '/jkkn-college-of-engineering-and-technology-15th-annual-day',
 ])
 
+// ── Old facility/institutional pages → redirect to homepage ───────────────
+// These pages don't exist in the new CMS and have no equivalent section page.
+// A 301 to homepage is better than a 404 for both users and SEO.
+const OLD_FACILITY_PAGES = new Set([
+  '/food-court',
+  '/smart-classroom',
+  '/wi-fi-campus',
+  '/bus',
+  '/portal',
+  '/bank-post-office',
+  '/emergancy-care',
+  '/lab',
+  '/laboratory',
+  '/digital-campus',
+  '/digital-campus1',
+  '/our-vision-and-mission',
+  '/seminor-hall',
+  '/facilities/seminar-hall',
+  '/google-workspace',
+  '/terms',
+  '/world-health-days/feed',
+  '/intellectual-property-rights-day-2/feed',
+])
+
+// ── Old facility pages with specific redirect targets ─────────────────────
+const OLD_FACILITY_SPECIFIC: Record<string, string> = {
+  '/medical-humanities': '/courses-offered',
+}
+
 const GONE_HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -188,6 +217,14 @@ export async function proxy(request: NextRequest) {
   // ── SEO: Redirect old blog/event posts to /blog ─────────────────────────
   if (OLD_BLOG_POSTS.has(pathname)) {
     return NextResponse.redirect(new URL('/blog', request.url), 301)
+  }
+
+  // ── SEO: Redirect old facility/institutional pages ──────────────────────
+  if (OLD_FACILITY_SPECIFIC[pathname]) {
+    return NextResponse.redirect(new URL(OLD_FACILITY_SPECIFIC[pathname], request.url), 301)
+  }
+  if (OLD_FACILITY_PAGES.has(pathname)) {
+    return NextResponse.redirect(new URL('/', request.url), 301)
   }
 
   // ── SEO: Return 410 Gone for spam and WordPress legacy URLs ─────────────
