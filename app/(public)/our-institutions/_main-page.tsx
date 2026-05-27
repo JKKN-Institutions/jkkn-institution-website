@@ -333,7 +333,7 @@ const FAQS = [
   },
   {
     q: 'How do I apply for JKKN admission?',
-    a: 'Applications open in March each year via the unified JKKN Admissions portal at jkkn.ai/apply/jkkn-admission-2026. Eligibility, fee structure, scholarships, and counseling vary by program — see the Admissions page or contact +91 4288 274891 / admissions@jkkn.ac.in for college-specific guidance.',
+    a: 'Applications open in March each year via the unified JKKN Admissions portal at jkkn.ai/apply/jkkn-admission-2026. Eligibility, fee structure, scholarships, and counseling vary by program — see the Admissions page or contact +91 9345855001 / info@jkkn.ac.in for college-specific guidance.',
   },
   {
     q: 'Does JKKN offer hostel and transport?',
@@ -459,13 +459,13 @@ function pageGraphSchema() {
           'Salem District',
           'Komarapalayam',
         ],
-        telephone: '+91-4288-274891',
-        email: 'admissions@jkkn.ac.in',
+        telephone: '+91-9345855001',
+        email: 'info@jkkn.ac.in',
         contactPoint: [
           {
             '@type': 'ContactPoint',
-            telephone: '+91-4288-274891',
-            email: 'admissions@jkkn.ac.in',
+            telephone: '+91-9345855001',
+            email: 'info@jkkn.ac.in',
             contactType: 'admissions',
             areaServed: 'IN',
             availableLanguage: ['en', 'ta'],
@@ -1330,18 +1330,18 @@ export default function MainOurInstitutionsPage() {
             </p>
             <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm">
               <a
-                href="tel:+914288274891"
+                href="tel:+919345855001"
                 className="inline-flex items-center gap-2 font-semibold text-primary hover:underline"
               >
                 <Phone className="h-4 w-4" />
-                +91 4288 274891
+                +91 9345855001
               </a>
               <span className="text-muted-foreground/40">·</span>
               <a
-                href="mailto:admissions@jkkn.ac.in"
+                href="mailto:info@jkkn.ac.in"
                 className="font-semibold text-primary hover:underline"
               >
-                admissions@jkkn.ac.in
+                info@jkkn.ac.in
               </a>
               <span className="text-muted-foreground/40">·</span>
               <span className="inline-flex items-center gap-1.5 text-muted-foreground">
