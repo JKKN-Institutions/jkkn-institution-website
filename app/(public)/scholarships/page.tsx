@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
+import { CmsRedirect } from '@/components/public/cms-redirect'
 
 import { getActiveCustomComponents } from '@/app/actions/cms/get-custom-components'
 import { getPageBySlug, getPageWithVisibility } from '@/app/actions/cms/pages'
@@ -211,7 +212,7 @@ export default async function ScholarshipsRoutePage() {
   const pageMetadata = page.metadata as Record<string, unknown> | null
   const redirectUrl = pageMetadata?.redirect_url as string | undefined
   if (redirectUrl) {
-    redirect(redirectUrl)
+    return <CmsRedirect url={redirectUrl} />
   }
 
   const blocks = page.cms_page_blocks.map((block) => ({

@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation'
+import { CmsRedirect } from '@/components/public/cms-redirect'
 import { Suspense } from 'react'
 import { Metadata } from 'next'
 import { getPageBySlug, getPageWithVisibility } from '@/app/actions/cms/pages'
@@ -201,7 +201,7 @@ export default async function HomePage() {
   const homepageMetadata = page.metadata as Record<string, unknown> | null
   const homepageRedirectUrl = homepageMetadata?.redirect_url as string | undefined
   if (homepageRedirectUrl) {
-    redirect(homepageRedirectUrl)
+    return <CmsRedirect url={homepageRedirectUrl} />
   }
 
   const blocks = page.cms_page_blocks.map((block) => ({

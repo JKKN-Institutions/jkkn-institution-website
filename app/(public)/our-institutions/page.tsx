@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
+import { CmsRedirect } from '@/components/public/cms-redirect'
 import { Suspense } from 'react'
 import { getInstitutionId } from '@/lib/config/multi-tenant'
 import { getPageBySlug, getPageWithVisibility } from '@/app/actions/cms/pages'
@@ -163,7 +164,7 @@ export default async function OurInstitutionsPage() {
 
   const pageMetadata = page.metadata as Record<string, unknown> | null
   const redirectUrl = pageMetadata?.redirect_url as string | undefined
-  if (redirectUrl) redirect(redirectUrl)
+  if (redirectUrl) return <CmsRedirect url={redirectUrl} />
 
   const blocks = page.cms_page_blocks.map((block) => ({
     id: block.id,

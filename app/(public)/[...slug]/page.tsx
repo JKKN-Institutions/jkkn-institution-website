@@ -1,4 +1,5 @@
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
+import { CmsRedirect } from '@/components/public/cms-redirect'
 import { Suspense } from 'react'
 import { Metadata } from 'next'
 import { getPageBySlug, getPageWithVisibility } from '@/app/actions/cms/pages'
@@ -199,11 +200,13 @@ export default async function DynamicPage({ params }: PageProps) {
     notFound()
   }
 
-  // Check for redirect URL in metadata - redirect to external URL if set
+  // Check for redirect URL in metadata - redirect to external URL if set.
+  // CmsRedirect handles cross-origin URLs via a full-page browser navigation
+  // so in-app (soft) navigations don't hit "This page couldn't load".
   const pageMetadata = page.metadata as Record<string, unknown> | null
   const redirectUrl = pageMetadata?.redirect_url as string | undefined
   if (redirectUrl) {
-    redirect(redirectUrl)
+    return <CmsRedirect url={redirectUrl} />
   }
 
   // Transform blocks to the format expected by PageRenderer
