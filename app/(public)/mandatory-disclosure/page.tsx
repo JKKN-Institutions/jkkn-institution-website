@@ -1,15 +1,7 @@
 import type { Metadata } from 'next'
 import { LocalPdfLinkList } from '@/components/cms-blocks/shared/local-pdf-link-list'
-import { OnlineFormSection } from '@/components/cms-blocks/shared/online-form-section'
 import { LOCAL_MANDATORY_DISCLOSURE_PDFS } from '@/lib/data/local-mandatory-disclosure-pdfs'
 import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
-
-/**
- * Online Grievance & Redressal form (Google Form).
- * A live web form — both View and Download open this URL in a new tab.
- */
-const GRIEVANCE_FORM_URL =
-  'https://docs.google.com/forms/d/e/1FAIpQLSdjib1yJxOKhU5aiLeO8_cJa6XuUJ3MzfZWZwxD8PvlQ3HEIQ/viewform'
 
 export const metadata: Metadata = {
   title: 'Mandatory Disclosure | JKKN College of Engineering',
@@ -25,19 +17,11 @@ export const metadata: Metadata = {
 }
 
 export default function MandatoryDisclosurePage() {
-  const disclosureItems = [
-    ...LOCAL_MANDATORY_DISCLOSURE_PDFS.map((pdf) => ({
-      name: pdf.title,
-      url: `/pdfs/${pdf.pdfPath}`,
-      description: pdf.description,
-    })),
-    {
-      name: 'Online Grievance and Redressal Form',
-      url: GRIEVANCE_FORM_URL,
-      description:
-        'Submit grievances online to the JKKN Grievance Redressal Committee.',
-    },
-  ]
+  const disclosureItems = LOCAL_MANDATORY_DISCLOSURE_PDFS.map((pdf) => ({
+    name: pdf.title,
+    url: `/pdfs/${pdf.pdfPath}`,
+    description: pdf.description,
+  }))
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-16 px-4">
@@ -88,15 +72,6 @@ export default function MandatoryDisclosurePage() {
           groupByCategory={true}
           showFileSize={true}
           columns={1}
-        />
-
-        {/* Online Grievance and Redressal */}
-        <OnlineFormSection
-          sectionTitle="Online Grievance and Redressal"
-          sectionDescription="Students, parents, and staff can raise grievances online. Submissions are reviewed by the JKKN Grievance Redressal Committee."
-          cardTitle="Online Grievance Redressal Form"
-          cardDescription="Submit your grievance through our online form. Click View to open and fill the form, or Download to access it in a new tab."
-          formUrl={GRIEVANCE_FORM_URL}
         />
 
         {/* Note Section */}
