@@ -1595,17 +1595,20 @@
     text-decoration: line-through;
   }
 
-  /* Bullet list */
+  /* Bullet list — outside markers so bullets align as proper hanging indents
+     (TipTap wraps li content in a block <p>; list-inside misplaces the marker) */
   ul {
     list-style-type: disc;
-    padding-left: 1.5rem;
+    list-style-position: outside;
+    padding-left: 1.75rem;
     margin: 0.5rem 0;
   }
 
   /* Ordered list */
   ol {
     list-style-type: decimal;
-    padding-left: 1.5rem;
+    list-style-position: outside;
+    padding-left: 1.75rem;
     margin: 0.5rem 0;
   }
 
@@ -1739,9 +1742,10 @@
   }
 
   th {
-    font-weight: 600;
+    font-weight: 700;
     text-align: left;
-    background-color: #f1f5f9; /* Tailwind gray-100 */
+    background-color: #0b6d41; /* JKKN green — matches the published .prose table header */
+    color: #ffffff; /* explicit white so header text is always legible on the green */
   }
 
   /* Dark mode table styles */
@@ -1755,7 +1759,8 @@
   }
 
   .dark & th {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: #0b6d41;
+    color: #ffffff;
   }
 
   /* Selected cell highlight */

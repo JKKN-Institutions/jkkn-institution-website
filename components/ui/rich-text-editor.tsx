@@ -1184,12 +1184,12 @@ export function RichTextEditor({
         // Explicitly enable list extensions (required in TipTap v3.13.0+)
         bulletList: {
           HTMLAttributes: {
-            class: 'list-disc list-inside ml-4 my-2',
+            class: 'list-disc list-outside ml-5 my-2',
           },
         },
         orderedList: {
           HTMLAttributes: {
-            class: 'list-decimal list-inside ml-4 my-2',
+            class: 'list-decimal list-outside ml-5 my-2',
           },
         },
         listItem: {
