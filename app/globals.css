@@ -407,11 +407,9 @@
     letter-spacing: 0.05em;
     font-size: 0.7rem;
     padding: 0.875rem 1rem;
-    /* Left-align every header. This works for content tables (Feature | Details),
-       multi-column tables (Fee Component | Amount | Remarks), and fee tables alike.
-       The previous first-child=left / last-child=right scheme only fit a 2-column
-       label|amount fee table and misaligned every other table shape on the site. */
-    text-align: left;
+    /* Center every header cell. Body cells stay left-aligned (see .prose tbody td)
+       so data reads naturally while headers sit centered above their columns. */
+    text-align: center;
     vertical-align: middle;
     border: 0;
   }
@@ -434,9 +432,8 @@
     font-size: 0.875rem;
     color: #1f2937;
     vertical-align: middle;
-    /* Left-align body cells by default. tabular-nums keeps numeric columns
-       (fees, dates, packages) neatly column-aligned while text reads naturally
-       left-to-right — no more values hugging the right edge. */
+    /* Left-align body cells (headers stay centered). tabular-nums keeps numeric
+       columns (fees, dates, packages) neatly aligned while text reads naturally. */
     text-align: left;
     font-variant-numeric: tabular-nums;
     border: 0;
@@ -1743,7 +1740,7 @@
 
   th {
     font-weight: 700;
-    text-align: left;
+    text-align: center;
     background-color: #0b6d41; /* JKKN green — matches the published .prose table header */
     color: #ffffff; /* explicit white so header text is always legible on the green */
   }
