@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { Home, ChevronRight } from 'lucide-react'
 import { z } from 'zod'
 
@@ -64,36 +63,54 @@ function CalendarEmbedSection({
   calendarEmbedUrl,
   calendarTitle,
 }: AcademicCalendarPageProps) {
-  const [isLoading, setIsLoading] = useState(true)
-
   return (
     <div className="bg-[#fbfbee] py-12 px-6 min-h-screen">
       <div className="container mx-auto max-w-7xl">
         {/* Calendar Container */}
         <div className="relative rounded-2xl overflow-hidden border border-gray-200 shadow-xl bg-white">
-          {/* Loading Overlay */}
-          {isLoading && (
-            <div className="absolute inset-0 bg-[#0b6d41]/10 backdrop-blur-sm flex items-center justify-center z-10">
-              <div className="text-[#0b6d41] text-lg font-medium flex items-center gap-3">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#0b6d41]"></div>
-                <span>Loading Academic Calendar...</span>
-              </div>
+          {/*
+            Loading placeholder sits BEHIND the iframe and is covered once the
+            calendar paints. It deliberately does NOT gate the iframe's
+            visibility. A previous version hid the iframe with `opacity-0` until
+            a client-side `onLoad` fired — which left the calendar permanently
+            blank whenever that load event was missed (hydration race with a
+            lazy, cross-origin iframe). The iframe is now always visible.
+          */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 flex items-center justify-center"
+          >
+            <div className="text-[#0b6d41] text-lg font-medium flex items-center gap-3">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#0b6d41]"></div>
+              <span>Loading Academic Calendar…</span>
             </div>
-          )}
+          </div>
 
-          {/* Google Calendar Iframe */}
+          {/* Google Calendar Iframe — always visible (no opacity/onLoad gating). */}
           <iframe
             src={calendarEmbedUrl}
             title={calendarTitle}
-            className={`w-full h-[600px] md:h-[700px] lg:h-[800px] relative z-20 transition-opacity duration-700 ${
-              isLoading ? 'opacity-0' : 'opacity-100'
-            }`}
+            className="relative z-10 w-full h-[600px] md:h-[700px] lg:h-[800px]"
             style={{ border: 0 }}
             allowFullScreen
             loading="lazy"
-            onLoad={() => setIsLoading(false)}
           />
         </div>
+
+        {/* Fallback for browsers that block third-party iframes (e.g. strict
+            third-party-cookie settings): a direct link to the calendar. */}
+        <p className="mt-4 text-center text-sm text-gray-600">
+          Can&apos;t see the calendar?{' '}
+          <a
+            href={calendarEmbedUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-[#0b6d41] hover:underline"
+          >
+            Open it in a new tab
+          </a>
+          .
+        </p>
       </div>
     </div>
   )
