@@ -1,0 +1,59 @@
+<!--
+  Recommended blog-post BODY structure for the JKKN rich-text editor.
+  This is the shape that spaces correctly under `.prose prose-lg` (app/globals.css).
+
+  HOW TO USE: don't paste this raw. Recreate it with the editor's buttons —
+  Heading (H2/H3), paragraph, list, quote, Table template picker, and the Image
+  picker (media library). The markup below just shows the TARGET output:
+    - H2/H3 for structure (never H1 in the body)
+    - <p> for body text (gets margin-bottom from .prose p)
+    - empty <p></p> as a deliberate spacer (.prose p:empty)
+    - <img> uses a media-library URL, NEVER base64; always has alt
+    - <table> made via the Table template picker (header row auto-styled)
+-->
+
+<p>Opening paragraph that introduces the topic in one or two sentences. This becomes the lead
+of the article body, beneath the post title (H1) and excerpt.</p>
+
+<h2>First Major Section</h2>
+<p>Body paragraph. Keep paragraphs focused; <strong>bold</strong> key phrases and use
+<a href="/some-internal-page">internal links</a> where useful.</p>
+
+<ul>
+  <li>Point one</li>
+  <li>Point two</li>
+  <li>Point three</li>
+</ul>
+
+<!-- empty paragraph = small vertical spacer (.prose p:empty) -->
+<p></p>
+
+<h3>A Sub-section</h3>
+<p>Supporting detail for the section above.</p>
+
+<blockquote>A pull-quote or important callout. Renders with the green left border.</blockquote>
+
+<!-- Inline image: media-library URL only. Add empty paragraphs around it for breathing room
+     because there is no .prose img spacing rule. -->
+<p></p>
+<img src="https://YOUR-PROJECT.supabase.co/storage/v1/object/public/media/example.jpg"
+     alt="Descriptive alt text for accessibility and SEO" />
+<p></p>
+
+<h2>A Section With a Table</h2>
+<p>Intro sentence for the table.</p>
+
+<!-- Built with the Table template picker; header row + first column are auto-emphasized by .prose.
+     Stays readable on mobile (table becomes horizontally scrollable). -->
+<table>
+  <thead>
+    <tr><th>Programme</th><th>Duration</th><th>Eligibility</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>B.E. CSE</td><td>4 years</td><td>10+2 with PCM</td></tr>
+    <tr><td>B.E. ECE</td><td>4 years</td><td>10+2 with PCM</td></tr>
+  </tbody>
+</table>
+
+<h2>Conclusion</h2>
+<p>Wrap-up paragraph with a clear call to action.</p>
