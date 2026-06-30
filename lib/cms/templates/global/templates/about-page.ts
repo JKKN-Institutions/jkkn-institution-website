@@ -94,15 +94,15 @@ const aboutPageTemplate: GlobalTemplate = {
           <p class="text-lg text-gray-700 mb-4">
             Founded in 1985, JKKN Institutions has been a beacon of educational excellence for over three decades.
             What started as a vision to provide quality education has grown into a multi-disciplinary educational hub
-            serving thousands of students across various fields.
+            serving thousands of learners across various fields.
           </p>
           <p class="text-gray-600 mb-4">
             Our journey is marked by continuous innovation, unwavering commitment to academic excellence, and a
-            student-centric approach that has produced leaders, innovators, and change-makers across the globe.
+            learner-centric approach that has produced leaders, innovators, and change-makers across the globe.
           </p>
           <p class="text-gray-600">
             Today, we stand as a testament to the power of education in transforming lives and shaping futures,
-            with state-of-the-art infrastructure, world-class faculty, and a legacy of excellence.
+            with state-of-the-art infrastructure, world-class senior learners, and a legacy of excellence.
           </p>
         `,
       },
@@ -136,7 +136,7 @@ const aboutPageTemplate: GlobalTemplate = {
             icon: 'Target',
             title: 'Our Mission',
             description:
-              'To provide accessible, affordable, and quality education that empowers students with knowledge, skills, and values to excel in their chosen fields and contribute positively to society.',
+              'To provide accessible, affordable, and quality education that empowers learners with knowledge, skills, and values to excel in their chosen fields and contribute positively to society.',
             iconColor: 'primary',
           },
           {
@@ -150,7 +150,7 @@ const aboutPageTemplate: GlobalTemplate = {
             icon: 'Heart',
             title: 'Our Values',
             description:
-              'Integrity, Excellence, Innovation, Inclusivity, and Social Responsibility. These core values guide every aspect of our institution and shape the character of our students.',
+              'Integrity, Excellence, Innovation, Inclusivity, and Social Responsibility. These core values guide every aspect of our institution and shape the character of our learners.',
             iconColor: 'accent',
           },
         ],
@@ -189,7 +189,7 @@ const aboutPageTemplate: GlobalTemplate = {
             year: '1985',
             title: 'Foundation',
             description:
-              'JKKN Institutions established with a vision to provide quality education to rural and semi-urban students.',
+              'JKKN Institutions established with a vision to provide quality education to rural and semi-urban learners.',
             icon: 'Flag',
           },
           {
@@ -210,14 +210,14 @@ const aboutPageTemplate: GlobalTemplate = {
             year: '2015',
             title: 'Autonomous Status',
             description:
-              'Granted autonomous status, enabling curriculum innovation and academic flexibility.',
+              'Granted autonomous status, enabling learning framework innovation and academic flexibility.',
             icon: 'Star',
           },
           {
             year: '2020',
             title: 'Digital Transformation',
             description:
-              'Completed digital transformation with smart classrooms, online learning platforms, and virtual labs.',
+              'Completed digital transformation with smart learning studios, online learning platforms, and virtual learning labs.',
             icon: 'Laptop',
           },
           {
@@ -331,8 +331,8 @@ const aboutPageTemplate: GlobalTemplate = {
           },
           {
             src: '/images/facilities/lab.jpg',
-            alt: 'Research Laboratory',
-            caption: 'Advanced research labs with cutting-edge equipment',
+            alt: 'Research Learning Lab',
+            caption: 'Advanced research learning labs with cutting-edge equipment',
           },
           {
             src: '/images/facilities/auditorium.jpg',

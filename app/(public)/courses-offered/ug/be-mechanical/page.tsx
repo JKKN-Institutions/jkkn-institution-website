@@ -12,7 +12,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'B.E. Mechanical Engineering | JKKN College of Engineering',
   description:
-    'Pursue B.E. in Mechanical Engineering at JKKN College of Engineering & Technology. NAAC accredited, AICTE approved 4-year program with 95%+ placement record. Industry-aligned curriculum covering Thermal Engineering, Manufacturing, CAD/CAM, Automobile Engineering, and Robotics.',
+    'Pursue B.E. in Mechanical Engineering at JKKN College of Engineering & Technology. NAAC accredited, AICTE approved 4-year program with 95%+ placement record. Industry-aligned learning framework covering Thermal Engineering, Manufacturing, CAD/CAM, Automobile Engineering, and Robotics.',
   keywords: [
     'BE Mechanical',
     'Mechanical Engineering',
@@ -42,14 +42,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'B.E. Mechanical Engineering | JKKN College',
     description:
-      'Build your engineering career with B.E. Mechanical at JKKN. Industry-aligned curriculum, state-of-the-art labs, expert faculty, and exceptional placement support with 95%+ placement rate.',
+      'Build your engineering career with B.E. Mechanical at JKKN. Industry-aligned learning framework, state-of-the-art learning labs, expert senior learners, and exceptional placement support with 95%+ placement rate.',
     type: 'website',
     images: [
       {
         url: '/images/courses/be-mech/labs/mech-lab-01.jpg',
         width: 1200,
         height: 630,
-        alt: 'JKKN Mechanical Engineering Laboratory',
+        alt: 'JKKN Mechanical Engineering Learning Lab',
       },
     ],
   },

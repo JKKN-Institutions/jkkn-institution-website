@@ -18,7 +18,7 @@ export default function ModernVideoHub({
 }: ModernVideoHubProps) {
     const defaultVideos: VideoItem[] = [
         { title: 'Campus Tour: Explore Our Facilities', duration: '3:45', thumbnail: '/images/hero/engineering-1.jpg', videoUrl: '#' },
-        { title: 'Student Life: A Holistic Experience', duration: '4:12', thumbnail: '/images/hero/engineering-2.jpg', videoUrl: '#' },
+        { title: 'Learner Life: A Holistic Experience', duration: '4:12', thumbnail: '/images/hero/engineering-2.jpg', videoUrl: '#' },
         { title: 'Research & Innovation at JKKN', duration: '5:30', thumbnail: '/images/hero/engineering-3.jpg', videoUrl: '#' },
         { title: 'Alumni Success Stories', duration: '2:50', thumbnail: '/images/hero/engineering-4.jpg', videoUrl: '#' },
     ]

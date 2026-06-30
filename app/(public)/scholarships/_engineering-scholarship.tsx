@@ -325,7 +325,7 @@ export default function EngineeringScholarshipPage() {
           </h1>
           <p className="text-white/80 text-base md:text-lg max-w-2xl mx-auto mb-8">
             Government, Trust, and Naan Mudhalvan scholarship benefits available
-            for B.E / B.Tech, M.B.A, and M.E students at JKKN College of
+            for B.E / B.Tech, M.B.A, and M.E learners at JKKN College of
             Engineering and Technology.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
@@ -363,7 +363,7 @@ export default function EngineeringScholarshipPage() {
             <p className="text-sm text-gray-700 leading-relaxed">
               PMSS, First Graduate, Community Scholarship, and Maintenance grants —
               funded by Tamil Nadu and Central Government for SC / SCA / ST / BC-CC
-              and BC / MBC / DNC / BCM category students.
+              and BC / MBC / DNC / BCM category learners.
             </p>
           </div>
           <div className="rounded-xl border border-[#0b6d41]/15 bg-[#f6faf7] p-6">
@@ -376,7 +376,7 @@ export default function EngineeringScholarshipPage() {
               </h3>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed">
-              Awarded by JKKN Trust to academically outstanding students. Open to
+              Awarded by JKKN Trust to academically outstanding learners. Open to
               both Management Quota (MQ) and Government Quota (GQ) admissions —
               from ₹5,000 to a full 100% tuition fee waiver.
             </p>

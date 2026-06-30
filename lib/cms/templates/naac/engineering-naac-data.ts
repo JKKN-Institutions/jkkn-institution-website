@@ -41,7 +41,7 @@ export const ENGINEERING_NAAC_DATA: NAACPageProps = {
     {
       id: 'criterion-5',
       label: 'Criterion V',
-      description: 'Student Support and Progression',
+      description: 'Learner Support and Progression',
     },
     {
       id: 'criterion-6',
@@ -85,7 +85,7 @@ export const ENGINEERING_NAAC_DATA: NAACPageProps = {
       id: 'overview',
       heading: 'Institutional Information for Quality Assessment (IIQA)',
       overview:
-        'Comprehensive institutional information for JKKN College of Engineering covering academic programs, faculty strength, infrastructure facilities, research initiatives, and student support services as part of NAAC quality assessment.',
+        'Comprehensive institutional information for JKKN College of Engineering covering academic programs, senior learners strength, infrastructure facilities, research initiatives, and learner support services as part of NAAC quality assessment.',
       documents: [
         {
           title: 'IIQA Report 2024 - Engineering College',
@@ -105,21 +105,21 @@ export const ENGINEERING_NAAC_DATA: NAACPageProps = {
         },
       ],
       metrics: [
-        { label: 'Engineering Students', value: '3,200+' },
-        { label: 'Faculty Members', value: '180+' },
+        { label: 'Engineering Learners', value: '3,200+' },
+        { label: 'Senior Learners', value: '180+' },
         { label: 'Engineering Programs', value: '8' },
-        { label: 'Research Labs', value: '45+' },
+        { label: 'Research Learning Labs', value: '45+' },
       ],
     },
     {
       id: 'criterion-1',
       heading: 'Criterion I: Curricular Aspects',
       overview:
-        'Engineering curriculum aligned with AICTE guidelines, NAAC accreditation requirements, and industry expectations. Focus on outcome-based education, choice-based credit system, and industry-integrated learning.',
+        'Engineering learning framework aligned with AICTE guidelines, NAAC accreditation requirements, and industry expectations. Focus on outcome-based education, choice-based credit system, and industry-integrated learning.',
       documents: [
         {
-          title: 'Engineering Curriculum Framework',
-          description: 'AICTE-compliant curriculum design and implementation',
+          title: 'Engineering Learning Framework Framework',
+          description: 'AICTE-compliant learning framework design and implementation',
           fileUrl: '/documents/naac/engineering/curriculum-framework.pdf',
           fileType: 'pdf',
           size: '3.8 MB',
@@ -134,8 +134,8 @@ export const ENGINEERING_NAAC_DATA: NAACPageProps = {
           uploadDate: '2024-02-01',
         },
         {
-          title: 'Industry-Integrated Curriculum',
-          description: 'Industry collaboration in curriculum development',
+          title: 'Industry-Integrated Learning Framework',
+          description: 'Industry collaboration in learning framework development',
           fileUrl: '/documents/naac/engineering/industry-curriculum.pdf',
           fileType: 'pdf',
           size: '2.9 MB',
@@ -147,7 +147,7 @@ export const ENGINEERING_NAAC_DATA: NAACPageProps = {
       id: 'criterion-2',
       heading: 'Criterion II: Teaching-Learning and Evaluation',
       overview:
-        'Student-centric teaching-learning methodologies with focus on experiential learning, project-based learning, and continuous assessment. Faculty development programs ensure quality pedagogy.',
+        'Learner-centric teaching-learning methodologies with focus on experiential learning, project-based learning, and continuous assessment. Senior Learners development programs ensure quality pedagogy.',
       documents: [
         {
           title: 'Teaching-Learning Practices',
@@ -158,7 +158,7 @@ export const ENGINEERING_NAAC_DATA: NAACPageProps = {
           uploadDate: '2024-03-01',
         },
         {
-          title: 'Faculty Development Initiatives',
+          title: 'Senior Learners Development Initiatives',
           description: 'FDPs, workshops, and professional development',
           fileUrl: '/documents/naac/engineering/faculty-development.pdf',
           fileType: 'pdf',
@@ -203,11 +203,11 @@ export const ENGINEERING_NAAC_DATA: NAACPageProps = {
       id: 'criterion-4',
       heading: 'Criterion IV: Infrastructure and Learning Resources',
       overview:
-        'State-of-the-art engineering laboratories, modern workshops, advanced computing facilities, and comprehensive library resources supporting academic and research activities.',
+        'State-of-the-art engineering learning labs, modern workshops, advanced computing facilities, and comprehensive library resources supporting academic and research activities.',
       documents: [
         {
-          title: 'Engineering Laboratories Report',
-          description: 'Details of 45+ specialized engineering labs',
+          title: 'Engineering Learning Labs Report',
+          description: 'Details of 45+ specialized engineering learning labs',
           fileUrl: '/documents/naac/engineering/laboratories.pdf',
           fileType: 'pdf',
           size: '6.2 MB',
@@ -225,9 +225,9 @@ export const ENGINEERING_NAAC_DATA: NAACPageProps = {
     },
     {
       id: 'criterion-5',
-      heading: 'Criterion V: Student Support and Progression',
+      heading: 'Criterion V: Learner Support and Progression',
       overview:
-        'Comprehensive student support through training and placement cell, career counseling, skill development programs, and strong industry partnerships ensuring excellent placement outcomes.',
+        'Comprehensive learner support through training and placement cell, career counseling, skill development programs, and strong industry partnerships ensuring excellent placement outcomes.',
       documents: [
         {
           title: 'Placement Statistics Report',
@@ -307,7 +307,7 @@ export const ENGINEERING_NAAC_DATA: NAACPageProps = {
       id: 'best-practices',
       heading: 'Best Practices',
       overview:
-        'Innovative practices in engineering education including industry mentorship program, hackathon culture, innovation labs, and entrepreneurship development initiatives.',
+        'Innovative practices in engineering education including industry mentorship program, hackathon culture, innovation learning labs, and entrepreneurship development initiatives.',
       documents: [
         {
           title: 'Industry Mentorship Program',
@@ -331,7 +331,7 @@ export const ENGINEERING_NAAC_DATA: NAACPageProps = {
       id: 'distinctiveness',
       heading: 'Institutional Distinctiveness',
       overview:
-        'Distinguished by strong industry partnerships, focus on emerging technologies (AI, IoT, Robotics), active student innovation projects, and excellent placement record with top recruiters.',
+        'Distinguished by strong industry partnerships, focus on emerging technologies (AI, IoT, Robotics), active learner innovation projects, and excellent placement record with top recruiters.',
       documents: [
         {
           title: 'Institutional Distinctiveness Report',
@@ -347,7 +347,7 @@ export const ENGINEERING_NAAC_DATA: NAACPageProps = {
       id: 'feedback',
       heading: 'Stakeholder Feedback',
       overview:
-        'Comprehensive feedback collected from students, faculty, employers, alumni, and other stakeholders across five academic years, demonstrating our commitment to continuous quality improvement.',
+        'Comprehensive feedback collected from learners, senior learners, employers, alumni, and other stakeholders across five academic years, demonstrating our commitment to continuous quality improvement.',
       documents: [
         {
           title: '2018-2019 Feedback',

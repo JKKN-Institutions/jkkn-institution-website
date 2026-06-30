@@ -456,7 +456,7 @@ function HeroSection({
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src="/images/courses/be-cse/labs/cse-lab-01.jpg"
-                alt="JKKN CSE students working in the computer science laboratory"
+                alt="JKKN CSE learners working in the computer science learning lab"
                 className="w-full h-[500px] object-cover"
               />
             </div>
@@ -594,13 +594,13 @@ function CurriculumSection({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: primaryColor }}>
-            Curriculum Structure
+            Learning Framework Structure
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mt-2" style={{ color: primaryColor }}>
             {title}
           </h2>
           <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
-            Our curriculum follows the latest Anna University regulations, combining foundational knowledge with specialized skills in emerging technologies.
+            Our learning framework follows the latest Anna University regulations, combining foundational knowledge with specialized skills in emerging technologies.
           </p>
         </div>
 
@@ -819,7 +819,7 @@ function PlacementsSection({
             {title}
           </h2>
           <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
-            Our dedicated Training & Placement Cell ensures every student receives comprehensive career support and access to top industry recruiters.
+            Our dedicated Training & Placement Cell ensures every learner receives comprehensive career support and access to top industry recruiters.
           </p>
         </div>
 
@@ -937,7 +937,7 @@ function InfrastructureSection({
             {title}
           </h2>
           <p className="text-gray-600 mt-4 max-w-3xl mx-auto text-lg leading-relaxed">
-            Experience hands-on learning in our modern laboratories equipped with the latest technology and software.
+            Experience hands-on learning in our modern learning labs equipped with the latest technology and software.
           </p>
         </div>
 
@@ -1033,7 +1033,7 @@ function FacultySection({
             {title}
           </h2>
           <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
-            Our department comprises highly qualified faculty with extensive industry and research experience, dedicated to nurturing future tech leaders.
+            Our department comprises highly qualified senior learners with extensive industry and research experience, dedicated to nurturing future tech leaders.
           </p>
         </div>
 

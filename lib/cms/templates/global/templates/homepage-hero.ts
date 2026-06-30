@@ -99,7 +99,7 @@ const homepageHeroTemplate: GlobalTemplate = {
           },
           {
             icon: 'Users',
-            title: 'Expert Faculty',
+            title: 'Expert Senior Learners',
             description:
               'Learn from industry experts and accomplished academicians with decades of experience.',
           },
@@ -107,7 +107,7 @@ const homepageHeroTemplate: GlobalTemplate = {
             icon: 'Building',
             title: 'Modern Infrastructure',
             description:
-              'State-of-the-art facilities, laboratories, and learning spaces for holistic development.',
+              'State-of-the-art facilities, learning labs, and learning spaces for holistic development.',
           },
           {
             icon: 'Award',
@@ -162,13 +162,13 @@ const homepageHeroTemplate: GlobalTemplate = {
           {
             value: 10000,
             suffix: '+',
-            label: 'Students Enrolled',
+            label: 'Learners Enrolled',
             icon: 'Users',
           },
           {
             value: 500,
             suffix: '+',
-            label: 'Faculty Members',
+            label: 'Senior Learners',
             icon: 'UserCheck',
           },
           {
@@ -197,8 +197,8 @@ const homepageHeroTemplate: GlobalTemplate = {
       parent_block_id: null,
       is_visible: true,
       props: {
-        heading: 'What Our Students Say',
-        subheading: 'Hear from our alumni and current students',
+        heading: 'What Our Learners Say',
+        subheading: 'Hear from our alumni and current learners',
         backgroundColor: 'gray-50',
         padding: 'large',
       },
@@ -218,7 +218,7 @@ const homepageHeroTemplate: GlobalTemplate = {
             name: 'Priya Sharma',
             role: 'B.Tech Computer Science, Class of 2023',
             content:
-              'JKKN provided me with not just education, but real-world skills and opportunities. The faculty support and industry connections helped me land my dream job at a leading tech company.',
+              'JKKN provided me with not just education, but real-world skills and opportunities. The senior learners support and industry connections helped me land my dream job at a leading tech company.',
             rating: 5,
             avatar: '/images/testimonials/student-1.jpg',
           },
@@ -236,7 +236,7 @@ const homepageHeroTemplate: GlobalTemplate = {
             name: 'Anita Desai',
             role: 'Pharmacy Graduate, Class of 2024',
             content:
-              'The hands-on learning experience, modern laboratories, and dedicated faculty made my journey at JKKN unforgettable. I feel confident and prepared for my professional career.',
+              'The hands-on learning experience, modern learning labs, and dedicated senior learners made my journey at JKKN unforgettable. I feel confident and prepared for my professional career.',
             rating: 5,
             avatar: '/images/testimonials/student-3.jpg',
           },
@@ -258,7 +258,7 @@ const homepageHeroTemplate: GlobalTemplate = {
       props: {
         heading: 'Ready to Begin Your Journey?',
         description:
-          'Join thousands of students who have transformed their lives at JKKN Institutions. Apply now for the upcoming academic year.',
+          'Join thousands of learners who have transformed their lives at JKKN Institutions. Apply now for the upcoming academic year.',
         primaryButton: {
           label: 'Apply Now',
           link: '/admissions/apply',

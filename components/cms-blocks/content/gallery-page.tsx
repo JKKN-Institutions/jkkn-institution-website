@@ -60,8 +60,8 @@ export const GalleryPagePropsSchema = z.object({
     { name: 'All', icon: '', slug: 'all' },
     { name: 'Events', icon: '', slug: 'events' },
     { name: 'Campus', icon: '', slug: 'campus' },
-    { name: 'Students', icon: '', slug: 'students' },
-    { name: 'Faculty', icon: '', slug: 'faculty' },
+    { name: 'Learners', icon: '', slug: 'learners' },
+    { name: 'Senior Learners', icon: '', slug: 'senior learners' },
   ]).describe('Gallery categories with optional icons'),
   showCategoryFilter: z.boolean().default(true).describe('Show category filter tabs'),
 
@@ -93,14 +93,14 @@ const defaultGalleryItems: GalleryItem[] = [
   // Campus
   { id: '5', type: 'image', title: 'Main Campus Aerial View', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Campus', date: '' },
   { id: '6', type: 'image', title: 'Library & Resource Center', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Campus', date: '' },
-  { id: '7', type: 'image', title: 'Modern Laboratories', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Campus', date: '' },
+  { id: '7', type: 'image', title: 'Modern Learning Labs', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Campus', date: '' },
   { id: '8', type: 'video', title: 'Campus Tour', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Campus', date: '' },
   // Students
-  { id: '9', type: 'image', title: 'Student Activities', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Students', date: '' },
-  { id: '10', type: 'image', title: 'Cultural Club', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Students', date: '' },
+  { id: '9', type: 'image', title: 'Learner Activities', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Learners', date: '' },
+  { id: '10', type: 'image', title: 'Cultural Club', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Learners', date: '' },
   // Faculty
-  { id: '11', type: 'image', title: 'Faculty Meet 2024', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Faculty', date: '' },
-  { id: '12', type: 'image', title: 'Research Symposium', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Faculty', date: '' },
+  { id: '11', type: 'image', title: 'Senior Learners Meet 2024', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Senior Learners', date: '' },
+  { id: '12', type: 'image', title: 'Research Symposium', thumbnail: '', thumbnailAlt: '', fullSrc: '', fullSrcAlt: '', category: 'Senior Learners', date: '' },
 ]
 
 /**
@@ -159,7 +159,7 @@ export function GalleryPage({
   headerPart1Color = '#0b6d41',
   headerPart2Color = '#ffde59',
   items = [],
-  categories = ['All', 'Events', 'Campus', 'Students', 'Faculty'],
+  categories = ['All', 'Events', 'Campus', 'Learners', 'Senior Learners'],
   showCategoryFilter = true,
   columns = '4',
   gap = 'md',

@@ -6,13 +6,13 @@ import { MainInstitutionPageSchema } from '@/components/seo/main-institution/mai
 export const metadata: Metadata = {
   title: 'Institutional Policies | JKKN College of Engineering',
   description:
-    'Browse institutional policies including HR, research, environmental, and student policies at JKKN College of Engineering.',
+    'Browse institutional policies including HR, research, environmental, and learner policies at JKKN College of Engineering.',
   keywords: [
     'institutional policies',
     'HR policy',
     'research policy',
     'environmental policy',
-    'student handbook',
+    'learner handbook',
     'JKKN policies',
   ],
 }
@@ -32,7 +32,7 @@ export default function PoliciesPage() {
           path: '/policies',
           name: 'Institutional Policies | JKKN Institutions',
           description:
-            'Comprehensive institutional policies at JKKN Institutions governing academics, research, human resources, environment, grievance redressal, and student life.',
+            'Comprehensive institutional policies at JKKN Institutions governing academics, research, human resources, environment, grievance redressal, and learner life.',
           pageType: 'CollectionPage',
           keywords: [
             'JKKN policies',
@@ -59,7 +59,7 @@ export default function PoliciesPage() {
             Institutional Policies
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Comprehensive policies governing academics, research, environment, and student life
+            Comprehensive policies governing academics, research, environment, and learner life
           </p>
         </div>
 

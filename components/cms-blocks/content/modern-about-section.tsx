@@ -33,7 +33,7 @@ export default function ModernAboutSection({
     title = 'Founded on a legacy of excellence and innovation',
     experienceYear = '39+',
     subtitle = 'Elevating Minds, Empowering Futures',
-    description = 'JKKN is committed to shaping the future of engineering. Our world-class faculty, state-of-the-art facilities, and collaborative environment empower students to become leaders and change makers.',
+    description = 'JKKN is committed to shaping the future of engineering. Our world-class senior learners, state-of-the-art facilities, and collaborative environment empower learners to become leaders and change makers.',
     image = '/images/hero/about-campus.jpg',
     className,
 }: ModernAboutSectionProps) {

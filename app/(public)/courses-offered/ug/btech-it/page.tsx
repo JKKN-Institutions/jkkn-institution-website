@@ -12,7 +12,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'B.Tech Information Technology | JKKN College of Engineering',
   description:
-    'Pursue B.Tech in Information Technology at JKKN College of Engineering & Technology. AICTE approved, NAAC accredited 4-year program with 95%+ placement record. Industry-aligned curriculum covering Data Science, AI/ML, Full Stack Development, UI/UX Design, Cloud Computing, and IoT.',
+    'Pursue B.Tech in Information Technology at JKKN College of Engineering & Technology. AICTE approved, NAAC accredited 4-year program with 95%+ placement record. Industry-aligned learning framework covering Data Science, AI/ML, Full Stack Development, UI/UX Design, Cloud Computing, and IoT.',
   keywords: [
     'BTech IT',
     'Information Technology',
@@ -39,14 +39,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'B.Tech Information Technology | JKKN College',
     description:
-      'Launch your tech career with B.Tech IT at JKKN. Industry-aligned curriculum, cutting-edge labs, expert faculty, and exceptional placement support with 95%+ placement rate.',
+      'Launch your tech career with B.Tech IT at JKKN. Industry-aligned learning framework, cutting-edge learning labs, expert senior learners, and exceptional placement support with 95%+ placement rate.',
     type: 'website',
     images: [
       {
         url: '/images/courses/btech-it/labs/it-lab-01.jpg',
         width: 1200,
         height: 630,
-        alt: 'JKKN IT Laboratory',
+        alt: 'JKKN IT Learning Lab',
       },
     ],
   },

@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     'teaching learning',
     'research innovation',
     'infrastructure',
-    'student support',
+    'learner support',
     'governance',
     'institutional values',
     'best practices',

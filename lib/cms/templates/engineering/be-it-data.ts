@@ -11,7 +11,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
   // Hero Section
   // ==========================================
   heroTitle: 'B.Tech Information Technology',
-  heroSubtitle: 'Transform your passion for technology into a rewarding career. Our AICTE-approved, NAAC-accredited program combines cutting-edge curriculum with industry-ready skills to shape tomorrow\'s tech leaders.',
+  heroSubtitle: 'Transform your passion for technology into a rewarding career. Our AICTE-approved, NAAC-accredited program combines cutting-edge learning framework with industry-ready skills to shape tomorrow\'s tech leaders.',
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
     { icon: 'Users', label: 'Seats Available', value: '60' },
@@ -20,7 +20,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
-    { label: 'Explore Curriculum', link: '#curriculum', variant: 'secondary' },
+    { label: 'Explore Learning Framework', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: 'Affiliated to Anna University, Chennai',
 
@@ -33,13 +33,13 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
       icon: 'GraduationCap',
       title: 'Program Duration',
       value: '4 Years (8 Semesters)',
-      description: 'Full-time undergraduate program with structured curriculum spanning 8 semesters of comprehensive learning and skill development.',
+      description: 'Full-time undergraduate program with structured learning framework spanning 8 semesters of comprehensive learning and skill development.',
     },
     {
       icon: 'BarChart3',
       title: 'Total Credits',
       value: '160 Credits',
-      description: 'Balanced distribution across core subjects, electives, labs, projects, and internships following Anna University curriculum.',
+      description: 'Balanced distribution across core subjects, electives, learning labs, projects, and internships following Anna University curriculum.',
     },
     {
       icon: 'CheckCircle',
@@ -72,13 +72,13 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
     },
     {
       icon: 'Globe',
-      title: 'Industry-Ready Curriculum',
-      description: 'Latest technologies including Data Science, Full Stack Development, UI/UX Design, Cloud Computing, and IoT integrated into curriculum.',
+      title: 'Industry-Ready Learning Framework',
+      description: 'Latest technologies including Data Science, Full Stack Development, UI/UX Design, Cloud Computing, and IoT integrated into learning framework.',
     },
     {
       icon: 'ScrollText',
       title: 'Certification Programs',
-      description: 'Free industry certifications from Microsoft, AWS, Oracle, and Google integrated with the curriculum.',
+      description: 'Free industry certifications from Microsoft, AWS, Oracle, and Google integrated with the learning framework.',
     },
     {
       icon: 'Trophy',
@@ -87,15 +87,15 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
     },
     {
       icon: 'GraduationCap',
-      title: 'Expert Faculty',
-      description: 'Learn from highly qualified faculty with Ph.D. degrees and extensive industry experience in emerging technologies.',
+      title: 'Expert Senior Learners',
+      description: 'Learn from highly qualified senior learners with Ph.D. degrees and extensive industry experience in emerging technologies.',
     },
   ],
 
   // ==========================================
   // Curriculum (4 Years, 8 Semesters)
   // ==========================================
-  curriculumTitle: 'Comprehensive 4-Year Curriculum',
+  curriculumTitle: 'Comprehensive 4-Year Learning Framework',
   curriculumYears: [
     {
       year: 1,
@@ -142,7 +142,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
             { code: '', name: 'Object Oriented Programming', credits: 3 },
             { code: '', name: 'Web Technologies', credits: 3 },
             { code: '', name: 'Skill Development Course - I', credits: 1 },
-            { code: '', name: 'English Communication Skills Laboratory – II', credits: 2 },
+            { code: '', name: 'English Communication Skills Learning Lab – II', credits: 2 },
           ],
         },
         {
@@ -155,7 +155,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
             { code: '', name: 'Java Programming', credits: 3 },
             { code: '', name: 'Operating Systems', credits: 3 },
             { code: '', name: 'Skill Development Course - II', credits: 1 },
-            { code: '', name: 'English Communication Skills Laboratory – III', credits: 1 },
+            { code: '', name: 'English Communication Skills Learning Lab – III', credits: 1 },
           ],
         },
       ],
@@ -188,7 +188,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
             { code: '', name: 'UI/UX Design and Human Centered Design', credits: 3 },
             { code: '', name: 'Industry Oriented Course – II', credits: 2 },
             { code: '', name: 'Compiler Design', credits: 3 },
-            { code: '', name: 'Full Stack Development Laboratory', credits: 2 },
+            { code: '', name: 'Full Stack Development Learning Lab', credits: 2 },
             { code: '', name: 'Self-Learning Course', credits: 3 },
           ],
         },
@@ -294,7 +294,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
     {
       step: 1,
       title: 'Check Eligibility',
-      description: '12th Standard (10+2) with PCM, Minimum 45% aggregate (40% for reserved categories), Valid TNEA rank or equivalent entrance exam score.',
+      description: '12th Standard (10+2) with PCM, Minimum 45% aggregate (40% for reserved categories), Valid TNEA rank or equivalent entrance learning assessment score.',
       icon: 'UserCheck',
     },
     {
@@ -312,7 +312,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
     {
       step: 4,
       title: 'Complete Registration',
-      description: 'Pay admission fees, complete medical examination, and attend orientation session to begin your engineering journey at JKKN.',
+      description: 'Pay admission fees, complete medical learning assessment, and attend orientation session to begin your engineering journey at JKKN.',
       icon: 'Check',
     },
   ],
@@ -324,8 +324,8 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
   feeBreakdown: [
     { component: 'Tuition Fee (Annual)', amount: '₹45,000 - ₹85,000' },
     { component: 'Development Fee', amount: '₹10,000' },
-    { component: 'Lab & Library Fee', amount: '₹8,000' },
-    { component: 'Exam Fee (Approx.)', amount: '₹5,000' },
+    { component: 'Learning Lab & Library Fee', amount: '₹8,000' },
+    { component: 'Learning Assessment Fee (Approx.)', amount: '₹5,000' },
     { component: 'Total (Without Hostel)', amount: '₹68,000 - ₹1,08,000', isTotal: true },
     { component: 'Hostel Fee (Optional)', amount: '₹60,000' },
   ],
@@ -333,36 +333,36 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
   // ==========================================
   // Facilities
   // ==========================================
-  facilitiesTitle: 'State-of-the-Art Learning Studios & Labs',
+  facilitiesTitle: 'State-of-the-Art Learning Studios & Learning Labs',
   facilities: [
     {
-      name: 'Programming Lab',
+      name: 'Programming Learning Lab',
       description: 'Equipped with high-performance desktop workstations and the latest IDEs including Visual Studio, Eclipse, PyCharm, and VS Code for hands-on programming practice.',
       image: '/images/courses/btech-it/labs/it-lab-01.jpg',
     },
     {
-      name: 'Web Technologies Lab',
-      description: 'Modern web development lab for full-stack development with React, Node.js, Angular, and Vue.js — faculty-guided sessions for real-world project building.',
+      name: 'Web Technologies Learning Lab',
+      description: 'Modern web development learning lab for full-stack development with React, Node.js, Angular, and Vue.js — senior learners-guided sessions for real-world project building.',
       image: '/images/courses/btech-it/labs/it-lab-02.jpg',
     },
     {
-      name: 'Data Science Lab',
-      description: 'Advanced analytics lab with Python, R Studio, Tableau, and Power BI for data visualization, machine learning, and statistical analysis.',
+      name: 'Data Science Learning Lab',
+      description: 'Advanced analytics learning lab with Python, R Studio, Tableau, and Power BI for data visualization, machine learning, and statistical analysis.',
       image: '/images/courses/btech-it/labs/it-lab-03.jpg',
     },
     {
-      name: 'Project & Innovation Lab',
-      description: 'Spacious multipurpose lab for capstone projects, hackathons, and collaborative innovation with laptops and specialized equipment.',
+      name: 'Project & Innovation Learning Lab',
+      description: 'Spacious multipurpose learning lab for capstone projects, hackathons, and collaborative innovation with laptops and specialized equipment.',
       image: '/images/courses/btech-it/labs/it-lab-04.jpg',
     },
     {
-      name: 'Advanced Computing Lab',
+      name: 'Advanced Computing Learning Lab',
       description: 'Modern cubicle-style workstations for focused individual practice in cloud computing, cybersecurity, and system administration.',
       image: '/images/courses/btech-it/labs/it-lab-05.jpg',
     },
     {
-      name: 'Software Development Lab',
-      description: 'Dedicated lab for software engineering projects, agile development workflows, version control, and team-based coding sessions.',
+      name: 'Software Development Learning Lab',
+      description: 'Dedicated learning lab for software engineering projects, agile development workflows, version control, and team-based coding sessions.',
       image: '/images/courses/btech-it/labs/it-lab-06.jpg',
     },
   ],
@@ -374,70 +374,70 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
   faculty: [
     {
       name: 'Mrs. R. Karthika',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.Tech',
       specialization: 'Information Technology',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. M. Santhiya',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E',
       specialization: 'Information Technology',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mr. G. Balakumuran',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.Tech',
       specialization: 'Information Technology',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. J. Dhivya',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E',
       specialization: 'Information Technology',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mr. S. Tamilarasan',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Information Technology',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mr. P. Rakupathi',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E',
       specialization: 'Information Technology',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Ms. S. Manipriya',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Information Technology',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. S. Renugadevi',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Information Technology',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Ms. G. Manimekalai',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Information Technology',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. M. Swathi',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Information Technology',
       image: '/images/faculty/placeholder-avatar.jpg',
@@ -451,7 +451,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
   faqs: [
     {
       question: 'What is the eligibility criteria for B.Tech IT at JKKN?',
-      answer: 'Candidates must have completed 12th Standard (10+2) or equivalent examination with Physics, Chemistry, and Mathematics as core subjects. A minimum aggregate of 45% marks is required for general category candidates, while reserved category candidates need a minimum of 40%. Additionally, candidates must have a valid TNEA counselling rank for government quota seats or can apply directly for management quota admission.',
+      answer: 'Candidates must have completed 12th Standard (10+2) or equivalent learning assessment with Physics, Chemistry, and Mathematics as core subjects. A minimum aggregate of 45% marks is required for general category candidates, while reserved category candidates need a minimum of 40%. Additionally, candidates must have a valid TNEA counselling rank for government quota seats or can apply directly for management quota admission.',
     },
     {
       question: 'What is the difference between B.Tech IT and B.E. CSE?',
@@ -459,19 +459,19 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
     },
     {
       question: 'What certifications can I get during B.Tech IT at JKKN?',
-      answer: 'JKKN has partnered with leading technology companies to offer industry-recognized certifications integrated with our curriculum. Students can earn certifications in AWS Cloud Practitioner, Microsoft Azure Fundamentals, Google Analytics, Python Programming, Full Stack Development, UI/UX Design, and more. These certifications significantly enhance employability.',
+      answer: 'JKKN has partnered with leading technology companies to offer industry-recognized certifications integrated with our learning framework. Learners can earn certifications in AWS Cloud Practitioner, Microsoft Azure Fundamentals, Google Analytics, Python Programming, Full Stack Development, UI/UX Design, and more. These certifications significantly enhance employability.',
     },
     {
       question: 'What are the career opportunities after B.Tech IT?',
       answer: 'Graduates have diverse career opportunities including Software Developer, Data Scientist, Full Stack Developer, UI/UX Designer, Cloud Solutions Architect, Business Analyst, IT Consultant, Database Administrator, and many more. Top recruiters include TCS, Infosys, Wipro, Cognizant, Amazon, Google, Microsoft, and leading startups.',
     },
     {
-      question: 'Does JKKN provide placement support for B.Tech IT students?',
+      question: 'Does JKKN provide placement support for B.Tech IT learners?',
       answer: 'Yes, our dedicated Training & Placement Cell provides comprehensive support including aptitude training, soft skills development, technical skill enhancement, mock interviews, resume building, and direct placement opportunities with leading companies. We maintain a 95%+ placement rate with competitive salary packages.',
     },
     {
       question: 'What is the fee structure for B.Tech IT at JKKN?',
-      answer: 'The annual tuition fee ranges from ₹45,000 (Government Quota) to ₹85,000 (Management Quota). Total annual fee including development, lab, and exam fees is approximately ₹68,000 to ₹1,08,000. Merit-based scholarships ranging from 25% to 100% fee waiver are available. Hostel facility is optional at ₹60,000 per year.',
+      answer: 'The annual tuition fee ranges from ₹45,000 (Government Quota) to ₹85,000 (Management Quota). Total annual fee including development, learning lab, and learning assessment fees is approximately ₹68,000 to ₹1,08,000. Merit-based scholarships ranging from 25% to 100% fee waiver are available. Hostel facility is optional at ₹60,000 per year.',
     },
   ],
 

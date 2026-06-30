@@ -42,22 +42,22 @@ export const TransportPageSchema = z.object({
     { src: '/images/facilities/transport-2.jpg', alt: 'Transport Facility 2' },
     { src: '/images/facilities/transport-3.jpg', alt: 'Transport Facility 3' }
   ]),
-  introduction: z.string().default('<p>At JKKN, we prioritize the safety and convenience of our students by providing a comprehensive transportation network. Our fleet of well-maintained buses ensures reliable and comfortable travel for students commuting from various locations.</p>'),
+  introduction: z.string().default('<p>At JKKN, we prioritize the safety and convenience of our learners by providing a comprehensive transportation network. Our fleet of well-maintained buses ensures reliable and comfortable travel for learners commuting from various locations.</p>'),
   features: z.array(z.object({
     title: z.string(),
     description: z.string()
   })).default([
     {
       title: 'Well-Maintained Fleet',
-      description: '<p>Our modern fleet of buses undergoes regular maintenance and safety checks to ensure a smooth and secure journey for all students.</p>'
+      description: '<p>Our modern fleet of buses undergoes regular maintenance and safety checks to ensure a smooth and secure journey for all learners.</p>'
     },
     {
       title: 'Trained Drivers',
-      description: '<p>Experienced and licensed drivers who are trained in defensive driving and student safety protocols operate all our buses.</p>'
+      description: '<p>Experienced and licensed drivers who are trained in defensive driving and learner safety protocols operate all our buses.</p>'
     },
     {
       title: 'Extensive Coverage',
-      description: '<p>We cover 19+ routes across Tamil Nadu, connecting students from various towns and cities to our campus.</p>'
+      description: '<p>We cover 19+ routes across Tamil Nadu, connecting learners from various towns and cities to our campus.</p>'
     },
     {
       title: 'GPS Tracking',
@@ -88,7 +88,7 @@ export const TransportPageSchema = z.object({
     { name: 'Erode' },
     { name: 'Elampillai' }
   ]),
-  conclusion: z.string().default('<p>Our transportation service is designed to provide safe, affordable, and convenient travel for all students. With extensive route coverage and modern facilities, we ensure that every student can reach campus comfortably and on time.</p>'),
+  conclusion: z.string().default('<p>Our transportation service is designed to provide safe, affordable, and convenient travel for all learners. With extensive route coverage and modern facilities, we ensure that every learner can reach campus comfortably and on time.</p>'),
   backgroundColor: z.string().default('#0b6d41'),
   accentColor: z.string().default('#ffde59'),
   textColor: z.string().default('#ffffff')

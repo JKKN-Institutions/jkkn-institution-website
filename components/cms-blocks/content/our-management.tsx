@@ -36,7 +36,7 @@ export const OurManagementPropsSchema = z.object({
       title: 'CHAIRPERSON - JKKN EDUCATIONAL INSTITUTIONS',
       image: '/images/chairperson.png',
       imageAlt: 'Smt. N. Sendamaraai - Chairperson',
-      message: 'As the Chairperson of JKKN Educational Institutions, I am honoured to shoulder this immense responsibility, and I take great pride in our exceptional progress. We have earned the status of one of the most prestigious colleges in the region. "Leadership and Excellence" is not merely our motto but the foundation of our values, a testament to our state-of-the-art infrastructure, distinguished faculty, and unwavering commitment to quality education.',
+      message: 'As the Chairperson of JKKN Educational Institutions, I am honoured to shoulder this immense responsibility, and I take great pride in our exceptional progress. We have earned the status of one of the most prestigious colleges in the region. "Leadership and Excellence" is not merely our motto but the foundation of our values, a testament to our state-of-the-art infrastructure, distinguished senior learners, and unwavering commitment to quality education.',
       order: 1,
     },
     {
@@ -44,7 +44,7 @@ export const OurManagementPropsSchema = z.object({
       title: 'DIRECTOR - JKKN EDUCATIONAL INSTITUTIONS',
       image: '/images/director.png',
       imageAlt: 'Shri. S. Ommsharravana - Director',
-      message: 'I extend my heartfelt congratulations to the college for its fervent and focused dedication to shaping future engineers of distinction. At JKKN, we are committed to innovative education methodologies that enable quality learning, foster independent thinking, and facilitate the development of well-rounded personalities. Our mission empowers students to contribute their best to society and the nation.',
+      message: 'I extend my heartfelt congratulations to the college for its fervent and focused dedication to shaping future engineers of distinction. At JKKN, we are committed to innovative education methodologies that enable quality learning, foster independent thinking, and facilitate the development of well-rounded personalities. Our mission empowers learners to contribute their best to society and the nation.',
       order: 2,
     },
   ]).describe('Management team members'),
@@ -285,7 +285,7 @@ export function OurManagement({
       title: 'CHAIRPERSON - JKKN EDUCATIONAL INSTITUTIONS',
       image: '/images/chairperson.png',
       imageAlt: 'Smt. N. Sendamaraai - Chairperson',
-      message: 'As the Chairperson of JKKN Educational Institutions, I am honoured to shoulder this immense responsibility, and I take great pride in our exceptional progress. We have earned the status of one of the most prestigious colleges in the region. "Leadership and Excellence" is not merely our motto but the foundation of our values, a testament to our state-of-the-art infrastructure, distinguished faculty, and unwavering commitment to quality education.',
+      message: 'As the Chairperson of JKKN Educational Institutions, I am honoured to shoulder this immense responsibility, and I take great pride in our exceptional progress. We have earned the status of one of the most prestigious colleges in the region. "Leadership and Excellence" is not merely our motto but the foundation of our values, a testament to our state-of-the-art infrastructure, distinguished senior learners, and unwavering commitment to quality education.',
       order: 1,
     },
     {
@@ -293,7 +293,7 @@ export function OurManagement({
       title: 'DIRECTOR - JKKN EDUCATIONAL INSTITUTIONS',
       image: '/images/director.png',
       imageAlt: 'Shri. S. Ommsharravana - Director',
-      message: 'I extend my heartfelt congratulations to the college for its fervent and focused dedication to shaping future engineers of distinction. At JKKN, we are committed to innovative education methodologies that enable quality learning, foster independent thinking, and facilitate the development of well-rounded personalities. Our mission empowers students to contribute their best to society and the nation.',
+      message: 'I extend my heartfelt congratulations to the college for its fervent and focused dedication to shaping future engineers of distinction. At JKKN, we are committed to innovative education methodologies that enable quality learning, foster independent thinking, and facilitate the development of well-rounded personalities. Our mission empowers learners to contribute their best to society and the nation.',
       order: 2,
     },
   ]

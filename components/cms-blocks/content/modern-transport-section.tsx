@@ -61,7 +61,7 @@ function AnimatedCounter({ value, inView }: { value: number; inView: boolean }) 
 export function ModernTransportSection({
     pageTitle = 'TRANSPORT',
     pageSubtitle = 'Safe & Reliable Transportation',
-    introduction = 'Transportation is an essential aspect of any educational institution. It provides students and faculty members with a convenient way to reach the campus and enhances the overall educational experience. JKKN Educational Institutions understand the importance of transportation and have made significant efforts to improve their transport facilities.',
+    introduction = 'Transportation is an essential aspect of any educational institution. It provides learners and senior learners with a convenient way to reach the campus and enhances the overall educational experience. JKKN Educational Institutions understand the importance of transportation and have made significant efforts to improve their transport facilities.',
     images = [
         { src: '/images/facilities/transport-1.jpg', alt: 'College bus fleet' },
         { src: '/images/facilities/transport-2.jpg', alt: 'Modern buses' },
@@ -69,10 +69,10 @@ export function ModernTransportSection({
     features = [
         { icon: 'Wrench', title: 'Well-Maintained Buses', description: 'The transport facility at JKKN Educational Institutions is equipped with a well-maintained fleet of buses. These buses are regularly serviced and cleaned to ensure the safety and comfort of the passengers. Moreover, the buses are equipped with modern amenities like air-conditioning, comfortable seating, and GPS tracking.' },
         { icon: 'UserCheck', title: 'Trained Drivers', description: 'The drivers who operate the buses at JKKN Educational Institutions are highly trained and experienced. They have a good understanding of the local routes and traffic conditions, which helps them provide a safe and efficient transportation service. Additionally, they undergo regular training sessions to keep their skills up to date.' },
-        { icon: 'Banknote', title: 'Affordable Fees', description: 'The transport facility at JKKN Educational Institutions is available to all students and faculty members at an affordable fee. The fee is calculated based on the distance of the student\'s residence from the campus, ensuring that the transportation cost is reasonable for everyone.' },
+        { icon: 'Banknote', title: 'Affordable Fees', description: 'The transport facility at JKKN Educational Institutions is available to all learners and senior learners at an affordable fee. The fee is calculated based on the distance of the learner\'s residence from the campus, ensuring that the transportation cost is reasonable for everyone.' },
         { icon: 'Shield', title: 'Safe and Secure', description: 'The safety and security of the passengers are of utmost importance at JKKN Educational Institutions. The buses are equipped with CCTV cameras, and there are female attendants on board to ensure the safety of female passengers. Additionally, the transport facility operates within a strict set of rules and regulations, ensuring that the passengers are always safe.' },
-        { icon: 'Clock', title: 'Timely Service', description: 'The transport facility at JKKN Educational Institutions operates on a strict schedule, ensuring that the buses arrive and depart from the campus on time. This allows the students and faculty members to plan their day accordingly, without worrying about delays or missed buses.' },
-        { icon: 'Accessibility', title: 'Accessibility', description: 'The transport facility at JKKN Educational Institutions is accessible to all students, regardless of their physical abilities. The buses are equipped with wheelchair ramps and other accessibility features, making it easy for students with disabilities to use the service.' },
+        { icon: 'Clock', title: 'Timely Service', description: 'The transport facility at JKKN Educational Institutions operates on a strict schedule, ensuring that the buses arrive and depart from the campus on time. This allows the learners and senior learners to plan their day accordingly, without worrying about delays or missed buses.' },
+        { icon: 'Accessibility', title: 'Accessibility', description: 'The transport facility at JKKN Educational Institutions is accessible to all learners, regardless of their physical abilities. The buses are equipped with wheelchair ramps and other accessibility features, making it easy for learners with disabilities to use the service.' },
     ],
     busRoutes = [
         { route: 'Athani', distance: 51, buses: 1 },
@@ -422,7 +422,7 @@ export function ModernTransportSection({
                                 </div>
                             </div>
                             <p className="text-gray-500 mb-8 leading-relaxed">
-                                Responsible for ensuring safe and timely transportation for all students and faculty members across all routes.
+                                Responsible for ensuring safe and timely transportation for all learners and senior learners across all routes.
                             </p>
 
                             <div className="flex flex-wrap gap-2 mt-auto">

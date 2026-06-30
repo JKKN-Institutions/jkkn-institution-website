@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'MBA Admission 2026-27 — Apply Online | JKKN Engineering',
     description:
-      '120 seats · ₹65,000/yr · TANCET / CAT / MAT / XAT · Finance · Marketing · HRM. GD + PI selection. Industry-aligned curriculum and placements.',
+      '120 seats · ₹65,000/yr · TANCET / CAT / MAT / XAT · Finance · Marketing · HRM. GD + PI selection. Industry-aligned learning framework and placements.',
     type: 'website',
     images: [{ url: '/og/engineering-admissions.jpg', width: 1200, height: 630, alt: 'JKKN MBA Admissions 2026-27' }],
   },

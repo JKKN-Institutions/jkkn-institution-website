@@ -47,7 +47,7 @@ export const PlacementPageSchema = z.object({
     eyebrow: z.string().default('Career & Placement'),
     title: z.string().default('Launching Careers, Building Futures'),
     subtitle: z.string().default(
-      'Our Placement Cell connects students with leading recruiters across technology, core engineering, and research — backed by rigorous training and a thriving alumni network.'
+      'Our Placement Cell connects learners with leading recruiters across technology, core engineering, and research — backed by rigorous training and a thriving alumni network.'
     ),
     backgroundImage: z.string().default('/images/engineering/placement-hero.jpg'),
   }),
@@ -65,7 +65,7 @@ export const PlacementPageSchema = z.object({
   ]),
   trainingTitle: z.string().default('Training & Preparation'),
   trainingSubtitle: z.string().default(
-    'A structured, multi-year programme that prepares every student for competitive recruitment.'
+    'A structured, multi-year programme that prepares every learner for competitive recruitment.'
   ),
   training: z.array(
     z.object({

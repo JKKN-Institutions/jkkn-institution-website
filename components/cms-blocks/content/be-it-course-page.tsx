@@ -436,7 +436,7 @@ function HeroSection({
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src="/images/engineering/labs/it/it-lab-01.jpg"
-                alt="Students working in IT laboratory at JKKN"
+                alt="Learners working in IT learning lab at JKKN"
                 className="w-full h-[500px] object-cover"
               />
               {/* Overlay gradient */}
@@ -974,7 +974,7 @@ function FacilitiesSection({
             {title}
           </h2>
           <p className="text-gray-600 mt-4 max-w-3xl mx-auto text-lg leading-relaxed">
-            Experience hands-on learning in our modern laboratories equipped with the latest technology and software.
+            Experience hands-on learning in our modern learning labs equipped with the latest technology and software.
           </p>
         </div>
 

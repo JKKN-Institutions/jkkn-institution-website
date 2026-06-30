@@ -173,7 +173,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
           layout: 'row',
           animate: true,
           stats: [
-            { value: 5000, suffix: '+', label: 'Students Enrolled', icon: 'users' },
+            { value: 5000, suffix: '+', label: 'Learners Enrolled', icon: 'users' },
             { value: 50, suffix: '+', label: 'Programs Offered', icon: 'book-open' },
             { value: 95, suffix: '%', label: 'Placement Rate', icon: 'briefcase' },
             { value: 30, suffix: '+', label: 'Years of Excellence', icon: 'award' }
@@ -192,7 +192,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
   {
     id: 'testimonials-carousel',
     name: 'Testimonials Carousel',
-    description: 'Auto-rotating carousel of student/parent testimonials',
+    description: 'Auto-rotating carousel of learner/parent testimonials',
     category: 'testimonials',
     icon: 'MessageSquareQuote',
     blocks: [
@@ -209,7 +209,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
       {
         component_name: 'Heading',
         props: {
-          text: 'What Our Students Say',
+          text: 'What Our Learners Say',
           level: 'h2',
           alignment: 'center',
           color: undefined
@@ -227,7 +227,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
           showRating: true,
           items: [
             {
-              quote: 'JKKN provided me with the best learning experience. The faculty is exceptional and the campus life is amazing.',
+              quote: 'JKKN provided me with the best learning experience. The senior learners is exceptional and the campus life is amazing.',
               author: 'Priya Sharma',
               role: 'B.Tech Graduate, 2023',
               avatar: undefined,
@@ -347,7 +347,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
         component_name: 'CallToAction',
         props: {
           title: 'Ready to Start Your Journey?',
-          description: 'Join thousands of students who have transformed their careers with us. Applications for the new academic year are now open.',
+          description: 'Join thousands of learners who have transformed their careers with us. Applications for the new academic year are now open.',
           variant: 'centered',
           buttons: [
             { label: 'Apply Now', link: '/apply', variant: 'primary' },
@@ -403,8 +403,8 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
           images: [
             { src: 'https://images.unsplash.com/photo-1562774053-701939374585?w=600', alt: 'Campus Building', caption: 'Main Campus' },
             { src: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600', alt: 'Library', caption: 'Central Library' },
-            { src: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600', alt: 'Students', caption: 'Student Life' },
-            { src: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600', alt: 'Lab', caption: 'Research Lab' }
+            { src: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600', alt: 'Learners', caption: 'Learner Life' },
+            { src: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600', alt: 'Learning Lab', caption: 'Research Learning Lab' }
           ]
         },
         sort_order: 2,
@@ -466,8 +466,8 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
   },
   {
     id: 'faculty-grid',
-    name: 'Faculty Directory',
-    description: 'Display faculty members in a grid layout',
+    name: 'Senior Learners Directory',
+    description: 'Display senior learners in a grid layout',
     category: 'data',
     icon: 'Users',
     blocks: [
@@ -484,7 +484,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
       {
         component_name: 'Heading',
         props: {
-          text: 'Our Faculty',
+          text: 'Our Senior Learners',
           level: 'h2',
           alignment: 'center',
           color: undefined
@@ -589,7 +589,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
             { year: '1990', title: 'Foundation', description: 'JKKN Institution was established with a vision to provide quality education.', icon: 'flag' },
             { year: '2000', title: 'Expansion', description: 'Added new programs in engineering and management.', icon: 'building' },
             { year: '2010', title: 'Recognition', description: 'Achieved NAAC accreditation with A grade.', icon: 'award' },
-            { year: '2020', title: 'Digital Transformation', description: 'Launched online learning platforms and smart classrooms.', icon: 'laptop' },
+            { year: '2020', title: 'Digital Transformation', description: 'Launched online learning platforms and smart learning studios.', icon: 'laptop' },
             { year: '2024', title: 'New Horizons', description: 'Expanding with new research centers and international collaborations.', icon: 'globe' }
           ]
         },
@@ -635,9 +635,9 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
           defaultTab: 0,
           tabs: [
             { label: 'Overview', content: '<p>This program offers comprehensive education with a focus on practical skills and industry readiness.</p>' },
-            { label: 'Curriculum', content: '<p>The curriculum includes core subjects, electives, and hands-on projects designed by industry experts.</p>' },
+            { label: 'Learning Framework', content: '<p>The learning framework includes core subjects, electives, and hands-on projects designed by industry experts.</p>' },
             { label: 'Eligibility', content: '<p>Candidates must have completed 10+2 with minimum 60% marks in relevant subjects.</p>' },
-            { label: 'Fees', content: '<p>Tuition fee: ₹1,50,000 per year. Scholarships available for meritorious students.</p>' }
+            { label: 'Fees', content: '<p>Tuition fee: ₹1,50,000 per year. Scholarships available for meritorious learners.</p>' }
           ]
         },
         sort_order: 2,

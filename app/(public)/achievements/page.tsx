@@ -23,11 +23,11 @@ import { ACHIEVEMENTS_FAQS } from '@/lib/seo/main-institution/page-content'
 export const metadata: Metadata = {
   title: 'Achievements',
   description:
-    'Explore the outstanding achievements of our faculty and students across various fields including research, teaching, competitions, and awards.',
+    'Explore the outstanding achievements of our senior learners and learners across various fields including research, teaching, competitions, and awards.',
   keywords: [
     'achievements',
-    'faculty achievements',
-    'student achievements',
+    'senior learners achievements',
+    'learner achievements',
     'awards',
     'research',
     'competitions',
@@ -56,12 +56,12 @@ export default async function AchievementsPage({
           path: '/achievements',
           name: 'Our Achievements | JKKN Institutions',
           description:
-            'Explore the outstanding achievements of JKKN Institutions faculty and students across research, teaching, competitions, and awards — 74+ years of academic excellence, 92%+ placement success, and 50,000+ alumni.',
+            'Explore the outstanding achievements of JKKN Institutions senior learners and learners across research, teaching, competitions, and awards — 74+ years of academic excellence, 92%+ placement success, and 50,000+ alumni.',
           pageType: 'CollectionPage',
           keywords: [
             'JKKN achievements',
-            'faculty achievements',
-            'student achievements',
+            'senior learners achievements',
+            'learner achievements',
             'JKKN awards',
             'research excellence',
           ],

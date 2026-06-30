@@ -50,7 +50,7 @@ export function CTASection() {
                 </span>
               </h2>
               <p className="text-lg text-gray-300 leading-relaxed">
-                Join thousands of successful students who started their journey at JKKN.
+                Join thousands of successful learners who started their journey at JKKN.
                 Applications for 2025-26 academic year are now open.
               </p>
             </div>
@@ -71,7 +71,7 @@ export function CTASection() {
                   <Clock className="w-6 h-6 text-secondary" />
                 </div>
                 <div>
-                  <p className="text-white font-semibold">Entrance Exam</p>
+                  <p className="text-white font-semibold">Entrance Learning Assessment</p>
                   <p className="text-sm text-gray-400">April 15-20, 2025</p>
                 </div>
               </div>

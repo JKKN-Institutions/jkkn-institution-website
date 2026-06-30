@@ -62,7 +62,7 @@ const PG_ME_COUNSELLING_PATHS = [
     points: [
       'Apply directly to JKKN with B.E / B.Tech degree (50%+ aggregate)',
       'Subject equivalency check as per Anna University regulations',
-      'Personal interview with department faculty',
+      'Personal interview with department senior learners',
       'Provisional admission based on academic merit',
       'Fee payment, document verification, and enrolment',
     ],
@@ -71,12 +71,12 @@ const PG_ME_COUNSELLING_PATHS = [
 
 const MBA_COUNSELLING_PATHS = [
   {
-    type: 'Entrance Exam Route',
+    type: 'Entrance Learning Assessment Route',
     badge: 'TANCET / CAT / MAT / XAT',
     color: 'blue' as const,
     points: [
       'Appear for any one: TANCET (Anna Univ) / CAT / MAT / XAT',
-      'Apply to JKKN MBA with valid entrance exam score',
+      'Apply to JKKN MBA with valid entrance learning assessment score',
       'Get shortlisted based on score + academic background',
       'Attend Group Discussion (GD) + Personal Interview (PI) at JKKN campus',
       'Final selection based on combined score (entrance + GD + PI + academics)',
@@ -90,7 +90,7 @@ const MBA_COUNSELLING_PATHS = [
     points: [
       'Apply directly to JKKN MBA with Bachelor\'s degree (50%+)',
       'Submit application + statement of purpose',
-      'Attend personal interview with MBA faculty / Director',
+      'Attend personal interview with MBA senior learners / Director',
       'Provisional admission based on academic merit + interview',
       'Fee payment and seat confirmation',
     ],
@@ -145,7 +145,7 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
     {
       question: 'Does B.E CSE cover AI / Machine Learning?',
       answer:
-        'Yes. Specializations include Artificial Intelligence, Machine Learning, Cloud Computing, Data Science, Cybersecurity. Curriculum updated regularly per industry needs.',
+        'Yes. Specializations include Artificial Intelligence, Machine Learning, Cloud Computing, Data Science, Cybersecurity. Learning Framework updated regularly per industry needs.',
     },
     {
       question: 'What are placement opportunities after B.E CSE?',
@@ -168,9 +168,9 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
         'Application portal opens April 1, 2026 and closes May 31, 2026. TNEA counselling June-July; Direct/MQ window May 1 – July 31; fee payment deadline August 15.',
     },
     {
-      question: 'Are scholarships available for B.E CSE students?',
+      question: 'Are scholarships available for B.E CSE learners?',
       answer:
-        'Yes. JKKN Trust Merit (up to 100% waiver), Government scholarships (SC/ST/OBC/MBC categories), Naan Mudhalvan (₹12,000/yr Tamil-medium govt school students), Need-based aid (up to 50% for income <₹2.5L).',
+        'Yes. JKKN Trust Merit (up to 100% waiver), Government scholarships (SC/ST/OBC/MBC categories), Naan Mudhalvan (₹12,000/yr Tamil-medium govt school learners), Need-based aid (up to 50% for income <₹2.5L).',
     },
     {
       question: 'Is there any application fee?',
@@ -178,7 +178,7 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
     },
   ],
   courseDetailsUrl: '/courses-offered/ug/be-cse',
-  courseDetailsLabel: 'View full B.E CSE curriculum, labs, faculty, and placements',
+  courseDetailsLabel: 'View full B.E CSE learning framework, learning labs, senior learners, and placements',
 }
 
 export const BE_EEE_ADMISSION: CourseAdmissionData = {
@@ -237,12 +237,12 @@ export const BE_EEE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What documents are required for B.E EEE admission?',
       answer:
-        '10th and 12th marksheets, TC, Community Certificate, 6 photos, Conduct Certificate, Aadhaar (student + parent), Income Certificate (for scholarships), TNEA Rank Card (GQ), Eligibility Certificate (other state boards).',
+        '10th and 12th marksheets, TC, Community Certificate, 6 photos, Conduct Certificate, Aadhaar (learner + parent), Income Certificate (for scholarships), TNEA Rank Card (GQ), Eligibility Certificate (other state boards).',
     },
     {
-      question: 'Are scholarships available for B.E EEE students?',
+      question: 'Are scholarships available for B.E EEE learners?',
       answer:
-        'Yes. SC/ST/OBC/MBC/EWS get government scholarships (PMSS, Community, First Graduate). JKKN Trust Merit up to 100% tuition waiver. Need-based up to 50% for income <₹2.5L. Naan Mudhalvan: ₹12,000/yr for Tamil-medium govt school students.',
+        'Yes. SC/ST/OBC/MBC/EWS get government scholarships (PMSS, Community, First Graduate). JKKN Trust Merit up to 100% tuition waiver. Need-based up to 50% for income <₹2.5L. Naan Mudhalvan: ₹12,000/yr for Tamil-medium govt school learners.',
     },
     {
       question: 'When does B.E EEE admission close for 2026-27?',
@@ -260,7 +260,7 @@ export const BE_EEE_ADMISSION: CourseAdmissionData = {
     },
   ],
   courseDetailsUrl: '/courses-offered/ug/be-eee',
-  courseDetailsLabel: 'View full B.E EEE curriculum, labs, faculty, and placements',
+  courseDetailsLabel: 'View full B.E EEE learning framework, learning labs, senior learners, and placements',
 }
 
 export const BE_ECE_ADMISSION: CourseAdmissionData = {
@@ -333,7 +333,7 @@ export const BE_ECE_ADMISSION: CourseAdmissionData = {
     {
       question: 'Scholarships for B.E ECE?',
       answer:
-        'JKKN Trust Merit (up to 100% waiver), Government scholarships (SC/ST/OBC/MBC/EWS), Naan Mudhalvan (₹12,000/yr Tamil-medium govt school students), Need-based aid (up to 50% for income <₹2.5L).',
+        'JKKN Trust Merit (up to 100% waiver), Government scholarships (SC/ST/OBC/MBC/EWS), Naan Mudhalvan (₹12,000/yr Tamil-medium govt school learners), Need-based aid (up to 50% for income <₹2.5L).',
     },
     {
       question: 'Application fee for B.E ECE?',
@@ -341,7 +341,7 @@ export const BE_ECE_ADMISSION: CourseAdmissionData = {
     },
   ],
   courseDetailsUrl: '/courses-offered/ug/be-ece',
-  courseDetailsLabel: 'View full B.E ECE curriculum, labs, faculty, and placements',
+  courseDetailsLabel: 'View full B.E ECE learning framework, learning labs, senior learners, and placements',
 }
 
 export const BE_MECHANICAL_ADMISSION: CourseAdmissionData = {
@@ -412,7 +412,7 @@ export const BE_MECHANICAL_ADMISSION: CourseAdmissionData = {
         'Portal: April 1 – May 31, 2026. TNEA counselling June-July. Direct/MQ window May 1 – July 31. Fee deadline August 15, 2026.',
     },
     {
-      question: 'Scholarships for Mechanical students?',
+      question: 'Scholarships for Mechanical learners?',
       answer:
         'Same as other branches: JKKN Trust Merit (up to 100% waiver), Government schemes (SC/ST/OBC/MBC/EWS), Naan Mudhalvan (₹12,000/yr), Need-based (up to 50% for income <₹2.5L).',
     },
@@ -422,7 +422,7 @@ export const BE_MECHANICAL_ADMISSION: CourseAdmissionData = {
     },
   ],
   courseDetailsUrl: '/courses-offered/ug/be-mechanical',
-  courseDetailsLabel: 'View full B.E Mechanical curriculum, labs, faculty, and placements',
+  courseDetailsLabel: 'View full B.E Mechanical learning framework, learning labs, senior learners, and placements',
 }
 
 export const BTECH_IT_ADMISSION: CourseAdmissionData = {
@@ -503,7 +503,7 @@ export const BTECH_IT_ADMISSION: CourseAdmissionData = {
     },
   ],
   courseDetailsUrl: '/courses-offered/ug/btech-it',
-  courseDetailsLabel: 'View full B.Tech IT curriculum, labs, faculty, and placements',
+  courseDetailsLabel: 'View full B.Tech IT learning framework, learning labs, senior learners, and placements',
 }
 
 export const ME_CSE_ADMISSION: CourseAdmissionData = {
@@ -568,7 +568,7 @@ export const ME_CSE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What are career options after M.E CSE?',
       answer:
-        'Senior software engineer / architect roles, R&D positions, academia (assistant professor), GATE-based PSU jobs (BHEL, NTPC, BSNL), Ph.D. research, technical leadership roles in MNCs.',
+        'Senior software engineer / architect roles, R&D positions, academia (assistant senior learner), GATE-based PSU jobs (BHEL, NTPC, BSNL), Ph.D. research, technical leadership roles in MNCs.',
     },
     {
       question: 'Scholarships for M.E CSE?',
@@ -586,7 +586,7 @@ export const ME_CSE_ADMISSION: CourseAdmissionData = {
     },
   ],
   courseDetailsUrl: '/courses-offered/pg/me-cse',
-  courseDetailsLabel: 'View full M.E CSE curriculum, labs, faculty, and research',
+  courseDetailsLabel: 'View full M.E CSE learning framework, learning labs, senior learners, and research',
 }
 
 export const MBA_ADMISSION: CourseAdmissionData = {
@@ -607,14 +607,14 @@ export const MBA_ADMISSION: CourseAdmissionData = {
   eligibility: [
     "Bachelor's degree in any discipline from a recognized university (Engineering, Arts, Science, Commerce all eligible)",
     'Minimum 50% aggregate marks in the qualifying degree',
-    'Valid score in TANCET / CAT / MAT / XAT (any one entrance exam)',
+    'Valid score in TANCET / CAT / MAT / XAT (any one entrance learning assessment)',
     'Shortlisted candidates appear for Group Discussion (GD) + Personal Interview (PI)',
-    'No upper age limit; final-year students may apply provisionally',
+    'No upper age limit; final-year learners may apply provisionally',
   ],
   counsellingPaths: MBA_COUNSELLING_PATHS,
   documentsAdditionalLabel: 'for PG (MBA) Applicants',
   feeBreakdown: [
-    { item: 'Tuition Fee (All Quotas)', amount: '₹65,000', note: 'Affordable MBA fee — industry-aligned curriculum' },
+    { item: 'Tuition Fee (All Quotas)', amount: '₹65,000', note: 'Affordable MBA fee — industry-aligned learning framework' },
     { item: 'Hostel (Optional)', amount: '₹60,000', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
@@ -622,7 +622,7 @@ export const MBA_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the eligibility for MBA at JKKN?',
       answer:
-        "Bachelor's degree in ANY discipline (Engineering, Arts, Science, Commerce) with minimum 50% aggregate from a recognized university. Valid score in TANCET / CAT / MAT / XAT required. Final-year students may apply provisionally.",
+        "Bachelor's degree in ANY discipline (Engineering, Arts, Science, Commerce) with minimum 50% aggregate from a recognized university. Valid score in TANCET / CAT / MAT / XAT required. Final-year learners may apply provisionally.",
     },
     {
       question: 'How many MBA seats at JKKN?',
@@ -634,7 +634,7 @@ export const MBA_ADMISSION: CourseAdmissionData = {
         '₹65,000/year for both quotas. Hostel (optional, all-inclusive): ₹60,000/year. Zero application fee.',
     },
     {
-      question: 'Which entrance exam is accepted for MBA?',
+      question: 'Which entrance learning assessment is accepted for MBA?',
       answer:
         'Any one of: TANCET (Anna University), CAT, MAT, XAT. TANCET is most common for Tamil Nadu candidates. Direct Management Quota admission also available for limited seats.',
     },
@@ -654,12 +654,12 @@ export const MBA_ADMISSION: CourseAdmissionData = {
         'Recruiters across finance (HDFC, ICICI, Axis), marketing (Asian Paints, ITC), HR (TCS, Cognizant), consulting (Deloitte, KPMG), retail (Reliance, Tata). Average package ₹4L+; placement support throughout 2 years.',
     },
     {
-      question: 'Can I do MBA without an entrance exam?',
+      question: 'Can I do MBA without an entrance learning assessment?',
       answer:
-        'Limited direct Management Quota seats available without entrance exam — apply with Bachelor\'s degree (50%+), statement of purpose, and personal interview. Contact admissions office for availability.',
+        'Limited direct Management Quota seats available without entrance learning assessment — apply with Bachelor\'s degree (50%+), statement of purpose, and personal interview. Contact admissions office for availability.',
     },
     {
-      question: 'Scholarships for MBA students?',
+      question: 'Scholarships for MBA learners?',
       answer:
         'JKKN Trust Merit Scholarship (academic toppers), Government scholarships for SC/ST/OBC categories, Need-based financial aid (up to 50% for family income <₹2.5L), Sports/Cultural quota with fee benefit.',
     },
@@ -670,5 +670,5 @@ export const MBA_ADMISSION: CourseAdmissionData = {
     },
   ],
   courseDetailsUrl: '/courses-offered/pg/mba',
-  courseDetailsLabel: 'View full MBA curriculum, faculty, specializations, and placements',
+  courseDetailsLabel: 'View full MBA learning framework, senior learners, specializations, and placements',
 }

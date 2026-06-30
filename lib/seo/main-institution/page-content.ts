@@ -23,7 +23,7 @@ export const ADMISSIONS_HOWTO_DESCRIPTION =
 export const ADMISSIONS_HOWTO_STEPS: HowToStep[] = [
   {
     name: 'Choose your programme',
-    text: 'Browse the 50+ programmes offered across JKKN\'s 7 colleges — Dental, Pharmacy, Engineering, Nursing, Allied Health Sciences, Arts & Science, and Education. Confirm eligibility criteria (minimum marks and qualifying examination) for your preferred course.',
+    text: 'Browse the 50+ programmes offered across JKKN\'s 7 colleges — Dental, Pharmacy, Engineering, Nursing, Allied Health Sciences, Arts & Science, and Education. Confirm eligibility criteria (minimum marks and qualifying learning assessment) for your preferred course.',
     url: 'https://jkkn.ac.in/courses-offered',
   },
   {
@@ -33,7 +33,7 @@ export const ADMISSIONS_HOWTO_STEPS: HowToStep[] = [
   },
   {
     name: 'Upload required documents',
-    text: 'Scan and upload your 10th, 12th, and qualifying exam mark sheets, transfer certificate, community certificate, Aadhaar, and passport-size photograph. Ensure scans are clear and below the maximum file size listed on the form.',
+    text: 'Scan and upload your 10th, 12th, and qualifying learning assessment mark sheets, transfer certificate, community certificate, Aadhaar, and passport-size photograph. Ensure scans are clear and below the maximum file size listed on the form.',
   },
   {
     name: 'Attend counselling and entrance test (if applicable)',
@@ -41,12 +41,12 @@ export const ADMISSIONS_HOWTO_STEPS: HowToStep[] = [
   },
   {
     name: 'Pay the course fee and confirm admission',
-    text: 'On allotment, pay the first-year tuition and hostel fees within the given deadline to confirm your seat. Scholarships and education loans through approved banks are available for eligible students.',
+    text: 'On allotment, pay the first-year tuition and hostel fees within the given deadline to confirm your seat. Scholarships and education loans through approved banks are available for eligible learners.',
     url: 'https://jkkn.ac.in/admissions',
   },
   {
     name: 'Complete joining formalities',
-    text: 'Report to the campus on the joining date with original documents for verification. Collect your student ID, uniform (for professional programmes), hostel room allotment, and academic calendar. Orientation begins the same week.',
+    text: 'Report to the campus on the joining date with original documents for verification. Collect your learner ID, uniform (for professional programmes), hostel room allotment, and academic calendar. Orientation begins the same week.',
   },
 ]
 
@@ -107,7 +107,7 @@ export const ALUMNI_FAQS: FAQ[] = [
   },
   {
     q: 'What events does the JKKN alumni association organise?',
-    a: 'The alumni cell hosts annual reunions, decadal batch meets, mentorship talks, career-guidance sessions for current students, and convocation homecoming. Announcements go through email, WhatsApp groups, and the alumni portal.',
+    a: 'The alumni cell hosts annual reunions, decadal batch meets, mentorship talks, career-guidance sessions for current learners, and convocation homecoming. Announcements go through email, WhatsApp groups, and the alumni portal.',
   },
 ]
 
@@ -136,12 +136,12 @@ export const CONTACT_FAQS: FAQ[] = [
 
 export const FACULTY_FAQS: FAQ[] = [
   {
-    q: 'How qualified are the faculty at JKKN Institutions?',
-    a: 'JKKN faculty include PhD holders, postgraduate specialists, and industry-experienced professionals across dental, pharmacy, engineering, nursing, and arts & science disciplines. Many hold Anna University, Madras University, and Tamil Nadu MGR Medical University degrees.',
+    q: 'How qualified are the senior learners at JKKN Institutions?',
+    a: 'JKKN senior learners include PhD holders, postgraduate specialists, and industry-experienced professionals across dental, pharmacy, engineering, nursing, and arts & science disciplines. Many hold Anna University, Madras University, and Tamil Nadu MGR Medical University degrees.',
   },
   {
-    q: 'Does JKKN faculty publish research and papers?',
-    a: 'Yes. JKKN faculty publish in Scopus and UGC CARE listed journals, supervise PhD scholars, and lead funded research projects. Research activity is coordinated by the IQAC (Internal Quality Assurance Cell).',
+    q: 'Does JKKN senior learners publish research and papers?',
+    a: 'Yes. JKKN senior learners publish in Scopus and UGC CARE listed journals, supervise PhD scholars, and lead funded research projects. Research activity is coordinated by the IQAC (Internal Quality Assurance Cell).',
   },
 ]
 
@@ -152,10 +152,10 @@ export const FACULTY_FAQS: FAQ[] = [
 export const ACHIEVEMENTS_FAQS: FAQ[] = [
   {
     q: 'What awards has JKKN Institutions received?',
-    a: 'JKKN has received NAAC A accreditation (Dental College), recognition for 74+ years of educational excellence, and selection under Unnat Bharat Abhiyan by the Ministry of HRD. Faculty and students win state- and national-level competitions yearly.',
+    a: 'JKKN has received NAAC A accreditation (Dental College), recognition for 74+ years of educational excellence, and selection under Unnat Bharat Abhiyan by the Ministry of HRD. Senior Learners and learners win state- and national-level competitions yearly.',
   },
   {
-    q: 'What are JKKN student placement records?',
+    q: 'What are JKKN learner placement records?',
     a: 'JKKN records 92%+ placement success across programmes. Top recruiters include Foxconn, Apex Pharma, Apotex, Cipla, Bosch, and leading hospitals across South India. Campus drives begin in the pre-final year with placement training.',
   },
 ]
@@ -175,7 +175,7 @@ export const ACCREDITATION_FAQS: FAQ[] = [
   },
   {
     q: 'What is the role of the IQAC at JKKN Institutions?',
-    a: 'The Internal Quality Assurance Cell (IQAC) monitors academic quality, coordinates NAAC accreditation, runs feedback from students and stakeholders, and publishes the Annual Quality Assurance Report (AQAR). IQAC drives continuous improvement across departments.',
+    a: 'The Internal Quality Assurance Cell (IQAC) monitors academic quality, coordinates NAAC accreditation, runs feedback from learners and stakeholders, and publishes the Annual Quality Assurance Report (AQAR). IQAC drives continuous improvement across departments.',
   },
 ]
 

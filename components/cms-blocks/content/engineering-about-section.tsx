@@ -61,9 +61,9 @@ export const EngineeringAboutSectionPropsSchema = z.object({
     'AICTE Approved & Anna University Affiliated',
     'NAAC Accredited Programs',
     'Industry-Academia Partnerships',
-    'State-of-the-Art Laboratories',
+    'State-of-the-Art Learning Labs',
     '95%+ Placement Record',
-    'Experienced Faculty Members',
+    'Experienced Senior Learners',
   ]),
 
   // Image
@@ -106,9 +106,9 @@ export default function EngineeringAboutSection({
     'AICTE Approved & Anna University Affiliated',
     'NAAC Accredited Programs',
     'Industry-Academia Partnerships',
-    'State-of-the-Art Laboratories',
+    'State-of-the-Art Learning Labs',
     '95%+ Placement Record',
-    'Experienced Faculty Members',
+    'Experienced Senior Learners',
   ],
   image = '/images/engineering/about-campus.jpg',
   imageAlt = 'JKKN Engineering College Campus',

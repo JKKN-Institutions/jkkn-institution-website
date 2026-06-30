@@ -86,7 +86,7 @@ function useAnimatedCounter(end: number, duration: number = 2000, isInView: bool
 export const EngineeringPlacementsSectionPropsSchema = z.object({
   // Title
   title: z.string().default('Launching Careers, Building Futures'),
-  subtitle: z.string().default('Our placement cell works tirelessly to connect students with top companies'),
+  subtitle: z.string().default('Our placement cell works tirelessly to connect learners with top companies'),
 
   // Stats
   stats: z.array(z.object({
@@ -489,7 +489,7 @@ function LogoMarquee({
 
 export default function EngineeringPlacementsSection({
   title = 'Launching Careers, Building Futures',
-  subtitle = 'Our placement cell works tirelessly to connect students with top companies',
+  subtitle = 'Our placement cell works tirelessly to connect learners with top companies',
   stats = [
     { value: 95, suffix: '%+', prefix: '', label: 'Placement Rate', icon: 'trending' },
     { value: 12, suffix: ' LPA', prefix: '', label: 'Highest Package', icon: 'award' },
@@ -672,7 +672,7 @@ export default function EngineeringPlacementsSection({
         >
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mb-6">
             <p className="text-center text-sm text-gray-500 font-medium">
-              Our students are placed in leading companies worldwide
+              Our learners are placed in leading companies worldwide
             </p>
             {enableDrag && (
               <>

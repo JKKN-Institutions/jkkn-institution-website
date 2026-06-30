@@ -169,7 +169,7 @@ export function ModernOrganogramSection({
                         <line x1="360" y1="220" x2="360" y2="245" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
                         <g transform="translate(360, 250)">
                             <rect x="-50" y="0" width="100" height="45" rx="4" fill="#f9a825" />
-                            <text x="0" y="18" textAnchor="middle" fill="#333" fontSize="10" fontWeight="bold">Exam cell</text>
+                            <text x="0" y="18" textAnchor="middle" fill="#333" fontSize="10" fontWeight="bold">Learning Assessment cell</text>
                             <text x="0" y="32" textAnchor="middle" fill="#333" fontSize="10" fontWeight="bold">Coordinator</text>
                         </g>
                         <line x1="360" y1="295" x2="360" y2="315" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
@@ -193,7 +193,7 @@ export function ModernOrganogramSection({
                         <line x1="490" y1="295" x2="490" y2="315" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
                         <g transform="translate(490, 320)">
                             <rect x="-55" y="0" width="110" height="35" rx="4" fill="#2e7d32" />
-                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">Faculty Members</text>
+                            <text x="0" y="22" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">Senior Learners</text>
                         </g>
                         <line x1="490" y1="355" x2="490" y2="375" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
                         <g transform="translate(490, 380)">
@@ -218,13 +218,13 @@ export function ModernOrganogramSection({
                         <g transform="translate(620, 320)">
                             <rect x="-55" y="0" width="110" height="45" rx="4" fill="#827717" />
                             <text x="0" y="18" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Non Teaching</text>
-                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Staff</text>
+                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">Team Members</text>
                         </g>
                         <line x1="620" y1="365" x2="620" y2="385" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
                         <g transform="translate(620, 390)">
                             <rect x="-60" y="0" width="120" height="45" rx="4" fill="#827717" />
                             <text x="0" y="18" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">Maintenance &</text>
-                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">Transport Staff</text>
+                            <text x="0" y="32" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">Transport Team Members</text>
                         </g>
                         <line x1="620" y1="435" x2="620" y2="455" stroke="#555" strokeWidth="2" markerEnd="url(#arrowhead)" />
                         <g transform="translate(620, 460)">

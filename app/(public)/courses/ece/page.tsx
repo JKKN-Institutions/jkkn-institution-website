@@ -35,7 +35,7 @@ export const metadata: Metadata = {
         url: '/images/engineering/labs/ece/ece-lab-01.jpg',
         width: 1200,
         height: 630,
-        alt: 'JKKN ECE Laboratory',
+        alt: 'JKKN ECE Learning Lab',
       },
     ],
   },

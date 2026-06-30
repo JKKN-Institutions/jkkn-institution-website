@@ -23,7 +23,7 @@ const stats = [
     icon: Users,
     value: 100000,
     suffix: '+',
-    label: 'Students Trained',
+    label: 'Learners Trained',
     description: 'Empowering futures across India',
     useSteppedAnimation: true,
   },
@@ -197,7 +197,7 @@ function StatCard({ stat, index, isVisible }: { stat: typeof stats[0], index: nu
               )}
               aria-live={count === stat.value ? 'polite' : 'off'}
               aria-atomic="true"
-              title={stat.useSteppedAnimation ? "1,00,000 students trained" : undefined}
+              title={stat.useSteppedAnimation ? "1,00,000 learners trained" : undefined}
             >
               {displayValue}
             </span>
@@ -282,7 +282,7 @@ export function StatsSection() {
           </h2>
           <p className="text-lg text-gray-600 leading-relaxed">
             Our achievements reflect our commitment to excellence in education,
-            research, and student success.
+            research, and learner success.
           </p>
         </div>
 

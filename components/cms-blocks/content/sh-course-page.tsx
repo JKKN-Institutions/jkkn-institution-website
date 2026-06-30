@@ -429,7 +429,7 @@ function HeroSection({
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src="/images/courses/s&h/JKKN S & H.png"
-                alt="Science and Humanities laboratory at JKKN"
+                alt="Science and Humanities learning lab at JKKN"
                 className="w-full h-[500px] object-cover"
                 onError={(e) => {
                   e.currentTarget.src = ''
@@ -477,7 +477,7 @@ function CourseOverviewSection({
           {title}
         </h2>
         <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
-          The Science and Humanities department provides the fundamental knowledge base essential for all engineering disciplines, ensuring students have strong foundations in basic sciences and communication skills.
+          The Science and Humanities department provides the fundamental knowledge base essential for all engineering disciplines, ensuring learners have strong foundations in basic sciences and communication skills.
         </p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -573,13 +573,13 @@ function CurriculumSection({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: primaryColor }}>
-            Curriculum Structure
+            Learning Framework Structure
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mt-2" style={{ color: primaryColor }}>
             {title}
           </h2>
           <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
-            Our curriculum provides comprehensive foundation in fundamental sciences following Anna University regulations, combining theoretical knowledge with practical laboratory experience.
+            Our learning framework provides comprehensive foundation in fundamental sciences following Anna University regulations, combining theoretical knowledge with practical learning lab experience.
           </p>
         </div>
 
@@ -610,7 +610,7 @@ function CurriculumSection({
                 .map((course) => (
                   <div key={course.code} className="bg-[#fbfbee] rounded-xl p-8 shadow-md">
                     <h3 className="text-2xl font-bold text-center mb-6" style={{ color: primaryColor }}>
-                      REGULATION 2025 CURRICULUM - {course.name}
+                      REGULATION 2025 LEARNING FRAMEWORK - {course.name}
                     </h3>
                     <div className="text-center">
                       <a
@@ -901,7 +901,7 @@ function InfrastructureSection({
             {title}
           </h2>
           <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
-            Experience hands-on learning in our modern laboratories equipped with state-of-the-art instruments and equipment.
+            Experience hands-on learning in our modern learning labs equipped with state-of-the-art instruments and equipment.
           </p>
         </div>
 
@@ -970,7 +970,7 @@ function FacultySection({
             {title}
           </h2>
           <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
-            Our department comprises highly qualified and energetic faculty members with extensive teaching and research experience, dedicated to building strong fundamentals.
+            Our department comprises highly qualified and energetic senior learners with extensive teaching and research experience, dedicated to building strong fundamentals.
           </p>
         </div>
 

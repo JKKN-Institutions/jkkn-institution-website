@@ -33,7 +33,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   // Hero Section
   // ==========================================
   heroTitle: 'B.E Computer Science & Engineering',
-  heroSubtitle: 'Transform your passion for technology into a rewarding career. Our AICTE-approved, NAAC-accredited program combines cutting-edge curriculum with industry-ready skills to shape tomorrow\'s tech leaders.',
+  heroSubtitle: 'Transform your passion for technology into a rewarding career. Our AICTE-approved, NAAC-accredited program combines cutting-edge learning framework with industry-ready skills to shape tomorrow\'s tech leaders.',
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
     { icon: 'Users', label: 'Seats Available', value: '60' },
@@ -42,7 +42,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
-    { label: 'Explore Curriculum', link: '#curriculum', variant: 'secondary' },
+    { label: 'Explore Learning Framework', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: '',
 
@@ -55,13 +55,13 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
       icon: 'GraduationCap',
       title: 'Program Duration',
       value: '4 Years (8 Semesters)',
-      description: 'Full-time undergraduate program with structured curriculum spanning 8 semesters of comprehensive learning and skill development.',
+      description: 'Full-time undergraduate program with structured learning framework spanning 8 semesters of comprehensive learning and skill development.',
     },
     {
       icon: 'BarChart3',
       title: 'Total Credits',
       value: '160 Credits',
-      description: 'Balanced distribution across core subjects, electives, labs, projects, and internships following Anna University curriculum.',
+      description: 'Balanced distribution across core subjects, electives, learning labs, projects, and internships following Anna University curriculum.',
     },
     {
       icon: 'CheckCircle',
@@ -106,13 +106,13 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     },
     {
       icon: 'Globe',
-      title: 'Industry-Ready Curriculum',
-      description: 'Latest technologies including Cloud Computing, DevOps, Blockchain, AI/ML, and Full Stack Development integrated into curriculum.',
+      title: 'Industry-Ready Learning Framework',
+      description: 'Latest technologies including Cloud Computing, DevOps, Blockchain, AI/ML, and Full Stack Development integrated into learning framework.',
     },
     {
       icon: 'ScrollText',
       title: 'Certification Programs',
-      description: 'Free industry certifications from Microsoft, AWS, Oracle, and Google integrated with the curriculum.',
+      description: 'Free industry certifications from Microsoft, AWS, Oracle, and Google integrated with the learning framework.',
     },
     {
       icon: 'Trophy',
@@ -121,15 +121,15 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     },
     {
       icon: 'GraduationCap',
-      title: 'Expert Faculty',
-      description: 'Learn from highly qualified faculty with Ph.D. degrees and extensive industry experience in emerging technologies.',
+      title: 'Expert Senior Learners',
+      description: 'Learn from highly qualified senior learners with Ph.D. degrees and extensive industry experience in emerging technologies.',
     },
   ],
 
   // ==========================================
   // Curriculum (4 Years, 8 Semesters)
   // ==========================================
-  curriculumTitle: 'Comprehensive 4-Year Curriculum',
+  curriculumTitle: 'Comprehensive 4-Year Learning Framework',
   curriculumYears: [
     {
       year: 1,
@@ -180,7 +180,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
             { code: '', name: 'Object Oriented Software Engineering', credits: 3 },
             { code: '', name: 'Data Structures', credits: 3 },
             { code: '', name: 'Java Programming', credits: 3 },
-            { code: '', name: 'English Communication Skills Laboratory – II', credits: 2 },
+            { code: '', name: 'English Communication Skills Learning Lab – II', credits: 2 },
             { code: '', name: 'Skill Development Course – I', credits: 1 },
           ],
         },
@@ -195,7 +195,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
             { code: '', name: 'Python for Data Science', credits: 3 },
             { code: '', name: 'Database Management Systems', credits: 3 },
             { code: '', name: 'Skill Development Course – II', credits: 1 },
-            { code: '', name: 'English Communication Skills Laboratory – III', credits: 1 },
+            { code: '', name: 'English Communication Skills Learning Lab – III', credits: 1 },
           ],
         },
       ],
@@ -227,7 +227,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
             { code: '', name: 'Open Elective', credits: 3 },
             { code: '', name: 'Industry Oriented Course - II', credits: 2 },
             { code: '', name: 'Deep Learning', credits: 3 },
-            { code: '', name: 'Mobile App Development Laboratory', credits: 2 },
+            { code: '', name: 'Mobile App Development Learning Lab', credits: 2 },
             { code: '', name: 'Self-Learning Course', credits: 3 },
           ],
         },
@@ -313,8 +313,8 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     rows: [
       { component: 'Tuition Fee (Annual)', govt: '₹45,000', mgmt: '₹85,000', nri: '₹1,50,000' },
       { component: 'Development Fee', govt: '₹10,000', mgmt: '₹10,000', nri: '₹15,000' },
-      { component: 'Lab & Library Fee', govt: '₹8,000', mgmt: '₹8,000', nri: '₹10,000' },
-      { component: 'Exam Fee (Approx.)', govt: '₹5,000', mgmt: '₹5,000', nri: '₹5,000' },
+      { component: 'Learning Lab & Library Fee', govt: '₹8,000', mgmt: '₹8,000', nri: '₹10,000' },
+      { component: 'Learning Assessment Fee (Approx.)', govt: '₹5,000', mgmt: '₹5,000', nri: '₹5,000' },
       { component: 'Hostel Fee (Optional)', govt: '₹60,000', mgmt: '₹60,000', nri: '₹75,000' },
     ],
     totals: {
@@ -397,31 +397,31 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   // ==========================================
   // Labs & Infrastructure
   // ==========================================
-  infrastructureTitle: 'State-of-the-Art Learning Studios & Labs',
+  infrastructureTitle: 'State-of-the-Art Learning Studios & Learning Labs',
   facilities: [
     {
-      name: 'Programming Lab',
+      name: 'Programming Learning Lab',
       description: 'Equipped with high-performance workstations running the latest IDEs and development tools for hands-on coding sessions.',
       image: '/images/courses/be-cse/labs/cse-lab-01.jpg',
       features: ['Visual Studio', 'Eclipse', 'PyCharm', 'VS Code'],
     },
     {
-      name: 'Software Development Lab',
-      description: 'Dedicated lab for software engineering projects, full stack development, and collaborative coding with faculty guidance.',
+      name: 'Software Development Learning Lab',
+      description: 'Dedicated learning lab for software engineering projects, full stack development, and collaborative coding with senior learners guidance.',
       image: '/images/courses/be-cse/labs/cse-lab-06.jpg',
       features: ['Git & GitHub', 'React', 'Node.js', 'Database Tools'],
     },
     {
-      name: 'Computer Lab – I',
-      description: 'Spacious lab with partitioned workstations providing focused learning environment for programming and practical sessions.',
+      name: 'Computer Learning Lab – I',
+      description: 'Spacious learning lab with partitioned workstations providing focused learning environment for programming and practical sessions.',
       image: '/images/courses/be-cse/labs/cse-lab-03.jpg',
       features: ['Java', 'Python', 'C/C++', 'Linux'],
     },
     {
-      name: 'Computer Lab – II',
-      description: 'Additional computing facility for concurrent lab sessions, project work, and certification practice.',
+      name: 'Computer Learning Lab – II',
+      description: 'Additional computing facility for concurrent learning lab sessions, project work, and certification practice.',
       image: '/images/courses/be-cse/labs/cse-lab-04.jpg',
-      features: ['AWS Academy', 'Azure Lab', 'Docker', 'Kubernetes'],
+      features: ['AWS Academy', 'Azure Learning Lab', 'Docker', 'Kubernetes'],
     },
     {
       name: 'Seminar & Workshop Hall',
@@ -430,8 +430,8 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
       features: ['Projector', 'Audio System', 'Video Conferencing'],
     },
     {
-      name: 'AI & Data Science Lab',
-      description: 'Specialized lab for Artificial Intelligence, Machine Learning, and Data Science projects with guided faculty instruction.',
+      name: 'AI & Data Science Learning Lab',
+      description: 'Specialized learning lab for Artificial Intelligence, Machine Learning, and Data Science projects with guided senior learners instruction.',
       image: '/images/courses/be-cse/labs/cse-lab-07.jpg',
       features: ['TensorFlow', 'PyTorch', 'Jupyter', 'Pandas'],
     },
@@ -444,70 +444,70 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   faculty: [
     {
       name: 'Mr. G.M. Sathyaseelan',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.Tech., (Ph.D)',
       specialization: 'Computer Science & Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. V. Deepika',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.Tech-IT',
       specialization: 'Information Technology',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mr. K.T. Mikelraj',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.Tech-IT',
       specialization: 'Information Technology',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. N. Sunmathi',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E-CSE',
       specialization: 'Computer Science & Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. B. Sharmila',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E-CSE',
       specialization: 'Computer Science & Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. G. Porkodi',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Computer Science & Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. S. Suji',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E-CSE',
       specialization: 'Computer Science & Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. L. Lavanya',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E-CSE',
       specialization: 'Computer Science & Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. M. Gokilavani',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E-CSE',
       specialization: 'Computer Science & Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. R. Dharsinapriya',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E-CSE',
       specialization: 'Computer Science & Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
@@ -519,7 +519,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   // ==========================================
   mous: {
     title: 'MOUs',
-    description: 'Our industry partnerships through Memorandums of Understanding (MOUs) provide students with valuable internship opportunities, industry exposure, and placement support.',
+    description: 'Our industry partnerships through Memorandums of Understanding (MOUs) provide learners with valuable internship opportunities, industry exposure, and placement support.',
     data: [
       {
         sno: 1,
@@ -567,11 +567,11 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   faqs: [
     {
       question: 'What is the eligibility criteria for B.E. CSE at JKKN?',
-      answer: 'Candidates must have completed 12th Standard (10+2) or equivalent examination with Physics, Chemistry, and Mathematics as core subjects. A minimum aggregate of 45% marks is required for general category candidates, while reserved category candidates need a minimum of 40%. Additionally, candidates must have a valid TNEA counselling rank for government quota seats or can apply directly for management quota admission. The age limit is generally below 21 years as of the date of admission.',
+      answer: 'Candidates must have completed 12th Standard (10+2) or equivalent learning assessment with Physics, Chemistry, and Mathematics as core subjects. A minimum aggregate of 45% marks is required for general category candidates, while reserved category candidates need a minimum of 40%. Additionally, candidates must have a valid TNEA counselling rank for government quota seats or can apply directly for management quota admission. The age limit is generally below 21 years as of the date of admission.',
     },
     {
       question: 'What is the duration of B.E. Computer Science and Engineering?',
-      answer: 'B.E. Computer Science and Engineering is a 4-year (8 semesters) full-time undergraduate program. Each academic year consists of two semesters with continuous internal assessment and end-semester examinations conducted by Anna University. The program includes classroom lectures, laboratory sessions, seminars, industrial training, and a final year project.',
+      answer: 'B.E. Computer Science and Engineering is a 4-year (8 semesters) full-time undergraduate program. Each academic year consists of two semesters with continuous internal assessment and end-semester learning assessments conducted by Anna University. The program includes learning studio lectures, learning lab sessions, seminars, industrial training, and a final year project.',
     },
     {
       question: 'Is B.E. CSE at JKKN AICTE approved and NAAC accredited?',
@@ -579,7 +579,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     },
     {
       question: 'What are the career opportunities after B.E. CSE?',
-      answer: 'Graduates of B.E. CSE have diverse career opportunities across multiple industries. Popular roles include Software Engineer, Data Scientist, AI/ML Engineer, Full Stack Developer, Cloud Architect, Cybersecurity Analyst, DevOps Engineer, System Architect, Database Administrator, and Technical Consultant. Our top recruiters include TCS, Infosys, Wipro, Cognizant, HCL, Amazon, Google, Microsoft, Zoho, and many more. Students can also pursue higher studies like M.Tech, MBA, or MS abroad.',
+      answer: 'Graduates of B.E. CSE have diverse career opportunities across multiple industries. Popular roles include Software Engineer, Data Scientist, AI/ML Engineer, Full Stack Developer, Cloud Architect, Cybersecurity Analyst, DevOps Engineer, System Architect, Database Administrator, and Technical Consultant. Our top recruiters include TCS, Infosys, Wipro, Cognizant, HCL, Amazon, Google, Microsoft, Zoho, and many more. Learners can also pursue higher studies like M.Tech, MBA, or MS abroad.',
     },
     {
       question: 'What is the placement record for B.E. CSE at JKKN?',
@@ -590,12 +590,12 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
       answer: 'The annual tuition fee for B.E. CSE under government quota is approximately ₹45,000 and under management quota is ₹85,000. Merit scholarships ranging from 25% to 100% fee waiver are available based on 12th standard marks. Government scholarships for SC/ST/OBC/BC categories, first-generation graduate scholarships, and sports quotas are also applicable. We also offer flexible payment options and education loan assistance through partner banks.',
     },
     {
-      question: 'Does JKKN provide hostel facilities for B.E. CSE students?',
+      question: 'Does JKKN provide hostel facilities for B.E. CSE learners?',
       answer: 'Yes, JKKN provides separate hostel facilities for boys and girls within the campus. The hostels offer comfortable accommodation with facilities including furnished rooms, 24/7 Wi-Fi, mess with nutritious food, recreation areas, gymnasium, and round-the-clock security. The annual hostel fee is approximately ₹60,000 which includes accommodation and meals. Transportation facilities are also available for day scholars from nearby towns.',
     },
     {
       question: 'What certifications can I get during B.E. CSE at JKKN?',
-      answer: 'JKKN has partnered with leading technology companies to offer industry-recognized certifications integrated with our curriculum. Students can earn certifications in AWS Cloud Practitioner, Microsoft Azure Fundamentals, Google IT Support, Oracle Database, Python Programming, Java SE, Cisco CCNA, and more. These certifications are provided at subsidized or no additional cost and significantly enhance employability.',
+      answer: 'JKKN has partnered with leading technology companies to offer industry-recognized certifications integrated with our learning framework. Learners can earn certifications in AWS Cloud Practitioner, Microsoft Azure Fundamentals, Google IT Support, Oracle Database, Python Programming, Java SE, Cisco CCNA, and more. These certifications are provided at subsidized or no additional cost and significantly enhance employability.',
     },
   ],
 

@@ -6,12 +6,12 @@ import { MainInstitutionPageSchema } from '@/components/seo/main-institution/mai
 export const metadata: Metadata = {
   title: 'Other Documents | JKKN College of Engineering',
   description:
-    'Browse additional institutional documents including NSS activities, R&D cell information, and examination manuals.',
+    'Browse additional institutional documents including NSS activities, R&D cell information, and learning assessment manuals.',
   keywords: [
     'JKKN documents',
     'NSS activities',
     'R&D cell',
-    'examination manual',
+    'learning assessment manual',
     'institutional documents',
   ],
 }
@@ -31,13 +31,13 @@ export default function OtherDocumentsPage() {
           path: '/others/documents',
           name: 'Other Documents | JKKN Institutions',
           description:
-            'Additional institutional documents published by JKKN Institutions — NSS activities, R&D cell reports, examination manuals, and student handbooks.',
+            'Additional institutional documents published by JKKN Institutions — NSS activities, R&D cell reports, learning assessment manuals, and learner handbooks.',
           pageType: 'CollectionPage',
           keywords: [
             'JKKN documents',
             'NSS activities',
             'R&D cell',
-            'examination manual',
+            'learning assessment manual',
             'institutional documents',
           ],
           speakableSelectors: ['h1'],

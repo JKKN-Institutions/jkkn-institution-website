@@ -48,13 +48,13 @@ export function ModernManagementSection({
             name: 'SHRI. S. OMMSHARRAVANA',
             title: 'DIRECTOR',
             image: '/images/director.png',
-            message: 'Our mission empowers students to contribute their best to society and the nation. We are committed to innovative education methodologies that enable quality learning.',
+            message: 'Our mission empowers learners to contribute their best to society and the nation. We are committed to innovative education methodologies that enable quality learning.',
         },
         {
             name: 'MRS. O. ISVARYA LAKSHMI',
             title: 'JOINT DIRECTOR',
             image: 'https://ui-avatars.com/api/?name=O+I&background=ffde59&color=0b6d41&size=512', // Fallback avatar
-            message: 'Together, we strive to create an environment where excellence thrives and every student achieves their fullest potential.',
+            message: 'Together, we strive to create an environment where excellence thrives and every learner achieves their fullest potential.',
         }
     ]
 

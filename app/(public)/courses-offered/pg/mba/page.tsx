@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'MBA - Master of Business Administration | JKKN',
     description:
-      'Launch your management career with MBA at JKKN. Industry-integrated curriculum, expert faculty, case-based learning, and exceptional placement support with 95%+ placement rate.',
+      'Launch your management career with MBA at JKKN. Industry-integrated learning framework, expert senior learners, case-based learning, and exceptional placement support with 95%+ placement rate.',
     type: 'website',
     images: [
       {

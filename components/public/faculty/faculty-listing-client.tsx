@@ -33,7 +33,7 @@ export function FacultyListingClient({ faculty, departments }: FacultyListingCli
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Search faculty by name, designation..."
+            placeholder="Search senior learners by name, designation..."
             className="w-full pl-10 pr-4 py-2.5 rounded-full border border-[rgba(11,109,65,0.1)] bg-white text-sm focus:outline-none focus:border-[rgba(11,109,65,0.3)] transition-colors"
           />
         </div>
@@ -66,13 +66,13 @@ export function FacultyListingClient({ faculty, departments }: FacultyListingCli
 
       {/* Results count */}
       <p className="text-sm text-[#7a8f80] mb-6">
-        Showing {filtered.length} faculty member{filtered.length !== 1 ? 's' : ''}
+        Showing {filtered.length} senior learner{filtered.length !== 1 ? 's' : ''}
       </p>
 
       {/* Faculty Grid */}
       {filtered.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-lg text-[#3d5443]">No faculty found</p>
+          <p className="text-lg text-[#3d5443]">No senior learners found</p>
           <p className="text-sm text-[#7a8f80] mt-1">Try adjusting your search or filter</p>
         </div>
       ) : (

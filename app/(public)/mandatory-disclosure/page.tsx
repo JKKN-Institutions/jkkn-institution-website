@@ -31,7 +31,7 @@ export default function MandatoryDisclosurePage() {
           path: '/mandatory-disclosure',
           name: 'Mandatory Disclosure | JKKN Institutions',
           description:
-            'Mandatory institutional disclosure at JKKN Institutions as per AICTE, UGC, and other regulatory requirements — approvals, governing body, faculty, fees, results, admission policy, and annual reports.',
+            'Mandatory institutional disclosure at JKKN Institutions as per AICTE, UGC, and other regulatory requirements — approvals, governing body, senior learners, fees, results, admission policy, and annual reports.',
           pageType: 'CollectionPage',
           keywords: [
             'mandatory disclosure',

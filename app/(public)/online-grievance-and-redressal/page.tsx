@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: [
       'grievance redressal',
       'online grievance form',
-      'student grievance',
+      'learner grievance',
       'grievance committee',
       institution.name,
     ],
@@ -43,7 +43,7 @@ export default function OnlineGrievanceRedressalPage() {
         {/* Online Grievance and Redressal — card with View / Download buttons */}
         <OnlineFormSection
           sectionTitle="Online Grievance and Redressal"
-          sectionDescription="Students, parents, and staff can raise grievances online. Submissions are reviewed by the JKKN Grievance Redressal Committee."
+          sectionDescription="Learners, parents, and team members can raise grievances online. Submissions are reviewed by the JKKN Grievance Redressal Committee."
           cardTitle="Online Grievance Redressal Form"
           cardDescription="Submit your grievance through our online form. Click View to open and fill the form, or Download to access it in a new tab."
           formUrl={GRIEVANCE_FORM_URL}

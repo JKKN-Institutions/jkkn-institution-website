@@ -44,7 +44,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
       props: {
         title: 'Shape Your Future in Engineering & Technology',
         subtitle: 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
-        description: 'Join one of the leading engineering colleges with 70+ years of educational excellence. World-class faculty, state-of-the-art infrastructure, and 95%+ placement record.',
+        description: 'Join one of the leading engineering colleges with 70+ years of educational excellence. World-class senior learners, state-of-the-art infrastructure, and 95%+ placement record.',
         badge: 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
         stats: [
           { value: 3000, suffix: '+', label: 'Learners', icon: 'graduation' },
@@ -99,14 +99,14 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
         badge: { text: '70 Years Legacy', position: 'top-left' },
         title: 'Welcome to JKKN College of Engineering',
         subtitle: 'About Us',
-        description: 'Established as part of the prestigious JKKN Institutions with over 70 years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development. Our state-of-the-art infrastructure and experienced faculty ensure students receive world-class technical education.',
+        description: 'Established as part of the prestigious JKKN Institutions with over 70 years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development. Our state-of-the-art infrastructure and experienced senior learners ensure learners receive world-class technical education.',
         features: [
           'AICTE Approved & Anna University Affiliated',
           'NAAC Accredited Programs',
           'Industry-Academia Partnerships',
-          'State-of-the-Art Laboratories',
+          'State-of-the-Art Learning Labs',
           '95%+ Placement Record',
-          'Experienced Faculty Members',
+          'Experienced Senior Learners',
         ],
         image: '/images/engineering/library/library-01.jpg',
         imageAlt: 'JKKN Engineering College Campus',
@@ -175,12 +175,12 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
           },
           {
             title: 'Expert Learning Facilitators',
-            description: 'Highly qualified faculty with industry experience and research background',
+            description: 'Highly qualified senior learners with industry experience and research background',
             icon: 'graduation',
           },
           {
-            title: 'Modern Labs & Infrastructure',
-            description: 'State-of-the-art laboratories equipped with latest technology',
+            title: 'Modern Learning Labs & Infrastructure',
+            description: 'State-of-the-art learning labs equipped with latest technology',
             icon: 'flask',
           },
           {
@@ -195,7 +195,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
           },
           {
             title: 'Global Exposure',
-            description: 'International collaborations and student exchange programs',
+            description: 'International collaborations and learner exchange programs',
             icon: 'globe',
           },
           {
@@ -224,7 +224,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
       component_name: 'EngineeringPlacementsSection',
       props: {
         title: 'Launching Careers, Building Futures',
-        subtitle: 'Our dedicated placement cell connects talented students with leading companies worldwide',
+        subtitle: 'Our dedicated placement cell connects talented learners with leading companies worldwide',
         stats: [
           { value: 95, suffix: '%+', prefix: '', label: 'Placement Rate', icon: 'trending' },
           { value: 12, suffix: ' LPA', prefix: '', label: 'Highest Package', icon: 'award' },
@@ -269,7 +269,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
         facilities: [
           {
             title: 'Computer Centers',
-            description: 'Modern computer labs with high-performance systems',
+            description: 'Modern computer learning labs with high-performance systems',
             highlight: '500+ Systems',
             icon: 'monitor',
           },
@@ -279,8 +279,8 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
             icon: 'wrench',
           },
           {
-            title: 'Research Labs',
-            description: 'Specialized labs for advanced research',
+            title: 'Research Learning Labs',
+            description: 'Specialized learning labs for advanced research',
             highlight: 'AI/ML, IoT, Robotics',
             icon: 'flask',
           },
@@ -406,8 +406,8 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
             answer: 'We maintain an excellent placement record with 95%+ placement rate. The highest package offered is 12 LPA with an average package of 4.5 LPA. Over 50 companies recruit from our campus including TCS, Infosys, Wipro, Cognizant, IBM, Amazon, Zoho, and more.',
           },
           {
-            question: 'What facilities are available for students?',
-            answer: 'We provide state-of-the-art facilities including 500+ computer systems in modern labs, engineering workshops, research labs for AI/ML/IoT/Robotics, digital library with 50,000+ books, Wi-Fi campus, separate hostels for boys and girls, cafeteria, sports complex, and transportation services.',
+            question: 'What facilities are available for learners?',
+            answer: 'We provide state-of-the-art facilities including 500+ computer systems in modern learning labs, engineering workshops, research learning labs for AI/ML/IoT/Robotics, digital library with 50,000+ books, Wi-Fi campus, separate hostels for boys and girls, cafeteria, sports complex, and transportation services.',
           },
           {
             question: 'Does JKKN offer AI and Machine Learning courses?',
@@ -415,7 +415,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
           },
           {
             question: 'What is the fee structure for engineering programs?',
-            answer: 'The fee structure varies by program and category. Please visit our admissions page or contact the admission office for detailed fee information. We also offer scholarships for meritorious students and fee concessions for economically weaker sections.',
+            answer: 'The fee structure varies by program and category. Please visit our admissions page or contact the admission office for detailed fee information. We also offer scholarships for meritorious learners and fee concessions for economically weaker sections.',
           },
           {
             question: 'Is hostel accommodation available?',

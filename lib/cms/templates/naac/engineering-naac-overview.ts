@@ -50,7 +50,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
     {
       id: 'criterion-5',
       label: 'Criterion V',
-      description: 'Student Support',
+      description: 'Learner Support',
     },
     {
       id: 'criterion-6',
@@ -97,7 +97,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
       id: 'iiqa',
       heading: 'Institutional Information for Quality Assessment (IIQA)',
       overview:
-        'The IIQA provides comprehensive information about the institution, including infrastructure, academic programs, faculty profile, governance structure, and quality initiatives undertaken by the institution.',
+        'The IIQA provides comprehensive information about the institution, including infrastructure, academic programs, senior learners profile, governance structure, and quality initiatives undertaken by the institution.',
       documents: [
         {
           title: 'IIQA Document',
@@ -116,7 +116,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
       id: 'criterion-1',
       heading: 'Criterion I – Curricular Aspects',
       overview:
-        'Focuses on curricular planning, academic flexibility, curriculum enrichment, and feedback systems to ensure effective teaching-learning processes.',
+        'Focuses on curricular planning, academic flexibility, learning framework enrichment, and feedback systems to ensure effective teaching-learning processes.',
       metrics: [
         { label: 'Total Marks', value: '100' },
       ],
@@ -126,11 +126,11 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
           id: 'criterion-1-1',
           title: '1.1 Curricular Planning and Implementation (20 Marks)',
           content:
-            'The Institution ensures effective curriculum planning and delivery through a well-planned and documented process including Academic calendar and conduct of continuous internal Assessment.',
+            'The Institution ensures effective learning framework planning and delivery through a well-planned and documented process including Academic calendar and conduct of continuous internal Assessment.',
           documents: [
             {
               title: '1.1.1 Curricular Planning Implementation',
-              description: 'QLM - Documented curriculum planning process',
+              description: 'QLM - Documented learning framework planning process',
               fileUrl: '/pdfs/naac/criterion-1/1-1-1-curricular-planning.pdf',
               fileType: 'pdf',
             },
@@ -152,12 +152,12 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
         },
         {
           id: 'criterion-1-3',
-          title: '1.3 Curriculum Enrichment (30 Marks)',
+          title: '1.3 Learning Framework Enrichment (30 Marks)',
           content:
             'Integration of crosscutting issues (Professional Ethics, Gender, Human Values, Environment) and project work/field work/internships.',
           documents: [
             {
-              title: '1.3.1 & 1.3.2 Curriculum Enrichment',
+              title: '1.3.1 & 1.3.2 Learning Framework Enrichment',
               description: 'QLM - Crosscutting issues and project work statistics',
               fileUrl: '/pdfs/naac/criterion-1/criteriaa1.3.2curriculam.pdf',
               fileType: 'pdf',
@@ -168,7 +168,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
           id: 'criterion-1-4',
           title: '1.4 Feedback System (20 Marks)',
           content:
-            'Feedback collected from stakeholders (Students, Teachers, Employers, Alumni), analysis, action taken, and communication.',
+            'Feedback collected from stakeholders (Learners, Senior Learners, Employers, Alumni), analysis, action taken, and communication.',
           documents: [
             {
               title: '1.4.1 Feedback Systems',
@@ -188,7 +188,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
       id: 'criterion-2',
       heading: 'Criterion II – Teaching-Learning and Evaluation',
       overview:
-        'Evaluates student enrollment, teacher profile, teaching-learning processes, evaluation mechanisms, and student satisfaction.',
+        'Evaluates learner enrollment, senior learner profile, teaching-learning processes, evaluation mechanisms, and learner satisfaction.',
       metrics: [
         { label: 'Total Marks', value: '350' },
       ],
@@ -196,12 +196,12 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
       subsections: [
         {
           id: 'criterion-2-1',
-          title: '2.1 Student Enrollment and Profile (40 Marks)',
+          title: '2.1 Learner Enrollment and Profile (40 Marks)',
           content: 'Enrollment percentage and reserved category seat filling statistics.',
           documents: [
             {
               title: '2.1.1 Enrollment Percentage',
-              description: 'QNM - Student enrollment statistics',
+              description: 'QNM - Learner enrollment statistics',
               fileUrl: '/pdfs/naac/criterion-2/criteria2-2.1.1.pdf',
               fileType: 'pdf',
             },
@@ -215,12 +215,12 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
         },
         {
           id: 'criterion-2-2',
-          title: '2.2 Student-Teacher Ratio (40 Marks)',
-          content: 'Student to full-time teacher ratio for the latest academic year.',
+          title: '2.2 Learner-Senior Learner Ratio (40 Marks)',
+          content: 'Learner to full-time senior learner ratio for the latest academic year.',
           documents: [
             {
-              title: '2.2.1 Student-Teacher Ratio',
-              description: 'QNM - Current student-teacher ratio data',
+              title: '2.2.1 Learner-Senior Learner Ratio',
+              description: 'QNM - Current learner-senior learner ratio data',
               fileUrl: '/pdfs/naac/criterion-2/criteria2-2.2.pdf',
               fileType: 'pdf',
             },
@@ -230,7 +230,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
           id: 'criterion-2-3',
           title: '2.3 Teaching-Learning Process (40 Marks)',
           content:
-            'Student-centric methods (experiential learning, participative learning, problem-solving) and ICT-enabled tools.',
+            'Learner-centric methods (experiential learning, participative learning, problem-solving) and ICT-enabled tools.',
           documents: [
             {
               title: '2.3.1 Teaching Methods',
@@ -242,18 +242,18 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
         },
         {
           id: 'criterion-2-4',
-          title: '2.4 Teacher Profile and Quality (40 Marks)',
-          content: 'Full-time teachers against sanctioned posts and qualified teachers with NET/SET/PhD.',
+          title: '2.4 Senior Learner Profile and Quality (40 Marks)',
+          content: 'Full-time senior learners against sanctioned posts and qualified senior learners with NET/SET/PhD.',
           documents: [
             {
-              title: '2.4.1 Full-time Teachers',
-              description: 'QNM - Teacher recruitment statistics',
+              title: '2.4.1 Full-time Senior Learners',
+              description: 'QNM - Senior Learner recruitment statistics',
               fileUrl: '/pdfs/naac/criterion-2/criteria2-2.4.1.pdf',
               fileType: 'pdf',
             },
             {
-              title: '2.4.2 Qualified Teachers',
-              description: 'QNM - Teachers with NET/SET/PhD qualifications',
+              title: '2.4.2 Qualified Senior Learners',
+              description: 'QNM - Senior Learners with NET/SET/PhD qualifications',
               fileUrl: '/pdfs/naac/criterion-2/criteria2-2.4.2.pdf',
               fileType: 'pdf',
             },
@@ -274,7 +274,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
         },
         {
           id: 'criterion-2-6',
-          title: '2.6 Student Performance and Learning Outcome (90 Marks)',
+          title: '2.6 Learner Performance and Learning Outcome (90 Marks)',
           content: 'Programme Outcomes (POs), Course Outcomes (COs), attainment evaluation, and pass percentage.',
           documents: [
             {
@@ -291,7 +291,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
             },
             {
               title: '2.6.3 Pass Percentage',
-              description: 'QNM - Student pass percentage (5 years)',
+              description: 'QNM - Learner pass percentage (5 years)',
               fileUrl: '/pdfs/naac/criterion-2/criteria2-2.6.3.pdf',
               fileType: 'pdf',
             },
@@ -299,11 +299,11 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
         },
         {
           id: 'criterion-2-7',
-          title: '2.7 Student Satisfaction Survey (60 Marks)',
-          content: 'Online student satisfaction survey regarding teaching-learning process.',
+          title: '2.7 Learner Satisfaction Survey (60 Marks)',
+          content: 'Online learner satisfaction survey regarding teaching-learning process.',
           documents: [
             {
-              title: '2.7.1 Student Satisfaction Survey',
+              title: '2.7.1 Learner Satisfaction Survey',
               description: 'QNM - Teaching-learning satisfaction data',
               fileUrl: '/pdfs/naac/criterion-2/criteria2-2.7.pdf',
               fileType: 'pdf',
@@ -386,7 +386,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
           documents: [
             {
               title: '3.4.1 Extension Outcomes',
-              description: 'QLM - Community impact and student development',
+              description: 'QLM - Community impact and learner development',
               fileUrl: '/pdfs/naac/criterion-3/Criteria-3-3.4.1.pdf',
               fileType: 'pdf',
             },
@@ -438,7 +438,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
           id: 'criterion-4-1',
           title: '4.1 Physical Facilities (30 Marks)',
           content:
-            'Adequate infrastructure for teaching-learning (classrooms, labs, computing), ICT facilities, and sports/cultural amenities.',
+            'Adequate infrastructure for teaching-learning (learning studios, learning labs, computing), ICT facilities, and sports/cultural amenities.',
           documents: [
             {
               title: '4.1.1 Infrastructure Adequacy',
@@ -458,7 +458,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
           id: 'criterion-4-2',
           title: '4.2 Library as a Learning Resource (20 Marks)',
           content:
-            'Library automation with ILMS, e-resources subscriptions, journals, and optimal utilization by faculty and students.',
+            'Library automation with ILMS, e-resources subscriptions, journals, and optimal utilization by senior learners and learners.',
           documents: [
             {
               title: '4.2.1 Library Automation',
@@ -471,7 +471,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
         {
           id: 'criterion-4-3',
           title: '4.3 IT Infrastructure (30 Marks)',
-          content: 'Regular IT facility updates, internet bandwidth, and student-computer ratio.',
+          content: 'Regular IT facility updates, internet bandwidth, and learner-computer ratio.',
           documents: [
             {
               title: '4.3.1 IT Facilities',
@@ -480,7 +480,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
               fileType: 'pdf',
             },
             {
-              title: '4.3.2 Student-Computer Ratio',
+              title: '4.3.2 Learner-Computer Ratio',
               description: 'QNM - Computing resource availability',
               fileUrl: '/pdfs/naac/criterion-4/criteria4-4.3.2-students.pdf',
               fileType: 'pdf',
@@ -508,9 +508,9 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
     // =============================================================================
     {
       id: 'criterion-5',
-      heading: 'Criterion V – Student Support and Progression',
+      heading: 'Criterion V – Learner Support and Progression',
       overview:
-        'Assesses student support services, progression to higher education/employment, participation in activities, and alumni engagement.',
+        'Assesses learner support services, progression to higher education/employment, participation in activities, and alumni engagement.',
       metrics: [
         { label: 'Total Marks', value: '140' },
       ],
@@ -518,7 +518,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
       subsections: [
         {
           id: 'criterion-5-1',
-          title: '5.1 Student Support (50 Marks)',
+          title: '5.1 Learner Support (50 Marks)',
           content:
             'Scholarships/freeships, capacity development programs (soft skills, life skills, career counseling), and grievance redressal mechanisms.',
           documents: [
@@ -536,13 +536,13 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
             },
             {
               title: '5.1.3 Career Counseling',
-              description: 'QNM - Competitive exam guidance and counseling',
+              description: 'QNM - Competitive learning assessment guidance and counseling',
               fileUrl: '/pdfs/naac/criterion-5/criteria5-main-page-5.1.3.pdf',
               fileType: 'pdf',
             },
             {
               title: '5.1.4 Grievance Redressal',
-              description: 'QNM - Student grievance and anti-ragging mechanisms',
+              description: 'QNM - Learner grievance and anti-ragging mechanisms',
               fileUrl: '/pdfs/naac/criterion-5/criteria5-main-page-5.1.4.pdf',
               fileType: 'pdf',
             },
@@ -550,18 +550,18 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
         },
         {
           id: 'criterion-5-2',
-          title: '5.2 Student Progression (35 Marks)',
-          content: 'Placement statistics, progression to higher education, and qualifying in competitive exams.',
+          title: '5.2 Learner Progression (35 Marks)',
+          content: 'Placement statistics, progression to higher education, and qualifying in competitive learning assessments.',
           documents: [
             {
               title: '5.2.1 Placement and Higher Education',
-              description: 'QNM - Outgoing students placement and progression data',
+              description: 'QNM - Outgoing learners placement and progression data',
               fileUrl: '/pdfs/naac/criterion-5/criteria5-main-page-5.2.1.pdf',
               fileType: 'pdf',
             },
             {
-              title: '5.2.2 Competitive Exams',
-              description: 'QNM - State/national/international exam qualifications',
+              title: '5.2.2 Competitive Learning Assessments',
+              description: 'QNM - State/national/international learning assessment qualifications',
               fileUrl: '/pdfs/naac/criterion-5/criteria5-main-page-5.2.2.pdf',
               fileType: 'pdf',
             },
@@ -569,12 +569,12 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
         },
         {
           id: 'criterion-5-3',
-          title: '5.3 Student Participation and Activities (45 Marks)',
+          title: '5.3 Learner Participation and Activities (45 Marks)',
           content: 'Awards in sports/cultural activities and participation in university/state/national/international events.',
           documents: [
             {
               title: '5.3.1 Sports and Cultural Awards',
-              description: 'QNM - Student achievements and medals',
+              description: 'QNM - Learner achievements and medals',
               fileUrl: '/pdfs/naac/criterion-5/criteria5-main-page-5.3.1.pdf',
               fileType: 'pdf',
             },
@@ -609,7 +609,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
       id: 'criterion-6',
       heading: 'Criterion VI – Governance, Leadership and Management',
       overview:
-        'Evaluates institutional vision and leadership, strategy deployment, faculty empowerment, financial management, and quality assurance systems.',
+        'Evaluates institutional vision and leadership, strategy deployment, senior learners empowerment, financial management, and quality assurance systems.',
       metrics: [
         { label: 'Total Marks', value: '100' },
       ],
@@ -642,7 +642,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
             },
             {
               title: '6.2.2 E-Governance',
-              description: 'QNM - Digital systems for administration, finance, admissions, exams',
+              description: 'QNM - Digital systems for administration, finance, admissions, learning assessments',
               fileUrl: '/pdfs/naac/criterion-6/6.2.2.pdf',
               fileType: 'pdf',
             },
@@ -650,7 +650,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
         },
         {
           id: 'criterion-6-3',
-          title: '6.3 Faculty Empowerment Strategies (33 Marks)',
+          title: '6.3 Senior Learners Empowerment Strategies (33 Marks)',
           content:
             'Performance appraisal, welfare measures, career development, financial support for conferences, and FDP participation.',
           documents: [
@@ -662,13 +662,13 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
             },
             {
               title: '6.3.2 Conference Financial Support',
-              description: 'QNM - Teacher support for conferences and professional bodies',
+              description: 'QNM - Senior Learner support for conferences and professional bodies',
               fileUrl: '/pdfs/naac/criterion-6/criteria6-6.3.2-Percentage-of-teachers-provided-with-financial-support.pdf',
               fileType: 'pdf',
             },
             {
               title: '6.3.3 FDP Participation',
-              description: 'QNM - Faculty and staff training programs',
+              description: 'QNM - Senior Learners and team members training programs',
               fileUrl: '/pdfs/naac/criterion-6/6.3.pdf',
               fileType: 'pdf',
             },
@@ -845,7 +845,7 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
       id: 'feedback',
       heading: 'Stakeholder Feedback',
       overview:
-        'Comprehensive feedback collected from students, faculty, employers, alumni, and other stakeholders across five academic years, demonstrating our commitment to continuous quality improvement.',
+        'Comprehensive feedback collected from learners, senior learners, employers, alumni, and other stakeholders across five academic years, demonstrating our commitment to continuous quality improvement.',
       documents: [
         {
           title: '2018-2019 Feedback',

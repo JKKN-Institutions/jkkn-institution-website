@@ -50,7 +50,7 @@ export default function AmbulanceServicesPage() {
           path: '/ambulance-services',
           name: 'Ambulance & Emergency Medical Services | JKKN Institutions',
           description:
-            'JKKN Institutions runs 24/7 campus ambulance services with trained medical personnel and equipped vehicles, supporting students, staff, and visitors across the Komarapalayam campus.',
+            'JKKN Institutions runs 24/7 campus ambulance services with trained medical personnel and equipped vehicles, supporting learners, team members, and visitors across the Komarapalayam campus.',
           keywords: [
             'JKKN ambulance',
             'emergency services',
@@ -69,7 +69,7 @@ export default function AmbulanceServicesPage() {
             name: 'JKKN Campus Medical & Ambulance Facility',
             description:
               '24/7 on-campus ambulance service and medical first-response unit serving JKKN Institutions, Komarapalayam, Namakkal District, Tamil Nadu.',
-            amenityFeature: ['Ambulance Services', 'Emergency Care', 'Trained Medical Staff'],
+            amenityFeature: ['Ambulance Services', 'Emergency Care', 'Trained Medical Team Members'],
           },
         ]}
       />

@@ -109,7 +109,7 @@ Our website https://jkkn.ac.in serves as a digital platform providing informatio
     content: `For clarity and consistency throughout this document:
 
 • **"Service"** refers to the JKKN Institutions website, mobile applications, online portals, learning management systems, and any related digital platforms operated by the Institution.
-• **"User"** or **"You"** refers to any individual, prospective student, current student, parent, guardian, alumni, or entity accessing or using our services.
+• **"User"** or **"You"** refers to any individual, prospective learner, current learner, parent, guardian, alumni, or entity accessing or using our services.
 • **"Content"** includes all text, images, videos, documents, graphics, data, and other materials available through our services.
 • **"Personal Information"** means any data that can identify you directly or indirectly, including name, contact details, academic records, and identification documents.`,
   },
@@ -127,7 +127,7 @@ We reserve the right to update or modify these terms at any time. Continued use 
     number: '4',
     title: 'Eligibility',
     icon: 'Users',
-    content: `Our website is accessible to all visitors seeking information about JKKN Institutions. However, certain services, including online applications, student portals, and learning management systems, may require you to be at least 18 years of age or have parental or guardian consent if you are a minor.
+    content: `Our website is accessible to all visitors seeking information about JKKN Institutions. However, certain services, including online applications, learner portals, and learning management systems, may require you to be at least 18 years of age or have parental or guardian consent if you are a minor.
 
 By using our services, you represent and warrant that you meet the eligibility requirements and have the legal capacity to enter into this agreement.`,
   },
@@ -142,7 +142,7 @@ By using our services, you represent and warrant that you meet the eligibility r
         id: '5.1',
         number: '5.1',
         title: 'Permitted Use',
-        content: `You may use our website and services for lawful purposes, including browsing institutional information, submitting admission applications, accessing student portals, and engaging with educational content provided by JKKN Institutions.`,
+        content: `You may use our website and services for lawful purposes, including browsing institutional information, submitting admission applications, accessing learner portals, and engaging with educational content provided by JKKN Institutions.`,
       },
       {
         id: '5.2',
@@ -172,9 +172,9 @@ You may not reproduce, modify, distribute, display, or create derivative works f
   {
     id: '7',
     number: '7',
-    title: 'Student and Academic Policies',
+    title: 'Learner and Academic Policies',
     icon: 'GraduationCap',
-    content: `Students enrolled at JKKN Institutions are subject to additional academic policies, codes of conduct, and institutional regulations as outlined in the student handbook and program-specific guidelines. These policies govern academic integrity, attendance, examinations, disciplinary procedures, and grievance redressal mechanisms.
+    content: `Learners enrolled at JKKN Institutions are subject to additional academic policies, codes of conduct, and institutional regulations as outlined in the learner handbook and program-specific guidelines. These policies govern academic integrity, attendance, learning assessments, disciplinary procedures, and grievance redressal mechanisms.
 
 For detailed information on academic policies, please refer to the official documentation provided during enrollment or contact the respective department.`,
   },
@@ -228,7 +228,7 @@ While we make reasonable efforts to ensure the accuracy of information on our we
     number: '13',
     title: 'Limitation of Liability',
     icon: 'Scale',
-    content: `To the fullest extent permitted by applicable law, JKKN Institutions, its trustees, management, faculty, staff, and affiliates shall not be liable for any direct, indirect, incidental, consequential, special, or punitive damages arising from your use of or inability to use our services.
+    content: `To the fullest extent permitted by applicable law, JKKN Institutions, its trustees, management, senior learners, team members, and affiliates shall not be liable for any direct, indirect, incidental, consequential, special, or punitive damages arising from your use of or inability to use our services.
 
 This includes, but is not limited to, damages for loss of data, academic opportunities, business interruption, or any other losses, even if we have been advised of the possibility of such damages. Our total liability, if any, shall not exceed the amount you have paid to us for the specific service in question.`,
   },
@@ -237,7 +237,7 @@ This includes, but is not limited to, damages for loss of data, academic opportu
     number: '14',
     title: 'Indemnification',
     icon: 'ShieldCheck',
-    content: `You agree to indemnify, defend, and hold harmless JKKN Institutions, its trustees, officers, employees, agents, and affiliates from any claims, damages, losses, liabilities, costs, or expenses (including legal fees) arising from your use of our services, violation of these terms, or infringement of any third-party rights.`,
+    content: `You agree to indemnify, defend, and hold harmless JKKN Institutions, its trustees, officers, team members, agents, and affiliates from any claims, damages, losses, liabilities, costs, or expenses (including legal fees) arising from your use of our services, violation of these terms, or infringement of any third-party rights.`,
   },
   {
     id: '15',

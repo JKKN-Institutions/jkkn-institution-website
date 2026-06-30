@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     'NAAC accredited',
     'AICTE approved',
     'research program',
-    'PhD faculty',
+    'PhD senior learners',
     'placement',
     'me computer science and engineering colleges in tamilnadu',
   ],

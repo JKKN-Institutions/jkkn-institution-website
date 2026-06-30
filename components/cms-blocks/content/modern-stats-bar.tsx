@@ -16,7 +16,7 @@ export default function ModernStatsBar({
 }: ModernStatsBarProps) {
     const defaultStats: Stat[] = [
         { value: 95, suffix: '%', label: 'Placement Rate', icon: 'GraduationCap' },
-        { value: 50, suffix: '+', label: 'Research Labs', icon: 'Landing' },
+        { value: 50, suffix: '+', label: 'Research Learning Labs', icon: 'Landing' },
         { value: 10000, suffix: '+', label: 'Alumni Network', icon: 'Handshake' },
         { value: 15, suffix: ':1', label: 'Student-Ratio', icon: 'Building2' },
     ]

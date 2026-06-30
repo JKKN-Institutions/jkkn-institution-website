@@ -56,7 +56,7 @@ export default function MainAdmissionsPage() {
           {
             name: 'Admission 2026-27 Application',
             description:
-              'Online admission application to UG and PG programmes across JKKN Institutions 7 colleges. Scholarships and education loans available for eligible students.',
+              'Online admission application to UG and PG programmes across JKKN Institutions 7 colleges. Scholarships and education loans available for eligible learners.',
             url: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
             priceCurrency: 'INR',
             priceValidUntil: '2027-06-30',
@@ -115,7 +115,7 @@ export default function MainAdmissionsPage() {
           {
             icon: 'Factory',
             title: 'Industry-Ready Programs',
-            description: 'Our curriculum integrates theory with practice. State-of-the-art Learning Labs and industry partnerships make graduates career-ready.',
+            description: 'Our learning framework integrates theory with practice. State-of-the-art Learning Learning Labs and industry partnerships make graduates career-ready.',
           },
           {
             icon: 'Briefcase',
@@ -179,7 +179,7 @@ export default function MainAdmissionsPage() {
                 {
                   number: '03',
                   title: 'AI-Integrated Campus',
-                  desc: 'Classrooms, labs, libraries, and learner workflows are designed for AI-augmented learning from day one — native, not retrofitted.',
+                  desc: 'Learning Studios, learning labs, libraries, and learner workflows are designed for AI-augmented learning from day one — native, not retrofitted.',
                 },
               ].map((pillar) => (
                 <div
@@ -299,7 +299,7 @@ export default function MainAdmissionsPage() {
           },
           {
             name: 'JKKN College of Education',
-            description: 'B.Ed programs with NCTE approved curriculum',
+            description: 'B.Ed programs with NCTE approved learning framework',
             headerColor: '#0b6d41',
             link: 'https://edu.jkkn.ac.in/admissions',
           },
@@ -419,14 +419,14 @@ export default function MainAdmissionsPage() {
           {
             icon: 'Building2',
             title: 'PMSS Community Scholarship',
-            description: 'Post Matric Scholarship Scheme for SC/SCA/ST/BC-CC category students (GQ)',
+            description: 'Post Matric Scholarship Scheme for SC/SCA/ST/BC-CC category learners (GQ)',
             eligibility: ['BE/BTech: ₹50,000/Year', 'MBA: ₹35,000/Year', 'ME: ₹50,000/Year'],
             type: 'government',
           },
           {
             icon: 'Trophy',
             title: 'Trust Scholarship (Merit-Based)',
-            description: 'JKKN Trust merit scholarship for academically outstanding students (MQ/GQ)',
+            description: 'JKKN Trust merit scholarship for academically outstanding learners (MQ/GQ)',
             eligibility: ['BE/BTech: ₹5,000 to 100% fee waiver/Year', 'Based on academic performance', 'Available for Management & Government quota'],
             type: 'merit',
           },
@@ -434,28 +434,28 @@ export default function MainAdmissionsPage() {
             icon: 'Award',
             title: 'First Graduate Scholarship',
             description: 'Government scholarship for first-generation college graduates (GQ)',
-            eligibility: ['BE/BTech: ₹25,000/Year', 'First in family to attend college', 'Government quota students only'],
+            eligibility: ['BE/BTech: ₹25,000/Year', 'First in family to attend college', 'Government quota learners only'],
             type: 'government',
           },
           {
             icon: 'Heart',
             title: 'Community Scholarship',
-            description: 'Financial support for BC/MBC/DNC/BCM category students (GQ)',
+            description: 'Financial support for BC/MBC/DNC/BCM category learners (GQ)',
             eligibility: ['BE/BTech: ₹5,000–₹10,000/Year', 'MBA: ₹5,000–₹10,000/Year', 'ME: ₹5,000–₹10,000/Year'],
             type: 'need-based',
           },
           {
             icon: 'Medal',
             title: 'Maintenance Scholarship',
-            description: 'Sustenance support for all eligible engineering students (GQ)',
+            description: 'Sustenance support for all eligible engineering learners (GQ)',
             eligibility: ['BE/BTech: ₹5,000–₹10,000/Year', 'MBA: ₹5,000–₹10,000/Year', 'ME: ₹5,000–₹10,000/Year'],
             type: 'need-based',
           },
           {
             icon: 'Award',
             title: 'Naan Mudhalvan Scholarship',
-            description: 'Tamil Nadu Government initiative for engineering students',
-            eligibility: ['BE/BTech: ₹1,000/month', 'Available for boys & girls', 'Govt/Govt-aided school (6–12) Tamil medium students'],
+            description: 'Tamil Nadu Government initiative for engineering learners',
+            eligibility: ['BE/BTech: ₹1,000/month', 'Available for boys & girls', 'Govt/Govt-aided school (6–12) Tamil medium learners'],
             type: 'sports-cultural',
           },
         ]}
@@ -472,10 +472,10 @@ export default function MainAdmissionsPage() {
         subtitle="Keep these documents ready for a smooth admission process"
         leftColumnTitle="For All Programs"
         leftColumnDocuments={[
-          { text: 'Mark Sheets', note: 'Qualifying examination mark sheet / provisional certificate (attested by School Headmaster)', required: true },
+          { text: 'Mark Sheets', note: 'Qualifying learning assessment mark sheet / provisional certificate (attested by School Headmaster)', required: true },
           { text: 'Transfer Certificate', note: 'Original TC from the last institution attended', required: true },
           { text: 'Community Certificate', note: 'If applicable (for SC/ST/OBC/MBC candidates)', required: false },
-          { text: 'Eligibility Certificate', note: 'For students from other states/universities', required: false },
+          { text: 'Eligibility Certificate', note: 'For learners from other states/universities', required: false },
           { text: 'Special Quota Proof', note: 'Differently Abled, Sports, NCC, Ex-Servicemen certificates (if applicable)', required: false },
           { text: 'Passport Photos', note: 'Recent passport-size photographs (6 copies)', required: true },
           { text: 'Conduct Certificate', note: 'From the last institution attended', required: true },
@@ -485,9 +485,9 @@ export default function MainAdmissionsPage() {
         rightColumnDocuments={[
           { text: 'Aadhar Card', note: 'Original + 2 attested photocopies', required: true },
           { text: 'NEET Score Card', note: 'For Medical / Dental / Pharmacy / Nursing programs', required: false },
-          { text: 'Entrance Exam Admit Card', note: 'Original admit card of qualifying entrance exam', required: false },
+          { text: 'Entrance Learning Assessment Admit Card', note: 'Original admit card of qualifying entrance learning assessment', required: false },
           { text: 'Sports / Cultural Certificates', note: 'State or National level achievement certificates', required: false },
-          { text: 'Gap Certificate', note: 'Self-declaration if gap year exists after qualifying exam', required: false },
+          { text: 'Gap Certificate', note: 'Self-declaration if gap year exists after qualifying learning assessment', required: false },
           { text: 'Medical Fitness Certificate', note: 'From a registered medical practitioner', required: true },
           { text: 'Migration Certificate', note: 'If migrating from another university / board', required: false },
         ]}
@@ -570,7 +570,7 @@ export default function MainAdmissionsPage() {
           { emoji: '', icon: 'Home', title: 'Hostels', description: 'Separate boys & girls hostels with 24/7 security, Wi-Fi, and home-like comfort.' },
           { emoji: '', icon: 'UtensilsCrossed', title: 'Dining', description: 'Hygienic, nutritious meals. Veg & non-veg options at central canteen.' },
           { emoji: '', icon: 'BookOpen', title: 'Libraries', description: '50,000+ books, journals, digital resources across all campuses.' },
-          { emoji: '', icon: 'FlaskConical', title: 'Learning Labs', description: 'State-of-the-art labs, simulation centers, and research facilities.' },
+          { emoji: '', icon: 'FlaskConical', title: 'Learning Learning Labs', description: 'State-of-the-art learning labs, simulation centers, and research facilities.' },
           { emoji: '', icon: 'Trophy', title: 'Sports', description: 'Cricket, basketball, volleyball, indoor games, and fitness center.' },
           { emoji: '', icon: 'HeartPulse', title: 'Healthcare', description: 'On-campus health center and attached hospital facilities.' },
           { emoji: '', icon: 'Bus', title: 'Transport', description: 'College buses covering Namakkal, Salem, Erode & surrounding areas.' },

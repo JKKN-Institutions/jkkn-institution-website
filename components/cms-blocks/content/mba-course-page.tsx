@@ -488,7 +488,7 @@ function HeroSection({
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src="/images/courses/mba/JKKN MBA (1).png"
-                alt="MBA Students"
+                alt="MBA Learners"
                 className="w-full h-auto object-cover"
               />
 

@@ -52,7 +52,7 @@ export const AboutSectionPropsSchema = z.object({
     { value: '1952', label: 'Year Established' },
     { value: '11', label: 'Institutions' },
     { value: '50,000+', label: 'Alumni' },
-    { value: '5,000+', label: 'Current Students' },
+    { value: '5,000+', label: 'Current Learners' },
   ]).describe('Statistics to display'),
 
   // Story section
@@ -154,7 +154,7 @@ export function AboutSection({
     { value: '1952', label: 'Year Established' },
     { value: '11', label: 'Institutions' },
     { value: '50,000+', label: 'Alumni' },
-    { value: '5,000+', label: 'Current Students' },
+    { value: '5,000+', label: 'Current Learners' },
   ],
   showStory = false,
   storyTitle = 'Our Story',

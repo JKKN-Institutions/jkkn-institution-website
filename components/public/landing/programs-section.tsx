@@ -50,7 +50,7 @@ const programs = [
   {
     icon: TrendingUp,
     title: 'Management',
-    description: 'BBA, MBA with industry-focused curriculum',
+    description: 'BBA, MBA with industry-focused learning framework',
     courses: 5,
     color: 'from-yellow-500 to-secondary',
     href: '/academics/programs/management',
