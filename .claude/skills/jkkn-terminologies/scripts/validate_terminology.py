@@ -28,17 +28,17 @@ CRITICAL_TERMS = {
     r'\bstudent body\b': 'learner community',
 
     # Teaching Staff
-    r'\bfaculty\b': 'learning facilitators',
-    r'\bteacher\b': 'learning facilitator',
-    r'\bteachers\b': 'learning facilitators',
-    r'\bprofessor\b': 'learning facilitator',
-    r'\bprofessors\b': 'learning facilitators',
-    r'\binstructor\b': 'learning facilitator',
-    r'\binstructors\b': 'learning facilitators',
-    r'\btutor\b': 'learning facilitator',
-    r'\btutors\b': 'learning facilitators',
-    r'\beducator\b': 'learning facilitator',
-    r'\beducators\b': 'learning facilitators',
+    r'\bfaculty\b': 'senior learners',
+    r'\bteacher\b': 'senior learner',
+    r'\bteachers\b': 'senior learners',
+    r'\bprofessor\b': 'senior learner',
+    r'\bprofessors\b': 'senior learners',
+    r'\binstructor\b': 'senior learner',
+    r'\binstructors\b': 'senior learners',
+    r'\btutor\b': 'senior learner',
+    r'\btutors\b': 'senior learners',
+    r'\beducator\b': 'senior learner',
+    r'\beducators\b': 'senior learners',
 
     # Non-Academic Staff
     r'\bstaff\b': 'team members',
