@@ -75,7 +75,7 @@ export type LibraryPageProps = z.infer<typeof LibraryPagePropsSchema> & BaseBloc
 
 const defaultParagraphs: ContentParagraph[] = [
   { text: 'The library covers a wide range of subjects in Science, Humanities, Engineering, Management, Computer Applications, etc. The library is well equipped with infrastructure. With 175 seating capacity, 30 Mbps high-speed internet and CCTV surveillance are available. The library is automated using Koha software.' },
-  { text: 'All the students and faculty can access online catalog, OPAC. The library uses barcode technology for its circulation and stock verification.' },
+  { text: 'All the learners and senior learners can access online catalog, OPAC. The library uses barcode technology for its circulation and stock verification.' },
   { text: 'JKKN library offers 6500 E-Journals through DELNET, E-GATE, NPTEL, NDL, SWAYAM, the online digital library. All books are covered with RFID tag. The library is open from 8:30 A.M. to 6:00 P.M. on all working days.' },
 ]
 

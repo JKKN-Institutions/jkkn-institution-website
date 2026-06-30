@@ -76,7 +76,7 @@ We collect this information to provide better services, process admissions, and 
 • **Communication**: To send you important updates about admissions, events, and institutional news.
 • **Service Improvement**: To analyze website usage and improve our online services.
 • **Legal Compliance**: To comply with applicable laws, regulations, and legal processes.
-• **Safety & Security**: To protect the rights, property, and safety of our institutions, students, and staff.
+• **Safety & Security**: To protect the rights, property, and safety of our institutions, learners, and team members.
 
 We do not sell, rent, or share your personal information with third parties for marketing purposes.`,
   },

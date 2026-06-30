@@ -124,7 +124,7 @@ export function PrivacyPolicyContent({
           <p className="text-base md:text-lg text-gray-700 leading-relaxed mb-4">
             At JKKN College of Engineering and Technology, we are committed to
             protecting the privacy and security of personal information provided
-            to us by our students, staff, alumni, and visitors. This Privacy
+            to us by our learners, team members, alumni, and visitors. This Privacy
             Policy outlines how we collect, use, disclose, and protect personal
             information in accordance with applicable privacy laws and
             regulations.
@@ -281,7 +281,7 @@ export function PrivacyPolicyContent({
               restricted access to facilities, and surveillance systems
             </li>
             <li>
-              <strong>Administrative Measures:</strong> Employee training on
+              <strong>Administrative Measures:</strong> Team Member training on
               data privacy, confidentiality agreements, and incident response
               procedures
             </li>
@@ -304,7 +304,7 @@ export function PrivacyPolicyContent({
           </p>
           <ul className="list-disc pl-6 space-y-2 mb-4">
             <li>
-              <strong>Student Records:</strong> Academic records are retained
+              <strong>Learner Records:</strong> Academic records are retained
               indefinitely to provide transcripts and verify credentials
             </li>
             <li>

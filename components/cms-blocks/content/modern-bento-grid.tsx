@@ -21,8 +21,8 @@ export default function ModernBentoGrid({
 }: ModernBentoGridProps) {
     const defaultItems: BentoItem[] = [
         {
-            title: 'JKKN Partners with Global Tech Firm for AI Research Lab',
-            excerpt: 'A landmark partnership to foster innovation in artificial intelligence and machine learning for engineering students.',
+            title: 'JKKN Partners with Global Tech Firm for AI Research Learning Lab',
+            excerpt: 'A landmark partnership to foster innovation in artificial intelligence and machine learning for engineering learners.',
             image: '/images/hero/engineering-1.jpg',
             date: 'Jan 10, 2025',
             category: 'Research',
@@ -30,7 +30,7 @@ export default function ModernBentoGrid({
             link: '#',
         },
         {
-            title: 'Students Win International Robotics Competition',
+            title: 'Learners Win International Robotics Competition',
             image: '/images/hero/engineering-2.jpg',
             category: 'Achievement',
             type: 'blog',

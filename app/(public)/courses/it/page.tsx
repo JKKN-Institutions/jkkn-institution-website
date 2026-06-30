@@ -40,7 +40,7 @@ export const metadata: Metadata = {
         url: '/images/engineering/labs/it/it-lab-01.jpg',
         width: 1200,
         height: 630,
-        alt: 'JKKN IT Laboratory',
+        alt: 'JKKN IT Learning Lab',
       },
     ],
   },

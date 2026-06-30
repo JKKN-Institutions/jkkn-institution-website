@@ -74,12 +74,12 @@ export const EngineeringWhyChooseSectionPropsSchema = z.object({
     },
     {
       title: 'Expert Learning Facilitators',
-      description: 'Highly qualified faculty with industry experience and research background',
+      description: 'Highly qualified senior learners with industry experience and research background',
       icon: 'graduation',
     },
     {
-      title: 'Modern Labs & Infrastructure',
-      description: 'State-of-the-art laboratories equipped with latest technology',
+      title: 'Modern Learning Labs & Infrastructure',
+      description: 'State-of-the-art learning labs equipped with latest technology',
       icon: 'flask',
     },
     {
@@ -94,7 +94,7 @@ export const EngineeringWhyChooseSectionPropsSchema = z.object({
     },
     {
       title: 'Global Exposure',
-      description: 'International collaborations and student exchange programs',
+      description: 'International collaborations and learner exchange programs',
       icon: 'globe',
     },
     {
@@ -170,12 +170,12 @@ export default function EngineeringWhyChooseSection({
     },
     {
       title: 'Expert Learning Facilitators',
-      description: 'Highly qualified faculty with industry experience and research background',
+      description: 'Highly qualified senior learners with industry experience and research background',
       icon: 'graduation',
     },
     {
-      title: 'Modern Labs & Infrastructure',
-      description: 'State-of-the-art laboratories equipped with latest technology',
+      title: 'Modern Learning Labs & Infrastructure',
+      description: 'State-of-the-art learning labs equipped with latest technology',
       icon: 'flask',
     },
     {
@@ -190,7 +190,7 @@ export default function EngineeringWhyChooseSection({
     },
     {
       title: 'Global Exposure',
-      description: 'International collaborations and student exchange programs',
+      description: 'International collaborations and learner exchange programs',
       icon: 'globe',
     },
     {

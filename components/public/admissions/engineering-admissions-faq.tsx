@@ -33,7 +33,7 @@ export function EngineeringAdmissionsFAQ({ faqs }: EngineeringAdmissionsFAQProps
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              {audience === 'student' ? 'For Students' : 'For Parents'}
+              {audience === 'student' ? 'For Learners' : 'For Parents'}
             </button>
           ))}
         </div>

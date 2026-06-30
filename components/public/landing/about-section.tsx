@@ -18,7 +18,7 @@ const values = [
   {
     icon: BookOpen,
     title: 'Academic Excellence',
-    description: 'Rigorous curriculum designed to nurture critical thinking and innovation.',
+    description: 'Rigorous learning framework designed to nurture critical thinking and innovation.',
     color: 'from-secondary to-yellow-500',
   },
   {
@@ -108,7 +108,7 @@ export function AboutSection() {
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Our Mission</h3>
               <p className="text-gray-300 leading-relaxed">
-                To provide transformative education that empowers students with knowledge,
+                To provide transformative education that empowers learners with knowledge,
                 skills, and values to become responsible global citizens and innovative leaders
                 in their chosen fields.
               </p>

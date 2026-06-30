@@ -64,7 +64,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
       icon: 'Briefcase',
       title: 'Mode',
       value: 'Full-time',
-      description: 'Campus-based program with hands-on laboratory sessions and industrial training',
+      description: 'Campus-based program with hands-on learning lab sessions and industrial training',
     },
     {
       icon: 'Globe',
@@ -82,23 +82,23 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   benefits: [
     {
       icon: 'BookOpen',
-      title: 'Industry-Relevant Curriculum',
-      description: 'Updated syllabus aligned with current industry standards, covering traditional mechanical engineering fundamentals and emerging technologies like additive manufacturing, Industry 4.0, and sustainable energy systems.',
+      title: 'Industry-Relevant Learning Framework',
+      description: 'Updated learning pathway aligned with current industry standards, covering traditional mechanical engineering fundamentals and emerging technologies like additive manufacturing, Industry 4.0, and sustainable energy systems.',
     },
     {
       icon: 'UserCheck',
-      title: 'Expert Faculty',
-      description: 'Learn from experienced professors with Ph.D. qualifications, extensive industry experience, and active research in areas like thermal engineering, design optimization, and advanced manufacturing technologies.',
+      title: 'Expert Senior Learners',
+      description: 'Learn from experienced senior learners with Ph.D. qualifications, extensive industry experience, and active research in areas like thermal engineering, design optimization, and advanced manufacturing technologies.',
     },
     {
       icon: 'Wrench',
       title: 'Hands-on Learning',
-      description: 'State-of-the-art laboratories including CAD/CAM, CNC machining, thermal engineering, fluid mechanics, manufacturing processes, and robotics labs with latest equipment and software tools.',
+      description: 'State-of-the-art learning labs including CAD/CAM, CNC machining, thermal engineering, fluid mechanics, manufacturing processes, and robotics learning labs with latest equipment and software tools.',
     },
     {
       icon: 'Lightbulb',
       title: 'Research Opportunities',
-      description: 'Active research culture with projects funded by government agencies. Students participate in conferences, publish papers, and work on cutting-edge technologies in renewable energy, automotive systems, and smart manufacturing.',
+      description: 'Active research culture with projects funded by government agencies. Learners participate in conferences, publish papers, and work on cutting-edge technologies in renewable energy, automotive systems, and smart manufacturing.',
     },
     {
       icon: 'Handshake',
@@ -115,7 +115,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   // ===========================================
   // Curriculum
   // ===========================================
-  curriculumTitle: 'Curriculum Structure',
+  curriculumTitle: 'Learning Framework Structure',
 
   curriculumYears: [
     {
@@ -172,7 +172,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
             { code: '', name: 'Strength of Materials', credits: 4 },
             { code: '', name: 'Manufacturing Processes – I', credits: 3 },
             { code: '', name: 'Embedded Systems', credits: 3 },
-            { code: '', name: 'English Communication Skills Laboratory – II', credits: 1 },
+            { code: '', name: 'English Communication Skills Learning Lab – II', credits: 1 },
             { code: '', name: 'Skill Development Course – I', credits: 1 },
           ],
         },
@@ -188,7 +188,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
             { code: '', name: 'Thermal Engineering – I', credits: 4 },
             { code: '', name: 'Power Generation Technologies', credits: 3 },
             { code: '', name: 'Standards in Mechanical Engineering', credits: 1 },
-            { code: '', name: 'English Communication Skills Laboratory – III', credits: 1 },
+            { code: '', name: 'English Communication Skills Learning Lab – III', credits: 1 },
             { code: '', name: 'Skill Development Course – II', credits: 1 },
           ],
         },
@@ -222,7 +222,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
             { code: '', name: 'FEM applications in Mechanical Engineering', credits: 3 },
             { code: '', name: 'Programme Elective - II', credits: 3 },
             { code: '', name: 'Programme Elective - III', credits: 3 },
-            { code: '', name: 'Computer Aided Modelling Laboratory', credits: 2 },
+            { code: '', name: 'Computer Aided Modelling Learning Lab', credits: 2 },
             { code: '', name: 'Self-Learning Course', credits: 1 },
             { code: '', name: 'Industry Oriented Course - II', credits: 1 },
           ],
@@ -368,100 +368,100 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   // ===========================================
   // Facilities
   // ===========================================
-  facilitiesTitle: 'World-Class Laboratories & Facilities',
+  facilitiesTitle: 'World-Class Learning Labs & Facilities',
 
   facilities: [
     {
-      name: 'Strength of Materials Laboratory',
+      name: 'Strength of Materials Learning Lab',
       image: '/images/courses/be-mech/labs/mech-lab-01.jpg',
-      description: 'Well-equipped lab with Universal Tensile Testing Machine (UTM), impact testing machine, hardness testers, torsion apparatus, and beam testing setups for material properties analysis.',
+      description: 'Well-equipped learning lab with Universal Tensile Testing Machine (UTM), impact testing machine, hardness testers, torsion apparatus, and beam testing setups for material properties analysis.',
     },
     {
-      name: 'Manufacturing Technology Laboratory',
+      name: 'Manufacturing Technology Learning Lab',
       image: '/images/courses/be-mech/labs/mech-lab-03.jpg',
-      description: 'Hands-on manufacturing lab with lathe, gear-cutting, milling, welding, casting equipment, and precision measuring instruments for practical training in manufacturing processes.',
+      description: 'Hands-on manufacturing learning lab with lathe, gear-cutting, milling, welding, casting equipment, and precision measuring instruments for practical training in manufacturing processes.',
     },
     {
-      name: 'CAD/CAM/CAE Laboratory',
+      name: 'CAD/CAM/CAE Learning Lab',
       image: '/images/courses/be-mech/labs/mech-lab-04.jpg',
-      description: 'State-of-the-art lab equipped with CNC machines, AutoCAD, SolidWorks, CATIA, Mastercam, and ANSYS for design, analysis, and computer-aided manufacturing simulation.',
+      description: 'State-of-the-art learning lab equipped with CNC machines, AutoCAD, SolidWorks, CATIA, Mastercam, and ANSYS for design, analysis, and computer-aided manufacturing simulation.',
     },
     {
-      name: 'Fluid Mechanics & Machines Laboratory',
+      name: 'Fluid Mechanics & Machines Learning Lab',
       image: '/images/courses/be-mech/labs/mech-lab-05.jpg',
-      description: 'Comprehensive lab featuring milling machines, drilling machines, hydraulic presses, and precision equipment for hands-on learning of fluid dynamics and machine operations.',
+      description: 'Comprehensive learning lab featuring milling machines, drilling machines, hydraulic presses, and precision equipment for hands-on learning of fluid dynamics and machine operations.',
     },
     {
-      name: 'Thermal Engineering Laboratory',
+      name: 'Thermal Engineering Learning Lab',
       image: '/images/courses/be-mech/labs/mech-lab-06.jpg',
-      description: 'Advanced lab with lathe machines, engines, heat transfer equipment, and faculty-guided practical sessions for thermal engineering experiments and analysis.',
+      description: 'Advanced learning lab with lathe machines, engines, heat transfer equipment, and senior learners-guided practical sessions for thermal engineering experiments and analysis.',
     },
     {
-      name: 'Mechatronics & IoT Laboratory',
+      name: 'Mechatronics & IoT Learning Lab',
       image: '/images/courses/be-mech/labs/mech-lab-02.jpg',
-      description: 'Cutting-edge lab with industrial testing equipment, PLC trainers, pneumatic and hydraulic circuits, sensors, actuators, and automation equipment for Industry 4.0 skill development.',
+      description: 'Cutting-edge learning lab with industrial testing equipment, PLC trainers, pneumatic and hydraulic circuits, sensors, actuators, and automation equipment for Industry 4.0 skill development.',
     },
   ],
 
   // ===========================================
   // Faculty
   // ===========================================
-  facultyTitle: 'Our Expert Faculty',
+  facultyTitle: 'Our Expert Senior Learners',
 
   faculty: [
     {
       name: 'Dr. R. Sasikumar',
-      designation: 'Associate Professor',
+      designation: 'Associate Senior Learner',
       qualification: 'Ph.D',
     },
     {
       name: 'Mr. S. RanjithKumar',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E',
     },
     {
       name: 'Mr. M. Sivashankar',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E',
     },
     {
       name: 'Mr. S. Sivabalan',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E',
     },
     {
       name: 'Mr. M. Kandasamy',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
     },
     {
       name: 'Mr. Shanmugam Ponnusamy',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E',
     },
     {
       name: 'Mr. D. Yaalarasan',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
     },
     {
       name: 'Mr. P. Jeyaprakash',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
     },
     {
       name: 'Mr. Meiyazhagan',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
     },
     {
       name: 'Mr. L. Gokula Vasan',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
     },
     {
       name: 'Mr. V. D. Janarthanan',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
     },
   ],
@@ -486,9 +486,9 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     },
     {
       step: 3,
-      title: 'Entrance Exam',
-      description: 'Qualify in TNEA counseling (Tamil Nadu students) or appear for JEE Main / Institution entrance test. Merit-based selection for eligible candidates based on entrance exam scores.',
-      icon: 'exam',
+      title: 'Entrance Learning Assessment',
+      description: 'Qualify in TNEA counseling (Tamil Nadu learners) or appear for JEE Main / Institution entrance test. Merit-based selection for eligible candidates based on entrance learning assessment scores.',
+      icon: 'learning assessment',
     },
     {
       step: 4,
@@ -499,7 +499,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     {
       step: 5,
       title: 'Admission Confirmation',
-      description: 'Pay the admission fee online or at the college. Receive admission confirmation, student ID, and joining instructions. Report to college on the specified date for orientation.',
+      description: 'Pay the admission fee online or at the college. Receive admission confirmation, learner ID, and joining instructions. Report to college on the specified date for orientation.',
       icon: 'confirm',
     },
   ],
@@ -519,7 +519,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
       amount: '₹10,000',
     },
     {
-      component: 'Laboratory Fee',
+      component: 'Learning Lab Fee',
       amount: '₹8,000',
     },
     {
@@ -531,7 +531,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
       amount: '₹2,000',
     },
     {
-      component: 'Exam Fee',
+      component: 'Learning Assessment Fee',
       amount: '₹2,000',
     },
     {
@@ -549,43 +549,43 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   faqs: [
     {
       question: 'What is the eligibility criteria for B.E. Mechanical Engineering?',
-      answer: 'Candidates must have passed 10+2 examination with Physics, Chemistry, and Mathematics as core subjects with a minimum of 50% aggregate marks (45% for reserved categories). The minimum age requirement is 17 years as on December 31st of the admission year.',
+      answer: 'Candidates must have passed 10+2 learning assessment with Physics, Chemistry, and Mathematics as core subjects with a minimum of 50% aggregate marks (45% for reserved categories). The minimum age requirement is 17 years as on December 31st of the admission year.',
     },
     {
       question: 'Is the B.E. Mechanical Engineering program NAAC accredited?',
-      answer: 'Yes, our B.E. Mechanical Engineering program is accredited by the National Assessment and Accreditation Council (NAAC), ensuring that the curriculum and teaching quality meet international standards. The program is also affiliated to Anna University and approved by AICTE.',
+      answer: 'Yes, our B.E. Mechanical Engineering program is accredited by the National Assessment and Accreditation Council (NAAC), ensuring that the learning framework and teaching quality meet international standards. The program is also affiliated to Anna University and approved by AICTE.',
     },
     {
       question: 'What are the career opportunities after completing this program?',
-      answer: 'Graduates can work in diverse sectors including automotive, aerospace, manufacturing, energy, construction, and consulting. Job roles include Mechanical Design Engineer, Production Engineer, Quality Control Engineer, R&D Engineer, CAD/CAM Engineer, Automotive Engineer, and Project Manager. Our placement cell assists students with competitive salary packages ranging from ₹3.5 to 15 LPA.',
+      answer: 'Graduates can work in diverse sectors including automotive, aerospace, manufacturing, energy, construction, and consulting. Job roles include Mechanical Design Engineer, Production Engineer, Quality Control Engineer, R&D Engineer, CAD/CAM Engineer, Automotive Engineer, and Project Manager. Our placement cell assists learners with competitive salary packages ranging from ₹3.5 to 15 LPA.',
     },
     {
       question: 'What specializations are available in Mechanical Engineering?',
-      answer: 'Students can choose from six specialization tracks: Thermal Engineering (energy systems, HVAC), Design Engineering (CAD/CAM, product development), Manufacturing Engineering (CNC, automation), Automobile Engineering (vehicle design, EVs), Robotics & Automation (industrial robotics, PLC), and Energy Systems (renewable energy, sustainability).',
+      answer: 'Learners can choose from six specialization tracks: Thermal Engineering (energy systems, HVAC), Design Engineering (CAD/CAM, product development), Manufacturing Engineering (CNC, automation), Automobile Engineering (vehicle design, EVs), Robotics & Automation (industrial robotics, PLC), and Energy Systems (renewable energy, sustainability).',
     },
     {
-      question: 'What kind of laboratories and facilities are available?',
-      answer: 'We have state-of-the-art laboratories including CAD/CAM/CAE Lab with industry-standard software, Thermal Engineering Lab with engines and HVAC equipment, Fluid Mechanics Lab with pumps and turbines, Strength of Materials Lab with testing machines, Manufacturing Technology Lab with CNC machines, and Robotics & Automation Lab with industrial robots and PLCs.',
+      question: 'What kind of learning labs and facilities are available?',
+      answer: 'We have state-of-the-art learning labs including CAD/CAM/CAE Learning Lab with industry-standard software, Thermal Engineering Learning Lab with engines and HVAC equipment, Fluid Mechanics Learning Lab with pumps and turbines, Strength of Materials Learning Lab with testing machines, Manufacturing Technology Learning Lab with CNC machines, and Robotics & Automation Learning Lab with industrial robots and PLCs.',
     },
     {
       question: 'Are there internship opportunities during the program?',
-      answer: 'Yes, industrial training is a mandatory component in the 6th semester. Students undergo 4-6 weeks internship in reputed companies to gain practical industry experience. The Training and Placement Cell facilitates internship opportunities with our industry partners in automotive, manufacturing, energy, and engineering services sectors.',
+      answer: 'Yes, industrial training is a mandatory component in the 6th semester. Learners undergo 4-6 weeks internship in reputed companies to gain practical industry experience. The Training and Placement Cell facilitates internship opportunities with our industry partners in automotive, manufacturing, energy, and engineering services sectors.',
     },
     {
       question: 'What is the placement record for Mechanical Engineering?',
       answer: 'Our Mechanical Engineering department consistently achieves 95% placement rate. Top recruiters include Tata Motors, Ashok Leyland, TVS, Mahindra, L&T, Hyundai, Bosch, Siemens, and other leading automotive and manufacturing companies. Average salary package is ₹5.8 LPA with highest going up to ₹24 LPA.',
     },
     {
-      question: 'Is hostel facility available for students?',
+      question: 'Is hostel facility available for learners?',
       answer: 'Yes, we provide separate hostel facilities for boys and girls with modern amenities including furnished rooms, mess with nutritious food, Wi-Fi connectivity, recreation facilities, and 24/7 security. Hostel fees are separate from tuition fees and can be paid semester-wise or annually.',
     },
     {
-      question: 'What research opportunities are available for students?',
-      answer: 'Students can participate in faculty-guided research projects, present papers in national and international conferences, and publish in journals. The department has ongoing research in renewable energy, advanced manufacturing, automotive systems, and sustainable engineering. Final year students must complete a major project involving research or product development.',
+      question: 'What research opportunities are available for learners?',
+      answer: 'Learners can participate in senior learners-guided research projects, present papers in national and international conferences, and publish in journals. The department has ongoing research in renewable energy, advanced manufacturing, automotive systems, and sustainable engineering. Final year learners must complete a major project involving research or product development.',
     },
     {
       question: 'Can I pursue higher studies after B.E. Mechanical Engineering?',
-      answer: 'Absolutely! Graduates can pursue M.E./M.Tech in specialized areas like Thermal Engineering, Manufacturing, CAD/CAM, Automobile Engineering, Energy Engineering, or pursue MBA for management roles. Many students also prepare for competitive exams like GATE, GRE for higher studies in India or abroad. Our faculty provides guidance for higher education pathways.',
+      answer: 'Absolutely! Graduates can pursue M.E./M.Tech in specialized areas like Thermal Engineering, Manufacturing, CAD/CAM, Automobile Engineering, Energy Engineering, or pursue MBA for management roles. Many learners also prepare for competitive learning assessments like GATE, GRE for higher studies in India or abroad. Our senior learners provides guidance for higher education pathways.',
     },
   ],
 
@@ -599,7 +599,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
       icon: 'TrendingUp',
       label: 'Placement Rate',
       value: '95.2%',
-      description: 'Students placed in reputed companies',
+      description: 'Learners placed in reputed companies',
     },
     {
       icon: 'DollarSign',

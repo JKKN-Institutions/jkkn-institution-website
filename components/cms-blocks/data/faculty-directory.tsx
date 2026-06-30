@@ -206,7 +206,7 @@ function FacultyCard({
 }
 
 export default function FacultyDirectory({
-  title = 'Our Faculty',
+  title = 'Our Senior Learners',
   faculty = [],
   layout = 'grid',
   columns = 4,
@@ -235,7 +235,7 @@ export default function FacultyDirectory({
         )}
         <div className="text-center py-8 text-muted-foreground">
           <Award className="h-12 w-12 mx-auto mb-3 opacity-50" />
-          <p>No faculty members to display.</p>
+          <p>No senior learners to display.</p>
         </div>
       </div>
     )
@@ -265,7 +265,7 @@ export default function FacultyDirectory({
           </h2>
           {(showDepartmentFilter || showSearchBox) && departments.length > 1 && (
             <p className="text-muted-foreground mt-2">
-              {departments.length} departments • {displayFaculty.length} faculty members
+              {departments.length} departments • {displayFaculty.length} senior learners
             </p>
           )}
         </div>
@@ -295,7 +295,7 @@ export default function FacultyDirectory({
       {filteredFaculty.length > maxItems && (
         <div className="mt-8 pt-6 border-t border-border text-center">
           <p className="text-sm text-muted-foreground">
-            Showing {displayFaculty.length} of {filteredFaculty.length} faculty members
+            Showing {displayFaculty.length} of {filteredFaculty.length} senior learners
           </p>
         </div>
       )}

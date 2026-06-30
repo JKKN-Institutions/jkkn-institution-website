@@ -15,12 +15,12 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
     { icon: 'BarChart3', label: 'Total Seats', value: '60' },
-    { icon: 'Users', label: 'Faculty Members', value: '13' },
+    { icon: 'Users', label: 'Senior Learners', value: '13' },
     { icon: 'CheckCircle', label: 'Semesters', value: '8' },
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
-    { label: 'Explore Curriculum', link: '#curriculum', variant: 'secondary' },
+    { label: 'Explore Learning Framework', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: 'Affiliated to Anna University, Chennai',
 
@@ -33,13 +33,13 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
       icon: 'GraduationCap',
       title: 'Program Duration',
       value: '4 Years (8 Semesters)',
-      description: 'Full-time undergraduate program with structured curriculum spanning 8 semesters of comprehensive learning and skill development. Lateral entry available for diploma holders (3 years).',
+      description: 'Full-time undergraduate program with structured learning framework spanning 8 semesters of comprehensive learning and skill development. Lateral entry available for diploma holders (3 years).',
     },
     {
       icon: 'BarChart3',
       title: 'Total Seats',
       value: '60 Seats',
-      description: 'Limited intake ensuring personalized attention and quality education with excellent faculty-student ratio for effective learning.',
+      description: 'Limited intake ensuring personalized attention and quality education with excellent senior learners-learner ratio for effective learning.',
     },
     {
       icon: 'CheckCircle',
@@ -49,15 +49,15 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
     },
     {
       icon: 'Users',
-      title: 'Expert Faculty',
+      title: 'Expert Senior Learners',
       value: '13 Members',
-      description: 'Energetic and consummate faculty members with Ph.D. qualifications and extensive teaching experience.',
+      description: 'Energetic and consummate senior learners with Ph.D. qualifications and extensive teaching experience.',
     },
     {
       icon: 'Microscope',
-      title: 'Laboratory Facilities',
+      title: 'Learning Lab Facilities',
       value: 'State-of-the-Art',
-      description: 'Excellent infrastructural and laboratory facilities for Physics, Chemistry, and interdisciplinary research.',
+      description: 'Excellent infrastructural and learning lab facilities for Physics, Chemistry, and interdisciplinary research.',
     },
     {
       icon: 'Briefcase',
@@ -80,12 +80,12 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
     {
       icon: 'Laptop',
       title: 'Hands-on Learning',
-      description: 'In addition to theoretical lecturing, we give more significance to practical sessions with state-of-the-art laboratory facilities.',
+      description: 'In addition to theoretical lecturing, we give more significance to practical sessions with state-of-the-art learning lab facilities.',
     },
     {
       icon: 'Globe',
       title: 'Interdisciplinary Support',
-      description: 'Faculty members provide support for final year engineering projects and interdisciplinary research with laboratory facilities.',
+      description: 'Senior Learners provide support for final year engineering projects and interdisciplinary research with learning lab facilities.',
     },
     {
       icon: 'ScrollText',
@@ -95,19 +95,19 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
     {
       icon: 'Trophy',
       title: 'Co-Curricular Activities',
-      description: 'Students participate in various co-curricular activities throughout the year to develop their overall personality.',
+      description: 'Learners participate in various co-curricular activities throughout the year to develop their overall personality.',
     },
     {
       icon: 'GraduationCap',
       title: 'Research Opportunities',
-      description: 'Faculty members pursuing research provide opportunities for students to engage in cutting-edge scientific investigations.',
+      description: 'Senior Learners pursuing research provide opportunities for learners to engage in cutting-edge scientific investigations.',
     },
   ],
 
   // ==========================================
   // Curriculum (Foundational Subjects)
   // ==========================================
-  curriculumTitle: 'Comprehensive Foundational Curriculum',
+  curriculumTitle: 'Comprehensive Foundational Learning Framework',
   curriculumYears: [
     {
       year: 1,
@@ -121,8 +121,8 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
             { code: 'CY3151', name: 'Engineering Chemistry', credits: 3 },
             { code: 'HS3151', name: 'Professional English I', credits: 3 },
             { code: 'GE3152', name: 'Engineering Graphics', credits: 4 },
-            { code: 'BS3171', name: 'Physics & Chemistry Lab', credits: 2 },
-            { code: 'HS3171', name: 'English Lab', credits: 1 },
+            { code: 'BS3171', name: 'Physics & Chemistry Learning Lab', credits: 2 },
+            { code: 'HS3171', name: 'English Learning Lab', credits: 1 },
           ],
         },
         {
@@ -134,8 +134,8 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
             { code: 'CY3251', name: 'Engineering Chemistry II', credits: 3 },
             { code: 'HS3251', name: 'Technical English', credits: 3 },
             { code: 'GE3251', name: 'Engineering Mechanics', credits: 4 },
-            { code: 'BS3271', name: 'Applied Physics Lab', credits: 2 },
-            { code: 'HS3271', name: 'Communication Skills Lab', credits: 1 },
+            { code: 'BS3271', name: 'Applied Physics Learning Lab', credits: 2 },
+            { code: 'HS3271', name: 'Communication Skills Learning Lab', credits: 1 },
           ],
         },
       ],
@@ -225,8 +225,8 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
     rows: [
       { component: 'Tuition Fee (Annual)', govt: '₹40,000', mgmt: '₹75,000', nri: '₹1,40,000' },
       { component: 'Development Fee', govt: '₹10,000', mgmt: '₹10,000', nri: '₹15,000' },
-      { component: 'Lab & Library Fee', govt: '₹8,000', mgmt: '₹8,000', nri: '₹10,000' },
-      { component: 'Exam Fee (Approx.)', govt: '₹5,000', mgmt: '₹5,000', nri: '₹5,000' },
+      { component: 'Learning Lab & Library Fee', govt: '₹8,000', mgmt: '₹8,000', nri: '₹10,000' },
+      { component: 'Learning Assessment Fee (Approx.)', govt: '₹5,000', mgmt: '₹5,000', nri: '₹5,000' },
       { component: 'Hostel Fee (Optional)', govt: '₹60,000', mgmt: '₹60,000', nri: '₹75,000' },
     ],
     totals: {
@@ -281,29 +281,29 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   // ==========================================
   // Labs & Infrastructure
   // ==========================================
-  infrastructureTitle: 'State-of-the-Art Laboratory Facilities',
+  infrastructureTitle: 'State-of-the-Art Learning Lab Facilities',
   facilities: [
     {
-      name: 'Physics Laboratory',
-      description: 'Well-equipped physics lab with modern instruments for mechanics, optics, thermodynamics, and electronics experiments.',
-      image: '/images/courses/s&h/JKKN Physics Laboratory.png',
+      name: 'Physics Learning Lab',
+      description: 'Well-equipped physics learning lab with modern instruments for mechanics, optics, thermodynamics, and electronics experiments.',
+      image: '/images/courses/s&h/JKKN Physics Learning Lab.png',
       features: ['Modern Instruments', 'Experiment Kits', 'Measurement Tools'],
     },
     {
-      name: 'Chemistry Laboratory',
-      description: 'Advanced chemistry lab with analytical instruments, fume hoods, and comprehensive chemical analysis equipment.',
-      image: '/images/courses/s&h/JKKN Chemistry Laboratory.png',
+      name: 'Chemistry Learning Lab',
+      description: 'Advanced chemistry learning lab with analytical instruments, fume hoods, and comprehensive chemical analysis equipment.',
+      image: '/images/courses/s&h/JKKN Chemistry Learning Lab.png',
       features: ['Analytical Instruments', 'Safety Equipment', 'Chemical Storage'],
     },
     {
-      name: 'Mathematics Lab',
-      description: 'Computer-aided mathematics lab with software for numerical methods, statistics, and mathematical modeling.',
-      image: '/images/courses/s&h/JKKN Mathematics Lab.png',
+      name: 'Mathematics Learning Lab',
+      description: 'Computer-aided mathematics learning lab with software for numerical methods, statistics, and mathematical modeling.',
+      image: '/images/courses/s&h/JKKN Mathematics Learning Lab.png',
       features: ['MATLAB', 'Mathematica', 'Statistical Software'],
     },
     {
-      name: 'English Language Lab',
-      description: 'Modern language lab with audio-visual aids, communication tools, and interactive learning systems.',
+      name: 'English Language Learning Lab',
+      description: 'Modern language learning lab with audio-visual aids, communication tools, and interactive learning systems.',
       image: '/images/courses/s&h/JKKN English.png',
       features: ['Audio-Visual Equipment', 'Interactive Tools', 'Practice Software'],
     },
@@ -312,33 +312,33 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   // ==========================================
   // Faculty
   // ==========================================
-  facultyTitle: 'Experienced Faculty Members',
+  facultyTitle: 'Experienced Senior Learners',
   faculty: [
     // Department of Physics
     {
       name: 'Dr. K.M. Rajendiran',
-      designation: 'Associate Professor - Physics',
+      designation: 'Associate Senior Learner - Physics',
       qualification: 'M.Sc., M.Phil., Ph.D.',
       specialization: 'Physics',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Dr. N. Latha',
-      designation: 'Associate Professor - Physics',
+      designation: 'Associate Senior Learner - Physics',
       qualification: 'M.Sc., M.Phil., Ph.D.',
       specialization: 'Physics',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. M. Baby',
-      designation: 'Assistant Professor - Physics',
+      designation: 'Assistant Senior Learner - Physics',
       qualification: 'M.Sc., M.Phil.',
       specialization: 'Physics',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. R. Deepika',
-      designation: 'Assistant Professor - Physics',
+      designation: 'Assistant Senior Learner - Physics',
       qualification: 'M.Sc., M.Phil.',
       specialization: 'Physics',
       image: '/images/faculty/placeholder-avatar.jpg',
@@ -347,35 +347,35 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
     // Department of Mathematics
     {
       name: 'Mrs. M. Muthulakshmi',
-      designation: 'Assistant Professor - Mathematics',
+      designation: 'Assistant Senior Learner - Mathematics',
       qualification: 'M.Sc., M.Phil.',
       specialization: 'Mathematics',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. N. Sathya',
-      designation: 'Assistant Professor - Mathematics',
+      designation: 'Assistant Senior Learner - Mathematics',
       qualification: 'M.Sc., M.Phil.',
       specialization: 'Mathematics',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. M. Bharathipriya',
-      designation: 'Assistant Professor - Mathematics',
+      designation: 'Assistant Senior Learner - Mathematics',
       qualification: 'M.Sc., M.Phil.',
       specialization: 'Mathematics',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. R. Kasthuri',
-      designation: 'Assistant Professor - Mathematics',
+      designation: 'Assistant Senior Learner - Mathematics',
       qualification: 'M.Sc., B.Ed., M.Phil.',
       specialization: 'Mathematics',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. M. Saraswathi',
-      designation: 'Assistant Professor - Mathematics',
+      designation: 'Assistant Senior Learner - Mathematics',
       qualification: 'M.Sc., M.Phil.',
       specialization: 'Mathematics',
       image: '/images/faculty/placeholder-avatar.jpg',
@@ -384,14 +384,14 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
     // Department of Chemistry
     {
       name: 'Mrs. S. Narmatha S',
-      designation: 'Assistant Professor - Chemistry',
+      designation: 'Assistant Senior Learner - Chemistry',
       qualification: 'M.Sc., M.Phil.',
       specialization: 'Chemistry',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. D. Panjami',
-      designation: 'Assistant Professor - Chemistry',
+      designation: 'Assistant Senior Learner - Chemistry',
       qualification: 'M.Sc., M.Phil.',
       specialization: 'Chemistry',
       image: '/images/faculty/placeholder-avatar.jpg',
@@ -400,14 +400,14 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
     // Department of English
     {
       name: 'Dr. A.D. Sasikala',
-      designation: 'Assistant Professor - English',
+      designation: 'Assistant Senior Learner - English',
       qualification: 'M.A., M.Phil., Ph.D.',
       specialization: 'English',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mr. R. Rajaratnam',
-      designation: 'Assistant Professor - English',
+      designation: 'Assistant Senior Learner - English',
       qualification: 'M.A., M.Phil.',
       specialization: 'English',
       image: '/images/faculty/placeholder-avatar.jpg',
@@ -421,35 +421,35 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   faqs: [
     {
       question: 'What is the role of Science and Humanities department?',
-      answer: 'The Science and Humanities department was established in 2008 to promote and develop teaching, research in Physics, Chemistry, Mathematics and English. We provide the fundamental knowledge base that is essential for all engineering disciplines, ensuring students have strong foundations in basic sciences and communication skills.',
+      answer: 'The Science and Humanities department was established in 2008 to promote and develop teaching, research in Physics, Chemistry, Mathematics and English. We provide the fundamental knowledge base that is essential for all engineering disciplines, ensuring learners have strong foundations in basic sciences and communication skills.',
     },
     {
       question: 'What is the duration of the program?',
-      answer: 'The program duration is 4 years (8 semesters) for regular entry students. For lateral entry students (diploma holders), the duration is 3 years. The program follows Anna University\'s semester system with continuous assessment and end-semester examinations.',
+      answer: 'The program duration is 4 years (8 semesters) for regular entry learners. For lateral entry learners (diploma holders), the duration is 3 years. The program follows Anna University\'s semester system with continuous assessment and end-semester learning assessments.',
     },
     {
       question: 'What are the eligibility criteria?',
       answer: 'Candidates must have completed 12th Standard (10+2) system of education with Physics, Chemistry, and Mathematics as core subjects. A minimum aggregate of 45% marks is required for general category candidates (40% for reserved categories). Valid TNEA rank is required for government quota admissions.',
     },
     {
-      question: 'What laboratory facilities are available?',
-      answer: 'We provide excellent infrastructural and laboratory facilities including state-of-the-art Physics laboratory, Chemistry laboratory with modern instruments, Computer-aided Mathematics lab, and English language lab with audio-visual aids. All labs are well-equipped to provide hands-on practical experience.',
+      question: 'What learning lab facilities are available?',
+      answer: 'We provide excellent infrastructural and learning lab facilities including state-of-the-art Physics learning lab, Chemistry learning lab with modern instruments, Computer-aided Mathematics learning lab, and English language learning lab with audio-visual aids. All learning labs are well-equipped to provide hands-on practical experience.',
     },
     {
       question: 'What is the teaching methodology?',
-      answer: 'Our teaching and learning process is based on Outcome Based Education (OBE). In addition to theoretical lecturing, we give more significance to practical sessions. Faculty members are energetic and consummate professionals who provide personalized attention to each student.',
+      answer: 'Our teaching and learning process is based on Outcome Based Education (OBE). In addition to theoretical lecturing, we give more significance to practical sessions. Senior Learners are energetic and consummate professionals who provide personalized attention to each learner.',
     },
     {
       question: 'What career opportunities are available?',
-      answer: 'Students with strong foundation in Science and Humanities can pursue higher studies including M.E/M.Tech in engineering disciplines, M.S (Master of Science) in various specializations, M.B.A for management careers, or research programs (Ph.D.) in academic institutions. The fundamental knowledge gained opens doors to diverse career paths.',
+      answer: 'Learners with strong foundation in Science and Humanities can pursue higher studies including M.E/M.Tech in engineering disciplines, M.S (Master of Science) in various specializations, M.B.A for management careers, or research programs (Ph.D.) in academic institutions. The fundamental knowledge gained opens doors to diverse career paths.',
     },
     {
-      question: 'Do faculty support student research projects?',
-      answer: 'Yes, our faculty members give additional support for final year engineering students for their projects. We have interdisciplinary staff members who are pursuing research and provide laboratory facilities for student projects and research activities.',
+      question: 'Do senior learners support learner research projects?',
+      answer: 'Yes, our senior learners give additional support for final year engineering learners for their projects. We have interdisciplinary team members who are pursuing research and provide learning lab facilities for learner projects and research activities.',
     },
     {
-      question: 'What is the student-faculty ratio?',
-      answer: 'With 13 energetic and well-qualified faculty members and an intake of 60 students, we maintain an excellent faculty-student ratio ensuring personalized attention and quality education. This allows for better interaction and mentoring of students.',
+      question: 'What is the learner-senior learners ratio?',
+      answer: 'With 13 energetic and well-qualified senior learners and an intake of 60 learners, we maintain an excellent senior learners-learner ratio ensuring personalized attention and quality education. This allows for better interaction and mentoring of learners.',
     },
   ],
 

@@ -94,7 +94,7 @@ export function FeeScholarshipsSection({ fees, scholarships }: FeeScholarshipsSe
             Scholarships
           </span>
           <h2 className="text-2xl md:text-3xl font-bold">
-            75% of Students Receive{' '}
+            75% of Learners Receive{' '}
             <span className="text-[#ffde59]">Financial Aid</span>
           </h2>
           <p className="mt-2 text-gray-400 text-sm max-w-xl mx-auto">

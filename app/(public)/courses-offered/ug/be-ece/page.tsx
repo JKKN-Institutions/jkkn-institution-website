@@ -12,7 +12,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'B.E. Electronics & Communication Engineering | JKKN College of Engineering',
   description:
-    'Pursue B.E. in Electronics & Communication Engineering at JKKN College of Engineering & Technology. AICTE approved, NAAC accredited 4-year program with 95%+ placement record. Industry-aligned curriculum covering Embedded Systems, VLSI, Wireless Communication, IoT, and Signal Processing.',
+    'Pursue B.E. in Electronics & Communication Engineering at JKKN College of Engineering & Technology. AICTE approved, NAAC accredited 4-year program with 95%+ placement record. Industry-aligned learning framework covering Embedded Systems, VLSI, Wireless Communication, IoT, and Signal Processing.',
   keywords: [
     'BE ECE',
     'Electronics and Communication Engineering',
@@ -41,14 +41,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'B.E. Electronics & Communication Engineering | JKKN College',
     description:
-      'Launch your electronics career with B.E. ECE at JKKN. Industry-aligned curriculum, cutting-edge labs, expert faculty, and exceptional placement support with 95%+ placement rate.',
+      'Launch your electronics career with B.E. ECE at JKKN. Industry-aligned learning framework, cutting-edge learning labs, expert senior learners, and exceptional placement support with 95%+ placement rate.',
     type: 'website',
     images: [
       {
         url: '/images/courses/be-ece/labs/ece-lab-33.jpg',
         width: 1200,
         height: 630,
-        alt: 'JKKN ECE Laboratory',
+        alt: 'JKKN ECE Learning Lab',
       },
     ],
   },

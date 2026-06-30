@@ -55,7 +55,7 @@ export type ContentParagraph = z.infer<typeof ContentParagraphSchema>
 export const DigitalClassroomPagePropsSchema = z.object({
   // Header
   showHeader: z.boolean().default(true),
-  headerTitle: z.string().default('Digital Classrooms'),
+  headerTitle: z.string().default('Digital Learning Studios'),
   headerSubtitle: z.string().default('Modern learning spaces powered by cutting-edge technology'),
   badge: z.string().default('Smart Learning'),
 
@@ -85,7 +85,7 @@ export const DigitalClassroomPagePropsSchema = z.object({
   showCta: z.boolean().default(true),
   ctaTitle: z.string().default('Experience the Future of Learning'),
   ctaDescription: z.string().default(
-    'Our digital classrooms combine world-class infrastructure with innovative pedagogy to create an unmatched learning experience.'
+    'Our digital learning studios combine world-class infrastructure with innovative pedagogy to create an unmatched learning experience.'
   ),
 
   // Styling
@@ -100,21 +100,21 @@ export type DigitalClassroomPageProps = z.infer<typeof DigitalClassroomPageProps
 
 const defaultParagraphs: ContentParagraph[] = [
   {
-    text: 'JKKN Educational Institutions prioritizes exceptional classroom facilities as a crucial aspect of a great learning environment. Our classrooms are thoughtfully designed to offer a comfortable and engaging space for students to thrive and progress in their studies.',
+    text: 'JKKN Educational Institutions prioritizes exceptional learning studio facilities as a crucial aspect of a great learning environment. Our learning studios are thoughtfully designed to offer a comfortable and engaging space for learners to thrive and progress in their studies.',
   },
   {
-    text: 'Our facilities boast cutting-edge technology, including high-speed internet, multimedia projectors, and interactive whiteboards, providing students with access to a vast array of information at their fingertips.',
+    text: 'Our facilities boast cutting-edge technology, including high-speed internet, multimedia projectors, and interactive whiteboards, providing learners with access to a vast array of information at their fingertips.',
   },
   {
-    text: 'With modern furnishings, proper ventilation, excellent lighting, and inspiring posters, our classrooms provide a warm and welcoming atmosphere that fosters a passion for learning.',
+    text: 'With modern furnishings, proper ventilation, excellent lighting, and inspiring posters, our learning studios provide a warm and welcoming atmosphere that fosters a passion for learning.',
   },
 ]
 
 const defaultStats: StatItem[] = [
-  { icon: 'Monitor', value: '60+', label: 'Smart Classrooms' },
+  { icon: 'Monitor', value: '60+', label: 'Smart Learning Studios' },
   { icon: 'Wifi', value: '500+', label: 'Mbps Internet' },
   { icon: 'Projector', value: '4K', label: 'Projectors' },
-  { icon: 'Users', value: '5,000+', label: 'Students Served' },
+  { icon: 'Users', value: '5,000+', label: 'Learners Served' },
 ]
 
 const defaultTechSpecs: TechSpec[] = [
@@ -127,7 +127,7 @@ const defaultTechSpecs: TechSpec[] = [
   {
     title: 'High-Speed Connectivity',
     description:
-      'Enterprise-grade 500+ Mbps fibre-optic network with seamless Wi-Fi 6 coverage across every classroom.',
+      'Enterprise-grade 500+ Mbps fibre-optic network with seamless Wi-Fi 6 coverage across every learning studio.',
     icon: 'Wifi',
   },
   {
@@ -139,19 +139,19 @@ const defaultTechSpecs: TechSpec[] = [
   {
     title: 'Digital Learning Platform',
     description:
-      'Integrated LMS access from every seat, enabling real-time quizzes, resource sharing, and assignment submissions.',
+      'Integrated LMS access from every seat, enabling real-time quick assessments, resource sharing, and learning task submissions.',
     icon: 'CloudCog',
   },
   {
     title: 'Audio-Visual System',
     description:
-      'Professional ceiling-mounted microphone arrays and surround speakers ensure every student hears clearly.',
+      'Professional ceiling-mounted microphone arrays and surround speakers ensure every learner hears clearly.',
     icon: 'Headphones',
   },
   {
     title: 'Screen Sharing & Casting',
     description:
-      'Students can wirelessly cast their devices to the classroom display for collaborative presentations.',
+      'Learners can wirelessly cast their devices to the learning studio display for collaborative presentations.',
     icon: 'ScreenShare',
   },
 ]
@@ -270,7 +270,7 @@ function BentoGallery({ images }: { images: { src: string; alt?: string }[] }) {
         <div className="relative aspect-[16/7] rounded-2xl overflow-hidden group">
           <Image
             src={filtered[0].src}
-            alt={filtered[0].alt || 'Digital classroom'}
+            alt={filtered[0].alt || 'Digital learning studio'}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-105"
             sizes="(max-width: 1024px) 100vw, 1024px"
@@ -326,7 +326,7 @@ function BentoGallery({ images }: { images: { src: string; alt?: string }[] }) {
         <div className="lg:col-span-3 relative aspect-[4/3] lg:aspect-auto lg:min-h-[360px] rounded-2xl overflow-hidden group">
           <Image
             src={hero.src}
-            alt={hero.alt || 'Digital classroom'}
+            alt={hero.alt || 'Digital learning studio'}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-105"
             sizes="(max-width: 1024px) 100vw, 60vw"
@@ -335,7 +335,7 @@ function BentoGallery({ images }: { images: { src: string; alt?: string }[] }) {
           <div className="absolute bottom-4 left-4 right-4">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-sm text-xs font-semibold text-[#0b6d41]">
               <Sparkles className="w-3 h-3" />
-              Smart Classroom
+              Smart Learning Studio
             </div>
           </div>
         </div>
@@ -392,7 +392,7 @@ function BentoGallery({ images }: { images: { src: string; alt?: string }[] }) {
 
 export default function DigitalClassroomPage({
   showHeader = true,
-  headerTitle = 'Digital Classrooms',
+  headerTitle = 'Digital Learning Studios',
   headerSubtitle = 'Modern learning spaces powered by cutting-edge technology',
   badge = 'Smart Learning',
   images = [],
@@ -407,7 +407,7 @@ export default function DigitalClassroomPage({
   features = defaultFeatures,
   showCta = true,
   ctaTitle = 'Experience the Future of Learning',
-  ctaDescription = 'Our digital classrooms combine world-class infrastructure with innovative pedagogy to create an unmatched learning experience.',
+  ctaDescription = 'Our digital learning studios combine world-class infrastructure with innovative pedagogy to create an unmatched learning experience.',
   showDecorations = true,
   className,
 }: DigitalClassroomPageProps) {
@@ -508,7 +508,7 @@ export default function DigitalClassroomPage({
                   <BookOpen className="w-5 h-5 text-[#0b6d41]" />
                 </div>
                 <h2 className="text-lg md:text-xl font-semibold text-gray-900">
-                  About Our Classrooms
+                  About Our Learning Studios
                 </h2>
               </div>
               <div className="space-y-4">
@@ -582,7 +582,7 @@ export default function DigitalClassroomPage({
                     {techSpecsTitle}
                   </h2>
                   <p className="text-sm text-gray-500 mt-0.5">
-                    State-of-the-art infrastructure in every classroom
+                    State-of-the-art infrastructure in every learning studio
                   </p>
                 </div>
               </div>

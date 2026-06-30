@@ -62,7 +62,7 @@ export function ModernTrustSection({
         { icon: 'Calendar', value: '1969', label: 'Year Established' },
         { icon: 'Building2', value: '9', label: 'Institutions' },
         { icon: 'GraduationCap', value: '50000+', label: 'Alumni' },
-        { icon: 'Users', value: '5000+', label: 'Current Students' },
+        { icon: 'Users', value: '5000+', label: 'Current Learners' },
     ],
     showPattern = true,
     className,

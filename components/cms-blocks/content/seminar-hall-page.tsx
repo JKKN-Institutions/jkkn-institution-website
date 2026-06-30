@@ -117,7 +117,7 @@ const defaultParagraphs: ContentParagraph[] = [
     text: 'High-speed Wi-Fi and ample parking facilities.',
   },
   {
-    text: 'Team of skilled technicians and support staff available.',
+    text: 'Team of skilled technicians and support team members available.',
   },
 ]
 

@@ -42,7 +42,7 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
     {
       id: 'criterion-5',
       label: 'Criterion V',
-      description: 'Student Support and Progression',
+      description: 'Learner Support and Progression',
     },
     {
       id: 'criterion-6',
@@ -86,7 +86,7 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
       id: 'overview',
       heading: 'Institutional Information for Quality Assessment (IIQA)',
       overview:
-        'The IIQA is a comprehensive document that provides complete institutional information as part of the NAAC accreditation process. It serves as the foundation for quality assessment and includes detailed data about institutional profile, governance structure, academic programs, infrastructure, student strength, faculty details, and institutional resources.',
+        'The IIQA is a comprehensive document that provides complete institutional information as part of the NAAC accreditation process. It serves as the foundation for quality assessment and includes detailed data about institutional profile, governance structure, academic programs, infrastructure, learner strength, senior learners details, and institutional resources.',
       documents: [
         {
           title: 'IIQA Report 2024',
@@ -114,8 +114,8 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
         },
       ],
       metrics: [
-        { label: 'Total Students', value: '8,500+' },
-        { label: 'Faculty Members', value: '450+' },
+        { label: 'Total Learners', value: '8,500+' },
+        { label: 'Senior Learners', value: '450+' },
         { label: 'Programs Offered', value: '75+' },
         { label: 'Research Projects', value: '120+' },
       ],
@@ -124,11 +124,11 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
       id: 'criterion-1',
       heading: 'Criterion I: Curricular Aspects',
       overview:
-        'This criterion evaluates curricular planning and implementation, academic flexibility, curriculum enrichment, and feedback mechanisms. It assesses how the institution designs, develops, and implements curricula that are aligned with institutional vision and mission while meeting stakeholder expectations and industry requirements.',
+        'This criterion evaluates curricular planning and implementation, academic flexibility, learning framework enrichment, and feedback mechanisms. It assesses how the institution designs, develops, and implements learning frameworks that are aligned with institutional vision and mission while meeting stakeholder expectations and industry requirements.',
       documents: [
         {
-          title: 'Curriculum Design Framework',
-          description: 'Framework for curriculum planning and development',
+          title: 'Learning Framework Design Framework',
+          description: 'Framework for learning framework planning and development',
           fileUrl: '/documents/naac/criterion-1-curriculum-framework.pdf',
           fileType: 'pdf',
           size: '3.1 MB',
@@ -143,7 +143,7 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
           uploadDate: '2024-02-01',
         },
         {
-          title: 'Curriculum Enrichment Activities',
+          title: 'Learning Framework Enrichment Activities',
           description: 'Value-added courses and skill development programs',
           fileUrl: '/documents/naac/criterion-1-enrichment.pdf',
           fileType: 'pdf',
@@ -152,7 +152,7 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
         },
         {
           title: 'Feedback Analysis Report',
-          description: 'Stakeholder feedback on curriculum effectiveness',
+          description: 'Stakeholder feedback on learning framework effectiveness',
           fileUrl: '/documents/naac/criterion-1-feedback.pdf',
           fileType: 'pdf',
           size: '1.8 MB',
@@ -164,10 +164,10 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
       id: 'criterion-2',
       heading: 'Criterion II: Teaching-Learning and Evaluation',
       overview:
-        'This criterion focuses on student enrollment and profile, catering to student diversity, teaching-learning processes, teacher quality and professional development, and evaluation processes and reforms. It examines the effectiveness of teaching-learning methodologies and assessment practices.',
+        'This criterion focuses on learner enrollment and profile, catering to learner diversity, teaching-learning processes, senior learner quality and professional development, and evaluation processes and reforms. It examines the effectiveness of teaching-learning methodologies and assessment practices.',
       documents: [
         {
-          title: 'Student Admission Policy',
+          title: 'Learner Admission Policy',
           description: 'Transparent and merit-based admission processes',
           fileUrl: '/documents/naac/criterion-2-admission-policy.pdf',
           fileType: 'pdf',
@@ -183,8 +183,8 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
           uploadDate: '2024-03-05',
         },
         {
-          title: 'Faculty Development Programs',
-          description: 'Professional development initiatives for faculty',
+          title: 'Senior Learners Development Programs',
+          description: 'Professional development initiatives for senior learners',
           fileUrl: '/documents/naac/criterion-2-faculty-development.pdf',
           fileType: 'pdf',
           size: '2.7 MB',
@@ -290,12 +290,12 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
     },
     {
       id: 'criterion-5',
-      heading: 'Criterion V: Student Support and Progression',
+      heading: 'Criterion V: Learner Support and Progression',
       overview:
-        'This criterion focuses on student support services, student progression and outcomes, student participation and activities, and alumni engagement. It evaluates how the institution supports students throughout their academic journey and facilitates their holistic development and career progression.',
+        'This criterion focuses on learner support services, learner progression and outcomes, learner participation and activities, and alumni engagement. It evaluates how the institution supports learners throughout their academic journey and facilitates their holistic development and career progression.',
       documents: [
         {
-          title: 'Student Support Services',
+          title: 'Learner Support Services',
           description: 'Scholarships, counseling, and support mechanisms',
           fileUrl: '/documents/naac/criterion-5-support-services.pdf',
           fileType: 'pdf',
@@ -303,7 +303,7 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
           uploadDate: '2024-06-01',
         },
         {
-          title: 'Student Progression Report',
+          title: 'Learner Progression Report',
           description: 'Academic progression and placement statistics',
           fileUrl: '/documents/naac/criterion-5-progression.pdf',
           fileType: 'pdf',
@@ -311,7 +311,7 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
           uploadDate: '2024-06-05',
         },
         {
-          title: 'Student Activities and Achievements',
+          title: 'Learner Activities and Achievements',
           description: 'Co-curricular and extracurricular participation',
           fileUrl: '/documents/naac/criterion-5-activities.pdf',
           fileType: 'pdf',
@@ -332,7 +332,7 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
       id: 'criterion-6',
       heading: 'Criterion VI: Governance, Leadership and Management',
       overview:
-        'This criterion evaluates institutional vision and leadership, strategy development and deployment, faculty empowerment strategies, financial management and resource mobilization, and internal quality assurance systems. It assesses the effectiveness of governance structures and leadership in achieving institutional goals.',
+        'This criterion evaluates institutional vision and leadership, strategy development and deployment, senior learners empowerment strategies, financial management and resource mobilization, and internal quality assurance systems. It assesses the effectiveness of governance structures and leadership in achieving institutional goals.',
       documents: [
         {
           title: 'Institutional Vision and Leadership',
@@ -351,7 +351,7 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
           uploadDate: '2024-07-05',
         },
         {
-          title: 'Faculty Empowerment Strategies',
+          title: 'Senior Learners Empowerment Strategies',
           description: 'Professional growth and welfare measures',
           fileUrl: '/documents/naac/criterion-6-faculty-empowerment.pdf',
           fileType: 'pdf',
@@ -420,11 +420,11 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
       id: 'best-practices',
       heading: 'Best Practices',
       overview:
-        'This section highlights unique institutional practices that have had a significant impact on institutional performance and student outcomes. These best practices demonstrate innovation, sustainability, and replicability, serving as models for other institutions.',
+        'This section highlights unique institutional practices that have had a significant impact on institutional performance and learner outcomes. These best practices demonstrate innovation, sustainability, and replicability, serving as models for other institutions.',
       documents: [
         {
-          title: 'Best Practice 1: Student Mentoring Program',
-          description: 'Comprehensive faculty-student mentoring framework',
+          title: 'Best Practice 1: Learner Mentoring Program',
+          description: 'Comprehensive senior learners-learner mentoring framework',
           fileUrl: '/documents/naac/best-practice-mentoring.pdf',
           fileType: 'pdf',
           size: '2.5 MB',
@@ -476,7 +476,7 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
       id: 'feedback',
       heading: 'Stakeholder Feedback',
       overview:
-        'Comprehensive feedback collected from students, faculty, employers, alumni, and other stakeholders across five academic years, demonstrating our commitment to continuous quality improvement.',
+        'Comprehensive feedback collected from learners, senior learners, employers, alumni, and other stakeholders across five academic years, demonstrating our commitment to continuous quality improvement.',
       documents: [
         {
           title: '2018-2019 Feedback',

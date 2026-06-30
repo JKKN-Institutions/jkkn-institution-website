@@ -21,7 +21,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
-    { label: 'Explore Curriculum', link: '#curriculum', variant: 'secondary' },
+    { label: 'Explore Learning Framework', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: 'Affiliated to Anna University, Chennai',
 
@@ -40,7 +40,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
       icon: 'GraduationCap',
       title: 'Duration & Credits',
       value: '4 Years | 8 Semesters',
-      description: 'The program spans 4 years with 8 semesters totaling 160 credits. Comprehensive curriculum balancing theory, laboratory work, and industrial training.',
+      description: 'The program spans 4 years with 8 semesters totaling 160 credits. Comprehensive learning framework balancing theory, learning lab work, and industrial training.',
     },
     {
       icon: 'CheckCircle',
@@ -66,18 +66,18 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   benefits: [
     {
       icon: 'CheckCircle',
-      title: 'Industry-Aligned Curriculum',
-      description: 'Our curriculum is designed to meet current industry standards covering embedded systems, IoT, VLSI design, 4G/5G wireless communication, and smart systems used globally.',
+      title: 'Industry-Aligned Learning Framework',
+      description: 'Our learning framework is designed to meet current industry standards covering embedded systems, IoT, VLSI design, 4G/5G wireless communication, and smart systems used globally.',
     },
     {
       icon: 'CheckCircle',
-      title: 'Expert Faculty',
-      description: 'Learn from highly qualified professors with Ph.D. degrees and extensive industry experience in embedded systems, VLSI, communication systems, and signal processing.',
+      title: 'Expert Senior Learners',
+      description: 'Learn from highly qualified senior learners with Ph.D. degrees and extensive industry experience in embedded systems, VLSI, communication systems, and signal processing.',
     },
     {
       icon: 'CheckCircle',
-      title: 'State-of-the-Art Laboratories',
-      description: 'Access advanced laboratories for digital electronics, microprocessors, communication systems, VLSI design, embedded systems, and IoT with modern equipment including FPGA boards and EDA tools.',
+      title: 'State-of-the-Art Learning Labs',
+      description: 'Access advanced learning labs for digital electronics, microprocessors, communication systems, VLSI design, embedded systems, and IoT with modern equipment including FPGA boards and EDA tools.',
     },
     {
       icon: 'CheckCircle',
@@ -99,7 +99,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   // ==========================================
   // Curriculum (4 Years)
   // ==========================================
-  curriculumTitle: 'Course Curriculum',
+  curriculumTitle: 'Course Learning Framework',
   curriculumYears: [
     {
       year: 1,
@@ -134,7 +134,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
             { code: 'CS25C05', name: 'Data Structures using C++' },
             { code: 'ME25C05', name: 'Re-Engineering for Innovation' },
             { code: 'UC25A03', name: 'Life Skills for Engineers – II' },
-            { code: 'EC25C03', name: 'Devices and Circuits Laboratory' },
+            { code: 'EC25C03', name: 'Devices and Circuits Learning Lab' },
             { code: 'UC25A04', name: 'Physical Education – II' },
           ],
         },
@@ -154,9 +154,9 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
             { code: '', name: 'Electronic Circuits and Analysis' },
             { code: '', name: 'Digital System Design' },
             { code: '', name: 'Problem solving using python' },
-            { code: '', name: 'Electronic Circuits Laboratory' },
+            { code: '', name: 'Electronic Circuits Learning Lab' },
             { code: '', name: 'Skill Development Course-I' },
-            { code: '', name: 'English Communication Skills Laboratory – II' },
+            { code: '', name: 'English Communication Skills Learning Lab – II' },
           ],
         },
         {
@@ -171,7 +171,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
             { code: '', name: 'Analog Communication' },
             { code: '', name: 'Digital Signal Processing' },
             { code: '', name: 'Skill Development Course – II' },
-            { code: '', name: 'English Communication Skills Laboratory – III' },
+            { code: '', name: 'English Communication Skills Learning Lab – III' },
           ],
         },
       ],
@@ -348,7 +348,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
     {
       step: 2,
       icon: 'BarChart3',
-      title: 'Entrance Exam / Merit',
+      title: 'Entrance Learning Assessment / Merit',
       description: 'Selection based on TNEA (Tamil Nadu Engineering Admissions) rank or 10+2 merit-based marks in Physics, Chemistry, and Mathematics.',
     },
     {
@@ -365,59 +365,59 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   feeTitle: 'Fee Structure (Annual)',
   feeBreakdown: [
     { component: 'Tuition Fee', amount: '₹60,000' },
-    { component: 'Laboratory Fee', amount: '₹10,000' },
+    { component: 'Learning Lab Fee', amount: '₹10,000' },
     { component: 'Library Fee', amount: '₹2,000' },
-    { component: 'Examination Fee', amount: '₹3,000' },
+    { component: 'Learning Assessment Fee', amount: '₹3,000' },
     { component: 'Total Annual Fee', amount: '₹75,000', isTotal: true },
   ],
 
   // ==========================================
   // Facilities & Laboratories
   // ==========================================
-  facilitiesTitle: 'Laboratories & Facilities',
+  facilitiesTitle: 'Learning Labs & Facilities',
   facilities: [
     {
-      name: 'Digital Electronics Laboratory',
+      name: 'Digital Electronics Learning Lab',
       image: '/images/courses/be-ece/labs/ece-lab-10.jpg',
       description: 'Equipped with logic gate trainers, IC testers, digital design kits, breadboards, and multimeters for hands-on learning of digital circuits and logic design.',
     },
     {
-      name: 'Analog Electronics Laboratory',
+      name: 'Analog Electronics Learning Lab',
       image: '/images/courses/be-ece/labs/ece-lab-01.jpg',
       description: 'State-of-the-art facility with analog circuit trainers, oscilloscopes, function generators, power supplies, and electronic components for amplifier and oscillator experiments.',
     },
     {
-      name: 'Microprocessor & Microcontroller Lab',
+      name: 'Microprocessor & Microcontroller Learning Lab',
       image: '/images/courses/be-ece/labs/ece-lab-08.jpg',
       description: 'Features 8085, 8086, ARM processor kits, counter trainers, Arduino boards, and assembly language programming tools for embedded systems development.',
     },
     {
-      name: 'Communication Systems Laboratory',
+      name: 'Communication Systems Learning Lab',
       image: '/images/courses/be-ece/labs/ece-lab-05.jpg',
-      description: 'Advanced lab with AM/FM modulation kits, digital communication system trainers, fiber optic communication systems, and signal generators.',
+      description: 'Advanced learning lab with AM/FM modulation kits, digital communication system trainers, fiber optic communication systems, and signal generators.',
     },
     {
-      name: 'VLSI Design Laboratory',
+      name: 'VLSI Design Learning Lab',
       image: '/images/courses/be-ece/labs/ece-lab-28.jpg',
       description: 'Equipped with Cadence EDA tools, ModelSim, Xilinx ISE, FPGA boards (Spartan, Virtex), and chip design software for VLSI coursework.',
     },
     {
-      name: 'Embedded Systems Laboratory',
+      name: 'Embedded Systems Learning Lab',
       image: '/images/courses/be-ece/labs/ece-lab-25.jpg',
       description: 'Contains Arduino, Raspberry Pi, ESP32 boards, robotic kits, IoT sensor kits, RTOS tools, and embedded development environments.',
     },
     {
-      name: 'Signal Processing Laboratory',
+      name: 'Signal Processing Learning Lab',
       image: '/images/courses/be-ece/labs/ece-lab-16.jpg',
       description: 'Equipped with oscilloscopes, DSP processors (TMS320 series), MATLAB workstations, audio/video processing kits, and image processing software.',
     },
     {
-      name: 'Network & Communication Lab',
+      name: 'Network & Communication Learning Lab',
       image: '/images/courses/be-ece/labs/ece-lab-22.jpg',
       description: 'Signal testing equipment, antenna apparatus, oscilloscopes, network simulators, and monitoring tools for practical communication and networking experience.',
     },
     {
-      name: 'Project Laboratory',
+      name: 'Project Learning Lab',
       image: '/images/courses/be-ece/labs/ece-lab-35.jpg',
       description: 'Dedicated workspace for final year projects with access to all equipment, 3D printers, PCB fabrication tools, robotic kits, and prototyping resources.',
     },
@@ -426,74 +426,74 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   // ==========================================
   // Faculty
   // ==========================================
-  facultyTitle: 'Our Expert Faculty',
+  facultyTitle: 'Our Expert Senior Learners',
   faculty: [
     {
       name: 'Dr. Rajesh K.P.',
-      designation: 'Associate Professor & Head',
+      designation: 'Associate Senior Learner & Head',
       qualification: 'M.E., Ph.D.',
       specialization: 'Electronics & Communication Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. Ponnarasi N',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E. (Ph.D)',
       specialization: 'Electronics & Communication Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. Tamilselvi S',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Electronics & Communication Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mr. Palanisamy K',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E. (Ph.D)',
       specialization: 'Electronics & Communication Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mr. Praveen Kumar K',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Electronics & Communication Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. Mekala',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Electronics & Communication Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mr. Dhineshkumar',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Electronics & Communication Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. Shaanthanu K',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Electronics & Communication Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Ms. Mouniga G',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Electronics & Communication Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mr. Vishvanathan',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Electronics & Communication Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
@@ -530,7 +530,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   faqs: [
     {
       question: 'What is the eligibility criteria for B.E. ECE admission?',
-      answer: 'Candidates must have passed 10+2 examination with Physics, Chemistry, and Mathematics as core subjects with a minimum of 50% aggregate marks (45% for reserved categories). Admission is based on TNEA rank or merit-based selection.',
+      answer: 'Candidates must have passed 10+2 learning assessment with Physics, Chemistry, and Mathematics as core subjects with a minimum of 50% aggregate marks (45% for reserved categories). Admission is based on TNEA rank or merit-based selection.',
     },
     {
       question: 'What are the career prospects after completing B.E. ECE?',
@@ -541,32 +541,32 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
       answer: 'Yes, our B.E. Electronics & Communication Engineering program is accredited by the National Assessment and Accreditation Council (NAAC), ensuring quality education that meets international standards.',
     },
     {
-      question: 'What laboratory facilities are available for ECE students?',
-      answer: 'We have 9 specialized laboratories including Digital Electronics Lab, Analog Electronics Lab, Microprocessor Lab, Communication Lab, VLSI Lab, Embedded Systems Lab, Signal Processing Lab, Network Lab, and Project Lab with modern equipment.',
+      question: 'What learning lab facilities are available for ECE learners?',
+      answer: 'We have 9 specialized learning labs including Digital Electronics Learning Lab, Analog Electronics Learning Lab, Microprocessor Learning Lab, Communication Learning Lab, VLSI Learning Lab, Embedded Systems Learning Lab, Signal Processing Learning Lab, Network Learning Lab, and Project Learning Lab with modern equipment.',
     },
     {
       question: 'What is the placement record for ECE department?',
-      answer: 'Our ECE department maintains a placement rate of 90%+ with students being recruited by top companies like TCS, Infosys, Wipro, Bosch, Samsung, LG, Airtel, Jio, Nokia, Siemens, and many more. The highest package offered is ₹10 LPA.',
+      answer: 'Our ECE department maintains a placement rate of 90%+ with learners being recruited by top companies like TCS, Infosys, Wipro, Bosch, Samsung, LG, Airtel, Jio, Nokia, Siemens, and many more. The highest package offered is ₹10 LPA.',
     },
     {
-      question: 'Can students pursue higher studies after B.E. ECE?',
-      answer: 'Yes, students can pursue M.E./M.Tech in specializations like VLSI Design, Embedded Systems, Communication Systems, Signal Processing, or opt for MBA. Many students also qualify for GATE and pursue higher education in top IITs and NITs.',
+      question: 'Can learners pursue higher studies after B.E. ECE?',
+      answer: 'Yes, learners can pursue M.E./M.Tech in specializations like VLSI Design, Embedded Systems, Communication Systems, Signal Processing, or opt for MBA. Many learners also qualify for GATE and pursue higher education in top IITs and NITs.',
     },
     {
-      question: 'Are there research opportunities for ECE students?',
-      answer: 'Yes, students can participate in research projects in areas like wireless communication, IoT, VLSI design, embedded systems, signal processing, and network security under faculty guidance. We encourage students to publish papers in conferences and journals.',
+      question: 'Are there research opportunities for ECE learners?',
+      answer: 'Yes, learners can participate in research projects in areas like wireless communication, IoT, VLSI design, embedded systems, signal processing, and network security under senior learners guidance. We encourage learners to publish papers in conferences and journals.',
     },
     {
-      question: 'Which companies recruit ECE students from your college?',
+      question: 'Which companies recruit ECE learners from your college?',
       answer: 'Top recruiters include IT companies (TCS, Infosys, Wipro, Tech Mahindra), electronics companies (Bosch, Samsung, LG, Philips), telecom companies (Airtel, Jio, Nokia, Ericsson), and core engineering companies (BHEL, Siemens, ABB, L&T).',
     },
     {
-      question: 'Is hostel facility available for ECE students?',
-      answer: 'Yes, we provide separate hostel facilities for boys and girls with modern amenities including 24/7 security, mess facilities, wifi, study rooms, and recreational areas. Hostel charges are separate from tuition fees.',
+      question: 'Is hostel facility available for ECE learners?',
+      answer: 'Yes, we provide separate hostel facilities for boys and girls with modern amenities including 24/7 security, mess facilities, wifi, learning commons, and recreational areas. Hostel charges are separate from tuition fees.',
     },
     {
       question: 'What is the total fee structure for B.E. ECE program?',
-      answer: 'The annual tuition fee is ₹75,000 which includes tuition (₹60,000), laboratory fee (₹10,000), library fee (₹2,000), and examination fee (₹3,000). Hostel and transport charges are additional and optional.',
+      answer: 'The annual tuition fee is ₹75,000 which includes tuition (₹60,000), learning lab fee (₹10,000), library fee (₹2,000), and learning assessment fee (₹3,000). Hostel and transport charges are additional and optional.',
     },
   ],
 

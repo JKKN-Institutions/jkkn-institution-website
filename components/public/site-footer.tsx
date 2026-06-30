@@ -92,7 +92,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
               </div>
             </Link>
             <p className="text-white/80 text-sm mb-8 leading-relaxed max-w-md">
-              {settings.description || 'JKKN Institutions is committed to providing quality education and fostering innovation, research, and holistic development of students to prepare them for global challenges.'}
+              {settings.description || 'JKKN Institutions is committed to providing quality education and fostering innovation, research, and holistic development of learners to prepare them for global challenges.'}
             </p>
 
             {/* Contact Info */}

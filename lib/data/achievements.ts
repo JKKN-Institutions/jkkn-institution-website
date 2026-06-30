@@ -127,7 +127,7 @@ export async function getFacultyAchievements(
   const { data, error } = await query
 
   if (error) {
-    console.error('Error fetching faculty achievements:', error)
+    console.error('Error fetching senior learners achievements:', error)
     return []
   }
 
@@ -156,7 +156,7 @@ export async function getFeaturedFacultyAchievements(
     .limit(limit)
 
   if (error) {
-    console.error('Error fetching featured faculty achievements:', error)
+    console.error('Error fetching featured senior learners achievements:', error)
     return []
   }
 
@@ -247,7 +247,7 @@ export async function getStudentAchievements(
   const { data, error } = await query
 
   if (error) {
-    console.error('Error fetching student achievements:', error)
+    console.error('Error fetching learner achievements:', error)
     return []
   }
 
@@ -276,7 +276,7 @@ export async function getFeaturedStudentAchievements(
     .limit(limit)
 
   if (error) {
-    console.error('Error fetching featured student achievements:', error)
+    console.error('Error fetching featured learner achievements:', error)
     return []
   }
 

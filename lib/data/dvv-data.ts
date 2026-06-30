@@ -7,19 +7,19 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/1.2.1.1.pdf',
         },
         {
-          finding: 'Kindly note that not include programs conducted under regular university curriculum.',
+          finding: 'Kindly note that not include programs conducted under regular university learning framework.',
           responseLink: '/pdfs/naac/dvv/1.2.1.2.pdf',
         },
         {
-          finding: 'Please provide Details of each program such as: Name of the program, duration, list of students enrolled (with signature of students), model certificates, curriculum, assessment procedures year- wise. As per revised data.',
+          finding: 'Please provide Details of each program such as: Name of the program, duration, list of learners enrolled (with signature of learners), model certificates, learning framework, assessment procedures year- wise. As per revised data.',
           responseLink: '/pdfs/naac/dvv/1.2.1.3.pdf',
         },
         {
-          finding: 'Please provide the model certificate of the students with sealed and singed by the head of institute.',
+          finding: 'Please provide the model certificate of the learners with sealed and singed by the head of institute.',
           responseLink: '/pdfs/naac/dvv/1.2.1.4.pdf',
         },
         {
-          finding: 'Please provide revised certificate of programs completed by students.',
+          finding: 'Please provide revised certificate of programs completed by learners.',
           responseLink: '/pdfs/naac/dvv/1.2.1.5.pdf',
         },
       ],
@@ -29,19 +29,19 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/1.2.2.1.pdf',
         },
         {
-          finding: 'Please provide the model certificate of the students with sealed and singed by the head of institute.',
+          finding: 'Please provide the model certificate of the learners with sealed and singed by the head of institute.',
           responseLink: '/pdfs/naac/dvv/1.2.2.2.pdf',
         },
         {
-          finding: 'Please provide the certificate for the academic year 2018-19=81, 2019-20=59, 2020-21=30, 2021-22=43, 2022-23=42 of the student for each program year wise for last five year with sealed and signed by the head of the institute.',
+          finding: 'Please provide the certificate for the academic year 2018-19=81, 2019-20=59, 2020-21=30, 2021-22=43, 2022-23=42 of the learner for each program year wise for last five year with sealed and signed by the head of the institute.',
           responseLink: '/pdfs/naac/dvv/1.2.2.3.pdf',
         },
         {
-          finding: 'Please provide Details of each program such as: Name of the program duration, list of students enrolled (with signature of students), model certificates, curriculum, assessment procedures year- wise.',
+          finding: 'Please provide Details of each program such as: Name of the program duration, list of learners enrolled (with signature of learners), model certificates, learning framework, assessment procedures year- wise.',
           responseLink: '/pdfs/naac/dvv/1.2.2.4.pdf',
         },
         {
-          finding: 'Please provide attendance sheet of students participating with signature of students for the last five year with sealed and singed by the head of institute.',
+          finding: 'Please provide attendance sheet of learners participating with signature of learners for the last five year with sealed and singed by the head of institute.',
           responseLink: '/pdfs/naac/dvv/1.2.2.5.pdf',
         },
       ],
@@ -49,11 +49,11 @@ export const dvvData = {
     indicator13: {
       metric132: [
         {
-          finding: 'HEI is requested to kindly provide Name of the students in the prescribed data template in the column "List of students undertaking project work/field work/internship".',
+          finding: 'HEI is requested to kindly provide Name of the learners in the prescribed data template in the column "List of learners undertaking project work/field work/internship".',
           responseLink: '/pdfs/naac/dvv/1.3.2.1.pdf',
         },
         {
-          finding: 'Please Provide List of students along with the details of title, place of work, duration etc, with sealed and signed by the head of the department. Which should be countable.',
+          finding: 'Please Provide List of learners along with the details of title, place of work, duration etc, with sealed and signed by the head of the department. Which should be countable.',
           responseLink: '/pdfs/naac/dvv/1.3.2.2.pdf',
         },
         {
@@ -65,7 +65,7 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/1.3.2.4.pdf',
         },
         {
-          finding: 'Kindly note that only one student involved in multiple field works and/or project work and/or internship in the same academic session should be counted as one.',
+          finding: 'Kindly note that only one learner involved in multiple field works and/or project work and/or internship in the same academic session should be counted as one.',
           responseLink: '/pdfs/naac/dvv/1.3.2.5.pdf',
         },
         {
@@ -107,15 +107,15 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/criteria2-2.1.1-prescribed-data-template-index-dvv.pdf',
         },
         {
-          finding: 'Please provide approved admission list year-wise (first year admission) program-wise from the Affiliating university, in a justified manner, which should be countable, for the total number of the first year/first semester students, for the last five year students.',
+          finding: 'Please provide approved admission list year-wise (first year admission) program-wise from the Affiliating university, in a justified manner, which should be countable, for the total number of the first year/first semester learners, for the last five year learners.',
           responseLink: '/pdfs/naac/dvv/criteria2-2.1.1-approved-admission-list-year-wise-index-dvv.pdf',
         },
         {
-          finding: 'Please provide year wise sanction of intake from affiliating University/Government/statutory body for each program for first year students only for the last five years.',
+          finding: 'Please provide year wise sanction of intake from affiliating University/Government/statutory body for each program for first year learners only for the last five years.',
           responseLink: '/pdfs/naac/dvv/criteria2-2.1.1-year-wise-sanction-of-intake-from-affiliating-University-index-dvv.pdf',
         },
         {
-          finding: 'Please provide Sanctioned admission strength in each program vs. students enrolment (first year admission / for first semester admission) for each program year-wise for the last five years.',
+          finding: 'Please provide Sanctioned admission strength in each program vs. learners enrolment (first year admission / for first semester admission) for each program year-wise for the last five years.',
           responseLink: '/pdfs/naac/dvv/criteria2-2.1.1-admission-strength-in-each-program-index-dvv.pdf',
         },
       ],
@@ -125,7 +125,7 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/criteria2-2.1.2-prescribed-data-template-index-dvv.pdf',
         },
         {
-          finding: 'Please provide year-wise final admission list of students (first year admission) indicating their category published by the HEI and signed by the principal to be provided for the last five years ,except general category ,which should be countable.',
+          finding: 'Please provide year-wise final admission list of learners (first year admission) indicating their category published by the HEI and signed by the principal to be provided for the last five years ,except general category ,which should be countable.',
           responseLink: '/pdfs/naac/dvv/criteria2-2.1.2-year-wise-final-admission-list-of-students-index-dvv.pdf',
         },
         {
@@ -137,11 +137,11 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/criteria2-2.1.2-number-of-seats-year-wise-index-dvv.pdf',
         },
         {
-          finding: 'Please provide admission extract submitted to the state OBC, SC and ST cell every year of the students (first year admission) with seal and signature of the principal.',
+          finding: 'Please provide admission extract submitted to the state OBC, SC and ST cell every year of the learners (first year admission) with seal and signature of the principal.',
           responseLink: '/pdfs/naac/dvv/criteria2-2.1.2-admission-extract-submitted-to-the-state-index-dvv.pdf',
         },
         {
-          finding: 'Please provide approval of additional intake of students has to be submitted for the claim.',
+          finding: 'Please provide approval of additional intake of learners has to be submitted for the claim.',
           responseLink: '/pdfs/naac/dvv/criteria2-2.1.2-approval-of-additional-intake-of-students-has-to-be-submitted-index-dvv.pdf',
         },
         {
@@ -153,11 +153,11 @@ export const dvvData = {
     indicator22: {
       metric221: [
         {
-          finding: 'HEI is requested to provide following supporting documents: 1. Certified list of full time teachers along with the departmental affiliation in the latest completed academic year.',
+          finding: 'HEI is requested to provide following supporting documents: 1. Certified list of full time senior learners along with the departmental affiliation in the latest completed academic year.',
           responseLink: '/pdfs/naac/dvv/2.1-Extended-profile-the-list-of-full-time-teachers-indicating-the-departmental-affiliation-index-page-dvv.pdf',
         },
         {
-          finding: 'List showing the number of students across all year in each of the programs in the latest completed academic year. No. of students should match total enrolled no. of students at extended ID 1.1.',
+          finding: 'List showing the number of learners across all year in each of the programs in the latest completed academic year. No. of learners should match total enrolled no. of learners at extended ID 1.1.',
           responseLink: '/pdfs/naac/dvv/1.1-Extended-Profile-year-wise-and-program-wise-dvv.pdf',
         },
         {
@@ -173,7 +173,7 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/criteria2-2.4.1-year-wise-Sanction-letter-index-dvv.pdf',
         },
         {
-          finding: 'Please provide appointment letters of all the full time teachers in last five years.',
+          finding: 'Please provide appointment letters of all the full time senior learners in last five years.',
           responseLink: '/pdfs/naac/dvv/criteria2-2.4.1-appointment-letters-of-all-the-full-time-teachers-index-dvv.pdf',
         },
         {
@@ -195,7 +195,7 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/criteria2-2.4.2Doctorate-Degrees-awarded-by-UGC-recognised-index-dvv.pdf',
         },
         {
-          finding: 'Kindly note that the teachers those who have less than one year of experience could not be considered.',
+          finding: 'Kindly note that the senior learners those who have less than one year of experience could not be considered.',
           responseLink: '/pdfs/naac/dvv/criteria2-2.4.2-less-than-one-year-of-experience-could-not-be-considered-index-dvv.pdf',
         },
         {
@@ -215,11 +215,11 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/criteria2-2.6.3-year-wise-result-sheet-published-by-the-affiliating-university-index-dvv.pdf',
         },
         {
-          finding: 'Please provide Certified report from Head of the institution / Controller of Examination of the affiliating university indicating pass percentage of students of the final year (final semester) eligible for the degree program- wise / year-wise, with sealed and singed by the head of the institute.',
+          finding: 'Please provide Certified report from Head of the institution / Controller of Examination of the affiliating university indicating pass percentage of learners of the final year (final semester) eligible for the degree program- wise / year-wise, with sealed and singed by the head of the institute.',
           responseLink: '/pdfs/naac/dvv/criteria2-2.6.3-Certified-report-from-Head-of-the-institution-index-dvv.pdf',
         },
         {
-          finding: 'Kindly note that Only final year student data will be considered for all the years of the assessment.',
+          finding: 'Kindly note that Only final year learner data will be considered for all the years of the assessment.',
           responseLink: '/pdfs/naac/dvv/criteria2-2.6.3Only-final-year-student-index-dvv.pdf',
         },
       ],
@@ -323,7 +323,7 @@ export const dvvData = {
     indicator34: {
       metric343: [
         {
-          finding: 'HEI is requested to kindly note that events conducted for the benefit of their own students not to be included under outreach programs. for ex:, World kidney day, Awareness on world no tobacco day etc.',
+          finding: 'HEI is requested to kindly note that events conducted for the benefit of their own learners not to be included under outreach programs. for ex:, World kidney day, Awareness on world no tobacco day etc.',
           responseLink: '/pdfs/naac/dvv/Criteria-3-3.4.3.-DVV-Extension-Activities-1.pdf',
         },
         {
@@ -381,7 +381,7 @@ export const dvvData = {
     indicator43: {
       metric432: [
         {
-          finding: 'HEI is requested to kindly note that in this metric number of computer available for student used only should be considered in this metric. So kindly highlight in the stock register accordingly.',
+          finding: 'HEI is requested to kindly note that in this metric number of computer available for learner used only should be considered in this metric. So kindly highlight in the stock register accordingly.',
           responseLink: '/pdfs/naac/dvv/1.-4.3.2.pdf',
         },
         {
@@ -419,7 +419,7 @@ export const dvvData = {
     indicator51: {
       metric511: [
         {
-          finding: 'HEI is requested to Kindly provide year wise list of students in each scheme for the last five year, which should be COUNTABLE to be attested by the competent authority.',
+          finding: 'HEI is requested to Kindly provide year wise list of learners in each scheme for the last five year, which should be COUNTABLE to be attested by the competent authority.',
           responseLink: '/pdfs/naac/dvv/Criteria5-5.1.1-DVV-1-Year-wise-list-of-Scholarship-Students.pdf',
         },
         {
@@ -435,7 +435,7 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/Criteria5-5.1.1-DVV-4-Yearwise-Sanction-Letter.pdf',
         },
         {
-          finding: 'For HEI input, please avoid multiple counting of the same student getting more than one scholarship in an academic year. please mention year wise number of students without multiple counting',
+          finding: 'For HEI input, please avoid multiple counting of the same learner getting more than one scholarship in an academic year. please mention year wise number of learners without multiple counting',
           responseLink: '/pdfs/naac/dvv/Criteria5-5.1.1-DVV-5-Certificate-for-students-count.pdf',
         },
         {
@@ -453,11 +453,11 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.1.2-Event-Report-DVV-1.pdf',
         },
         {
-          finding: 'Please provide List of programs conducted and the number of students enrolled for each of the events for the last five years with sealed and singed by the head of the institute.',
+          finding: 'Please provide List of programs conducted and the number of learners enrolled for each of the events for the last five years with sealed and singed by the head of the institute.',
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.1.2-List-of-Events-DVV-3.pdf',
         },
         {
-          finding: 'Please provide the certificate of the students for the last five years.',
+          finding: 'Please provide the certificate of the learners for the last five years.',
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.1.2-Students-Certificate-DVV-4.pdf',
         },
         {
@@ -471,11 +471,11 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.1.3-DVV-1-Consolidated.pdf',
         },
         {
-          finding: 'Kindly note that provided list of students is not matching with HEI input so please check and provide correct revised data.',
+          finding: 'Kindly note that provided list of learners is not matching with HEI input so please check and provide correct revised data.',
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.1.3-DVV-2-Year-wise-Participated-Students-List.pdf',
         },
         {
-          finding: 'Kindly provide revised attendance sheet of the students attending this program for the last five year by sealed and signed by the head of the institute.',
+          finding: 'Kindly provide revised attendance sheet of the learners attending this program for the last five year by sealed and signed by the head of the institute.',
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.1.3-DVV-3-Students-Attendance.pdf',
         },
         {
@@ -483,7 +483,7 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.1.3-DVV-4-Event-Report.pdf',
         },
         {
-          finding: 'Please provide year wise list of students attending these schemes, signed by competent authority. In a justified manner which should be countable, for the last five year.',
+          finding: 'Please provide year wise list of learners attending these schemes, signed by competent authority. In a justified manner which should be countable, for the last five year.',
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.1.3-DVV-5-Program-Attending-List.pdf',
         },
       ],
@@ -497,7 +497,7 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/Criteria5-5.1.4-DVV-2-Norms-of-UGC.pdf',
         },
         {
-          finding: 'Please provide report of Minutes of the meetings of student grievance committee, as per metric.',
+          finding: 'Please provide report of Minutes of the meetings of learner grievance committee, as per metric.',
           responseLink: '/pdfs/naac/dvv/Criteria5-5.1.4-DVV3-Annual-Report-1.pdf',
         },
         {
@@ -513,37 +513,37 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.2.1-DVV-1-Prescribed-Data-Template.pdf',
         },
         {
-          finding: 'Kindly note that multiple offers to the same students to be counted once. Please relook and provide correct and revise data.',
+          finding: 'Kindly note that multiple offers to the same learners to be counted once. Please relook and provide correct and revise data.',
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.2.1-DVV-2-Consolidated-Placement-data.pdf',
         },
         {
-          finding: 'Please provide revised list of students placed along with placement details year wise for the last five year and with sealed and singed by the head of the institute.',
+          finding: 'Please provide revised list of learners placed along with placement details year wise for the last five year and with sealed and singed by the head of the institute.',
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.2.1-DVV-3-Year-wise-Placemenet-Students-List.pdf',
         },
         {
-          finding: 'Please provide links/documents relating to placement cell such as brochures, appointment letter of students, tie up etc. And should be sealed and singed by the head of the institute.',
+          finding: 'Please provide links/documents relating to placement cell such as brochures, appointment letter of learners, tie up etc. And should be sealed and singed by the head of the institute.',
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.2.1-DVV-4-Placement-Offer-Letter.pdf',
         },
         {
-          finding: 'Please provide revised list of the students who have joined the higher education in the last five year with sealed and singed by the head of the institute.',
+          finding: 'Please provide revised list of the learners who have joined the higher education in the last five year with sealed and singed by the head of the institute.',
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.2.1-DVV-5-Higher-Education-List.pdf',
         },
         {
-          finding: 'Please provide clearly scanned proofs like, admission letters or identity cards or higher degree certificates for students progressing to higher education in the last five year with sealed and singed by the head of the institute.',
+          finding: 'Please provide clearly scanned proofs like, admission letters or identity cards or higher degree certificates for learners progressing to higher education in the last five year with sealed and singed by the head of the institute.',
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.2.1-DVV-6-Higher-Education-Proof.pdf',
         },
         {
-          finding: 'Please provide the list number of outgoing students year wise during the last five years which should be matched with the 2.6.3.1 and sealed and signed by the head of the institute.',
+          finding: 'Please provide the list number of outgoing learners year wise during the last five years which should be matched with the 2.6.3.1 and sealed and signed by the head of the institute.',
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.2.1-DVV-7-Corrected-Students-Count.pdf',
         },
       ],
       metric522: [
         {
-          finding: 'HEI is requested to kindly note that qualifying exam on the date 5/08/23 is beyond the assessment period which should not be considered.so please relook and provide correct revised data.',
+          finding: 'HEI is requested to kindly note that qualifying learning assessment on the date 5/08/23 is beyond the assessment period which should not be considered.so please relook and provide correct revised data.',
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.2.2-DVV-1-Revised-Qualified-Student-List.pdf',
         },
         {
-          finding: 'Please provide Qualifying Certificates of the students taking the examination year wise under each category.',
+          finding: 'Please provide Qualifying Certificates of the learners taking the learning assessment year wise under each category.',
           responseLink: '/pdfs/naac/dvv/Criteria-5-5.2.2-DVV-2-GOVT-Exam-Proof.pdf',
         },
       ],
@@ -573,7 +573,7 @@ export const dvvData = {
       ],
       metric532: [
         {
-          finding: 'HEI should note that this metric seeks the information for the Number of sports and cultural programs in which students of the Institution participated year wise during last five years so please provide revised data. As in present case provided number of students participated is given which could not be considered.',
+          finding: 'HEI should note that this metric seeks the information for the Number of sports and cultural programs in which learners of the Institution participated year wise during last five years so please provide revised data. As in present case provided number of learners participated is given which could not be considered.',
           responseLink: '/pdfs/naac/dvv/Criteria5-5.3.2-DVV1-Yearwise-List-of-Events-List-of-Participants-1.pdf',
         },
         {
@@ -593,7 +593,7 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/Criteria5-5.3.2-DVV5-Yearwise-List-of-students-Participants-1.pdf',
         },
         {
-          finding: 'Please provide the participation Certificates of Specified students for the last five year with sealed and signed by the head of the department.',
+          finding: 'Please provide the participation Certificates of Specified learners for the last five year with sealed and signed by the head of the department.',
           responseLink: '/pdfs/naac/dvv/Criteria5-5.3.2-DVV6-Yearwise-Certificates-1.pdf',
         },
       ],
@@ -623,15 +623,15 @@ export const dvvData = {
     indicator63: {
       metric632: [
         {
-          finding: 'HEI is requested to kindly note that as per manual financial support of less than 5000 rupees per teacher per year, should not be considered so, Please relook and provide correct revised data.',
+          finding: 'HEI is requested to kindly note that as per manual financial support of less than 5000 rupees per senior learner per year, should not be considered so, Please relook and provide correct revised data.',
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.2.1-financial-support-of-not-less-than-5000-rupees-index-page.pdf',
         },
         {
-          finding: 'Kindly note that Multiple financial supports provided to teacher in a year to be considered once only. Please relook and provide correct revise data.',
+          finding: 'Kindly note that Multiple financial supports provided to senior learner in a year to be considered once only. Please relook and provide correct revise data.',
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.2.2-multiple-financial-supports-provided-to-teacher-in-a-year-to-be-considered-once-only-index-page.pdf',
         },
         {
-          finding: 'Please provide e-copy of letter/s indicating financial assistance to teachers year-wise for the last five years.',
+          finding: 'Please provide e-copy of letter/s indicating financial assistance to senior learners year-wise for the last five years.',
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.2.3-e-copy-of-letters-index-page.pdf',
         },
         {
@@ -643,15 +643,15 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.2.5-audited-statement-index-page.pdf',
         },
         {
-          finding: 'Please provide list of teachers receiving financial support year wise.',
+          finding: 'Please provide list of senior learners receiving financial support year wise.',
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.2.6-list-of-teachers-receiving-financial-index-page.pdf',
         },
         {
-          finding: 'Kindly note that Receipts / vouchers of Institution in favour of teacher with amount given should be considered.',
+          finding: 'Kindly note that Receipts / vouchers of Institution in favour of senior learner with amount given should be considered.',
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.2.7-receipts-vouchers-index-page.pdf',
         },
         {
-          finding: 'Kindly note that Without proof of payment on financial support for faculty development, mere name-list of the faculty will not considered.',
+          finding: 'Kindly note that Without proof of payment on financial support for senior learners development, mere name-list of the senior learners will not considered.',
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.2.8-financial-support-for-faculty-development-index-page.pdf',
         },
         {
@@ -665,11 +665,11 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.3.1-correct-revised-data-for-data-mismatch-index-page.pdf',
         },
         {
-          finding: 'Kindly note that metric id 6.3.3.1 seeks the information of Total number of teaching and non-teaching staff participating in Faculty development Programmes (FDP), Management Development Programmes (MDPs) professional development /administrative training programs during the last five years so please relook and provide data accordingly.',
+          finding: 'Kindly note that metric id 6.3.3.1 seeks the information of Total number of teaching and non-senior learners participating in Senior Learners development Programmes (FDP), Management Development Programmes (MDPs) professional development /administrative training programs during the last five years so please relook and provide data accordingly.',
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.3.2-total-number-of-teaching-and-non-teaching-staff-in-fdp-and-mdp-index-page.pdf',
         },
         {
-          finding: 'Kindly note that metric id 6.3.3.2 seeks the information of Number of non- teaching staff year wise during the last five years in the institute so please check and provide correct revised data.',
+          finding: 'Kindly note that metric id 6.3.3.2 seeks the information of Number of non- senior learners year wise during the last five years in the institute so please check and provide correct revised data.',
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.3.3-number-of-non-teaching-staff-index-page.pdf',
         },
         {
@@ -677,19 +677,19 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.3.4-fdp-less-than-five-days-are-not-to-be-considered-index-page.pdf',
         },
         {
-          finding: 'Kindly note that multiple counting for the same number of the teacher for the same academic year should be counted as one. Please relook and provide the correct',
+          finding: 'Kindly note that multiple counting for the same number of the senior learner for the same academic year should be counted as one. Please relook and provide the correct',
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.3.5-multiple-counting-index-page.pdf',
         },
         {
-          finding: 'Please provide list of Number of non- teaching staff year wise during the last five years.',
+          finding: 'Please provide list of Number of non- senior learners year wise during the last five years.',
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.3.6-number-of-non-teaching-staff-year-wise-index-page.pdf',
         },
         {
-          finding: 'Kindly provide Annual reports HIGHLIGHTING the programs undertaken by the teaching faculties and non-teaching staff.',
+          finding: 'Kindly provide Annual reports HIGHLIGHTING the programs undertaken by the teaching faculties and non-senior learners.',
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.3.7-annual-reports-index-page.pdf',
         },
         {
-          finding: 'Please provide revised list of participating teaching and non-teaching staff year-wise during the last five years.',
+          finding: 'Please provide revised list of participating teaching and non-senior learners year-wise during the last five years.',
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.3.8-revised-list-of-participating-index-page.pdf',
         },
         {
@@ -697,7 +697,7 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.3.9-event-brochures-index-page.pdf',
         },
         {
-          finding: 'Please provide revised e-copy of the certificates of the program attended by teaching and non- teaching staff for the last five year.',
+          finding: 'Please provide revised e-copy of the certificates of the program attended by teaching and non- senior learners for the last five year.',
           responseLink: '/pdfs/naac/dvv/criteria6-6.3.3.10-e-copy-of-the-certificates-index-page.pdf',
         },
       ],
@@ -763,11 +763,11 @@ export const dvvData = {
     students: {
       metric11: [
         {
-          finding: 'HEI is requested to provide year wise and program wise list of students of approved by the affiliating university for the last five years on the letter head of the HEI, with the seal and signed by the head of the institute.',
+          finding: 'HEI is requested to provide year wise and program wise list of learners of approved by the affiliating university for the last five years on the letter head of the HEI, with the seal and signed by the head of the institute.',
           responseLink: '/pdfs/naac/dvv/1.1-Extended-Profile-year-wise-and-program-wise-dvv.pdf',
         },
         {
-          finding: 'Please provide data in the template Academic year wise and mentioning the name and year of the program also. HEI could add a row mentioning Academic year below which list of students should be provided including the total number of students on rolls across all the programs(consider 1st, 2nd , 3rd years etc., of each program) for all the assessment years.',
+          finding: 'Please provide data in the template Academic year wise and mentioning the name and year of the program also. HEI could add a row mentioning Academic year below which list of learners should be provided including the total number of learners on rolls across all the programs(consider 1st, 2nd , 3rd years etc., of each program) for all the assessment years.',
           responseLink: '/pdfs/naac/dvv/1.1-Extended-Profile-data-in-the-template-Academic-year-wise-dvv.pdf',
         },
         {
@@ -787,37 +787,37 @@ export const dvvData = {
           responseLink: '/pdfs/naac/dvv/2.1-Extended-profile-prescribe-data-template-Index-page-index-page-dvv.pdf',
         },
         {
-          finding: 'Kindly note that the teachers those who have less than 1 years of experience should not be considered, so please check and remove those teachers.',
+          finding: 'Kindly note that the senior learners those who have less than 1 years of experience should not be considered, so please check and remove those senior learners.',
           responseLink: '/pdfs/naac/dvv/2.1-Extended-profile-teachers-those-who-have-less-than-1-years-of-experience-index-page-dvv.pdf',
         },
         {
-          finding: 'Please Provide revised list of total full time teachers in block five years (Without repeat count) indicating the departmental affiliation during the assessment period authenticated by the Principal/competent authority, on the letter head of HEI with seal and singed from head of the institute.',
+          finding: 'Please Provide revised list of total full time senior learners in block five years (Without repeat count) indicating the departmental affiliation during the assessment period authenticated by the Principal/competent authority, on the letter head of HEI with seal and singed from head of the institute.',
           responseLink: '/pdfs/naac/dvv/2.1-Extended-profile-list-of-total-full-time-teachers-in-block-five-years-Without-repeat-count-index-page-dvv.pdf',
         },
         {
-          finding: 'Please provide appointment letters of all the full time teachers for the last five years.',
+          finding: 'Please provide appointment letters of all the full time senior learners for the last five years.',
           responseLink: '/pdfs/naac/dvv/2.1-Extended-profile-appointment-letters-of-all-the-full-time-teachers-index-page-dvv.pdf',
         },
         {
-          finding: 'Please provide the list of full time teachers indicating the departmental affiliation during the assessment period authenticated by the principal/ competent authority, for the last five years.',
+          finding: 'Please provide the list of full time senior learners indicating the departmental affiliation during the assessment period authenticated by the principal/ competent authority, for the last five years.',
           responseLink: '/pdfs/naac/dvv/2.1-Extended-profile-the-list-of-full-time-teachers-indicating-the-departmental-affiliation-index-page-dvv.pdf',
         },
       ],
       metric22: [
         {
-          finding: 'HEI is requested to please provide the list of all full time teachers indicating the departmental affiliation during the assessment period authenticated by the Principal/ Competent authority.',
+          finding: 'HEI is requested to please provide the list of all full time senior learners indicating the departmental affiliation during the assessment period authenticated by the Principal/ Competent authority.',
           responseLink: '/pdfs/naac/dvv/2.2-Extended-Profile-the-list-of-full-time-teachers-indicating-the-departmental-affiliation-Index-Page-dvv.pdf',
         },
         {
-          finding: 'Please provide appointment letters of all the full time teachers.',
+          finding: 'Please provide appointment letters of all the full time senior learners.',
           responseLink: '/pdfs/naac/dvv/2.2-Extended-profile-appointment-letters-of-all-the-full-time-teachers-Index-page-dvv.pdf',
         },
         {
-          finding: 'Kindly note that the teachers those who have less than 1 year of experience should not be considered.',
+          finding: 'Kindly note that the senior learners those who have less than 1 year of experience should not be considered.',
           responseLink: '/pdfs/naac/dvv/2.2-Extended-Profile-teachers-those-who-have-less-than-1-years-of-experience-index-page-dvv.pdf',
         },
         {
-          finding: 'Please provide the sanction letters for the sanctioned no. of posts for full time teacher during last five years.',
+          finding: 'Please provide the sanction letters for the sanctioned no. of posts for full time senior learner during last five years.',
           responseLink: '/pdfs/naac/dvv/2.2-Extended-profile-Sanction-letter-for-the-sanctioned-index-page-dvv.pdf',
         },
       ],

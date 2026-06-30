@@ -75,9 +75,9 @@ export const meCSECourseData: MECSECoursePageProps = {
     label: 'Program Overview',
     title: 'Why Choose M.E Computer Science and Engineering at JKKN?',
     content: [
-      'The Master of Engineering (M.E) in Computer Science and Engineering at JKKN College of Engineering is a premier postgraduate program designed to develop advanced expertise in cutting-edge computing technologies. Our curriculum focuses on emerging areas such as Artificial Intelligence, Machine Learning, Data Science, Cybersecurity, Cloud Computing, and IoT.',
-      'With a perfect blend of theoretical knowledge and practical research, our program prepares students for leadership roles in technology organizations, research institutions, and academia. Students work on real-world projects, publish research papers in international journals, and collaborate with industry partners on innovative solutions.',
-      'Our state-of-the-art laboratories, experienced faculty with PhD qualifications, and strong industry connections ensure that graduates are well-equipped to tackle complex technological challenges and drive innovation in their respective domains.',
+      'The Master of Engineering (M.E) in Computer Science and Engineering at JKKN College of Engineering is a premier postgraduate program designed to develop advanced expertise in cutting-edge computing technologies. Our learning framework focuses on emerging areas such as Artificial Intelligence, Machine Learning, Data Science, Cybersecurity, Cloud Computing, and IoT.',
+      'With a perfect blend of theoretical knowledge and practical research, our program prepares learners for leadership roles in technology organizations, research institutions, and academia. Learners work on real-world projects, publish research papers in international journals, and collaborate with industry partners on innovative solutions.',
+      'Our state-of-the-art learning labs, experienced senior learners with PhD qualifications, and strong industry connections ensure that graduates are well-equipped to tackle complex technological challenges and drive innovation in their respective domains.',
       'The program emphasizes research methodology, advanced problem-solving skills, and independent thinking, making it ideal for aspiring researchers, technology leaders, and innovators who want to make a significant impact in the field of computer science and engineering.'
     ],
     quickFacts: [
@@ -139,12 +139,12 @@ export const meCSECourseData: MECSECoursePageProps = {
       {
         icon: 'graduationCap',
         number: '15+',
-        label: 'PhD Faculty'
+        label: 'PhD Senior Learners'
       },
       {
         icon: 'testTube',
         number: '8+',
-        label: 'Research Labs'
+        label: 'Research Learning Labs'
       },
       {
         icon: 'trophy',
@@ -176,7 +176,7 @@ export const meCSECourseData: MECSECoursePageProps = {
         title: 'Artificial Intelligence & Machine Learning',
         badge: 'Most Popular',
         description: 'Deep dive into neural networks, deep learning, natural language processing, and computer vision. Work on AI-powered applications and intelligent systems.',
-        image: '/images/courses/me-cse/ai-ml-lab copy.png',
+        image: '/images/courses/me-cse/ai-ml-learning lab copy.png',
         topics: [
           'Deep Learning',
           'Neural Networks',
@@ -263,8 +263,8 @@ export const meCSECourseData: MECSECoursePageProps = {
   // Curriculum
   // ===========================================
   curriculum: {
-    label: 'Curriculum',
-    title: 'Comprehensive 2-Year Curriculum',
+    label: 'Learning Framework',
+    title: 'Comprehensive 2-Year Learning Framework',
     description: 'Anna University affiliated M.E. Computer Science and Engineering program with industry-oriented courses and research focus',
     years: [
       {
@@ -442,11 +442,11 @@ export const meCSECourseData: MECSECoursePageProps = {
       'Minimum 50% aggregate marks (45% for SC/ST candidates)',
       'Valid TANCET score or GATE qualification (preferred but not mandatory)',
       'Candidates with relevant work experience will be given preference',
-      'Final year students can apply (admission subject to completion)'
+      'Final year learners can apply (admission subject to completion)'
     ],
     admissionProcess: [
       'Submit online application with academic transcripts and certificates',
-      'Appear for entrance exam (TANCET) or submit GATE scorecard',
+      'Appear for entrance learning assessment (TANCET) or submit GATE scorecard',
       'Attend counselling session (online or offline)',
       'Document verification and seat confirmation',
       'Complete admission formalities and fee payment'
@@ -461,24 +461,24 @@ export const meCSECourseData: MECSECoursePageProps = {
     title: 'State-of-the-Art Research Facilities',
     labs: [
       {
-        name: 'AI & Machine Learning Lab',
+        name: 'AI & Machine Learning Learning Lab',
         description: 'High-performance computing systems with GPU clusters for deep learning research',
-        image: '/images/courses/me-cse/ai-ml-lab copy.png'
+        image: '/images/courses/me-cse/ai-ml-learning lab copy.png'
       },
 
       {
-        name: 'Cybersecurity Lab',
+        name: 'Cybersecurity Learning Lab',
         description: 'Ethical hacking tools, network security appliances, and forensic systems',
         image: '/images/courses/me-cse/cloud-computing-lab.png'
       },
       {
-        name: 'Cloud Computing Lab',
+        name: 'Cloud Computing Learning Lab',
         description: 'AWS, Azure, and Google Cloud platforms with virtualization infrastructure',
         image: '/images/courses/me-cse/JKKN ME CSE (1).png'
       },
      
       {
-        name: 'IoT & Embedded Systems Lab',
+        name: 'IoT & Embedded Systems Learning Lab',
         description: 'Sensors, microcontrollers, development boards, and smart devices',
         image: '/images/courses/me-cse/JKKN B.Tech IT - AI & Machine Learning Research Center.png'
       },
@@ -533,18 +533,18 @@ export const meCSECourseData: MECSECoursePageProps = {
   // Faculty
   // ===========================================
   faculty: {
-    label: 'Faculty',
+    label: 'Senior Learners',
     title: 'Learn from Industry Experts',
     members: [
       {
         name: 'Dr. J.S. Narmadha',
-        designation: 'Professor',
+        designation: 'Senior Learner',
         qualification: 'M.E-CSE., Ph.D',
         photo: '/images/faculty/narmadha.jpg'
       },
       {
         name: 'Mrs. O. Isvarya Lakshmi',
-        designation: 'Assistant Professor',
+        designation: 'Assistant Senior Learner',
         qualification: 'M.E-CSE.',
         photo: '/images/faculty/isvarya-lakshmi.jpg'
       }
@@ -561,15 +561,15 @@ export const meCSECourseData: MECSECoursePageProps = {
     items: [
       {
         question: 'What is the eligibility criteria for ME CSE admission?',
-        answer: 'Candidates must have a BE/B.Tech degree in Computer Science, IT, Electronics, or related branches with a minimum of 50% aggregate marks (45% for SC/ST). TANCET or GATE score is preferred but not mandatory. Final year students can also apply.'
+        answer: 'Candidates must have a BE/B.Tech degree in Computer Science, IT, Electronics, or related branches with a minimum of 50% aggregate marks (45% for SC/ST). TANCET or GATE score is preferred but not mandatory. Final year learners can also apply.'
       },
       {
         question: 'What specializations are offered in the ME CSE program?',
-        answer: 'We offer six specializations: AI & Machine Learning, Data Science & Big Data Analytics, Cybersecurity & Network Security, Cloud Computing & Distributed Systems, Computer Vision & Image Processing, and IoT & Embedded Systems. Students choose their specialization through elective courses.'
+        answer: 'We offer six specializations: AI & Machine Learning, Data Science & Big Data Analytics, Cybersecurity & Network Security, Cloud Computing & Distributed Systems, Computer Vision & Image Processing, and IoT & Embedded Systems. Learners choose their specialization through elective courses.'
       },
       {
         question: 'What is the fee structure for the ME CSE program?',
-        answer: 'The annual tuition fee is ₹75,000, making the total program fee ₹1,50,000 for two years. This includes lab fees, library access, and examination fees. Scholarships and financial aid are available for eligible students.'
+        answer: 'The annual tuition fee is ₹75,000, making the total program fee ₹1,50,000 for two years. This includes learning lab fees, library access, and learning assessment fees. Scholarships and financial aid are available for eligible learners.'
       },
       {
         question: 'What is the placement record for ME CSE graduates?',
@@ -581,7 +581,7 @@ export const meCSECourseData: MECSECoursePageProps = {
       },
       {
         question: 'Are there research opportunities in the program?',
-        answer: 'Absolutely! Research is a core component of our ME program. Students work on cutting-edge research projects, publish papers in international journals and conferences, and collaborate with industry partners. We have eight specialized research labs and experienced PhD faculty to guide students.'
+        answer: 'Absolutely! Research is a core component of our ME program. Learners work on cutting-edge research projects, publish papers in international journals and conferences, and collaborate with industry partners. We have eight specialized research learning labs and experienced PhD senior learners to guide learners.'
       },
       {
         question: 'Is hostel accommodation available?',

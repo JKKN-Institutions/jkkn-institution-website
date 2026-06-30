@@ -156,7 +156,7 @@ export const EVENTS: EventEntry[] = [
   },
   {
     name: 'JKKN Open House 2026',
-    description: 'Campus tour, faculty meet, infrastructure walkthrough, and program-wise counseling for prospective students and parents.',
+    description: 'Campus tour, senior learners meet, infrastructure walkthrough, and program-wise counseling for prospective learners and parents.',
     startDate: '2026-05-25',
     endDate: '2026-05-25',
     applyUrl: 'https://www.jkkn.ac.in/contact',
@@ -187,7 +187,7 @@ export const REVIEWS: ReviewEntry[] = [
     authorContext: 'Alumna · B.E. CSE 2023',
     rating: 5,
     date: '2026-02-12',
-    body: 'JKKN gave me strong technical foundation plus placement support — got selected at TCS during campus drive. Faculty mentoring and lab infrastructure were excellent throughout my four years.',
+    body: 'JKKN gave me strong technical foundation plus placement support — got selected at TCS during campus drive. Senior Learners mentoring and learning lab infrastructure were excellent throughout my four years.',
   },
   {
     authorName: 'Dr. Karthik M.',
@@ -201,14 +201,14 @@ export const REVIEWS: ReviewEntry[] = [
     authorContext: 'Parent · Daughter at Matric School',
     rating: 4,
     date: '2026-03-05',
-    body: 'My daughter has been at JKKN Matric School for six years. Teachers are caring, transport is reliable, and the integrated campus means everything she needs is in one place.',
+    body: 'My daughter has been at JKKN Matric School for six years. Senior Learners are caring, transport is reliable, and the integrated campus means everything she needs is in one place.',
   },
   {
     authorName: 'Mohamed Arif',
     authorContext: 'Alumnus · B.Pharm 2022',
     rating: 5,
     date: '2025-12-18',
-    body: 'PCI approved pharmacy program with NAAC A grade — got into a good M.Pharm program after JKKN. The research exposure and faculty support genuinely prepared me for higher studies.',
+    body: 'PCI approved pharmacy program with NAAC A grade — got into a good M.Pharm program after JKKN. The research exposure and senior learners support genuinely prepared me for higher studies.',
   },
 ]
 
@@ -244,14 +244,14 @@ export const LEADERS: LeaderEntry[] = [
 // ─── Campus services (visible on page + Service schema) ─────────────────────
 export const SERVICES: ServiceEntry[] = [
   {
-    name: 'Student Hostels',
-    serviceType: 'Student Accommodation',
+    name: 'Learner Hostels',
+    serviceType: 'Learner Accommodation',
     description:
-      'Separate hostel facilities for boys and girls with mess, Wi-Fi, study rooms, and 24/7 security across the 70-acre campus.',
+      'Separate hostel facilities for boys and girls with mess, Wi-Fi, learning commons, and 24/7 security across the 70-acre campus.',
   },
   {
     name: 'Campus Transport',
-    serviceType: 'Student Transport',
+    serviceType: 'Learner Transport',
     description:
       'Fleet of college buses covering routes across Namakkal, Erode, Salem, and Coimbatore districts for day scholars.',
   },
@@ -265,13 +265,13 @@ export const SERVICES: ServiceEntry[] = [
     name: 'Sports Complex',
     serviceType: 'Sports Facility',
     description:
-      'Cricket ground, football field, indoor courts (badminton, basketball, volleyball), gym, and athletic track open to all students.',
+      'Cricket ground, football field, indoor courts (badminton, basketball, volleyball), gym, and athletic track open to all learners.',
   },
   {
     name: 'Teaching Hospital',
     serviceType: 'Healthcare Service',
     description:
-      '350-bed teaching hospital at the Dental College providing clinical exposure for dental, allied health, and nursing students.',
+      '350-bed teaching hospital at the Dental College providing clinical exposure for dental, allied health, and nursing learners.',
   },
 ]
 

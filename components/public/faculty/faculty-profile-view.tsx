@@ -72,7 +72,7 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
   return (
     <>
       <style jsx global>{`
-        .faculty-page {
+        .senior learners-page {
           --green: #0b6d41; --green-dark: #085533; --green-light: #0e8a52;
           --green-pale: #e8f5ee; --green-faint: rgba(11,109,65,0.05);
           --green-border: rgba(11,109,65,0.1); --green-border-hover: rgba(11,109,65,0.22);
@@ -90,8 +90,8 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
           font-family: var(--font-poppins), 'Poppins', ui-sans-serif, system-ui, sans-serif;
           background: var(--cream); color: var(--text);
         }
-        .faculty-page .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
-        .faculty-page .reveal.visible { opacity: 1; transform: translateY(0); }
+        .senior learners-page .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+        .senior learners-page .reveal.visible { opacity: 1; transform: translateY(0); }
       `}</style>
 
       <div className="faculty-page" ref={containerRef}>
@@ -101,7 +101,7 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
           <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 py-6 max-[480px]:py-4 text-[0.78rem] text-[#7a8f80]">
             <Link href="/" className="hover:text-[#0b6d41] transition-colors">Home</Link>
             <span className="opacity-30">/</span>
-            <Link href="/faculty" className="hover:text-[#0b6d41] transition-colors">Faculty</Link>
+            <Link href="/faculty" className="hover:text-[#0b6d41] transition-colors">Senior Learners</Link>
             <span className="opacity-30">/</span>
             <span className="text-[#3d5443]">{faculty.full_name}</span>
           </nav>
@@ -475,7 +475,7 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
             <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-5 sm:p-8 mb-5 sm:mb-6 shadow-sm hover:border-[rgba(11,109,65,0.18)] hover:shadow-md transition-all">
               <div className="flex items-center gap-3.5 mb-6">
                 <div className="w-[42px] h-[42px] max-[480px]:w-[36px] max-[480px]:h-[36px] rounded-xl flex items-center justify-center shrink-0" style={{ background: '#e8f5ee', color: '#0b6d41' }}><GraduationCap className="w-5 h-5" /></div>
-                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Student Mentoring & Guidance</h2>
+                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>Learner Mentoring & Guidance</h2>
               </div>
 
               {faculty.mentoring_description && (
@@ -578,14 +578,14 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
                 Interested in {faculty.department.replace('Department of ', '')}?
               </h2>
               <p className="text-white/70 mb-7 text-[0.95rem] max-[480px]:text-[0.82rem] break-words">
-                Explore the {faculty.department} at {institutionName} and learn from faculty like {faculty.full_name}.
+                Explore the {faculty.department} at {institutionName} and learn from senior learners like {faculty.full_name}.
               </p>
               <div className="flex gap-3 justify-center flex-wrap max-[768px]:flex-col max-[768px]:items-center">
                 <Link href="/admissions/enquiry" className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-[0.88rem] bg-[#ffde59] text-[#085533] shadow-[0_4px_20px_rgba(255,222,89,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(255,222,89,0.45)]">
                   <Mail className="w-4 h-4" /> Enquire Now
                 </Link>
                 <Link href="/faculty" className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-[0.88rem] text-white/85 border border-white/20 transition-all hover:border-[#ffde59] hover:text-[#ffde59] hover:-translate-y-1">
-                  <Users className="w-4 h-4" /> View All Faculty
+                  <Users className="w-4 h-4" /> View All Senior Learners
                 </Link>
               </div>
             </div>
@@ -596,7 +596,7 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
             <section className="reveal bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-5 sm:p-8 mb-5 sm:mb-6 shadow-sm">
               <div className="flex items-center gap-3.5 mb-6">
                 <div className="w-[42px] h-[42px] max-[480px]:w-[36px] max-[480px]:h-[36px] rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(26,115,167,0.08)', color: '#1a73a7' }}><Users className="w-5 h-5" /></div>
-                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>{faculty.department} &mdash; Faculty</h2>
+                <h2 className="text-[1.45rem] max-[480px]:text-[1.15rem] text-[#1a2a1e] break-words" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>{faculty.department} &mdash; Senior Learners</h2>
               </div>
               <div className="grid grid-cols-4 max-[768px]:grid-cols-2 max-[480px]:grid-cols-2 gap-4">
                 {relatedFaculty.map(f => {
@@ -615,7 +615,7 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
               </div>
               <div className="text-center mt-5">
                 <Link href="/faculty" className="inline-flex items-center gap-1.5 text-[0.85rem] font-semibold text-[#0b6d41] hover:text-[#085533] hover:gap-2.5 transition-all">
-                  View All Faculty <span className="transition-transform">→</span>
+                  View All Senior Learners <span className="transition-transform">→</span>
                 </Link>
               </div>
             </section>

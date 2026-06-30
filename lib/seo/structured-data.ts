@@ -179,7 +179,7 @@ export function generateOrganizationSchema(): Record<string, unknown> {
       '@type': 'QuantitativeValue',
       'minValue': config.numberOfEmployees.min,
       'maxValue': config.numberOfEmployees.max,
-      'unitText': 'employees',
+      'unitText': 'team members',
     }
   }
 

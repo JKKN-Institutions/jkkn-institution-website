@@ -75,7 +75,7 @@ export const SportsPageSchema = z.object({
       icon: 'Award'
     },
     {
-      title: 'Expert Instructors',
+      title: 'Expert Senior Learners',
       description: '<p>Our certified and experienced trainers are dedicated to helping you achieve your fitness goals with personalized guidance and support.</p>',
       icon: 'Users'
     },
@@ -86,7 +86,7 @@ export const SportsPageSchema = z.object({
     },
     {
       title: 'Free Memberships',
-      description: '<p>Complimentary access for all students, staff, and community members - because fitness should be accessible to everyone.</p>',
+      description: '<p>Complimentary access for all learners, team members, and community members - because fitness should be accessible to everyone.</p>',
       icon: 'Heart'
     },
     {

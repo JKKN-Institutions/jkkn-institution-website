@@ -22,7 +22,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
-    { label: 'View Curriculum', link: '#curriculum', variant: 'secondary' },
+    { label: 'View Learning Framework', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: 'AICTE Approved',
   admissionBadge: 'Admissions Open 2026-27',
@@ -33,9 +33,9 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   overviewTitle: 'Program Overview',
   overviewSubtitle: 'Why Choose MBA at JKKN?',
   overviewDescription: [
-    'Our MBA program is designed to create future business leaders who can navigate the complexities of modern business environments. With a perfect blend of theoretical knowledge and practical application, we prepare our students for senior management roles across industries.',
-    'The curriculum emphasizes case-based learning, live projects, and industry interactions. Students gain exposure to real-world business challenges through internships with leading corporations, consulting projects, and entrepreneurship initiatives.',
-    'Our faculty comprises experienced academicians and industry practitioners who bring diverse perspectives to the classroom. The program also features regular guest lectures from CEOs, entrepreneurs, and business leaders, providing invaluable insights into current business practices and trends.',
+    'Our MBA program is designed to create future business leaders who can navigate the complexities of modern business environments. With a perfect blend of theoretical knowledge and practical application, we prepare our learners for senior management roles across industries.',
+    'The learning framework emphasizes case-based learning, live projects, and industry interactions. Learners gain exposure to real-world business challenges through internships with leading corporations, consulting projects, and entrepreneurship initiatives.',
+    'Our senior learners comprises experienced academicians and industry practitioners who bring diverse perspectives to the learning studio. The program also features regular guest lectures from CEOs, entrepreneurs, and business leaders, providing invaluable insights into current business practices and trends.',
   ],
   overviewImage:
     '/images/courses/mba/JKKN MBA (1).png',
@@ -59,9 +59,9 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     },
     {
       icon: 'GraduationCap',
-      title: 'Expert Faculty',
+      title: 'Expert Senior Learners',
       description:
-        'Learn from experienced professors and industry practitioners with deep expertise in their domains.',
+        'Learn from experienced senior learners and industry practitioners with deep expertise in their domains.',
     },
     {
       icon: 'Briefcase',
@@ -79,13 +79,13 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
       icon: 'Lightbulb',
       title: 'Entrepreneurship Cell',
       description:
-        'Incubation support, mentorship, and funding assistance for students aspiring to start their own ventures.',
+        'Incubation support, mentorship, and funding assistance for learners aspiring to start their own ventures.',
     },
     {
       icon: 'BookOpen',
       title: 'Research Opportunities',
       description:
-        'Engage in cutting-edge research with faculty guidance and present papers at national and international conferences.',
+        'Engage in cutting-edge research with senior learners guidance and present papers at national and international conferences.',
     },
     {
       icon: 'BarChart3',
@@ -129,7 +129,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     {
       title: 'Human Resource Management',
       description:
-        'Learn talent acquisition, performance management, organizational behavior, employee relations, and HR analytics to build high-performing teams.',
+        'Learn talent acquisition, performance management, organizational behavior, team member relations, and HR analytics to build high-performing teams.',
       icon: 'Users',
       courses: [
         'Talent Management',
@@ -157,7 +157,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   // ==========================================
   // Curriculum (2 Years - 4 Semesters)
   // ==========================================
-  curriculumTitle: 'MBA Curriculum Structure',
+  curriculumTitle: 'MBA Learning Framework Structure',
   curriculumYears: [
     {
       year: 1,
@@ -189,7 +189,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
             { code: 'MB25C08', name: 'Business Research Methods', credits: 3 },
             { code: 'MB25202', name: 'Business Analytics', credits: 3 },
             { code: 'MB25C10', name: 'Marketing Management', credits: 3 },
-            { code: 'MB25203', name: 'Creativity and Innovation Laboratory', credits: 3 },
+            { code: 'MB25203', name: 'Creativity and Innovation Learning Lab', credits: 3 },
             { code: 'MB25204', name: 'Data analysis and Business Modelling', credits: 3 },
           ],
         },
@@ -236,7 +236,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     },
     {
       criteria:
-        'Valid scores in entrance exams: TANCET, CAT, MAT, XAT, CMAT, or ATMA',
+        'Valid scores in entrance learning assessments: TANCET, CAT, MAT, XAT, CMAT, or ATMA',
     },
     {
       criteria:
@@ -244,7 +244,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     },
     {
       criteria:
-        'Candidates appearing for final year exams can apply provisionally',
+        'Candidates appearing for final year learning assessments can apply provisionally',
     },
     {
       criteria:
@@ -255,7 +255,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   requiredDocuments: [
     'UG Degree Certificate and Mark Sheets (all semesters)',
     '10th and 12th Standard Mark Sheets & Certificates',
-    'Entrance Exam Scorecard (TANCET/CAT/MAT/XAT/CMAT/ATMA)',
+    'Entrance Learning Assessment Scorecard (TANCET/CAT/MAT/XAT/CMAT/ATMA)',
     'Transfer Certificate (TC) from previous institution',
     'Community Certificate (if applicable for reserved category)',
     'Passport size photographs (8 copies)',
@@ -272,14 +272,14 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
       step: 1,
       title: 'Online Application',
       description:
-        'Fill out the online application form with personal and academic details. Upload required documents and entrance exam scores.',
+        'Fill out the online application form with personal and academic details. Upload required documents and entrance learning assessment scores.',
       icon: 'FileText',
     },
     {
       step: 2,
-      title: 'Entrance Exam',
+      title: 'Entrance Learning Assessment',
       description:
-        'Submit valid TANCET/CAT/MAT/XAT/CMAT/ATMA scores. Candidates will be shortlisted based on entrance exam performance.',
+        'Submit valid TANCET/CAT/MAT/XAT/CMAT/ATMA scores. Candidates will be shortlisted based on entrance learning assessment performance.',
       icon: 'UserCheck',
     },
     {
@@ -318,9 +318,9 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   feeTitle: 'Fee Structure (Annual)',
   feeBreakdown: [
     { component: 'Tuition Fee', amount: '₹1,20,000' },
-    { component: 'Examination Fee', amount: '₹5,000' },
+    { component: 'Learning Assessment Fee', amount: '₹5,000' },
     { component: 'Library Fee', amount: '₹3,000' },
-    { component: 'Computer Lab Fee', amount: '₹4,000' },
+    { component: 'Computer Learning Lab Fee', amount: '₹4,000' },
     { component: 'Sports & Extracurricular', amount: '₹2,000' },
     { component: 'Insurance', amount: '₹1,000' },
     { component: 'Alumni Association Fee', amount: '₹500' },
@@ -328,7 +328,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     { component: 'Total Annual Fee', amount: '₹1,40,000', isTotal: true },
   ],
   feeDisclaimer:
-    '*Fee structure is subject to change. Installment payment options available. Scholarships available for meritorious students.',
+    '*Fee structure is subject to change. Installment payment options available. Scholarships available for meritorious learners.',
 
   // ==========================================
   // Career Opportunities
@@ -360,7 +360,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
       icon: 'Users',
       title: 'HR Manager',
       description:
-        'Manage talent acquisition, employee development, performance management, and organizational culture.',
+        'Manage talent acquisition, team member development, performance management, and organizational culture.',
       avgSalary: '5-9 LPA',
     },
     {
@@ -451,16 +451,16 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   facilitiesTitle: 'World-Class Facilities',
   facilities: [
     {
-      name: 'Smart Classrooms',
+      name: 'Smart Learning Studios',
       description:
-        'Technology-enabled classrooms with projectors, audio systems, and video conferencing for interactive learning experiences.',
+        'Technology-enabled learning studios with projectors, audio systems, and video conferencing for interactive learning experiences.',
       image:
         '/images/engineering/classrooms/classroom-01.jpg',
     },
     {
-      name: 'Computer Labs',
+      name: 'Computer Learning Labs',
       description:
-        'State-of-the-art computer labs with latest software for analytics, simulations, and business applications.',
+        'State-of-the-art computer learning labs with latest software for analytics, simulations, and business applications.',
       image:
         '/images/engineering/labs/cse/cse-lab-01.jpg',
     },
@@ -474,7 +474,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     {
       name: 'Seminar Halls',
       description:
-        'Spacious auditoriums and seminar halls for guest lectures, conferences, and student presentations.',
+        'Spacious auditoriums and seminar halls for guest lectures, conferences, and learner presentations.',
       image:
         '/images/engineering/senthuraja-hall/senthuraja-hall-02.jpg',
     },
@@ -486,7 +486,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     {
       name: 'Entrepreneurship Cell',
       description:
-        'Incubation center with mentorship programs, funding assistance, and co-working spaces for student startups.',
+        'Incubation center with mentorship programs, funding assistance, and co-working spaces for learner startups.',
     },
     {
       name: 'Sports & Recreation',
@@ -503,46 +503,46 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   // ==========================================
   // Faculty
   // ==========================================
-  facultyTitle: 'Our Distinguished Faculty',
+  facultyTitle: 'Our Distinguished Senior Learners',
   faculty: [
     {
       name: 'Dr.G.MOHANRAJ',
-      designation: 'Associate Professor',
+      designation: 'Associate Senior Learner',
       qualification: 'MBA., Ph.D',
       specialization: 'HR & Marketing',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs.C.VIMALA',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'MBA., M.Phil',
       specialization: 'Finance and Systems',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mr.V.P.ARUN',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'MBA',
       specialization: 'HR & Marketing',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs.G.SARANYA',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'MBA',
       specialization: 'HR and Finance',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs.V.RAJESWARI',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'MBA',
       specialization: 'HR and Finance',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs.B.RAMYA',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'MBA',
       specialization: 'HR & Marketing',
       image: '/images/faculty/placeholder-avatar.jpg',
@@ -557,12 +557,12 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     {
       question: 'What is the duration of the MBA program?',
       answer:
-        'The MBA program is a 2-year full-time course divided into 4 semesters. Each academic year consists of two semesters with examinations at the end of each semester.',
+        'The MBA program is a 2-year full-time course divided into 4 semesters. Each academic year consists of two semesters with learning assessments at the end of each semester.',
     },
     {
       question: 'What specializations are offered in the MBA program?',
       answer:
-        'We offer four specializations: Marketing Management, Financial Management, Human Resource Management, and Operations Management. Students choose their specialization in the second year after completing core courses in the first year.',
+        'We offer four specializations: Marketing Management, Financial Management, Human Resource Management, and Operations Management. Learners choose their specialization in the second year after completing core courses in the first year.',
     },
     {
       question: 'What are the eligibility criteria for MBA admission?',
@@ -572,7 +572,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     {
       question: 'How much is the MBA program fee?',
       answer:
-        'The total annual fee is ₹1,40,000, which includes tuition, examination, library, computer lab, and other charges. Installment payment options are available. Scholarships and fee concessions are provided for meritorious students and reserved categories.',
+        'The total annual fee is ₹1,40,000, which includes tuition, learning assessment, library, computer learning lab, and other charges. Installment payment options are available. Scholarships and fee concessions are provided for meritorious learners and reserved categories.',
     },
     {
       question: 'What is the placement record for MBA graduates?',
@@ -582,27 +582,27 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     {
       question: 'Can I pursue MBA without work experience?',
       answer:
-        'Yes, work experience is not mandatory for admission. However, candidates with relevant work experience may have an advantage during the selection process and can bring practical perspectives to classroom discussions. We welcome both fresh graduates and experienced professionals.',
+        'Yes, work experience is not mandatory for admission. However, candidates with relevant work experience may have an advantage during the selection process and can bring practical perspectives to learning studio discussions. We welcome both fresh graduates and experienced professionals.',
     },
     {
       question: 'What is the admission process?',
       answer:
-        'The admission process includes online application submission with entrance exam scores, followed by group discussion and personal interview for shortlisted candidates. Final selection is based on entrance exam scores, GD-PI performance, and academic records. Document verification is done before final admission.',
+        'The admission process includes online application submission with entrance learning assessment scores, followed by group discussion and personal interview for shortlisted candidates. Final selection is based on entrance learning assessment scores, GD-PI performance, and academic records. Document verification is done before final admission.',
     },
     {
       question: 'Are there internship opportunities during the MBA program?',
       answer:
-        'Yes, a summer internship project is mandatory after the first year. Students work with companies for 8-10 weeks on live projects. Our placement cell helps students secure internships with reputed organizations. Many students receive pre-placement offers based on their internship performance.',
+        'Yes, a summer internship project is mandatory after the first year. Learners work with companies for 8-10 weeks on live projects. Our placement cell helps learners secure internships with reputed organizations. Many learners receive pre-placement offers based on their internship performance.',
     },
     {
       question: 'What kind of campus facilities are available?',
       answer:
-        'We offer world-class facilities including smart classrooms with audio-visual aids, computer labs with business software, digital library with e-resources, seminar halls, dedicated placement cell, entrepreneurship incubation center, sports facilities, and hygienic cafeteria.',
+        'We offer world-class facilities including smart learning studios with audio-visual aids, computer learning labs with business software, digital library with e-resources, seminar halls, dedicated placement cell, entrepreneurship incubation center, sports facilities, and hygienic cafeteria.',
     },
     {
       question: 'Is hostel accommodation available?',
       answer:
-        'Yes, separate hostel facilities are available for boys and girls with modern amenities including Wi-Fi, mess, recreation rooms, and 24/7 security. Hostel fees are separate from academic fees. Priority is given to outstation students, and accommodation is subject to availability.',
+        'Yes, separate hostel facilities are available for boys and girls with modern amenities including Wi-Fi, mess, recreation rooms, and 24/7 security. Hostel fees are separate from academic fees. Priority is given to outstation learners, and accommodation is subject to availability.',
     },
   ],
 

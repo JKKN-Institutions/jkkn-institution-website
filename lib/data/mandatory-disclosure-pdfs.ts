@@ -52,16 +52,16 @@ export const MANDATORY_DISCLOSURE_PDFS: PdfLinkConfig[] = [
     year: '2024-2025',
   },
   {
-    title: 'Faculty List with Qualifications',
+    title: 'Senior Learners List with Qualifications',
     driveUrl: 'YOUR_GOOGLE_DRIVE_LINK_HERE',
-    description: 'Complete faculty list with qualifications and experience',
+    description: 'Complete senior learners list with qualifications and experience',
     category: 'Academic Information',
     year: '2024-2025',
   },
   {
-    title: 'Student-Teacher Ratio',
+    title: 'Learner-Senior Learner Ratio',
     driveUrl: 'YOUR_GOOGLE_DRIVE_LINK_HERE',
-    description: 'Department-wise student-teacher ratio',
+    description: 'Department-wise learner-senior learner ratio',
     category: 'Academic Information',
     year: '2024-2025',
   },
@@ -77,13 +77,13 @@ export const MANDATORY_DISCLOSURE_PDFS: PdfLinkConfig[] = [
   {
     title: 'Campus Infrastructure',
     driveUrl: 'YOUR_GOOGLE_DRIVE_LINK_HERE',
-    description: 'Details of classrooms, labs, library, and facilities',
+    description: 'Details of learning studios, learning labs, library, and facilities',
     category: 'Infrastructure',
   },
   {
-    title: 'Laboratory Facilities',
+    title: 'Learning Lab Facilities',
     driveUrl: 'YOUR_GOOGLE_DRIVE_LINK_HERE',
-    description: 'Department-wise laboratory details with equipment list',
+    description: 'Department-wise learning lab details with equipment list',
     category: 'Infrastructure',
   },
   {
@@ -154,7 +154,7 @@ export const MANDATORY_DISCLOSURE_PDFS: PdfLinkConfig[] = [
 
   // Examination & Results
   {
-    title: 'Examination Results',
+    title: 'Learning Assessment Results',
     driveUrl: 'YOUR_GOOGLE_DRIVE_LINK_HERE',
     description: 'Pass percentage and university ranks',
     category: 'Results',
@@ -202,7 +202,7 @@ export const MANDATORY_DISCLOSURE_PDFS: PdfLinkConfig[] = [
   {
     title: 'Code of Conduct',
     driveUrl: 'YOUR_GOOGLE_DRIVE_LINK_HERE',
-    description: 'Code of conduct for students and staff',
+    description: 'Code of conduct for learners and team members',
     category: 'Policies',
   },
   {

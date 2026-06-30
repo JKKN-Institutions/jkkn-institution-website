@@ -210,13 +210,13 @@ const COLLEGES: Institution[] = [
     url: 'https://edu.jkkn.ac.in/',
     isExternal: true,
     description:
-      'B.Ed (Bachelor of Education) program. NCTE recognized. Trains future teachers across multiple subject specializations.',
+      'B.Ed (Bachelor of Education) program. NCTE recognized. Trains future senior learners across multiple subject specializations.',
     visitLabel: 'Visit Education College',
     alternateName: ['JKKN B.Ed College'],
     schemaType: 'CollegeOrUniversity',
     schemaId: 'https://edu.jkkn.ac.in/#organization',
     schemaDescription:
-      'NCTE recognized B.Ed program established 2016. Trains future teachers across multiple subject specializations.',
+      'NCTE recognized B.Ed program established 2016. Trains future senior learners across multiple subject specializations.',
     foundedYear: 2016,
     approval: 'NCTE Recognized',
     affiliation: 'TNTEU',
@@ -235,7 +235,7 @@ const SCHOOLS: Institution[] = [
     url: 'https://school.jkkn.ac.in/',
     isExternal: true,
     description:
-      'Matriculation Board curriculum from LKG to Class 12. Smart classrooms, sports facilities, transport coverage across Erode and Salem.',
+      'Matriculation Board curriculum from LKG to Class 12. Smart learning studios, sports facilities, transport coverage across Erode and Salem.',
     visitLabel: 'Visit Matric School',
     alternateName: ['JKKN Matric'],
     schemaType: 'HighSchool',
@@ -325,11 +325,11 @@ const FAQS = [
   },
   {
     q: 'How big is the JKKN campus?',
-    a: 'JKKN\'s main campus spans 70 acres on a single integrated site at Komarapalayam, accommodating all 9 institutions — academic blocks, laboratories, libraries, separate hostels for boys and girls, sports facilities, a 350-bed dental teaching hospital, auditoriums, and transport hubs serving Erode and Salem corridors.',
+    a: 'JKKN\'s main campus spans 70 acres on a single integrated site at Komarapalayam, accommodating all 9 institutions — academic blocks, learning labs, libraries, separate hostels for boys and girls, sports facilities, a 350-bed dental teaching hospital, auditoriums, and transport hubs serving Erode and Salem corridors.',
   },
   {
     q: 'Are JKKN colleges autonomous?',
-    a: 'Two JKKN colleges hold autonomous status: JKKN College of Engineering and Technology (Autonomous, under Anna University) and JKKN College of Arts and Science (Autonomous, under Periyar University). Other colleges follow their parent university curriculum while exercising independent academic governance.',
+    a: 'Two JKKN colleges hold autonomous status: JKKN College of Engineering and Technology (Autonomous, under Anna University) and JKKN College of Arts and Science (Autonomous, under Periyar University). Other colleges follow their parent university learning framework while exercising independent academic governance.',
   },
   {
     q: 'How do I apply for JKKN admission?',
@@ -720,7 +720,7 @@ function pageGraphSchema() {
         areaServed: { '@id': ORG_ID },
         audience: {
           '@type': 'EducationalAudience',
-          educationalRole: 'student',
+          educationalRole: 'learner',
         },
       })),
 
@@ -1111,8 +1111,8 @@ export default function MainOurInstitutionsPage() {
             </h2>
             <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
               Foundational education from kindergarten through Class 12, preparing
-              students for higher education at JKKN&apos;s own colleges or elsewhere — with
-              smart classrooms, sports facilities, and holistic development.
+              learners for higher education at JKKN&apos;s own colleges or elsewhere — with
+              smart learning studios, sports facilities, and holistic development.
             </p>
           </div>
 
@@ -1203,10 +1203,10 @@ export default function MainOurInstitutionsPage() {
               Campus Services
             </span>
             <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-[2.25rem]">
-              <span className="text-secondary">Student Services</span> & Facilities
+              <span className="text-secondary">Learner Services</span> & Facilities
             </h2>
             <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Everything a student needs on a single integrated 70-acre campus — housing,
+              Everything a learner needs on a single integrated 70-acre campus — housing,
               transport, libraries, sports, and a teaching hospital.
             </p>
           </div>
@@ -1242,10 +1242,10 @@ export default function MainOurInstitutionsPage() {
           <div className="mx-auto mb-10 max-w-3xl text-center">
             <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider text-primary">
               <Star className="h-3.5 w-3.5" />
-              Student Voices
+              Learner Voices
             </span>
             <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-[2.25rem]">
-              What Students &amp; Parents <span className="text-secondary">Say</span>
+              What Learners &amp; Parents <span className="text-secondary">Say</span>
             </h2>
             <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
               <StarRow rating={Math.round(parseFloat(AGGREGATE_RATING.ratingValue))} />

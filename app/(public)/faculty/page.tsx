@@ -7,11 +7,11 @@ import { MainInstitutionPageSchema } from '@/components/seo/main-institution/mai
 import { FACULTY_FAQS } from '@/lib/seo/main-institution/page-content'
 
 export const metadata: Metadata = {
-  title: 'Our Faculty | JKKN College of Engineering & Technology',
-  description: 'Meet our distinguished faculty members at JKKN College of Engineering & Technology. Experienced professors and researchers across all departments.',
+  title: 'Our Senior Learners | JKKN College of Engineering & Technology',
+  description: 'Meet our distinguished senior learners at JKKN College of Engineering & Technology. Experienced senior learners and researchers across all departments.',
   openGraph: {
-    title: 'Our Faculty | JKKN College of Engineering & Technology',
-    description: 'Meet our distinguished faculty members at JKKN College of Engineering & Technology.',
+    title: 'Our Senior Learners | JKKN College of Engineering & Technology',
+    description: 'Meet our distinguished senior learners at JKKN College of Engineering & Technology.',
     type: 'website',
   },
 }
@@ -42,15 +42,15 @@ export default function FacultyPage() {
       <MainInstitutionPageSchema
         webpage={{
           path: '/faculty',
-          name: 'Faculty Directory | JKKN Institutions',
+          name: 'Senior Learners Directory | JKKN Institutions',
           description:
-            'Meet the distinguished faculty at JKKN Institutions — PhD-qualified professors, postgraduate specialists, and industry-experienced educators across dental, pharmacy, engineering, nursing, and arts & science disciplines.',
+            'Meet the distinguished senior learners at JKKN Institutions — PhD-qualified senior learners, postgraduate specialists, and industry-experienced senior learners across dental, pharmacy, engineering, nursing, and arts & science disciplines.',
           pageType: 'CollectionPage',
-          keywords: ['JKKN faculty', 'JKKN professors', 'JKKN teaching staff'],
+          keywords: ['JKKN senior learners', 'JKKN senior learners', 'JKKN senior learners'],
           speakableSelectors: ['h1', '[data-speakable="faculty-intro"]'],
           breadcrumbs: [
             { name: 'Home', url: '/' },
-            { name: 'Faculty', url: '/faculty' },
+            { name: 'Senior Learners', url: '/faculty' },
           ],
         }}
         faqs={FACULTY_FAQS}
@@ -60,13 +60,13 @@ export default function FacultyPage() {
         <div className="text-center mb-10">
           <p className="text-sm font-bold uppercase tracking-[2.5px] text-[#0b6d41] mb-2">
             <span className="inline-block w-6 h-0.5 bg-[#0b6d41] mr-2 align-middle" />
-            Our Faculty
+            Our Senior Learners
           </p>
           <h1 className="text-3xl sm:text-4xl font-bold text-[#1a2a1e]" style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}>
-            Meet Our Distinguished Faculty
+            Meet Our Distinguished Senior Learners
           </h1>
           <p className="mt-3 text-[#3d5443] max-w-2xl mx-auto">
-            Dedicated educators and researchers committed to academic excellence and innovation.
+            Dedicated senior learners and researchers committed to academic excellence and innovation.
           </p>
         </div>
 

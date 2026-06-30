@@ -56,7 +56,7 @@ function getFeatureIcon(title: string) {
   if (lower.includes('24') || lower.includes('round') || lower.includes('clock')) return Clock
   if (lower.includes('equip') || lower.includes('medical') || lower.includes('aid'))
     return Stethoscope
-  if (lower.includes('train') || lower.includes('staff') || lower.includes('team'))
+  if (lower.includes('train') || lower.includes('team members') || lower.includes('team'))
     return HeartPulse
   if (lower.includes('safe') || lower.includes('secur')) return Shield
   if (lower.includes('emergency') || lower.includes('rapid') || lower.includes('fast'))
@@ -205,7 +205,7 @@ export function AmbulanceServicePage({
           </h1>
 
           <p className="mt-4 text-base md:text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
-            Round-the-clock ambulance service for students, staff, and community
+            Round-the-clock ambulance service for learners, team members, and community
           </p>
 
           {/* Decorative line */}

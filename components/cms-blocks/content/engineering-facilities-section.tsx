@@ -71,7 +71,7 @@ export const EngineeringFacilitiesSectionPropsSchema = z.object({
   })).default([
     {
       title: 'Computer Centers',
-      description: 'Modern computer labs with high-performance systems',
+      description: 'Modern computer learning labs with high-performance systems',
       highlight: '500+ Systems',
       icon: 'monitor',
     },
@@ -81,8 +81,8 @@ export const EngineeringFacilitiesSectionPropsSchema = z.object({
       icon: 'wrench',
     },
     {
-      title: 'Research Labs',
-      description: 'Specialized labs for advanced research',
+      title: 'Research Learning Labs',
+      description: 'Specialized learning labs for advanced research',
       highlight: 'AI/ML, IoT, Robotics',
       icon: 'flask',
     },
@@ -184,7 +184,7 @@ export default function EngineeringFacilitiesSection({
   facilities = [
     {
       title: 'Computer Centers',
-      description: 'Modern computer labs with high-performance systems',
+      description: 'Modern computer learning labs with high-performance systems',
       highlight: '500+ Systems',
       icon: 'monitor',
     },
@@ -194,8 +194,8 @@ export default function EngineeringFacilitiesSection({
       icon: 'wrench',
     },
     {
-      title: 'Research Labs',
-      description: 'Specialized labs for advanced research',
+      title: 'Research Learning Labs',
+      description: 'Specialized learning labs for advanced research',
       highlight: 'AI/ML, IoT, Robotics',
       icon: 'flask',
     },

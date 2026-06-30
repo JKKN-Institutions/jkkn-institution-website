@@ -27,7 +27,7 @@ export default function ModernEducationStories({
             link: '#',
         },
         {
-            title: 'Innovation in Robotics Lab',
+            title: 'Innovation in Robotics Learning Lab',
             subtitle: 'Building the Future of Automation',
             image: '/images/hero/engineering-2.jpg',
             link: '#',

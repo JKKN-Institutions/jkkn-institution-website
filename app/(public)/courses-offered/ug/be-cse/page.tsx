@@ -12,7 +12,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'B.E Computer Science and Engineering | JKKN College of Engineering',
   description:
-    'Pursue B.E in Computer Science and Engineering at JKKN College of Engineering & Technology. AICTE approved, NAAC accredited 4-year program with 95%+ placement record. Industry-aligned curriculum covering AI, ML, Cloud Computing, Cybersecurity, and Full Stack Development.',
+    'Pursue B.E in Computer Science and Engineering at JKKN College of Engineering & Technology. AICTE approved, NAAC accredited 4-year program with 95%+ placement record. Industry-aligned learning framework covering AI, ML, Cloud Computing, Cybersecurity, and Full Stack Development.',
   keywords: [
     'BE CSE',
     'Computer Science Engineering',
@@ -44,14 +44,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'B.E Computer Science and Engineering | JKKN College',
     description:
-      'Launch your tech career with B.E. CSE at JKKN. Industry-aligned curriculum, cutting-edge labs, expert faculty, and exceptional placement support with 95%+ placement rate.',
+      'Launch your tech career with B.E. CSE at JKKN. Industry-aligned learning framework, cutting-edge learning labs, expert senior learners, and exceptional placement support with 95%+ placement rate.',
     type: 'website',
     images: [
       {
         url: '/images/courses/be-cse/labs/cse-lab-01.jpg',
         width: 1200,
         height: 630,
-        alt: 'JKKN CSE Laboratory',
+        alt: 'JKKN CSE Learning Lab',
       },
     ],
   },

@@ -467,7 +467,7 @@ function HeroSection({
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src={heroImage || '/images/courses/be-mech/labs/mech-lab-05.jpg'}
-                alt="Students working in Mechanical Engineering laboratory at JKKN"
+                alt="Learners working in Mechanical Engineering learning lab at JKKN"
                 className="w-full h-[500px] object-cover"
               />
               {/* Overlay gradient */}
@@ -834,7 +834,7 @@ function FacilitiesSection({
             {title}
           </h2>
           <p className="text-gray-600 mt-4 max-w-3xl mx-auto text-lg leading-relaxed">
-            Experience hands-on learning in our modern laboratories equipped with industry-standard machinery and equipment.
+            Experience hands-on learning in our modern learning labs equipped with industry-standard machinery and equipment.
           </p>
         </div>
 
@@ -1222,7 +1222,7 @@ function MOUsSection({
         </div>
 
         <p className="text-center text-sm text-gray-600 mt-6">
-          * These MOUs facilitate industry collaborations, internships, and knowledge exchange opportunities for students.
+          * These MOUs facilitate industry collaborations, internships, and knowledge exchange opportunities for learners.
         </p>
       </div>
     </section>

@@ -24,9 +24,9 @@ const ADMISSIONS_FAQS = [
       'Yes! JKKN is fully approved by AICTE (Engineering & Pharmacy), UGC (Arts & Science), DCI (Dental), PCI (Pharmacy), INC (Nursing), ISO 9001, and is NAAC A accredited. Our colleges are affiliated with Anna University and Periyar University.',
   },
   {
-    question: 'What scholarships are available for students?',
+    question: 'What scholarships are available for learners?',
     answer:
-      'JKKN offers merit scholarships (up to 100% tuition), sports scholarships, girl student scholarships, SC/ST/OBC/Minority government scholarships, EWS financial aid, and alumni referral discounts. Scholarships can cover up to 100% of tuition fees based on eligibility.',
+      'JKKN offers merit scholarships (up to 100% tuition), sports scholarships, girl learner scholarships, SC/ST/OBC/Minority government scholarships, EWS financial aid, and alumni referral discounts. Scholarships can cover up to 100% of tuition fees based on eligibility.',
   },
   {
     question: 'Does JKKN offer hostel and transportation facilities?',
