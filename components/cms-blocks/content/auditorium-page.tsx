@@ -70,7 +70,7 @@ const defaultFeatures: FeatureItem[] = [
   { text: 'High-tech sound and lighting systems', icon: 'Speaker' },
   { text: 'Stage equipment and props', icon: 'Theater' },
   { text: 'Excellent acoustics', icon: 'Volume2' },
-  { text: 'Professional staff', icon: 'UserCheck' },
+  { text: 'Professional team members', icon: 'UserCheck' },
 ]
 
 /**

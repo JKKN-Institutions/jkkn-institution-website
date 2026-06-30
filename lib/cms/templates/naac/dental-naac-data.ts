@@ -41,7 +41,7 @@ export const DENTAL_NAAC_DATA: NAACPageProps = {
     {
       id: 'criterion-5',
       label: 'Criterion V',
-      description: 'Student Support and Progression',
+      description: 'Learner Support and Progression',
     },
     {
       id: 'criterion-6',
@@ -85,7 +85,7 @@ export const DENTAL_NAAC_DATA: NAACPageProps = {
       id: 'overview',
       heading: 'Institutional Information for Quality Assessment (IIQA)',
       overview:
-        'Comprehensive institutional information for JKKN Dental College covering dental education programs, clinical facilities, faculty expertise, research infrastructure, and patient care services.',
+        'Comprehensive institutional information for JKKN Dental College covering dental education programs, clinical facilities, senior learners expertise, research infrastructure, and patient care services.',
       documents: [
         {
           title: 'IIQA Report 2024 - Dental College',
@@ -105,8 +105,8 @@ export const DENTAL_NAAC_DATA: NAACPageProps = {
         },
       ],
       metrics: [
-        { label: 'Dental Students', value: '600+' },
-        { label: 'Faculty Members', value: '85+' },
+        { label: 'Dental Learners', value: '600+' },
+        { label: 'Senior Learners', value: '85+' },
         { label: 'Dental Chairs', value: '120+' },
         { label: 'Annual Patients', value: '50,000+' },
       ],
@@ -115,11 +115,11 @@ export const DENTAL_NAAC_DATA: NAACPageProps = {
       id: 'criterion-1',
       heading: 'Criterion I: Curricular Aspects',
       overview:
-        'Dental curriculum aligned with DCI regulations and global dental education standards. Focus on competency-based education, integrated teaching, and evidence-based dentistry.',
+        'Dental learning framework aligned with DCI regulations and global dental education standards. Focus on competency-based education, integrated teaching, and evidence-based dentistry.',
       documents: [
         {
-          title: 'Dental Curriculum Framework',
-          description: 'DCI-compliant curriculum for BDS and MDS programs',
+          title: 'Dental Learning Framework Framework',
+          description: 'DCI-compliant learning framework for BDS and MDS programs',
           fileUrl: '/documents/naac/dental/curriculum-framework.pdf',
           fileType: 'pdf',
           size: '3.6 MB',
@@ -139,7 +139,7 @@ export const DENTAL_NAAC_DATA: NAACPageProps = {
       id: 'criterion-2',
       heading: 'Criterion II: Teaching-Learning and Evaluation',
       overview:
-        'Patient-centric clinical training with emphasis on hands-on experience, case-based learning, and continuous professional development for faculty and students.',
+        'Patient-centric clinical training with emphasis on hands-on experience, case-based learning, and continuous professional development for senior learners and learners.',
       documents: [
         {
           title: 'Clinical Training Program',
@@ -150,8 +150,8 @@ export const DENTAL_NAAC_DATA: NAACPageProps = {
           uploadDate: '2024-03-01',
         },
         {
-          title: 'Faculty Development in Medical Education',
-          description: 'FDPs and workshops for dental faculty',
+          title: 'Senior Learners Development in Medical Education',
+          description: 'FDPs and workshops for dental senior learners',
           fileUrl: '/documents/naac/dental/faculty-development.pdf',
           fileType: 'pdf',
           size: '3.1 MB',
@@ -187,7 +187,7 @@ export const DENTAL_NAAC_DATA: NAACPageProps = {
       id: 'criterion-4',
       heading: 'Criterion IV: Infrastructure and Learning Resources',
       overview:
-        'Modern dental hospital with 120+ dental chairs, advanced diagnostic equipment, specialized departments, digital dental lab, and comprehensive library resources.',
+        'Modern dental hospital with 120+ dental chairs, advanced diagnostic equipment, specialized departments, digital dental learning lab, and comprehensive library resources.',
       documents: [
         {
           title: 'Clinical Infrastructure Report',
@@ -209,12 +209,12 @@ export const DENTAL_NAAC_DATA: NAACPageProps = {
     },
     {
       id: 'criterion-5',
-      heading: 'Criterion V: Student Support and Progression',
+      heading: 'Criterion V: Learner Support and Progression',
       overview:
-        'Comprehensive student support through mentoring, career guidance, competitive exam coaching, and strong alumni network. Focus on holistic development of dental professionals.',
+        'Comprehensive learner support through mentoring, career guidance, competitive learning assessment coaching, and strong alumni network. Focus on holistic development of dental professionals.',
       documents: [
         {
-          title: 'Student Support Services',
+          title: 'Learner Support Services',
           description: 'Mentoring, counseling, and welfare measures',
           fileUrl: '/documents/naac/dental/student-support.pdf',
           fileType: 'pdf',
@@ -223,7 +223,7 @@ export const DENTAL_NAAC_DATA: NAACPageProps = {
         },
         {
           title: 'MDS Entrance Coaching',
-          description: 'Preparation for postgraduate entrance exams',
+          description: 'Preparation for postgraduate entrance learning assessments',
           fileUrl: '/documents/naac/dental/mds-coaching.pdf',
           fileType: 'pdf',
           size: '2.1 MB',
@@ -235,7 +235,7 @@ export const DENTAL_NAAC_DATA: NAACPageProps = {
       id: 'criterion-6',
       heading: 'Criterion VI: Governance, Leadership and Management',
       overview:
-        'Effective governance with participatory management involving faculty, students, and stakeholders. Strong IQAC ensuring continuous quality enhancement in academic and clinical activities.',
+        'Effective governance with participatory management involving senior learners, learners, and stakeholders. Strong IQAC ensuring continuous quality enhancement in academic and clinical activities.',
       documents: [
         {
           title: 'Institutional Governance Structure',
@@ -323,7 +323,7 @@ export const DENTAL_NAAC_DATA: NAACPageProps = {
       id: 'feedback',
       heading: 'Stakeholder Feedback',
       overview:
-        'Comprehensive feedback collected from students, faculty, employers, alumni, and other stakeholders across five academic years, demonstrating our commitment to continuous quality improvement.',
+        'Comprehensive feedback collected from learners, senior learners, employers, alumni, and other stakeholders across five academic years, demonstrating our commitment to continuous quality improvement.',
       documents: [
         {
           title: '2018-2019 Feedback',

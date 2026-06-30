@@ -59,14 +59,14 @@ export const OurTrustPropsSchema = z.object({
 
 The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 1969 with the mission of providing literacy and empowering women, aiming to upgrade the socio-economic status of the community. Following in her father's footsteps, Smt. N. Sendamaraai, Managing Trustee, expanded the service to offer multi-disciplinary education to both genders. Now, under the umbrella of the Trust, there are nine institutions, including Dental, Pharmacy, Nursing, Education, Engineering, Arts, and Science colleges, as well as Government-Aided Girls' School and Matriculation schools.
 
-The Trust actively engages in various social service activities, including health-oriented services like free dental camps, treatments, surgeries, blood donation drives, and motivational and entrepreneurship awareness camps. It also extends its charitable efforts to provide medical support to the impoverished, assist the destitute, offer natural calamity support, grant educational scholarships to underprivileged students, and foster cultural enrichment. A pioneering establishment of the region since its inception, the Trust's grand service to society remains immense, not only in terms of education but also in community welfare.`).describe('Trust story content'),
+The Trust actively engages in various social service activities, including health-oriented services like free dental camps, treatments, surgeries, blood donation drives, and motivational and entrepreneurship awareness camps. It also extends its charitable efforts to provide medical support to the impoverished, assist the destitute, offer natural calamity support, grant educational scholarships to underprivileged learners, and foster cultural enrichment. A pioneering establishment of the region since its inception, the Trust's grand service to society remains immense, not only in terms of education but also in community welfare.`).describe('Trust story content'),
 
   // Stats
   stats: z.array(TrustStatItemSchema).default([
     { icon: 'Calendar', value: '1969', label: 'Year Established' },
     { icon: 'Building2', value: '9', label: 'Institutions' },
     { icon: 'GraduationCap', value: '50000+', label: 'Alumni' },
-    { icon: 'Users', value: '5000+', label: 'Current Students' },
+    { icon: 'Users', value: '5000+', label: 'Current Learners' },
   ]).describe('Trust statistics'),
 
   // Milestones
@@ -302,7 +302,7 @@ export function OurTrust({
     { icon: 'Calendar', value: '1969', label: 'Year Established' },
     { icon: 'Building2', value: '9', label: 'Institutions' },
     { icon: 'GraduationCap', value: '50000+', label: 'Alumni' },
-    { icon: 'Users', value: '5000+', label: 'Current Students' },
+    { icon: 'Users', value: '5000+', label: 'Current Learners' },
   ]
 
   const defaultMilestones: MilestoneItem[] = [
@@ -319,7 +319,7 @@ export function OurTrust({
 
 The Trust, J.K.K. Rangammal Charitable Trust (Reg No: 33), was established in 1969 with the mission of providing literacy and empowering women, aiming to upgrade the socio-economic status of the community. Following in her father's footsteps, Smt. N. Sendamaraai, Managing Trustee, expanded the service to offer multi-disciplinary education to both genders. Now, under the umbrella of the Trust, there are nine institutions, including Dental, Pharmacy, Nursing, Education, Engineering, Arts, and Science colleges, as well as Government-Aided Girls' School and Matriculation schools.
 
-The Trust actively engages in various social service activities, including health-oriented services like free dental camps, treatments, surgeries, blood donation drives, and motivational and entrepreneurship awareness camps. It also extends its charitable efforts to provide medical support to the impoverished, assist the destitute, offer natural calamity support, grant educational scholarships to underprivileged students, and foster cultural enrichment. A pioneering establishment of the region since its inception, the Trust's grand service to society remains immense, not only in terms of education but also in community welfare.`
+The Trust actively engages in various social service activities, including health-oriented services like free dental camps, treatments, surgeries, blood donation drives, and motivational and entrepreneurship awareness camps. It also extends its charitable efforts to provide medical support to the impoverished, assist the destitute, offer natural calamity support, grant educational scholarships to underprivileged learners, and foster cultural enrichment. A pioneering establishment of the region since its inception, the Trust's grand service to society remains immense, not only in terms of education but also in community welfare.`
 
   const displayStoryContent = storyContent || defaultStoryContent
 

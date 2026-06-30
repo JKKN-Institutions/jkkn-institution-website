@@ -98,10 +98,10 @@ export function StatsCounter({
 
   const defaultStats: StatItem[] = [
     { value: '25', label: 'Years of Excellence' },
-    { value: '15000', label: 'Students' },
+    { value: '15000', label: 'Learners' },
     { value: '95', label: 'Placement Rate' },
     { value: '50', label: 'Courses Offered' },
-    { value: '500', label: 'Expert Faculty' },
+    { value: '500', label: 'Expert Senior Learners' },
     { value: '100', label: 'Industry Partners' },
   ]
 

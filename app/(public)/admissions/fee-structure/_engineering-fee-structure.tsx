@@ -270,7 +270,7 @@ export default function EngineeringFeeStructurePage() {
               <h3 className="text-base font-semibold text-gray-900">Government Quota</h3>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed">
-              Allotted through TNEA counselling by Anna University, Chennai. Tuition fees are regulated by the Tamil Nadu Government and may be revised each academic year. Eligible students pay as per government norms.
+              Allotted through TNEA counselling by Anna University, Chennai. Tuition fees are regulated by the Tamil Nadu Government and may be revised each academic year. Eligible learners pay as per government norms.
             </p>
           </div>
           <div className="rounded-xl border border-[#0b6d41]/15 bg-[#f6faf7] p-6">
@@ -341,7 +341,7 @@ export default function EngineeringFeeStructurePage() {
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#0b6d41] mt-2" />
-              <span>Examination fees, caution deposits, and other university-mandated fees are charged additionally as notified by Anna University.</span>
+              <span>Learning Assessment fees, caution deposits, and other university-mandated fees are charged additionally as notified by Anna University.</span>
             </li>
           </ul>
         </div>

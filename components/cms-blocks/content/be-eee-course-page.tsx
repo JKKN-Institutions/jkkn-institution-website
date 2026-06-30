@@ -414,7 +414,7 @@ function HeroSection({
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src={heroImage || '/images/courses/be-eee/labs/eee-lab-12.jpg'}
-                alt="Students working in EEE laboratory at JKKN"
+                alt="Learners working in EEE learning lab at JKKN"
                 className="w-full h-[500px] object-cover"
               />
               {/* Overlay gradient */}
@@ -896,7 +896,7 @@ function FacilitiesSection({
             {title}
           </h2>
           <p className="text-gray-600 mt-4 max-w-3xl mx-auto text-lg leading-relaxed">
-            Experience hands-on learning in our modern laboratories equipped with industry-standard electrical and electronics equipment.
+            Experience hands-on learning in our modern learning labs equipped with industry-standard electrical and electronics equipment.
           </p>
         </div>
 

@@ -205,7 +205,7 @@ export function InstitutionalDevelopmentPlanPage({
 
   const defaultHighlights = highlights.length > 0 ? highlights : [
     "Strategic goals focused on academic excellence, research, community health, and financial sustainability.",
-    "Robust faculty development and interdisciplinary learning initiatives.",
+    "Robust senior learners development and interdisciplinary learning initiatives.",
     "Comprehensive community engagement through dental camps and outreach programs.",
     "Integration of digital technologies in learning and administration.",
     "Environmentally responsible infrastructure upgrades with green campus initiatives."

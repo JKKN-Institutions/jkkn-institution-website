@@ -21,7 +21,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
-    { label: 'Explore Curriculum', link: '#curriculum', variant: 'secondary' },
+    { label: 'Explore Learning Framework', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: 'Affiliated to Anna University, Chennai',
 
@@ -40,7 +40,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
       icon: 'GraduationCap',
       title: 'Duration & Credits',
       value: '4 Years | 8 Semesters',
-      description: 'The program spans 4 years with 8 semesters totaling 160 credits. Comprehensive curriculum balancing theory, laboratory work, and industrial training.',
+      description: 'The program spans 4 years with 8 semesters totaling 160 credits. Comprehensive learning framework balancing theory, learning lab work, and industrial training.',
     },
     {
       icon: 'CheckCircle',
@@ -63,18 +63,18 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   benefits: [
     {
       icon: 'CheckCircle',
-      title: 'Industry-Aligned Curriculum',
-      description: 'Our curriculum is designed to meet current industry standards covering power systems, renewable energy, smart grids, electric vehicles, and automation technologies used globally.',
+      title: 'Industry-Aligned Learning Framework',
+      description: 'Our learning framework is designed to meet current industry standards covering power systems, renewable energy, smart grids, electric vehicles, and automation technologies used globally.',
     },
     {
       icon: 'CheckCircle',
-      title: 'Expert Faculty',
-      description: 'Learn from highly qualified professors with Ph.D. degrees and extensive industry experience in power systems, electrical machines, control systems, and power electronics.',
+      title: 'Expert Senior Learners',
+      description: 'Learn from highly qualified senior learners with Ph.D. degrees and extensive industry experience in power systems, electrical machines, control systems, and power electronics.',
     },
     {
       icon: 'CheckCircle',
-      title: 'Advanced Laboratories',
-      description: 'Access state-of-the-art laboratories for electrical machines, power systems, power electronics, control systems, renewable energy, and high voltage engineering with modern equipment.',
+      title: 'Advanced Learning Labs',
+      description: 'Access state-of-the-art learning labs for electrical machines, power systems, power electronics, control systems, renewable energy, and high voltage engineering with modern equipment.',
     },
     {
       icon: 'CheckCircle',
@@ -96,7 +96,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   // ==========================================
   // Curriculum (4 Years) - Updated 2025 Syllabus
   // ==========================================
-  curriculumTitle: 'Course Curriculum',
+  curriculumTitle: 'Course Learning Framework',
   curriculumYears: [
     {
       year: 1,
@@ -148,7 +148,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
             { name: 'Electric Circuit Analysis' },
             { name: 'Electronic Devices & Circuits' },
             { name: 'Skill Development Course – I' },
-            { name: 'English Communication Skills Laboratory – II' },
+            { name: 'English Communication Skills Learning Lab – II' },
           ],
         },
         {
@@ -162,9 +162,9 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
             { name: 'DC Machines and Transformers' },
             { name: 'Linear Integrated Circuits' },
             { name: 'Skill Development Course – II' },
-            { name: 'English Communication Skills Laboratory – III' },
-            { name: 'DC Machines and Transformers Laboratory' },
-            { name: 'Electronics Laboratory' },
+            { name: 'English Communication Skills Learning Lab – III' },
+            { name: 'DC Machines and Transformers Learning Lab' },
+            { name: 'Electronics Learning Lab' },
           ],
         },
       ],
@@ -183,8 +183,8 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
             { name: 'Measurements and Instrumentation' },
             { name: 'Skill Development Course – III' },
             { name: 'Industry Oriented Course – I' },
-            { name: 'AC Machines Laboratory' },
-            { name: 'Control and Instrumentation Laboratory' },
+            { name: 'AC Machines Learning Lab' },
+            { name: 'Control and Instrumentation Learning Lab' },
           ],
         },
         {
@@ -217,7 +217,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
             { name: 'Programme Elective – IV' },
             { name: 'Programme Elective – V' },
             { name: 'Project Management' },
-            { name: 'Power System Laboratory' },
+            { name: 'Power System Learning Lab' },
             { name: 'Summer Internship' },
           ],
         },
@@ -356,9 +356,9 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   feeTitle: 'Fee Structure (Annual)',
   feeBreakdown: [
     { component: 'Tuition Fee', amount: '70,000' },
-    { component: 'Lab Fee', amount: '5,000' },
+    { component: 'Learning Lab Fee', amount: '5,000' },
     { component: 'Library Fee', amount: '2,000' },
-    { component: 'Exam Fee', amount: '3,000' },
+    { component: 'Learning Assessment Fee', amount: '3,000' },
     { component: 'Development Fee', amount: '5,000' },
     { component: 'Other Fees', amount: '5,000' },
     { component: 'TOTAL', amount: '90,000', isTotal: true },
@@ -367,51 +367,51 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   // ==========================================
   // Facilities
   // ==========================================
-  facilitiesTitle: 'State-of-the-Art Laboratories',
+  facilitiesTitle: 'State-of-the-Art Learning Labs',
   facilities: [
     {
-      name: 'Electrical Machines Laboratory',
-      description: 'Well-equipped lab with DC machines, transformers, induction motors, synchronous machines, and testing equipment for comprehensive hands-on training in electrical machine operations.',
+      name: 'Electrical Machines Learning Lab',
+      description: 'Well-equipped learning lab with DC machines, transformers, induction motors, synchronous machines, and testing equipment for comprehensive hands-on training in electrical machine operations.',
       image: '/images/courses/be-eee/labs/eee-lab-11.jpg',
     },
     {
-      name: 'Power Systems Laboratory',
-      description: 'Advanced lab with power system simulation software, protection relays, circuit breakers, and equipment for studying power generation, transmission, and distribution.',
+      name: 'Power Systems Learning Lab',
+      description: 'Advanced learning lab with power system simulation software, protection relays, circuit breakers, and equipment for studying power generation, transmission, and distribution.',
       image: '/images/courses/be-eee/labs/eee-lab-18.jpg',
     },
     {
-      name: 'Power Electronics Laboratory',
-      description: 'Modern lab featuring converters, inverters, choppers, cycloconverters, motor drives, and DSP-based control systems for practical training in power electronics applications.',
+      name: 'Power Electronics Learning Lab',
+      description: 'Modern learning lab featuring converters, inverters, choppers, cycloconverters, motor drives, and DSP-based control systems for practical training in power electronics applications.',
       image: '/images/courses/be-eee/labs/eee-lab-07.jpg',
     },
     {
-      name: 'Control Systems Laboratory',
+      name: 'Control Systems Learning Lab',
       description: 'Equipped with PLC trainers, SCADA systems, servo motors, process control trainers, and simulation software for studying linear and nonlinear control systems.',
       image: '/images/courses/be-eee/labs/eee-lab-04.jpg',
     },
     {
-      name: 'High Voltage Engineering Laboratory',
-      description: 'Specialized lab with high voltage testing equipment, impulse generators, transformer testing setups, and insulation testing for understanding HV phenomena.',
+      name: 'High Voltage Engineering Learning Lab',
+      description: 'Specialized learning lab with high voltage testing equipment, impulse generators, transformer testing setups, and insulation testing for understanding HV phenomena.',
       image: '/images/courses/be-eee/labs/eee-lab-17.jpg',
     },
     {
-      name: 'Renewable Energy Laboratory',
-      description: 'Dedicated lab with solar panels, wind turbines, battery storage systems, charge controllers, and hybrid renewable energy setups for sustainable energy education.',
+      name: 'Renewable Energy Learning Lab',
+      description: 'Dedicated learning lab with solar panels, wind turbines, battery storage systems, charge controllers, and hybrid renewable energy setups for sustainable energy education.',
       image: '/images/courses/be-eee/labs/eee-lab-05.jpg',
     },
     {
-      name: 'Measurements & Instrumentation Lab',
-      description: 'Comprehensive lab with analog and digital measuring instruments, transducers, signal conditioning equipment, and data acquisition systems for precision measurements.',
+      name: 'Measurements & Instrumentation Learning Lab',
+      description: 'Comprehensive learning lab with analog and digital measuring instruments, transducers, signal conditioning equipment, and data acquisition systems for precision measurements.',
       image: '/images/courses/be-eee/labs/eee-lab-13.jpg',
     },
     {
-      name: 'Microprocessor & Microcontroller Lab',
-      description: 'Advanced lab with 8085, 8086 microprocessor kits, 8051 microcontroller trainers, ARM processors, and embedded development tools for programming and interfacing practice.',
+      name: 'Microprocessor & Microcontroller Learning Lab',
+      description: 'Advanced learning lab with 8085, 8086 microprocessor kits, 8051 microcontroller trainers, ARM processors, and embedded development tools for programming and interfacing practice.',
       image: '/images/courses/be-eee/labs/eee-lab-06.jpg',
     },
     {
-      name: 'Project Laboratory',
-      description: 'Dedicated space for final year projects and research work with access to advanced equipment, design software, fabrication facilities, and mentorship from faculty.',
+      name: 'Project Learning Lab',
+      description: 'Dedicated space for final year projects and research work with access to advanced equipment, design software, fabrication facilities, and mentorship from senior learners.',
       image: '/images/courses/be-eee/labs/eee-lab-01.jpg',
     },
   ],
@@ -419,74 +419,74 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   // ==========================================
   // Faculty
   // ==========================================
-  facultyTitle: 'Our Experienced Faculty',
+  facultyTitle: 'Our Experienced Senior Learners',
   faculty: [
     {
       name: 'Dr. C. Kathirvel',
-      designation: 'Professor & Principal',
+      designation: 'Senior Learner & Principal',
       qualification: 'M.E., Ph.D.',
       specialization: 'Power Systems, Electrical Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Dr. M. R. Mohanraj',
-      designation: 'Associate Professor & Head',
+      designation: 'Associate Senior Learner & Head',
       qualification: 'M.E., Ph.D.',
       specialization: 'Electrical & Electronics Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mr. K. Aruljothi',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E. (Ph.D)',
       specialization: 'Electrical & Electronics Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mr. M. Vignesh',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Electrical & Electronics Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Miss. M. Vaishnavi',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E. (Ph.D)',
       specialization: 'Electrical & Electronics Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mr. S. Vijayaprabakaran',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Electrical & Electronics Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. R. Deepika',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Electrical & Electronics Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. V. M. Jeevitha',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E. (Ph.D)',
       specialization: 'Electrical & Electronics Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. S. Sindhuja',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Electrical & Electronics Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
     },
     {
       name: 'Mrs. M. Dharshini Devi',
-      designation: 'Assistant Professor',
+      designation: 'Assistant Senior Learner',
       qualification: 'M.E.',
       specialization: 'Electrical & Electronics Engineering',
       image: '/images/faculty/placeholder-avatar.jpg',
@@ -500,7 +500,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   faqs: [
     {
       question: 'What is the eligibility criteria for B.E. EEE admission?',
-      answer: 'Candidates must have passed 10+2 with Physics, Chemistry, and Mathematics with a minimum of 50% aggregate marks (45% for reserved categories). Valid TNEA rank is required for Tamil Nadu students.',
+      answer: 'Candidates must have passed 10+2 with Physics, Chemistry, and Mathematics with a minimum of 50% aggregate marks (45% for reserved categories). Valid TNEA rank is required for Tamil Nadu learners.',
     },
     {
       question: 'What is the difference between EEE and ECE?',
@@ -523,8 +523,8 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
       answer: 'Yes! EEE graduates are highly sought after for government jobs in TNEB, TANGEDCO, Indian Railways, BHEL, NTPC, PGCIL, and other PSUs. You can also prepare for GATE and pursue M.Tech followed by PSU recruitment through GATE score.',
     },
     {
-      question: 'What are the laboratory facilities?',
-      answer: 'We have 9 specialized laboratories including Electrical Machines Lab, Power Systems Lab, Power Electronics Lab, Control Systems Lab, High Voltage Lab, Renewable Energy Lab, Measurements Lab, Microprocessor Lab, and Project Lab with latest equipment and software.',
+      question: 'What are the learning lab facilities?',
+      answer: 'We have 9 specialized learning labs including Electrical Machines Learning Lab, Power Systems Learning Lab, Power Electronics Learning Lab, Control Systems Learning Lab, High Voltage Learning Lab, Renewable Energy Learning Lab, Measurements Learning Lab, Microprocessor Learning Lab, and Project Learning Lab with latest equipment and software.',
     },
     {
       question: 'Can I specialize in renewable energy?',
@@ -532,7 +532,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
     },
     {
       question: 'What is the fee structure?',
-      answer: 'The annual fee is ₹90,000 which includes tuition, lab fees, library fees, and other charges. We offer various scholarships including merit-based scholarships, government scholarships, and financial assistance with up to 100% fee waiver for eligible students.',
+      answer: 'The annual fee is ₹90,000 which includes tuition, learning lab fees, library fees, and other charges. We offer various scholarships including merit-based scholarships, government scholarships, and financial assistance with up to 100% fee waiver for eligible learners.',
     },
     {
       question: 'Are internships available?',

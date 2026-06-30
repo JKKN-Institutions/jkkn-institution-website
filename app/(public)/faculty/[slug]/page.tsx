@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: FacultyDetailProps): Promise<
   const faculty = await getFacultyBySlug(slug)
 
   if (!faculty) {
-    return { title: 'Faculty Not Found' }
+    return { title: 'Senior Learners Not Found' }
   }
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://engg.jkkn.ac.in'
@@ -103,7 +103,7 @@ export default async function FacultyDetailPage({ params }: FacultyDetailProps) 
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
-      { '@type': 'ListItem', position: 2, name: 'Faculty', item: `${siteUrl}/faculty` },
+      { '@type': 'ListItem', position: 2, name: 'Senior Learners', item: `${siteUrl}/faculty` },
       { '@type': 'ListItem', position: 3, name: faculty.full_name, item: `${siteUrl}/faculty/${slug}` },
     ],
   }

@@ -17,7 +17,7 @@ export const TRUST_STATS: TrustStat[] = [
 // ─── Overview ────────────────────────────────────────────────────────────────
 
 export const OVERVIEW =
-  'JKKN College of Engineering and Technology (JKKNCET) offers admissions to undergraduate (B.E / B.Tech) and postgraduate (M.E & MBA) programmes. Admissions are governed by TNEA counselling administered by Anna University, Chennai, and direct admission under Management Quota as per AICTE and Tamil Nadu Government norms.The college is AICTE approved, NAAC Accredited, and Autonomous — affiliated to Anna University. Students benefit from a placement-oriented curriculum, experienced faculty, state-of-the-art laboratories, and fully-residential hostel facilities for boys and girls.'
+  'JKKN College of Engineering and Technology (JKKNCET) offers admissions to undergraduate (B.E / B.Tech) and postgraduate (M.E & MBA) programmes. Admissions are governed by TNEA counselling administered by Anna University, Chennai, and direct admission under Management Quota as per AICTE and Tamil Nadu Government norms.The college is AICTE approved, NAAC Accredited, and Autonomous — affiliated to Anna University. Learners benefit from a placement-oriented learning framework, experienced senior learners, state-of-the-art learning labs, and fully-residential hostel facilities for boys and girls.'
 
 // ─── Programmes Table ────────────────────────────────────────────────────────
 
@@ -193,7 +193,7 @@ export const ADMISSION_STEPS: AdmissionStep[] = [
     number: 6,
     title: 'Fee Payment & Enrolment',
     description:
-      'Complete fee payment via DD, NEFT, or online transfer. Submit original documents for university verification, collect your enrolment confirmation and student ID card.',
+      'Complete fee payment via DD, NEFT, or online transfer. Submit original documents for university verification, collect your enrolment confirmation and learner ID card.',
   },
 ]
 
@@ -368,22 +368,22 @@ export const SCHOLARSHIP_GROUPS: ScholarshipGroup[] = [
   {
     title: 'Government Scholarships (SC/SCA/ST/BC-CC)',
     description:
-      'Funded by Tamil Nadu and Central Government schemes for Government Quota (GQ) students. Our admissions office assists with the complete application process at no charge.',
+      'Funded by Tamil Nadu and Central Government schemes for Government Quota (GQ) learners. Our admissions office assists with the complete application process at no charge.',
     schemes: [
       {
         name: 'PMSS (Community Scholarship)',
         benefit: 'BE/BTech: ₹50,000/Yr · MBA: ₹35,000/Yr · ME: ₹50,000/Yr',
-        eligibility: 'SC/SCA/ST/BC-CC category students admitted under Government Quota (GQ)',
+        eligibility: 'SC/SCA/ST/BC-CC category learners admitted under Government Quota (GQ)',
       },
       {
         name: 'Maintenance Scholarship',
         benefit: '₹5,000–₹10,000/Yr (all courses)',
-        eligibility: 'SC/SCA/ST/BC-CC category GQ students for sustenance support',
+        eligibility: 'SC/SCA/ST/BC-CC category GQ learners for sustenance support',
       },
       {
         name: 'Community Scholarship (BC/MBC/DNC/BCM)',
         benefit: '₹5,000–₹10,000/Yr (all courses)',
-        eligibility: 'BC, MBC, DNC, and BCM category students under Government Quota',
+        eligibility: 'BC, MBC, DNC, and BCM category learners under Government Quota',
       },
       {
         name: 'First Graduate Scholarship',
@@ -395,19 +395,19 @@ export const SCHOLARSHIP_GROUPS: ScholarshipGroup[] = [
   {
     title: 'Trust Scholarship (Merit-Based)',
     description:
-      'Awarded by JKKN Trust directly to academically outstanding students. Available for both Management Quota (MQ) and Government Quota (GQ) admissions.',
+      'Awarded by JKKN Trust directly to academically outstanding learners. Available for both Management Quota (MQ) and Government Quota (GQ) admissions.',
     schemes: [
       {
         name: 'JKKN Trust Merit Scholarship',
         benefit: 'BE/BTech: ₹5,000 to 100% tuition fee waiver/Yr',
-        eligibility: 'High-performing students based on academic merit (MQ & GQ eligible)',
+        eligibility: 'High-performing learners based on academic merit (MQ & GQ eligible)',
       },
     ],
   },
   {
     title: 'Naan Mudhalvan & Special Category',
     description:
-      'Tamil Nadu Government initiative and dedicated support for students from Govt/Govt-aided schools (Class 6–12, Tamil medium) and other special categories.',
+      'Tamil Nadu Government initiative and dedicated support for learners from Govt/Govt-aided schools (Class 6–12, Tamil medium) and other special categories.',
     schemes: [
       {
         name: 'Naan Mudhalvan Scholarship',
@@ -662,11 +662,11 @@ export const FAQS: FAQItem[] = [
   {
     question: 'What is the total cost of education including hostel?',
     answer:
-      'B.E / B.Tech annual tuition ranges from ₹45,000 (EEE / MECH) to ₹80,000 (CSE / IT Management Quota), depending on branch and quota (Government or Management). Hostel accommodation (optional, all-inclusive with meals and utilities) is ₹60,000 per year. Scholarships can significantly reduce tuition costs; approximately 75% of students receive some form of financial aid.',
+      'B.E / B.Tech annual tuition ranges from ₹45,000 (EEE / MECH) to ₹80,000 (CSE / IT Management Quota), depending on branch and quota (Government or Management). Hostel accommodation (optional, all-inclusive with meals and utilities) is ₹60,000 per year. Scholarships can significantly reduce tuition costs; approximately 75% of learners receive some form of financial aid.',
     audience: 'parent',
   },
   {
-    question: 'What percentage of students get placed after graduation?',
+    question: 'What percentage of learners get placed after graduation?',
     answer:
       'JKKN College of Engineering maintains a 92%+ placement rate (verified 2025). Top recruiters include TCS, Infosys, Wipro, Cognizant, HCL, and 500+ companies. Average package: ₹3.5L per annum; highest: ₹8.5L+.',
     audience: 'parent',
@@ -680,7 +680,7 @@ export const FAQS: FAQItem[] = [
   {
     question: 'Are there scholarships for financially weaker families?',
     answer:
-      'Yes. Need-Based Financial Aid is available for families with annual income below ₹2.5L — up to 50% tuition reduction. Government scholarships (SC/ST/OBC/MBC/EWS/Minority) are supported with direct bank transfer. Around 75% of students receive some form of financial aid.',
+      'Yes. Need-Based Financial Aid is available for families with annual income below ₹2.5L — up to 50% tuition reduction. Government scholarships (SC/ST/OBC/MBC/EWS/Minority) are supported with direct bank transfer. Around 75% of learners receive some form of financial aid.',
     audience: 'parent',
   },
 ]

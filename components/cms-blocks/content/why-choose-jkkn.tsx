@@ -183,7 +183,7 @@ const defaultUspCards: USPCard[] = [
 const defaultAdditionalUsps = [
   '50+ Industry-Relevant Programs across Medical, Engineering, Arts & Science',
   'Multi-Specialty Hospital for clinical training and community healthcare',
-  'Industry-Integrated Curriculum with internships and live projects',
+  'Industry-Integrated Learning Framework with internships and live projects',
   'Research & Innovation Hub with funded projects and patent support',
   'Holistic Development through sports, cultural, and social activities',
   'Safe & Secure Campus with 24/7 security and CCTV surveillance',

@@ -31,7 +31,7 @@ export const COMMITTEE_PDFS: Record<string, PdfLinkConfig[]> = {
     {
       title: 'Anti-Ragging Affidavit Form',
       driveUrl: 'YOUR_GOOGLE_DRIVE_LINK_HERE',
-      description: 'Affidavit form to be filled by students',
+      description: 'Affidavit form to be filled by learners',
       category: 'Forms',
     },
   ],

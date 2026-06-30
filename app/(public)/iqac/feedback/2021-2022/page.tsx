@@ -4,14 +4,14 @@ import { FileText } from 'lucide-react'
 export const metadata: Metadata = {
   title: '2021-2022 Feedback | JKKN Institutions',
   description:
-    'Student, Alumni, Parents, and Faculty feedback reports for the academic year 2021-2022.',
+    'Learner, Alumni, Parents, and Senior Learners feedback reports for the academic year 2021-2022.',
   keywords: [
     'feedback',
     '2021-2022',
-    'student feedback',
+    'learner feedback',
     'alumni feedback',
     'parent feedback',
-    'faculty feedback',
+    'senior learners feedback',
     'JKKN',
     'IQAC',
   ],
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
 
 const feedbackCategories = [
   {
-    id: 'student',
-    label: 'student',
+    id: 'learner',
+    label: 'learner',
     pdfPath: '/pdfs/feedback/2021-2022/student-feedback-2021-2022.pdf',
   },
   {
@@ -34,8 +34,8 @@ const feedbackCategories = [
     pdfPath: '/pdfs/feedback/2021-2022/parents-feedback-2021-2022.pdf',
   },
   {
-    id: 'faculty',
-    label: 'Faculty',
+    id: 'senior learners',
+    label: 'Senior Learners',
     pdfPath: '/pdfs/feedback/2021-2022/faculty-feedback-2021-2022.pdf',
   },
 ]

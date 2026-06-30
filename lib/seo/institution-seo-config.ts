@@ -161,12 +161,12 @@ const SHARED_PARENT_ORG = {
 }
 
 const SHARED_AMENITIES = [
-  'Smart Classrooms',
+  'Smart Learning Studios',
   'Wi-Fi Campus',
   'Hostel Accommodation',
   'Sports Facilities',
   'Library',
-  'Laboratories',
+  'Learning Labs',
   'Auditorium',
   'Seminar Hall',
   'Food Court',
@@ -282,7 +282,7 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
       { question: "What is JKKN's placement rate?", answer: 'JKKN maintains an impressive 90%+ placement rate across institutions. The Dental College achieved 92% placements in 2024. The dedicated Placement Cell organizes campus drives, skill development programs, and mock interviews.' },
       { question: 'How do I reach JKKN from Erode?', answer: 'JKKN is located just 15 km from Erode City on NH-544 (Salem-Coimbatore Highway). Reach by bus from Erode Bus Stand (30 minutes), train to Erode Junction (18 km), or air via Salem Airport (60 km) or Coimbatore Airport (100 km).' },
       { question: "What is JKKN's address?", answer: 'JKKN Institutions, Natarajapuram, NH-544 (Salem-Coimbatore Highway), Komarapalayam, Namakkal District, Tamil Nadu - 638183. Contact: 9345855001 | Email: info@jkkn.ac.in.' },
-      { question: 'Which areas does JKKN serve?', answer: 'JKKN primarily serves students from Erode, Salem, Namakkal, Komarapalayam, Tiruchengode, Sankagiri, Bhavani, Perundurai, and Gobichettipalayam. Students from across Tamil Nadu and neighboring states attend due to its excellent reputation.' },
+      { question: 'Which areas does JKKN serve?', answer: 'JKKN primarily serves learners from Erode, Salem, Namakkal, Komarapalayam, Tiruchengode, Sankagiri, Bhavani, Perundurai, and Gobichettipalayam. Learners from across Tamil Nadu and neighboring states attend due to its excellent reputation.' },
     ],
 
     keywords: [
@@ -368,8 +368,8 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
 
     amenityFeature: [
       ...SHARED_AMENITIES,
-      'Advanced Computing Lab',
-      'Robotics Lab',
+      'Advanced Computing Learning Lab',
+      'Robotics Learning Lab',
       'Innovation Centre',
     ],
 
@@ -385,14 +385,14 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
     faqs: [
       { question: 'How do I apply for JKKN Engineering College admission 2026-27?', answer: 'Apply online at jkkn.ac.in/admissions or visit our campus with required documents. You can also call +91 93458 55001 for admission guidance. Applications are accepted throughout the year, but seats are limited.' },
       { question: 'What are the eligibility criteria for B.E./B.Tech admission?', answer: '10+2 with Mathematics, Physics, and Chemistry/Computer Science/Biology with minimum 50% aggregate. Valid TNEA/counseling rank preferred. Direct admission also available based on merit.' },
-      { question: 'What is the fee structure for engineering courses?', answer: 'Annual tuition fees range from ₹75,000 to ₹1,00,000 depending on the branch. Additional charges for hostel, transportation, and activities apply. Scholarships and fee concessions available for eligible students.' },
+      { question: 'What is the fee structure for engineering courses?', answer: 'Annual tuition fees range from ₹75,000 to ₹1,00,000 depending on the branch. Additional charges for hostel, transportation, and activities apply. Scholarships and fee concessions available for eligible learners.' },
       { question: 'Does JKKN Engineering College provide hostel facilities?', answer: 'Yes, separate hostels for boys and girls with 24/7 security, Wi-Fi, mess facilities, and recreational rooms. Hostel fees are approximately ₹50,000 per year including food and accommodation.' },
       { question: 'Is JKKN Engineering College AICTE approved and Anna University affiliated?', answer: 'Yes, JKKN College of Engineering & Technology is AICTE approved and affiliated to Anna University, Chennai. We are also NAAC accredited with excellent placement records.' },
-      { question: 'What is the placement record of JKKN Engineering College?', answer: 'JKKN Engineering College places 500+ students annually through campus recruitment. Placement rates range from 60–70% as reported by education aggregators (Collegedunia, Careers360). Top recruiters include TCS, Infosys, Wipro, Cognizant, HCL, and Tech Mahindra.' },
+      { question: 'What is the placement record of JKKN Engineering College?', answer: 'JKKN Engineering College places 500+ learners annually through campus recruitment. Placement rates range from 60–70% as reported by education aggregators (Collegedunia, Careers360). Top recruiters include TCS, Infosys, Wipro, Cognizant, HCL, and Tech Mahindra.' },
       { question: 'What is the highest package offered at JKKN?', answer: 'The highest package recorded at JKKN Engineering College is ₹12 LPA. Average salary figures range from ₹2.2 LPA (Careers360 median) to ₹4.5 LPA depending on branch and batch. Dedicated placement training begins from the first year.' },
       { question: 'What courses are offered at JKKN College of Engineering?', answer: 'JKKN offers B.E. in CSE, ECE, EEE, Mechanical, and B.Tech in IT. Postgraduate programs include M.E. CSE and MBA. All programs are AICTE approved and affiliated to Anna University.' },
       { question: 'Where is JKKN College of Engineering located?', answer: 'JKKN College of Engineering & Technology is located in Komarapalayam, Namakkal District, Tamil Nadu, on the Salem-Coimbatore National Highway (NH-544). Just 15 km from Erode city.' },
-      { question: 'What facilities are available at JKKN Engineering College?', answer: 'State-of-the-art laboratories, modern library with 50,000+ books, Wi-Fi campus, sports facilities, seminar halls, auditorium, cafeteria, bus transport, separate hostels, and 24/7 medical care.' },
+      { question: 'What facilities are available at JKKN Engineering College?', answer: 'State-of-the-art learning labs, modern library with 50,000+ books, Wi-Fi campus, sports facilities, seminar halls, auditorium, cafeteria, bus transport, separate hostels, and 24/7 medical care.' },
     ],
 
     keywords: [

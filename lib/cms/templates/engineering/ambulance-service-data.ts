@@ -18,7 +18,7 @@ export const AMBULANCE_SERVICE_DATA: AmbulanceServicePageProps = {
 
   introduction: `
     <p class="mb-4">
-      JKKN Educational Institutions. we prioritize delivering top-notch education to our students, staff, and
+      JKKN Educational Institutions. we prioritize delivering top-notch education to our learners, team members, and
       community members. As a testament to our commitment to the community, we take great pride in offering our
       own ambulance services. With round-the-clock availability, our ambulance service cater to emergency situations
       and medical transportation needs of individuals.

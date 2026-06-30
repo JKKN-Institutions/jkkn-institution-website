@@ -11,7 +11,7 @@ const testimonials = [
     role: 'Software Engineer at Google',
     program: 'B.Tech CSE, Class of 2020',
     image: null,
-    quote: 'JKKN provided me with not just technical skills but also the confidence to dream big. The faculty mentorship and industry exposure were invaluable in my journey to Google.',
+    quote: 'JKKN provided me with not just technical skills but also the confidence to dream big. The senior learners mentorship and industry exposure were invaluable in my journey to Google.',
     rating: 5,
   },
   {
@@ -38,7 +38,7 @@ const testimonials = [
     role: 'Research Scientist, ISRO',
     program: 'M.Tech Aerospace, Class of 2019',
     image: null,
-    quote: 'The research facilities and guidance from professors helped me achieve my dream of working at ISRO. JKKN truly nurtures scientific minds.',
+    quote: 'The research facilities and guidance from senior learners helped me achieve my dream of working at ISRO. JKKN truly nurtures scientific minds.',
     rating: 5,
   },
 ]

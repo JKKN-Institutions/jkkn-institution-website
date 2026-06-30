@@ -157,7 +157,7 @@ export function CollegeAlumni({
       currentRole: 'Senior Dentist',
       company: 'Apollo Hospitals',
       location: 'Chennai',
-      testimonial: 'JKKN gave me the foundation to pursue my dreams. The faculty support was exceptional.',
+      testimonial: 'JKKN gave me the foundation to pursue my dreams. The senior learners support was exceptional.',
     },
     {
       name: 'Rajesh Kumar',
@@ -175,7 +175,7 @@ export function CollegeAlumni({
       currentRole: 'Research Scientist',
       company: 'Cipla',
       location: 'Mumbai',
-      testimonial: 'World-class labs and research facilities at JKKN helped shape my career.',
+      testimonial: 'World-class learning labs and research facilities at JKKN helped shape my career.',
     },
   ]
 

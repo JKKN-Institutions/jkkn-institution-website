@@ -541,7 +541,7 @@ export function CourseAdmissionPage(props: CourseAdmissionData) {
           ))}
         </div>
         <p className="mt-5 text-xs text-gray-500 text-center">
-          ~75% of JKKN engineering students receive some form of financial aid.
+          ~75% of JKKN engineering learners receive some form of financial aid.
         </p>
       </Section>
 
@@ -570,7 +570,7 @@ export function CourseAdmissionPage(props: CourseAdmissionData) {
           <span className="font-semibold">Note:</span>{' '}
           {level === 'UG'
             ? <>TNEA counselling dates are set by Anna University and may vary. Always check <Link href="https://www.tneaonline.org" target="_blank" rel="noopener noreferrer" className="underline">www.tneaonline.org</Link> for the latest schedule.</>
-            : <>TANCET / entrance exam dates are set by Anna University and may vary. Always check <Link href="https://www.annauniv.edu" target="_blank" rel="noopener noreferrer" className="underline">www.annauniv.edu</Link> for the latest schedule.</>
+            : <>TANCET / entrance learning assessment dates are set by Anna University and may vary. Always check <Link href="https://www.annauniv.edu" target="_blank" rel="noopener noreferrer" className="underline">www.annauniv.edu</Link> for the latest schedule.</>
           }
         </div>
       </Section>

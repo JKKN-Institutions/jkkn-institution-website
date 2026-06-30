@@ -199,7 +199,7 @@ const CATEGORY_CONFIG: Record<
     gradientToHex: '#0f8f56',
   },
   student: {
-    label: 'Student',
+    label: 'Learner',
     bgColor: 'bg-primary-100',
     textColor: 'text-primary-700',
     borderColor: 'border-primary-200',
@@ -277,8 +277,8 @@ const defaultPolicies: PolicyItem[] = [
   },
   {
     id: '3',
-    title: 'Students Play Book',
-    description: 'Comprehensive guide for student conduct and campus life',
+    title: 'Learners Play Book',
+    description: 'Comprehensive guide for learner conduct and campus life',
     category: 'student',
     icon: 'BookMarked',
     pdfUrl: 'https://drive.google.com/file/d/YOUR_FILE_ID_3/view',

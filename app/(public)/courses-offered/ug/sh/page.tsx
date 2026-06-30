@@ -11,7 +11,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Department of Science and Humanities | JKKN College of Engineering',
   description:
-    'Explore the Science and Humanities department at JKKN College of Engineering & Technology. Established in 2008, offering comprehensive foundation in Physics, Chemistry, Mathematics, and English with state-of-the-art laboratory facilities and outcome-based education.',
+    'Explore the Science and Humanities department at JKKN College of Engineering & Technology. Established in 2008, offering comprehensive foundation in Physics, Chemistry, Mathematics, and English with state-of-the-art learning lab facilities and outcome-based education.',
   keywords: [
     'Science and Humanities',
     'JKKN Engineering College',
@@ -31,14 +31,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Science and Humanities Department | JKKN College',
     description:
-      'Build your engineering foundation with comprehensive education in Physics, Chemistry, Mathematics, and English at JKKN. Established in 2008 with state-of-the-art laboratories and expert faculty.',
+      'Build your engineering foundation with comprehensive education in Physics, Chemistry, Mathematics, and English at JKKN. Established in 2008 with state-of-the-art learning labs and expert senior learners.',
     type: 'website',
     images: [
       {
         url: '/images/engineering/library/library-01.jpg',
         width: 1200,
         height: 630,
-        alt: 'JKKN Science and Humanities Laboratory',
+        alt: 'JKKN Science and Humanities Learning Lab',
       },
     ],
   },
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Science and Humanities Department | JKKN',
     description:
-      'AICTE approved, NAAC accredited program providing strong foundation in fundamental sciences. Expert faculty and excellent laboratory facilities.',
+      'AICTE approved, NAAC accredited program providing strong foundation in fundamental sciences. Expert senior learners and excellent learning lab facilities.',
     images: ['/images/engineering/library/library-01.jpg'],
   },
 }
