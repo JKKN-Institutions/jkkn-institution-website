@@ -45,7 +45,7 @@ These terms are preferred but allow contextual flexibility.
 
 **Teaching Staff (Academic):**
 - NEVER: faculty, teachers, professors, instructors, tutors, educators
-- ALWAYS: learning facilitators
+- ALWAYS: senior learners
 
 **Non-Academic Staff:**
 - NEVER: staff, employees, workers
@@ -89,7 +89,7 @@ When writing code for JKKN projects:
    ```
    // Use learner-centered naming
    learnerId, learnerName, learnerList
-   facilitatorId, facilitatorName
+   seniorLearnerId, seniorLearnerName
    learningStudioId, learningStudioName
    assessmentValue, learningLevel
    ```
@@ -97,7 +97,7 @@ When writing code for JKKN projects:
 2. **Database Tables:**
    ```sql
    -- Correct table names
-   learners, learning_facilitators, team_members
+   learners, senior_learners, team_members
    learning_studios, learning_labs, learning_commons
    learning_assessments, learning_outcomes
    ```
@@ -105,14 +105,14 @@ When writing code for JKKN projects:
 3. **API Endpoints:**
    ```
    /api/learners
-   /api/learning-facilitators
+   /api/senior-learners
    /api/learning-studios
    /api/learning-assessments
    ```
 
 4. **UI Labels:**
    - "Learner Dashboard" (not "Student Dashboard")
-   - "Learning Facilitator Portal" (not "Teacher Portal")
+   - "Senior Learner Portal" (not "Teacher Portal")
    - "Learning Assessment Report" (not "Grade Report")
 
 ### Workflow 2: Content Review & Validation
@@ -141,7 +141,7 @@ When creating documentation:
    - Use JKKN terms from the first draft
 
 2. **Consistency check:**
-   - Verify all people references use: learners, learning facilitators, team members
+   - Verify all people references use: learners, senior learners, team members
    - Verify all space references use: learning studios, learning labs, etc.
    - Verify all academic references use: learning outcomes, learning pathway, etc.
 
@@ -160,7 +160,7 @@ When designing interfaces:
 
 2. **Error messages:**
    - "Learner did not meet learning outcomes" (not "Student failed")
-   - "Learning facilitator not found" (not "Teacher not found")
+   - "Senior learner not found" (not "Teacher not found")
 
 3. **Notifications:**
    - "New learning task assigned" (not "New assignment")
@@ -170,7 +170,7 @@ When designing interfaces:
 
 When creating email templates, notifications, or communications:
 
-1. **Greetings:** Address learners, learning facilitators, team members appropriately
+1. **Greetings:** Address learners, senior learners, team members appropriately
 2. **Body:** Use JKKN terminology throughout
 3. **Sign-offs:** Reference JKKN community appropriately
 
@@ -193,7 +193,7 @@ This reference includes:
 Before finalizing any JKKN project deliverable, verify:
 
 - [ ] No instances of "student/students" (use learner/learners)
-- [ ] No instances of "teacher/teachers" (use learning facilitator)
+- [ ] No instances of "teacher/teachers" (use senior learner)
 - [ ] No instances of "classroom" (use learning studio)
 - [ ] No instances of "syllabus" (use learning pathway)
 - [ ] No instances of "curriculum" (use learning framework)

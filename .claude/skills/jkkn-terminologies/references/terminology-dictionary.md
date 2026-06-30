@@ -22,7 +22,7 @@ These terms are preferred but have more flexibility based on context.
 | Category | NEVER Use | ALWAYS Use | Context Notes |
 |----------|-----------|------------|---------------|
 | Learner Community | students, pupils, kids, children, trainees, student body | learners, young learners | Use "young learners" only when age context is specifically needed |
-| Teaching Staff (Academic) | faculty, teachers, professors, instructors, tutors, educators | learning facilitators | For academic/teaching roles |
+| Teaching Staff (Academic) | faculty, teachers, professors, instructors, tutors, educators | senior learners | For academic/teaching roles |
 | Non-Academic Staff | staff, employees, workers | team members | For administrative and support roles |
 | Parents/Guardians | parents, guardians | learning partners, family partners | Emphasizes collaborative relationship |
 
@@ -142,7 +142,7 @@ gradeValue, gradeLevel
 
 // CORRECT
 learnerId, learnerName, learnerList
-facilitatorId, facilitatorName, facilitatorList
+seniorLearnerId, seniorLearnerName, seniorLearnerList
 learningStudioId, learningStudioName
 assessmentValue, learningLevel
 ```
@@ -158,7 +158,7 @@ CREATE TABLE grades (...)
 
 -- CORRECT
 CREATE TABLE learners (...)
-CREATE TABLE learning_facilitators (...)
+CREATE TABLE senior_learners (...)
 CREATE TABLE learning_studios (...)
 CREATE TABLE learning_assessments (...)
 ```
@@ -174,7 +174,7 @@ PUT /api/grades/:id
 
 // CORRECT
 GET /api/learners
-POST /api/learning-facilitators
+POST /api/senior-learners
 GET /api/learning-studios/:id
 PUT /api/learning-assessments/:id
 ```
@@ -191,7 +191,7 @@ PUT /api/learning-assessments/:id
 
 // CORRECT
 "Learner Dashboard"
-"Learning Facilitator Login"
+"Senior Learner Login"
 "Learning Session Schedule"
 "Learning Assessment Report"
 "Learner did not meet learning outcomes"
@@ -220,7 +220,7 @@ Internal technical docs should use JKKN terminology to maintain consistency acro
 | NEVER Say | ALWAYS Say |
 |-----------|------------|
 | student | learner |
-| teacher | learning facilitator |
+| teacher | senior learner |
 | staff | team member |
 | classroom | learning studio |
 | lecture hall | learning auditorium |
