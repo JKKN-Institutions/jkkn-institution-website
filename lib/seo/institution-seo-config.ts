@@ -403,6 +403,10 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
       'Engineering College Komarapalayam', 'Top Engineering College Tamil Nadu',
     ],
 
+    // Account-scoped Google Search Console tag (same value as Main — Google
+    // issues one HTML-tag token per Google account across all its properties).
+    googleSiteVerification: 'y27BHDBypTLPOsApWrsud0u-UDAAT62rIvfM46VcID8',
+
     analytics: {
       gaId: 'G-WH0VZ5V4TL',
       metaPixelId: '365029645695967',
