@@ -157,6 +157,13 @@ function getEngineeringPages(siteUrl: string): SitemapEntry[] {
     { loc: `${siteUrl}/namakkal`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
     { loc: `${siteUrl}/salem`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
     { loc: `${siteUrl}/tiruppur`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    { loc: `${siteUrl}/karur`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    { loc: `${siteUrl}/tiruchengode`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    { loc: `${siteUrl}/perundurai`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    { loc: `${siteUrl}/dharmapuri`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    { loc: `${siteUrl}/rasipuram`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    { loc: `${siteUrl}/mettur`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
+    { loc: `${siteUrl}/trichy`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
   ]
 }
 

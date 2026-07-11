@@ -57,6 +57,13 @@ const LOCATION_SLUGS = new Set([
   'namakkal',
   'coimbatore',
   'tiruppur',
+  'karur',
+  'tiruchengode',
+  'perundurai',
+  'dharmapuri',
+  'rasipuram',
+  'mettur',
+  'trichy',
 ])
 
 /**
