@@ -342,7 +342,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
     },
     {
       name: 'Web Technologies Learning Lab',
-      description: 'Modern web development learning lab for full-stack development with React, Node.js, Angular, and Vue.js — senior learners-guided sessions for real-world project building.',
+      description: 'Modern web development learning lab for full-stack development with React, Node.js, Angular, and Vue.js — senior learner-guided sessions for real-world project building.',
       image: '/images/courses/btech-it/labs/it-lab-02.jpg',
     },
     {

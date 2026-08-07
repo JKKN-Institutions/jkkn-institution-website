@@ -19,7 +19,11 @@ loadEnv({ path: path.resolve(process.cwd(), '.env.local') })
 import { syncFacultyFromMyJKKN } from '../lib/sync/faculty-sync'
 
 async function main() {
-  const report = await syncFacultyFromMyJKKN()
+  // --force bypasses change detection. Needed after any adapter / slug /
+  // draft-rule change, since unchanged rows would otherwise keep the old mapping.
+  const force = process.argv.includes('--force')
+  if (force) console.log('\n⚠  --force: re-processing every row, ignoring last_synced_at\n')
+  const report = await syncFacultyFromMyJKKN({ force })
   console.log('\n=== SYNC REPORT ===\n')
   console.log(JSON.stringify(report, null, 2))
   if (report.errors.length > 0) {

@@ -93,6 +93,7 @@ export interface AdaptResult {
   meta: {
     apiId: string                     // staff.id UUID (becomes local faculty.id)
     staffId: string | null            // CET245, CET225, ... (display only)
+    roleKey: string | null            // principal | hod | faculty | ... — ranks the public directory
     apiUpdatedAt: string              // for change detection in future deltas
     apiStatus: 'draft' | 'published'  // MyJKKN's published flag (input to completeness rule)
     apiPhotoUrl: string | null        // raw upstream URL — sync rehosts to our bucket
@@ -252,6 +253,7 @@ export function staffToFacultyRow(staff: StaffApiRecord): AdaptResult {
     meta: {
       apiId: staff.id,
       staffId: nullIfEmpty(staff.staff_id),
+      roleKey: nullIfEmpty(staff.role_key)?.toLowerCase() ?? null,
       apiUpdatedAt: staff.updated_at,
       apiStatus: staff.status,
       apiPhotoUrl: nullIfEmpty(staff.profile_picture),

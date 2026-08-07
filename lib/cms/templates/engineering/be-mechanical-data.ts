@@ -394,7 +394,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     {
       name: 'Thermal Engineering Learning Lab',
       image: '/images/courses/be-mech/labs/mech-lab-06.jpg',
-      description: 'Advanced learning lab with lathe machines, engines, heat transfer equipment, and senior learners-guided practical sessions for thermal engineering experiments and analysis.',
+      description: 'Advanced learning lab with lathe machines, engines, heat transfer equipment, and senior learner-guided practical sessions for thermal engineering experiments and analysis.',
     },
     {
       name: 'Mechatronics & IoT Learning Lab',
@@ -581,7 +581,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     },
     {
       question: 'What research opportunities are available for learners?',
-      answer: 'Learners can participate in senior learners-guided research projects, present papers in national and international conferences, and publish in journals. The department has ongoing research in renewable energy, advanced manufacturing, automotive systems, and sustainable engineering. Final year learners must complete a major project involving research or product development.',
+      answer: 'Learners can participate in senior learner-guided research projects, present papers in national and international conferences, and publish in journals. The department has ongoing research in renewable energy, advanced manufacturing, automotive systems, and sustainable engineering. Final year learners must complete a major project involving research or product development.',
     },
     {
       question: 'Can I pursue higher studies after B.E. Mechanical Engineering?',

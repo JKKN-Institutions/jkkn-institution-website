@@ -39,7 +39,7 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
       icon: 'BarChart3',
       title: 'Total Seats',
       value: '60 Seats',
-      description: 'Limited intake ensuring personalized attention and quality education with excellent senior learners-learner ratio for effective learning.',
+      description: 'Limited intake ensuring personalized attention and quality education with excellent senior learner-to-learner ratio for effective learning.',
     },
     {
       icon: 'CheckCircle',
@@ -449,7 +449,7 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
     },
     {
       question: 'What is the learner-senior learners ratio?',
-      answer: 'With 13 energetic and well-qualified senior learners and an intake of 60 learners, we maintain an excellent senior learners-learner ratio ensuring personalized attention and quality education. This allows for better interaction and mentoring of learners.',
+      answer: 'With 13 energetic and well-qualified senior learners and an intake of 60 learners, we maintain an excellent senior learner-to-learner ratio ensuring personalized attention and quality education. This allows for better interaction and mentoring of learners.',
     },
   ],
 

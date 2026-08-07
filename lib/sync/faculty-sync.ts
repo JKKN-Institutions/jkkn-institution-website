@@ -245,6 +245,7 @@ export async function syncFacultyFromMyJKKN(options: SyncOptions = {}): Promise<
         status: finalStatus,
         synced_from_api: true,
         staff_id: meta.staffId,
+        role_key: meta.roleKey,
         last_synced_at: new Date().toISOString(),
       }
       const { error } = await sb.from('faculty').upsert(row, { onConflict: 'id' })

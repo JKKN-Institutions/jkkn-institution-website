@@ -10,7 +10,7 @@
 
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { createPublicSupabaseClient } from '@/lib/supabase/server'
-import type { FacultyRow } from '@/lib/schemas/faculty'
+import { compareFacultyForDirectory, type FacultyRow } from '@/lib/schemas/faculty'
 
 // ============================================
 // READ operations only
@@ -48,7 +48,13 @@ export async function getPublishedFaculty(department?: string): Promise<FacultyR
     console.error('Error fetching published faculty:', error)
     return []
   }
-  return (data || []) as FacultyRow[]
+
+  // Sort in JS rather than SQL: the ordering is Principal → HOD → seniority →
+  // name, which needs a CASE over role_key plus a designation lookup. Keeping
+  // it in compareFacultyForDirectory means the listing page, the leadership
+  // band and the related-faculty rail all rank identically from one place.
+  // The result set is ~45 rows, so cost is irrelevant.
+  return ((data || []) as FacultyRow[]).sort(compareFacultyForDirectory)
 }
 
 /** Get a single faculty by ID (admin). */

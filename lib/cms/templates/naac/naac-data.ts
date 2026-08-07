@@ -424,7 +424,7 @@ export const MAIN_NAAC_DATA: NAACPageProps = {
       documents: [
         {
           title: 'Best Practice 1: Learner Mentoring Program',
-          description: 'Comprehensive senior learners-learner mentoring framework',
+          description: 'Comprehensive senior learner-to-learner mentoring framework',
           fileUrl: '/documents/naac/best-practice-mentoring.pdf',
           fileType: 'pdf',
           size: '2.5 MB',

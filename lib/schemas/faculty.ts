@@ -161,6 +161,67 @@ export interface FacultyRow extends FacultyFormData {
   synced_from_api: boolean
   staff_id: string | null
   last_synced_at: string | null
+  /**
+   * MyJKKN staff.role_key. Added 2026-08-07 to rank the public directory —
+   * designation can't identify HODs (no published row contains "Head").
+   * NULL for manually-entered legacy rows.
+   */
+  role_key: string | null
+}
+
+// ============================================
+// Directory ranking
+// ============================================
+
+/**
+ * Institutional rank for the public directory: Principal, then HODs, then
+ * everyone else. Lower sorts first.
+ *
+ * Reads role_key rather than designation because MyJKKN encodes leadership
+ * there — the Principal's designation happens to say "Principal", but HODs are
+ * designated "Associate Professor"/"Assistant Professor" like anyone else.
+ * The designation fallback only exists to rank the two legacy rows, which have
+ * no role_key at all.
+ */
+export function facultyRoleRank(faculty: Pick<FacultyRow, 'role_key' | 'designation'>): number {
+  const role = (faculty.role_key ?? '').toLowerCase()
+  if (role === 'principal') return 0
+  if (role === 'hod') return 1
+
+  const designation = (faculty.designation ?? '').toLowerCase()
+  if (!role) {
+    if (designation.includes('principal')) return 0
+    if (designation.includes('head')) return 1
+  }
+  return 2
+}
+
+/** True if this person belongs in the directory's leadership band. */
+export function isFacultyLeadership(faculty: Pick<FacultyRow, 'role_key' | 'designation'>): boolean {
+  return facultyRoleRank(faculty) < 2
+}
+
+/**
+ * Sort by rank, then seniority of designation, then name. display_order is
+ * ignored on purpose: MyJKKN leaves it 0 for every row, so it carries no signal.
+ */
+const DESIGNATION_RANK: Record<string, number> = {
+  principal: 0,
+  professor: 1,
+  'associate professor': 2,
+  'assistant professor': 3,
+}
+
+export function compareFacultyForDirectory(a: FacultyRow, b: FacultyRow): number {
+  const rank = facultyRoleRank(a) - facultyRoleRank(b)
+  if (rank !== 0) return rank
+
+  const seniority =
+    (DESIGNATION_RANK[(a.designation ?? '').toLowerCase()] ?? 99) -
+    (DESIGNATION_RANK[(b.designation ?? '').toLowerCase()] ?? 99)
+  if (seniority !== 0) return seniority
+
+  return a.full_name.localeCompare(b.full_name)
 }
 
 // ============================================
