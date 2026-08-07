@@ -69,9 +69,7 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || ''
   const institutionName = process.env.NEXT_PUBLIC_INSTITUTION_NAME || 'JKKN College of Engineering & Technology'
 
-  // Only stats with a non-zero value are shown, so the column count has to be
-  // derived rather than fixed — a hardcoded grid-cols-4 left two dead columns
-  // for anyone with fewer than four metrics, which is most of the roster.
+  // Only stats with a non-zero value are shown.
   const stats = [
     { icon: <Clock className="w-6 h-6" />, value: `${faculty.experience_years}+`, label: 'Years Experience', bg: '#e8f5ee', color: '#0b6d41' },
     { icon: <FileText className="w-6 h-6" />, value: faculty.research_papers, label: 'Research Papers', bg: 'rgba(26,115,167,0.08)', color: '#1a73a7' },
@@ -79,14 +77,9 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
     { icon: <Trophy className="w-6 h-6" />, value: faculty.awards_won, label: 'Awards Won', bg: 'rgba(196,69,105,0.08)', color: '#c44569' },
   ].filter(s => Number(String(s.value).replace('+', '')) > 0)
 
-  // Static strings so Tailwind's JIT can see every class it needs to emit.
-  // Cards stretch to the container width so the row lines up with the hero's
-  // edges — a capped width reads as an accident next to a full-bleed hero.
-  const statGridCols =
-    stats.length === 1 ? 'grid-cols-1' :
-    stats.length === 2 ? 'grid-cols-2' :
-    stats.length === 3 ? 'grid-cols-3' :
-    'grid-cols-4'
+  // Fixed 4-column track by design: cards keep a consistent, compact size from
+  // profile to profile regardless of how many metrics a person has. Anyone with
+  // fewer than four simply leaves the trailing columns empty.
 
   return (
     <>
@@ -186,7 +179,7 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
 
           {/* ===== BENTO STATS ===== */}
           {stats.length > 0 && (
-            <div className={`reveal grid ${statGridCols} max-[768px]:grid-cols-2 max-[480px]:grid-cols-2 gap-4 mb-6`}>
+            <div className="reveal grid grid-cols-4 max-[768px]:grid-cols-2 max-[480px]:grid-cols-2 gap-4 mb-6">
               {stats.map((stat, i) => (
                 <div key={i} className="bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-6 text-center transition-all duration-400 hover:border-[rgba(11,109,65,0.18)] hover:-translate-y-1 hover:shadow-md relative overflow-hidden group">
                   <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#0b6d41] via-[#0e8a52] to-[#12a863] scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
