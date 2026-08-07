@@ -9,7 +9,9 @@
 import { z } from 'zod'
 
 const StaffQualificationSchema = z.object({
-  year: z.number().int().nullable().optional(),
+  // MyJKKN sends this as either a number or a string depending on how the
+  // record was entered. The adapter stringifies it either way.
+  year: z.union([z.string(), z.number()]).nullable().optional(),
   degree: z.string().nullable().optional(),
   institution: z.string().nullable().optional(),
   specialization: z.string().nullable().optional(),
@@ -28,7 +30,8 @@ const StaffExperienceEntrySchema = z.object({
 const StaffPublicationSchema = z.object({
   doi: z.string().nullable().optional(),
   url: z.string().nullable().optional(),
-  year: z.number().int().nullable().optional(),
+  // Same string-or-number inconsistency as qualifications.year.
+  year: z.union([z.string(), z.number()]).nullable().optional(),
   title: z.string().nullable().optional(),
   journal: z.string().nullable().optional(),
 }).passthrough()
@@ -139,3 +142,20 @@ export const StaffApiListResponseSchema = z.object({
 })
 
 export type StaffApiListResponse = z.infer<typeof StaffApiListResponseSchema>
+
+/**
+ * Lenient envelope — validates only the response shell, leaving each record
+ * as `unknown` so the caller can safeParse them one at a time.
+ *
+ * Why: StaffApiListResponseSchema.parse() is all-or-nothing. One malformed
+ * record in a 64-row payload throws and the entire sync writes nothing. With
+ * this envelope a bad record costs one profile, not the whole directory, and
+ * the Zod issue still surfaces in the sync report.
+ */
+export const StaffApiListEnvelopeSchema = z.object({
+  data: z.array(z.unknown()),
+  metadata: z.object({
+    total: z.number(),
+    returned: z.number(),
+  }).passthrough().optional(),
+})

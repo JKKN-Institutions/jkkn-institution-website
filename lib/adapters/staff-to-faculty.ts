@@ -39,6 +39,32 @@ function nullIfEmpty(s: string | null | undefined): string | null {
   return v === '' ? null : v
 }
 
+/** Honorifics stripped from generated slugs so URLs stay consistent. */
+const HONORIFIC_REGEX = /\b(dr|mr|mrs|ms|miss|prof|professor)\b\.?/gi
+
+/**
+ * Derive a URL slug from a person's name.
+ *
+ * Only used when MyJKKN has no slug of its own — which is the common case
+ * (37 of 64 teaching staff have none). faculty.slug is UNIQUE NOT NULL and is
+ * the public /faculty/[slug] URL, so an empty string here would both collide
+ * on the unique index and produce an unroutable page.
+ *
+ * Honorifics are dropped because they're inconsistently present upstream:
+ * keeping them would yield a mix of `mr-prakash-p` and bare `sathish-s`.
+ *
+ * Returns '' if nothing usable survives — the caller must handle that.
+ */
+export function slugifyName(name: string): string {
+  return name
+    .replace(HONORIFIC_REGEX, ' ')
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
 /**
  * Map the API's `description` value into our local `type` enum.
  * The API stores values like "Teaching" / "Industry" in `description`;
@@ -91,9 +117,22 @@ export function staffToFacultyRow(staff: StaffApiRecord): AdaptResult {
   // 4. Email: prefer institution_email, fall back to email
   const email = nullIfEmpty(staff.institution_email) ?? nullIfEmpty(staff.email) ?? ''
 
+  // 4b. Slug: MyJKKN's slug wins so existing public URLs never move. Only 5 of
+  //     64 teaching staff have one, so the rest are derived from the name.
+  //     Last resort is the staff_id (or API UUID) — guarantees a non-empty
+  //     value for faculty.slug, which is UNIQUE NOT NULL.
+  //     Cross-row collisions are resolved by the sync engine, which is the only
+  //     layer that can see the whole batch at once.
+  const apiSlug = clean(staff.slug ?? '')
+  const slug =
+    apiSlug ||
+    slugifyName(fullName) ||
+    slugifyName(staff.staff_id ?? '') ||
+    staff.id
+
   const formData: FacultyFormData = {
     full_name: fullName,
-    slug: clean(staff.slug ?? ''),
+    slug,
     designation: designationNorm,
     department,
     // 5. qualification (singular text summary)

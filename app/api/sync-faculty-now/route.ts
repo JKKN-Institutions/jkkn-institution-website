@@ -37,8 +37,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
   }
 
+  // ?force=1 bypasses change detection — see trigger-sync route for why.
+  const force = req.nextUrl.searchParams.get('force') === '1'
+
   try {
-    const report = await syncFacultyFromMyJKKN()
+    const report = await syncFacultyFromMyJKKN({ force })
     return NextResponse.json({ ok: true, ...report })
   } catch (e) {
     console.error('[sync-faculty-now] failed:', e)

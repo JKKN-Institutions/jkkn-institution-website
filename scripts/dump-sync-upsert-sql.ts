@@ -13,7 +13,7 @@ import path from 'path'
 
 loadEnv({ path: path.resolve(process.cwd(), '.env.local') })
 
-import { listEngineeringLeadership } from '../lib/services/staff-api'
+import { listEngineeringTeachingStaff } from '../lib/services/staff-api'
 import { staffToFacultyRow } from '../lib/adapters/staff-to-faculty'
 import { checkFacultyCompleteness } from '../lib/sync/draft-rule'
 
@@ -27,7 +27,7 @@ function jb(v: unknown): string {
 }
 
 async function main() {
-  const apiRows = await listEngineeringLeadership()
+  const apiRows = (await listEngineeringTeachingStaff()).records
   const stmts: string[] = []
 
   for (const r of apiRows) {

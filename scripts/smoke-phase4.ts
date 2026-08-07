@@ -13,13 +13,13 @@ import path from 'path'
 
 loadEnv({ path: path.resolve(process.cwd(), '.env.local') })
 
-import { listEngineeringLeadership } from '../lib/services/staff-api'
+import { listEngineeringTeachingStaff } from '../lib/services/staff-api'
 import { staffToFacultyRow } from '../lib/adapters/staff-to-faculty'
 import { checkFacultyCompleteness } from '../lib/sync/draft-rule'
 import { rehostFacultyPhoto } from '../lib/sync/photo-rehost'
 
 async function main() {
-  const rows = await listEngineeringLeadership()
+  const rows = (await listEngineeringTeachingStaff()).records
   console.log(`\n✓ Fetched ${rows.length} rows; running Phase 4 checks…\n`)
 
   // ── 1. Completeness rule (without rehost) ─────────────────────────────

@@ -13,7 +13,7 @@ import path from 'path'
 
 loadEnv({ path: path.resolve(process.cwd(), '.env.local') })
 
-import { listEngineeringLeadership } from '../lib/services/staff-api'
+import { listEngineeringTeachingStaff } from '../lib/services/staff-api'
 import { staffToFacultyRow } from '../lib/adapters/staff-to-faculty'
 
 function header(label: string) {
@@ -21,7 +21,7 @@ function header(label: string) {
 }
 
 async function main() {
-  const rows = await listEngineeringLeadership()
+  const rows = (await listEngineeringTeachingStaff()).records
   console.log(`\n✓ Fetched ${rows.length} rows; running through adapter…\n`)
 
   const issues: string[] = []

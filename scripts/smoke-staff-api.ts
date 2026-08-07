@@ -13,10 +13,10 @@ import path from 'path'
 // Load .env.local explicitly — `dotenv/config` defaults to .env which is empty here.
 loadEnv({ path: path.resolve(process.cwd(), '.env.local') })
 
-import { listEngineeringLeadership } from '../lib/services/staff-api'
+import { listEngineeringTeachingStaff } from '../lib/services/staff-api'
 
 async function main() {
-  const rows = await listEngineeringLeadership()
+  const rows = (await listEngineeringTeachingStaff()).records
   console.log(`\n✓ Fetched ${rows.length} rows from MyJKKN\n`)
   for (const r of rows) {
     const name = `${r.first_name.trim()} ${r.last_name.trim()}`.replace(/\s+/g, ' ')

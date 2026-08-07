@@ -9,14 +9,14 @@
 // is NEVER exposed to the browser — the button hits this same-origin route
 // and we run the sync inline.
 
-import { NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { syncFacultyFromMyJKKN } from '@/lib/sync/faculty-sync'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
-export async function POST() {
+export async function POST(req: NextRequest) {
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
@@ -26,8 +26,13 @@ export async function POST() {
     return NextResponse.json({ ok: false, error: 'forbidden' }, { status: 403 })
   }
 
+  // ?force=1 re-processes every row even if MyJKKN hasn't touched it since our
+  // last sync. Needed after changing the adapter, slug logic or draft rule —
+  // otherwise change detection skips rows that still carry the old mapping.
+  const force = req.nextUrl.searchParams.get('force') === '1'
+
   try {
-    const report = await syncFacultyFromMyJKKN()
+    const report = await syncFacultyFromMyJKKN({ force })
     return NextResponse.json({ ok: true, ...report })
   } catch (e) {
     console.error('[admin/trigger-sync] failed:', e)
