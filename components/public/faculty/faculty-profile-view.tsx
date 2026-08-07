@@ -69,10 +69,35 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || ''
   const institutionName = process.env.NEXT_PUBLIC_INSTITUTION_NAME || 'JKKN College of Engineering & Technology'
 
+  // Only stats with a non-zero value are shown, so the column count has to be
+  // derived rather than fixed — a hardcoded grid-cols-4 left two dead columns
+  // for anyone with fewer than four metrics, which is most of the roster.
+  const stats = [
+    { icon: <Clock className="w-6 h-6" />, value: `${faculty.experience_years}+`, label: 'Years Experience', bg: '#e8f5ee', color: '#0b6d41' },
+    { icon: <FileText className="w-6 h-6" />, value: faculty.research_papers, label: 'Research Papers', bg: 'rgba(26,115,167,0.08)', color: '#1a73a7' },
+    { icon: <GraduationCap className="w-6 h-6" />, value: faculty.phd_scholars, label: 'PhD Scholars', bg: 'rgba(255,222,89,0.25)', color: '#a88c00' },
+    { icon: <Trophy className="w-6 h-6" />, value: faculty.awards_won, label: 'Awards Won', bg: 'rgba(196,69,105,0.08)', color: '#c44569' },
+  ].filter(s => Number(String(s.value).replace('+', '')) > 0)
+
+  // Static strings so Tailwind's JIT can see every class it needs to emit.
+  // Cards stretch to the container width so the row lines up with the hero's
+  // edges — a capped width reads as an accident next to a full-bleed hero.
+  const statGridCols =
+    stats.length === 1 ? 'grid-cols-1' :
+    stats.length === 2 ? 'grid-cols-2' :
+    stats.length === 3 ? 'grid-cols-3' :
+    'grid-cols-4'
+
   return (
     <>
       <style jsx global>{`
-        .senior learners-page {
+        /* NOTE: this selector must stay ".faculty-page" — it pairs with the
+           className on the wrapper div below, not with user-facing copy. A
+           terminology sweep once rewrote it to ".senior learners-page", which
+           CSS parses as a descendant combinator (".senior" > "learners-page"),
+           silently killing the whole block: the hero lost --gradient-hero and
+           rendered white text on the cream page background. */
+        .faculty-page {
           --green: #0b6d41; --green-dark: #085533; --green-light: #0e8a52;
           --green-pale: #e8f5ee; --green-faint: rgba(11,109,65,0.05);
           --green-border: rgba(11,109,65,0.1); --green-border-hover: rgba(11,109,65,0.22);
@@ -90,8 +115,8 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
           font-family: var(--font-poppins), 'Poppins', ui-sans-serif, system-ui, sans-serif;
           background: var(--cream); color: var(--text);
         }
-        .senior learners-page .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
-        .senior learners-page .reveal.visible { opacity: 1; transform: translateY(0); }
+        .faculty-page .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+        .faculty-page .reveal.visible { opacity: 1; transform: translateY(0); }
       `}</style>
 
       <div className="faculty-page" ref={containerRef}>
@@ -160,14 +185,9 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
           </section>
 
           {/* ===== BENTO STATS ===== */}
-          {(faculty.experience_years > 0 || faculty.research_papers > 0 || faculty.phd_scholars > 0 || faculty.awards_won > 0) && (
-            <div className="reveal grid grid-cols-4 max-[768px]:grid-cols-2 max-[480px]:grid-cols-2 gap-4 mb-6">
-              {[
-                { icon: <Clock className="w-6 h-6" />, value: `${faculty.experience_years}+`, label: 'Years Experience', bg: '#e8f5ee', color: '#0b6d41' },
-                { icon: <FileText className="w-6 h-6" />, value: faculty.research_papers, label: 'Research Papers', bg: 'rgba(26,115,167,0.08)', color: '#1a73a7' },
-                { icon: <GraduationCap className="w-6 h-6" />, value: faculty.phd_scholars, label: 'PhD Scholars', bg: 'rgba(255,222,89,0.25)', color: '#a88c00' },
-                { icon: <Trophy className="w-6 h-6" />, value: faculty.awards_won, label: 'Awards Won', bg: 'rgba(196,69,105,0.08)', color: '#c44569' },
-              ].filter(s => Number(String(s.value).replace('+', '')) > 0).map((stat, i) => (
+          {stats.length > 0 && (
+            <div className={`reveal grid ${statGridCols} max-[768px]:grid-cols-2 max-[480px]:grid-cols-2 gap-4 mb-6`}>
+              {stats.map((stat, i) => (
                 <div key={i} className="bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-6 text-center transition-all duration-400 hover:border-[rgba(11,109,65,0.18)] hover:-translate-y-1 hover:shadow-md relative overflow-hidden group">
                   <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#0b6d41] via-[#0e8a52] to-[#12a863] scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
                   <div className="w-12 h-12 rounded-[14px] flex items-center justify-center mx-auto mb-3" style={{ background: stat.bg, color: stat.color }}>{stat.icon}</div>
