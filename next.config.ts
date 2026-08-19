@@ -507,11 +507,6 @@ const nextConfig: NextConfig = {
         destination: '/',
         permanent: true,
       },
-      {
-        source: '/llms.txt',
-        destination: '/',
-        permanent: true,
-      },
 
       // === Pharmacy College URLs → Homepage ===
       // /pharmacy-college: CMS row exists but has zero content blocks (renders empty).
