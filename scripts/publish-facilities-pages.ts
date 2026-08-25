@@ -26,7 +26,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { v4 as uuidv4 } from 'uuid'
 import * as dotenv from 'dotenv'
-import { buildAbsoluteUrl, getSiteUrl } from '../lib/utils/site-url'
+import { getSiteUrl } from '../lib/utils/site-url'
 import { requireProductionEnvironment, displayEnvironmentSummary } from './utils/validate-environment'
 
 // Load environment variables
@@ -919,7 +919,11 @@ async function publishFacilitiesPages() {
           og_description: facility.seo.og_description,
           og_image: facility.seo.og_image,
           twitter_card: 'summary_large_image',
-          canonical_url: buildAbsoluteUrl(`/${facility.slug}`),
+          // canonical_url is deliberately NOT set — see the note in
+          // scripts/publish-committee-pages.ts. Writing an absolute URL here
+          // baked the run-time host into a per-tenant column, and because the
+          // facility pages ended up on flat slugs while this wrote
+          // `/${facility.slug}`, several rows pointed at paths that 404.
         })
 
       if (seoError) {

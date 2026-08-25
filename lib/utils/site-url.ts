@@ -8,8 +8,14 @@
  * - Environment-driven configuration
  */
 
-/** Production fallback URL — used when env var is absent or points to localhost */
-const PRODUCTION_FALLBACK = 'https://jkkn.ac.in'
+/**
+ * Production fallback URL — used when env var is absent or points to localhost.
+ * Must stay on the www host: next.config.ts 301-redirects jkkn.ac.in/* to
+ * www.jkkn.ac.in/*, and app/layout.tsx uses the same www fallback for
+ * metadataBase. A non-www value here made JSON-LD @id/url disagree with the
+ * page's own canonical whenever NEXT_PUBLIC_SITE_URL was unset.
+ */
+const PRODUCTION_FALLBACK = 'https://www.jkkn.ac.in'
 
 /** Tracks whether the localhost/missing URL warning has already been logged */
 let hasWarnedAboutSiteUrl = false
@@ -57,6 +63,41 @@ export function buildAbsoluteUrl(path: string): string {
   const base = getSiteUrl()
   const normalizedPath = path.startsWith('/') ? path : `/${path}`
   return `${base}${normalizedPath}`
+}
+
+/**
+ * Normalizes a CMS-authored canonical URL.
+ *
+ * Mirrors the `normalize_canonical_url()` trigger on `cms_seo_metadata` — keep
+ * the two in sync. The correct stored value for a page whose canonical is its
+ * own URL is `null`: app/(public)/[...slug]/page.tsx falls back to the page's
+ * own relative path, which Next resolves against each deployment's
+ * metadataBase, so every institution emits its own host automatically.
+ *
+ * Editors routinely paste a full URL out of the address bar, so this repairs
+ * rather than rejects:
+ *  - trims whitespace, and collapses an empty value to `null`
+ *  - rewrites an absolute URL on the jkkn.ac.in apex/www host to a relative
+ *    path, keeping it host-agnostic across the six institution deployments
+ *
+ * Institution subdomains (dental./engg./pharmacy. …) are deliberately left
+ * alone — a cross-domain canonical is a legitimate editorial choice.
+ *
+ * @param value - Raw canonical URL from the SEO panel
+ * @returns Normalized relative path, a foreign absolute URL, or null
+ */
+export function normalizeCanonicalUrl(value: string | null | undefined): string | null {
+  if (!value) return null
+
+  const trimmed = value.trim()
+  if (!trimmed) return null
+
+  const relative = trimmed.replace(/^https?:\/\/(www\.)?jkkn\.ac\.in/i, '')
+
+  // A bare host with no path is the site root
+  if (!relative) return '/'
+
+  return relative
 }
 
 /**

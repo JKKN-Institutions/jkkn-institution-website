@@ -1,6 +1,28 @@
 /**
  * Automated Committee Pages Publishing Script
  *
+ * ⚠️  DO NOT RE-RUN WITHOUT READING THIS (2026-08-25)
+ *
+ * The committee pages are ALREADY LIVE in the Engineering CMS, at FLAT slugs
+ * (`anti-drug-club`, `sc-st-committee`, …) — not at the `committees/<slug>`
+ * prefix this script inserts. The rest of the codebase agrees with the flat
+ * slugs: lib/data/committee-pdfs.ts and the bottom-nav cms-icon-mapper.ts are
+ * both keyed on them.
+ *
+ * Running this script as-is therefore does NOT update the live pages — it
+ * creates 8-9 DUPLICATE CMS pages under a second URL prefix, i.e. real
+ * duplicate content. (A separate, also-unused script,
+ * scripts/create-committee-pages.ts, writes STATIC routes under
+ * app/(public)/committees/ — a third competing approach. Neither prefix has a
+ * single row in cms_pages today.)
+ *
+ * Before re-running, decide the information architecture first: keep the flat
+ * slugs (current live state, and the safe default), or migrate to
+ * `committees/*` with 301s from the flat URLs and a sitemap update. Do not
+ * reintroduce a canonical_url pointing at `committee/*` (singular) either way —
+ * that prefix has never existed, and the 8 canonicals that pointed at it were
+ * cleared in docs/database/engineering-college/36-canonical-url-cleanup.sql.
+ *
  * This script creates 9 committee submenu pages for the Engineering College CMS.
  *
  * Features:
@@ -24,7 +46,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { v4 as uuidv4 } from 'uuid'
 import * as dotenv from 'dotenv'
-import { buildAbsoluteUrl, getSiteUrl } from '../lib/utils/site-url'
+import { getSiteUrl } from '../lib/utils/site-url'
 import { requireProductionEnvironment, displayEnvironmentSummary } from './utils/validate-environment'
 
 // Load environment variables
@@ -357,7 +379,12 @@ async function publishCommitteePages() {
           og_title: committee.seo.og_title,
           og_description: committee.seo.og_description,
           twitter_card: 'summary_large_image',
-          canonical_url: buildAbsoluteUrl(`/${committee.slug}`),
+          // canonical_url is deliberately NOT set. Leaving it null makes the
+          // renderer self-canonicalize against each deployment's metadataBase.
+          // This script previously wrote buildAbsoluteUrl(`/${slug}`), which
+          // baked whatever NEXT_PUBLIC_SITE_URL happened to be at run time into
+          // a per-tenant column — one of the sources of the host drift cleaned
+          // up in docs/database/*/…-canonical-url-cleanup.sql.
         })
 
       if (seoError) {

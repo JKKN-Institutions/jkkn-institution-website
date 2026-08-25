@@ -75,7 +75,7 @@ BEGIN
   );
 
   -- Insert SEO metadata
-  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, canonical_url, created_at, updated_at)
+  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, created_at, updated_at)
   VALUES (
     gen_random_uuid(),
     ambulance_page_id,
@@ -85,7 +85,6 @@ BEGIN
     'Round-the-clock emergency medical care facility.',
     'https://images.unsplash.com/photo-1587745416684-47953f16f02f?w=1200&h=630',
     'summary_large_image',
-    'https://engg.jkkn.ac.in/facilities/ambulance-services',
     current_time,
     current_time
   );
@@ -114,8 +113,8 @@ BEGIN
   INSERT INTO cms_page_blocks (id, page_id, component_name, props, sort_order, is_visible, created_at, updated_at)
   VALUES (gen_random_uuid(), auditorium_page_id, 'FacilityPage', '{"facilityTitle": "AUDITORIUM", "introduction": "<p class=\"text-lg text-gray-700 leading-relaxed\">Modern auditorium facility with seating for 500+ attendees.</p>", "images": ["https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800"], "features": [{"title": "Large Seating", "description": "500+ comfortable seats"}, {"title": "Advanced AV", "description": "Professional sound and projection"}, {"title": "Air-Conditioned", "description": "Climate-controlled environment"}]}'::jsonb, 1, true, current_time, current_time);
 
-  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, canonical_url, created_at, updated_at)
-  VALUES (gen_random_uuid(), auditorium_page_id, 'Auditorium - JKKN College of Engineering', 'Modern auditorium with advanced audiovisual systems.', 'Auditorium - JKKN Engineering College', 'State-of-the-art auditorium facility.', 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200', 'summary_large_image', 'https://engg.jkkn.ac.in/facilities/auditorium', current_time, current_time);
+  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, created_at, updated_at)
+  VALUES (gen_random_uuid(), auditorium_page_id, 'Auditorium - JKKN College of Engineering', 'Modern auditorium with advanced audiovisual systems.', 'Auditorium - JKKN Engineering College', 'State-of-the-art auditorium facility.', 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200', 'summary_large_image', current_time, current_time);
 
   INSERT INTO cms_page_fab_config (id, page_id, is_enabled, primary_action, position, created_at, updated_at)
   VALUES (gen_random_uuid(), auditorium_page_id, true, '{"label": "Book Auditorium", "icon": "calendar", "action": "/contact?service=auditorium", "variant": "primary"}'::jsonb, 'bottom-right', current_time, current_time);
@@ -132,8 +131,8 @@ BEGIN
   INSERT INTO cms_page_blocks (id, page_id, component_name, props, sort_order, is_visible, created_at, updated_at)
   VALUES (gen_random_uuid(), transport_page_id, 'TransportPage', '{"facilityTitle": "TRANSPORT FACILITIES", "introduction": "<p class=\"text-lg text-gray-700 leading-relaxed\">Comprehensive bus transport services covering major routes.</p>", "busImages": ["https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=800"], "routes": [{"routeNumber": "Route 1", "from": "Namakkal", "to": "JKKN Engineering College", "stops": ["Bus Stand", "College Junction"], "timing": "7:00 AM - 6:30 PM", "frequency": "Every 30 minutes"}], "features": [{"title": "GPS Tracking", "description": "Real-time bus tracking"}, {"title": "Safety Features", "description": "CCTV cameras and safety equipment"}]}'::jsonb, 1, true, current_time, current_time);
 
-  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, canonical_url, created_at, updated_at)
-  VALUES (gen_random_uuid(), transport_page_id, 'Transport - JKKN College of Engineering', 'Comprehensive bus transport services.', 'Transport - JKKN Engineering College', 'Safe and comfortable transportation.', 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=1200', 'summary_large_image', 'https://engg.jkkn.ac.in/facilities/transport', current_time, current_time);
+  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, created_at, updated_at)
+  VALUES (gen_random_uuid(), transport_page_id, 'Transport - JKKN College of Engineering', 'Comprehensive bus transport services.', 'Transport - JKKN Engineering College', 'Safe and comfortable transportation.', 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=1200', 'summary_large_image', current_time, current_time);
 
   INSERT INTO cms_page_fab_config (id, page_id, is_enabled, position, created_at, updated_at)
   VALUES (gen_random_uuid(), transport_page_id, false, 'bottom-right', current_time, current_time);
@@ -150,8 +149,8 @@ BEGIN
   INSERT INTO cms_page_blocks (id, page_id, component_name, props, sort_order, is_visible, created_at, updated_at)
   VALUES (gen_random_uuid(), classroom_page_id, 'FacilityPage', '{"facilityTitle": "CLASSROOM FACILITIES", "introduction": "<p class=\"text-lg text-gray-700 leading-relaxed\">Modern smart classrooms for enhanced learning.</p>", "images": ["https://images.unsplash.com/photo-1562774053-701939374585?w=800"], "features": [{"title": "Smart Boards", "description": "Interactive digital boards"}, {"title": "Audio-Visual", "description": "High-quality projectors"}, {"title": "Climate Control", "description": "Air-conditioned classrooms"}]}'::jsonb, 1, true, current_time, current_time);
 
-  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, canonical_url, created_at, updated_at)
-  VALUES (gen_random_uuid(), classroom_page_id, 'Classrooms - JKKN College of Engineering', 'Modern smart classrooms.', 'Classrooms - JKKN Engineering College', 'Technology-enabled learning spaces.', 'https://images.unsplash.com/photo-1562774053-701939374585?w=1200', 'summary_large_image', 'https://engg.jkkn.ac.in/facilities/class-room', current_time, current_time);
+  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, created_at, updated_at)
+  VALUES (gen_random_uuid(), classroom_page_id, 'Classrooms - JKKN College of Engineering', 'Modern smart classrooms.', 'Classrooms - JKKN Engineering College', 'Technology-enabled learning spaces.', 'https://images.unsplash.com/photo-1562774053-701939374585?w=1200', 'summary_large_image', current_time, current_time);
 
   INSERT INTO cms_page_fab_config (id, page_id, is_enabled, position, created_at, updated_at)
   VALUES (gen_random_uuid(), classroom_page_id, false, 'bottom-right', current_time, current_time);
@@ -168,8 +167,8 @@ BEGIN
   INSERT INTO cms_page_blocks (id, page_id, component_name, props, sort_order, is_visible, created_at, updated_at)
   VALUES (gen_random_uuid(), foodcourt_page_id, 'FacilityPage', '{"facilityTitle": "FOOD COURT", "introduction": "<p class=\"text-lg text-gray-700 leading-relaxed\">Spacious food court with multiple cuisine options.</p>", "images": ["https://images.unsplash.com/photo-1567521464027-f127ff144326?w=800"], "features": [{"title": "Hygienic Environment", "description": "Maintained cleanliness standards"}, {"title": "Nutritious Menu", "description": "Balanced meal options"}, {"title": "Affordable Pricing", "description": "Subsidized rates for students"}]}'::jsonb, 1, true, current_time, current_time);
 
-  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, canonical_url, created_at, updated_at)
-  VALUES (gen_random_uuid(), foodcourt_page_id, 'Food Court - JKKN College of Engineering', 'Hygienic food court facilities.', 'Food Court - JKKN Engineering College', 'Quality food in clean environment.', 'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=1200', 'summary_large_image', 'https://engg.jkkn.ac.in/facilities/food-court', current_time, current_time);
+  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, created_at, updated_at)
+  VALUES (gen_random_uuid(), foodcourt_page_id, 'Food Court - JKKN College of Engineering', 'Hygienic food court facilities.', 'Food Court - JKKN Engineering College', 'Quality food in clean environment.', 'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=1200', 'summary_large_image', current_time, current_time);
 
   INSERT INTO cms_page_fab_config (id, page_id, is_enabled, position, created_at, updated_at)
   VALUES (gen_random_uuid(), foodcourt_page_id, false, 'bottom-right', current_time, current_time);
@@ -186,8 +185,8 @@ BEGIN
   INSERT INTO cms_page_blocks (id, page_id, component_name, props, sort_order, is_visible, created_at, updated_at)
   VALUES (gen_random_uuid(), hostel_page_id, 'HostelPage', '{"facilityTitle": "HOSTEL FACILITIES", "introduction": "<p class=\"text-lg text-gray-700 leading-relaxed\">Safe and comfortable hostel facilities.</p>", "boysHostel": {"images": ["https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800"], "features": [{"title": "Accommodation", "description": "2-3 students per room"}, {"title": "Mess Facility", "description": "Nutritious meals"}], "capacity": "500 students", "warden": {"name": "Dr. Rajkumar", "contact": "+91-9876543210"}}, "girlsHostel": {"images": ["https://images.unsplash.com/photo-1631049035182-249067d7618e?w=800"], "features": [{"title": "Safe Environment", "description": "24/7 security"}, {"title": "Comfortable Rooms", "description": "Modern furniture"}], "capacity": "400 students", "warden": {"name": "Dr. Lakshmi", "contact": "+91-9876543211"}}}'::jsonb, 1, true, current_time, current_time);
 
-  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, canonical_url, created_at, updated_at)
-  VALUES (gen_random_uuid(), hostel_page_id, 'Hostel - JKKN College of Engineering', 'Separate hostel facilities for boys and girls.', 'Hostel - JKKN Engineering College', 'Safe and comfortable accommodation.', 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=1200', 'summary_large_image', 'https://engg.jkkn.ac.in/facilities/hostel', current_time, current_time);
+  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, created_at, updated_at)
+  VALUES (gen_random_uuid(), hostel_page_id, 'Hostel - JKKN College of Engineering', 'Separate hostel facilities for boys and girls.', 'Hostel - JKKN Engineering College', 'Safe and comfortable accommodation.', 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=1200', 'summary_large_image', current_time, current_time);
 
   INSERT INTO cms_page_fab_config (id, page_id, is_enabled, position, created_at, updated_at)
   VALUES (gen_random_uuid(), hostel_page_id, false, 'bottom-right', current_time, current_time);
@@ -204,8 +203,8 @@ BEGIN
   INSERT INTO cms_page_blocks (id, page_id, component_name, props, sort_order, is_visible, created_at, updated_at)
   VALUES (gen_random_uuid(), library_page_id, 'FacilityPage', '{"facilityTitle": "LIBRARY", "introduction": "<p class=\"text-lg text-gray-700 leading-relaxed\">Central library with 50,000+ books.</p>", "images": ["https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800"], "features": [{"title": "Extensive Collection", "description": "50,000+ books"}, {"title": "Digital Library", "description": "E-books and e-journals"}, {"title": "Reading Rooms", "description": "Quiet study areas"}]}'::jsonb, 1, true, current_time, current_time);
 
-  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, canonical_url, created_at, updated_at)
-  VALUES (gen_random_uuid(), library_page_id, 'Library - JKKN College of Engineering', 'Central library facilities.', 'Library - JKKN Engineering College', 'Comprehensive learning resources.', 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200', 'summary_large_image', 'https://engg.jkkn.ac.in/facilities/library', current_time, current_time);
+  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, created_at, updated_at)
+  VALUES (gen_random_uuid(), library_page_id, 'Library - JKKN College of Engineering', 'Central library facilities.', 'Library - JKKN Engineering College', 'Comprehensive learning resources.', 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200', 'summary_large_image', current_time, current_time);
 
   INSERT INTO cms_page_fab_config (id, page_id, is_enabled, position, created_at, updated_at)
   VALUES (gen_random_uuid(), library_page_id, false, 'bottom-right', current_time, current_time);
@@ -222,8 +221,8 @@ BEGIN
   INSERT INTO cms_page_blocks (id, page_id, component_name, props, sort_order, is_visible, created_at, updated_at)
   VALUES (gen_random_uuid(), seminar_page_id, 'FacilityPage', '{"facilityTitle": "SEMINAR HALLS", "introduction": "<p class=\"text-lg text-gray-700 leading-relaxed\">Modern seminar halls for events.</p>", "images": ["https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800"], "features": [{"title": "Multiple Halls", "description": "Various capacity options"}, {"title": "Presentation Equipment", "description": "Projectors and audio systems"}, {"title": "Air-Conditioned", "description": "Comfortable environment"}]}'::jsonb, 1, true, current_time, current_time);
 
-  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, canonical_url, created_at, updated_at)
-  VALUES (gen_random_uuid(), seminar_page_id, 'Seminar Halls - JKKN College of Engineering', 'Modern seminar facilities.', 'Seminar Halls - JKKN Engineering College', 'Well-equipped event spaces.', 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1200', 'summary_large_image', 'https://engg.jkkn.ac.in/facilities/seminar-hall', current_time, current_time);
+  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, created_at, updated_at)
+  VALUES (gen_random_uuid(), seminar_page_id, 'Seminar Halls - JKKN College of Engineering', 'Modern seminar facilities.', 'Seminar Halls - JKKN Engineering College', 'Well-equipped event spaces.', 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1200', 'summary_large_image', current_time, current_time);
 
   INSERT INTO cms_page_fab_config (id, page_id, is_enabled, position, created_at, updated_at)
   VALUES (gen_random_uuid(), seminar_page_id, false, 'bottom-right', current_time, current_time);
@@ -240,8 +239,8 @@ BEGIN
   INSERT INTO cms_page_blocks (id, page_id, component_name, props, sort_order, is_visible, created_at, updated_at)
   VALUES (gen_random_uuid(), sports_page_id, 'FacilityPage', '{"facilityTitle": "SPORTS FACILITIES", "introduction": "<p class=\"text-lg text-gray-700 leading-relaxed\">Comprehensive sports infrastructure.</p>", "images": ["https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800"], "features": [{"title": "Outdoor Facilities", "description": "Cricket, football, basketball courts"}, {"title": "Indoor Games", "description": "Badminton, table tennis"}, {"title": "Fitness Center", "description": "Modern gymnasium"}]}'::jsonb, 1, true, current_time, current_time);
 
-  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, canonical_url, created_at, updated_at)
-  VALUES (gen_random_uuid(), sports_page_id, 'Sports - JKKN College of Engineering', 'Comprehensive sports facilities.', 'Sports - JKKN Engineering College', 'World-class athletic infrastructure.', 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200', 'summary_large_image', 'https://engg.jkkn.ac.in/facilities/sports', current_time, current_time);
+  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, created_at, updated_at)
+  VALUES (gen_random_uuid(), sports_page_id, 'Sports - JKKN College of Engineering', 'Comprehensive sports facilities.', 'Sports - JKKN Engineering College', 'World-class athletic infrastructure.', 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200', 'summary_large_image', current_time, current_time);
 
   INSERT INTO cms_page_fab_config (id, page_id, is_enabled, position, created_at, updated_at)
   VALUES (gen_random_uuid(), sports_page_id, false, 'bottom-right', current_time, current_time);
@@ -258,8 +257,8 @@ BEGIN
   INSERT INTO cms_page_blocks (id, page_id, component_name, props, sort_order, is_visible, created_at, updated_at)
   VALUES (gen_random_uuid(), wifi_page_id, 'FacilityPage', '{"facilityTitle": "WI-FI CAMPUS", "introduction": "<p class=\"text-lg text-gray-700 leading-relaxed\">Campus-wide wireless connectivity.</p>", "images": ["https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800"], "features": [{"title": "Complete Coverage", "description": "Wi-Fi across campus"}, {"title": "High-Speed Internet", "description": "Fast connectivity"}, {"title": "Secure Network", "description": "Protected access"}]}'::jsonb, 1, true, current_time, current_time);
 
-  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, canonical_url, created_at, updated_at)
-  VALUES (gen_random_uuid(), wifi_page_id, 'Wi-Fi Campus - JKKN College of Engineering', 'Campus-wide internet connectivity.', 'Wi-Fi Campus - JKKN Engineering College', 'High-speed wireless network.', 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200', 'summary_large_image', 'https://engg.jkkn.ac.in/facilities/wi-fi-campus', current_time, current_time);
+  INSERT INTO cms_seo_metadata (id, page_id, meta_title, meta_description, og_title, og_description, og_image, twitter_card, created_at, updated_at)
+  VALUES (gen_random_uuid(), wifi_page_id, 'Wi-Fi Campus - JKKN College of Engineering', 'Campus-wide internet connectivity.', 'Wi-Fi Campus - JKKN Engineering College', 'High-speed wireless network.', 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200', 'summary_large_image', current_time, current_time);
 
   INSERT INTO cms_page_fab_config (id, page_id, is_enabled, position, created_at, updated_at)
   VALUES (gen_random_uuid(), wifi_page_id, false, 'bottom-right', current_time, current_time);

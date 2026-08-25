@@ -4,6 +4,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { logActivity } from '@/lib/utils/activity-logger'
+import { normalizeCanonicalUrl } from '@/lib/utils/site-url'
 import { checkPermission } from '../permissions'
 import { NotificationHelpers } from '@/lib/utils/notification-sender'
 import {
@@ -2098,6 +2099,13 @@ export async function updatePageSeo(
     .eq('page_id', pageId)
     .single()
 
+  // Normalize the editor-supplied canonical URL before it is stored. Mirrors the
+  // normalize_canonical_url() trigger on cms_seo_metadata; doing it here too
+  // means the admin UI reflects the stored value immediately rather than after
+  // a refetch. Guarded on key presence so a partial update leaves the field be.
+  const hasCanonical = 'canonical_url' in seoData
+  const canonicalUrl = hasCanonical ? normalizeCanonicalUrl(seoData.canonical_url) : undefined
+
   // Calculate SEO score based on filled fields
   let seoScore = 0
   if (seoData.meta_title && seoData.meta_title.length >= 30 && seoData.meta_title.length <= 60) seoScore += 20
@@ -2111,10 +2119,23 @@ export async function updatePageSeo(
   if (seoData.twitter_title || seoData.og_title) seoScore += 5
   if (seoData.twitter_description || seoData.og_description) seoScore += 5
   if (seoData.twitter_image || seoData.og_image) seoScore += 5
-  if (seoData.canonical_url) seoScore += 5
+
+  // Canonical URL: awarded unconditionally, and deliberately so.
+  // The old rule (`if (seoData.canonical_url) seoScore += 5`) rewarded typing
+  // anything into an unvalidated free-text field — which is how three different
+  // hosts ended up in this column. Empty is the CORRECT answer for almost every
+  // page, because the renderer self-canonicalizes, so penalising empty pushed
+  // editors towards the exact drift this cleanup removed. After normalization
+  // the stored value is always valid — null, a relative path, or a deliberate
+  // cross-domain URL — so the field no longer discriminates between pages. The
+  // 5 points are retained as a constant purely to keep the scale at 0-100.
+  seoScore += 5
 
   const updateData = {
     ...seoData,
+    // Spread conditionally: a partial SEO update that omits canonical_url must
+    // never null out a deliberate cross-domain canonical.
+    ...(hasCanonical ? { canonical_url: canonicalUrl } : {}),
     seo_score: seoScore,
     last_analyzed_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),

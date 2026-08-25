@@ -470,9 +470,12 @@ export function SeoPanel({
                       <TooltipTrigger>
                         <Info className="h-3 w-3 text-muted-foreground" />
                       </TooltipTrigger>
-                      <TooltipContent side="right" className="max-w-[200px]">
+                      <TooltipContent side="right" className="max-w-[240px]">
                         <p className="text-xs">
-                          The preferred URL if this content exists at multiple URLs.
+                          Leave empty. The page automatically canonicalises to its
+                          own URL. Only set this to point search engines at a
+                          different page — e.g. duplicate content that lives on
+                          another institution&apos;s site.
                         </p>
                       </TooltipContent>
                     </Tooltip>
@@ -480,11 +483,17 @@ export function SeoPanel({
                 </Label>
                 <Input
                   id="canonical_url"
-                  type="url"
+                  type="text"
                   value={seoData.canonical_url || ''}
                   onChange={(e) => updateField('canonical_url', e.target.value)}
-                  placeholder="https://jkkn.ac.in/..."
+                  placeholder="Leave empty — defaults to this page's own URL"
                 />
+                <p className="text-xs text-muted-foreground">
+                  Only fill this in when the canonical is a{' '}
+                  <strong>different</strong> page. A full URL on this site is
+                  saved as a relative path so every institution resolves its own
+                  domain.
+                </p>
               </div>
             </CollapsibleContent>
           </Collapsible>

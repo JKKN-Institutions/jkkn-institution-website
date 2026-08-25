@@ -50,7 +50,9 @@ const SEO_CONFIG = {
   og_image: '/images/engineering/senthuraja-hall/senthuraja-hall-01.jpg',
   og_type: 'website',
   twitter_card: 'summary_large_image',
-  canonical_url: getSiteUrl(),
+  // canonical_url deliberately omitted — the homepage self-canonicalizes to '/'
+  // via the renderer's fallback. getSiteUrl() here baked the run-time host into
+  // a per-tenant column; see docs/database/*/…-canonical-url-cleanup.sql.
   robots_directive: 'index, follow'
 }
 
