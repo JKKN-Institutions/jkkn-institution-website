@@ -48,4 +48,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-nul.tmp/
+# scratch / working files (not part of the build)
+.tmp/
