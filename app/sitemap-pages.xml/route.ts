@@ -16,6 +16,7 @@ import {
 } from '@/lib/config/sitemaps.config'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
+import { getSiteUrl } from '@/lib/utils/site-url'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 3600 // 1-hour edge cache; env vars read at request time
@@ -26,7 +27,7 @@ const RESERVED_CMS_SLUGS = new Set(['home'])
 
 export async function GET() {
   const institutionId = process.env.NEXT_PUBLIC_INSTITUTION_ID || 'main'
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.jkkn.ac.in'
+  const siteUrl = getSiteUrl()
 
   // Start with static config entries (known routes)
   const staticEntries = getPagesSitemap(siteUrl, institutionId)

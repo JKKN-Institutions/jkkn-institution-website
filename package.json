@@ -9,6 +9,7 @@
     "dev:pharmacy": "node node_modules/tsx/dist/cli.mjs scripts/switch-institution.ts pharmacy && node --max-http-header-size=32768 node_modules/next/dist/bin/next dev",
     "dev:engineering": "node node_modules/tsx/dist/cli.mjs scripts/switch-institution.ts engineering && node --max-http-header-size=32768 node_modules/next/dist/bin/next dev",
     "switch": "node node_modules/tsx/dist/cli.mjs scripts/switch-institution.ts",
+    "prebuild": "node scripts/check-site-url.mjs",
     "build": "node --max-old-space-size=8192 node_modules/next/dist/bin/next build --webpack",
     "start": "node node_modules/next/dist/bin/next start",
     "lint": "node node_modules/eslint/bin/eslint.js",

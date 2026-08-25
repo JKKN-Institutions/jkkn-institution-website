@@ -8,6 +8,7 @@ import { generateOrganizationSchema, serializeSchema } from "@/lib/seo";
 import { generateSiteMetadata } from "@/lib/seo/site-metadata";
 import { VideoSchema } from "@/components/seo/video-schema";
 import { getGoogleSiteVerification } from "@/lib/seo/institution-seo-config";
+import { getSiteUrl } from '@/lib/utils/site-url'
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -33,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const siteMetadata = await generateSiteMetadata()
 
   // Get site URL from environment (institution-specific)
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.jkkn.ac.in'
+  const siteUrl = getSiteUrl()
 
   // Get institution-specific Google verification code
   const googleVerification = getGoogleSiteVerification()
