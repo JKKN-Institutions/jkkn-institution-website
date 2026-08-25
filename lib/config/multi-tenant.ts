@@ -108,7 +108,7 @@ export const INSTITUTION_REGISTRY: InstitutionConfig[] = [
     id: 'arts-science',
     name: 'JKKN College of Arts and Science',
     shortName: 'JKKN CAS',
-    domain: 'arts.jkkn.ac.in',
+    domain: 'cas.jkkn.ac.in',
     type: 'college',
     theme: {
       primaryColor: '#166534',    // Green
@@ -192,7 +192,7 @@ export const INSTITUTION_REGISTRY: InstitutionConfig[] = [
     id: 'nursing',
     name: 'Sresakthimayeil Institute of Nursing and Research',
     shortName: 'SINR',
-    domain: 'nursing.jkkn.ac.in',
+    domain: 'nursing.sresakthimayeil.jkkn.ac.in',
     type: 'college',
     theme: {
       primaryColor: '#be185d',    // Pink

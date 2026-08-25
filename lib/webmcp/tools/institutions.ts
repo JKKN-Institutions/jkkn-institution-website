@@ -79,11 +79,12 @@ export function registerInstitutionTools() {
         'jkkn-dental-college': 'https://dental.jkkn.ac.in',
         'jkkn-college-pharmacy': 'https://pharmacy.jkkn.ac.in',
         'jkkn-college-engineering': 'https://engg.jkkn.ac.in',
-        'jkkn-college-arts-science': 'https://arts.jkkn.ac.in',
-        'jkkn-college-nursing': 'https://nursing.jkkn.ac.in',
+        'jkkn-college-arts-science': 'https://cas.jkkn.ac.in',
+        'jkkn-college-nursing': 'https://nursing.sresakthimayeil.jkkn.ac.in',
         'jkkn-college-allied-health': 'https://ahs.jkkn.ac.in',
-        'jkkn-college-physiotherapy': 'https://physio.jkkn.ac.in',
-        'jkkn-school-nursing': 'https://nursing.jkkn.ac.in',
+        // No dedicated site for Physiotherapy or the School of Nursing (GNM/ANM):
+        // physio.jkkn.ac.in does not resolve, and the nursing site covers only
+        // B.Sc / M.Sc / P.B.Sc. Both fall back to the umbrella site below.
       }
 
       const inst = INSTITUTIONS.find((i) => i.id === d.institution)
