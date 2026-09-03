@@ -81,6 +81,13 @@ Allow: /news/
 Allow: /events/
 Allow: /sitemap.xml
 
+# --- ALLOW: the two /_next/ paths that are NOT build junk ---
+# /_next/static/ is the JS, CSS and fonts; /_next/image is the image optimizer.
+# Longest match wins, so these two beat the /_next/ Disallow below and every
+# crawler without its own group can still render the page.
+Allow: /_next/static/
+Allow: /_next/image
+
 # --- DISALLOW: Next.js internal/build paths (zero SEO value) ---
 Disallow: /_next/             # Build assets — JS chunks, CSS, webpack output
 Disallow: /api/               # API routes — server-side only, not indexable
@@ -313,6 +320,10 @@ User-agent: Amazonbot
 User-agent: MistralAI-User
 User-agent: cohere-ai
 Allow: /
+# An AI engine that cannot fetch /_next/static/ or /_next/image sees a page with
+# no styling and no images. Goal 4 wants the opposite. Build paths stay closed.
+Allow: /_next/static/
+Allow: /_next/image
 Disallow: /_next/
 Disallow: /api/
 Disallow: /admin/
@@ -333,6 +344,9 @@ User-agent: webzio-extended
 User-agent: ICC-Crawler
 User-agent: Timpibot
 Allow: /
+# Same carve-out as the AI group above.
+Allow: /_next/static/
+Allow: /_next/image
 Disallow: /_next/
 Disallow: /api/
 Disallow: /admin/
@@ -661,6 +675,13 @@ Allow: /news/
 Allow: /events/
 Allow: /sitemap.xml${extraPaths}
 
+# --- ALLOW: the two /_next/ paths that are NOT build junk ---
+# /_next/static/ is the JS, CSS and fonts; /_next/image is the image optimizer.
+# Longest match wins, so these two beat the /_next/ Disallow below and every
+# crawler without its own group can still render the page.
+Allow: /_next/static/
+Allow: /_next/image
+
 # --- DISALLOW: Next.js internal/build paths (zero SEO value) ---
 Disallow: /_next/
 Disallow: /api/
@@ -882,6 +903,10 @@ User-agent: Timpibot
 User-agent: omgili
 User-agent: ImagesiftBot
 Allow: /
+# An AI engine that cannot fetch /_next/static/ or /_next/image sees a page with
+# no styling and no images. Goal 4 wants the opposite. Build paths stay closed.
+Allow: /_next/static/
+Allow: /_next/image
 Disallow: /_next/
 Disallow: /api/
 Disallow: /admin/
@@ -1003,8 +1028,20 @@ Disallow: /
 User-agent: BLEXBot
 Disallow: /
 
+# DataForSeoBot is NOT a scraper - it is the crawler behind a DataForSEO
+# subscription JKKN pays for, so blocking it only blinds our own on-page audits.
+# Engineering was corrected in a796d26; this is the same fix for the parent.
 User-agent: DataForSeoBot
-Disallow: /
+Allow: /
+Allow: /_next/static/
+Allow: /_next/image
+Disallow: /_next/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /auth/
+Disallow: /preview/
+Disallow: /draft/
+Crawl-delay: 3
 
 User-agent: magpie-crawler
 Disallow: /
