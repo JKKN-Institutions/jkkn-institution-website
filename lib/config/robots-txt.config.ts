@@ -249,7 +249,6 @@ Disallow: /_next/
 Disallow: /api/
 Disallow: /admin/
 Disallow: /search
-Crawl-delay: 2
 
 
 # ---------------------------------------------------------------------------
@@ -451,9 +450,6 @@ User-agent: SemrushBot-OCOB
 Disallow: /
 
 User-agent: BLEXBot
-Disallow: /
-
-User-agent: DataForSeoBot
 Disallow: /
 
 User-agent: magpie-crawler
