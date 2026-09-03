@@ -217,9 +217,18 @@ Disallow: /account/
 
 User-agent: Googlebot
 Allow: /
+# /_next/static/ carries the JS, CSS and fonts; /_next/image is the optimizer.
+# Google resolves by LONGEST match, so these two beat the /_next/ Disallow below
+# and only the build paths stay closed. Same pattern as dental, cas, nursing, ahs.
+Allow: /_next/static/
+Allow: /_next/image
 Disallow: /_next/
 Disallow: /api/
 Disallow: /admin/
+# /admin 302s to /auth/login?redirectTo=/admin, so blocking /admin/ alone left
+# the real CMS login crawlable. GSC 2026-09-03: both hosts report the URL as
+# "unknown to Google", so this closes it before it is ever indexed.
+Disallow: /auth/
 Disallow: /preview/
 Disallow: /draft/
 Disallow: /search
@@ -245,9 +254,13 @@ Allow: /events/
 
 User-agent: Bingbot
 Allow: /
+# Same carve-out as the Googlebot group above - Bing renders pages too.
+Allow: /_next/static/
+Allow: /_next/image
 Disallow: /_next/
 Disallow: /api/
 Disallow: /admin/
+Disallow: /auth/
 Disallow: /search
 
 
@@ -773,9 +786,18 @@ Disallow: /account/
 
 User-agent: Googlebot
 Allow: /
+# /_next/static/ carries the JS, CSS and fonts; /_next/image is the optimizer.
+# Google resolves by LONGEST match, so these two beat the /_next/ Disallow below
+# and only the build paths stay closed. Same pattern as dental, cas, nursing, ahs.
+Allow: /_next/static/
+Allow: /_next/image
 Disallow: /_next/
 Disallow: /api/
 Disallow: /admin/
+# /admin 302s to /auth/login?redirectTo=/admin, so blocking /admin/ alone left
+# the real CMS login crawlable. GSC 2026-09-03: both hosts report the URL as
+# "unknown to Google", so this closes it before it is ever indexed.
+Disallow: /auth/
 Disallow: /preview/
 Disallow: /draft/
 Disallow: /search
@@ -799,9 +821,13 @@ Allow: /events/
 
 User-agent: Bingbot
 Allow: /
+# Same carve-out as the Googlebot group above - Bing renders pages too.
+Allow: /_next/static/
+Allow: /_next/image
 Disallow: /_next/
 Disallow: /api/
 Disallow: /admin/
+Disallow: /auth/
 Disallow: /search
 Crawl-delay: 2
 
