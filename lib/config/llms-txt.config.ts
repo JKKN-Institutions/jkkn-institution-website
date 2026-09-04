@@ -12,6 +12,10 @@
  * Keep entries factual and aggregator-verifiable. Do NOT overstate metrics.
  */
 
+// Bump this whenever a brief below changes. It is emitted into every llms.txt so
+// content drift is visible to an AI crawler instead of being silent.
+const LAST_REVIEWED = '2026-09-04'
+
 // =============================================================================
 // ENGINEERING INSTITUTION
 // =============================================================================
@@ -27,24 +31,27 @@ Contact: +91 93458 55001 | engg@jkkn.ac.in | ${siteUrl}
 
 ## Programs Offered
 
-- [B.E. Computer Science and Engineering](${siteUrl}/department-of-cse): 4-year undergraduate program. Intake 60. AICTE approved. Anna University affiliated.
-- [B.E. Electronics and Communication Engineering](${siteUrl}/department-of-ece): 4-year undergraduate program. Intake 60. Strong industry tie-ups.
-- [B.E. Electrical and Electronics Engineering](${siteUrl}/department-of-eee): 4-year undergraduate program. Intake 60.
-- [B.E. Mechanical Engineering](${siteUrl}/department-of-mechanical): 4-year undergraduate program. Intake 60.
-- [B.Tech Information Technology](${siteUrl}/department-of-it): 4-year undergraduate program. Intake 60.
-- [M.E. Computer Science and Engineering](${siteUrl}/department-of-cse): 2-year postgraduate program.
-- [Master of Business Administration (MBA)](${siteUrl}/department-of-mba): 2-year management program.
+Total sanctioned intake 372 — 300 undergraduate across 5 B.E./B.Tech branches, 72 postgraduate.
+
+- [B.E. Computer Science and Engineering](${siteUrl}/courses-offered/ug/be-cse): 4-year undergraduate program. Intake 60. AICTE approved. Anna University affiliated.
+- [B.E. Electronics and Communication Engineering](${siteUrl}/courses-offered/ug/be-ece): 4-year undergraduate program. Intake 60. Strong industry tie-ups.
+- [B.E. Electrical and Electronics Engineering](${siteUrl}/courses-offered/ug/be-eee): 4-year undergraduate program. Intake 60.
+- [B.E. Mechanical Engineering](${siteUrl}/courses-offered/ug/be-mechanical): 4-year undergraduate program. Intake 60.
+- [B.Tech Information Technology](${siteUrl}/courses-offered/ug/btech-it): 4-year undergraduate program. Intake 60.
+- [M.E. Computer Science and Engineering](${siteUrl}/courses-offered/pg/me-cse): 2-year postgraduate program.
+- [Master of Business Administration (MBA)](${siteUrl}/courses-offered/pg/mba): 2-year management program.
+- [All programs](${siteUrl}/courses-offered): Complete UG and PG course list with eligibility.
 
 ## Admissions
 
 - [Admissions 2026-27](${siteUrl}/admissions): B.E./B.Tech via TNEA counselling (tnea.ac.in) or direct admission. Eligibility: 10+2 with Mathematics, Physics, Chemistry/CS minimum 50%. Lateral entry for Diploma holders into 2nd year.
-- Tuition fees: ₹75,000–₹1,00,000 per year depending on branch (AICTE regulated).
-- Hostel available: ₹50,000/year (food + accommodation).
+- [Fee structure](${siteUrl}/admissions/fee-structure): Annual tuition ₹30,000–₹80,000 depending on branch and quota. Government quota — B.E. CSE and B.Tech IT ₹65,000, B.E. ECE ₹60,000, B.E. EEE and B.E. Mechanical ₹45,000, MBA ₹65,000, M.E. CSE ₹30,000. Management quota — B.E. CSE and B.Tech IT ₹80,000, B.E. ECE ₹70,000, B.E. EEE and B.E. Mechanical ₹45,000, MBA ₹65,000, M.E. CSE ₹30,000. Lateral entry ₹50,000 government quota, ₹60,000 management quota.
+- [Hostel](${siteUrl}/hostel): Separate hostels for boys and girls. Hostel and mess charges are quoted by the admissions office.
 - Scholarships: Government schemes, merit-based, management concessions available.
 
 ## Placements
 
-- [Placement Cell](${siteUrl}/placements): 500+ students placed annually. Placement rates 60–70% (Collegedunia, Careers360). Highest recorded package ₹12 LPA. Average package ₹2.2 LPA (Careers360 median)–₹4.5 LPA.
+- [Placement Cell](${siteUrl}/placements): Campus recruitment drives, placement training and the recruiter list.
 - Top recruiters: TCS, Infosys, Wipro, Cognizant, HCL, Tech Mahindra, Amazon, Zoho, Accenture, Capgemini, L&T, Ashok Leyland.
 - Placement training: Aptitude, reasoning, coding, mock interviews from 3rd year.
 
@@ -64,14 +71,15 @@ Contact: +91 93458 55001 | engg@jkkn.ac.in | ${siteUrl}
 ## About
 
 - [About JKKN CET](${siteUrl}/about): History, vision, mission, leadership team.
-- [Faculty](${siteUrl}/faculty): 100+ experienced faculty. Student-teacher ratio 15:1.
-- [Events & News](${siteUrl}/events): Technical symposia, cultural events, workshops.
+- [Faculty](${siteUrl}/faculty): Faculty directory with qualifications, specialisations and publications.
 - [Blog](${siteUrl}/blog): Articles on engineering education, campus updates, placement news.
 - [Contact](${siteUrl}/contact): Admissions office, campus location map, enquiry form.
 
 ## Parent Organization
 
 JKKN Institutions (jkkn.ac.in) — J.K.K. Rangammal Charitable Trust, established 1952. Operates 7 colleges and 2 schools on one integrated residential campus in Komarapalayam.
+
+Last reviewed: ${LAST_REVIEWED}
 `
 }
 
@@ -82,7 +90,7 @@ JKKN Institutions (jkkn.ac.in) — J.K.K. Rangammal Charitable Trust, establishe
 function getMainLlmsTxt(siteUrl: string): string {
   return `# JKKN Institutions
 
-> Premier educational group in Komarapalayam, Tamil Nadu, comprising 7 colleges and 2 schools. Established 1952 by the J.K.K. Rangammal Charitable Trust. NAAC accredited. 74+ years of educational excellence.
+> Premier educational group in Komarapalayam, Tamil Nadu, comprising 7 colleges and 2 schools. Established 1952 by the J.K.K. Rangammal Charitable Trust. Colleges are individually accredited and approved by NAAC, AICTE, DCI, PCI, INC and NCTE. 74+ years of educational excellence.
 
 JKKN Institutions offers 50+ career-focused programs across Dental, Pharmacy, Engineering, Nursing, Allied Health Sciences, Arts & Science, and Education. All colleges are on one integrated 55-acre residential campus in Komarapalayam, Namakkal District, Tamil Nadu — 15 km from Erode city on NH-544.
 
@@ -97,6 +105,12 @@ Contact: +91 93458 55001 | info@jkkn.ac.in | ${siteUrl}
 - [JKKN College of Allied Health Sciences](https://ahs.jkkn.ac.in/): Established 2019. B.Sc Allied Health Sciences. Tamil Nadu Dr. M.G.R. Medical University affiliated.
 - [Sresakthimayeil Institute of Nursing and Research](https://nursing.sresakthimayeil.jkkn.ac.in/): Established 2006. B.Sc Nursing, P.B.B.Sc Nursing, M.Sc Nursing. Indian Nursing Council recognized.
 - [JKKN College of Education](https://edu.jkkn.ac.in/): Established 2016. B.Ed. NCTE approved, TNTEU affiliated.
+
+## Schools Under JKKN
+
+- [JKKN Matriculation Higher Secondary School](https://school.jkkn.ac.in/): Founded 1969. Matriculation school recognized by the Government of Tamil Nadu.
+- [Nattraja Vidhyalaya](https://nv.jkkn.ac.in/): Founded 2009. Elementary school offering Pre-KG through Grade 10.
+- [Both school campuses](${siteUrl}/our-schools): Curriculum, facilities and school admissions.
 
 ## Admissions
 
@@ -120,6 +134,8 @@ Contact: +91 93458 55001 | info@jkkn.ac.in | ${siteUrl}
 - [Blog](${siteUrl}/blog): Institutional news, program updates, student achievements.
 - [Events](${siteUrl}/events): Inter-college events, cultural programs, workshops, seminars.
 - [Contact](${siteUrl}/contact): Main campus address, enquiry forms, department contacts.
+
+Last reviewed: ${LAST_REVIEWED}
 `
 }
 
