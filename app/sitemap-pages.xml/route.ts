@@ -112,14 +112,24 @@ export async function GET() {
             && !normalized.startsWith('blog/')
             && !normalized.startsWith('careers/')
         })
-        .map(p => ({
-          loc: `${siteUrl}/${p.slug}`,
-          lastmod: p.updated_at
-            ? new Date(p.updated_at).toISOString().split('T')[0]
-            : new Date().toISOString().split('T')[0],
-          changefreq: 'monthly' as const,
-          priority: 0.6,
-        }))
+        .map(p => {
+          // updated_at, then published_at, then NOTHING. The old code fell back to
+          // new Date(), which stamped today's date on every CMS row whose updated_at is
+          // NULL. On engineering that was all 13 rows whose slug 404s (measured
+          // 2026-09-10): the sitemap told Google the dead URLs had changed today, every
+          // day. published_at is already selected above and the dbDateMap a few lines up
+          // already uses this same `updated_at || published_at` chain - the two paths
+          // were simply inconsistent.
+          const realDate = p.updated_at || p.published_at
+          return {
+            loc: `${siteUrl}/${p.slug}`,
+            lastmod: realDate
+              ? new Date(realDate).toISOString().split('T')[0]
+              : undefined,
+            changefreq: 'monthly' as const,
+            priority: 0.6,
+          }
+        })
     }
   } catch {
     // If DB fetch fails, fall back to static entries only

@@ -13,11 +13,40 @@
  * - sitemap-blog.xml (blog/events/news)
  */
 
-const TODAY = new Date().toISOString().split('T')[0]
+/**
+ * The sitemap INDEX may honestly carry today's date: every child sitemap route is
+ * force-dynamic, so those documents really are regenerated on each request. Only the
+ * per-URL entries must not claim a date they do not know.
+ */
+const GENERATED_ON = new Date().toISOString().split('T')[0]
+
+/**
+ * Deliberately UNDEFINED. A static config entry has no known modification date.
+ *
+ * This was `new Date().toISOString().split('T')[0]`, evaluated at module load and
+ * re-evaluated on every request because the sitemap routes are force-dynamic. All 166
+ * static entries therefore claimed they had been modified TODAY - every day, forever.
+ *
+ * Measured on engg.jkkn.ac.in 2026-09-10 (live fetch, cache bypassed): 39 of 106
+ * sitemap URLs carried lastmod=2026-09-10. That set contained ALL 13 URLs that return a
+ * hard 404 and ALL 10 /admissions/* pages. The one signal a sitemap has for "what
+ * changed" was being spent equally on the dead URLs and on the money pages.
+ *
+ * Google's guidance is to omit lastmod when it is not known; an unreliable lastmod is
+ * discounted and costs trust. The route layer still overwrites this with the real
+ * cms_pages.updated_at wherever a CMS row matches the slug, so every page that has a
+ * genuine date keeps it.
+ *
+ * Keeping the identifier name means the 166 call sites did not have to be touched in a
+ * file that three other worktrees are editing today. Renaming it to UNKNOWN_LASTMOD is
+ * a safe follow-up once those land.
+ */
+const TODAY = undefined
 
 export interface SitemapEntry {
   loc: string
-  lastmod: string
+  /** Omitted from the XML when no real modification date is known - see TODAY above. */
+  lastmod?: string
   changefreq?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never'
   priority?: number
 }
@@ -40,16 +69,19 @@ export interface InstitutionSitemaps {
  */
 export function getSitemapIndex(siteUrl: string, institutionId: string): SitemapIndex[] {
   const config: { [key: string]: SitemapIndex[] } = {
+    // GENERATED_ON, not TODAY: an index entry's lastmod describes when the CHILD
+    // SITEMAP DOCUMENT last changed, and those routes are force-dynamic, so "today" is
+    // true here. SitemapIndex.lastmod stays a required string for the same reason.
     engineering: [
-      { loc: `${siteUrl}/sitemap-pages.xml`, lastmod: TODAY },
-      { loc: `${siteUrl}/sitemap-courses.xml`, lastmod: TODAY },
-      { loc: `${siteUrl}/sitemap-blog.xml`, lastmod: TODAY },
+      { loc: `${siteUrl}/sitemap-pages.xml`, lastmod: GENERATED_ON },
+      { loc: `${siteUrl}/sitemap-courses.xml`, lastmod: GENERATED_ON },
+      { loc: `${siteUrl}/sitemap-blog.xml`, lastmod: GENERATED_ON },
     ],
     main: [
-      { loc: `${siteUrl}/sitemap-pages.xml`, lastmod: TODAY },
-      { loc: `${siteUrl}/sitemap-institutions.xml`, lastmod: TODAY },
-      { loc: `${siteUrl}/sitemap-courses.xml`, lastmod: TODAY },
-      { loc: `${siteUrl}/sitemap-blog.xml`, lastmod: TODAY },
+      { loc: `${siteUrl}/sitemap-pages.xml`, lastmod: GENERATED_ON },
+      { loc: `${siteUrl}/sitemap-institutions.xml`, lastmod: GENERATED_ON },
+      { loc: `${siteUrl}/sitemap-courses.xml`, lastmod: GENERATED_ON },
+      { loc: `${siteUrl}/sitemap-blog.xml`, lastmod: GENERATED_ON },
     ],
   }
 
@@ -395,8 +427,14 @@ export function generateSitemapXML(entries: SitemapEntry[]): string {
   const urlEntries = entries
     .map((entry) => {
       let xml = `  <url>
-    <loc>${entry.loc}</loc>
-    <lastmod>${entry.lastmod}</lastmod>`
+    <loc>${entry.loc}</loc>`
+
+      // Emit <lastmod> ONLY when a real date is known. Without this guard an entry
+      // whose lastmod is undefined would ship the literal string
+      // <lastmod>undefined</lastmod>, which is worse than the wrong date it replaces.
+      if (entry.lastmod) {
+        xml += `\n    <lastmod>${entry.lastmod}</lastmod>`
+      }
 
       if (entry.changefreq) {
         xml += `\n    <changefreq>${entry.changefreq}</changefreq>`

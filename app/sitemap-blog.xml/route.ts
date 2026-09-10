@@ -36,19 +36,24 @@ export async function GET() {
         .filter(post => post.slug)
         .map(post => ({
           loc: `${siteUrl}/blog/${post.slug}`,
+          // updated_at, then published_at, then NOTHING. The final tier used to be
+          // new Date(), which claimed a post was modified today whenever both real
+          // dates were NULL. An absent lastmod is honest; a wrong one is discounted by
+          // Google and costs trust across the whole file.
           lastmod: post.updated_at
             ? new Date(post.updated_at).toISOString().split('T')[0]
             : post.published_at
               ? new Date(post.published_at).toISOString().split('T')[0]
-              : new Date().toISOString().split('T')[0],
+              : undefined,
           changefreq: 'weekly' as const,
           priority: 0.6,
         }))
 
-      // Also add the blog index page
+      // Also add the blog index page. Its lastmod is the newest post's real date when
+      // one exists, and omitted otherwise - never today's date as a filler.
       entries.unshift({
         loc: `${siteUrl}/blog`,
-        lastmod: entries[0]?.lastmod || new Date().toISOString().split('T')[0],
+        lastmod: entries[0]?.lastmod,
         changefreq: 'daily' as const,
         priority: 0.7,
       })
