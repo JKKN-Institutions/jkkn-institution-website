@@ -30,12 +30,12 @@ export function generateMetadata(): Metadata {
         'NAAC accredited college Tamil Nadu',
         'JKKN fee structure',
       ],
-      alternates: { canonical: 'https://jkkn.ac.in/admissions' },
+      alternates: { canonical: 'https://www.jkkn.ac.in/admissions' },
       openGraph: {
         title: 'Admissions 2026-27 | JKKN Institutions — Apply Now',
         description:
           'Apply for JKKN Institutions admission 2026-27. NAAC A accredited, 7 colleges, 95%+ placements, scholarships available.',
-        url: 'https://jkkn.ac.in/admissions',
+        url: 'https://www.jkkn.ac.in/admissions',
         siteName: 'JKKN Institutions',
         type: 'website',
         locale: 'en_IN',

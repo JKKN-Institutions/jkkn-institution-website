@@ -277,7 +277,6 @@ function getMainPages(siteUrl: string): SitemapEntry[] {
     { loc: `${siteUrl}/ambulance-services`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
     { loc: `${siteUrl}/hospital`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
     { loc: `${siteUrl}/digital-classroom`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
-    { loc: `${siteUrl}/microsoft-360`, lastmod: TODAY, changefreq: 'yearly', priority: 0.4 },
     { loc: `${siteUrl}/events`, lastmod: TODAY, changefreq: 'weekly', priority: 0.6 },
     { loc: `${siteUrl}/more`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
     { loc: `${siteUrl}/privacy-policy`, lastmod: TODAY, changefreq: 'yearly', priority: 0.3 },
@@ -293,22 +292,15 @@ function getMainInstitutions(siteUrl: string): SitemapEntry[] {
     { loc: `${siteUrl}/our-institutions`, lastmod: TODAY, changefreq: 'monthly', priority: 0.95 },
     { loc: `${siteUrl}/our-colleges`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/our-schools`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
-    { loc: `${siteUrl}/jkkn-dental-college`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
-    // /jkkn-college-of-pharmacy intentionally omitted — currently 301-redirects to /.
-    // Restore this entry once a real Pharmacy College hub page exists at that path.
-    { loc: `${siteUrl}/jkkn-college-of-nursing`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
-    { loc: `${siteUrl}/jkkn-college-of-allied-health-sciences`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
-    { loc: `${siteUrl}/jkkn-college-of-engineering`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
-    { loc: `${siteUrl}/jkkn-college-of-arts-and-science`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
-    { loc: `${siteUrl}/jkkn-college-of-education`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
+    // The six /jkkn-*-college hub paths were removed on 2026-09-09: every one returned a
+    // hard 404 in two independent measurement passes, and /jkkn-college-of-pharmacy had
+    // already been pulled for redirecting. Restore an entry only once its page is real.
     { loc: `${siteUrl}/jkkn-matriculation-higher-secondary-school`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
     { loc: `${siteUrl}/nattraja-vidhyalya`, lastmod: TODAY, changefreq: 'monthly', priority: 0.85 },
-    // Cross-domain canonical institution URLs (subdomain deployments)
-    { loc: `https://dental.jkkn.ac.in/`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
-    { loc: `https://pharmacy.jkkn.ac.in/`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
-    { loc: `https://engg.jkkn.ac.in/`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
-    { loc: `https://ahs.jkkn.ac.in/`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
-    { loc: `https://cas.jkkn.ac.in/`, lastmod: TODAY, changefreq: 'weekly', priority: 0.95 },
+    // Cross-host institution URLs were removed on 2026-09-09. A sitemap may only carry
+    // URLs on its own host unless that host's robots.txt declares this sitemap; all five
+    // sibling robots.txt files were read that day and none does, so Google was discarding
+    // these entries. Each subdomain has its own sitemap and its own GSC property.
   ]
 }
 

@@ -17,6 +17,7 @@ import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from '@/lib/seo'
 import { resolvePageSchemas } from '@/lib/seo/schema-resolver'
 import { getCityConfig } from '@/lib/config/city-pages'
+import { getInstitutionId } from '@/lib/config/multi-tenant'
 import { CityLandingPage } from '@/components/city-pages/city-landing-page'
 
 // Dynamic rendering for 404 handling - automatically handled with cacheComponents
@@ -102,7 +103,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     // Canonical URL + hreflang alternates
     alternates: {
-      ...(seo?.canonical_url ? { canonical: seo.canonical_url } : {}),
+      // A page's `alternates` REPLACES the root layout's. The original spread emitted
+      // an object with no `canonical` key at all whenever the CMS carried no
+      // canonical_url, so 85 of 140 parent sitemap URLs shipped with no
+      // <link rel="canonical"> (measured 2026-09-07, both passes).
+      //
+      // The fallback is deliberately MAIN-ONLY. This file serves every tenant, and on
+      // 2026-09-10 the 25 paths that exist on BOTH engg.jkkn.ac.in and www.jkkn.ac.in
+      // were measured: 11 of them carry no canonical on Engineering today. Giving those
+      // a self-canonical would have them claim originality against parent copies Google
+      // has already consolidated onto www (/our-institutions alone holds 14,608
+      // impressions there). Engineering needs the same fix AFTER its own audit, not as
+      // a side effect of the parent's. For every non-main tenant the object below is
+      // byte-identical to what shipped before.
+      //
+      // `path` is relative, so metadataBase resolves it against this tenant's site URL.
+      ...(seo?.canonical_url
+        ? { canonical: seo.canonical_url }
+        : getInstitutionId() === 'main'
+          ? { canonical: path }
+          : {}),
       languages: {
         'en-IN': path,
         'x-default': path,

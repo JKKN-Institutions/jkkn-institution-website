@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: 'ME Computer Science and Engineering (CSE) | JKKN College of Engineering',
     description: 'Advance your career with our AICTE-approved ME CSE program. Specialize in AI, ML, Data Science, and more. 95% placement with ₹12L average package.',
     images: ['/images/engineering/labs/rnd/rnd-lab-01.jpg'],
-    url: 'https://jkkn.ac.in/courses-offered/pg/me-cse',
+    url: 'https://www.jkkn.ac.in/courses-offered/pg/me-cse',
     type: 'website',
     siteName: 'JKKN College of Engineering'
   },
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     images: ['/images/engineering/labs/rnd/rnd-lab-01.jpg']
   },
   alternates: {
-    canonical: 'https://jkkn.ac.in/courses-offered/pg/me-cse'
+    canonical: 'https://www.jkkn.ac.in/courses-offered/pg/me-cse'
   }
 }
 

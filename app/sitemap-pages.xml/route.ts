@@ -23,7 +23,23 @@ export const revalidate = 3600 // 1-hour edge cache; env vars read at request ti
 
 // CMS slugs that duplicate canonical routes — must never appear as separate URLs
 // 'home' is a common CMS draft slug for '/' and would otherwise create a W7 duplicate
-const RESERVED_CMS_SLUGS = new Set(['home'])
+// 'blog' is emitted by getMainBlog() into sitemap-blog.xml; a CMS page of the same slug
+// put https://www.jkkn.ac.in/blog into TWO child sitemaps at once (measured 2026-09-07)
+const RESERVED_CMS_SLUGS = new Set(['home', 'blog'])
+
+// Slugs that middleware 301-redirects (proxy.ts -> OLD_FACILITY_PAGES). A published CMS
+// row can still exist for these, and it did for 'bank-post-office', which shipped in the
+// sitemap while the live URL answered 301 to '/' (measured 2026-09-07, both passes).
+// A sitemap must never advertise a redirecting URL.
+// SOURCE OF TRUTH is proxy.ts. Kept as a literal here on purpose: importing from the
+// middleware would pull its Supabase client into this route's bundle. If proxy.ts gains
+// or loses an entry, mirror it here.
+const MIDDLEWARE_REDIRECTED_SLUGS = new Set([
+  'food-court', 'smart-classroom', 'wi-fi-campus', 'bus', 'portal', 'bank-post-office',
+  'emergancy-care', 'lab', 'laboratory', 'digital-campus', 'digital-campus1',
+  'our-vision-and-mission', 'seminor-hall', 'facilities/seminar-hall', 'google-workspace',
+  'terms', 'world-health-days/feed', 'intellectual-property-rights-day-2/feed',
+])
 
 export async function GET() {
   const institutionId = process.env.NEXT_PUBLIC_INSTITUTION_ID || 'main'
@@ -83,6 +99,7 @@ export async function GET() {
           if (!p.slug || p.slug === '' || p.slug === '/') return false
           const normalized = p.slug.replace(/^\//, '').replace(/\/$/, '')
           if (RESERVED_CMS_SLUGS.has(normalized)) return false
+          if (MIDDLEWARE_REDIRECTED_SLUGS.has(normalized)) return false
           if (otherSitemapSlugs.has(normalized)) return false
           // Engineering: legacy long-form city URLs are 301-redirected to short
           // canonicals (/{city}) by next.config.ts. Sitemap must never advertise
