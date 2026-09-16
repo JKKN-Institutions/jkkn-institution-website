@@ -343,7 +343,7 @@ const contactPageTemplate: GlobalTemplate = {
           {
             question: 'How can I reach the campus by public transport?',
             answer:
-              'JKKN Institutions is well-connected by road. Regular buses operate from Erode, Namakkal, and Salem. The nearest railway station is Erode Junction (30 km) and the nearest airport is Coimbatore International Airport (90 km).',
+              'JKKN Institutions is well-connected by road. Regular buses operate from Erode, Namakkal, and Salem. The nearest railway station is Erode Junction (19 km by road) and the nearest airport is Coimbatore International Airport (101 km by road).',
           },
         ],
         allowMultiple: false,
