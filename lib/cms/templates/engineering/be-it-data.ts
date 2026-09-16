@@ -15,8 +15,8 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
     { icon: 'Users', label: 'Seats Available', value: '60' },
-    { icon: 'TrendingUp', label: 'Placement Rate', value: '95%' },
-    { icon: 'DollarSign', label: 'Highest Package', value: '₹12L' },
+    { icon: 'TrendingUp', label: 'Placement Cell', value: 'On-Campus' },
+    { icon: 'DollarSign', label: 'Approval', value: 'AICTE' },
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
@@ -322,12 +322,11 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
   // ==========================================
   feeTitle: 'Fee Structure 2026-27',
   feeBreakdown: [
-    { component: 'Tuition Fee (Annual)', amount: '₹45,000 - ₹85,000' },
-    { component: 'Development Fee', amount: '₹10,000' },
-    { component: 'Learning Lab & Library Fee', amount: '₹8,000' },
-    { component: 'Learning Assessment Fee (Approx.)', amount: '₹5,000' },
-    { component: 'Total (Without Hostel)', amount: '₹68,000 - ₹1,08,000', isTotal: true },
-    { component: 'Hostel Fee (Optional)', amount: '₹60,000' },
+    { component: 'Tuition Fee (Management Quota, 2026-27)', amount: '₹80,000' },
+    { component: 'Tuition Fee (Government Quota)', amount: 'As per Govt. norms' },
+    { component: 'Examination Fee & Caution Deposit', amount: 'As notified by the university' },
+    { component: 'Annual Tuition (Management Quota)', amount: '₹80,000', isTotal: true },
+    { component: 'Hostel Fee (Optional)', amount: 'As quoted by the admissions office' },
   ],
 
   // ==========================================
@@ -467,11 +466,11 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
     },
     {
       question: 'Does JKKN provide placement support for B.Tech IT learners?',
-      answer: 'Yes, our dedicated Training & Placement Cell provides comprehensive support including aptitude training, soft skills development, technical skill enhancement, mock interviews, resume building, and direct placement opportunities with leading companies. We maintain a 95%+ placement rate with competitive salary packages.',
+      answer: 'Yes, our dedicated Training & Placement Cell provides comprehensive support including aptitude training, soft skills development, technical skill enhancement, mock interviews, resume building, and direct placement opportunities with leading companies. Our Training & Placement Cell coordinates on-campus recruitment drives through the year.',
     },
     {
       question: 'What is the fee structure for B.Tech IT at JKKN?',
-      answer: 'The annual tuition fee ranges from ₹45,000 (Government Quota) to ₹85,000 (Management Quota). Total annual fee including development, learning lab, and learning assessment fees is approximately ₹68,000 to ₹1,08,000. Merit-based scholarships ranging from 25% to 100% fee waiver are available. Hostel facility is optional at ₹60,000 per year.',
+      answer: 'For 2026-27 the Management Quota annual tuition is ₹80,000; Government Quota tuition is as per Tamil Nadu Government norms. Examination fees and caution deposit are charged as notified by the university. Merit-based scholarships are available for eligible learners. Hostel is optional and quoted by the admissions office.',
     },
   ],
 

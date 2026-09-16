@@ -12,7 +12,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'MBA - Master of Business Administration | JKKN Institutions',
   description:
-    'Pursue MBA at JKKN Institutions. AICTE approved 2-year postgraduate program with specializations in Marketing, Finance, HR, and Operations. 95%+ placement record with top corporate recruiters. Transform your career with strategic business education.',
+    'Pursue MBA at JKKN Institutions. AICTE approved 2-year postgraduate program with specializations in Marketing, Finance, HR, and Operations. On-campus recruitment drives with corporate recruiters. Transform your career with strategic business education.',
   keywords: [
     'MBA',
     'Master of Business Administration',
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'MBA - Master of Business Administration | JKKN',
     description:
-      'Launch your management career with MBA at JKKN. Industry-integrated learning framework, expert senior learners, case-based learning, and exceptional placement support with 95%+ placement rate.',
+      'Launch your management career with MBA at JKKN. Industry-integrated learning framework, expert senior learners, case-based learning, and on-campus placement support.',
     type: 'website',
     images: [
       {
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'MBA - Master of Business Administration | JKKN',
     description:
-      'AICTE approved MBA program with 95%+ placement success. Transform your career with strategic business education and industry exposure.',
+      'AICTE approved MBA program. Transform your career with strategic business education and industry exposure.',
     images: ['/images/engineering/senthuraja-hall/senthuraja-hall-07.jpg'],
   },
 }

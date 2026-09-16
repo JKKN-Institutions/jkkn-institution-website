@@ -16,8 +16,8 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
     { icon: 'Users', label: 'Seats Available', value: '60' },
-    { icon: 'TrendingUp', label: 'Placement Rate', value: '95%' },
-    { icon: 'Trophy', label: 'Highest Package', value: '₹10L' },
+    { icon: 'TrendingUp', label: 'Placement Cell', value: 'On-Campus' },
+    { icon: 'Trophy', label: 'Approval', value: 'AICTE' },
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
@@ -55,7 +55,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
       icon: 'BookOpen',
       title: 'Eligibility',
       value: '10+2 with PCM',
-      description: 'Candidates must have passed 10+2 with Physics, Chemistry & Mathematics with minimum 50% aggregate (45% for reserved categories).',
+      description: 'Candidates must have passed 10+2 with Physics, Chemistry & Mathematics with minimum 45% aggregate (40% for BC / MBC / DNC / SC / SCA / ST), as per the TNEA information brochure.',
     },
   ],
 
@@ -364,11 +364,11 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   // ==========================================
   feeTitle: 'Fee Structure (Annual)',
   feeBreakdown: [
-    { component: 'Tuition Fee', amount: '₹60,000' },
-    { component: 'Learning Lab Fee', amount: '₹10,000' },
-    { component: 'Library Fee', amount: '₹2,000' },
-    { component: 'Learning Assessment Fee', amount: '₹3,000' },
-    { component: 'Total Annual Fee', amount: '₹75,000', isTotal: true },
+    { component: 'Tuition Fee (Management Quota, 2026-27)', amount: '₹70,000' },
+    { component: 'Tuition Fee (Government Quota)', amount: 'As per Govt. norms' },
+    { component: 'Examination Fee & Caution Deposit', amount: 'As notified by the university' },
+    { component: 'Hostel Fee (Optional)', amount: 'As quoted by the admissions office' },
+    { component: 'Annual Tuition (Management Quota)', amount: '₹70,000', isTotal: true },
   ],
 
   // ==========================================
@@ -530,7 +530,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   faqs: [
     {
       question: 'What is the eligibility criteria for B.E. ECE admission?',
-      answer: 'Candidates must have passed 10+2 learning assessment with Physics, Chemistry, and Mathematics as core subjects with a minimum of 50% aggregate marks (45% for reserved categories). Admission is based on TNEA rank or merit-based selection.',
+      answer: 'Candidates must have passed 10+2 learning assessment with Physics, Chemistry, and Mathematics as core subjects with a minimum of 45% aggregate marks (40% for BC / MBC / DNC / SC / SCA / ST), as per the TNEA information brochure. Admission is based on TNEA rank or merit-based selection.',
     },
     {
       question: 'What are the career prospects after completing B.E. ECE?',
@@ -546,7 +546,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
     },
     {
       question: 'What is the placement record for ECE department?',
-      answer: 'Our ECE department maintains a placement rate of 90%+ with learners being recruited by top companies like TCS, Infosys, Wipro, Bosch, Samsung, LG, Airtel, Jio, Nokia, Siemens, and many more. The highest package offered is ₹10 LPA.',
+      answer: 'Our ECE department holds on-campus recruitment drives with companies including TCS, Infosys, Wipro, Bosch, Samsung, LG, Airtel, Jio, Nokia and Siemens.',
     },
     {
       question: 'Can learners pursue higher studies after B.E. ECE?',
@@ -566,7 +566,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
     },
     {
       question: 'What is the total fee structure for B.E. ECE program?',
-      answer: 'The annual tuition fee is ₹75,000 which includes tuition (₹60,000), learning lab fee (₹10,000), library fee (₹2,000), and learning assessment fee (₹3,000). Hostel and transport charges are additional and optional.',
+      answer: 'For 2026-27 the Management Quota annual tuition is ₹70,000; Government Quota tuition is as per Tamil Nadu Government norms. Examination fees and caution deposit are charged as notified by the university. Hostel and transport are optional and quoted by the admissions office.',
     },
   ],
 

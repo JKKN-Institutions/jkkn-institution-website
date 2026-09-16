@@ -24,8 +24,8 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
     { icon: 'Users', label: 'Seats Available', value: '60' },
-    { icon: 'TrendingUp', label: 'Placement Rate', value: '95%' },
-    { icon: 'DollarSign', label: 'Highest Package', value: '₹12L' },
+    { icon: 'TrendingUp', label: 'Placement Cell', value: 'On-Campus' },
+    { icon: 'DollarSign', label: 'Approval', value: 'AICTE' },
 
   ],
 
@@ -58,7 +58,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
       icon: 'ClipboardList',
       title: 'Eligibility',
       value: '10+2 PCM',
-      description: 'Physics, Chemistry, and Mathematics with minimum 50% aggregate marks',
+      description: 'Physics, Chemistry, and Mathematics with minimum 45% aggregate marks (40% for BC / MBC / DNC / SC / SCA / ST)',
     },
     {
       icon: 'Briefcase',
@@ -108,7 +108,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     {
       icon: 'Target',
       title: 'Placement Support',
-      description: 'Dedicated placement cell with 95% placement record. Training in aptitude, soft skills, technical interviews, and resume building. Top recruiters include Tata Motors, Ashok Leyland, TVS, Mahindra, L&T, and MNCs.',
+      description: 'Dedicated placement cell providing training in aptitude, soft skills, technical interviews and resume building. Recruiters include Tata Motors, Ashok Leyland, TVS, Mahindra and L&T.',
     },
   ],
 
@@ -475,7 +475,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     {
       step: 1,
       title: 'Check Eligibility',
-      description: 'Ensure you have passed 10+2 with Physics, Chemistry, and Mathematics with minimum 50% aggregate marks (45% for reserved categories). Age should be minimum 17 years.',
+      description: 'Ensure you have passed 10+2 with Physics, Chemistry, and Mathematics with minimum 45% aggregate marks (40% for BC / MBC / DNC / SC / SCA / ST), as per the TNEA information brochure. Age should be minimum 17 years.',
       icon: 'check',
     },
     {
@@ -511,32 +511,24 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
 
   feeBreakdown: [
     {
-      component: 'Tuition Fee',
-      amount: '₹85,000',
+      component: 'Tuition Fee (Management Quota, 2026-27)',
+      amount: '₹45,000',
     },
     {
-      component: 'Development Fee',
-      amount: '₹10,000',
+      component: 'Tuition Fee (Government Quota)',
+      amount: 'As per Govt. norms',
     },
     {
-      component: 'Learning Lab Fee',
-      amount: '₹8,000',
+      component: 'Examination Fee & Caution Deposit',
+      amount: 'As notified by the university',
     },
     {
-      component: 'Library Fee',
-      amount: '₹3,000',
+      component: 'Hostel Fee (Optional)',
+      amount: 'As quoted by the admissions office',
     },
     {
-      component: 'Sports & Cultural Fee',
-      amount: '₹2,000',
-    },
-    {
-      component: 'Learning Assessment Fee',
-      amount: '₹2,000',
-    },
-    {
-      component: 'Total Annual Fee',
-      amount: '₹1,10,000',
+      component: 'Annual Tuition (Management Quota)',
+      amount: '₹45,000',
       isTotal: true,
     },
   ],
@@ -549,7 +541,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   faqs: [
     {
       question: 'What is the eligibility criteria for B.E. Mechanical Engineering?',
-      answer: 'Candidates must have passed 10+2 learning assessment with Physics, Chemistry, and Mathematics as core subjects with a minimum of 50% aggregate marks (45% for reserved categories). The minimum age requirement is 17 years as on December 31st of the admission year.',
+      answer: 'Candidates must have passed 10+2 learning assessment with Physics, Chemistry, and Mathematics as core subjects with a minimum of 45% aggregate marks (40% for BC / MBC / DNC / SC / SCA / ST), as per the TNEA information brochure. The minimum age requirement is 17 years as on December 31st of the admission year.',
     },
     {
       question: 'Is the B.E. Mechanical Engineering program NAAC accredited?',
@@ -557,7 +549,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     },
     {
       question: 'What are the career opportunities after completing this program?',
-      answer: 'Graduates can work in diverse sectors including automotive, aerospace, manufacturing, energy, construction, and consulting. Job roles include Mechanical Design Engineer, Production Engineer, Quality Control Engineer, R&D Engineer, CAD/CAM Engineer, Automotive Engineer, and Project Manager. Our placement cell assists learners with competitive salary packages ranging from ₹3.5 to 15 LPA.',
+      answer: 'Graduates can work in diverse sectors including automotive, aerospace, manufacturing, energy, construction, and consulting. Job roles include Mechanical Design Engineer, Production Engineer, Quality Control Engineer, R&D Engineer, CAD/CAM Engineer, Automotive Engineer, and Project Manager. Our placement cell supports learners through on-campus recruitment drives and interview preparation.',
     },
     {
       question: 'What specializations are available in Mechanical Engineering?',
@@ -573,7 +565,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     },
     {
       question: 'What is the placement record for Mechanical Engineering?',
-      answer: 'Our Mechanical Engineering department consistently achieves 95% placement rate. Top recruiters include Tata Motors, Ashok Leyland, TVS, Mahindra, L&T, Hyundai, Bosch, Siemens, and other leading automotive and manufacturing companies. Average salary package is ₹5.8 LPA with highest going up to ₹24 LPA.',
+      answer: 'Our Mechanical Engineering department holds on-campus recruitment drives with companies including Tata Motors, Ashok Leyland, TVS, Mahindra, L&T, Hyundai, Bosch and Siemens.',
     },
     {
       question: 'Is hostel facility available for learners?',
@@ -597,21 +589,21 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   placementStats: [
     {
       icon: 'TrendingUp',
-      label: 'Placement Rate',
-      value: '95.2%',
+      label: 'Placement Cell',
+      value: 'On-Campus',
       description: 'Learners placed in reputed companies',
     },
     {
       icon: 'DollarSign',
-      label: 'Average Package',
-      value: '₹5.8 LPA',
-      description: 'Competitive salary packages',
+      label: 'Placement Training',
+      value: 'Included',
+      description: 'Aptitude, soft skills and mock interviews',
     },
     {
       icon: 'Trophy',
-      label: 'Highest Package',
-      value: '₹24 LPA',
-      description: 'Offered by leading MNC',
+      label: 'Approval',
+      value: 'AICTE',
+      description: 'Anna University affiliated',
     },
     {
       icon: 'Building2',

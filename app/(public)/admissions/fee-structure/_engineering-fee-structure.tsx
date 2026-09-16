@@ -146,15 +146,9 @@ function FeeTable({ rows }: { rows: FeeEntry[] }) {
                   </div>
                 </td>
                 <td className="px-5 py-4 text-right whitespace-nowrap">
-                  {fee.gqFee === fee.mqFee ? (
-                    <span className="font-semibold text-gray-800 text-[15px]">
-                      {formatINR(fee.gqFee)}
-                    </span>
-                  ) : (
-                    <span className="inline-block text-gray-600 text-xs italic bg-gray-100 px-2.5 py-1 rounded-md">
-                      As per Govt. norms
-                    </span>
-                  )}
+                  <span className="inline-block text-gray-600 text-xs italic bg-gray-100 px-2.5 py-1 rounded-md">
+                    As per Govt. norms
+                  </span>
                 </td>
                 <td className="px-6 py-4 text-right whitespace-nowrap bg-[#ffde59]/5 group-hover:bg-[#ffde59]/15 transition-colors">
                   <span className="font-bold text-[#0b6d41] text-base tabular-nums">
@@ -191,7 +185,7 @@ function FeeTable({ rows }: { rows: FeeEntry[] }) {
                   Govt. Quota
                 </div>
                 <div className="mt-1 text-sm font-semibold text-gray-800 tabular-nums">
-                  {fee.gqFee === fee.mqFee ? formatINR(fee.gqFee) : 'As per Govt.'}
+                  As per Govt. norms
                 </div>
               </div>
               <div className="rounded-lg border border-[#0b6d41]/25 bg-[#ffde59]/10 px-3 py-2.5">

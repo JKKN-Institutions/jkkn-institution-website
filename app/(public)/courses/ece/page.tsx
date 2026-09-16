@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'B.E. Electronics & Communication Engineering | JKKN College',
-    description: 'Shape the future with our comprehensive B.E. ECE program. Specializations in Embedded Systems, VLSI, Wireless Communication, and IoT. 90%+ placement rate.',
+    description: 'Shape the future with our comprehensive B.E. ECE program. Specializations in Embedded Systems, VLSI, Wireless Communication, and IoT. On-campus placement support.',
     type: 'website',
     images: [
       {
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'B.E. Electronics & Communication Engineering | JKKN',
-    description: 'NAAC accredited ECE program with specializations in Embedded Systems, VLSI, IoT. 90%+ placement rate.',
+    description: 'NAAC accredited ECE program with specializations in Embedded Systems, VLSI, IoT. On-campus placement support.',
     images: ['/images/engineering/labs/ece/ece-lab-01.jpg'],
   },
 }

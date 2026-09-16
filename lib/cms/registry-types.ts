@@ -455,7 +455,7 @@ export const FAQSectionPropsSchema = z.object({
   faqs: z.array(FAQItemSchema).default([
     {
       question: 'What is JKKN Institutions and how long has it been established?',
-      answer: 'J.K.K. Nattraja Educational Institutions (JKKN) is a premier educational group established in 1969 under the J.K.K. Rangammal Trust. Founded by Kodai Vallal Shri. J.K.K. Natarajah with a vision to empower through education, JKKN has grown into a multi-disciplinary institution spanning 7 colleges and 2 schools, nurturing over 1,00,000+ Learners across 74+ years of educational excellence.',
+      answer: 'J.K.K. Nattraja Educational Institutions (JKKN) is a premier educational group established in 1952 under the J.K.K. Rangammal Trust. Founded by Kodai Vallal Shri. J.K.K. Natarajah with a vision to empower through education, JKKN has grown into a multi-disciplinary institution spanning 7 colleges and 2 schools, nurturing over 1,00,000+ Learners across 74+ years of educational excellence.',
     },
     {
       question: 'What courses are offered at JKKN Institutions?',

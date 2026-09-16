@@ -156,7 +156,7 @@ const SHARED_PARENT_ORG = {
   type: 'Organization',
   name: 'J.K.K. Rangammal Charitable Trust',
   id: 'https://www.jkkn.ac.in/#trust',
-  foundingDate: '1969',
+  foundingDate: '1952',
   description: 'Charitable trust dedicated to empowering women through literacy and providing quality education',
 }
 
@@ -333,10 +333,9 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
     email: 'engg@jkkn.ac.in',
 
     sameAs: [
-      'https://www.facebook.com/myjkkn',
-      'https://www.instagram.com/jkkninstitutions/',
-      'https://www.youtube.com/@JKKNINSTITUTIONS',
-      'https://www.linkedin.com/school/jkkninstitutions/',
+      'https://www.facebook.com/jkknengineering',
+      'https://www.instagram.com/jkknengineering/',
+      'https://www.linkedin.com/school/jkknengineering/',
     ],
 
     parentOrganization: {
@@ -377,20 +376,20 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
       'NAAC Accredited',
       'AICTE Approved',
       'Anna University Affiliated',
-      'Selected under Unnat Bharat Abhiyan by Ministry of HRD',
+      'Autonomous Status conferred by UGC, New Delhi and Anna University, Chennai',
+      'Selected under Unnat Bharat Abhiyan by the Ministry of Education',
     ],
 
-    numberOfEmployees: { min: 80, max: 120 },
+    numberOfEmployees: { min: 46, max: 46 },
 
     faqs: [
       { question: 'How do I apply for JKKN Engineering College admission 2026-27?', answer: 'Apply online at jkkn.ac.in/admissions or visit our campus with required documents. You can also call +91 93458 55001 for admission guidance. Applications are accepted throughout the year, but seats are limited.' },
-      { question: 'What are the eligibility criteria for B.E./B.Tech admission?', answer: '10+2 with Mathematics, Physics, and Chemistry/Computer Science/Biology with minimum 50% aggregate. Valid TNEA/counseling rank preferred. Direct admission also available based on merit.' },
-      { question: 'What is the fee structure for engineering courses?', answer: 'Annual tuition fees range from ₹75,000 to ₹1,00,000 depending on the branch. Additional charges for hostel, transportation, and activities apply. Scholarships and fee concessions available for eligible learners.' },
-      { question: 'Does JKKN Engineering College provide hostel facilities?', answer: 'Yes, separate hostels for boys and girls with 24/7 security, Wi-Fi, mess facilities, and recreational rooms. Hostel fees are approximately ₹50,000 per year including food and accommodation.' },
-      { question: 'Is JKKN Engineering College AICTE approved and Anna University affiliated?', answer: 'Yes, JKKN College of Engineering & Technology is AICTE approved and affiliated to Anna University, Chennai. We are also NAAC accredited with excellent placement records.' },
-      { question: 'What is the placement record of JKKN Engineering College?', answer: 'JKKN Engineering College places 500+ learners annually through campus recruitment. Placement rates range from 60–70% as reported by education aggregators (Collegedunia, Careers360). Top recruiters include TCS, Infosys, Wipro, Cognizant, HCL, and Tech Mahindra.' },
-      { question: 'What is the highest package offered at JKKN?', answer: 'The highest package recorded at JKKN Engineering College is ₹12 LPA. Average salary figures range from ₹2.2 LPA (Careers360 median) to ₹4.5 LPA depending on branch and batch. Dedicated placement training begins from the first year.' },
-      { question: 'What courses are offered at JKKN College of Engineering?', answer: 'JKKN offers B.E. in CSE, ECE, EEE, Mechanical, and B.Tech in IT. Postgraduate programs include M.E. CSE and MBA. All programs are AICTE approved and affiliated to Anna University.' },
+      { question: 'What are the eligibility criteria for B.E./B.Tech admission?', answer: 'A pass in 10+2 with Mathematics, Physics and Chemistry, with a minimum average of 45% for General Category and 40% for BC / MBC / DNC / SC / SCA / ST, as per the TNEA 2026 information brochure. Admission is through TNEA counselling or direct Management Quota.' },
+      { question: 'What is the fee structure for engineering courses?', answer: 'For the 2026-27 academic year, Management Quota annual tuition ranges from ₹30,000 to ₹80,000 depending on the programme. Government Quota tuition is as per Tamil Nadu Government norms. Hostel, transport, examination fees and caution deposit are charged separately. Scholarships and fee concessions are available for eligible learners.' },
+      { question: 'Does JKKN Engineering College provide hostel facilities?', answer: 'Yes, separate hostels for boys and girls with 24/7 security, Wi-Fi, mess facilities, and recreational rooms. Hostel and mess charges are quoted by the admissions office.' },
+      { question: 'Is JKKN Engineering College AICTE approved and Anna University affiliated?', answer: 'Yes, JKKN College of Engineering & Technology is AICTE approved and affiliated to Anna University, Chennai. We are also NAAC accredited, and hold autonomous status conferred by UGC, New Delhi and Anna University, Chennai.' },
+      { question: 'What is the placement record of JKKN Engineering College?', answer: 'JKKN Engineering College runs a Training & Placement Cell that coordinates on-campus recruitment drives and interview preparation. Recruiters who have visited campus include TCS, Infosys, Wipro, Cognizant, HCL and Tech Mahindra.' },
+            { question: 'What courses are offered at JKKN College of Engineering?', answer: 'JKKN offers B.E. in CSE, ECE, EEE, Mechanical, and B.Tech in IT. Postgraduate programs include M.E. CSE and MBA. All programs are AICTE approved and affiliated to Anna University.' },
       { question: 'Where is JKKN College of Engineering located?', answer: 'JKKN College of Engineering & Technology is located in Komarapalayam, Namakkal District, Tamil Nadu, on the Salem-Coimbatore National Highway (NH-544). Just 15 km from Erode city.' },
       { question: 'What facilities are available at JKKN Engineering College?', answer: 'State-of-the-art learning labs, modern library with 50,000+ books, Wi-Fi campus, sports facilities, seminar halls, auditorium, cafeteria, bus transport, separate hostels, and 24/7 medical care.' },
     ],

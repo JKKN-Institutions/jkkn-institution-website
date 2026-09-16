@@ -105,9 +105,9 @@ export const ENGINEERING_NAAC_DATA: NAACPageProps = {
         },
       ],
       metrics: [
-        { label: 'Engineering Learners', value: '3,200+' },
-        { label: 'Senior Learners', value: '180+' },
-        { label: 'Engineering Programs', value: '8' },
+        { label: 'Engineering Learners', value: '607' },
+        { label: 'Senior Learners', value: '46' },
+        { label: 'Engineering Programs', value: '7' },
         { label: 'Research Learning Labs', value: '45+' },
       ],
     },

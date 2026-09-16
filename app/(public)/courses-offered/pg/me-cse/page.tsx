@@ -5,7 +5,7 @@ import { MECSECourseSchema } from '@/lib/seo/course-schema-generator'
 
 export const metadata: Metadata = {
   title: 'ME Computer Science and Engineering (CSE) | JKKN College of Engineering - AICTE Approved',
-  description: 'ME Computer Science and Engineering (CSE) at JKKN College of Engineering - AICTE approved 2-year postgraduate program. Specialize in AI, ML, Data Science, Cybersecurity. NAAC accredited with 95% placement record.',
+  description: 'ME Computer Science and Engineering (CSE) at JKKN College of Engineering - AICTE approved 2-year postgraduate program. Specialize in AI, ML, Data Science, Cybersecurity. NAAC accredited.',
   keywords: [
     'ME CSE',
     'Master of Engineering Computer Science',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'ME Computer Science and Engineering (CSE) | JKKN College of Engineering',
-    description: 'Advance your career with our AICTE-approved ME CSE program. Specialize in AI, ML, Data Science, and more. 95% placement with ₹12L average package.',
+    description: 'Advance your career with our AICTE-approved ME CSE program. Specialize in AI, ML, Data Science, and more. On-campus placement support.',
     images: ['/images/engineering/labs/rnd/rnd-lab-01.jpg'],
     url: 'https://www.jkkn.ac.in/courses-offered/pg/me-cse',
     type: 'website',

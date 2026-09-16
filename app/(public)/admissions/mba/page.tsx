@@ -7,7 +7,7 @@ export const revalidate = 86400
 export const metadata: Metadata = {
   title: 'MBA Admission 2026-27 | Eligibility, Fees, TANCET/CAT/MAT — JKKN Engineering',
   description:
-    'Apply for M.B.A — Master of Business Administration at JKKN College of Engineering & Technology for 2026-27. AICTE approved, NAAC accredited. 120 seats, ₹65,000 fee, TANCET/CAT/MAT/XAT entrance, GD/PI selection. Finance, Marketing, HRM specializations.',
+    'Apply for M.B.A — Master of Business Administration at JKKN College of Engineering & Technology for 2026-27. AICTE approved, NAAC accredited. 60 seats, ₹65,000 fee, TANCET/CAT/MAT/XAT entrance, GD/PI selection. Finance, Marketing, HRM specializations.',
   keywords: [
     'MBA admission 2026',
     'JKKN MBA admission',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'MBA Admission 2026-27 — Apply Online | JKKN Engineering',
     description:
-      '120 seats · ₹65,000/yr · TANCET / CAT / MAT / XAT · Finance · Marketing · HRM. GD + PI selection. Industry-aligned learning framework and placements.',
+      '60 seats · ₹65,000/yr · TANCET / CAT / MAT / XAT · Finance · Marketing · HRM. GD + PI selection. Industry-aligned learning framework and placements.',
     type: 'website',
     images: [{ url: '/og/engineering-admissions.jpg', width: 1200, height: 630, alt: 'JKKN MBA Admissions 2026-27' }],
   },

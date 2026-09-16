@@ -123,7 +123,7 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
   feeBreakdown: [
     { item: 'Tuition Fee (Management Quota)', amount: '₹80,000', note: 'Highest demand branch — premium fee' },
     { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norms', note: 'Fixed by Tamil Nadu Govt / Anna University' },
-    { item: 'Hostel (Optional)', amount: '₹60,000', note: 'All-inclusive: meals, utilities, Wi-Fi' },
+    { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
   faqs: [
@@ -140,7 +140,7 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the B.E CSE fee at JKKN?',
       answer:
-        'Management Quota: ₹80,000/year (highest among engineering branches due to demand). Government Quota: as per Tamil Nadu Government norms. Hostel (optional, all-inclusive): ₹60,000/year. Zero application fee.',
+        'Management Quota: ₹80,000/year (highest among engineering branches due to demand). Government Quota: as per Tamil Nadu Government norms. Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
     },
     {
       question: 'Does B.E CSE cover AI / Machine Learning?',
@@ -150,7 +150,7 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What are placement opportunities after B.E CSE?',
       answer:
-        '92%+ placement rate. Recruiters: TCS, Infosys, Wipro, Cognizant, HCL, Accenture, Capgemini, and 500+ companies. Average package ₹3.5L; highest ₹8.5L+.',
+        'On-campus recruitment drives are held through the year, with aptitude and interview preparation from the Training & Placement Cell.',
     },
     {
       question: 'Is TNEA mandatory for B.E CSE?',
@@ -205,7 +205,7 @@ export const BE_EEE_ADMISSION: CourseAdmissionData = {
   feeBreakdown: [
     { item: 'Tuition Fee (Management Quota)', amount: '₹45,000', note: 'One of our most affordable branches' },
     { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norms', note: 'Fixed by Tamil Nadu Govt / Anna University' },
-    { item: 'Hostel (Optional)', amount: '₹60,000', note: 'All-inclusive: meals, utilities, Wi-Fi' },
+    { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
   faqs: [
@@ -222,7 +222,7 @@ export const BE_EEE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the fee for B.E EEE — Government and Management Quota?',
       answer:
-        'Management Quota: ₹45,000/year (one of the most affordable engineering branches at JKKN). Government Quota: as per Tamil Nadu Government norms. Hostel (optional, all-inclusive): ₹60,000/year.',
+        'Management Quota: ₹45,000/year (one of the most affordable engineering branches at JKKN). Government Quota: as per Tamil Nadu Government norms. Hostel (optional, all-inclusive): as quoted by the admissions office.',
     },
     {
       question: 'How do I apply for B.E EEE — what is the process?',
@@ -287,7 +287,7 @@ export const BE_ECE_ADMISSION: CourseAdmissionData = {
   feeBreakdown: [
     { item: 'Tuition Fee (Management Quota)', amount: '₹70,000', note: 'High-demand electronics branch' },
     { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norms', note: 'Fixed by Tamil Nadu Govt / Anna University' },
-    { item: 'Hostel (Optional)', amount: '₹60,000', note: 'All-inclusive: meals, utilities, Wi-Fi' },
+    { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
   faqs: [
@@ -304,7 +304,7 @@ export const BE_ECE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the B.E ECE fee?',
       answer:
-        'Management Quota: ₹70,000/year. Government Quota: as per Tamil Nadu Government norms. Hostel (optional): ₹60,000/year. Zero application fee.',
+        'Management Quota: ₹70,000/year. Government Quota: as per Tamil Nadu Government norms. Hostel (optional): as quoted by the admissions office. Zero application fee.',
     },
     {
       question: 'What specializations does B.E ECE offer?',
@@ -350,7 +350,7 @@ export const BE_MECHANICAL_ADMISSION: CourseAdmissionData = {
   shortName: 'B.E Mechanical',
   fullName: 'B.E Mechanical Engineering',
   duration: '4 Years',
-  seats: 120,
+  seats: 60,
   affiliated: 'Affiliated to Anna University, Chennai',
   CourseIcon: Cog,
   heroIntro:
@@ -368,7 +368,7 @@ export const BE_MECHANICAL_ADMISSION: CourseAdmissionData = {
   feeBreakdown: [
     { item: 'Tuition Fee (Management Quota)', amount: '₹45,000', note: 'Most affordable engineering branch' },
     { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norms', note: 'Fixed by Tamil Nadu Govt / Anna University' },
-    { item: 'Hostel (Optional)', amount: '₹60,000', note: 'All-inclusive: meals, utilities, Wi-Fi' },
+    { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
   faqs: [
@@ -380,12 +380,12 @@ export const BE_MECHANICAL_ADMISSION: CourseAdmissionData = {
     {
       question: 'How many B.E Mechanical seats are available?',
       answer:
-        '120 sanctioned seats — the largest engineering branch at JKKN. Split between Government Quota (~65%) and Management Quota (~35%) per Tamil Nadu norms.',
+        '60 sanctioned seats, as approved by AICTE for 2026-27. Seats are filled through TNEA counselling (Government Quota) and direct Management Quota admission.',
     },
     {
       question: 'What is the fee for B.E Mechanical?',
       answer:
-        'Management Quota: ₹45,000/year — most affordable engineering branch at JKKN. Government Quota: as per Tamil Nadu Government norms. Hostel: ₹60,000/year (optional). Zero application fee.',
+        'Management Quota: ₹45,000/year — most affordable engineering branch at JKKN. Government Quota: as per Tamil Nadu Government norms. Hostel (optional): as quoted by the admissions office. Zero application fee.',
     },
     {
       question: 'What specializations does B.E Mechanical offer?',
@@ -449,7 +449,7 @@ export const BTECH_IT_ADMISSION: CourseAdmissionData = {
   feeBreakdown: [
     { item: 'Tuition Fee (Management Quota)', amount: '₹80,000', note: 'High-demand IT branch' },
     { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norms', note: 'Fixed by Tamil Nadu Govt / Anna University' },
-    { item: 'Hostel (Optional)', amount: '₹60,000', note: 'All-inclusive: meals, utilities, Wi-Fi' },
+    { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
   faqs: [
@@ -466,7 +466,7 @@ export const BTECH_IT_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the B.Tech IT fee at JKKN?',
       answer:
-        'Management Quota: ₹80,000/year. Government Quota: as per Tamil Nadu Government norms. Hostel (optional, all-inclusive): ₹60,000/year. Zero application fee.',
+        'Management Quota: ₹80,000/year. Government Quota: as per Tamil Nadu Government norms. Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
     },
     {
       question: 'What is the difference between B.E CSE and B.Tech IT?',
@@ -512,7 +512,7 @@ export const ME_CSE_ADMISSION: CourseAdmissionData = {
   shortName: 'M.E CSE',
   fullName: 'M.E Computer Science & Engineering',
   duration: '2 Years',
-  seats: 60,
+  seats: 12,
   affiliated: 'Affiliated to Anna University, Chennai',
   CourseIcon: Server,
   heroIntro:
@@ -532,7 +532,7 @@ export const ME_CSE_ADMISSION: CourseAdmissionData = {
   documentsAdditionalLabel: 'for PG (M.E CSE) Applicants',
   feeBreakdown: [
     { item: 'Tuition Fee (All Quotas)', amount: '₹30,000', note: 'Subsidized PG fee — most affordable PG engineering' },
-    { item: 'Hostel (Optional)', amount: '₹60,000', note: 'All-inclusive: meals, utilities, Wi-Fi' },
+    { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
   faqs: [
@@ -543,12 +543,12 @@ export const ME_CSE_ADMISSION: CourseAdmissionData = {
     },
     {
       question: 'How many M.E CSE seats at JKKN?',
-      answer: '60 sanctioned seats. Both TANCET-based and direct merit admissions accepted.',
+      answer: '12 sanctioned seats, as approved by AICTE for 2026-27. Both TANCET-based and direct merit admissions accepted.',
     },
     {
       question: 'What is the M.E CSE fee?',
       answer:
-        '₹30,000/year — the most affordable PG engineering fee. Hostel (optional, all-inclusive): ₹60,000/year. Zero application fee.',
+        '₹30,000/year — the most affordable PG engineering fee. Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
     },
     {
       question: 'Is TANCET mandatory for M.E CSE?',
@@ -595,7 +595,7 @@ export const MBA_ADMISSION: CourseAdmissionData = {
   shortName: 'MBA',
   fullName: 'M.B.A — Master of Business Administration',
   duration: '2 Years',
-  seats: 120,
+  seats: 60,
   affiliated: 'Affiliated to Anna University, Chennai',
   CourseIcon: Briefcase,
   heroIntro:
@@ -615,7 +615,7 @@ export const MBA_ADMISSION: CourseAdmissionData = {
   documentsAdditionalLabel: 'for PG (MBA) Applicants',
   feeBreakdown: [
     { item: 'Tuition Fee (All Quotas)', amount: '₹65,000', note: 'Affordable MBA fee — industry-aligned learning framework' },
-    { item: 'Hostel (Optional)', amount: '₹60,000', note: 'All-inclusive: meals, utilities, Wi-Fi' },
+    { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
   faqs: [
@@ -626,12 +626,12 @@ export const MBA_ADMISSION: CourseAdmissionData = {
     },
     {
       question: 'How many MBA seats at JKKN?',
-      answer: '120 sanctioned seats — the largest PG program at JKKN.',
+      answer: '60 sanctioned seats, as approved by AICTE for 2026-27.',
     },
     {
       question: 'What is the MBA fee?',
       answer:
-        '₹65,000/year for both quotas. Hostel (optional, all-inclusive): ₹60,000/year. Zero application fee.',
+        '₹65,000/year for both quotas. Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
     },
     {
       question: 'Which entrance learning assessment is accepted for MBA?',

@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'B.Tech Information Technology | JKKN College',
-    description: 'Shape the future with our comprehensive B.Tech IT program. Specializations in AI/ML, Cloud Computing, Cybersecurity, and Full Stack Development. 95%+ placement rate.',
+    description: 'Shape the future with our comprehensive B.Tech IT program. Specializations in AI/ML, Cloud Computing, Cybersecurity, and Full Stack Development. On-campus placement support.',
     type: 'website',
     images: [
       {
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'B.Tech Information Technology | JKKN',
-    description: 'NAAC accredited IT program with specializations in AI/ML, Cloud Computing, Cybersecurity. 95%+ placement rate with packages up to ₹18 LPA.',
+    description: 'NAAC accredited IT program with specializations in AI/ML, Cloud Computing, Cybersecurity. On-campus placement support.',
     images: ['/images/engineering/labs/it/it-lab-01.jpg'],
   },
 }

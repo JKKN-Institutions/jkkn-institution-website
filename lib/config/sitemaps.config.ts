@@ -147,7 +147,6 @@ function getEngineeringPages(siteUrl: string): SitemapEntry[] {
   return [
     { loc: `${siteUrl}`, lastmod: TODAY, changefreq: 'daily', priority: 1.0 },
     { loc: `${siteUrl}/about`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
-    { loc: `${siteUrl}/over-view`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
     { loc: `${siteUrl}/our-trust`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
     { loc: `${siteUrl}/our-management`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
     { loc: `${siteUrl}/our-institutions`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
@@ -155,22 +154,15 @@ function getEngineeringPages(siteUrl: string): SitemapEntry[] {
     { loc: `${siteUrl}/institution-rules`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
     { loc: `${siteUrl}/organogram`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
     { loc: `${siteUrl}/gallery`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${siteUrl}/library`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
-    { loc: `${siteUrl}/auditorium`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
-    { loc: `${siteUrl}/hospital`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
     { loc: `${siteUrl}/facilities/transport`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
     { loc: `${siteUrl}/facilities/sports`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
     { loc: `${siteUrl}/facilities/food-court`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
     { loc: `${siteUrl}/facilities/class-room`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
-    { loc: `${siteUrl}/career-opportunities`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
-    { loc: `${siteUrl}/sports-achievements`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
-    { loc: `${siteUrl}/help-desk`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
     { loc: `${siteUrl}/privacy-policy`, lastmod: TODAY, changefreq: 'yearly', priority: 0.3 },
     { loc: `${siteUrl}/mandatory-disclosure`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
     { loc: `${siteUrl}/policy`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
     { loc: `${siteUrl}/committee`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
     { loc: `${siteUrl}/others`, lastmod: TODAY, changefreq: 'monthly', priority: 0.4 },
-    { loc: `${siteUrl}/institutional-plan`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
     { loc: `${siteUrl}/academic-calendar`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
     { loc: `${siteUrl}/others/academic-calendar`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
     { loc: `${siteUrl}/admissions/engineering`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
@@ -205,8 +197,6 @@ function getEngineeringPages(siteUrl: string): SitemapEntry[] {
 function getEngineeringCourses(siteUrl: string): SitemapEntry[] {
   return [
     { loc: `${siteUrl}/courses-offered`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
-    { loc: `${siteUrl}/department-of-ece`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
-    { loc: `${siteUrl}/department-of-master-of-business-administration`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     // UG programmes — all 5 BE/BTech branches at parity priority
     { loc: `${siteUrl}/courses-offered/ug/be-cse`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
     { loc: `${siteUrl}/courses-offered/ug/be-ece`, lastmod: TODAY, changefreq: 'monthly', priority: 0.9 },
@@ -222,10 +212,7 @@ function getEngineeringCourses(siteUrl: string): SitemapEntry[] {
     // Canonical NIRF location is /iqac/nirf/nirf-<year>. Bare /nirf-2, /nirf2024,
     // /nirf-2025 dropped as duplicates that confused Google about the canonical.
     { loc: `${siteUrl}/iqac/nirf/nirf-2024`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
-    { loc: `${siteUrl}/program-outcomes-pos`, lastmod: TODAY, changefreq: 'yearly', priority: 0.6 },
-    { loc: `${siteUrl}/program-specific-outcomes-psos`, lastmod: TODAY, changefreq: 'yearly', priority: 0.6 },
     { loc: `${siteUrl}/student-support-and-progression`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
-    { loc: `${siteUrl}/criterion-5-student-support-and-progression-140`, lastmod: TODAY, changefreq: 'yearly', priority: 0.5 },
     { loc: `${siteUrl}/electoral-literacy-club`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
   ]
 }

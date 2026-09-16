@@ -54,16 +54,16 @@ export const meCSECourseData: MECSECoursePageProps = {
     image: '/images/courses/me-cse/hero-image.jpg',
     stats: [
       {
-        number: '95%',
-        label: 'Placement Rate'
+        number: 'On-Campus',
+        label: 'Placement Cell'
       },
       {
-        number: '₹12L',
-        label: 'Avg. Package'
+        number: 'AICTE',
+        label: 'Approval'
       },
       {
-        number: '50+',
-        label: 'Recruiters'
+        number: 'Anna Univ.',
+        label: 'Affiliation'
       }
     ]
   },
@@ -148,13 +148,13 @@ export const meCSECourseData: MECSECoursePageProps = {
       },
       {
         icon: 'trophy',
-        number: '95%',
-        label: 'Placement'
+        number: 'On-Campus',
+        label: 'Placement Cell'
       },
       {
         icon: 'indianRupee',
-        number: '₹24L',
-        label: 'Highest Package'
+        number: 'AICTE',
+        label: 'Approval'
       },
       {
         icon: 'bookMarked',
@@ -500,23 +500,15 @@ export const meCSECourseData: MECSECoursePageProps = {
   // ===========================================
   placement: {
     label: 'Placements',
-    title: 'Outstanding Placement Record',
+    title: 'Placement Support',
     stats: [
       {
-        number: '95%',
-        label: 'Placement Rate'
+        number: 'On-Campus',
+        label: 'Placement Cell'
       },
       {
-        number: '₹12L',
-        label: 'Average Package'
-      },
-      {
-        number: '₹24L',
-        label: 'Highest Package'
-      },
-      {
-        number: '50+',
-        label: 'Top Recruiters'
+        number: 'Included',
+        label: 'Placement Training'
       }
     ],
     recruiters: [
@@ -569,11 +561,11 @@ export const meCSECourseData: MECSECoursePageProps = {
       },
       {
         question: 'What is the fee structure for the ME CSE program?',
-        answer: 'The annual tuition fee is ₹75,000, making the total program fee ₹1,50,000 for two years. This includes learning lab fees, library access, and learning assessment fees. Scholarships and financial aid are available for eligible learners.'
+        answer: 'For 2026-27 the annual tuition fee is ₹30,000 (Management Quota); Government Quota tuition is as per Tamil Nadu Government norms. Examination fees and caution deposit are charged as notified by the university. Scholarships and financial aid are available for eligible learners.'
       },
       {
         question: 'What is the placement record for ME CSE graduates?',
-        answer: 'Our ME CSE program has an excellent placement record of 95%. The average package is ₹12 LPA, with the highest package reaching ₹24 LPA. Top recruiters include TCS, Infosys, Amazon, Microsoft, Google, and many other leading technology companies.'
+        answer: 'Our ME CSE learners are supported by the Training & Placement Cell, which coordinates on-campus recruitment drives and interview preparation through the programme.'
       },
       {
         question: 'Is the program NAAC accredited?',

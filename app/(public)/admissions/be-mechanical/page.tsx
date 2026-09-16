@@ -7,7 +7,7 @@ export const revalidate = 86400
 export const metadata: Metadata = {
   title: 'B.E Mechanical Admission 2026-27 | Eligibility, Fees, Apply — JKKN Engineering',
   description:
-    'Apply for B.E Mechanical Engineering at JKKN College of Engineering & Technology for 2026-27. AICTE approved, NAAC accredited. 120 seats, ₹45,000 fee, CAD/CAM/Thermal/Manufacturing specializations, TNEA + Management Quota admission.',
+    'Apply for B.E Mechanical Engineering at JKKN College of Engineering & Technology for 2026-27. AICTE approved, NAAC accredited. 60 seats, ₹45,000 fee, CAD/CAM/Thermal/Manufacturing specializations, TNEA + Management Quota admission.',
   keywords: [
     'BE Mechanical admission 2026',
     'JKKN Mechanical admission',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'B.E Mechanical Admission 2026-27 — Apply Online | JKKN Engineering',
     description:
-      '120 seats · ₹45,000/yr · CAD/CAM · Thermal · Manufacturing. Most affordable engineering branch. Eligibility, application steps, and scholarships.',
+      '60 seats · ₹45,000/yr · CAD/CAM · Thermal · Manufacturing. Most affordable engineering branch. Eligibility, application steps, and scholarships.',
     type: 'website',
     images: [{ url: '/og/engineering-admissions.jpg', width: 1200, height: 630, alt: 'JKKN B.E Mechanical Admissions 2026-27' }],
   },

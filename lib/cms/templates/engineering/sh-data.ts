@@ -13,10 +13,10 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   heroTitle: 'Department of Science and Humanities',
   heroSubtitle: 'Building the foundation for engineering excellence through comprehensive education in Physics, Chemistry, Mathematics, and English. Established in 2008, we nurture aspiring engineers with strong fundamentals and outcome-based learning.',
   heroStats: [
-    { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
-    { icon: 'BarChart3', label: 'Total Seats', value: '60' },
+    { icon: 'GraduationCap', label: 'Subjects Taught', value: 'Physics, Chemistry, Maths, English' },
+    { icon: 'BarChart3', label: 'Serves', value: 'All B.E / B.Tech Branches' },
     { icon: 'Users', label: 'Senior Learners', value: '13' },
-    { icon: 'CheckCircle', label: 'Semesters', value: '8' },
+    { icon: 'CheckCircle', label: 'Established', value: '2008' },
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
@@ -37,9 +37,9 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
     },
     {
       icon: 'BarChart3',
-      title: 'Total Seats',
-      value: '60 Seats',
-      description: 'Limited intake ensuring personalized attention and quality education with excellent senior learner-to-learner ratio for effective learning.',
+      title: 'Departmental Role',
+      value: 'Foundation Subjects',
+      description: 'Science and Humanities is a service department. It teaches the foundation subjects to learners admitted into the B.E / B.Tech branches; it does not have a separate sanctioned intake of its own.',
     },
     {
       icon: 'CheckCircle',
@@ -223,17 +223,14 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
   feeTable: {
     headers: ['Fee Component', 'Government Quota', 'Management Quota', 'NRI Quota'],
     rows: [
-      { component: 'Tuition Fee (Annual)', govt: '₹40,000', mgmt: '₹75,000', nri: '₹1,40,000' },
-      { component: 'Development Fee', govt: '₹10,000', mgmt: '₹10,000', nri: '₹15,000' },
-      { component: 'Learning Lab & Library Fee', govt: '₹8,000', mgmt: '₹8,000', nri: '₹10,000' },
-      { component: 'Learning Assessment Fee (Approx.)', govt: '₹5,000', mgmt: '₹5,000', nri: '₹5,000' },
-      { component: 'Hostel Fee (Optional)', govt: '₹60,000', mgmt: '₹60,000', nri: '₹75,000' },
+      { component: 'Tuition Fee', govt: 'See the B.E / B.Tech branch fee', mgmt: 'See the B.E / B.Tech branch fee', nri: 'Not offered' },
+      { component: 'Hostel Fee (Optional)', govt: 'As quoted by the admissions office', mgmt: 'As quoted by the admissions office', nri: 'Not offered' },
     ],
     totals: {
-      component: 'Total (Without Hostel)',
-      govt: '₹63,000',
-      mgmt: '₹98,000',
-      nri: '₹1,70,000',
+      component: 'Note',
+      govt: 'S&H has no separate intake or fee',
+      mgmt: 'Fees follow the admitted branch',
+      nri: 'Not offered',
     },
   },
   scholarships: [
@@ -449,7 +446,7 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
     },
     {
       question: 'What is the learner-senior learners ratio?',
-      answer: 'With 13 energetic and well-qualified senior learners and an intake of 60 learners, we maintain an excellent senior learner-to-learner ratio ensuring personalized attention and quality education. This allows for better interaction and mentoring of learners.',
+      answer: 'With 13 energetic and well-qualified senior learners teaching the foundation subjects across all B.E / B.Tech branches, we maintain a strong senior learner-to-learner ratio ensuring personalized attention and quality education.',
     },
   ],
 

@@ -17,8 +17,8 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   heroStats: [
     { icon: '', label: 'Program Duration', value: '2 Years' },
     { icon: '', label: 'Specializations', value: '4' },
-    { icon: '', label: 'Placement Rate', value: '95%' },
-    { icon: '', label: 'Top Recruiters', value: '7' },
+    { icon: '', label: 'Placement Cell', value: 'On-Campus' },
+    { icon: '', label: 'Approval', value: 'AICTE' },
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
@@ -67,7 +67,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
       icon: 'Briefcase',
       title: 'Placement Support',
       description:
-        'Dedicated placement cell with 95%+ placement record and tie-ups with top recruiters across sectors.',
+        'Dedicated placement cell coordinating on-campus recruitment drives and interview preparation.',
     },
     {
       icon: 'Target',
@@ -317,15 +317,11 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   // ==========================================
   feeTitle: 'Fee Structure (Annual)',
   feeBreakdown: [
-    { component: 'Tuition Fee', amount: '₹1,20,000' },
-    { component: 'Learning Assessment Fee', amount: '₹5,000' },
-    { component: 'Library Fee', amount: '₹3,000' },
-    { component: 'Computer Learning Lab Fee', amount: '₹4,000' },
-    { component: 'Sports & Extracurricular', amount: '₹2,000' },
-    { component: 'Insurance', amount: '₹1,000' },
-    { component: 'Alumni Association Fee', amount: '₹500' },
-    { component: 'Development Fund', amount: '₹4,500' },
-    { component: 'Total Annual Fee', amount: '₹1,40,000', isTotal: true },
+    { component: 'Tuition Fee (Management Quota, 2026-27)', amount: '₹65,000' },
+    { component: 'Tuition Fee (Government Quota)', amount: 'As per Govt. norms' },
+    { component: 'Examination Fee & Caution Deposit', amount: 'As notified by the university' },
+    { component: 'Hostel Fee (Optional)', amount: 'As quoted by the admissions office' },
+    { component: 'Annual Tuition (Management Quota)', amount: '₹65,000', isTotal: true },
   ],
   feeDisclaimer:
     '*Fee structure is subject to change. Installment payment options available. Scholarships available for meritorious learners.',
@@ -424,12 +420,10 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   // ==========================================
   // Placement Statistics
   // ==========================================
-  placementTitle: 'Placement Statistics 2024',
+  placementTitle: 'Placement Support',
   placementStats: [
-    { label: 'Placement Rate', value: '95%', icon: 'Award' },
-    { label: 'Average Package', value: '₹6.5 LPA', icon: 'TrendingUp' },
-    { label: 'Highest Package', value: '₹18 LPA', icon: 'BarChart3' },
-    { label: 'Top Recruiters', value: '60+', icon: 'Building2' },
+    { label: 'Placement Cell', value: 'On-Campus', icon: 'Award' },
+    { label: 'Placement Training', value: 'Included', icon: 'TrendingUp' },
   ],
 
   // ==========================================
@@ -577,7 +571,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     {
       question: 'What is the placement record for MBA graduates?',
       answer:
-        'Our MBA program consistently achieves 95%+ placement rate. The average package is ₹6.5 LPA with the highest package reaching ₹18 LPA. We have tie-ups with 60+ top recruiters across various sectors including IT, BFSI, FMCG, consulting, and manufacturing.',
+        'Our MBA learners are supported by a dedicated placement cell that coordinates on-campus recruitment drives with recruiters across IT, BFSI, FMCG, consulting and manufacturing.',
     },
     {
       question: 'Can I pursue MBA without work experience?',

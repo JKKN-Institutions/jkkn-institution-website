@@ -6,7 +6,7 @@ export const revalidate = 86400
 export const metadata: Metadata = {
   title: 'Admission Process 2026 | JKKN College of Engineering and Technology',
   description:
-    'Complete guide to admissions for B.E / B.Tech and M.E / MBA programmes at JKKN College of Engineering — AICTE approved, Anna University affiliated, NAAC A accredited. Eligibility, fee structure, important dates, and scholarships.',
+    'Complete guide to admissions for B.E / B.Tech and M.E / MBA programmes at JKKN College of Engineering — AICTE approved, Anna University affiliated, NAAC accredited. Eligibility, fee structure, important dates, and scholarships.',
   keywords: [
     'JKKN engineering admissions 2026',
     'engineering college admissions Tamil Nadu',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'JKKN Engineering Admissions 2026 — Complete Admission Guide',
     description:
-      'NAAC A accredited · 5 UG + 2 PG programmes · 95%+ placement · Eligibility, fee, dates, scholarships.',
+      'NAAC accredited · 5 UG + 2 PG programmes · Eligibility, fee, dates, scholarships.',
     type: 'website',
     images: [
       {

@@ -6,7 +6,13 @@
  *
  * Google's guidelines: "Structured data should only be added to pages
  * for which it is directly relevant."
+ *
+ * Tenant note: CourseCatalogSchema describes the WHOLE JKKN group (Dental, Pharmacy,
+ * Nursing, ...). It belongs to the parent tenant only. Emitting it on engg.jkkn.ac.in
+ * made Google report a BDS Review snippet on the engineering courses page.
  */
+
+import { isMainInstitution } from '@/lib/config/multi-tenant'
 
 export type PageSchemaSet = {
   /** Include WebSite schema (homepage only) */
@@ -81,7 +87,7 @@ export function resolvePageSchemas(slug: string, isHomepage: boolean = false): P
     return {
       ...EMPTY_SCHEMAS,
       website: true,
-      courseCatalog: true,
+      courseCatalog: isMainInstitution(),
       faqGeneral: true,
     }
   }
@@ -91,7 +97,7 @@ export function resolvePageSchemas(slug: string, isHomepage: boolean = false): P
   if (slug === 'courses-offered' || slug.startsWith('courses-offered/')) {
     return {
       ...EMPTY_SCHEMAS,
-      courseCatalog: true,
+      courseCatalog: isMainInstitution(),
       faqGeneral: true,
     }
   }

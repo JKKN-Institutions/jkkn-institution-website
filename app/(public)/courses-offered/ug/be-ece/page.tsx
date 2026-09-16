@@ -12,7 +12,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'B.E. Electronics & Communication Engineering | JKKN College of Engineering',
   description:
-    'Pursue B.E. in Electronics & Communication Engineering at JKKN College of Engineering & Technology. AICTE approved, NAAC accredited 4-year program with 95%+ placement record. Industry-aligned learning framework covering Embedded Systems, VLSI, Wireless Communication, IoT, and Signal Processing.',
+    'Pursue B.E. in Electronics & Communication Engineering at JKKN College of Engineering & Technology. AICTE approved, NAAC accredited 4-year program. Industry-aligned learning framework covering Embedded Systems, VLSI, Wireless Communication, IoT, and Signal Processing.',
   keywords: [
     'BE ECE',
     'Electronics and Communication Engineering',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'B.E. Electronics & Communication Engineering | JKKN College',
     description:
-      'Launch your electronics career with B.E. ECE at JKKN. Industry-aligned learning framework, cutting-edge learning labs, expert senior learners, and exceptional placement support with 95%+ placement rate.',
+      'Launch your electronics career with B.E. ECE at JKKN. Industry-aligned learning framework, cutting-edge learning labs, expert senior learners, and on-campus placement support.',
     type: 'website',
     images: [
       {
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'B.E. Electronics & Communication Engineering | JKKN',
     description:
-      'AICTE approved, NAAC accredited ECE program with 95%+ placement success. Transform your future with cutting-edge electronics and communication education.',
+      'AICTE approved, NAAC accredited ECE program. Transform your future with cutting-edge electronics and communication education.',
     images: ['/images/courses/be-ece/labs/ece-lab-33.jpg'],
   },
 }

@@ -37,8 +37,8 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
     { icon: 'Users', label: 'Seats Available', value: '60' },
-    { icon: 'TrendingUp', label: 'Placement Rate', value: '95%' },
-    { icon: 'Trophy', label: 'Highest Package', value: '₹12L' },
+    { icon: 'TrendingUp', label: 'Placement Cell', value: 'On-Campus' },
+    { icon: 'Trophy', label: 'Approval', value: 'AICTE' },
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
@@ -311,17 +311,15 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   feeTable: {
     headers: ['Fee Component', 'Government Quota', 'Management Quota', 'NRI Quota'],
     rows: [
-      { component: 'Tuition Fee (Annual)', govt: '₹45,000', mgmt: '₹85,000', nri: '₹1,50,000' },
-      { component: 'Development Fee', govt: '₹10,000', mgmt: '₹10,000', nri: '₹15,000' },
-      { component: 'Learning Lab & Library Fee', govt: '₹8,000', mgmt: '₹8,000', nri: '₹10,000' },
-      { component: 'Learning Assessment Fee (Approx.)', govt: '₹5,000', mgmt: '₹5,000', nri: '₹5,000' },
-      { component: 'Hostel Fee (Optional)', govt: '₹60,000', mgmt: '₹60,000', nri: '₹75,000' },
+      { component: 'Tuition Fee (Annual, 2026-27)', govt: 'As per Govt. norms', mgmt: '₹80,000', nri: 'Not offered' },
+      { component: 'Examination Fee & Caution Deposit', govt: 'As notified by the university', mgmt: 'As notified by the university', nri: 'Not offered' },
+      { component: 'Hostel Fee (Optional)', govt: 'As quoted by the admissions office', mgmt: 'As quoted by the admissions office', nri: 'Not offered' },
     ],
     totals: {
-      component: 'Total (Without Hostel)',
-      govt: '₹68,000',
-      mgmt: '₹1,08,000',
-      nri: '₹1,80,000',
+      component: 'Annual Tuition (Management Quota)',
+      govt: 'As per Govt. norms',
+      mgmt: '₹80,000',
+      nri: 'Not offered',
     },
   },
   scholarships: [
@@ -336,9 +334,8 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   // ==========================================
   placementsTitle: 'Exceptional Placement Record',
   placementsStats: [
-    { label: 'Placement Rate', value: '95%' },
-    { label: 'Highest Package', value: '₹12 LPA' },
-    { label: 'Average Package', value: '₹4.5 LPA' },
+    { label: 'Placement Cell', value: 'On-Campus' },
+    { label: 'Placement Training', value: 'Included' },
     { label: 'Recruiting Companies', value: '6' },
   ],
   recruiters: [
@@ -583,7 +580,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     },
     {
       question: 'What is the placement record for B.E. CSE at JKKN?',
-      answer: 'JKKN College of Engineering & Technology maintains an exceptional placement record with over 95% placement rate for B.E. CSE graduates. The highest package offered is ₹12 LPA with an average package of ₹4.5 LPA. Over 100+ companies visit our campus annually for recruitment. Our dedicated Training & Placement Cell provides comprehensive support including aptitude training, soft skills development, mock interviews, and industry certifications.',
+      answer: 'JKKN College of Engineering & Technology runs a dedicated Training & Placement Cell for B.E. CSE learners, providing aptitude training, soft skills development, mock interviews and industry certifications, with on-campus recruitment drives held through the year.',
     },
     {
       question: 'What are the fee structure and scholarship options?',
@@ -591,7 +588,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     },
     {
       question: 'Does JKKN provide hostel facilities for B.E. CSE learners?',
-      answer: 'Yes, JKKN provides separate hostel facilities for boys and girls within the campus. The hostels offer comfortable accommodation with facilities including furnished rooms, 24/7 Wi-Fi, mess with nutritious food, recreation areas, gymnasium, and round-the-clock security. The annual hostel fee is approximately ₹60,000 which includes accommodation and meals. Transportation facilities are also available for day scholars from nearby towns.',
+      answer: 'Yes, JKKN provides separate hostel facilities for boys and girls within the campus. The hostels offer comfortable accommodation with facilities including furnished rooms, 24/7 Wi-Fi, mess with nutritious food, recreation areas, gymnasium, and round-the-clock security. Hostel charges, which include accommodation and meals, are quoted by the admissions office. Transportation facilities are also available for day scholars from nearby towns.',
     },
     {
       question: 'What certifications can I get during B.E. CSE at JKKN?',

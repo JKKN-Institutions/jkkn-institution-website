@@ -9,9 +9,9 @@ export interface TrustStat {
 }
 
 export const TRUST_STATS: TrustStat[] = [
-  { label: 'Placement Rate', value: '92%+', verifiedOn: '2025' },
-  { label: 'Accreditation', value: 'NAAC A', verifiedOn: '2024' },
-  { label: 'Average Package', value: '₹3.5L', verifiedOn: '2025' },
+  { label: 'Approved Intake', value: '372', verifiedOn: '2026' },
+  { label: 'Accreditation', value: 'NAAC Accredited', verifiedOn: '2024' },
+  { label: 'Affiliation', value: 'Anna University', verifiedOn: '2026' },
 ]
 
 // ─── Overview ────────────────────────────────────────────────────────────────
@@ -662,13 +662,13 @@ export const FAQS: FAQItem[] = [
   {
     question: 'What is the total cost of education including hostel?',
     answer:
-      'B.E / B.Tech annual tuition ranges from ₹45,000 (EEE / MECH) to ₹80,000 (CSE / IT Management Quota), depending on branch and quota (Government or Management). Hostel accommodation (optional, all-inclusive with meals and utilities) is ₹60,000 per year. Scholarships can significantly reduce tuition costs; approximately 75% of learners receive some form of financial aid.',
+      'For 2026-27, B.E / B.Tech Management Quota annual tuition ranges from ₹45,000 (EEE / MECH) to ₹80,000 (CSE / IT); Government Quota tuition is as per Tamil Nadu Government norms. Hostel accommodation (optional, all-inclusive with meals and utilities) is quoted by the admissions office. Scholarships can significantly reduce tuition costs for eligible learners.',
     audience: 'parent',
   },
   {
     question: 'What percentage of learners get placed after graduation?',
     answer:
-      'JKKN College of Engineering maintains a 92%+ placement rate (verified 2025). Top recruiters include TCS, Infosys, Wipro, Cognizant, HCL, and 500+ companies. Average package: ₹3.5L per annum; highest: ₹8.5L+.',
+      'JKKN College of Engineering runs a Training & Placement Cell that coordinates on-campus recruitment drives and interview preparation. Recruiters who have visited campus are listed on the placements page.',
     audience: 'parent',
   },
   {

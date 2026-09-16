@@ -44,7 +44,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
       props: {
         title: 'Shape Your Future in Engineering & Technology',
         subtitle: 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
-        description: 'Join one of the leading engineering colleges with 70+ years of educational excellence. World-class senior learners, state-of-the-art infrastructure, and 95%+ placement record.',
+        description: 'Join an AICTE-approved, Anna University affiliated engineering college with experienced senior learners, state-of-the-art infrastructure and a dedicated on-campus placement cell.',
         badge: 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
         stats: [
           { value: 3000, suffix: '+', label: 'Learners', icon: 'graduation' },
@@ -105,7 +105,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
           'NAAC Accredited Programs',
           'Industry-Academia Partnerships',
           'State-of-the-Art Learning Labs',
-          '95%+ Placement Record',
+          'On-Campus Placement Cell',
           'Experienced Senior Learners',
         ],
         image: '/images/engineering/library/library-01.jpg',
@@ -135,11 +135,11 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
         programs: [
           { name: 'B.E Computer Science & Engineering', type: 'ug', duration: '4 Years', seats: 60, icon: 'cpu', description: 'AI, Data Structures, Software Development', link: '/courses-offered/ug/be-cse', tags: ['Popular'] },
           { name: 'B.E Electronics & Communication', type: 'ug', duration: '4 Years', seats: 60, icon: 'cpu', description: 'Embedded Systems, IoT, VLSI Design', link: '/courses-offered/ug/be-ece' },
-          { name: 'B.E Mechanical Engineering', type: 'ug', duration: '4 Years', seats: 120, icon: 'settings', description: 'Robotics, CAD/CAM, Automation', link: '/courses-offered/ug/be-mechanical' },
+          { name: 'B.E Mechanical Engineering', type: 'ug', duration: '4 Years', seats: 60, icon: 'settings', description: 'Robotics, CAD/CAM, Automation', link: '/courses-offered/ug/be-mechanical' },
           { name: 'B.E Electrical & Electronics', type: 'ug', duration: '4 Years', seats: 60, icon: 'zap', description: 'Power Systems, Renewable Energy', link: '/courses-offered/ug/be-eee' },
           { name: 'B.Tech Information Technology', type: 'ug', duration: '4 Years', seats: 60, icon: 'wifi', description: 'Cloud Computing, Cybersecurity, DevOps', link: '/courses-offered/ug/btech-it' },
-          { name: 'MBA - Business Administration', type: 'pg', duration: '2 Years', seats: 120, icon: 'briefcase', description: 'Business Analytics, Marketing, Finance', link: '/courses-offered/pg/mba' },
-          { name: 'M.E Computer Science & Engineering', type: 'pg', duration: '2 Years', seats: 60, icon: 'graduation', description: 'Advanced Computing, Research Focus', link: '/courses-offered/pg/me-cse' },
+          { name: 'MBA - Business Administration', type: 'pg', duration: '2 Years', seats: 60, icon: 'briefcase', description: 'Business Analytics, Marketing, Finance', link: '/courses-offered/pg/mba' },
+          { name: 'M.E Computer Science & Engineering', type: 'pg', duration: '2 Years', seats: 12, icon: 'graduation', description: 'Advanced Computing, Research Focus', link: '/courses-offered/pg/me-cse' },
         ],
         showTabs: true,
         primaryColor: '#0b6d41',
@@ -184,8 +184,8 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
             icon: 'flask',
           },
           {
-            title: '95%+ Placements',
-            description: 'Consistently high placement rate with top recruiters visiting campus',
+            title: 'On-Campus Placements',
+            description: 'Recruiters visit campus through the year, with interview preparation support',
             icon: 'trending',
           },
           {
@@ -226,10 +226,9 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
         title: 'Launching Careers, Building Futures',
         subtitle: 'Our dedicated placement cell connects talented learners with leading companies worldwide',
         stats: [
-          { value: 95, suffix: '%+', prefix: '', label: 'Placement Rate', icon: 'trending' },
-          { value: 12, suffix: ' LPA', prefix: '', label: 'Highest Package', icon: 'award' },
-          { value: 4.5, suffix: ' LPA', prefix: '', label: 'Average Package', icon: 'users' },
-          { value: 50, suffix: '+', prefix: '', label: 'Recruiters', icon: 'building' },
+          { value: 372, suffix: '', prefix: '', label: 'AICTE Approved Seats', icon: 'trending' },
+          { value: 7, suffix: '', prefix: '', label: 'Programmes Offered', icon: 'award' },
+          { value: 2008, suffix: '', prefix: '', label: 'Established', icon: 'users' },
         ],
         companies: [
           { name: 'LGB', logo: '/images/recruiters/lgb.png', category: 'all' },
@@ -403,7 +402,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
           },
           {
             question: 'What is the placement record at JKKN Engineering College?',
-            answer: 'We maintain an excellent placement record with 95%+ placement rate. The highest package offered is 12 LPA with an average package of 4.5 LPA. Over 50 companies recruit from our campus including TCS, Infosys, Wipro, Cognizant, IBM, Amazon, Zoho, and more.',
+            answer: 'Our Training & Placement Cell coordinates on-campus recruitment drives through the year, along with aptitude training, soft skills sessions and mock interviews.',
           },
           {
             question: 'What facilities are available for learners?',
@@ -411,7 +410,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
           },
           {
             question: 'Does JKKN offer AI and Machine Learning courses?',
-            answer: 'Yes, we offer a dedicated B.Tech program in Artificial Intelligence & Machine Learning with 60 seats. The program covers Deep Learning, Neural Networks, Data Science, and cutting-edge AI technologies with hands-on projects and industry internships.',
+            answer: 'AI and Machine Learning are taught within our AICTE-approved B.E. Computer Science and Engineering and B.Tech Information Technology programmes as specialisation and research areas, alongside Data Science, Cloud Computing and Cybersecurity. JKKN does not offer a separate B.Tech in AI & ML.',
           },
           {
             question: 'What is the fee structure for engineering programs?',

@@ -16,8 +16,8 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
     { icon: 'Users', label: 'Seats Available', value: '60' },
-    { icon: 'TrendingUp', label: 'Placement Rate', value: '95%' },
-    { icon: 'Trophy', label: 'Highest Package', value: '₹10L' },
+    { icon: 'TrendingUp', label: 'Placement Cell', value: 'On-Campus' },
+    { icon: 'Trophy', label: 'Approval', value: 'AICTE' },
   ],
   heroCTAs: [
     { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
@@ -52,7 +52,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
       icon: 'BookOpen',
       title: 'Eligibility',
       value: '10+2 with PCM',
-      description: 'Candidates must have passed 10+2 with Physics, Chemistry & Mathematics with minimum 50% aggregate (45% for reserved categories).',
+      description: 'Candidates must have passed 10+2 with Physics, Chemistry & Mathematics with minimum 45% aggregate (40% for BC / MBC / DNC / SC / SCA / ST), as per the TNEA information brochure.',
     },
   ],
 
@@ -355,13 +355,11 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   // ==========================================
   feeTitle: 'Fee Structure (Annual)',
   feeBreakdown: [
-    { component: 'Tuition Fee', amount: '70,000' },
-    { component: 'Learning Lab Fee', amount: '5,000' },
-    { component: 'Library Fee', amount: '2,000' },
-    { component: 'Learning Assessment Fee', amount: '3,000' },
-    { component: 'Development Fee', amount: '5,000' },
-    { component: 'Other Fees', amount: '5,000' },
-    { component: 'TOTAL', amount: '90,000', isTotal: true },
+    { component: 'Tuition Fee (Management Quota, 2026-27)', amount: '₹45,000' },
+    { component: 'Tuition Fee (Government Quota)', amount: 'As per Govt. norms' },
+    { component: 'Examination Fee & Caution Deposit', amount: 'As notified by the university' },
+    { component: 'Hostel Fee (Optional)', amount: 'As quoted by the admissions office' },
+    { component: 'Annual Tuition (Management Quota)', amount: '₹45,000', isTotal: true },
   ],
 
   // ==========================================
@@ -500,7 +498,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   faqs: [
     {
       question: 'What is the eligibility criteria for B.E. EEE admission?',
-      answer: 'Candidates must have passed 10+2 with Physics, Chemistry, and Mathematics with a minimum of 50% aggregate marks (45% for reserved categories). Valid TNEA rank is required for Tamil Nadu learners.',
+      answer: 'Candidates must have passed 10+2 with Physics, Chemistry, and Mathematics with a minimum of 45% aggregate marks (40% for BC / MBC / DNC / SC / SCA / ST), as per the TNEA information brochure. Valid TNEA rank is required for Tamil Nadu learners.',
     },
     {
       question: 'What is the difference between EEE and ECE?',
@@ -512,7 +510,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
     },
     {
       question: 'What are the placement opportunities?',
-      answer: 'Our department has a strong placement record with 92%+ placement rate. Top companies like TNEB, BHEL, Siemens, ABB, L&T, Schneider Electric, and CG Power visit our campus. The highest package offered is ₹10 LPA and average package is ₹4 LPA.',
+      answer: 'Our department runs on-campus recruitment drives with companies including TNEB, BHEL, Siemens, ABB, L&T, Schneider Electric and CG Power.',
     },
     {
       question: 'What practical skills will I learn?',

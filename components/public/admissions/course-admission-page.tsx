@@ -268,7 +268,7 @@ export function CourseAdmissionPage(props: CourseAdmissionData) {
 
   const quickFacts: { icon: LucideIcon; label: string; value: string }[] = [
     { icon: Users, label: 'Sanctioned Seats', value: String(seats) },
-    { icon: IndianRupee, label: 'Annual Tuition', value: headlineFee },
+    { icon: IndianRupee, label: 'Annual Tuition (Mgmt Quota)', value: headlineFee },
     { icon: CalendarDays, label: 'Last Date to Apply', value: applyDeadline },
     { icon: ShieldCheck, label: approvalsLabel, value: approvalsValue },
   ]

@@ -23,7 +23,7 @@ const LAST_REVIEWED = '2026-09-04'
 function getEngineeringLlmsTxt(siteUrl: string): string {
   return `# JKKN College of Engineering and Technology
 
-> AICTE-approved engineering college in Komarapalayam, Tamil Nadu, affiliated to Anna University, Chennai. Established 2008. Offers B.E., B.Tech, M.E., and MBA programs across 5 departments. NAAC accredited. 55-acre residential campus.
+> AICTE-approved autonomous engineering college in Komarapalayam, Tamil Nadu, affiliated to Anna University, Chennai, with autonomous status conferred by UGC, New Delhi and Anna University, Chennai. Established 2008. Offers B.E., B.Tech, M.E., and MBA programs across 5 departments. NAAC accredited. 55-acre residential campus.
 
 JKKN College of Engineering and Technology (JKKN CET) is part of the J.K.K. Rangammal Charitable Trust, a group operating since 1952. The college is located in Komarapalayam, Namakkal District, Tamil Nadu, on NH-544 (Salem–Coimbatore National Highway), approximately 15 km from Erode city.
 
@@ -38,22 +38,22 @@ Total sanctioned intake 372 — 300 undergraduate across 5 B.E./B.Tech branches,
 - [B.E. Electrical and Electronics Engineering](${siteUrl}/courses-offered/ug/be-eee): 4-year undergraduate program. Intake 60.
 - [B.E. Mechanical Engineering](${siteUrl}/courses-offered/ug/be-mechanical): 4-year undergraduate program. Intake 60.
 - [B.Tech Information Technology](${siteUrl}/courses-offered/ug/btech-it): 4-year undergraduate program. Intake 60.
-- [M.E. Computer Science and Engineering](${siteUrl}/courses-offered/pg/me-cse): 2-year postgraduate program.
-- [Master of Business Administration (MBA)](${siteUrl}/courses-offered/pg/mba): 2-year management program.
+- [M.E. Computer Science and Engineering](${siteUrl}/courses-offered/pg/me-cse): 2-year postgraduate program. Intake 12. AICTE approved.
+- [Master of Business Administration (MBA)](${siteUrl}/courses-offered/pg/mba): 2-year management program. Intake 60. AICTE approved.
 - [All programs](${siteUrl}/courses-offered): Complete UG and PG course list with eligibility.
 
 ## Admissions
 
-- [Admissions 2026-27](${siteUrl}/admissions): B.E./B.Tech via TNEA counselling (tnea.ac.in) or direct admission. Eligibility: 10+2 with Mathematics, Physics, Chemistry/CS minimum 50%. Lateral entry for Diploma holders into 2nd year.
-- [Fee structure](${siteUrl}/admissions/fee-structure): Annual tuition ₹30,000–₹80,000 depending on branch and quota. Government quota — B.E. CSE and B.Tech IT ₹65,000, B.E. ECE ₹60,000, B.E. EEE and B.E. Mechanical ₹45,000, MBA ₹65,000, M.E. CSE ₹30,000. Management quota — B.E. CSE and B.Tech IT ₹80,000, B.E. ECE ₹70,000, B.E. EEE and B.E. Mechanical ₹45,000, MBA ₹65,000, M.E. CSE ₹30,000. Lateral entry ₹50,000 government quota, ₹60,000 management quota.
+- [Admissions 2026-27](${siteUrl}/admissions): B.E./B.Tech via TNEA counselling (tnea.ac.in) or direct admission. Eligibility: a pass in 10+2 with Mathematics, Physics and Chemistry, minimum average 45% for General Category and 40% for BC / MBC / DNC / SC / SCA / ST, as per the TNEA 2026 information brochure. Lateral entry for Diploma holders into 2nd year.
+- [Fee structure](${siteUrl}/admissions/fee-structure): Annual tuition for the 2026-27 academic year. Government quota — as per Tamil Nadu Government norms; fees are regulated by the State and may be revised each academic year. Management quota — B.E. CSE and B.Tech IT ₹80,000, B.E. ECE ₹70,000, B.E. EEE and B.E. Mechanical ₹45,000, MBA ₹65,000, M.E. CSE ₹30,000. Lateral entry — government quota as per Government norms, management quota ₹60,000. Examination fees, caution deposit and other university-mandated fees are charged additionally.
 - [Hostel](${siteUrl}/hostel): Separate hostels for boys and girls. Hostel and mess charges are quoted by the admissions office.
 - Scholarships: Government schemes, merit-based, management concessions available.
 
 ## Placements
 
-- [Placement Cell](${siteUrl}/placements): Campus recruitment drives, placement training and the recruiter list.
+- [Placement Cell](${siteUrl}/placements): Campus recruitment drives and placement training.
 - Top recruiters: TCS, Infosys, Wipro, Cognizant, HCL, Tech Mahindra, Amazon, Zoho, Accenture, Capgemini, L&T, Ashok Leyland.
-- Placement training: Aptitude, reasoning, coding, mock interviews from 3rd year.
+- Placement training: Aptitude, reasoning, coding and mock interviews.
 
 ## Accreditations & Affiliations
 
