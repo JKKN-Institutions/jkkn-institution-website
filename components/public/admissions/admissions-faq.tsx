@@ -41,7 +41,7 @@ const ADMISSIONS_FAQS = [
   {
     question: 'Where is JKKN campus located?',
     answer:
-      'JKKN is located at Natarajapuram, NH-544 (Salem-Coimbatore Highway), Komarapalayam, Namakkal District, Tamil Nadu 638183. We are 30 km from Erode, 45 km from Salem and 70 km from Coimbatore. Contact +91 93458 55001 to schedule a campus tour.',
+      'JKKN is located at Natarajapuram, NH-544 (Salem-Coimbatore Highway), Komarapalayam, Namakkal District, Tamil Nadu 638183. We are 18 km from Erode, 58 km from Salem and 114 km from Coimbatore by road. Contact +91 93458 55001 to schedule a campus tour.',
   },
   {
     question: 'What is NEET requirement for health science programs?',

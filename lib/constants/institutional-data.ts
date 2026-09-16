@@ -44,6 +44,31 @@ export const INSTITUTIONAL_DATA = {
     schoolCount: 2,
   },
 
+  /**
+   * Campus facts. Ruled by the user 2026-09-12 after a four-way conflict on the
+   * live site (llms.txt 55-acre / homepage 60+ acres / our-institutions 70 acres /
+   * how-to-reach 100+ acre). 70 acres is the value of record.
+   */
+  campus: {
+    acres: 70,
+    acresText: '70-acre',
+  },
+
+  /**
+   * Road distances from the campus pin (11.4454, 77.7306), measured 2026-09-12
+   * via OSRM / OpenStreetMap driving routes. The figures published before this
+   * date (Salem 45 km, Coimbatore 70 km, Namakkal 40 km) were SHORTER than the
+   * straight-line distance and were therefore impossible.
+   */
+  distancesByRoadKm: {
+    erode: 18,
+    salem: 58,
+    coimbatore: 114,
+    namakkal: 62,
+    coimbatoreAirport: 101,
+    tiruppur: 64,
+  },
+
   contact: {
     primaryPhone: '+91 93458 55001',
     primaryPhoneFormatted: '+91 93458 55001',
@@ -74,8 +99,8 @@ export const INSTITUTIONAL_DATA = {
   },
 
   admissions: {
-    currentYear: '2025-26',
-    nextYear: '2026-27',
+    currentYear: '2026-27',
+    nextYear: '2027-28',
   },
 
   /** All institutions under JKKN (7 colleges + 2 schools = 9 total) */

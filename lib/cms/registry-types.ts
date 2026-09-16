@@ -483,7 +483,7 @@ export const FAQSectionPropsSchema = z.object({
     },
     {
       question: 'What are the unique facilities available at JKKN campus?',
-      answer: "JKKN's 100+ acre campus features smart Learning Studios, advanced research laboratories, digital library with 50,000+ books, 500-bed multi-specialty hospital, sports complex with indoor and outdoor facilities, auditorium (2000+ seating), food court, bank & post office, ambulance services, and complete Wi-Fi coverage. All facilities are designed to provide a holistic learning environment.",
+      answer: "JKKN's 70-acre campus features smart Learning Studios, advanced research laboratories, digital library with 50,000+ books, 500-bed multi-specialty hospital, sports complex with indoor and outdoor facilities, auditorium (2000+ seating), food court, bank & post office, ambulance services, and complete Wi-Fi coverage. All facilities are designed to provide a holistic learning environment.",
     },
     {
       question: 'What makes JKKN different from other colleges in Tamil Nadu?',
@@ -1685,7 +1685,7 @@ export const WhyChooseSectionPropsSchema = z.object({
     { icon: 'GraduationCap', title: '7 Specialized Colleges', description: 'From Dental Sciences to Engineering, Pharmacy to Nursing — choose from diverse disciplines under one trusted institution.' },
     { icon: 'Users', title: 'Learner-Centered Approach', description: 'At JKKN, you\'re an active Learner shaping your future. Our Learning Facilitators guide, mentor, and empower you.' },
     { icon: 'Factory', title: 'Industry-Ready Programs', description: 'Our curriculum integrates theory with practice. State-of-the-art Learning Labs and industry partnerships make graduates career-ready.' },
-    { icon: 'Briefcase', title: 'Strong Placement Record', description: '500+ recruiting companies, competitive salary packages, and dedicated placement support ensure seamless transition from campus to career.' },
+    { icon: 'Briefcase', title: 'Strong Placement Record', description: '100+ recruiting companies, competitive salary packages, and dedicated placement support ensure seamless transition from campus to career.' },
     { icon: 'Star', title: 'Holistic Development', description: 'Beyond academics, JKKN nurtures well-rounded individuals through sports, cultural activities, community service, and leadership opportunities.' },
   ]),
 

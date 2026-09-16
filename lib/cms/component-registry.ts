@@ -1266,7 +1266,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
               type: 'string',
               label: 'Name',
               required: true,
-              placeholder: 'e.g., NAAC A+ Accredited',
+              placeholder: 'e.g., NAAC A Accredited',
             },
             description: {
               type: 'string',

@@ -126,7 +126,7 @@ export const CONTACT_FAQS: FAQ[] = [
   },
   {
     q: 'How do I reach JKKN campus by public transport?',
-    a: 'The nearest railway station is Erode Junction (45 km). The nearest airport is Salem (70 km) or Coimbatore (120 km). Government and private buses between Salem and Coimbatore stop at Komarapalayam bus stand, 3 km from the campus.',
+    a: 'The nearest railway station is Erode Junction (19 km by road). The nearest airport is Salem (66 km) or Coimbatore (101 km). Government and private buses between Salem and Coimbatore stop at Komarapalayam bus stand, 4 km from the campus.',
   },
 ]
 

@@ -174,7 +174,7 @@ function getSampleProps(componentName: string, defaultProps: Record<string, unkn
       events: [
         { year: '1994', title: 'Foundation', description: 'JKKN was established with a vision for excellence.' },
         { year: '2000', title: 'Expansion', description: 'Added Engineering and Medical colleges.' },
-        { year: '2010', title: 'Recognition', description: 'Received NAAC A+ accreditation.' },
+        { year: '2010', title: 'Recognition', description: 'Received NAAC A accreditation.' },
         { year: '2024', title: 'Today', description: '50,000+ students across multiple campuses.' },
       ],
       alternating: true,

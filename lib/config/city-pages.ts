@@ -450,7 +450,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       routeDescription: 'NH-544 (Salem-Coimbatore Highway) — direct route',
       busTerminal:
         'Frequent buses from Salem New Bus Stand and Shevapet to Komarapalayam/Namakkal route',
-      nearestRailway: 'Salem Junction Railway Station (~45 km from campus)',
+      nearestRailway: 'Salem Junction Railway Station (~55 km by road from campus)',
       nearestAirport: 'Salem Airport (~55 km from campus)',
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,

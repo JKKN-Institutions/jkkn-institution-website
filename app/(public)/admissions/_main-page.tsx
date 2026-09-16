@@ -120,7 +120,7 @@ export default function MainAdmissionsPage() {
           {
             icon: 'Briefcase',
             title: 'Strong Placement Record',
-            description: '500+ recruiting companies, competitive salary packages, and dedicated placement support ensure seamless transition from campus to career.',
+            description: '100+ recruiting companies, competitive salary packages, and dedicated placement support ensure seamless transition from campus to career.',
           },
           {
             icon: 'Star',

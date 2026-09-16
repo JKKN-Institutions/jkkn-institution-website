@@ -74,7 +74,7 @@ const SAMPLE_DATA = {
   events: [
     { date: '1990', title: 'Foundation', description: 'JKKN was established with a vision for excellence' },
     { date: '2000', title: 'Expansion', description: 'Added new colleges and departments' },
-    { date: '2010', title: 'Accreditation', description: 'Received NAAC A+ accreditation' },
+    { date: '2010', title: 'Accreditation', description: 'Received NAAC A accreditation' },
     { date: '2020', title: 'Digital Era', description: 'Launched online learning platforms' },
   ],
 

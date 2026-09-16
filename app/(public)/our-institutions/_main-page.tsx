@@ -78,7 +78,7 @@ const COLLEGES: Institution[] = [
     url: 'https://dental.jkkn.ac.in/',
     isExternal: true,
     description:
-      'BDS (Bachelor of Dental Surgery), MDS (Master of Dental Surgery) across 9 specialties. 350-bed teaching hospital. DCI approved.',
+      'BDS (Bachelor of Dental Surgery), MDS (Master of Dental Surgery) across 5 specialties. 350-bed teaching hospital. DCI approved.',
     visitLabel: 'Visit Dental College',
     alternateName: ['JKK Nataraja Dental College', 'JKKN Dental'],
     schemaType: 'CollegeOrUniversity',
@@ -88,7 +88,7 @@ const COLLEGES: Institution[] = [
     foundedYear: 1987,
     approval: 'DCI Approved',
     affiliation: 'TN Dr. M.G.R. Medical University',
-    keyPrograms: 'BDS, MDS (9 specialties)',
+    keyPrograms: 'BDS, MDS (5 specialties)',
     applyUrl: 'https://dental.jkkn.ac.in/admissions',
     feeUrl: 'https://dental.jkkn.ac.in/fees-structure/',
     scholarshipUrl: 'https://dental.jkkn.ac.in/scholarships/',
@@ -144,13 +144,13 @@ const COLLEGES: Institution[] = [
     url: 'https://ahs.jkkn.ac.in/',
     isExternal: true,
     description:
-      'B.Sc programs in Medical Lab Technology, Operation Theatre, Radiology, Optometry, Anaesthesia, Physiotherapy.',
+      'B.Sc programs in Cardiac Technology, Critical Care, Dialysis, Operation Theatre & Anaesthesia, Physician Assistant, Radiology & Imaging, Respiratory Therapy, Accident & Emergency Care, and Medical Record Science.',
     visitLabel: 'Visit AHS College',
     alternateName: ['JKKN AHS'],
     schemaType: 'CollegeOrUniversity',
     schemaId: 'https://ahs.jkkn.ac.in/#organization',
     schemaDescription:
-      'Allied Health Sciences college established 2019. B.Sc programs in Medical Lab Technology, Operation Theatre, Radiology, Optometry, Anaesthesia, Physiotherapy.',
+      'Allied Health Sciences college established 2019. B.Sc programs in Cardiac Technology, Critical Care, Dialysis, Operation Theatre & Anaesthesia, Physician Assistant, Radiology & Imaging, Respiratory Therapy, Accident & Emergency Care, and Medical Record Science.',
     foundedYear: 2019,
     approval: 'MGR University Approved',
     affiliation: 'TN Dr. M.G.R. Medical University',
@@ -188,17 +188,17 @@ const COLLEGES: Institution[] = [
     url: 'https://nursing.sresakthimayeil.jkkn.ac.in/',
     isExternal: true,
     description:
-      'B.Sc Nursing, M.Sc Nursing, GNM, ANM programs. INC approved. Tamil Nadu Dr. M.G.R. Medical University affiliated.',
+      'B.Sc Nursing, Post Basic B.Sc Nursing, M.Sc Nursing programs. INC approved. Tamil Nadu Dr. M.G.R. Medical University affiliated.',
     visitLabel: 'Visit Nursing College',
     alternateName: ['JKKN Nursing College', 'Sresakthimayeil Nursing'],
     schemaType: 'CollegeOrUniversity',
     schemaId: 'https://nursing.sresakthimayeil.jkkn.ac.in/#organization',
     schemaDescription:
-      'INC approved nursing institute established 2006. B.Sc Nursing, M.Sc Nursing, GNM, ANM programs. Affiliated to Tamil Nadu Dr. M.G.R. Medical University.',
+      'INC approved nursing institute established 2006. B.Sc Nursing, Post Basic B.Sc Nursing, M.Sc Nursing programs. Affiliated to Tamil Nadu Dr. M.G.R. Medical University.',
     foundedYear: 2006,
     approval: 'INC Approved',
     affiliation: 'TN Dr. M.G.R. Medical University',
-    keyPrograms: 'B.Sc Nursing, M.Sc, GNM, ANM',
+    keyPrograms: 'B.Sc Nursing, PB B.Sc, M.Sc',
     applyUrl: 'https://nursing.sresakthimayeil.jkkn.ac.in/admissions',
     feeUrl: 'https://nursing.sresakthimayeil.jkkn.ac.in/fee-structure',
     scholarshipUrl: 'https://nursing.sresakthimayeil.jkkn.ac.in/scholarships',
@@ -267,7 +267,7 @@ const SCHOOLS: Institution[] = [
     foundedYear: 2009,
     approval: 'CBSE Affiliated',
     affiliation: 'Central Board of Secondary Education',
-    keyPrograms: 'Pre-KG to Class 12 (CBSE)',
+    keyPrograms: 'Pre-KG to Grade 10 (CBSE)',
     applyUrl: 'https://nv.jkkn.ac.in/',
     feeUrl: 'https://nv.jkkn.ac.in/',
     scholarshipUrl: 'https://nv.jkkn.ac.in/',
@@ -305,7 +305,7 @@ const FAQS = [
   },
   {
     q: 'Where is the JKKN campus located?',
-    a: 'JKKN Institutions occupies a 70-acre integrated campus at Natarajapuram on NH-544 (Salem–Coimbatore Highway), Komarapalayam, Namakkal District, Tamil Nadu — 638183. The campus sits between Erode and Salem, accessible by road and rail; Coimbatore International Airport is ~80 km away.',
+    a: 'JKKN Institutions occupies a 70-acre integrated campus at Natarajapuram on NH-544 (Salem–Coimbatore Highway), Komarapalayam, Namakkal District, Tamil Nadu — 638183. The campus sits between Erode and Salem, accessible by road and rail; Coimbatore International Airport is ~101 km away by road.',
   },
   {
     q: 'Is JKKN NAAC accredited?',
@@ -313,11 +313,11 @@ const FAQS = [
   },
   {
     q: 'How many programs does JKKN offer?',
-    a: 'JKKN offers 50+ academic programs across UG, PG, and doctoral levels — including B.E./B.Tech, M.Tech, MBA, BDS, MDS, B.Pharm, M.Pharm, Pharm.D, B.Sc/M.Sc Nursing, B.Ed, and diverse arts/science/commerce streams. Schools cover LKG to Class 12 in both Matriculation and CBSE curricula.',
+    a: 'JKKN offers 50+ academic programs across UG, PG, and doctoral levels — including B.E./B.Tech, M.Tech, MBA, BDS, MDS, B.Pharm, M.Pharm, Pharm.D, B.Sc/M.Sc Nursing, B.Ed, and diverse arts/science/commerce streams. Schools cover LKG to Class 12 (Matriculation) and Pre-KG to Grade 10 (CBSE).',
   },
   {
     q: 'What is JKKN\'s placement rate?',
-    a: 'JKKN Institutions reports 92%+ placement across professional courses, with 1000+ recruiting partners including TCS, Infosys, Wipro, Cognizant, and major dental/pharma/healthcare employers. Specific placement data varies by college and is published annually in each institution\'s placement report.',
+    a: 'JKKN Institutions reports 92%+ placement across professional courses, with 100+ recruiting partners including TCS, Infosys, Wipro, Cognizant, and major dental/pharma/healthcare employers. Specific placement data varies by college and is published annually in each institution\'s placement report.',
   },
   {
     q: 'Which JKKN college is best for engineering?',
@@ -535,21 +535,28 @@ function pageGraphSchema() {
           bestRating: AGGREGATE_RATING.bestRating,
           worstRating: AGGREGATE_RATING.worstRating,
         },
-        review: REVIEWS.map((r) => ({
-          '@type': 'Review',
-          author: { '@type': 'Person', name: r.authorName },
-          datePublished: r.date,
-          reviewBody: r.body,
-          reviewRating: {
-            '@type': 'Rating',
-            ratingValue: String(r.rating),
-            bestRating: '5',
-            worstRating: '1',
-          },
-        })),
+        // Only emit Review markup when real, on-page reviews exist.
+        ...(REVIEWS.length > 0
+          ? {
+              review: REVIEWS.map((r) => ({
+                '@type': 'Review',
+                author: { '@type': 'Person', name: r.authorName },
+                datePublished: r.date,
+                reviewBody: r.body,
+                reviewRating: {
+                  '@type': 'Rating',
+                  ratingValue: String(r.rating),
+                  bestRating: '5',
+                  worstRating: '1',
+                },
+              })),
+            }
+          : {}),
         subOrganization: subOrgRefs,
         hasOfferCatalog: { '@id': `${PAGE_URL}#programs-catalog` },
-        event: EVENTS.map((_, i) => ({ '@id': `${PAGE_URL}#event-${i}` })),
+        ...(EVENTS.length > 0
+          ? { event: EVENTS.map((_, i) => ({ '@id': `${PAGE_URL}#event-${i}` })) }
+          : {}),
         makesOffer: SERVICES.map((s, i) => ({ '@id': `${PAGE_URL}#service-${i}` })),
         sameAs: [
           'https://www.facebook.com/myjkkn',
@@ -1253,11 +1260,12 @@ export default function MainOurInstitutionsPage() {
                 {AGGREGATE_RATING.ratingValue}/5
               </span>
               <span className="text-muted-foreground">
-                · {AGGREGATE_RATING.reviewCount} verified reviews
+                · {AGGREGATE_RATING.reviewCount} {AGGREGATE_RATING.sourceLabel}
               </span>
             </div>
           </div>
 
+          {REVIEWS.length > 0 && (
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             {REVIEWS.map((r) => (
               <figure
@@ -1278,6 +1286,7 @@ export default function MainOurInstitutionsPage() {
               </figure>
             ))}
           </div>
+          )}
         </div>
       </section>
 
