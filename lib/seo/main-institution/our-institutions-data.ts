@@ -101,7 +101,6 @@ export const PROGRAMS: ProgramEntry[] = [
   { name: 'B.Sc Radiology and Imaging Technology', level: 'UG', category: 'Allied Health', durationYears: 3, providerOrgId: 'https://ahs.jkkn.ac.in/#organization' },
   { name: 'B.Sc Optometry', level: 'UG', category: 'Allied Health', durationYears: 4, providerOrgId: 'https://ahs.jkkn.ac.in/#organization' },
   { name: 'B.Sc Anaesthesia Technology', level: 'UG', category: 'Allied Health', durationYears: 3, providerOrgId: 'https://ahs.jkkn.ac.in/#organization' },
-  { name: 'Bachelor of Physiotherapy (BPT)', level: 'UG', category: 'Allied Health', durationYears: 4, providerOrgId: 'https://ahs.jkkn.ac.in/#organization' },
 
   // Arts & Science (cas.jkkn.ac.in)
   { name: 'B.Sc Computer Science', level: 'UG', category: 'Science', durationYears: 3, providerOrgId: 'https://cas.jkkn.ac.in/#organization' },
@@ -118,15 +117,13 @@ export const PROGRAMS: ProgramEntry[] = [
   { name: 'B.Sc Nursing', level: 'UG', category: 'Nursing', durationYears: 4, providerOrgId: 'https://nursing.sresakthimayeil.jkkn.ac.in/#organization' },
   { name: 'Post Basic B.Sc Nursing', level: 'UG', category: 'Nursing', durationYears: 2, providerOrgId: 'https://nursing.sresakthimayeil.jkkn.ac.in/#organization' },
   { name: 'M.Sc Nursing', level: 'PG', category: 'Nursing', durationYears: 2, providerOrgId: 'https://nursing.sresakthimayeil.jkkn.ac.in/#organization' },
-  { name: 'General Nursing and Midwifery (GNM)', level: 'Diploma', category: 'Nursing', durationYears: 3, providerOrgId: 'https://nursing.sresakthimayeil.jkkn.ac.in/#organization' },
-  { name: 'Auxiliary Nursing Midwifery (ANM)', level: 'Diploma', category: 'Nursing', durationYears: 2, providerOrgId: 'https://nursing.sresakthimayeil.jkkn.ac.in/#organization' },
 
   // Education (edu.jkkn.ac.in)
   { name: 'Bachelor of Education (B.Ed)', level: 'UG', category: 'Education', durationYears: 2, providerOrgId: 'https://edu.jkkn.ac.in/#organization' },
 
   // Schools (school.jkkn.ac.in + nv.jkkn.ac.in)
   { name: 'Matriculation Curriculum (LKG to Class 12)', level: 'School', category: 'School', durationYears: 14, providerOrgId: 'https://school.jkkn.ac.in/#organization' },
-  { name: 'CBSE Curriculum (Pre-KG to Class 12)', level: 'School', category: 'School', durationYears: 14, providerOrgId: 'https://nv.jkkn.ac.in/#organization' },
+  { name: 'CBSE Curriculum (Pre-KG to Grade 10)', level: 'School', category: 'School', durationYears: 14, providerOrgId: 'https://nv.jkkn.ac.in/#organization' },
 ]
 
 // ─── Accreditation bodies with official verification URLs ───────────────────
@@ -145,82 +142,47 @@ export const ACCREDITATION_BODIES: AccreditationBody[] = [
   { short: 'TNTEU', name: 'Tamil Nadu Teachers Education University', url: 'https://tnteu.ac.in/' },
 ]
 
-// ─── Upcoming events (admissions 2026-27) ───────────────────────────────────
-export const EVENTS: EventEntry[] = [
-  {
-    name: 'JKKN Admissions 2026-27 — Application Window Opens',
-    description: 'Online admissions open across all 9 institutions for the 2026-27 academic year. Submit applications via the unified JKKN Admissions portal.',
-    startDate: '2026-03-01',
-    endDate: '2026-08-30',
-    applyUrl: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
-  },
-  {
-    name: 'JKKN Open House 2026',
-    description: 'Campus tour, senior learners meet, infrastructure walkthrough, and program-wise counseling for prospective learners and parents.',
-    startDate: '2026-05-25',
-    endDate: '2026-05-25',
-    applyUrl: 'https://www.jkkn.ac.in/contact',
-  },
-  {
-    name: 'TNEA Counseling 2026 (Engineering)',
-    description: 'Tamil Nadu Engineering Admissions counseling for B.E./B.Tech programs at JKKN College of Engineering and Technology (Autonomous).',
-    startDate: '2026-06-15',
-    endDate: '2026-07-31',
-    applyUrl: 'https://engg.jkkn.ac.in/admissions',
-  },
-  {
-    name: 'JKKN Scholarship Application Deadline',
-    description: 'Last date to apply for JKKN Trust Merit Scholarships, First-Graduate aid, and government PMSS schemes for incoming 2026-27 batch.',
-    startDate: '2026-08-15',
-    endDate: '2026-08-15',
-    applyUrl: 'https://www.jkkn.ac.in/scholarships',
-  },
-]
+// ─── Upcoming events ────────────────────────────────────────────────────────
+// EMPTIED 2026-09-12. The four entries that lived here had ALL expired (latest
+// endDate 2026-08-30) while the page still said "Admissions 2026-27 open now",
+// and none of them was rendered anywhere on the page — they existed only in
+// JSON-LD. Expired, invisible Event markup is a Google structured-data policy
+// problem, not just a stale date.
+//
+// Only add an event back when BOTH are true:
+//   1. it is visible on the page, and
+//   2. its endDate is in the future.
+export const EVENTS: EventEntry[] = []
 
-// ─── Representative testimonials (REPLACE with real reviews from GBP MCP) ───
-// NOTE: To remain Google policy-compliant for AggregateRating, the visible
-// review section MUST reflect actual reviews. Wire this to live data via
-// mcp__google-business-profile__list_reviews before promoting to production.
-export const REVIEWS: ReviewEntry[] = [
-  {
-    authorName: 'Priya R.',
-    authorContext: 'Alumna · B.E. CSE 2023',
-    rating: 5,
-    date: '2026-02-12',
-    body: 'JKKN gave me strong technical foundation plus placement support — got selected at TCS during campus drive. Senior Learners mentoring and learning lab infrastructure were excellent throughout my four years.',
-  },
-  {
-    authorName: 'Dr. Karthik M.',
-    authorContext: 'Alumnus · BDS 2018',
-    rating: 5,
-    date: '2026-01-28',
-    body: 'The 350-bed dental hospital gave me unmatched clinical exposure — I handled real patient cases from second year onwards. Today I run my own dental practice in Coimbatore.',
-  },
-  {
-    authorName: 'Lakshmi V.',
-    authorContext: 'Parent · Daughter at Matric School',
-    rating: 4,
-    date: '2026-03-05',
-    body: 'My daughter has been at JKKN Matric School for six years. Senior Learners are caring, transport is reliable, and the integrated campus means everything she needs is in one place.',
-  },
-  {
-    authorName: 'Mohamed Arif',
-    authorContext: 'Alumnus · B.Pharm 2022',
-    rating: 5,
-    date: '2025-12-18',
-    body: 'PCI approved pharmacy program with NAAC A grade — got into a good M.Pharm program after JKKN. The research exposure and senior learners support genuinely prepared me for higher studies.',
-  },
-]
+// ─── Testimonials ───────────────────────────────────────────────────────────
+// EMPTIED 2026-09-12. The four entries here were placeholders that shipped to
+// production — the original comment in this file said "REPLACE with real
+// reviews from GBP MCP" and "wire this to live data ... before promoting to
+// production", and that never happened. They were rendered BOTH as visible
+// cards and as Review JSON-LD, so the site was publishing self-written reviews
+// as review markup about itself.
+//
+// Only repopulate from a real source (Google Business Profile), and keep the
+// visible cards and the JSON-LD in sync.
+export const REVIEWS: ReviewEntry[] = []
 
-// ─── Aggregate rating (conservative placeholder — replace with real GBP data) ──
-// IMPORTANT: When AggregateRating is in JSON-LD, the values MUST reflect
-// reviews actually displayed on the page (Google structured data policy).
-// Current values are conservative defaults; wire to GBP MCP for real numbers.
+
+// ─── Aggregate rating — MEASURED, no longer a placeholder ───────────────────
+// Measured 2026-09-12 from Google local results (tbm=lcl, searched as if at
+// Komarapalayam) across the Google Business Profiles of JKKN's seven colleges:
+//   Dental 4.5 (429) · Arts & Science 4.8 (517) · Pharmacy 4.3 (238)
+//   Engineering 4.6 (276) · Nursing 4.8 (208) · Allied Health 4.6 (127)
+//   Education 4.2 (24)
+// Review-weighted mean = 8,388.5 / 1,819 = 4.61 -> 4.6
+// The previous reviewCount of 1247 was a placeholder and matched no real source.
 export const AGGREGATE_RATING = {
   ratingValue: '4.6',
-  reviewCount: '1247',
+  reviewCount: '1819',
   bestRating: '5',
   worstRating: '1',
+  /** Shown next to the rating so the number is never unsourced on the page. */
+  sourceLabel: 'Google reviews across JKKN\u2019s seven colleges',
+  measuredOn: '2026-09-12',
 }
 
 // ─── Leadership (founder verified; current chairman placeholder) ────────────

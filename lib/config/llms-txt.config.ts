@@ -23,9 +23,9 @@ const LAST_REVIEWED = '2026-09-04'
 function getEngineeringLlmsTxt(siteUrl: string): string {
   return `# JKKN College of Engineering and Technology
 
-> AICTE-approved autonomous engineering college in Komarapalayam, Tamil Nadu, affiliated to Anna University, Chennai, with autonomous status conferred by UGC, New Delhi and Anna University, Chennai. Established 2008. Offers B.E., B.Tech, M.E., and MBA programs across 5 departments. NAAC accredited. 55-acre residential campus.
+> AICTE-approved autonomous engineering college in Komarapalayam, Tamil Nadu, affiliated to Anna University, Chennai, with autonomous status conferred by UGC, New Delhi and Anna University, Chennai. Established 2008. Offers B.E., B.Tech, M.E., and MBA programs across 5 departments. NAAC accredited. 70-acre residential campus.
 
-JKKN College of Engineering and Technology (JKKN CET) is part of the J.K.K. Rangammal Charitable Trust, a group operating since 1952. The college is located in Komarapalayam, Namakkal District, Tamil Nadu, on NH-544 (Salem–Coimbatore National Highway), approximately 15 km from Erode city.
+JKKN College of Engineering and Technology (JKKN CET) is part of the J.K.K. Rangammal Charitable Trust, a group operating since 1952. The college is located in Komarapalayam, Namakkal District, Tamil Nadu, on NH-544 (Salem–Coimbatore National Highway), approximately 18 km by road from Erode city.
 
 Contact: +91 93458 55001 | engg@jkkn.ac.in | ${siteUrl}
 
@@ -60,11 +60,11 @@ Total sanctioned intake 372 — 300 undergraduate across 5 B.E./B.Tech branches,
 - Affiliated: Anna University, Chennai (annauniv.edu)
 - Approved: All India Council for Technical Education (AICTE)
 - Accredited: National Assessment and Accreditation Council (NAAC)
-- Scheme: Unnat Bharat Abhiyan, Ministry of Human Resource Development
+- Scheme: Unnat Bharat Abhiyan, Ministry of Education
 
 ## Facilities
 
-- [Campus & Infrastructure](${siteUrl}/about): 55-acre residential campus. Smart classrooms, advanced computing lab, robotics lab, innovation centre, library (50,000+ books), Wi-Fi, auditorium, sports complex.
+- [Campus & Infrastructure](${siteUrl}/about): 70-acre residential campus. Smart classrooms, advanced computing lab, robotics lab, innovation centre, library (50,000+ books), Wi-Fi, auditorium, sports complex.
 - Separate hostels for boys and girls with 24/7 security.
 - Bus transport covering Erode, Salem, Namakkal, Tiruchengode routes.
 
@@ -92,7 +92,7 @@ function getMainLlmsTxt(siteUrl: string): string {
 
 > Premier educational group in Komarapalayam, Tamil Nadu, comprising 7 colleges and 2 schools. Established 1952 by the J.K.K. Rangammal Charitable Trust. Colleges are individually accredited and approved by NAAC, AICTE, DCI, PCI, INC and NCTE. 74+ years of educational excellence.
 
-JKKN Institutions offers 50+ career-focused programs across Dental, Pharmacy, Engineering, Nursing, Allied Health Sciences, Arts & Science, and Education. All colleges are on one integrated 55-acre residential campus in Komarapalayam, Namakkal District, Tamil Nadu — 15 km from Erode city on NH-544.
+JKKN Institutions offers 50+ career-focused programs across Dental, Pharmacy, Engineering, Nursing, Allied Health Sciences, Arts & Science, and Education. All colleges are on one integrated 70-acre residential campus in Komarapalayam, Namakkal District, Tamil Nadu — 18 km by road from Erode city on NH-544.
 
 Contact: +91 93458 55001 | info@jkkn.ac.in | ${siteUrl}
 
@@ -114,7 +114,7 @@ Contact: +91 93458 55001 | info@jkkn.ac.in | ${siteUrl}
 
 ## Admissions
 
-- [Admissions 2026-27](${siteUrl}/admissions): Programs across all 7 colleges. NEET required for Dental/Nursing/Allied Health; TNEA counselling for Engineering; merit-based for Arts & Science/Pharmacy.
+- [Admissions 2026-27](${siteUrl}/admissions): Programs across all 7 colleges. NEET required for Dental (BDS/MDS); TNEA counselling for Engineering; TNTEU counselling for B.Ed; merit-based for Arts & Science, Pharmacy, Nursing and Allied Health Sciences.
 - Online application: jkkn.ai/apply/jkkn-admission-2026.
 - Contact admissions: +91 93458 55001.
 
@@ -126,7 +126,7 @@ Contact: +91 93458 55001 | info@jkkn.ac.in | ${siteUrl}
 - Pharmacy Council of India Approval
 - Indian Nursing Council Recognition
 - NCTE Approval (Education)
-- Unnat Bharat Abhiyan — Ministry of HRD
+- Unnat Bharat Abhiyan — Ministry of Education
 
 ## About
 

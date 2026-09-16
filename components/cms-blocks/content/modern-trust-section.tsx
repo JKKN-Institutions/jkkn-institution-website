@@ -55,7 +55,7 @@ export function ModernTrustSection({
     founderName = 'SHRI. J.K.K. NATARAJAH',
     founderTitle = 'Founder of J.K.K. Rangammal Charitable Trust',
     founderImage = '/images/founder.webp',
-    founderStory = "In the sixties, female children in Kumarapalayam had to walk 2.5 km for their schooling to the nearby town of Bhavani. Realizing the need for women's education, a visionary philanthropist of the zone, Shri J.K.K. Natarajah, initiated a girls' school in the town in 1965.",
+    founderStory = "In the sixties, female children in Kumarapalayam had to walk 2.5 km for their schooling to the nearby town of Bhavani. Realizing the need for women's education, a visionary philanthropist of the zone, Shri J.K.K. Natarajah, initiated a girls' school in the town in 1952.",
     storyTitle = 'A Legacy of Service',
     storyContent = "The J.K.K. Rangammal Charitable Trust was established in 1969 with the motto of providing literacy and women's empowerment. Walking in the footsteps of her father, Smt. N. Sendamaraai, Managing Trustee, expanded the service by providing multi-disciplinary education to both genders. Now, under the umbrella, there are nine institutions, including Dental, Pharmacy, Nursing, Education, Engineering, Arts, and Science colleges.",
     stats = [

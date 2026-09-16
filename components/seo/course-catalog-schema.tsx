@@ -111,7 +111,7 @@ export function CourseCatalogSchema() {
         "@type": "EducationalOccupationalProgram",
         "@id": `${config.site.url}/#dental-programs`,
         "name": "Dental Programs at JKKN Dental College",
-        "description": "Comprehensive dental education programs including BDS and MDS with 7 specializations at JKKN Dental College & Hospital, Komarapalayam. DCI recognized, affiliated to Tamil Nadu Dr. M.G.R. Medical University with 92%+ placement rate.",
+        "description": "Comprehensive dental education programs including BDS and MDS with 5 specializations at JKKN Dental College & Hospital, Komarapalayam. DCI recognized, affiliated to Tamil Nadu Dr. M.G.R. Medical University with 92%+ placement rate.",
         "url": `${config.site.url}/courses-offered/dental-courses`,
         "provider": {
           "@type": "CollegeOrUniversity",
@@ -220,13 +220,6 @@ export function CourseCatalogSchema() {
                 "name": "India"
               }
             },
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.6",
-              "bestRating": "5",
-              "worstRating": "1",
-              "ratingCount": "450"
-            },
             "audience": {
               "@type": "EducationalAudience",
               "educationalRole": "student",
@@ -237,7 +230,7 @@ export function CourseCatalogSchema() {
             "@type": "Course",
             "@id": `${config.site.url}/#course-mds`,
             "name": "MDS - Master of Dental Surgery",
-            "description": "3-year postgraduate dental specialization programs at JKKN Dental College. 7 specializations available: Orthodontics, Periodontics, Prosthodontics, Oral Surgery, Conservative Dentistry, Oral Pathology, and Pedodontics. Best MDS college near Erode, Salem.",
+            "description": "3-year postgraduate dental specialization programs at JKKN Dental College. 5 DCI-approved specializations available: Orthodontics, Prosthodontics, Periodontics, Endodontics, and Oral Medicine. Best MDS college near Erode, Salem.",
             "url": `${config.site.url}/courses-offered/dental-courses/mds`,
             "courseCode": "MDS",
             "educationalCredentialAwarded": "Master of Dental Surgery (MDS)",

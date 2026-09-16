@@ -170,7 +170,7 @@ export function CollegeNews({
   }, [fetchDynamicData])
 
   const defaultNews: NewsItem[] = [
-    { title: 'NAAC A+ Accreditation Achieved', image: '', date: 'Jan 15, 2025', link: '/news/naac', category: 'Achievement' },
+    { title: 'NAAC A Accreditation Achieved', image: '', date: 'Jan 15, 2025', link: '/news/naac', category: 'Achievement' },
     { title: 'Learners Win National Level Hackathon', image: '', date: 'Jan 10, 2025', link: '/news/hackathon', category: 'Events' },
     { title: 'New Research Learning Lab Inaugurated', image: '', date: 'Jan 5, 2025', link: '/news/research-lab', category: 'Infrastructure' },
   ]
