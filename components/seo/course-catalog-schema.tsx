@@ -577,41 +577,6 @@ export function CourseCatalogSchema() {
           },
           {
             "@type": "Course",
-            "@id": `${config.site.url}/#course-btech-aids`,
-            "name": "B.Tech Artificial Intelligence and Data Science",
-            "description": "4-year B.Tech AI&DS program at JKKN Engineering College. Industry-focused curriculum covering Machine Learning, Deep Learning, Big Data Analytics, and Natural Language Processing.",
-            "url": `${config.site.url}/courses-offered/engineering-courses/btech-aids`,
-            "courseCode": "BTECH-AIDS",
-            "educationalCredentialAwarded": "Bachelor of Technology in AI and Data Science",
-            "timeRequired": "P4Y",
-            "teaches": [
-              "Machine Learning",
-              "Deep Learning",
-              "Big Data Analytics",
-              "Natural Language Processing",
-              "Computer Vision",
-              "Data Mining"
-            ],
-            "hasCourseInstance": {
-              "@type": "CourseInstance",
-              "name": `B.Tech AI&DS ${config.academicYear} Batch`,
-              "courseMode": "full-time",
-              "startDate": config.courseStartDates.engineering,
-              "location": {
-                "@type": "Place",
-                "name": "JKKN College of Engineering and Technology",
-                "address": {
-                  "@type": "PostalAddress",
-                  "addressLocality": config.address.addressLocality,
-                  "addressRegion": config.address.addressRegion,
-                  "postalCode": config.address.postalCode,
-                  "addressCountry": config.address.addressCountry
-                }
-              }
-            }
-          },
-          {
-            "@type": "Course",
             "@id": `${config.site.url}/#course-mba`,
             "name": "MBA - Master of Business Administration",
             "description": "2-year MBA program at JKKN College of Engineering with specializations in Marketing, Finance, HR, and Operations. AICTE approved, best MBA college near Erode.",

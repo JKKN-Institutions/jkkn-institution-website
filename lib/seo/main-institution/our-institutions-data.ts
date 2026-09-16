@@ -71,9 +71,7 @@ export const PROGRAMS: ProgramEntry[] = [
   { name: 'B.E. Electronics and Communication Engineering', level: 'UG', category: 'Engineering', durationYears: 4, providerOrgId: 'https://engg.jkkn.ac.in/#organization' },
   { name: 'B.E. Electrical and Electronics Engineering', level: 'UG', category: 'Engineering', durationYears: 4, providerOrgId: 'https://engg.jkkn.ac.in/#organization' },
   { name: 'B.E. Mechanical Engineering', level: 'UG', category: 'Engineering', durationYears: 4, providerOrgId: 'https://engg.jkkn.ac.in/#organization' },
-  { name: 'B.E. Civil Engineering', level: 'UG', category: 'Engineering', durationYears: 4, providerOrgId: 'https://engg.jkkn.ac.in/#organization' },
   { name: 'B.Tech Information Technology', level: 'UG', category: 'Engineering', durationYears: 4, providerOrgId: 'https://engg.jkkn.ac.in/#organization' },
-  { name: 'B.Tech Artificial Intelligence and Machine Learning', level: 'UG', category: 'Engineering', durationYears: 4, providerOrgId: 'https://engg.jkkn.ac.in/#organization' },
   { name: 'M.E. Computer Science and Engineering', level: 'PG', category: 'Engineering', durationYears: 2, providerOrgId: 'https://engg.jkkn.ac.in/#organization' },
   { name: 'Master of Business Administration (MBA)', level: 'PG', category: 'Management', durationYears: 2, providerOrgId: 'https://engg.jkkn.ac.in/#organization' },
 
