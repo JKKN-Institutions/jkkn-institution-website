@@ -2,6 +2,7 @@ import { BEECECoursePage } from '@/components/cms-blocks/content/be-ece-course-p
 import { BE_ECE_SAMPLE_DATA } from '@/lib/cms/templates/engineering/be-ece-data'
 import { BEECECourseSchema } from '@/lib/seo/course-schema-generator'
 import type { Metadata } from 'next'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 /**
  * B.E. Electronics & Communication Engineering Course Page
@@ -64,6 +65,7 @@ export const metadata: Metadata = {
 export default function ECECoursePage() {
   return (
     <>
+      <BreadcrumbSchema path="/courses-offered/ug/be-ece" />
       <BEECECourseSchema />
       <main>
         <BEECECoursePage {...BE_ECE_SAMPLE_DATA} />

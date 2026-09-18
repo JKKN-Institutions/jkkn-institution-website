@@ -2,6 +2,7 @@ import { BECSECoursePage } from '@/components/cms-blocks/content/be-cse-course-p
 import { BE_CSE_SAMPLE_DATA } from '@/lib/cms/templates/engineering/be-cse-data'
 import { BECSECourseSchema } from '@/lib/seo/course-schema-generator'
 import type { Metadata } from 'next'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 /**
  * B.E Computer Science & Engineering Course Page
@@ -67,6 +68,7 @@ export const metadata: Metadata = {
 export default function CSECoursePage() {
   return (
     <>
+      <BreadcrumbSchema path="/courses-offered/ug/be-cse" />
       <BECSECourseSchema />
       <main>
         <BECSECoursePage {...BE_CSE_SAMPLE_DATA} />

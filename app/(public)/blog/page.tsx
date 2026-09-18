@@ -10,13 +10,11 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Calendar, Clock, User, ChevronLeft, ChevronRight, Search, Tag, Folder } from 'lucide-react'
-import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from '@/lib/seo'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 // Generate metadata with breadcrumb schema
 export async function generateMetadata(): Promise<Metadata> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://jkkn.ac.in'
-  const breadcrumbs = getBreadcrumbsForPath('/blog')
-  const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbs)
 
   return {
     title: 'Blog | JKKN Institution',
@@ -30,9 +28,10 @@ export async function generateMetadata(): Promise<Metadata> {
       type: 'website',
       url: `${siteUrl}/blog`,
     },
-    other: {
-      'script:ld+json:breadcrumb': serializeSchema(breadcrumbSchema),
-    },
+    // NOTE: the BreadcrumbList used to be emitted here via metadata.other, which Next.js
+    // renders as <meta name="script:ld+json:breadcrumb" content="...">, not a
+    // <script type="application/ld+json">. No schema parser ever saw it, and it carried the
+    // parent origin. It is now rendered as a real script tag by <BreadcrumbSchema /> below.
   }
 }
 
@@ -374,6 +373,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
   return (
     <div className="min-h-screen bg-cream">
+      <BreadcrumbSchema path="/blog" />
       {/* Hero Section */}
       <section className="relative py-16 md:py-24 bg-gradient-to-br from-primary/5 to-primary/10">
         <div className="container mx-auto px-4">

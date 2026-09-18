@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 export const metadata: Metadata = {
   title: 'NIRF | IQAC | JKKN',
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
 export default function NIRFPage() {
   return (
     <div className="container mx-auto px-4 py-12">
+      <BreadcrumbSchema path="/iqac/nirf" />
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
           NIRF - National Institutional Ranking Framework

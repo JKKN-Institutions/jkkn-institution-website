@@ -6,6 +6,7 @@ import { PageRenderer } from '@/components/cms-blocks/page-renderer'
 import { PrivacyPolicyContent } from '@/components/public/privacy-policy-content'
 import { getCurrentInstitution } from '@/lib/config/multi-tenant'
 import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPageBySlug('privacy-policy')
@@ -102,6 +103,7 @@ export default async function PrivacyPolicyPage() {
 
     return (
       <>
+        <BreadcrumbSchema path="/privacy-policy" />
         {privacySchema}
         <PageRenderer blocks={blocksWithContactInfo} />
       </>
@@ -111,6 +113,7 @@ export default async function PrivacyPolicyPage() {
   // Fallback to static component with dynamic contact info
   return (
     <>
+      <BreadcrumbSchema path="/privacy-policy" />
       {privacySchema}
       <PrivacyPolicyContent
         contactEmail={primaryEmail}

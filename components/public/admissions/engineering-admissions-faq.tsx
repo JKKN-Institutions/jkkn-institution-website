@@ -16,8 +16,12 @@ interface EngineeringAdmissionsFAQProps {
 export function EngineeringAdmissionsFAQ({ faqs }: EngineeringAdmissionsFAQProps) {
   const [activeAudience, setActiveAudience] = useState<'student' | 'parent'>('student')
 
-  const filtered = faqs.filter((f) => f.audience === activeAudience)
-
+  // Every FAQ is rendered, for both audiences. The inactive audience is hidden with the
+  // `hidden` attribute instead of being filtered out of the tree, and answers are
+  // force-mounted, so all question AND answer text is present in the server HTML.
+  // Previously `.filter()` dropped the parent-audience questions and the accordion
+  // unmounted every closed answer, so the FAQPage JSON-LD asserted 12 answers that no
+  // crawler could find on the page. Googlebot renders JS but never clicks or toggles.
   return (
     <div>
       {/* Audience Toggle */}
@@ -41,16 +45,20 @@ export function EngineeringAdmissionsFAQ({ faqs }: EngineeringAdmissionsFAQProps
 
       {/* FAQ Accordion */}
       <Accordion type="single" collapsible className="space-y-3 max-w-3xl mx-auto">
-        {filtered.map((faq, index) => (
+        {faqs.map((faq, index) => (
           <AccordionItem
-            key={`${activeAudience}-${index}`}
-            value={`faq-${index}`}
+            key={`${faq.audience}-${index}`}
+            value={`faq-${faq.audience}-${index}`}
+            hidden={faq.audience !== activeAudience}
             className="bg-white border border-border rounded-xl px-6 overflow-hidden"
           >
             <AccordionTrigger className="text-left hover:no-underline py-5 text-sm font-semibold text-foreground hover:text-[#0b6d41] [&[data-state=open]]:text-[#0b6d41]">
               {faq.question}
             </AccordionTrigger>
-            <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-5">
+            <AccordionContent
+              forceMount
+              className="text-sm text-muted-foreground leading-relaxed pb-5 data-[state=closed]:hidden"
+            >
               {faq.answer}
             </AccordionContent>
           </AccordionItem>

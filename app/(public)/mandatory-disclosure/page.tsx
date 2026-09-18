@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { LocalPdfLinkList } from '@/components/cms-blocks/shared/local-pdf-link-list'
 import { LOCAL_MANDATORY_DISCLOSURE_PDFS } from '@/lib/data/local-mandatory-disclosure-pdfs'
 import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 export const metadata: Metadata = {
   title: 'Mandatory Disclosure | JKKN College of Engineering',
@@ -25,6 +26,7 @@ export default function MandatoryDisclosurePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-16 px-4">
+      <BreadcrumbSchema path="/mandatory-disclosure" />
       {/* JSON-LD (main only): CollectionPage + BreadcrumbList + ItemList */}
       <MainInstitutionPageSchema
         webpage={{

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { OnlineFormSection } from '@/components/cms-blocks/shared/online-form-section'
 import { getCurrentInstitution } from '@/lib/config/multi-tenant'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 /**
  * Online Grievance & Redressal — first-party page surfacing the institution's
@@ -39,6 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function OnlineGrievanceRedressalPage() {
   return (
     <div className="min-h-screen bg-background px-4 py-16">
+      <BreadcrumbSchema path="/online-grievance-and-redressal" />
       <div className="mx-auto max-w-7xl">
         {/* Online Grievance and Redressal — card with View / Download buttons */}
         <OnlineFormSection

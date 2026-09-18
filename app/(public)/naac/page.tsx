@@ -3,6 +3,7 @@ import { getInstitutionId } from '@/lib/config/multi-tenant'
 import type { Metadata } from 'next'
 import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
 import { ACCREDITATION_FAQS } from '@/lib/seo/main-institution/page-content'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 /**
  * NAAC Accreditation Page Route
@@ -61,6 +62,7 @@ export default async function NAACPageRoute() {
 
   return (
     <>
+      <BreadcrumbSchema path="/naac" />
       {/* JSON-LD (main only): WebPage + BreadcrumbList + FAQ */}
       <MainInstitutionPageSchema
         webpage={{

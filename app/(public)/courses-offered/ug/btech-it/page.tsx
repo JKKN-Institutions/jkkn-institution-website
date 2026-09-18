@@ -2,6 +2,7 @@ import { BEITCoursePage } from '@/components/cms-blocks/content/be-it-course-pag
 import { BE_IT_SAMPLE_DATA } from '@/lib/cms/templates/engineering/be-it-data'
 import { BTechITCourseSchema } from '@/lib/seo/course-schema-generator'
 import type { Metadata } from 'next'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 /**
  * B.Tech Information Technology Course Page
@@ -62,6 +63,7 @@ export const metadata: Metadata = {
 export default function BTechITCoursePage() {
   return (
     <>
+      <BreadcrumbSchema path="/courses-offered/ug/btech-it" />
       <BTechITCourseSchema />
       <main>
         <BEITCoursePage {...BE_IT_SAMPLE_DATA} />

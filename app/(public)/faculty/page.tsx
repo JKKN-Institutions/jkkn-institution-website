@@ -5,6 +5,7 @@ import { FacultyListingClient } from '@/components/public/faculty/faculty-listin
 import { Skeleton } from '@/components/ui/skeleton'
 import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
 import { FACULTY_FAQS } from '@/lib/seo/main-institution/page-content'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 export const metadata: Metadata = {
   title: 'Our Senior Learners | JKKN College of Engineering & Technology',
@@ -38,6 +39,7 @@ async function FacultyContent() {
 export default function FacultyPage() {
   return (
     <div className="min-h-screen" style={{ background: '#fbfbee' }}>
+      <BreadcrumbSchema path="/faculty" />
       {/* JSON-LD (main only): CollectionPage + BreadcrumbList + FAQ */}
       <MainInstitutionPageSchema
         webpage={{

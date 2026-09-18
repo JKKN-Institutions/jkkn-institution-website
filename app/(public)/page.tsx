@@ -77,7 +77,8 @@ export async function generateMetadata(): Promise<Metadata> {
       images: seo?.twitter_image ? [seo.twitter_image] : (seo?.og_image ? [seo.og_image] : ['/og-image.png']),
     },
     alternates: {
-      ...(seo?.canonical_url ? { canonical: seo.canonical_url } : {}),
+      // Self-canonical fallback: the root layout no longer supplies one.
+      ...(seo?.canonical_url ? { canonical: seo.canonical_url } : { canonical: '/' }),
       languages: {
         'en-IN': '/',
         'x-default': '/',

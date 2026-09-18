@@ -1,6 +1,7 @@
 import { SHCoursePage } from '@/components/cms-blocks/content/sh-course-page'
 import { SH_SAMPLE_DATA } from '@/lib/cms/templates/engineering/sh-data'
 import type { Metadata } from 'next'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 /**
  * Science and Humanities Department Page
@@ -54,6 +55,7 @@ export const metadata: Metadata = {
 export default function ScienceHumanitiesPage() {
   return (
     <main>
+      <BreadcrumbSchema path="/courses-offered/ug/sh" />
       <SHCoursePage {...SH_SAMPLE_DATA} />
     </main>
   )

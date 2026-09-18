@@ -346,10 +346,6 @@ export async function generateWebsiteSchema() {
     '@type': 'WebSite',
     name: seo.siteName,
     url: seo.canonicalBase,
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${seo.canonicalBase}/search?q={search_term_string}`,
-      'query-input': 'required name=search_term_string',
-    },
+    // SearchAction removed 2026-09-18: /search is 404 on every JKKN tenant checked.
   }
 }

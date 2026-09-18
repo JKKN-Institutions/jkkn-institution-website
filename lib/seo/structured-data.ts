@@ -212,16 +212,10 @@ export function generateOrganizationSchema(): Record<string, unknown> {
       'description': "Visionary philanthropist who established the J.K.K. Rangammal Charitable Trust with a strong commitment to advancing girls' education",
     }
 
-    // Search and Apply actions (main only)
+    // Apply action (main only).
+    // SearchAction removed 2026-09-18: /search returns 404 on engg.jkkn.ac.in AND on
+    // www.jkkn.ac.in, so the sitelinks-searchbox claim pointed at a page that does not exist.
     schema.potentialAction = [
-      {
-        '@type': 'SearchAction',
-        'target': {
-          '@type': 'EntryPoint',
-          'urlTemplate': `${SITE_URL}/search?q={search_term_string}`,
-        },
-        'query-input': 'required name=search_term_string',
-      },
       {
         '@type': 'ApplyAction',
         'name': 'Apply for Admission',

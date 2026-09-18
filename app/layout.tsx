@@ -81,8 +81,15 @@ export async function generateMetadata(): Promise<Metadata> {
     },
 
     // hreflang alternates — signals English (India) as primary language
+    //
+    // NO `canonical` here. A page's `alternates` REPLACES the layout's, so any route that
+    // did not set its own used to inherit `canonical: siteUrl`, telling Google it was a
+    // duplicate of the HOMEPAGE. Measured 2026-09-18 on engg.jkkn.ac.in: 19 live pages
+    // shipped <link rel="canonical" href="https://engg.jkkn.ac.in/">, including all 8
+    // course pages, /faculty and every IQAC/NIRF page. The homepage sets its own
+    // self-canonical in app/(public)/page.tsx; every other route either sets one or
+    // ships none, which is strictly better than claiming to be the homepage.
     alternates: {
-      canonical: siteUrl,
       languages: {
         'en-IN': siteUrl,
         'x-default': siteUrl,

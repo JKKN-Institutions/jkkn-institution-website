@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
 import { ACCREDITATION_FAQS } from '@/lib/seo/main-institution/page-content'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 export const metadata: Metadata = {
   title: 'IQAC | JKKN',
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 export default function IQACPage() {
   return (
     <div className="container mx-auto px-4 py-12">
+      <BreadcrumbSchema path="/iqac" />
       {/* JSON-LD (main only): WebPage + BreadcrumbList + FAQ */}
       <MainInstitutionPageSchema
         webpage={{

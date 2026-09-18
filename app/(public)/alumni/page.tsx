@@ -3,6 +3,7 @@ import { LocalPdfLinkList } from '@/components/cms-blocks/shared/local-pdf-link-
 import { LOCAL_ALUMNI_PDFS } from '@/lib/data/local-alumni-pdfs'
 import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
 import { ALUMNI_FAQS } from '@/lib/seo/main-institution/page-content'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 export const metadata: Metadata = {
   title: 'Alumni Resources | JKKN College of Engineering',
@@ -26,6 +27,7 @@ export default function AlumniPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white py-16 px-4">
+      <BreadcrumbSchema path="/alumni" />
       {/* JSON-LD: @graph — CollectionPage + BreadcrumbList + FAQ + ItemList (main only) */}
       <MainInstitutionPageSchema
         webpage={{

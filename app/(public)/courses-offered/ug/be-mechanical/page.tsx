@@ -2,6 +2,7 @@ import { BEMechanicalCoursePage } from '@/components/cms-blocks/content/be-mecha
 import { beMechanicalCourseData } from '@/lib/cms/templates/engineering/be-mechanical-data'
 import { BEMechanicalCourseSchema } from '@/lib/seo/course-schema-generator'
 import type { Metadata } from 'next'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 /**
  * B.E. Mechanical Engineering Course Page
@@ -65,6 +66,7 @@ export const metadata: Metadata = {
 export default function MechanicalCoursePage() {
   return (
     <>
+      <BreadcrumbSchema path="/courses-offered/ug/be-mechanical" />
       <BEMechanicalCourseSchema />
       <main>
         <BEMechanicalCoursePage {...beMechanicalCourseData} />

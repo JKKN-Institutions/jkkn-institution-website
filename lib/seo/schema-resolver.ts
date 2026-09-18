@@ -37,6 +37,9 @@ export type PageSchemaSet = {
   localBusiness: boolean
   /** Include Article schema (news, success stories, chairman message) */
   article: boolean
+  /** Include BreadcrumbList schema (every page except the homepage and the city pages,
+   *  which emit their own crumb trail from components/city-pages/city-schema.tsx) */
+  breadcrumb: boolean
 }
 
 const EMPTY_SCHEMAS: PageSchemaSet = {
@@ -51,6 +54,7 @@ const EMPTY_SCHEMAS: PageSchemaSet = {
   testimonialsReview: false,
   localBusiness: false,
   article: false,
+  breadcrumb: false,
 }
 
 /**
@@ -81,7 +85,7 @@ const LOCATION_SLUGS = new Set([
  * @param slug - The page slug (empty string for homepage)
  * @param isHomepage - Whether this is the homepage
  */
-export function resolvePageSchemas(slug: string, isHomepage: boolean = false): PageSchemaSet {
+function resolvePageSchemasInner(slug: string, isHomepage: boolean = false): PageSchemaSet {
   // Homepage gets the full treatment
   if (isHomepage || slug === '') {
     return {
@@ -212,4 +216,49 @@ export function resolvePageSchemas(slug: string, isHomepage: boolean = false): P
 
   // All other pages: no extra schemas (Organization is already in layout)
   return EMPTY_SCHEMAS
+}
+
+/**
+ * Routes on a COLLEGE tenant that carry no visible FAQ block matching the generated
+ * Q&A. Measured on engg.jkkn.ac.in 2026-09-18: these pages emitted FAQPage JSON-LD
+ * asserting 5-9 question/answer pairs that appear nowhere in the rendered DOM.
+ *
+ * Google requires FAQPage content to be visible on the page, and since Aug 2023 FAQ
+ * rich results are limited to authoritative government and health sites anyway - so a
+ * college FAQPage earns no rich result while still carrying the policy risk. The
+ * homepage is included because its visible FAQ (CMS-managed) is a DIFFERENT set of
+ * questions from the generated schema.
+ *
+ * The parent tenant is untouched: it renders its own FAQ sections on these routes.
+ */
+const NO_VISIBLE_FAQ_ROUTES = new Set([
+  '',
+  'about',
+  'placements',
+  'fee-structure',
+  'courses-offered',
+  'courses-offered/ug',
+  'courses-offered/pg',
+])
+
+export function resolvePageSchemas(slug: string, isHomepage: boolean = false): PageSchemaSet {
+  const schemas = resolvePageSchemasInner(slug, isHomepage)
+
+  const key = isHomepage ? '' : slug.replace(/^\/+|\/+$/g, '')
+
+  // BreadcrumbList on every page except the homepage (a single "Home" crumb is not a
+  // trail) and the city landing pages, which already emit their own from CitySchema.
+  // Measured 2026-09-18: 76 of 101 live pages carried no BreadcrumbList at all.
+  schemas.breadcrumb = !isHomepage && key !== '' && !LOCATION_SLUGS.has(key)
+  if (!isMainInstitution() && NO_VISIBLE_FAQ_ROUTES.has(key)) {
+    return {
+      ...schemas,
+      faqGeneral: false,
+      faqAdmissions: false,
+      faqPlacements: false,
+      faqAbout: false,
+    }
+  }
+
+  return schemas
 }
