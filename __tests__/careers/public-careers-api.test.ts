@@ -69,9 +69,15 @@ describe('getPublicJob', () => {
     expect(await getPublicJob('x', impl)).toBeNull()
     expect(impl).not.toHaveBeenCalled()
   })
-  it('returns null on 404', async () => {
+  it('returns null on a JSON 404 (job not visible)', async () => {
     const { impl } = fetchStub(404, { error: 'Job not found.' })
     expect(await getPublicJob(JOB_ID, impl)).toBeNull()
+  })
+  it('throws on an HTML 404 (route missing = outage, not a missing job)', async () => {
+    const impl = vi.fn(async () => new Response('<!doctype html>', {
+      status: 404, headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    })) as unknown as typeof fetch
+    await expect(getPublicJob(JOB_ID, impl)).rejects.toThrow(/404/)
   })
   it('returns the parsed job on 200', async () => {
     const { impl } = fetchStub(200, { data: JOB })

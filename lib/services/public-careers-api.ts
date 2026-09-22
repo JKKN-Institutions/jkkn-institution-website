@@ -45,7 +45,11 @@ async function getJson(url: string, fetchImpl: typeof fetch): Promise<{ status: 
     headers: { Accept: 'application/json' },
     next: { revalidate: REVALIDATE_SECONDS },
   })
-  if (res.status === 404) return { status: 404, body: null }
+  // A real "job not found" is a JSON 404 from the route. An HTML 404 means the
+  // route itself is missing (API not deployed) — that is an outage, not a
+  // missing job, and must never render as "no longer accepting applications".
+  const isJson = (res.headers.get('content-type') ?? '').includes('application/json')
+  if (res.status === 404 && isJson) return { status: 404, body: null }
   if (!res.ok) {
     const text = await res.text().catch(() => '')
     throw new Error(`[public-careers] ${res.status} ${res.statusText} — ${text.slice(0, 200)}`)
