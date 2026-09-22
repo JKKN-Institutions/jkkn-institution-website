@@ -5,6 +5,12 @@ const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
 
+// MyJKKN origin for the public careers apply form. The browser POSTs the
+// application straight to MyJKKN (see lib/services/public-careers-apply.ts), so
+// it must be in CSP connect-src or Chrome refuses the request before it is sent.
+// Keep in sync with getMyJkknBaseUrl() in lib/services/public-careers-api.ts.
+const MYJKKN_ORIGIN = new URL(process.env.NEXT_PUBLIC_MYJKKN_URL || 'https://www.jkkn.ai').origin;
+
 const nextConfig: NextConfig = {
   // Cache Components disabled - incompatible with admin layout that accesses cookies/auth
   // The admin layout requires dynamic rendering for all routes
@@ -107,7 +113,8 @@ const nextConfig: NextConfig = {
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https:",
               "media-src 'self' https:",
-              "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://analytics.google.com https://www.facebook.com https://api.stripe.com https://m.stripe.network",
+              // MYJKKN_ORIGIN: careers applications are posted from the browser to MyJKKN
+              `connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://analytics.google.com https://www.facebook.com https://api.stripe.com https://m.stripe.network ${MYJKKN_ORIGIN}`,
               "frame-src 'self' https://www.youtube.com https://www.google.com https://calendar.google.com https://jobs.cvviz.com https://www.facebook.com https://js.stripe.com https://hooks.stripe.com https://m.stripe.network",
               "frame-ancestors 'self'",
               "object-src 'none'",
