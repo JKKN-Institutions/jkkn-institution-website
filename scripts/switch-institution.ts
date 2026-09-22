@@ -15,12 +15,15 @@
  *   .env.{institutionId}.servicekey  — Supabase service role key (one value
  *                                       per file, raw token). Enables full
  *                                       admin operations in local dev.
- *   .env.{institutionId}.jkkn-api    — MyJKKN Staff API sync config (KEY=VALUE
- *                                       lines). Used by engineering's faculty
- *                                       sync pipeline. Expected keys:
+ *   .env.{institutionId}.jkkn-api    — MyJKKN sidecar config (KEY=VALUE lines).
+ *                                       Staff API sync (engineering's faculty
+ *                                       pipeline) and the public careers pages.
+ *                                       Expected keys:
  *                                         JKKN_API_BASE_URL
  *                                         JKKN_API_KEY
  *                                         JKKN_ENGINEERING_INSTITUTION_ID
+ *                                         NEXT_PUBLIC_MYJKKN_URL   (optional, default https://www.jkkn.ai)
+ *                                         MYJKKN_INSTITUTION_ID    (careers: this college's MyJKKN id)
  */
 
 import * as fs from 'fs'
@@ -181,7 +184,7 @@ function switchInstitution(institutionId: string): void {
     console.log(`   Get it from: ${inst.supabaseUrl.replace('.supabase.co', '')}/project/settings/api`)
   }
 
-  // Check for JKKN Staff API sync sidecar (engineering uses this; others may add it later)
+  // Check for the MyJKKN sidecar (staff sync + public careers scoping)
   const syncVars = readEnvSidecar(syncSidecarPath)
   if (syncVars) {
     console.log(
