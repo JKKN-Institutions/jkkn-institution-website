@@ -4,6 +4,7 @@
  * @see https://developers.google.com/search/docs/appearance/structured-data/job-posting
  */
 import type { PublicJob } from '@/lib/schemas/public-careers'
+import { looksLikeHtml, sanitizeJobHtml } from '@/lib/utils/careers-html'
 
 const EMPLOYMENT_TYPE: Record<string, string> = {
   full_time: 'FULL_TIME', part_time: 'PART_TIME', contract: 'CONTRACTOR', internship: 'INTERN', freelance: 'CONTRACTOR',
@@ -15,7 +16,8 @@ const COUNTRY_CODE: Record<string, string> = { india: 'IN' }
 
 export function buildJobPostingJsonLd(job: PublicJob, pageUrl: string): Record<string, unknown> {
   const description = [
-    job.description ?? '',
+    // Google accepts HTML in JobPosting.description; ship the sanitised markup.
+    job.description ? (looksLikeHtml(job.description) ? sanitizeJobHtml(job.description) : job.description) : '',
     job.qualifications.length ? `Qualifications: ${job.qualifications.join(', ')}.` : '',
     job.skills.length ? `Skills: ${job.skills.join(', ')}.` : '',
   ].filter(Boolean).join('\n\n') || job.title
