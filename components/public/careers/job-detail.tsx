@@ -6,6 +6,7 @@ import type { PublicJob } from '@/lib/schemas/public-careers'
 import {
   formatDate, formatExperience, formatJobType, formatLocation, formatRoleCategory, formatSalary,
 } from '@/lib/utils/careers-format'
+import { looksLikeHtml, sanitizeJobHtml } from '@/lib/utils/careers-html'
 
 function Fact({ icon: Icon, label, value }: { icon: typeof MapPin; label: string; value: string | null }) {
   if (!value) return null
@@ -49,7 +50,15 @@ export function JobDetail({ job }: { job: PublicJob }) {
       {job.description && (
         <section>
           <h2 className="text-xl font-semibold text-foreground">About the role</h2>
-          <div className="mt-3 max-w-none whitespace-pre-line text-sm leading-relaxed text-foreground/90">{job.description}</div>
+          {/* MyJKKN's editor emits HTML; older/plain rows are shown with their line breaks. */}
+          {looksLikeHtml(job.description) ? (
+            <div
+              className="prose mt-3 max-w-none text-foreground/90 [&_p]:mb-3 [&_p]:text-sm [&_li]:text-sm [&_a]:text-primary [&_a]:underline"
+              dangerouslySetInnerHTML={{ __html: sanitizeJobHtml(job.description) }}
+            />
+          ) : (
+            <div className="mt-3 max-w-none whitespace-pre-line text-sm leading-relaxed text-foreground/90">{job.description}</div>
+          )}
         </section>
       )}
 
