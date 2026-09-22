@@ -29,7 +29,10 @@ export function JobFilters({ institutions, showInstitutions }: JobFiltersProps) 
 
   const update = useCallback((patch: Record<string, string>) => {
     const next = new URLSearchParams(params.toString())
-    for (const [k, v] of Object.entries(patch)) v ? next.set(k, v) : next.delete(k)
+    for (const [k, v] of Object.entries(patch)) {
+      if (v) next.set(k, v)
+      else next.delete(k)
+    }
     const qs = next.toString()
     startTransition(() => router.replace(`${pathname}${qs ? `?${qs}` : ''}`, { scroll: false }))
   }, [params, pathname, router])

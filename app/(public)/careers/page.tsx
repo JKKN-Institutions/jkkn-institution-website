@@ -36,6 +36,16 @@ function ListSkeleton() {
   )
 }
 
+/** Data-or-null so the JSX below stays outside try/catch (react-hooks/error-boundaries). */
+async function loadJobs(filters: Parameters<typeof listPublicJobs>[0]) {
+  try {
+    return await listPublicJobs(filters)
+  } catch (err) {
+    console.error('[careers] listing failed', err)
+    return null
+  }
+}
+
 async function CareersContent({ searchParams }: CareersPageProps) {
   const sp = await searchParams
   const showInstitutions = isMainInstitution()
@@ -43,19 +53,16 @@ async function CareersContent({ searchParams }: CareersPageProps) {
   // lets the visitor pick one.
   const institutionId = getCareersInstitutionId() ?? (showInstitutions ? sp.institution_id ?? null : null)
 
-  try {
-    const { data, institutions } = await listPublicJobs({ q: sp.q, jobType: sp.job_type, institutionId })
-    const filtered = Boolean(sp.q || sp.job_type || sp.institution_id)
-    return (
-      <>
-        <JobFilters institutions={institutions} showInstitutions={showInstitutions} />
-        <JobList jobs={data} filtered={filtered} />
-      </>
-    )
-  } catch (err) {
-    console.error('[careers] listing failed', err)
-    return <CareersUnavailable />
-  }
+  const result = await loadJobs({ q: sp.q, jobType: sp.job_type, institutionId })
+  if (!result) return <CareersUnavailable />
+
+  const filtered = Boolean(sp.q || sp.job_type || sp.institution_id)
+  return (
+    <>
+      <JobFilters institutions={result.institutions} showInstitutions={showInstitutions} />
+      <JobList jobs={result.data} filtered={filtered} />
+    </>
+  )
 }
 
 export default function CareersPage(props: CareersPageProps) {
