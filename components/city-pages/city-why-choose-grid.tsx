@@ -19,8 +19,8 @@ export default function CityWhyChooseGrid({ cityConfig }: CityWhyChooseGridProps
   const uspCards = [
     {
       icon: ShieldCheck,
-      title: 'AICTE + NBA',
-      desc: 'AICTE-approved engineering college with Anna University affiliation and NBA accreditation',
+      title: 'AICTE + Anna University',
+      desc: 'AICTE-approved engineering college, affiliated to Anna University, Chennai',
     },
     {
       icon: Laptop,
@@ -40,7 +40,7 @@ export default function CityWhyChooseGrid({ cityConfig }: CityWhyChooseGridProps
     {
       icon: Trophy,
       title: 'Quality Standards',
-      desc: 'NBA accredited departments ensuring quality education standards',
+      desc: 'Programmes run to the AICTE approval and Anna University curriculum',
     },
     {
       icon: Bus,

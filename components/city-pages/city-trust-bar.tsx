@@ -2,7 +2,7 @@
 // Server Component — same for all city pages
 
 export default function CityTrustBar() {
-  const badges = ['AICTE', 'NBA', 'NAAC'] as const
+  const badges = ['AICTE', 'NAAC'] as const
 
   return (
     <div className="trust-bar">
