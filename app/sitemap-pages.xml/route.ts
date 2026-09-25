@@ -17,6 +17,13 @@ import {
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import { getSiteUrl } from '@/lib/utils/site-url'
+import { CITY_PAGES_CONFIG } from '@/lib/config/city-pages'
+
+// City slugs belong to the engineering site only. The parent's CMS has rows with some of
+// these slugs, but proxy.ts answers them with 404 on every non-engineering deployment, so
+// the parent sitemap must not list them (it listed /coimbatore, /erode, /namakkal and
+// /salem on 2026-09-25, GL6-342).
+const CITY_SLUGS = new Set(CITY_PAGES_CONFIG.map((city) => city.slug))
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 3600 // 1-hour edge cache; env vars read at request time
@@ -105,6 +112,9 @@ export async function GET() {
           // canonicals (/{city}) by next.config.ts. Sitemap must never advertise
           // redirected URLs — wastes crawl budget and dilutes the short-URL signal.
           if (institutionId === 'engineering' && normalized.startsWith('best-engineering-college-in-')) {
+            return false
+          }
+          if (institutionId !== 'engineering' && CITY_SLUGS.has(normalized)) {
             return false
           }
           return !staticSlugs.has(normalized)

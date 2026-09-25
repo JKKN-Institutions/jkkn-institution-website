@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { createMiddlewareClient } from '@/lib/supabase/middleware'
+import { CITY_PAGES_CONFIG } from '@/lib/config/city-pages'
 
 // ==========================================================================
 // SEO CLEANUP: WordPress Hack Remediation (2026-05)
@@ -194,6 +195,9 @@ const engineeringOnlyPathPrefixes = [
   '/courses/ece',
   '/courses/it',
   '/courses/me-cse',
+  // Engineering city landing pages (/erode, /salem, ...). On the parent they rendered the
+  // engineering city title as a 200 soft-404 with index,follow (measured 2026-09-25, GL6-342).
+  ...CITY_PAGES_CONFIG.map((city) => `/${city.slug}`),
 ]
 
 function isEngineeringOnlyPath(pathname: string): boolean {
