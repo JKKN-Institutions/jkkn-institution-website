@@ -23,10 +23,33 @@ export interface CityCrossLink {
   emoji: string
 }
 
+export interface CityHeroStat {
+  num: string
+  label: string
+}
+
+// An official list of the engineering colleges inside a district, rendered as a table on
+// that city's page. Only for a district the campus is NOT in: it answers the "colleges in
+// <district>" searches honestly and says where JKKNCET sits relative to that list.
+export interface CityDistrictColleges {
+  heading: string
+  intro: string
+  colleges: Array<{ name: string; tneaCode: string }>
+  sourceLabel: string
+  sourceUrl: string
+  readOn: string
+  jkknNote: string
+}
+
 export interface CityPageConfig {
   // Identity
   slug: string
   displayName: string
+
+  // Optional overrides. When absent the shared template text is used.
+  h1?: string
+  heroStatItems?: CityHeroStat[]
+  districtColleges?: CityDistrictColleges
 
   // Distance & Travel
   distanceKm: string
@@ -186,7 +209,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     crossLinks: [
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '5-10 km', emoji: '🏠' },
       { displayName: 'Salem', slug: 'salem', distanceLabel: '40-50 km', emoji: '🚌' },
-      { displayName: 'Erode', slug: 'erode', distanceLabel: '30-40 km', emoji: '🛣️' },
+      { displayName: 'Erode', slug: 'erode', distanceLabel: '18 km', emoji: '🛣️' },
       { displayName: 'Tiruppur', slug: 'tiruppur', distanceLabel: '80-90 km', emoji: '🎯' },
       { displayName: 'Tiruchengode', slug: 'tiruchengode', distanceLabel: '20-25 km', emoji: '🏘️' },
       { displayName: 'Karur', slug: 'karur', distanceLabel: '80-85 km', emoji: '🚗' },
@@ -212,29 +235,42 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
   {
     slug: 'erode',
     displayName: 'Erode',
-    distanceKm: '30-40 km',
-    travelTime: '50-70 minutes',
+    // Distance: the user's Google Maps measurement, campus to Erode bus stand via NH-544,
+    // 18.4 km / 28 min (2026-09-21, the same Natarajapuram campus the dental and pharmacy
+    // Erode pages use). Erode Junction: 21 km, measured the same way for the pharmacy page.
+    distanceKm: '18 km',
+    travelTime: 'About 30 minutes',
+    h1: 'Engineering College near Erode — 18 km on NH-544',
     heroSubheading:
-      'Just 30-40 km from Erode — your gateway to quality engineering education. JKKN College of Engineering and Technology offers top-tier engineering programmes with support from the Training and Placement Cell. AICTE approved.',
+      'JKKN College of Engineering and Technology is in Komarapalayam, Namakkal district, 18 km from Erode bus stand on NH-544. AICTE approved and affiliated to Anna University, with 372 approved seats in 2026-27.',
     heroStats: {
-      placements: '95%',
-      lpaHighest: '10-12',
-      distanceStat: '35km',
+      placements: '23 of 53',
+      lpaHighest: '2.40',
+      distanceStat: '18km',
       distanceLabel: 'from Erode',
-      programmes: '5',
+      programmes: '7',
     },
+    // Every figure here is read from a document hosted on this site:
+    // AICTE EOA 2026-27 (/pdfs/mandatory-disclosure/Mandatory-Disclosure.pdf) for the seats,
+    // NIRF 2026 IR-E-C-37096 (/documents/nirf/2026/engineering.pdf) for the placement row.
+    heroStatItems: [
+      { num: '18 km', label: 'from Erode bus stand' },
+      { num: '372', label: 'AICTE-approved seats, 2026-27' },
+      { num: '7', label: 'UG + PG programmes' },
+      { num: '23 of 53', label: 'placed, 2024-25 (NIRF 2026)' },
+    ],
     whatsappMessage:
       "Hi%2C%20I'm%20from%20Erode%20and%20interested%20in%20Engineering%20programmes%20at%20JKKNCET.%20Please%20share%20admission%20details%20for%202026-27.",
     whyChooseHeadline: 'Why Erode Students Choose JKKNCET',
     whyChooseSubtitle:
-      'JKKN is one of the closest quality engineering colleges for students from Erode. With a peaceful campus, smaller class sizes for personalised attention, strong industry connections, and affordable fees, JKKNCET is a smart choice for Erode students.',
+      'JKKNCET is 18 km from Erode on NH-544, in Komarapalayam, Namakkal district. Learners from Erode can travel daily or stay in the campus hostel.',
     reachHeadline: 'How to Reach from Erode',
-    reachSummary: '30-40 km · 50-70 minutes',
+    reachSummary: '18 km · about 30 minutes',
     transport: {
-      routeDescription: 'NH-544 / State Highway via Komarapalayam',
+      routeDescription: 'NH-544 via Komarapalayam',
       busTerminal:
         'Buses available from Erode New Bus Stand to Komarapalayam — frequent services',
-      nearestRailway: 'Erode Junction Railway Station (~35 km from campus)',
+      nearestRailway: 'Erode Junction Railway Station (about 21 km from campus)',
       nearestAirport: 'Coimbatore International Airport (~100 km)',
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
@@ -253,16 +289,73 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         role: '[Course], Batch of [Year]',
       },
     ],
+    // Names and TNEA codes copied from Anna University's own district page on 2026-09-25.
+    // Kongu School of Architecture (TNEA 2344) is on that page too; it is left out because
+    // this table lists engineering colleges.
+    districtColleges: {
+      heading: 'Engineering Colleges in Erode District',
+      intro:
+        'Anna University lists these engineering colleges in Erode district. JKKNCET is not on this list: it is in Namakkal district, 18 km from Erode.',
+      colleges: [
+        { name: 'Aishwarya College of Engineering and Technology', tneaCode: '2332' },
+        { name: 'Al-Ameen Engineering College (Autonomous)', tneaCode: '2652' },
+        { name: 'Bannari Amman Institute of Technology (Autonomous)', tneaCode: '2702' },
+        { name: 'Erode Sengunthar Engineering College (Autonomous)', tneaCode: '2707' },
+        {
+          name: 'Government College of Engineering, Erode (formerly Institute of Road and Transport Technology)',
+          tneaCode: '2709',
+        },
+        { name: 'J K K Munirajah College of Technology', tneaCode: '2758' },
+        { name: 'Kongu Engineering College (Autonomous)', tneaCode: '2711' },
+        { name: 'M.P. Nachimuthu M. Jaganathan Engineering College', tneaCode: '2713' },
+        { name: 'Nandha College of Technology', tneaCode: '2752' },
+        { name: 'Nandha Engineering College (Autonomous)', tneaCode: '2715' },
+        { name: 'Shree Venkateshwara Hi-tech Engineering College', tneaCode: '2747' },
+        { name: 'Surya Engineering College', tneaCode: '2748' },
+        { name: 'Velalar College of Engineering and Technology (Autonomous)', tneaCode: '2723' },
+      ],
+      sourceLabel: 'Anna University, Centre for Affiliation of Institutions — Erode district list',
+      sourceUrl: 'https://www.annauniv.edu/cai/District%20wise/district/Erode.php',
+      readOn: '25 September 2026',
+      jkknNote:
+        'JKKN College of Engineering and Technology — Komarapalayam, Namakkal district, 18 km from Erode on NH-544.',
+    },
     faqs: [
       {
-        question: 'What is the best engineering college in Erode?',
+        question: 'Is JKKN College of Engineering and Technology in Erode district?',
         answer:
-          'JKKN College of Engineering and Technology, located just 30-40 km from Erode on NH-544, is widely regarded as one of the top engineering colleges accessible from Erode. Approved by AICTE and affiliated to Anna University, Chennai.',
+          'No. JKKN College of Engineering and Technology is in Komarapalayam, Namakkal district, 18 km from Erode bus stand on NH-544. Many learners from Erode travel daily or stay in the campus hostel.',
+      },
+      {
+        question: 'How many engineering colleges are there in Erode district?',
+        answer:
+          "Anna University's district list names 13 engineering colleges in Erode district, plus one school of architecture. The full list is on this page. JKKNCET is not one of them because it is in Namakkal district.",
+      },
+      {
+        question: 'Is there a government engineering college in Erode?',
+        answer:
+          "Yes. Government College of Engineering, Erode, formerly the Institute of Road and Transport Technology, is on Anna University's Erode district list with TNEA code 2709.",
+      },
+      {
+        question: 'How do I choose an engineering college near Erode?',
+        answer:
+          'Compare AICTE approval, the NIRF data each college files, the TNEA cutoff for your branch and community, the fees, and your daily travel time. JKKNCET publishes its AICTE approval and its NIRF filings on this website.',
+      },
+      {
+        question:
+          'Is JKKN College of Engineering and Technology the same as JKK Munirajah College of Technology?',
+        answer:
+          "No. They are different colleges. JKKN College of Engineering and Technology is in Komarapalayam, Namakkal district. J K K Munirajah College of Technology is in Erode district, TNEA code 2758 on Anna University's list.",
       },
       {
         question: 'How far is JKKNCET from Erode?',
         answer:
-          'JKKNCET is approximately 30-40 km from Erode city centre, which takes about 50-70 minutes by road via NH-544 / State Highway via Komarapalayam. Regular bus services are available from Erode.',
+          'JKKNCET is 18 km from Erode bus stand, about 30 minutes by road on NH-544 via Komarapalayam. Erode Junction railway station is about 21 km from the campus. Regular buses run from Erode New Bus Stand to Komarapalayam.',
+      },
+      {
+        question: 'What placement data has JKKNCET filed?',
+        answer:
+          'In NIRF 2026 the college filed that 23 of 53 UG graduates were placed in 2024-25 (median salary Rs 2.40 lakh), 35 of 89 in 2023-24 (Rs 2.20 lakh) and 29 of 126 in 2022-23 (Rs 1.68 lakh).',
       },
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
@@ -272,17 +365,12 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
-      },
-      {
-        question: 'Does JKKNCET have good campus placements?',
-        answer:
-          'Yes, JKKN College of Engineering and Technology has an active placement cell bringing top companies to campus every year. The college focuses on on-campus placements and career development training including aptitude, soft skills, and technical interview preparation.',
+          'B.E. Computer Science and Engineering, B.E. Electronics and Communication, B.E. Electrical and Electronics, B.E. Mechanical Engineering and B.Tech Information Technology, 60 seats each in 2026-27, plus M.E. Computer Science and Engineering and MBA. All are AICTE approved and affiliated to Anna University.',
       },
       {
         question: 'Does JKKNCET provide hostel for Erode students?',
         answer:
-          'Yes, JKKNCET provides separate hostel facilities for boys and girls. Students from Erode can also commute daily as the campus is just 50-70 minutes away. College transport services are available.',
+          'Yes, JKKNCET provides separate hostel facilities for boys and girls. Students from Erode can also travel daily, as the campus is about 30 minutes from Erode. College transport services are available.',
       },
       {
         question: 'How can I apply for admission at JKKNCET?',
@@ -300,16 +388,16 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Perundurai', slug: 'perundurai', distanceLabel: '20-25 km', emoji: '🛤️' },
     ],
     seo: {
-      title: 'Best Engineering College in Erode | JKKNCET — Admissions Open 2026-27',
+      title: 'Engineering Colleges near Erode - JKKNCET, 18 km on NH-544',
       description:
-        'Looking for the best engineering college near Erode? JKKN College of Engineering and Technology is just 30-40 km away. AICTE approved. Apply now for 2026-27!',
+        'JKKNCET is 18 km from Erode on NH-544, in Namakkal district. AICTE approved, Anna University affiliated. With the official list of Erode district engineering colleges.',
       canonicalPath: '/erode',
       ogImage: '/images/city/erode-og.jpg',
       twitterDescription:
-        'Top engineering college near Erode. Just 30-40 km away. Admissions open 2026-27.',
+        'Engineering college near Erode: JKKNCET, 18 km on NH-544. AICTE approved. Admissions 2026-27.',
     },
     schema: {
-      breadcrumbLabel: 'Best Engineering College in Erode',
+      breadcrumbLabel: 'Engineering Colleges near Erode',
       areaServedCity: 'Erode',
     },
   },
@@ -400,7 +488,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     ],
     crossLinks: [
       { displayName: 'Salem', slug: 'salem', distanceLabel: '40-50 km', emoji: '🚌' },
-      { displayName: 'Erode', slug: 'erode', distanceLabel: '30-40 km', emoji: '🛣️' },
+      { displayName: 'Erode', slug: 'erode', distanceLabel: '18 km', emoji: '🛣️' },
       { displayName: 'Coimbatore', slug: 'coimbatore', distanceLabel: '100-110 km', emoji: '🌆' },
       { displayName: 'Tiruppur', slug: 'tiruppur', distanceLabel: '80-90 km', emoji: '🎯' },
       { displayName: 'Tiruchengode', slug: 'tiruchengode', distanceLabel: '20-25 km', emoji: '🏘️' },
@@ -508,7 +596,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     ],
     crossLinks: [
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '5-10 km', emoji: '🏠' },
-      { displayName: 'Erode', slug: 'erode', distanceLabel: '30-40 km', emoji: '🛣️' },
+      { displayName: 'Erode', slug: 'erode', distanceLabel: '18 km', emoji: '🛣️' },
       { displayName: 'Coimbatore', slug: 'coimbatore', distanceLabel: '100-110 km', emoji: '🌆' },
       { displayName: 'Tiruppur', slug: 'tiruppur', distanceLabel: '80-90 km', emoji: '🎯' },
       { displayName: 'Tiruchengode', slug: 'tiruchengode', distanceLabel: '20-25 km', emoji: '🏘️' },
@@ -617,7 +705,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     ],
     crossLinks: [
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '5-10 km', emoji: '🏠' },
-      { displayName: 'Erode', slug: 'erode', distanceLabel: '30-40 km', emoji: '🛣️' },
+      { displayName: 'Erode', slug: 'erode', distanceLabel: '18 km', emoji: '🛣️' },
       { displayName: 'Salem', slug: 'salem', distanceLabel: '40-50 km', emoji: '🚌' },
       { displayName: 'Coimbatore', slug: 'coimbatore', distanceLabel: '100-110 km', emoji: '🌆' },
       { displayName: 'Tiruchengode', slug: 'tiruchengode', distanceLabel: '20-25 km', emoji: '🏘️' },
@@ -726,7 +814,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     crossLinks: [
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '5-10 km', emoji: '🏠' },
       { displayName: 'Tiruchengode', slug: 'tiruchengode', distanceLabel: '20-25 km', emoji: '🏘️' },
-      { displayName: 'Erode', slug: 'erode', distanceLabel: '30-40 km', emoji: '🛣️' },
+      { displayName: 'Erode', slug: 'erode', distanceLabel: '18 km', emoji: '🛣️' },
       { displayName: 'Salem', slug: 'salem', distanceLabel: '40-50 km', emoji: '🚌' },
       { displayName: 'Trichy', slug: 'trichy', distanceLabel: '140-150 km', emoji: '🏙️' },
     ],
@@ -832,7 +920,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     ],
     crossLinks: [
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '5-10 km', emoji: '🏠' },
-      { displayName: 'Erode', slug: 'erode', distanceLabel: '30-40 km', emoji: '🛣️' },
+      { displayName: 'Erode', slug: 'erode', distanceLabel: '18 km', emoji: '🛣️' },
       { displayName: 'Salem', slug: 'salem', distanceLabel: '40-50 km', emoji: '🚌' },
       { displayName: 'Karur', slug: 'karur', distanceLabel: '80-85 km', emoji: '🚗' },
     ],
@@ -937,7 +1025,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       },
     ],
     crossLinks: [
-      { displayName: 'Erode', slug: 'erode', distanceLabel: '30-40 km', emoji: '🛣️' },
+      { displayName: 'Erode', slug: 'erode', distanceLabel: '18 km', emoji: '🛣️' },
       { displayName: 'Tiruchengode', slug: 'tiruchengode', distanceLabel: '20-25 km', emoji: '🏘️' },
       { displayName: 'Tiruppur', slug: 'tiruppur', distanceLabel: '80-90 km', emoji: '🎯' },
       { displayName: 'Coimbatore', slug: 'coimbatore', distanceLabel: '100-110 km', emoji: '🌆' },
@@ -1046,7 +1134,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Salem', slug: 'salem', distanceLabel: '40-50 km', emoji: '🚌' },
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '5-10 km', emoji: '🏠' },
       { displayName: 'Mettur', slug: 'mettur', distanceLabel: '43-48 km', emoji: '💧' },
-      { displayName: 'Erode', slug: 'erode', distanceLabel: '30-40 km', emoji: '🛣️' },
+      { displayName: 'Erode', slug: 'erode', distanceLabel: '18 km', emoji: '🛣️' },
     ],
     seo: {
       title: 'Best Engineering College near Dharmapuri | JKKNCET — Admissions Open 2026-27',
@@ -1152,7 +1240,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '5-10 km', emoji: '🏠' },
       { displayName: 'Tiruchengode', slug: 'tiruchengode', distanceLabel: '20-25 km', emoji: '🏘️' },
       { displayName: 'Salem', slug: 'salem', distanceLabel: '40-50 km', emoji: '🚌' },
-      { displayName: 'Erode', slug: 'erode', distanceLabel: '30-40 km', emoji: '🛣️' },
+      { displayName: 'Erode', slug: 'erode', distanceLabel: '18 km', emoji: '🛣️' },
     ],
     seo: {
       title: 'Best Engineering College near Rasipuram | JKKNCET — Admissions Open 2026-27',
@@ -1256,7 +1344,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     ],
     crossLinks: [
       { displayName: 'Salem', slug: 'salem', distanceLabel: '40-50 km', emoji: '🚌' },
-      { displayName: 'Erode', slug: 'erode', distanceLabel: '30-40 km', emoji: '🛣️' },
+      { displayName: 'Erode', slug: 'erode', distanceLabel: '18 km', emoji: '🛣️' },
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '5-10 km', emoji: '🏠' },
       { displayName: 'Dharmapuri', slug: 'dharmapuri', distanceLabel: '90-105 km', emoji: '🌄' },
     ],
@@ -1364,7 +1452,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Karur', slug: 'karur', distanceLabel: '80-85 km', emoji: '🚗' },
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '5-10 km', emoji: '🏠' },
       { displayName: 'Salem', slug: 'salem', distanceLabel: '40-50 km', emoji: '🚌' },
-      { displayName: 'Erode', slug: 'erode', distanceLabel: '30-40 km', emoji: '🛣️' },
+      { displayName: 'Erode', slug: 'erode', distanceLabel: '18 km', emoji: '🛣️' },
     ],
     seo: {
       title: 'Best Engineering College near Trichy | JKKNCET — Admissions Open 2026-27',

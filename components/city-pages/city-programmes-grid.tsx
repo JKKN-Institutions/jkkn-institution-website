@@ -46,7 +46,7 @@ const COURSES: Course[] = [
   {
     icon: Wrench,
     name: 'B.E. Mechanical Engineering',
-    intake: 120,
+    intake: 60,
     duration: '4 Years',
     level: 'UG',
     eligibility: '10+2 with Maths, Physics; TNEA counselling',

@@ -7,6 +7,7 @@ import { CityFAQAccordion } from '@/components/city-pages/city-faq-accordion'
 // City-pages components (default exports)
 import CitySchema from '@/components/city-pages/city-schema'
 import CityDistanceBanner from '@/components/city-pages/city-distance-banner'
+import CityDistrictColleges from '@/components/city-pages/city-district-colleges'
 import CityWhyChooseGrid from '@/components/city-pages/city-why-choose-grid'
 import CityProgrammesGrid from '@/components/city-pages/city-programmes-grid'
 import CityPlacementStats from '@/components/city-pages/city-placement-stats'
@@ -29,6 +30,9 @@ export function CityLandingPage({ cityConfig }: CityLandingPageProps) {
 
       {/* 2. Distance Banner */}
       <CityDistanceBanner cityConfig={cityConfig} />
+
+      {/* 3. District college list (only cities that carry one) */}
+      <CityDistrictColleges cityConfig={cityConfig} />
 
       {/* 4. Why Choose */}
       <CityWhyChooseGrid cityConfig={cityConfig} />
