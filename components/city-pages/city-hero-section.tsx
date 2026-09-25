@@ -7,12 +7,13 @@ interface CityHeroSectionProps {
 }
 
 export function CityHeroSection({ cityConfig }: CityHeroSectionProps) {
-  // A city that carries its own sourced stat row uses it; the rest keep the template row.
+  // A city that carries its own stat row uses it. The template row is sourced too:
+  // 372 seats = AICTE EOA 2026-27, 23 of 53 = NIRF 2026 (IR-E-C-37096), 2024-25 batch.
   const stats = cityConfig.heroStatItems ?? [
-    { num: cityConfig.heroStats.placements, label: 'Placements' },
-    { num: cityConfig.heroStats.lpaHighest, label: 'LPA Highest' },
     { num: cityConfig.heroStats.distanceStat, label: cityConfig.heroStats.distanceLabel },
-    { num: cityConfig.heroStats.programmes, label: 'Programmes' },
+    { num: '372', label: 'AICTE-approved seats, 2026-27' },
+    { num: cityConfig.heroStats.programmes, label: 'UG + PG programmes' },
+    { num: '23 of 53', label: 'placed, 2024-25 (NIRF 2026)' },
   ]
 
   return (

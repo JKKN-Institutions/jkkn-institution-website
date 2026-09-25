@@ -56,7 +56,7 @@ export default function CityCampusFacilities() {
       <div className="section-inner">
         <h2 className="section-title">Campus &amp; Facilities</h2>
         <p className="section-subtitle">
-          Everything you need for a world-class education experience
+          Labs, library, hostels and transport on the Komarapalayam campus
         </p>
         <span className="section-accent" aria-hidden="true" />
         <div className="section-spacer" />
