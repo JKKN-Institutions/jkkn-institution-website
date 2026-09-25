@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { AcademicCalendarPage } from '@/components/cms-blocks/content/academic-calendar-page'
 import { ACADEMIC_CALENDAR_DATA } from '@/lib/cms/templates/engineering/academic-calendar-data'
 import { MainInstitutionPageSchema } from '@/components/seo/main-institution/main-institution-page-schema'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 export const metadata: Metadata = {
   title: 'Academic Calendar 2024-2025 | JKKN College of Engineering',
@@ -37,6 +38,7 @@ export const metadata: Metadata = {
 export default function AcademicCalendarRoutePage() {
   return (
     <main>
+      <BreadcrumbSchema path="/others/academic-calendar" />
       {/* JSON-LD (main only): WebPage + BreadcrumbList */}
       <MainInstitutionPageSchema
         webpage={{

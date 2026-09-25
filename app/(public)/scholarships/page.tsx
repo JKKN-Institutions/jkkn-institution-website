@@ -29,6 +29,7 @@ import {
 import { resolvePageSchemas } from '@/lib/seo/schema-resolver'
 
 import EngineeringScholarshipPage from './_engineering-scholarship'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 const CMS_SLUG = 'scholarships'
 
@@ -175,6 +176,7 @@ function PageSchemas({ slug }: { slug: string }) {
       {schemas.faqAdmissions && <FAQSchemaAdmissions />}
       {schemas.howToAdmissions && <HowToSchemaAdmissions />}
       {schemas.faqPlacements && <FAQSchemaPlacements />}
+      {schemas.breadcrumb && <BreadcrumbSchema path="/scholarships" />}
       {schemas.faqAbout && <FAQSchemaAbout />}
     </>
   )

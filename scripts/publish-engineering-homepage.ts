@@ -43,10 +43,10 @@ const ENGINEERING_TEMPLATE_ID = '3e4a1f8c-9d2b-4c7e-a5f3-1b8d6e9c2bf2'
 // SEO Configuration
 const SEO_CONFIG = {
   meta_title: 'JKKN Engineering College | Premier Engineering Institution',
-  meta_description: 'Discover excellence in engineering education at JKKN Engineering College. NAAC A+ accredited institution with 95% placement record, state-of-the-art labs, and industry partnerships.',
+  meta_description: 'JKKN College of Engineering and Technology - AICTE-approved and affiliated to Anna University, Chennai. NAAC accredited, autonomous, with modern laboratories and an active Training and Placement Cell.',
   meta_keywords: ['engineering college', 'JKKN', 'technical education', 'engineering programs', 'placement'],
   og_title: 'JKKN Engineering College | Excellence in Engineering',
-  og_description: 'Top-ranked engineering institution with 95% placement record and global industry partnerships.',
+  og_description: 'AICTE-approved autonomous engineering institution affiliated to Anna University, Chennai, with an active Training and Placement Cell.',
   og_image: '/images/engineering/senthuraja-hall/senthuraja-hall-01.jpg',
   og_type: 'website',
   twitter_card: 'summary_large_image',

@@ -11,6 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { PasswordProtectedPage, PrivatePageGate } from '@/components/public/password-protected-page'
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import MainOurInstitutionsPage from './_main-page'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 const CMS_SLUG = 'our-institutions'
 
@@ -181,6 +182,7 @@ export default async function OurInstitutionsPage() {
 
   return (
     <article>
+      <BreadcrumbSchema path="/our-institutions" />
       <Suspense fallback={<BlocksSkeleton />}>
         <CustomComponentRegistrar components={customComponents}>
           <PageRenderer blocks={blocks} pageTypography={pageTypography} />

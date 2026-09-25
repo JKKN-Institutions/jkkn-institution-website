@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
     title: 'JKKN College of Engineering & Technology | Preview',
-    description: 'AICTE Approved, Anna University Affiliated Engineering College with NAAC Accredited Programs. 95%+ Placement Rate, 12 LPA Highest Package.',
+    description: 'AICTE-approved, Anna University affiliated engineering college in Komarapalayam, Tamil Nadu. NAAC accredited. 372 approved seats across B.E., B.Tech, M.E. and MBA.',
 }
 
 export default function EngineeringPreviewPage() {

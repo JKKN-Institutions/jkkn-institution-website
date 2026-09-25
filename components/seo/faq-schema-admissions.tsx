@@ -129,11 +129,11 @@ export function FAQSchemaPlacements() {
   const faqs: FAQItem[] = [
     {
       question: 'What is the placement record of JKKN Engineering College?',
-      answer: 'JKKN Engineering College places 500+ students annually through campus recruitment. Placement rates range from 60–70% as reported by education aggregators (Collegedunia, Careers360). Top recruiters include TCS, Infosys, Wipro, Cognizant, HCL, and Tech Mahindra.'
+      answer: 'JKKN College of Engineering runs a Training and Placement Cell that coordinates on-campus recruitment drives and interview preparation. In the college\'s own NIRF 2026 filing, 23 of the 53 UG students who graduated in the minimum stipulated time in 2024-25 were placed. Recruiters who have visited campus include TCS, Infosys, Wipro, Cognizant, HCL and Tech Mahindra.'
     },
     {
       question: 'What is the highest package offered at JKKN?',
-      answer: 'The highest package recorded at JKKN Engineering College is ₹12 LPA. Average salary figures range from ₹2.2 LPA (Careers360 median) to ₹4.5 LPA depending on branch and batch. Dedicated placement training begins from the first year.'
+      answer: 'The median annual salary of placed UG graduates reported in the college\'s own NIRF 2026 filing is ₹2,40,000 for 2024-25. Placement training begins in the first year through the Training and Placement Cell.'
     },
     {
       question: 'Which companies visit JKKN for campus placements?',

@@ -35,28 +35,14 @@ export default function CitySchema({ cityConfig }: CitySchemaProps) {
   }
 
   // 2. CollegeOrUniversity
+  // The full college entity is already declared site-wide by the root layout under
+  // the @id below. Re-declaring it here created a SECOND, anonymous college entity on
+  // every city page. This node now only ADDS areaServed to the existing entity by
+  // referencing the same @id, so the site describes one college, not two.
   const collegeSchema = {
     '@context': 'https://schema.org',
     '@type': 'CollegeOrUniversity',
-    name: 'JKKN College of Engineering and Technology',
-    alternateName: 'JKKNCET',
-    url: 'https://engg.jkkn.ac.in/',
-    description:
-      'JKKN College of Engineering and Technology is a leading engineering institution in Tamil Nadu. Approved by AICTE, NBA, NAAC. Located in Komarapalayam, Namakkal District.',
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: 'Natarajapuram, NH-544 (Salem To Coimbatore National Highway)',
-      addressLocality: 'Komarapalayam',
-      addressRegion: 'Tamil Nadu',
-      postalCode: '638183',
-      addressCountry: 'IN',
-    },
-    telephone: '+91-9345855001',
-    parentOrganization: {
-      '@type': 'EducationalOrganization',
-      name: 'JKKN Institutions',
-      url: 'https://jkkn.ac.in/',
-    },
+    '@id': 'https://engg.jkkn.ac.in/#organization',
     areaServed: [
       { '@type': 'City', name: cityConfig.schema.areaServedCity },
       { '@type': 'State', name: 'Tamil Nadu' },

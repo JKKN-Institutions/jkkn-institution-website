@@ -14,11 +14,11 @@ import { WebsiteSchema } from '@/components/seo/website-schema'
 import { FAQSchema } from '@/components/seo/faq-schema'
 import { FAQSchemaAdmissions, FAQSchemaPlacements, FAQSchemaAbout, HowToSchemaAdmissions } from '@/components/seo/faq-schema-admissions'
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
-import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from '@/lib/seo'
 import { resolvePageSchemas } from '@/lib/seo/schema-resolver'
 import { getCityConfig } from '@/lib/config/city-pages'
 import { getInstitutionId } from '@/lib/config/multi-tenant'
 import { CityLandingPage } from '@/components/city-pages/city-landing-page'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 // Dynamic rendering for 404 handling - automatically handled with cacheComponents
 // Cache Components ensures proper 404 status codes without force-dynamic
@@ -57,10 +57,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       },
     }
   }
-
-  // Generate breadcrumb schema for this page
-  const breadcrumbs = getBreadcrumbsForPath(path)
-  const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbs)
 
   // Fetch page for both homepage and other pages
   const page = await getPageBySlug(slugPath)
@@ -133,9 +129,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     robots: seo?.robots_directive || undefined,
 
     // Structured data (BreadcrumbList JSON-LD)
-    other: {
-      'script:ld+json:breadcrumb': serializeSchema(breadcrumbSchema),
-    },
+    // NOTE: the BreadcrumbList used to be emitted here through metadata.other, which
+    // Next.js renders as <meta name="script:ld+json:breadcrumb" content=...>, NOT a
+    // <script type="application/ld+json">. That is why 76 of 101 live pages measured as
+    // having no BreadcrumbList on 2026-09-18 even though this code existed. It is now
+    // rendered as a real script tag by <BreadcrumbSchema /> in PageSchemas below.
   }
 }
 
@@ -171,6 +169,7 @@ function PageSchemas({ slug, isHomepage }: { slug: string; isHomepage: boolean }
       {schemas.howToAdmissions && <HowToSchemaAdmissions />}
       {schemas.faqPlacements && <FAQSchemaPlacements />}
       {schemas.faqAbout && <FAQSchemaAbout />}
+      {schemas.breadcrumb && <BreadcrumbSchema path={`/${slug}`} />}
     </>
   )
 }

@@ -107,7 +107,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '100-110 km',
     travelTime: '2-2.5 hours',
     heroSubheading:
-      'Better value, better campus, better you — just 2 hours from Coimbatore. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support — world-class education at a fraction of Coimbatore city college fees.',
+      'Better value, better campus, better you — just 2 hours from Coimbatore. JKKN College of Engineering and Technology offers top-tier engineering programmes with support from the Training and Placement Cell — world-class education at a fraction of Coimbatore city college fees.',
     heroStats: {
       placements: '95%',
       lpaHighest: '10-12',
@@ -150,7 +150,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the best engineering college in Coimbatore?',
         answer:
-          'JKKN College of Engineering and Technology, located just 100-110 km from Coimbatore on NH-544, is widely regarded as one of the top engineering colleges accessible from Coimbatore. Approved by AICTE, NBA, NAAC and affiliated to Anna University, Chennai, it offers excellent programmes with strong placement support.',
+          'JKKN College of Engineering and Technology, located just 100-110 km from Coimbatore on NH-544, is widely regarded as one of the top engineering colleges accessible from Coimbatore. Approved by AICTE and affiliated to Anna University, Chennai, it offers excellent programmes with strong placement support.',
       },
       {
         question: 'How far is JKKNCET from Coimbatore?',
@@ -165,7 +165,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Civil Engineering. All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
         question: 'Does JKKNCET have good campus placements?',
@@ -194,7 +194,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College in Coimbatore | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college near Coimbatore? JKKN College of Engineering and Technology is just 100-110 km away. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
+        'Looking for the best engineering college near Coimbatore? JKKN College of Engineering and Technology is just 100-110 km away. AICTE approved. Apply now for 2026-27!',
       canonicalPath: '/coimbatore',
       ogImage: '/images/city/coimbatore-og.jpg',
       twitterDescription:
@@ -215,7 +215,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '30-40 km',
     travelTime: '50-70 minutes',
     heroSubheading:
-      'Just 30-40 km from Erode — your gateway to quality engineering education. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved.',
+      'Just 30-40 km from Erode — your gateway to quality engineering education. JKKN College of Engineering and Technology offers top-tier engineering programmes with support from the Training and Placement Cell. AICTE approved.',
     heroStats: {
       placements: '95%',
       lpaHighest: '10-12',
@@ -257,7 +257,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the best engineering college in Erode?',
         answer:
-          'JKKN College of Engineering and Technology, located just 30-40 km from Erode on NH-544, is widely regarded as one of the top engineering colleges accessible from Erode. Approved by AICTE, NBA, NAAC and affiliated to Anna University, Chennai.',
+          'JKKN College of Engineering and Technology, located just 30-40 km from Erode on NH-544, is widely regarded as one of the top engineering colleges accessible from Erode. Approved by AICTE and affiliated to Anna University, Chennai.',
       },
       {
         question: 'How far is JKKNCET from Erode?',
@@ -272,7 +272,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Civil Engineering. All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
         question: 'Does JKKNCET have good campus placements?',
@@ -302,7 +302,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College in Erode | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college near Erode? JKKN College of Engineering and Technology is just 30-40 km away. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
+        'Looking for the best engineering college near Erode? JKKN College of Engineering and Technology is just 30-40 km away. AICTE approved. Apply now for 2026-27!',
       canonicalPath: '/erode',
       ogImage: '/images/city/erode-og.jpg',
       twitterDescription:
@@ -323,7 +323,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '5-10 km',
     travelTime: '15-20 minutes',
     heroSubheading:
-      'Just 5-10 km from Namakkal — your nearest engineering college! JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved. Located right here in Namakkal district.',
+      'Just 5-10 km from Namakkal — your nearest engineering college! JKKN College of Engineering and Technology offers top-tier engineering programmes with support from the Training and Placement Cell. AICTE approved. Located right here in Namakkal district.',
     heroStats: {
       placements: '95%',
       lpaHighest: '10-12',
@@ -365,7 +365,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the best engineering college in Namakkal?',
         answer:
-          'JKKN College of Engineering and Technology, located just 5-10 km from Namakkal town in Komarapalayam, is widely regarded as the top engineering college in Namakkal district. Approved by AICTE, NBA, NAAC and affiliated to Anna University, Chennai.',
+          'JKKN College of Engineering and Technology, located just 5-10 km from Namakkal town in Komarapalayam, is widely regarded as the top engineering college in Namakkal district. Approved by AICTE and affiliated to Anna University, Chennai.',
       },
       {
         question: 'How far is JKKNCET from Namakkal?',
@@ -380,7 +380,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Civil Engineering. All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
         question: 'Does JKKNCET have good campus placements?',
@@ -410,7 +410,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College in Namakkal | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college in Namakkal? JKKN College of Engineering and Technology is just 5-10 km away in Komarapalayam. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
+        'Looking for the best engineering college in Namakkal? JKKN College of Engineering and Technology is just 5-10 km away in Komarapalayam. AICTE approved. Apply now for 2026-27!',
       canonicalPath: '/namakkal',
       ogImage: '/images/city/namakkal-og.jpg',
       twitterDescription:
@@ -431,7 +431,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '40-50 km',
     travelTime: '50-60 minutes',
     heroSubheading:
-      'Just 40-50 km from Salem — quality engineering education within easy reach. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved.',
+      'Just 40-50 km from Salem — quality engineering education within easy reach. JKKN College of Engineering and Technology offers top-tier engineering programmes with support from the Training and Placement Cell. AICTE approved.',
     heroStats: {
       placements: '95%',
       lpaHighest: '10-12',
@@ -473,7 +473,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the best engineering college in Salem?',
         answer:
-          'JKKN College of Engineering and Technology, located just 40-50 km from Salem on NH-544, is widely regarded as one of the top engineering colleges accessible from Salem. Approved by AICTE, NBA, NAAC and affiliated to Anna University, Chennai.',
+          'JKKN College of Engineering and Technology, located just 40-50 km from Salem on NH-544, is widely regarded as one of the top engineering colleges accessible from Salem. Approved by AICTE and affiliated to Anna University, Chennai.',
       },
       {
         question: 'How far is JKKNCET from Salem?',
@@ -488,7 +488,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Civil Engineering. All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
         question: 'Does JKKNCET have good campus placements?',
@@ -519,7 +519,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College in Salem | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college near Salem? JKKN College of Engineering and Technology is just 40-50 km away. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
+        'Looking for the best engineering college near Salem? JKKN College of Engineering and Technology is just 40-50 km away. AICTE approved. Apply now for 2026-27!',
       canonicalPath: '/salem',
       ogImage: '/images/city/salem-og.jpg',
       twitterDescription:
@@ -540,7 +540,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '80-90 km',
     travelTime: '1.5-2 hours',
     heroSubheading:
-      'Just 80-90 km from Tiruppur — quality engineering education within reach. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved.',
+      'Just 80-90 km from Tiruppur — quality engineering education within reach. JKKN College of Engineering and Technology offers top-tier engineering programmes with support from the Training and Placement Cell. AICTE approved.',
     heroStats: {
       placements: '95%',
       lpaHighest: '10-12',
@@ -582,7 +582,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the best engineering college in Tiruppur?',
         answer:
-          'JKKN College of Engineering and Technology, located just 80-90 km from Tiruppur on NH-544, is widely regarded as one of the top engineering colleges accessible from Tiruppur. Approved by AICTE, NBA, NAAC and affiliated to Anna University, Chennai.',
+          'JKKN College of Engineering and Technology, located just 80-90 km from Tiruppur on NH-544, is widely regarded as one of the top engineering colleges accessible from Tiruppur. Approved by AICTE and affiliated to Anna University, Chennai.',
       },
       {
         question: 'How far is JKKNCET from Tiruppur?',
@@ -597,7 +597,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Civil Engineering. All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
         question: 'Does JKKNCET have good campus placements?',
@@ -626,7 +626,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College in Tiruppur | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college near Tiruppur? JKKN College of Engineering and Technology is just 80-90 km away. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
+        'Looking for the best engineering college near Tiruppur? JKKN College of Engineering and Technology is just 80-90 km away. AICTE approved. Apply now for 2026-27!',
       canonicalPath: '/tiruppur',
       ogImage: '/images/city/tiruppur-og.jpg',
       twitterDescription:
@@ -647,7 +647,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '80-85 km',
     travelTime: '1.5-2 hours',
     heroSubheading:
-      'Just 80-85 km from Karur — quality engineering education within easy reach. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved.',
+      'Just 80-85 km from Karur — quality engineering education within easy reach. JKKN College of Engineering and Technology offers top-tier engineering programmes with support from the Training and Placement Cell. AICTE approved.',
     heroStats: {
       placements: '95%',
       lpaHighest: '10-12',
@@ -690,7 +690,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the best engineering college in Karur?',
         answer:
-          'JKKN College of Engineering and Technology, located about 80-85 km from Karur near Komarapalayam on NH-544, is widely regarded as one of the top engineering colleges accessible from Karur. Approved by AICTE, NBA, NAAC and affiliated to Anna University, Chennai.',
+          'JKKN College of Engineering and Technology, located about 80-85 km from Karur near Komarapalayam on NH-544, is widely regarded as one of the top engineering colleges accessible from Karur. Approved by AICTE and affiliated to Anna University, Chennai.',
       },
       {
         question: 'How far is JKKNCET from Karur?',
@@ -705,7 +705,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Civil Engineering. All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
         question: 'Does JKKNCET have good campus placements?',
@@ -733,7 +733,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College in Karur | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college near Karur? JKKN College of Engineering and Technology is about 80-85 km away. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
+        'Looking for the best engineering college near Karur? JKKN College of Engineering and Technology is about 80-85 km away. AICTE approved. Apply now for 2026-27!',
       canonicalPath: '/karur',
       ogImage: '/images/engineering/campus-hero.jpg',
       twitterDescription:
@@ -754,7 +754,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '20-25 km',
     travelTime: '30-40 minutes',
     heroSubheading:
-      'Just 20-25 km from Tiruchengode — your nearest accredited engineering college. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved. Right here in Namakkal district.',
+      'Just 20-25 km from Tiruchengode — your nearest accredited engineering college. JKKN College of Engineering and Technology offers top-tier engineering programmes with support from the Training and Placement Cell. AICTE approved. Right here in Namakkal district.',
     heroStats: {
       placements: '95%',
       lpaHighest: '10-12',
@@ -797,7 +797,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the best engineering college in Tiruchengode?',
         answer:
-          'JKKN College of Engineering and Technology, located just 20-25 km from Tiruchengode in Komarapalayam, is widely regarded as one of the top engineering colleges near Tiruchengode. Approved by AICTE, NBA, NAAC and affiliated to Anna University, Chennai.',
+          'JKKN College of Engineering and Technology, located just 20-25 km from Tiruchengode in Komarapalayam, is widely regarded as one of the top engineering colleges near Tiruchengode. Approved by AICTE and affiliated to Anna University, Chennai.',
       },
       {
         question: 'How far is JKKNCET from Tiruchengode?',
@@ -812,7 +812,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Civil Engineering. All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
         question: 'Does JKKNCET have good campus placements?',
@@ -839,7 +839,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College in Tiruchengode | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college near Tiruchengode? JKKN College of Engineering and Technology is just 20-25 km away in Komarapalayam. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
+        'Looking for the best engineering college near Tiruchengode? JKKN College of Engineering and Technology is just 20-25 km away in Komarapalayam. AICTE approved. Apply now for 2026-27!',
       canonicalPath: '/tiruchengode',
       ogImage: '/images/engineering/campus-hero.jpg',
       twitterDescription:
@@ -860,7 +860,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '20-25 km',
     travelTime: '30-40 minutes',
     heroSubheading:
-      'Just 20-25 km from Perundurai on NH-544 — quality engineering education right on your highway. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved.',
+      'Just 20-25 km from Perundurai on NH-544 — quality engineering education right on your highway. JKKN College of Engineering and Technology offers top-tier engineering programmes with support from the Training and Placement Cell. AICTE approved.',
     heroStats: {
       placements: '95%',
       lpaHighest: '10-12',
@@ -903,7 +903,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the best engineering college near Perundurai?',
         answer:
-          'JKKN College of Engineering and Technology, located just 20-25 km from Perundurai on NH-544 near Komarapalayam, is widely regarded as one of the top engineering colleges near Perundurai. Approved by AICTE, NBA, NAAC and affiliated to Anna University, Chennai.',
+          'JKKN College of Engineering and Technology, located just 20-25 km from Perundurai on NH-544 near Komarapalayam, is widely regarded as one of the top engineering colleges near Perundurai. Approved by AICTE and affiliated to Anna University, Chennai.',
       },
       {
         question: 'How far is JKKNCET from Perundurai?',
@@ -918,7 +918,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Civil Engineering. All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
         question: 'Does JKKNCET have good campus placements?',
@@ -945,7 +945,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College near Perundurai | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college near Perundurai? JKKN College of Engineering and Technology is just 20-25 km away on NH-544. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
+        'Looking for the best engineering college near Perundurai? JKKN College of Engineering and Technology is just 20-25 km away on NH-544. AICTE approved. Apply now for 2026-27!',
       canonicalPath: '/perundurai',
       ogImage: '/images/engineering/campus-hero.jpg',
       twitterDescription:
@@ -966,7 +966,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '90-105 km',
     travelTime: '2-2.5 hours',
     heroSubheading:
-      'About 2 hours from Dharmapuri via Salem — quality engineering education with full residential facilities. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved.',
+      'About 2 hours from Dharmapuri via Salem — quality engineering education with full residential facilities. JKKN College of Engineering and Technology offers top-tier engineering programmes with support from the Training and Placement Cell. AICTE approved.',
     heroStats: {
       placements: '95%',
       lpaHighest: '10-12',
@@ -1009,7 +1009,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the best engineering college accessible from Dharmapuri?',
         answer:
-          'JKKN College of Engineering and Technology, located about 90-105 km from Dharmapuri near Komarapalayam on NH-544, is widely regarded as one of the top engineering colleges accessible from Dharmapuri. Approved by AICTE, NBA, NAAC and affiliated to Anna University, Chennai.',
+          'JKKN College of Engineering and Technology, located about 90-105 km from Dharmapuri near Komarapalayam on NH-544, is widely regarded as one of the top engineering colleges accessible from Dharmapuri. Approved by AICTE and affiliated to Anna University, Chennai.',
       },
       {
         question: 'How far is JKKNCET from Dharmapuri?',
@@ -1024,7 +1024,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Civil Engineering. All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
         question: 'Does JKKNCET have good campus placements?',
@@ -1051,7 +1051,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College near Dharmapuri | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college accessible from Dharmapuri? JKKN College of Engineering and Technology is about 2-2.5 hours away via Salem. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
+        'Looking for the best engineering college accessible from Dharmapuri? JKKN College of Engineering and Technology is about 2-2.5 hours away via Salem. AICTE approved. Apply now for 2026-27!',
       canonicalPath: '/dharmapuri',
       ogImage: '/images/engineering/campus-hero.jpg',
       twitterDescription:
@@ -1072,7 +1072,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '60-65 km',
     travelTime: '1-1.5 hours',
     heroSubheading:
-      'About 60-65 km from Rasipuram — quality engineering education in your own Namakkal district. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved.',
+      'About 60-65 km from Rasipuram — quality engineering education in your own Namakkal district. JKKN College of Engineering and Technology offers top-tier engineering programmes with support from the Training and Placement Cell. AICTE approved.',
     heroStats: {
       placements: '95%',
       lpaHighest: '10-12',
@@ -1115,7 +1115,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the best engineering college near Rasipuram?',
         answer:
-          'JKKN College of Engineering and Technology, located about 60-65 km from Rasipuram in Komarapalayam (same Namakkal district), is widely regarded as one of the top engineering colleges near Rasipuram. Approved by AICTE, NBA, NAAC and affiliated to Anna University, Chennai.',
+          'JKKN College of Engineering and Technology, located about 60-65 km from Rasipuram in Komarapalayam (same Namakkal district), is widely regarded as one of the top engineering colleges near Rasipuram. Approved by AICTE and affiliated to Anna University, Chennai.',
       },
       {
         question: 'How far is JKKNCET from Rasipuram?',
@@ -1130,7 +1130,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Civil Engineering. All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
         question: 'Does JKKNCET have good campus placements?',
@@ -1157,7 +1157,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College near Rasipuram | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college near Rasipuram? JKKN College of Engineering and Technology is in the same Namakkal district, about 60-65 km away. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
+        'Looking for the best engineering college near Rasipuram? JKKN College of Engineering and Technology is in the same Namakkal district, about 60-65 km away. AICTE approved. Apply now for 2026-27!',
       canonicalPath: '/rasipuram',
       ogImage: '/images/engineering/campus-hero.jpg',
       twitterDescription:
@@ -1178,7 +1178,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '43-48 km',
     travelTime: '1-1.5 hours',
     heroSubheading:
-      'About 43-48 km from Mettur — one of the closest accredited engineering colleges for the Mettur–Bhavani belt. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved.',
+      'About 43-48 km from Mettur — one of the closest accredited engineering colleges for the Mettur–Bhavani belt. JKKN College of Engineering and Technology offers top-tier engineering programmes with support from the Training and Placement Cell. AICTE approved.',
     heroStats: {
       placements: '95%',
       lpaHighest: '10-12',
@@ -1221,7 +1221,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the best engineering college near Mettur?',
         answer:
-          'JKKN College of Engineering and Technology, located about 43-48 km from Mettur near Komarapalayam on NH-544, is widely regarded as one of the top engineering colleges near Mettur. Approved by AICTE, NBA, NAAC and affiliated to Anna University, Chennai.',
+          'JKKN College of Engineering and Technology, located about 43-48 km from Mettur near Komarapalayam on NH-544, is widely regarded as one of the top engineering colleges near Mettur. Approved by AICTE and affiliated to Anna University, Chennai.',
       },
       {
         question: 'How far is JKKNCET from Mettur?',
@@ -1236,7 +1236,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Civil Engineering. All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
         question: 'Does JKKNCET have good campus placements?',
@@ -1263,7 +1263,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College near Mettur | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for the best engineering college near Mettur? JKKN College of Engineering and Technology is about 43-48 km away near Komarapalayam. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
+        'Looking for the best engineering college near Mettur? JKKN College of Engineering and Technology is about 43-48 km away near Komarapalayam. AICTE approved. Apply now for 2026-27!',
       canonicalPath: '/mettur',
       ogImage: '/images/engineering/campus-hero.jpg',
       twitterDescription:
@@ -1284,7 +1284,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     distanceKm: '140-150 km',
     travelTime: '2.5-3 hours',
     heroSubheading:
-      'About 140-150 km from Trichy — a fully residential engineering campus on the NH-544 corridor. JKKN College of Engineering and Technology offers top-tier engineering programmes with 95% placement support. AICTE, NBA, NAAC approved.',
+      'About 140-150 km from Trichy — a fully residential engineering campus on the NH-544 corridor. JKKN College of Engineering and Technology offers top-tier engineering programmes with support from the Training and Placement Cell. AICTE approved.',
     heroStats: {
       placements: '95%',
       lpaHighest: '10-12',
@@ -1327,7 +1327,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the best engineering college accessible from Trichy?',
         answer:
-          'JKKN College of Engineering and Technology, located about 140-150 km from Tiruchirappalli near Komarapalayam on NH-544, is one of the top residential engineering colleges accessible from Trichy. Approved by AICTE, NBA, NAAC and affiliated to Anna University, Chennai.',
+          'JKKN College of Engineering and Technology, located about 140-150 km from Tiruchirappalli near Komarapalayam on NH-544, is one of the top residential engineering colleges accessible from Trichy. Approved by AICTE and affiliated to Anna University, Chennai.',
       },
       {
         question: 'How far is JKKNCET from Trichy?',
@@ -1342,7 +1342,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Civil Engineering. All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
         question: 'Does JKKNCET have good campus placements?',
@@ -1369,7 +1369,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     seo: {
       title: 'Best Engineering College near Trichy | JKKNCET — Admissions Open 2026-27',
       description:
-        'Looking for a residential engineering college accessible from Trichy? JKKN College of Engineering and Technology is about 140-150 km away via Namakkal. AICTE, NBA, NAAC approved. 95% placements. Apply now for 2026-27!',
+        'Looking for a residential engineering college accessible from Trichy? JKKN College of Engineering and Technology is about 140-150 km away via Namakkal. AICTE approved. Apply now for 2026-27!',
       canonicalPath: '/trichy',
       ogImage: '/images/engineering/campus-hero.jpg',
       twitterDescription:

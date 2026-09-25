@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { MECSECoursePage } from '@/components/cms-blocks/content/me-cse-course-page'
 import { meCSECourseData } from '@/lib/cms/templates/engineering/me-cse-data'
 import { MECSECourseSchema } from '@/lib/seo/course-schema-generator'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 export const metadata: Metadata = {
   title: 'ME Computer Science and Engineering (CSE) | JKKN College of Engineering - AICTE Approved',
@@ -46,6 +47,7 @@ export const metadata: Metadata = {
 export default function MECSEPage() {
   return (
     <>
+      <BreadcrumbSchema path="/courses-offered/pg/me-cse" />
       <MECSECourseSchema />
       <MECSECoursePage {...meCSECourseData} />
     </>

@@ -2,6 +2,7 @@ import { MBACoursePage } from '@/components/cms-blocks/content/mba-course-page'
 import { MBA_SAMPLE_DATA } from '@/lib/cms/templates/mba-data'
 import { MBACourseSchema } from '@/lib/seo/course-schema-generator'
 import type { Metadata } from 'next'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 /**
  * MBA (Master of Business Administration) Course Page
@@ -81,6 +82,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
+      <BreadcrumbSchema path="/courses-offered/pg/mba" />
       <MBACourseSchema />
       <main>
         <MBACoursePage {...MBA_SAMPLE_DATA} />

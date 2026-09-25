@@ -21,6 +21,7 @@ import {
 import { ShareButtons } from './share-buttons'
 import { CommentsSection } from './comments-section'
 import { GalleryBlock } from '@/components/public/blog/gallery-block'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -478,6 +479,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     <div className="min-h-screen bg-white relative overflow-hidden">
       {/* Article Schema for Rich Snippets */}
       <ArticleSchema post={post} />
+      <BreadcrumbSchema path={`/blog/${slug}`} label={post.title} />
 
       {/* Hero Section */}
       <section className="relative py-12 md:py-16 z-10">

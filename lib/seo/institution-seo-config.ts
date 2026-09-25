@@ -144,7 +144,7 @@ const SHARED_GEO = {
 }
 
 const SHARED_AREA_SERVED: InstitutionSEOConfig['areaServed'] = [
-  { type: 'City', name: 'Komarapalayam', sameAs: 'https://en.wikipedia.org/wiki/Kumarapalayam' },
+  { type: 'City', name: 'Komarapalayam', sameAs: 'https://en.wikipedia.org/wiki/Komarapalayam' },
   { type: 'City', name: 'Erode', sameAs: 'https://en.wikipedia.org/wiki/Erode' },
   { type: 'City', name: 'Salem', sameAs: 'https://en.wikipedia.org/wiki/Salem,_Tamil_Nadu' },
   { type: 'AdministrativeArea', name: 'Namakkal District', sameAs: 'https://en.wikipedia.org/wiki/Namakkal_district' },

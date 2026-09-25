@@ -476,7 +476,7 @@ export const BTECH_IT_ADMISSION: CourseAdmissionData = {
     {
       question: 'What are B.Tech IT career options?',
       answer:
-        'Network engineer, cybersecurity analyst, full-stack developer, IT consultant, cloud engineer, database administrator. Recruiters: TCS, Infosys, Wipro, Cognizant, IBM, Accenture, Capgemini. Average package ₹3.5L; highest ₹8L+.',
+        'Network engineer, cybersecurity analyst, full-stack developer, IT consultant, cloud engineer, database administrator. Recruiters: TCS, Infosys, Wipro, Cognizant, IBM, Accenture, Capgemini.',
     },
     {
       question: 'Is TNEA mandatory for B.Tech IT?',

@@ -1,6 +1,7 @@
 import { NAACPage } from '@/components/cms-blocks/content/naac-page'
 import { getInstitutionId, getCurrentInstitution } from '@/lib/config/multi-tenant'
 import type { Metadata } from 'next'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 // Force dynamic rendering to ensure correct institution data is loaded
 export const dynamic = 'force-dynamic'
@@ -83,5 +84,10 @@ async function getNAACOverviewData() {
 export default async function NAACOverviewPage() {
   const data = await getNAACOverviewData()
 
-  return <NAACPage {...data} />
+  return (
+    <>
+      <BreadcrumbSchema path="/iqac/naac" />
+      <NAACPage {...data} />
+    </>
+  )
 }

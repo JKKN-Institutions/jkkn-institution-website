@@ -54,15 +54,9 @@ export function WebsiteSchema() {
       'email': config.email,
       'sameAs': config.sameAs,
     },
+    // SearchAction removed: it advertised ${siteUrl}/search?q=... which returns 404.
+    // A SearchAction pointing at a non-existent endpoint is an invalid sitelinks-searchbox claim.
     'potentialAction': [
-      {
-        '@type': 'SearchAction',
-        'target': {
-          '@type': 'EntryPoint',
-          'urlTemplate': `${siteUrl}/search?q={search_term_string}`,
-        },
-        'query-input': 'required name=search_term_string',
-      },
       {
         '@type': 'ReadAction',
         'target': [`${siteUrl}/`],

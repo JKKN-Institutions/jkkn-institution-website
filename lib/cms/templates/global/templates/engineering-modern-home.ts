@@ -75,9 +75,12 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
         accreditations: [
           { name: 'All India Council for Technical Education', shortName: 'AICTE', description: 'Approved', icon: 'shield' },
           { name: 'Anna University', shortName: 'Anna University', description: 'Affiliated', icon: 'graduation' },
-          { name: 'National Board of Accreditation', shortName: 'NAAC', description: 'Accredited', icon: 'award' },
-          { name: 'National Assessment and Accreditation Council', shortName: 'NAAC', description: 'A+ Grade', icon: 'badge' },
-          { name: 'International Organization for Standardization', shortName: 'ISO 9001:2015', description: 'Certified', icon: 'building' },
+          // NBA removed: the AICTE Mandatory Disclosure 2026-27 records no NBA grant to this
+          // college (NBA appears only in AICTE's generic boilerplate). The entry also carried
+          // the wrong shortName - it said NAAC while naming the National Board of Accreditation.
+          // NAAC grade reduced to 'Accredited': no document evidencing an A+ grade is held.
+          // ISO 9001:2015 removed: no certificate on file.
+          { name: 'National Assessment and Accreditation Council', shortName: 'NAAC', description: 'Accredited', icon: 'badge' },
         ],
         primaryColor: '#0b6d41',
         backgroundColor: '#f8f9fa',
@@ -390,11 +393,11 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
         faqs: [
           {
             question: 'What engineering courses are offered at JKKN Engineering College?',
-            answer: 'We offer B.E. programs in Computer Science & Engineering, Electronics & Communication, Electrical & Electronics, Mechanical Engineering, and Civil Engineering. We also offer B.Tech programs in AI & Machine Learning and Information Technology, along with postgraduate programs MBA and MCA.',
+            answer: 'We offer B.E. programmes in Computer Science and Engineering, Electronics and Communication Engineering, Electrical and Electronics Engineering and Mechanical Engineering, and a B.Tech in Information Technology. Postgraduate programmes are MBA and M.E. Computer Science and Engineering. Total AICTE-approved intake is 372.',
           },
           {
             question: 'Is JKKN Engineering College AICTE approved?',
-            answer: 'Yes, JKKN College of Engineering & Technology is approved by AICTE (All India Council for Technical Education), affiliated with Anna University, and has NAAC accreditation for multiple programs. We are also NAAC accredited with A+ grade and ISO 9001:2015 certified.',
+            answer: 'Yes. JKKN College of Engineering and Technology is approved by AICTE (All India Council for Technical Education), affiliated to Anna University, Chennai, and holds autonomous status conferred by UGC, New Delhi and Anna University. The college is NAAC accredited.',
           },
           {
             question: 'What is the admission process for B.E./B.Tech programs?',

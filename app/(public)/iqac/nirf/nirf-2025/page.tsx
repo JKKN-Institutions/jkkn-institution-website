@@ -2,6 +2,7 @@
 
 import { Download } from 'lucide-react'
 import { useEffect } from 'react'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 interface NIRFCategory {
   title: string
@@ -38,6 +39,7 @@ export default function NIRF2025Page() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#FFF8E7] via-[#F5E6D3] to-[#FFF8E7]">
+      <BreadcrumbSchema path="/iqac/nirf/nirf-2025" />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-5xl mx-auto">
           {/* Page Title */}
