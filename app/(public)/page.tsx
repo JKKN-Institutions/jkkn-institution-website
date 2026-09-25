@@ -17,13 +17,13 @@ import { MainInstitutionPageSchema } from '@/components/seo/main-institution/mai
 import { HomepageInstitutionsItemListSchema } from '@/components/seo/main-institution/homepage-institutions-itemlist-schema'
 import { HOME_SPEAKABLE_SELECTORS } from '@/lib/seo/main-institution/page-content'
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
-import { getBreadcrumbsForPath, generateBreadcrumbSchema, serializeSchema } from '@/lib/seo'
 import { resolvePageSchemas } from '@/lib/seo/schema-resolver'
 
 // Generate metadata for SEO
 export async function generateMetadata(): Promise<Metadata> {
-  const breadcrumbs = getBreadcrumbsForPath('/')
-  const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbs)
+  // The homepage emitted a one-item BreadcrumbList through metadata.other, which Next.js
+  // renders as a <meta> tag, never as JSON-LD (measured live 2026-09-25). A breadcrumb
+  // with only the homepage in it says nothing, so it is dropped rather than moved.
 
   const page = await getPageBySlug('')
 
@@ -45,9 +45,6 @@ export async function generateMetadata(): Promise<Metadata> {
         title: 'JKKN Institution | Excellence in Education',
         description: 'Discover world-class education at JKKN Institution. Where tradition meets innovation.',
         images: ['/og-image.png'],
-      },
-      other: {
-        'script:ld+json:breadcrumb': serializeSchema(breadcrumbSchema),
       },
     }
   }
@@ -85,9 +82,6 @@ export async function generateMetadata(): Promise<Metadata> {
       },
     },
     robots: seo?.robots_directive || undefined,
-    other: {
-      'script:ld+json:breadcrumb': serializeSchema(breadcrumbSchema),
-    },
   }
 }
 

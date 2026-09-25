@@ -31,7 +31,7 @@ export default function CityFooter() {
             JKKN College of Engineering and Technology
           </h4>
           <p className="text-sm mb-2 leading-relaxed">
-            AICTE Approved | NBA Accredited | Anna University Affiliated
+            AICTE Approved | Anna University Affiliated
           </p>
           <p className="text-sm mb-2 leading-relaxed">
             Natarajapuram, NH-544, Komarapalayam, Namakkal District, Tamil Nadu — 638183

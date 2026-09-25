@@ -338,6 +338,15 @@ const nextConfig: NextConfig = {
         permanent: false,
       },
 
+      // /engineering-preview was a live orphan (200, in no sitemap or nav) that advertised
+      // "95%+ Placement Rate, 12 LPA Highest Package" - both refuted by NIRF 2026. Measured
+      // still 200 after PR #9 on 2026-09-25; the page is deleted and the path sent home.
+      {
+        source: '/engineering-preview',
+        destination: '/',
+        permanent: true,
+      },
+
       // === Legacy Blog Content → /blog ===
       {
         source: '/the-rise-of-artificial-intelligence-in-healthcare',
