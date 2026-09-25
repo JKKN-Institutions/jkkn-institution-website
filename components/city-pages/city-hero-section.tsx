@@ -7,7 +7,8 @@ interface CityHeroSectionProps {
 }
 
 export function CityHeroSection({ cityConfig }: CityHeroSectionProps) {
-  const stats = [
+  // A city that carries its own sourced stat row uses it; the rest keep the template row.
+  const stats = cityConfig.heroStatItems ?? [
     { num: cityConfig.heroStats.placements, label: 'Placements' },
     { num: cityConfig.heroStats.lpaHighest, label: 'LPA Highest' },
     { num: cityConfig.heroStats.distanceStat, label: cityConfig.heroStats.distanceLabel },
@@ -24,8 +25,12 @@ export function CityHeroSection({ cityConfig }: CityHeroSectionProps) {
 
         {/* H1 */}
         <h1>
-          Best Engineering College Near{' '}
-          <span className="city-highlight">{cityConfig.displayName}</span>
+          {cityConfig.h1 ?? (
+            <>
+              Best Engineering College Near{' '}
+              <span className="city-highlight">{cityConfig.displayName}</span>
+            </>
+          )}
         </h1>
 
         {/* Subheading */}

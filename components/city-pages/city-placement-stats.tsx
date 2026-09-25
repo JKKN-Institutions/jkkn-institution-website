@@ -3,11 +3,14 @@
 
 import Image from 'next/image'
 
+// Read from the college's own NIRF 2026 filing, IR-E-C-37096 (/documents/nirf/2026/engineering.pdf),
+// UG 4-year programmes. The filing gives graduates, placed and median salary per batch; it gives
+// no highest salary and no recruiter count, so neither is shown. Update with the next filing.
 const STATS = [
-  { value: '95%', label: 'Placement Rate' },
-  { value: '₹12', label: 'LPA Highest' },
-  { value: '₹4.5', label: 'LPA Average' },
-  { value: '50+', label: 'Recruiting Companies' },
+  { value: '23 / 53', label: 'Graduates placed, 2024-25' },
+  { value: '₹2.40 L', label: 'Median salary, 2024-25' },
+  { value: '35 / 89', label: 'Graduates placed, 2023-24' },
+  { value: '29 / 126', label: 'Graduates placed, 2022-23' },
 ] as const
 
 const RECRUITERS = [
@@ -23,9 +26,9 @@ export default function CityPlacementStats() {
   return (
     <section className="section bg-white">
       <div className="section-inner">
-        <h2 className="section-title">Placement Highlights</h2>
+        <h2 className="section-title">Placement Record</h2>
         <p className="section-subtitle">
-          Our dedicated placement cell connects talented students with leading companies worldwide
+          As filed by the college in NIRF 2026 (IR-E-C-37096), UG 4-year programmes
         </p>
         <span className="section-accent" aria-hidden="true" />
         <div className="section-spacer" />

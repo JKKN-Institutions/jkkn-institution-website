@@ -1119,3 +1119,53 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── District college list (city pages that carry districtColleges) ─────── */
+.city-page .district-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+}
+
+.city-page .district-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  min-width: 480px;
+}
+
+.city-page .district-table th,
+.city-page .district-table td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.city-page .district-table th {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.city-page .district-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.city-page .district-note {
+  margin-top: 16px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.city-page .district-source {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.city-page .district-source a {
+  color: var(--primary);
+  text-decoration: underline;
+}
