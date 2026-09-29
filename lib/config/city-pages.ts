@@ -323,12 +323,12 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How many engineering colleges are there in Erode district?',
         answer:
-          "Anna University's district list names 13 engineering colleges in Erode district, plus one school of architecture. The full list is on this page. JKKNCET is not one of them because it is in Namakkal district.",
+          "Anna University's district list names 13 engineering colleges in Erode district, plus one school of architecture. JKKNCET is not one of them: it is in Komarapalayam, Namakkal district, 18 km from Erode bus stand on NH-544. The full list is on this page.",
       },
       {
         question: 'Is there a government engineering college in Erode?',
         answer:
-          "Yes. Government College of Engineering, Erode, formerly the Institute of Road and Transport Technology, is on Anna University's Erode district list with TNEA code 2709.",
+          "Yes. Government College of Engineering, Erode, formerly the Institute of Road and Transport Technology, is on Anna University's Erode district list with TNEA code 2709. JKKN College of Engineering and Technology is in Komarapalayam, Namakkal district, 18 km from Erode bus stand on NH-544.",
       },
       {
         question: 'How do I choose an engineering college near Erode?',
