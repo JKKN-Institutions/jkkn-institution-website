@@ -117,7 +117,7 @@ export const BEECECourseSchema = () =>
     duration: 'PT4Y',
     description:
       'Bachelor of Engineering in Electronics and Communication Engineering. Covers electronic circuits, communication systems, signal processing, embedded systems, VLSI design, and wireless technologies.',
-    eligibility: '10+2 with Mathematics, Physics, Chemistry with minimum 50% aggregate',
+    eligibility: '10+2 with Mathematics, Physics, Chemistry with minimum 45% aggregate (40% for BC / MBC / DNC / SC / SCA / ST)',
     approvalBody: 'AICTE and affiliated to Anna University',
   })
 
