@@ -9,7 +9,7 @@ import { BEMechanicalCoursePageProps } from '@/components/cms-blocks/content/be-
  * Institution: JKKN College of Engineering
  * Program: B.E. Mechanical Engineering
  * Duration: 4 Years (8 Semesters)
- * Accreditation: NAAC Accredited
+ * Approval: AICTE, affiliated to Anna University
  */
 
 export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
@@ -19,7 +19,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   heroTitle: 'BE Mechanical Engineering',
   heroSubtitle: 'Mechanical systems, manufacturing and design at JKKN College of Engineering and Technology, Komarapalayam, Namakkal District, Tamil Nadu',
   heroImage: '/images/courses/be-mech/labs/mech-lab-05.jpg',
-  affiliatedTo: 'Affiliated to Anna University | Approved by AICTE | NAAC Accredited',
+  affiliatedTo: 'Affiliated to Anna University | Approved by AICTE | TNEA Code 2647',
 
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
@@ -108,7 +108,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     {
       icon: 'Target',
       title: 'Placement Support',
-      description: 'Dedicated placement cell providing training in aptitude, soft skills, technical interviews and resume building. Recruiters include Tata Motors, Ashok Leyland, TVS, Mahindra and L&T.',
+      description: 'Dedicated placement cell providing training in aptitude, soft skills, technical interviews and resume building, and organising on-campus recruitment drives.',
     },
   ],
 
@@ -348,14 +348,9 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   // ===========================================
   recruitersTitle: 'Top Recruiters',
 
-  recruiters: [
-    'LGB',
-    'Foxconn',
-    'TVS Group',
-    'Sourcesys',
-    'Infinix',
-    'Pronoia Insurance',
-  ],
+  // Emptied 2026-09-30 (GL6-355): three conflicting recruiter lists; restore only from a
+  // placement-office verified list. The section does not render while this is empty.
+  recruiters: [],
 
   // ===========================================
   // Facilities
@@ -537,7 +532,15 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     },
     {
       question: 'How do I get B.E. Mechanical admission at JKKN through TNEA?',
-      answer: 'Register on tneaonline.org, upload your 12th marks with Physics, Chemistry and Mathematics, and receive your TNEA rank. During choice filling, select JKKN College of Engineering and Technology and Mechanical Engineering. Management Quota admission is direct at the college and does not need a TNEA rank.',
+      answer: 'Register on tneaonline.org, upload your 12th marks with Physics, Chemistry and Mathematics, and receive your TNEA rank. During choice filling, select J.K.K. Nataraja College of Engineering and Technology (TNEA counselling code 2647) and Mechanical Engineering. Management Quota admission is direct at the college and does not need a TNEA rank.',
+    },
+    {
+      question: 'What is the TNEA counselling code of JKKN College of Engineering and Technology?',
+      answer: 'The TNEA counselling code is 2647. The college is listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list. Use code 2647 during TNEA choice filling to select B.E. Mechanical Engineering at JKKN.',
+    },
+    {
+      question: 'How do I check the B.E. Mechanical cutoff before TNEA choice filling?',
+      answer: 'Open the official TNEA cutoff portal at cutoff.tneaonline.org, search college code 2647, and read the Mechanical Engineering row for the previous years. Compare it with your own TNEA cutoff mark, then list JKKN Mechanical at the right position in your choice order.',
     },
     {
       question: 'How many B.E. Mechanical seats and what fees does JKKN have?',
@@ -552,8 +555,8 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
       answer: 'Candidates must have passed 10+2 learning assessment with Physics, Chemistry, and Mathematics as core subjects with a minimum of 45% aggregate marks (40% for BC / MBC / DNC / SC / SCA / ST), as per the TNEA information brochure. The minimum age requirement is 17 years as on December 31st of the admission year.',
     },
     {
-      question: 'Is the B.E. Mechanical Engineering program NAAC accredited?',
-      answer: 'Yes, our B.E. Mechanical Engineering program is accredited by the National Assessment and Accreditation Council (NAAC), ensuring that the learning framework and teaching quality meet international standards. The program is also affiliated to Anna University and approved by AICTE.',
+      question: 'Is B.E. Mechanical Engineering at JKKN approved?',
+      answer: 'Yes. B.E. Mechanical Engineering at JKKN College of Engineering and Technology is approved by AICTE for 60 seats in 2026-27 and the college is affiliated to Anna University, Chennai.',
     },
     {
       question: 'What are the career opportunities after completing this program?',
@@ -573,7 +576,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     },
     {
       question: 'What is the placement record for Mechanical Engineering?',
-      answer: 'Our Mechanical Engineering department holds on-campus recruitment drives with companies including Tata Motors, Ashok Leyland, TVS, Mahindra, L&T, Hyundai, Bosch and Siemens.',
+      answer: 'The JKKN Training and Placement Cell organises on-campus recruitment drives and gives aptitude, soft-skills and interview training to Mechanical Engineering learners. Placement data for the college is published in its NIRF filing on the NIRF page of this website.',
     },
     {
       question: 'Is hostel facility available for learners?',

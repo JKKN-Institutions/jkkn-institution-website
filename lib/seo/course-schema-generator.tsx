@@ -143,7 +143,7 @@ export const BEMechanicalCourseSchema = () =>
     duration: 'PT4Y',
     description:
       'Bachelor of Engineering in Mechanical Engineering. Comprehensive program covering thermodynamics, manufacturing, CAD/CAM, robotics, automobile engineering, and industrial automation.',
-    eligibility: '10+2 with Mathematics, Physics, Chemistry with minimum 50% aggregate',
+    eligibility: '10+2 with Mathematics, Physics, Chemistry with minimum 45% aggregate (40% for BC / MBC / DNC / SC / SCA / ST)',
     approvalBody: 'AICTE and affiliated to Anna University',
   })
 
