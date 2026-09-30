@@ -273,11 +273,11 @@ export const BE_ECE_ADMISSION: CourseAdmissionData = {
   affiliated: 'Affiliated to Anna University, Chennai',
   CourseIcon: Antenna,
   heroIntro:
-    'Apply for B.E Electronics & Communication Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved, NAAC accredited,',
+    'Apply for B.E Electronics & Communication Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved,',
   applyUrl: APPLY_URL,
   admissionStatus: ADMISSION_STATUS,
   approvalsLabel: 'Approval',
-  approvalsValue: 'AICTE · NAAC',
+  approvalsValue: 'AICTE',
   eligibility: [
     ...UG_ELIGIBILITY_BASE,
     'Lateral entry to 2nd year — Diploma in Electronics / ECE with minimum 50%',
@@ -314,7 +314,7 @@ export const BE_ECE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What are ECE career options at JKKN?',
       answer:
-        'Embedded systems engineer, VLSI engineer, RF engineer, telecom engineer, signal processing engineer. Companies: Intel, Qualcomm, Texas Instruments, Samsung, Bharti, Jio. Govt: BSNL, DRDO, ISRO.',
+        'ECE graduates work as embedded systems, VLSI, RF, telecom and signal processing engineers, in IT services, and in government jobs through GATE and PSU recruitment. The JKKN Training and Placement Cell organises on-campus recruitment drives and interview training.',
     },
     {
       question: 'Is TNEA mandatory for B.E ECE?',
