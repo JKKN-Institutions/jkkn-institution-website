@@ -179,7 +179,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -354,7 +354,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -455,7 +455,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -561,7 +561,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -668,7 +668,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -775,7 +775,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -881,7 +881,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -986,7 +986,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -1091,7 +1091,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -1196,7 +1196,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -1301,7 +1301,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -1406,7 +1406,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',

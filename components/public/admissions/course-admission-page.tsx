@@ -61,7 +61,7 @@ export interface CourseAdmissionData {
   // Hero
   heroIntro: string
   applyUrl: string
-  applyDeadline: string
+  admissionStatus: string
 
   // Quick facts (icon picked by key)
   approvalsLabel: string
@@ -251,7 +251,7 @@ export function CourseAdmissionPage(props: CourseAdmissionData) {
     CourseIcon,
     heroIntro,
     applyUrl,
-    applyDeadline,
+    admissionStatus,
     approvalsLabel,
     approvalsValue,
     eligibility,
@@ -269,7 +269,7 @@ export function CourseAdmissionPage(props: CourseAdmissionData) {
   const quickFacts: { icon: LucideIcon; label: string; value: string }[] = [
     { icon: Users, label: 'Sanctioned Seats', value: String(seats) },
     { icon: IndianRupee, label: 'Annual Tuition (Mgmt Quota)', value: headlineFee },
-    { icon: CalendarDays, label: 'Last Date to Apply', value: applyDeadline },
+    { icon: CalendarDays, label: 'Admission Status', value: admissionStatus },
     { icon: ShieldCheck, label: approvalsLabel, value: approvalsValue },
   ]
 
@@ -290,7 +290,7 @@ export function CourseAdmissionPage(props: CourseAdmissionData) {
       <section className="bg-[#0b6d41] py-14 md:py-20">
         <div className="max-w-5xl mx-auto px-4 md:px-8 text-center">
           <span className="inline-block bg-[#ffde59] text-[#0b6d41] text-xs font-semibold uppercase tracking-wide px-4 py-1.5 rounded-full mb-5">
-            Admissions Open · 2026-27
+            2026-27 Closed · 2027-28 Enquiry Open
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4">
             {shortName} Admission 2026-27
@@ -316,7 +316,7 @@ export function CourseAdmissionPage(props: CourseAdmissionData) {
             </a>
           </div>
           <p className="text-white/60 text-xs">
-            Application portal closes <span className="font-semibold text-white">{applyDeadline}</span> · Zero application fee
+            2026-27 admissions are closed · <span className="font-semibold text-white">2027-28 enquiries are open</span> · Zero application fee
           </p>
         </div>
       </section>
@@ -547,7 +547,7 @@ export function CourseAdmissionPage(props: CourseAdmissionData) {
 
       {/* ── Important Dates ───────────────────────────────────────────────── */}
       <Section>
-        <SectionHeading kicker="Calendar" title={`Important Dates · ${shortName} 2026-27`} />
+        <SectionHeading kicker="Calendar" title={`Important Dates · ${shortName} 2026-27 (cycle closed)`} />
         <div className="space-y-0">
           {ADMISSION_DATES.map((item, idx) => (
             <div
@@ -655,10 +655,10 @@ export function CourseAdmissionPage(props: CourseAdmissionData) {
       <section className="bg-[#0b6d41] py-14">
         <div className="max-w-3xl mx-auto px-4 md:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-            Ready to apply for {shortName} 2026-27?
+            Planning {shortName} for 2027-28?
           </h2>
           <p className="text-white/80 text-sm md:text-base mb-7">
-            Limited seats · Application closes {applyDeadline} · Zero application fee
+            2026-27 admissions are closed · Enquire now for 2027-28 · Zero application fee
           </p>
           <Link
             href={applyUrl}
@@ -667,7 +667,7 @@ export function CourseAdmissionPage(props: CourseAdmissionData) {
             className="inline-flex items-center gap-2 bg-[#ffde59] text-[#0b6d41] font-bold text-sm px-8 py-3.5 rounded-full shadow hover:bg-[#f5c518] transition-colors"
           >
             <GraduationCap className="w-4 h-4" />
-            Apply Online Now
+            Send a 2027-28 Enquiry
             <ExternalLink className="w-4 h-4" />
           </Link>
         </div>
