@@ -17,9 +17,9 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   // Hero Section
   // ===========================================
   heroTitle: 'BE Mechanical Engineering',
-  heroSubtitle: 'Engineering excellence in mechanical systems, manufacturing, and innovation with 60+ years of academic legacy',
+  heroSubtitle: 'Mechanical systems, manufacturing and design at JKKN College of Engineering and Technology, Komarapalayam, Namakkal District, Tamil Nadu',
   heroImage: '/images/courses/be-mech/labs/mech-lab-05.jpg',
-  affiliatedTo: 'Affiliated to Anna University | Approved by AICTE | NAAC Accredite',
+  affiliatedTo: 'Affiliated to Anna University | Approved by AICTE | NAAC Accredited',
 
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
@@ -88,7 +88,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     {
       icon: 'UserCheck',
       title: 'Expert Senior Learners',
-      description: 'Learn from experienced senior learners with Ph.D. qualifications, extensive industry experience, and active research in areas like thermal engineering, design optimization, and advanced manufacturing technologies.',
+      description: 'Learn from senior learners with M.E. and Ph.D. qualifications, industry experience, and active research in areas like thermal engineering, design optimization, and advanced manufacturing technologies.',
     },
     {
       icon: 'Wrench',
@@ -305,49 +305,41 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
       icon: 'Palette',
       title: 'Mechanical Design Engineer',
       description: 'Design and develop mechanical systems, components, and products using advanced CAD software. Work on innovative solutions for automotive, aerospace, and industrial machinery applications.',
-      avgSalary: '4-8 LPA',
     },
     {
       icon: 'Factory',
       title: 'Production Engineer',
       description: 'Manage manufacturing processes, optimize production lines, implement quality control measures, and improve efficiency. Essential role in automotive, FMCG, and heavy industries.',
-      avgSalary: '3.5-7 LPA',
     },
     {
       icon: 'CheckCircle',
       title: 'Quality Control Engineer',
       description: 'Ensure product quality through testing, inspection, and adherence to standards. Implement quality management systems and continuous improvement methodologies in manufacturing environments.',
-      avgSalary: '3-6 LPA',
     },
     {
       icon: 'Car',
       title: 'Automotive Engineer',
       description: 'Design, develop, and test vehicles and vehicle systems. Work on engine design, vehicle dynamics, safety systems, and emerging technologies like electric and autonomous vehicles.',
-      avgSalary: '5-10 LPA',
     },
     {
       icon: 'Laptop',
       title: 'CAD/CAM Engineer',
       description: 'Develop 3D models, engineering drawings, and manufacturing programs using advanced software. Bridge the gap between design and manufacturing in product development companies.',
-      avgSalary: '4-8 LPA',
     },
     {
       icon: 'Wrench',
       title: 'Maintenance Engineer',
       description: 'Plan and execute preventive and corrective maintenance of industrial equipment. Minimize downtime, extend equipment life, and ensure smooth operations in manufacturing facilities.',
-      avgSalary: '3.5-7 LPA',
     },
     {
       icon: 'Microscope',
       title: 'R&D Engineer',
       description: 'Conduct research, develop new technologies, and innovate products. Work in advanced technology domains like additive manufacturing, materials science, and sustainable engineering.',
-      avgSalary: '5-12 LPA',
     },
     {
       icon: 'Briefcase',
       title: 'Project Manager',
       description: 'Lead engineering projects from conception to completion. Manage teams, budgets, timelines, and stakeholders in manufacturing, construction, and infrastructure projects.',
-      avgSalary: '8-15 LPA',
     },
   ],
 
@@ -540,6 +532,22 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
 
   faqs: [
     {
+      question: 'Which is a good college for B.E. Mechanical Engineering in Tamil Nadu?',
+      answer: 'For learners from Namakkal, Erode, Salem and Tiruppur districts, JKKN College of Engineering and Technology in Komarapalayam, Namakkal District, is an Anna University-affiliated autonomous college offering B.E. Mechanical Engineering with 60 AICTE-approved seats and a Management Quota tuition fee of Rs 45,000 a year. To compare colleges across Tamil Nadu, check the NIRF data, fees and previous-year TNEA Mechanical cutoff of each college on tneaonline.org.',
+    },
+    {
+      question: 'How do I get B.E. Mechanical admission at JKKN through TNEA?',
+      answer: 'Register on tneaonline.org, upload your 12th marks with Physics, Chemistry and Mathematics, and receive your TNEA rank. During choice filling, select JKKN College of Engineering and Technology and Mechanical Engineering. Management Quota admission is direct at the college and does not need a TNEA rank.',
+    },
+    {
+      question: 'How many B.E. Mechanical seats and what fees does JKKN have?',
+      answer: 'B.E. Mechanical Engineering has 60 seats approved by AICTE for 2026-27. Management Quota tuition is Rs 45,000 a year; Government Quota tuition is as per Tamil Nadu Government norms. There is no application fee.',
+    },
+    {
+      question: 'Where is the JKKN Mechanical Engineering college located?',
+      answer: 'JKKN College of Engineering and Technology is at Natarajapuram, NH-544 (Salem to Coimbatore National Highway), Komarapalayam, Namakkal District, Tamil Nadu 638183.',
+    },
+    {
       question: 'What is the eligibility criteria for B.E. Mechanical Engineering?',
       answer: 'Candidates must have passed 10+2 learning assessment with Physics, Chemistry, and Mathematics as core subjects with a minimum of 45% aggregate marks (40% for BC / MBC / DNC / SC / SCA / ST), as per the TNEA information brochure. The minimum age requirement is 17 years as on December 31st of the admission year.',
     },
@@ -584,7 +592,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
   // ===========================================
   // Placement Statistics
   // ===========================================
-  placementStatsTitle: 'Placement Statistics 2023-24',
+  placementStatsTitle: 'Placement Support',
 
   placementStats: [
     {
@@ -604,12 +612,6 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
       label: 'Approval',
       value: 'AICTE',
       description: 'Anna University affiliated',
-    },
-    {
-      icon: 'Building2',
-      label: 'Top Recruiters',
-      value: '75+',
-      description: 'Companies participated',
     },
   ],
 

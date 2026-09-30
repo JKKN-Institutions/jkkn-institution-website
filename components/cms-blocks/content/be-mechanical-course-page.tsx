@@ -1107,11 +1107,13 @@ function FAQSection({
                 />
               </button>
 
-              {openIndex === index && (
-                <div className="px-6 py-4 border-t border-gray-100 bg-white">
-                  <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
-                </div>
-              )}
+              {/* Always in the HTML so crawlers read the answer; hidden only visually until opened. */}
+              <div
+                className="px-6 py-4 border-t border-gray-100 bg-white"
+                hidden={openIndex !== index}
+              >
+                <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+              </div>
             </div>
           ))}
         </div>
