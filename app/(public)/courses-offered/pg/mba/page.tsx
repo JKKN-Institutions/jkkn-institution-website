@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     'MBA college Namakkal',
     'MBA college in Namakkal district',
     'MBA college near Salem',
+    'MBA colleges in Tamil Nadu',
     'TANCET MBA admission',
     'MBA Marketing Finance HR Operations',
   ],
