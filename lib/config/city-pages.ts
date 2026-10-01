@@ -187,7 +187,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -199,7 +199,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Karur', slug: 'karur', distanceLabel: '84 km', emoji: '🚗' },
     ],
     seo: {
-      title: 'Best Engineering College in Coimbatore | JKKNCET — Admissions Open 2026-27',
+      title: 'Best Engineering College in Coimbatore | JKKNCET — 2027-28 Enquiry Open',
       description:
         'JKKN College of Engineering and Technology is 112 km from Coimbatore on NH-544, in Komarapalayam. AICTE approved, affiliated to Anna University. Admissions 2026-27.',
       canonicalPath: '/coimbatore',
@@ -345,7 +345,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -424,7 +424,12 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech), plus M.E. Computer Science and Engineering and a full-time MBA. All programmes are AICTE approved and affiliated to Anna University.',
+      },
+      {
+        question: 'Does JKKNCET offer MBA in Namakkal district?',
+        answer:
+          'Yes. JKKN College of Engineering and Technology in Komarapalayam, Namakkal district, offers a full-time 2-year MBA with 60 AICTE-approved seats, specializations in Marketing, Finance, HR and Operations, and an annual tuition fee of Rs 65,000 (2026-27). Its Tamil Nadu MBA counselling code is 2647. Full details are on the MBA page of this website.',
       },
       {
         question: 'What placement data has JKKNCET filed?',
@@ -439,7 +444,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 65 km from Namakkal. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 65 km from Namakkal. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -452,7 +457,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Rasipuram', slug: 'rasipuram', distanceLabel: '60 km', emoji: '🧵' },
     ],
     seo: {
-      title: 'Best Engineering College in Namakkal | JKKNCET — Admissions Open 2026-27',
+      title: 'Best Engineering College in Namakkal | JKKNCET — 2027-28 Enquiry Open',
       description:
         'JKKN College of Engineering and Technology is in Namakkal district, 65 km from Namakkal town on NH-544, in Komarapalayam. AICTE approved, affiliated to Anna University. Admissions 2026-27.',
       canonicalPath: '/namakkal',
@@ -533,7 +538,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -547,7 +552,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Dharmapuri', slug: 'dharmapuri', distanceLabel: '110 km', emoji: '🌄' },
     ],
     seo: {
-      title: 'Best Engineering College in Salem | JKKNCET — Admissions Open 2026-27',
+      title: 'Best Engineering College in Salem | JKKNCET — 2027-28 Enquiry Open',
       description:
         'JKKN College of Engineering and Technology is 57 km from Salem on NH-544, in Komarapalayam. AICTE approved, affiliated to Anna University. Admissions 2026-27.',
       canonicalPath: '/salem',
@@ -628,7 +633,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -640,7 +645,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Karur', slug: 'karur', distanceLabel: '84 km', emoji: '🚗' },
     ],
     seo: {
-      title: 'Best Engineering College in Tiruppur | JKKNCET — Admissions Open 2026-27',
+      title: 'Best Engineering College in Tiruppur | JKKNCET — 2027-28 Enquiry Open',
       description:
         'JKKN College of Engineering and Technology is 67 km from Tiruppur on NH-544, in Komarapalayam. AICTE approved, affiliated to Anna University. Admissions 2026-27.',
       canonicalPath: '/tiruppur',
@@ -723,7 +728,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -817,7 +822,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 26 km from Tiruchengode. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 26 km from Tiruchengode. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -910,7 +915,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 29 km from Perundurai. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 29 km from Perundurai. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -1003,7 +1008,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -1096,7 +1101,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -1189,7 +1194,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -1282,7 +1287,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
