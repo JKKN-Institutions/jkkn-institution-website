@@ -515,6 +515,14 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   faqTitle: 'Frequently Asked Questions',
   faqs: [
     {
+      question: 'Is JKKN an MBA college in Namakkal district?',
+      answer: 'Yes. JKKN College of Engineering and Technology is in Komarapalayam, Namakkal District, and offers a full-time 2-year MBA with 60 AICTE-approved seats, specializations in Marketing, Finance, HR and Operations, and an annual tuition fee of Rs 65,000 (2026-27). Its Tamil Nadu MBA counselling code is 2647. The campus is 65 km from Namakkal town and 18 km from Erode on NH-544.',
+    },
+    {
+      question: 'What is the Tamil Nadu MBA counselling code of JKKN?',
+      answer: 'The college code is 2647 in the Tamil Nadu MBA / MCA Admissions run by the Directorate of Technical Education (listed as J.K.K. Nataraja College of Engineering and Technology, Komarapalayam). Use code 2647 when you choose JKKN MBA in the state counselling.',
+    },
+    {
       question: 'Is JKKN a good MBA college for students from Erode?',
       answer: 'For students from Erode, JKKN College of Engineering and Technology in Komarapalayam, Namakkal District, is 18 km from Erode on NH-544 and offers a full-time 2-year MBA with 60 AICTE-approved seats, four specializations (Marketing, Finance, HR, Operations) and an annual tuition fee of Rs 65,000. The college is in Namakkal District, not Erode District. Colleges inside Erode District also offer MBA, so compare fees, specializations and travel time before you choose.',
     },
@@ -524,7 +532,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     },
     {
       question: 'How do I get MBA admission at JKKN?',
-      answer: 'Take TANCET (conducted by Anna University) or another accepted entrance test such as CAT, MAT, XAT, CMAT or ATMA. Government Quota MBA seats in Tamil Nadu are allotted through the state MBA counselling based on TANCET scores; Management Quota admission is direct at the college. A bachelor\'s degree in any discipline with at least 50% marks (45% for SC / ST) is required.',
+      answer: 'Take TANCET (conducted by Anna University) or another accepted entrance test such as CAT, MAT, XAT, CMAT or ATMA. Government Quota MBA seats in Tamil Nadu are allotted through the Tamil Nadu MBA / MCA Admissions counselling based on TANCET scores (JKKN college code 2647); Management Quota admission is direct at the college. A bachelor\'s degree in any discipline with at least 50% marks (45% for SC / ST) is required.',
     },
     {
       question: 'What is the duration of the MBA program?',
