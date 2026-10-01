@@ -11,7 +11,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   // Hero Section
   // ==========================================
   heroTitle: 'B.E Electronics & Communication Engineering',
-  heroSubtitle: 'Shape the future of communication technology with expertise in embedded systems, VLSI, wireless communication, and IoT. Our AICTE-approved, NAAC-accredited program prepares you to design, develop, and innovate in the rapidly evolving world of electronics and communication.',
+  heroSubtitle: 'Shape the future of communication technology with expertise in embedded systems, VLSI, wireless communication, and IoT. Our AICTE-approved programme at Komarapalayam, Namakkal District, Tamil Nadu prepares you to design, develop, and innovate in the rapidly evolving world of electronics and communication.',
   heroImage: '/images/courses/be-ece/labs/ece-lab-25.jpg',
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
@@ -20,7 +20,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
     { icon: 'Trophy', label: 'Approval', value: 'AICTE' },
   ],
   heroCTAs: [
-    { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
+    { label: 'Enquire for 2027-28', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
     { label: 'Explore Learning Framework', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: 'Affiliated to Anna University, Chennai',
@@ -44,9 +44,9 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
     },
     {
       icon: 'CheckCircle',
-      title: 'Accreditation',
-      value: 'AICTE & NAAC',
-      description: 'Our program is approved by AICTE (All India Council for Technical Education) and accredited by NAAC, ensuring quality education standards.',
+      title: 'Approval',
+      value: 'AICTE',
+      description: 'Approved by AICTE (All India Council for Technical Education) for 60 seats in 2026-27 and affiliated to Anna University, Chennai.',
     },
 
 
@@ -72,7 +72,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
     {
       icon: 'CheckCircle',
       title: 'Expert Senior Learners',
-      description: 'Learn from highly qualified senior learners with Ph.D. degrees and extensive industry experience in embedded systems, VLSI, communication systems, and signal processing.',
+      description: 'Learn from highly qualified senior learners with M.E. and Ph.D. qualifications and industry experience in embedded systems, VLSI, communication systems, and signal processing.',
     },
     {
       icon: 'CheckCircle',
@@ -81,8 +81,8 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
     },
     {
       icon: 'CheckCircle',
-      title: 'Excellent Placements',
-      description: 'Strong placement record with recruitment from TCS, Infosys, Wipro, Bosch, Samsung, LG, Airtel, Jio, Nokia, and other leading electronics and IT companies.',
+      title: 'Placement Support',
+      description: 'The Training and Placement Cell gives aptitude, soft-skills and interview training and organises on-campus recruitment drives.',
     },
     {
       icon: 'CheckCircle',
@@ -287,37 +287,31 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
       icon: 'Briefcase',
       title: 'Electronics Design Engineer',
       description: 'Design and develop electronic circuits, PCB layouts, and hardware systems for consumer electronics, automotive, and industrial applications.',
-      avgSalary: '₹4-8 LPA',
     },
     {
       icon: 'Briefcase',
       title: 'VLSI Design Engineer',
       description: 'Work on chip design, verification, and testing using advanced EDA tools for semiconductor companies and R&D organizations.',
-      avgSalary: '₹5-10 LPA',
     },
     {
       icon: 'Briefcase',
       title: 'Embedded Systems Engineer',
       description: 'Develop firmware and software for embedded devices in automotive, aerospace, consumer electronics, and medical equipment industries.',
-      avgSalary: '₹4-9 LPA',
     },
     {
       icon: 'Briefcase',
       title: 'Network Engineer',
       description: 'Design, implement, and maintain communication networks, routers, switches, and network security infrastructure for enterprises.',
-      avgSalary: '₹4-7 LPA',
     },
     {
       icon: 'Briefcase',
       title: 'Telecommunications Engineer',
       description: 'Work with telecom service providers on network optimization, 4G/5G deployment, RF engineering, and wireless infrastructure.',
-      avgSalary: '₹4-8 LPA',
     },
     {
       icon: 'Briefcase',
       title: 'IoT Solutions Architect',
       description: 'Design end-to-end IoT ecosystems, sensor networks, cloud platforms, and smart device integration for industry 4.0 applications.',
-      avgSalary: '₹6-12 LPA',
     },
   ],
 
@@ -325,14 +319,9 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   // Top Recruiters
   // ==========================================
   recruitersTitle: 'Our Top Recruiters',
-  recruiters: [
-    'LGB',
-    'Foxconn',
-    'TVS Group',
-    'Sourcesys',
-    'Infinix',
-    'Pronoia Insurance',
-  ],
+  // Emptied 2026-09-30 (GL6-362): unverified recruiter names; restore only from a
+  // placement-office verified list. The section does not render while this is empty.
+  recruiters: [],
 
   // ==========================================
   // Admission Process
@@ -529,16 +518,36 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   faqTitle: 'Frequently Asked Questions',
   faqs: [
     {
+      question: 'Which is a good college for B.E. ECE in Tamil Nadu?',
+      answer: 'For learners from Namakkal, Erode, Salem and Tiruppur districts, JKKN College of Engineering and Technology in Komarapalayam, Namakkal District, is an Anna University-affiliated autonomous college offering B.E. Electronics and Communication Engineering with 60 AICTE-approved seats and a Management Quota tuition fee of Rs 70,000 a year. To compare colleges across Tamil Nadu, check the NIRF data, fees and previous-year TNEA ECE cutoff of each college on tneaonline.org.',
+    },
+    {
+      question: 'How do I get B.E. ECE admission at JKKN through TNEA?',
+      answer: 'Register on tneaonline.org, upload your 12th marks with Physics, Chemistry and Mathematics, and receive your TNEA rank. During choice filling, select J.K.K. Nataraja College of Engineering and Technology (TNEA counselling code 2647) and Electronics and Communication Engineering. Management Quota admission is direct at the college and does not need a TNEA rank.',
+    },
+    {
+      question: 'What is the TNEA counselling code of JKKN College of Engineering and Technology?',
+      answer: 'The TNEA counselling code is 2647. The college is listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list. Use code 2647 during TNEA choice filling to select B.E. ECE at JKKN.',
+    },
+    {
+      question: 'How do I check the B.E. ECE cutoff before TNEA choice filling?',
+      answer: 'Open the official TNEA cutoff portal at cutoff.tneaonline.org, search college code 2647, and read the Electronics and Communication Engineering row for the previous years. Compare it with your own TNEA cutoff mark, then list JKKN ECE at the right position in your choice order.',
+    },
+    {
+      question: 'Where is the JKKN ECE college located?',
+      answer: 'JKKN College of Engineering and Technology is at Natarajapuram, NH-544 (Salem to Coimbatore National Highway), Komarapalayam, Namakkal District, Tamil Nadu 638183.',
+    },
+    {
       question: 'What is the eligibility criteria for B.E. ECE admission?',
       answer: 'Candidates must have passed 10+2 learning assessment with Physics, Chemistry, and Mathematics as core subjects with a minimum of 45% aggregate marks (40% for BC / MBC / DNC / SC / SCA / ST), as per the TNEA information brochure. Admission is based on TNEA rank or merit-based selection.',
     },
     {
       question: 'What are the career prospects after completing B.E. ECE?',
-      answer: 'ECE graduates can pursue careers as Electronics Design Engineers, VLSI Engineers, Embedded Systems Engineers, Network Engineers, Telecommunications Engineers, IoT Architects, and more. Average starting salaries range from ₹4-10 LPA depending on skills and company.',
+      answer: 'ECE graduates can pursue careers as Electronics Design Engineers, VLSI Engineers, Embedded Systems Engineers, Network Engineers, Telecommunications Engineers, IoT Architects, and more.',
     },
     {
-      question: 'Is the ECE program NAAC accredited?',
-      answer: 'Yes, our B.E. Electronics & Communication Engineering program is accredited by the National Assessment and Accreditation Council (NAAC), ensuring quality education that meets international standards.',
+      question: 'Is B.E. ECE at JKKN approved?',
+      answer: 'Yes. B.E. Electronics and Communication Engineering at JKKN College of Engineering and Technology is approved by AICTE for 60 seats in 2026-27 and the college is affiliated to Anna University, Chennai.',
     },
     {
       question: 'What learning lab facilities are available for ECE learners?',
@@ -546,19 +555,15 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
     },
     {
       question: 'What is the placement record for ECE department?',
-      answer: 'Our ECE department holds on-campus recruitment drives with companies including TCS, Infosys, Wipro, Bosch, Samsung, LG, Airtel, Jio, Nokia and Siemens.',
+      answer: 'The JKKN Training and Placement Cell organises on-campus recruitment drives and gives aptitude, soft-skills and interview training to ECE learners. Placement data for the college is published in its NIRF filing on the NIRF page of this website.',
     },
     {
       question: 'Can learners pursue higher studies after B.E. ECE?',
-      answer: 'Yes, learners can pursue M.E./M.Tech in specializations like VLSI Design, Embedded Systems, Communication Systems, Signal Processing, or opt for MBA. Many learners also qualify for GATE and pursue higher education in top IITs and NITs.',
+      answer: 'Yes, learners can pursue M.E./M.Tech in specializations like VLSI Design, Embedded Systems, Communication Systems, Signal Processing, or opt for MBA. Learners can also prepare for GATE for M.E. / M.Tech admission.',
     },
     {
       question: 'Are there research opportunities for ECE learners?',
       answer: 'Yes, learners can participate in research projects in areas like wireless communication, IoT, VLSI design, embedded systems, signal processing, and network security under senior learners guidance. We encourage learners to publish papers in conferences and journals.',
-    },
-    {
-      question: 'Which companies recruit ECE learners from your college?',
-      answer: 'Top recruiters include IT companies (TCS, Infosys, Wipro, Tech Mahindra), electronics companies (Bosch, Samsung, LG, Philips), telecom companies (Airtel, Jio, Nokia, Ericsson), and core engineering companies (BHEL, Siemens, ABB, L&T).',
     },
     {
       question: 'Is hostel facility available for ECE learners?',
@@ -574,8 +579,8 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   // Final CTA Section
   // ==========================================
   ctaTitle: 'Ready to Start Your ECE Journey?',
-  ctaDescription: 'Join JKKN College of Engineering & Technology and become a skilled electronics and communication engineer. Apply now for 2026-27 admissions!',
-  ctaButtonLabel: 'Apply Now',
+  ctaDescription: 'Join JKKN College of Engineering & Technology and become a skilled electronics and communication engineer. 2026-27 admissions are closed; enquiries for 2027-28 are open.',
+  ctaButtonLabel: 'Send a 2027-28 Enquiry',
   ctaButtonLink: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
 
   // ==========================================
