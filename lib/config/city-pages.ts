@@ -523,7 +523,12 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech), plus M.E. Computer Science and Engineering and a full-time MBA. All programmes are AICTE approved and affiliated to Anna University.',
+      },
+      {
+        question: 'Does JKKNCET offer MBA for Salem students?',
+        answer:
+          'Yes. JKKN College of Engineering and Technology in Komarapalayam, Namakkal district, 57 km from Salem on NH-544, offers a full-time 2-year MBA with 60 AICTE-approved seats, specializations in Marketing, Finance, HR and Operations, and an annual tuition fee of Rs 65,000 (2026-27). Its Tamil Nadu MBA counselling code is 2647. Full details are on the MBA page of this website.',
       },
       {
         question: 'What placement data has JKKNCET filed?',
