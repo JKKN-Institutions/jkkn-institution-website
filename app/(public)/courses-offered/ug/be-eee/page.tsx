@@ -3,6 +3,7 @@ import { BE_EEE_SAMPLE_DATA } from '@/lib/cms/templates/engineering/be-eee-data'
 import { BEEEECourseSchema } from '@/lib/seo/course-schema-generator'
 import type { Metadata } from 'next'
 import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
+import { FAQSchemaGenerator } from '@/components/seo/faq-schema-admissions'
 
 /**
  * B.E. Electrical & Electronics Engineering Course Page
@@ -11,33 +12,21 @@ import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
  */
 
 export const metadata: Metadata = {
-  title: 'B.E. Electrical & Electronics Engineering | JKKN College of Engineering',
+  title: 'B.E. EEE College in Namakkal, Tamil Nadu',
   description:
-    'Pursue B.E. in Electrical & Electronics Engineering at JKKN College of Engineering & Technology. AICTE approved, NAAC accredited 4-year program. Industry-aligned learning framework covering Power Systems, Electrical Machines, Power Electronics, Renewable Energy, and Smart Grid Technologies.',
+    'B.E. Electrical and Electronics Engineering at JKKN College of Engineering and Technology (Autonomous), Komarapalayam, Namakkal District, Tamil Nadu. 60 AICTE-approved seats, Anna University affiliated, TNEA code 2647.',
   keywords: [
     'BE EEE',
-    'Electrical Electronics Engineering',
+    'Electrical and Electronics Engineering',
     'JKKN Engineering College',
-    'EEE course Tamil Nadu',
-    'AICTE approved engineering',
-    'NAAC accredited EEE',
+    'EEE engineering college Tamil Nadu',
+    'EEE engineering college Namakkal',
     'Anna University',
-    'Engineering admission',
-    'EEE placements',
-    'Power Systems engineering',
-    'Electrical Machines course',
-    'Power Electronics program',
-    'Renewable Energy',
-    'Smart Grid Technology',
-    'Best engineering college Tamil Nadu',
-    'Namakkal engineering college',
-    'best college for eee in tamilnadu',
-    'best eee colleges in tamilnadu',
-    'eee best colleges in tamilnadu',
-    'top eee engineering colleges in tamilnadu',
-    'top 10 engineering colleges in tamilnadu for eee',
-    'top eee colleges in tamilnadu',
+    'TNEA EEE',
   ],
+  alternates: {
+    canonical: 'https://engg.jkkn.ac.in/courses-offered/ug/be-eee',
+  },
   openGraph: {
     title: 'B.E. Electrical & Electronics Engineering | JKKN College',
     description:
@@ -56,7 +45,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'B.E. Electrical & Electronics Engineering | JKKN',
     description:
-      'AICTE approved, NAAC accredited EEE program. Transform your future with cutting-edge electrical engineering education.',
+      'B.E. EEE in Komarapalayam, Namakkal District, Tamil Nadu. 60 AICTE-approved seats, Anna University affiliated.',
     images: ['/images/courses/be-eee/labs/eee-lab-11.jpg'],
   },
 }
@@ -66,6 +55,7 @@ export default function EEECoursePage() {
     <>
       <BreadcrumbSchema path="/courses-offered/ug/be-eee" />
       <BEEEECourseSchema />
+      <FAQSchemaGenerator faqs={BE_EEE_SAMPLE_DATA.faqs} />
       <main>
         <BEEEECoursePage {...BE_EEE_SAMPLE_DATA} />
       </main>
