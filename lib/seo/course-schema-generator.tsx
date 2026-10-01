@@ -104,7 +104,7 @@ export const BECSECourseSchema = () =>
     description:
       'Bachelor of Engineering in Computer Science and Engineering. This program provides comprehensive knowledge in software development, algorithms, data structures, computer networks, database management, and emerging technologies like AI, Machine Learning, and Cloud Computing.',
     eligibility:
-      '10+2 with Mathematics, Physics, Chemistry/Computer Science/Biology/Biotechnology with minimum 50% aggregate',
+      '10+2 with Mathematics, Physics, Chemistry/Computer Science/Biology/Biotechnology with minimum 45% aggregate (40% for BC / MBC / DNC / SC / SCA / ST)',
     approvalBody: 'AICTE and affiliated to Anna University',
   })
 

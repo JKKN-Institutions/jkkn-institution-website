@@ -33,7 +33,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   // Hero Section
   // ==========================================
   heroTitle: 'B.E Computer Science & Engineering',
-  heroSubtitle: 'Transform your passion for technology into a rewarding career. Our AICTE-approved, NAAC-accredited program combines cutting-edge learning framework with industry-ready skills to shape tomorrow\'s tech leaders.',
+  heroSubtitle: 'Transform your passion for technology into a rewarding career. Our AICTE-approved programme at Komarapalayam, Namakkal District, Tamil Nadu combines cutting-edge learning framework with industry-ready skills to shape tomorrow\'s tech leaders.',
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
     { icon: 'Users', label: 'Seats Available', value: '60' },
@@ -41,7 +41,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     { icon: 'Trophy', label: 'Approval', value: 'AICTE' },
   ],
   heroCTAs: [
-    { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
+    { label: 'Enquire for 2027-28', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
     { label: 'Explore Learning Framework', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: '',
@@ -65,9 +65,9 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     },
     {
       icon: 'CheckCircle',
-      title: 'Accreditation',
-      value: 'AICTE & NAAC',
-      description: 'Approved by AICTE and accredited by NAAC ensuring quality education standards and global recognition.',
+      title: 'Approval',
+      value: 'AICTE',
+      description: 'Approved by AICTE for 60 seats in 2026-27 and affiliated to Anna University, Chennai.',
     },
     {
       icon: 'Building2',
@@ -111,8 +111,8 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     },
     {
       icon: 'ScrollText',
-      title: 'Certification Programs',
-      description: 'Free industry certifications from Microsoft, AWS, Oracle, and Google integrated with the learning framework.',
+      title: 'Certification Preparation',
+      description: 'Preparation support for industry certification exams alongside the Anna University learning framework.',
     },
     {
       icon: 'Trophy',
@@ -122,7 +122,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     {
       icon: 'GraduationCap',
       title: 'Expert Senior Learners',
-      description: 'Learn from highly qualified senior learners with Ph.D. degrees and extensive industry experience in emerging technologies.',
+      description: 'Learn from highly qualified senior learners with postgraduate and Ph.D. qualifications in emerging technologies.',
     },
   ],
 
@@ -307,40 +307,35 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   // Fee Structure
   // ==========================================
   feeTitle: 'Fee Structure 2026-27',
-  feeDescription: 'Affordable quality education with multiple scholarship opportunities and flexible payment options.',
+  feeDescription: 'Annual tuition for 2026-27 from the JKKN course fee sheet. Government and first-graduate scholarships apply for eligible learners.',
   feeTable: {
     headers: ['Fee Component', 'Government Quota', 'Management Quota', 'NRI Quota'],
     rows: [
-      { component: 'Tuition Fee (Annual, 2026-27)', govt: 'As per Govt. norms', mgmt: '₹80,000', nri: 'Not offered' },
+      { component: 'Tuition Fee (Annual, 2026-27)', govt: '₹65,000', mgmt: '₹80,000', nri: 'Not offered' },
       { component: 'Examination Fee & Caution Deposit', govt: 'As notified by the university', mgmt: 'As notified by the university', nri: 'Not offered' },
       { component: 'Hostel Fee (Optional)', govt: 'As quoted by the admissions office', mgmt: 'As quoted by the admissions office', nri: 'Not offered' },
     ],
     totals: {
-      component: 'Annual Tuition (Management Quota)',
-      govt: 'As per Govt. norms',
+      component: 'Annual Tuition',
+      govt: '₹65,000',
       mgmt: '₹80,000',
       nri: 'Not offered',
     },
   },
-  scholarships: [
-    { percentage: '100%', criteria: '12th Aggregate ≥ 95%' },
-    { percentage: '75%', criteria: '12th Aggregate ≥ 90%' },
-    { percentage: '50%', criteria: '12th Aggregate ≥ 85%' },
-    { percentage: '25%', criteria: '12th Aggregate ≥ 80%' },
-  ],
+  // Emptied 2026-10-01 (GL6-369): merit slabs not verified; the section does not render while empty.
+  scholarships: [],
 
   // ==========================================
   // Placements
   // ==========================================
-  placementsTitle: 'Exceptional Placement Record',
+  placementsTitle: 'Placement Support',
   placementsStats: [
     { label: 'Placement Cell', value: 'On-Campus' },
     { label: 'Placement Training', value: 'Included' },
-    { label: 'Recruiting Companies', value: '6' },
   ],
-  recruiters: [
-    'LGB', 'Foxconn', 'TVS Group', 'Sourcesys', 'Infinix', 'Pronoia Insurance',
-  ],
+  // Emptied 2026-10-01 (GL6-369): unverified recruiter names; restore only from a
+  // placement-office verified list. The recruiter grid does not render while this is empty.
+  recruiters: [],
 
   // ==========================================
   // Career Paths
@@ -350,42 +345,36 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     {
       icon: 'Laptop',
       title: 'Software Engineer',
-      salary: '₹4-15 LPA',
       description: 'Design, develop, and maintain software applications and systems for various industries.',
       skills: ['Java', 'Python', 'DSA', 'System Design'],
     },
     {
       icon: 'BarChart3',
       title: 'Data Scientist',
-      salary: '₹6-20 LPA',
       description: 'Analyze complex data sets to derive actionable insights and drive business decisions.',
       skills: ['Python', 'ML', 'Statistics', 'SQL'],
     },
     {
       icon: 'Bot',
       title: 'AI/ML Engineer',
-      salary: '₹8-25 LPA',
       description: 'Build intelligent systems and models that can learn, predict, and automate tasks.',
       skills: ['TensorFlow', 'PyTorch', 'NLP', 'Deep Learning'],
     },
     {
       icon: 'Globe',
       title: 'Full Stack Developer',
-      salary: '₹5-18 LPA',
       description: 'Develop complete web applications handling both frontend and backend components.',
       skills: ['React', 'Node.js', 'MongoDB', 'AWS'],
     },
     {
       icon: 'Cloud',
       title: 'Cloud Architect',
-      salary: '₹10-30 LPA',
       description: 'Design and implement scalable cloud infrastructure and solutions.',
       skills: ['AWS', 'Azure', 'GCP', 'DevOps'],
     },
     {
       icon: 'Lock',
       title: 'Cybersecurity Analyst',
-      salary: '₹6-20 LPA',
       description: 'Protect organizations from cyber threats and ensure data security.',
       skills: ['Security', 'Networking', 'Ethical Hacking', 'SIEM'],
     },
@@ -563,36 +552,52 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   faqTitle: 'Frequently Asked Questions',
   faqs: [
     {
+      question: 'Which is a good college for B.E. CSE in Tamil Nadu?',
+      answer: 'For learners from Namakkal, Erode, Salem and Tiruppur districts, JKKN College of Engineering and Technology in Komarapalayam, Namakkal District, is an Anna University-affiliated autonomous college offering B.E. Computer Science and Engineering with 60 AICTE-approved seats and an annual tuition fee of Rs 80,000 under Management Quota. To compare colleges across Tamil Nadu, check the NIRF data, fees and previous-year TNEA CSE cutoff of each college on tneaonline.org.',
+    },
+    {
+      question: 'How do I get B.E. CSE admission at JKKN through TNEA?',
+      answer: 'Register on tneaonline.org, upload your 12th marks with Physics, Chemistry and Mathematics, and receive your TNEA rank. During choice filling, select J.K.K. Nataraja College of Engineering and Technology (TNEA counselling code 2647) and Computer Science and Engineering. Management Quota admission is direct at the college and does not need a TNEA rank.',
+    },
+    {
+      question: 'What is the TNEA counselling code of JKKN College of Engineering and Technology?',
+      answer: 'The TNEA counselling code is 2647. The college is listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list. Use code 2647 during TNEA choice filling to select B.E. CSE at JKKN.',
+    },
+    {
+      question: 'How do I check the B.E. CSE cutoff before TNEA choice filling?',
+      answer: 'Open the official TNEA cutoff portal at cutoff.tneaonline.org, search college code 2647, and read the Computer Science and Engineering row for the previous years. Compare it with your own TNEA cutoff mark, then list JKKN CSE at the right position in your choice order.',
+    },
+    {
+      question: 'Where is the JKKN CSE college located?',
+      answer: 'JKKN College of Engineering and Technology is at Natarajapuram, NH-544 (Salem to Coimbatore National Highway), Komarapalayam, Namakkal District, Tamil Nadu 638183.',
+    },
+    {
       question: 'What is the eligibility criteria for B.E. CSE at JKKN?',
-      answer: 'Candidates must have completed 12th Standard (10+2) or equivalent learning assessment with Physics, Chemistry, and Mathematics as core subjects. A minimum aggregate of 45% marks is required for general category candidates, while reserved category candidates need a minimum of 40%. Additionally, candidates must have a valid TNEA counselling rank for government quota seats or can apply directly for management quota admission. The age limit is generally below 21 years as of the date of admission.',
+      answer: 'Candidates must have completed 12th Standard (10+2) or equivalent learning assessment with Physics, Chemistry, and Mathematics as core subjects. A minimum aggregate of 45% marks is required for general category candidates, while reserved category candidates need a minimum of 40%. Additionally, candidates must have a valid TNEA counselling rank for government quota seats or can apply directly for management quota admission.',
     },
     {
       question: 'What is the duration of B.E. Computer Science and Engineering?',
       answer: 'B.E. Computer Science and Engineering is a 4-year (8 semesters) full-time undergraduate program. Each academic year consists of two semesters with continuous internal assessment and end-semester learning assessments conducted by Anna University. The program includes learning studio lectures, learning lab sessions, seminars, industrial training, and a final year project.',
     },
     {
-      question: 'Is B.E. CSE at JKKN AICTE approved and NAAC accredited?',
-      answer: 'Yes, the B.E. Computer Science and Engineering program at JKKN College of Engineering & Technology is approved by AICTE (All India Council for Technical Education) and accredited by NAAC (National Board of Accreditation). This ensures that our program meets the highest quality standards in technical education and is recognized nationally and internationally for higher studies and employment opportunities.',
+      question: 'Is B.E. CSE at JKKN approved?',
+      answer: 'Yes. B.E. Computer Science and Engineering at JKKN College of Engineering and Technology is approved by AICTE for 60 seats in 2026-27 and the college is affiliated to Anna University, Chennai.',
     },
     {
       question: 'What are the career opportunities after B.E. CSE?',
-      answer: 'Graduates of B.E. CSE have diverse career opportunities across multiple industries. Popular roles include Software Engineer, Data Scientist, AI/ML Engineer, Full Stack Developer, Cloud Architect, Cybersecurity Analyst, DevOps Engineer, System Architect, Database Administrator, and Technical Consultant. Our top recruiters include TCS, Infosys, Wipro, Cognizant, HCL, Amazon, Google, Microsoft, Zoho, and many more. Learners can also pursue higher studies like M.Tech, MBA, or MS abroad.',
+      answer: 'Graduates of B.E. CSE have diverse career opportunities across multiple industries. Popular roles include Software Engineer, Data Scientist, AI/ML Engineer, Full Stack Developer, Cloud Architect, Cybersecurity Analyst, DevOps Engineer, System Architect, Database Administrator, and Technical Consultant. Learners can also pursue higher studies like M.Tech, MBA, or MS abroad.',
     },
     {
       question: 'What is the placement record for B.E. CSE at JKKN?',
-      answer: 'JKKN College of Engineering & Technology runs a dedicated Training & Placement Cell for B.E. CSE learners, providing aptitude training, soft skills development, mock interviews and industry certifications, with on-campus recruitment drives held through the year.',
+      answer: 'JKKN College of Engineering & Technology runs a dedicated Training & Placement Cell for B.E. CSE learners, providing aptitude training, soft skills development and mock interviews, with on-campus recruitment drives held through the year.',
     },
     {
       question: 'What are the fee structure and scholarship options?',
-      answer: 'The annual tuition fee for B.E. CSE under government quota is approximately ₹45,000 and under management quota is ₹85,000. Merit scholarships ranging from 25% to 100% fee waiver are available based on 12th standard marks. Government scholarships for SC/ST/OBC/BC categories, first-generation graduate scholarships, and sports quotas are also applicable. We also offer flexible payment options and education loan assistance through partner banks.',
+      answer: 'For 2026-27 the annual tuition fee for B.E. CSE is ₹65,000 under Government Quota and ₹80,000 under Management Quota (JKKN course fee sheet). Examination fees and caution deposit are charged as notified by the university; hostel is optional. Government scholarships for SC / ST / BC / MBC categories and first-graduate scholarships apply for eligible learners.',
     },
     {
       question: 'Does JKKN provide hostel facilities for B.E. CSE learners?',
       answer: 'Yes, JKKN provides separate hostel facilities for boys and girls within the campus. The hostels offer comfortable accommodation with facilities including furnished rooms, 24/7 Wi-Fi, mess with nutritious food, recreation areas, gymnasium, and round-the-clock security. Hostel charges, which include accommodation and meals, are quoted by the admissions office. Transportation facilities are also available for day scholars from nearby towns.',
-    },
-    {
-      question: 'What certifications can I get during B.E. CSE at JKKN?',
-      answer: 'JKKN has partnered with leading technology companies to offer industry-recognized certifications integrated with our learning framework. Learners can earn certifications in AWS Cloud Practitioner, Microsoft Azure Fundamentals, Google IT Support, Oracle Database, Python Programming, Java SE, Cisco CCNA, and more. These certifications are provided at subsidized or no additional cost and significantly enhance employability.',
     },
   ],
 
@@ -600,9 +605,9 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   // CTA Section
   // ==========================================
   ctaTitle: 'Ready to Shape Your Future in Technology?',
-  ctaDescription: 'Join thousands of successful alumni who launched their tech careers from JKKN. Applications for 2026-27 batch are now open!',
+  ctaDescription: 'Build your tech career at JKKN College of Engineering and Technology. 2026-27 admissions are closed; enquiries for 2027-28 are open.',
   ctaButtons: [
-    { label: 'Apply Now', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
+    { label: 'Send a 2027-28 Enquiry', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
     { label: 'Talk to Counselor', link: 'tel:+919345855001', variant: 'secondary' },
   ],
   ctaContact: [],
