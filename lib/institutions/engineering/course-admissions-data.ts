@@ -109,11 +109,11 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
   affiliated: 'Affiliated to Anna University, Chennai',
   CourseIcon: Cpu,
   heroIntro:
-    'Apply for B.E Computer Science & Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved, NAAC accredited,',
+    'Apply for B.E Computer Science & Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved,',
   applyUrl: APPLY_URL,
   admissionStatus: ADMISSION_STATUS,
   approvalsLabel: 'Approval',
-  approvalsValue: 'AICTE · NAAC',
+  approvalsValue: 'AICTE',
   eligibility: [
     ...UG_ELIGIBILITY_BASE,
     'Lateral entry to 2nd year — Diploma in Computer Science / IT with minimum 50%',
@@ -122,7 +122,7 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
   documentsAdditionalLabel: 'for UG (B.E CSE) Applicants',
   feeBreakdown: [
     { item: 'Tuition Fee (Management Quota)', amount: '₹80,000', note: 'Highest demand branch — premium fee' },
-    { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norms', note: 'Fixed by Tamil Nadu Govt / Anna University' },
+    { item: 'Tuition Fee (Government Quota)', amount: '₹65,000', note: '2026-27 JKKN course fee sheet' },
     { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
@@ -140,7 +140,7 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the B.E CSE fee at JKKN?',
       answer:
-        'Management Quota: ₹80,000/year (highest among engineering branches due to demand). Government Quota: as per Tamil Nadu Government norms. Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
+        'Management Quota: ₹80,000/year (highest among engineering branches due to demand). Government Quota: ₹65,000/year (2026-27 JKKN course fee sheet). Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
     },
     {
       question: 'Does B.E CSE cover AI / Machine Learning?',
