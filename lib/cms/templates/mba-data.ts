@@ -515,6 +515,10 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   faqTitle: 'Frequently Asked Questions',
   faqs: [
     {
+      question: 'How do I choose an MBA college in Tamil Nadu?',
+      answer: 'For learners from Namakkal, Erode and Salem districts, JKKN College of Engineering and Technology in Komarapalayam offers a full-time 2-year MBA with 60 AICTE-approved seats, four specializations (Marketing, Finance, HR, Operations) and an annual tuition fee of Rs 65,000 for both Government and Management Quota (2026-27 fee sheet). To compare MBA colleges across Tamil Nadu, check AICTE approval, the NIRF data each college files, the specializations offered, the annual fee, and the previous year allotment in the Tamil Nadu MBA counselling.',
+    },
+    {
       question: 'Is JKKN an MBA college in Namakkal district?',
       answer: 'Yes. JKKN College of Engineering and Technology is in Komarapalayam, Namakkal District, and offers a full-time 2-year MBA with 60 AICTE-approved seats, specializations in Marketing, Finance, HR and Operations, and an annual tuition fee of Rs 65,000 (2026-27). Its Tamil Nadu MBA counselling code is 2647. The campus is 65 km from Namakkal town and 18 km from Erode on NH-544.',
     },
@@ -556,7 +560,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     {
       question: 'How much is the MBA program fee?',
       answer:
-        'For 2026-27 the annual tuition fee for MBA is ₹65,000 (JKKN course fee sheet). Examination fees and caution deposit are charged as notified by the university; hostel is optional and quoted by the admissions office. Government scholarships apply for eligible learners.',
+        'For 2026-27 the annual tuition fee for MBA is ₹65,000 for both Government and Management Quota (JKKN course fee sheet). Examination fees and caution deposit are charged as notified by the university; hostel is optional and quoted by the admissions office. Government scholarships apply for eligible learners.',
     },
     {
       question: 'What is the placement record for MBA graduates?',
