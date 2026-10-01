@@ -151,20 +151,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Coimbatore to be added here. Include their experience at JKKNCET, what they liked about the campus, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Coimbatore to be added here. Focus on the ease of commute/hostel life and the quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Coimbatore?',
@@ -269,20 +257,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Erode to be added here. Include their experience at JKKNCET, what they liked about the campus, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Erode to be added here. Focus on the ease of commute and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     // Names and TNEA codes copied from Anna University's own district page on 2026-09-25.
     // Kongu School of Architecture (TNEA 2344) is on that page too; it is left out because
     // this table lists engineering colleges.
@@ -427,20 +403,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Namakkal to be added here. Include their experience at JKKNCET, the convenience of studying locally, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Namakkal to be added here. Focus on the proximity advantage and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Namakkal?',
@@ -533,20 +497,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Salem to be added here. Include their experience at JKKNCET, what they liked about the campus, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Salem to be added here. Focus on the commute experience and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Salem?',
@@ -640,20 +592,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Tiruppur to be added here. Include their experience at JKKNCET, what they liked about the campus, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Tiruppur to be added here. Focus on hostel life and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Tiruppur?',
@@ -747,20 +687,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Karur to be added here. Include their experience at JKKNCET, what they liked about the campus, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Karur to be added here. Focus on hostel life and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Karur?',
@@ -853,20 +781,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Tiruchengode to be added here. Include their experience at JKKNCET, the convenience of the short commute, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Tiruchengode to be added here. Focus on the proximity advantage and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Tiruchengode?',
@@ -958,20 +874,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Perundurai to be added here. Include their experience at JKKNCET, the convenience of the short commute, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Perundurai to be added here. Focus on the ease of commute and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Perundurai?',
@@ -1063,20 +967,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Dharmapuri to be added here. Include their experience at JKKNCET, hostel life, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Dharmapuri to be added here. Focus on the residential campus experience and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Dharmapuri?',
@@ -1168,20 +1060,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Rasipuram to be added here. Include their experience at JKKNCET, the same-district advantage, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Rasipuram to be added here. Focus on hostel/commute experience and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Rasipuram?',
@@ -1273,20 +1153,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Mettur to be added here. Include their experience at JKKNCET, what they liked about the campus, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Mettur to be added here. Focus on the commute/hostel experience and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Mettur?',
@@ -1378,20 +1246,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Trichy to be added here. Include their experience at JKKNCET, hostel life, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Trichy to be added here. Focus on the residential campus experience and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Trichy?',
