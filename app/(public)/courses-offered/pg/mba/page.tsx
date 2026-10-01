@@ -3,6 +3,7 @@ import { MBA_SAMPLE_DATA } from '@/lib/cms/templates/mba-data'
 import { MBACourseSchema } from '@/lib/seo/course-schema-generator'
 import type { Metadata } from 'next'
 import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
+import { FAQSchemaGenerator } from '@/components/seo/faq-schema-admissions'
 
 /**
  * MBA (Master of Business Administration) Course Page
@@ -11,55 +12,26 @@ import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
  */
 
 export const metadata: Metadata = {
-  title: 'MBA - Master of Business Administration | JKKN Institutions',
+  title: 'MBA College near Erode, Tamil Nadu - Komarapalayam, 18 km',
   description:
-    'Pursue MBA at JKKN Institutions. AICTE approved 2-year postgraduate program with specializations in Marketing, Finance, HR, and Operations. On-campus recruitment drives with corporate recruiters. Transform your career with strategic business education.',
+    'Full-time 2-year MBA (Marketing, Finance, HR, Operations) at JKKN College of Engineering and Technology, Komarapalayam, Namakkal District - 18 km from Erode on NH-544. 60 AICTE-approved seats, TANCET admission, Rs 65,000 a year.',
   keywords: [
     'MBA',
     'Master of Business Administration',
     'JKKN MBA',
-    'MBA Tamil Nadu',
-    'AICTE approved MBA',
-    'MBA admissions',
-    'MBA placements',
-    'MBA specializations',
-    'Marketing MBA',
-    'Finance MBA',
-    'HR MBA',
-    'Operations Management MBA',
-    'Business school Tamil Nadu',
-    'Best MBA college',
-    'MBA course details',
-    'MBA eligibility',
-    'MBA fee structure',
-    'Postgraduate management',
-    'top mba colleges in tamilnadu',
-    'best mba colleges in tamilnadu',
-    'mba colleges in tamilnadu',
-    'top 10 mba colleges in tamilnadu',
-    'mba distance education in tamilnadu',
-    'mba correspondence course in tamilnadu',
-    'mba courses in tamilnadu',
-    'mba hospital management colleges in tamilnadu',
-    'top 10 mba logistics colleges in tamilnadu',
-    'top mba colleges in tamilnadu with fees structure',
-    'best mba colleges in tamilnadu with low fees',
-    'best university for mba distance education in tamilnadu',
-    'mba colleges ranking in tamilnadu',
-    'mba courses correspondence in tamilnadu',
-    'mba logistics colleges in tamilnadu',
-    'mba hr distance education in tamilnadu',
-    'mba hr courses in tamilnadu',
-    'private mba colleges in tamilnadu',
-    'top 5 mba colleges in tamilnadu',
-    'best distance education university in tamilnadu for mba',
-    'best mba distance education university in tamilnadu',
-    'best mba hr colleges in tamilnadu',
+    'MBA college near Erode',
+    'MBA college Komarapalayam',
+    'MBA college Namakkal',
+    'TANCET MBA admission',
+    'MBA Marketing Finance HR Operations',
   ],
+  alternates: {
+    canonical: 'https://engg.jkkn.ac.in/courses-offered/pg/mba',
+  },
   openGraph: {
     title: 'MBA - Master of Business Administration | JKKN',
     description:
-      'Launch your management career with MBA at JKKN. Industry-integrated learning framework, expert senior learners, case-based learning, and on-campus placement support.',
+      'Full-time MBA at JKKN College of Engineering and Technology, Komarapalayam - 18 km from Erode. Marketing, Finance, HR and Operations specializations, case-based classes and on-campus placement support.',
     type: 'website',
     images: [
       {
@@ -74,7 +46,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'MBA - Master of Business Administration | JKKN',
     description:
-      'AICTE approved MBA program. Transform your career with strategic business education and industry exposure.',
+      'AICTE-approved full-time MBA in Komarapalayam, Namakkal District - 18 km from Erode on NH-544.',
     images: ['/images/engineering/senthuraja-hall/senthuraja-hall-07.jpg'],
   },
 }
@@ -84,6 +56,7 @@ export default function Page() {
     <>
       <BreadcrumbSchema path="/courses-offered/pg/mba" />
       <MBACourseSchema />
+      <FAQSchemaGenerator faqs={MBA_SAMPLE_DATA.faqs} />
       <main>
         <MBACoursePage {...MBA_SAMPLE_DATA} />
       </main>

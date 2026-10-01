@@ -21,11 +21,11 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     { icon: '', label: 'Approval', value: 'AICTE' },
   ],
   heroCTAs: [
-    { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
+    { label: 'Enquire for 2027-28', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
     { label: 'View Learning Framework', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: 'AICTE Approved',
-  admissionBadge: 'Admissions Open 2026-27',
+  admissionBadge: '2027-28 Enquiry Open',
 
   // ==========================================
   // Program Overview
@@ -55,7 +55,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
       icon: 'Users',
       title: 'Industry Integration',
       description:
-        'Strong corporate partnerships with regular guest lectures, workshops, and live projects from leading companies.',
+        'Guest lectures and workshops with industry practitioners as part of the learning framework.',
     },
     {
       icon: 'GraduationCap',
@@ -73,19 +73,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
       icon: 'Target',
       title: 'Case-Based Learning',
       description:
-        'Harvard case methodology with real business scenarios to develop analytical and problem-solving skills.',
-    },
-    {
-      icon: 'Lightbulb',
-      title: 'Entrepreneurship Cell',
-      description:
-        'Incubation support, mentorship, and funding assistance for learners aspiring to start their own ventures.',
-    },
-    {
-      icon: 'BookOpen',
-      title: 'Research Opportunities',
-      description:
-        'Engage in cutting-edge research with senior learners guidance and present papers at national and international conferences.',
+        'Case-study based classes built on real business scenarios to develop analytical and problem-solving skills.',
     },
     {
       icon: 'BarChart3',
@@ -324,7 +312,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     { component: 'Annual Tuition (Management Quota)', amount: '₹65,000', isTotal: true },
   ],
   feeDisclaimer:
-    '*Fee structure is subject to change. Installment payment options available. Scholarships available for meritorious learners.',
+    '*Annual tuition from the 2026-27 JKKN course fee sheet. Fee structure is subject to change.',
 
   // ==========================================
   // Career Opportunities
@@ -336,84 +324,72 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
       title: 'Business Development Manager',
       description:
         'Drive business growth through strategic partnerships, market expansion, and new revenue streams.',
-      avgSalary: '6-10 LPA',
     },
     {
       icon: 'BarChart3',
       title: 'Marketing Manager',
       description:
         'Lead marketing campaigns, brand strategies, and digital marketing initiatives for products and services.',
-      avgSalary: '5-9 LPA',
     },
     {
       icon: 'DollarSign',
       title: 'Financial Analyst',
       description:
         'Analyze financial data, prepare reports, and provide insights for investment and business decisions.',
-      avgSalary: '6-11 LPA',
     },
     {
       icon: 'Users',
       title: 'HR Manager',
       description:
         'Manage talent acquisition, team member development, performance management, and organizational culture.',
-      avgSalary: '5-9 LPA',
     },
     {
       icon: 'Target',
       title: 'Operations Manager',
       description:
         'Optimize business processes, manage supply chains, and ensure operational efficiency and quality.',
-      avgSalary: '6-10 LPA',
     },
     {
       icon: 'TrendingUp',
       title: 'Management Consultant',
       description:
         'Advise organizations on strategy, operations, and transformation to solve complex business challenges.',
-      avgSalary: '8-15 LPA',
     },
     {
       icon: 'Briefcase',
       title: 'Product Manager',
       description:
         'Define product vision, strategy, and roadmap while collaborating with cross-functional teams.',
-      avgSalary: '7-12 LPA',
     },
     {
       icon: 'Building2',
       title: 'Investment Banking Analyst',
       description:
         'Support M&A deals, IPOs, and corporate finance transactions with financial modeling and analysis.',
-      avgSalary: '8-15 LPA',
     },
     {
       icon: 'Lightbulb',
       title: 'Entrepreneur/Startup Founder',
       description:
         'Launch and scale your own venture with comprehensive business knowledge and entrepreneurial skills.',
-      avgSalary: 'Variable',
     },
     {
       icon: 'Award',
       title: 'Business Analyst',
       description:
         'Bridge business needs and technology solutions through data analysis and process improvement.',
-      avgSalary: '5-9 LPA',
     },
     {
       icon: 'BarChart3',
       title: 'Sales Manager',
       description:
         'Lead sales teams, develop strategies, manage client relationships, and drive revenue growth.',
-      avgSalary: '6-11 LPA',
     },
     {
       icon: 'Target',
       title: 'Strategy Manager',
       description:
         'Develop corporate strategies, analyze market trends, and guide long-term business planning.',
-      avgSalary: '8-14 LPA',
     },
   ],
 
@@ -430,14 +406,9 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   // Top Recruiters
   // ==========================================
   recruitersTitle: 'Our Top Recruiters',
-  recruiters: [
-    'LGB',
-    'Foxconn',
-    'TVS Group',
-    'Sourcesys',
-    'Infinix',
-    'Pronoia Insurance',
-  ],
+  // Emptied 2026-10-01 (GL6-371): unverified recruiter names; restore only from a
+  // placement-office verified list. The section does not render while this is empty.
+  recruiters: [],
 
   // ==========================================
   // Facilities
@@ -461,7 +432,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     {
       name: 'Digital Library',
       description:
-        'Extensive collection of books, journals, e-resources, and databases including Harvard Business Review and EBSCO.',
+        'Extensive collection of books, journals, and e-resources.',
       image:
         '/images/engineering/library/library-02.jpg',
     },
@@ -476,11 +447,6 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
       name: 'Placement Cell',
       description:
         'Dedicated placement cell with training facilities, mock interview rooms, and corporate interface lounge.',
-    },
-    {
-      name: 'Entrepreneurship Cell',
-      description:
-        'Incubation center with mentorship programs, funding assistance, and co-working spaces for learner startups.',
     },
     {
       name: 'Sports & Recreation',
@@ -549,6 +515,18 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   faqTitle: 'Frequently Asked Questions',
   faqs: [
     {
+      question: 'Is JKKN a good MBA college for students from Erode?',
+      answer: 'For students from Erode, JKKN College of Engineering and Technology in Komarapalayam, Namakkal District, is 18 km from Erode on NH-544 and offers a full-time 2-year MBA with 60 AICTE-approved seats, four specializations (Marketing, Finance, HR, Operations) and an annual tuition fee of Rs 65,000. The college is in Namakkal District, not Erode District. Colleges inside Erode District also offer MBA, so compare fees, specializations and travel time before you choose.',
+    },
+    {
+      question: 'How far is the JKKN MBA campus from Erode?',
+      answer: 'The campus is at Natarajapuram, NH-544 (Salem to Coimbatore National Highway), Komarapalayam, Namakkal District, Tamil Nadu 638183 - about 18 km from Erode by road on NH-544.',
+    },
+    {
+      question: 'How do I get MBA admission at JKKN?',
+      answer: 'Take TANCET (conducted by Anna University) or another accepted entrance test such as CAT, MAT, XAT, CMAT or ATMA. Government Quota MBA seats in Tamil Nadu are allotted through the state MBA counselling based on TANCET scores; Management Quota admission is direct at the college. A bachelor\'s degree in any discipline with at least 50% marks (45% for SC / ST) is required.',
+    },
+    {
       question: 'What is the duration of the MBA program?',
       answer:
         'The MBA program is a 2-year full-time course divided into 4 semesters. Each academic year consists of two semesters with learning assessments at the end of each semester.',
@@ -566,12 +544,12 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     {
       question: 'How much is the MBA program fee?',
       answer:
-        'The total annual fee is ₹1,40,000, which includes tuition, learning assessment, library, computer learning lab, and other charges. Installment payment options are available. Scholarships and fee concessions are provided for meritorious learners and reserved categories.',
+        'For 2026-27 the annual tuition fee for MBA is ₹65,000 (JKKN course fee sheet). Examination fees and caution deposit are charged as notified by the university; hostel is optional and quoted by the admissions office. Government scholarships apply for eligible learners.',
     },
     {
       question: 'What is the placement record for MBA graduates?',
       answer:
-        'Our MBA learners are supported by a dedicated placement cell that coordinates on-campus recruitment drives with recruiters across IT, BFSI, FMCG, consulting and manufacturing.',
+        'Our MBA learners are supported by a dedicated placement cell that coordinates on-campus recruitment drives and interview preparation. Placement data for the college is published in its NIRF filing on the NIRF page of this website.',
     },
     {
       question: 'Can I pursue MBA without work experience?',
@@ -586,12 +564,12 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     {
       question: 'Are there internship opportunities during the MBA program?',
       answer:
-        'Yes, a summer internship project is mandatory after the first year. Learners work with companies for 8-10 weeks on live projects. Our placement cell helps learners secure internships with reputed organizations. Many learners receive pre-placement offers based on their internship performance.',
+        'Yes, a summer internship project is mandatory after the first year. Learners work with companies for 8-10 weeks on live projects. Our placement cell helps learners secure internships with reputed organizations.',
     },
     {
       question: 'What kind of campus facilities are available?',
       answer:
-        'We offer world-class facilities including smart learning studios with audio-visual aids, computer learning labs with business software, digital library with e-resources, seminar halls, dedicated placement cell, entrepreneurship incubation center, sports facilities, and hygienic cafeteria.',
+        'MBA learners use the campus learning studios with audio-visual aids, computer learning labs, the library, seminar halls, the placement cell, sports facilities and the food court.',
     },
     {
       question: 'Is hostel accommodation available?',
@@ -605,8 +583,8 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   // ==========================================
   ctaTitle: 'Ready to Start Your MBA Journey?',
   ctaDescription:
-    'Transform your career with our comprehensive MBA program. Apply now for 2026-27 admissions and join a community of future business leaders.',
-  ctaPrimaryButtonLabel: 'Apply Now',
+    'Full-time MBA at Komarapalayam, 18 km from Erode. 2026-27 admissions are closed; enquiries for 2027-28 are open.',
+  ctaPrimaryButtonLabel: 'Send a 2027-28 Enquiry',
   ctaPrimaryButtonLink: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
   ctaSecondaryButtonLabel: 'Talk to Counselor',
   ctaSecondaryButtonLink: 'tel:+919345855001',
