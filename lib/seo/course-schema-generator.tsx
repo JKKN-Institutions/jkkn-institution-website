@@ -130,7 +130,7 @@ export const BEEEECourseSchema = () =>
     duration: 'PT4Y',
     description:
       'Bachelor of Engineering in Electrical and Electronics Engineering. Focuses on power systems, electrical machines, control systems, power electronics, renewable energy, and smart grid technologies.',
-    eligibility: '10+2 with Mathematics, Physics, Chemistry with minimum 50% aggregate',
+    eligibility: '10+2 with Mathematics, Physics, Chemistry with minimum 45% aggregate (40% for BC / MBC / DNC / SC / SCA / ST)',
     approvalBody: 'AICTE and affiliated to Anna University',
   })
 

@@ -11,7 +11,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   // Hero Section
   // ==========================================
   heroTitle: 'B.E Electrical & Electronics Engineering',
-  heroSubtitle: 'Power your future with expertise in electrical systems, power generation, automation, and control systems. Our AICTE-approved, NAAC-accredited program prepares you to design, develop, and maintain the electrical infrastructure that powers the modern world.',
+  heroSubtitle: 'Power your future with expertise in electrical systems, power generation, automation, and control systems. Our AICTE-approved programme at Komarapalayam, Namakkal District, Tamil Nadu prepares you to design, develop, and maintain the electrical infrastructure that powers the modern world.',
   heroImage: '/images/courses/be-eee/labs/eee-lab-12.jpg',
   heroStats: [
     { icon: 'GraduationCap', label: 'Years Duration', value: '4' },
@@ -20,7 +20,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
     { icon: 'Trophy', label: 'Approval', value: 'AICTE' },
   ],
   heroCTAs: [
-    { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
+    { label: 'Enquire for 2027-28', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
     { label: 'Explore Learning Framework', link: '#curriculum', variant: 'secondary' },
   ],
   affiliatedTo: 'Affiliated to Anna University, Chennai',
@@ -44,9 +44,9 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
     },
     {
       icon: 'CheckCircle',
-      title: 'Accreditation',
-      value: 'AICTE & NAAC',
-      description: 'Our program is approved by AICTE (All India Council for Technical Education) and accredited by NAAC, ensuring quality education standards.',
+      title: 'Approval',
+      value: 'AICTE',
+      description: 'Approved by AICTE (All India Council for Technical Education) for 60 seats in 2026-27 and affiliated to Anna University, Chennai.',
     },
     {
       icon: 'BookOpen',
@@ -69,7 +69,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
     {
       icon: 'CheckCircle',
       title: 'Expert Senior Learners',
-      description: 'Learn from highly qualified senior learners with Ph.D. degrees and extensive industry experience in power systems, electrical machines, control systems, and power electronics.',
+      description: 'Learn from highly qualified senior learners with M.E. and Ph.D. qualifications and industry experience in power systems, electrical machines, control systems, and power electronics.',
     },
     {
       icon: 'CheckCircle',
@@ -78,8 +78,8 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
     },
     {
       icon: 'CheckCircle',
-      title: 'Placement Opportunities',
-      description: 'Strong placement record with recruitment from TNEB, BHEL, Siemens, ABB, L&T, Schneider Electric, and other leading power and automation companies.',
+      title: 'Placement Support',
+      description: 'The Training and Placement Cell gives aptitude, soft-skills and interview training and organises on-campus recruitment drives.',
     },
     {
       icon: 'CheckCircle',
@@ -278,37 +278,31 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
       icon: 'Zap',
       title: 'Electrical Engineer',
       description: 'Design, develop, and maintain electrical systems for power generation plants, substations, transmission networks, and industrial facilities.',
-      avgSalary: '₹3.5-8 LPA',
     },
     {
       icon: 'Plug',
       title: 'Power Systems Engineer',
       description: 'Work on power system planning, operation, control, and protection. Analyze power flow, stability, and optimize grid performance.',
-      avgSalary: '₹4-9 LPA',
     },
     {
       icon: 'Factory',
       title: 'Automation Engineer',
       description: 'Design and implement automation solutions using PLCs, SCADA, DCS, and robotics for manufacturing and process industries.',
-      avgSalary: '₹3.5-8 LPA',
     },
     {
       icon: 'Battery',
       title: 'Power Electronics Engineer',
       description: 'Develop power electronic converters, inverters, motor drives, and control systems for renewable energy and electric vehicles.',
-      avgSalary: '₹4-10 LPA',
     },
     {
       icon: 'Sun',
       title: 'Renewable Energy Engineer',
       description: 'Design and implement solar power plants, wind farms, and hybrid renewable energy systems. Work on energy storage and microgrid projects.',
-      avgSalary: '₹3.5-9 LPA',
     },
     {
       icon: 'Construction',
       title: 'Project Engineer',
       description: 'Manage electrical projects including design, procurement, installation, testing, and commissioning of electrical systems and equipment.',
-      avgSalary: '₹3-7 LPA',
     },
   ],
 
@@ -316,14 +310,9 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   // Top Recruiters
   // ==========================================
   recruitersTitle: 'Our Top Recruiters',
-  recruiters: [
-    'LGB',
-    'Foxconn',
-    'TVS Group',
-    'Sourcesys',
-    'Infinix',
-    'Pronoia Insurance',
-  ],
+  // Emptied 2026-10-01 (GL6-368): unverified recruiter names; restore only from a
+  // placement-office verified list. The section does not render while this is empty.
+  recruiters: [],
 
   // ==========================================
   // Admission Process
@@ -497,6 +486,26 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   faqTitle: 'Frequently Asked Questions',
   faqs: [
     {
+      question: 'Which is a good college for B.E. EEE in Tamil Nadu?',
+      answer: 'For learners from Namakkal, Erode, Salem and Tiruppur districts, JKKN College of Engineering and Technology in Komarapalayam, Namakkal District, is an Anna University-affiliated autonomous college offering B.E. Electrical and Electronics Engineering with 60 AICTE-approved seats and a Management Quota tuition fee of Rs 45,000 a year. To compare colleges across Tamil Nadu, check the NIRF data, fees and previous-year TNEA EEE cutoff of each college on tneaonline.org.',
+    },
+    {
+      question: 'How do I get B.E. EEE admission at JKKN through TNEA?',
+      answer: 'Register on tneaonline.org, upload your 12th marks with Physics, Chemistry and Mathematics, and receive your TNEA rank. During choice filling, select J.K.K. Nataraja College of Engineering and Technology (TNEA counselling code 2647) and Electrical and Electronics Engineering. Management Quota admission is direct at the college and does not need a TNEA rank.',
+    },
+    {
+      question: 'What is the TNEA counselling code of JKKN College of Engineering and Technology?',
+      answer: 'The TNEA counselling code is 2647. The college is listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list. Use code 2647 during TNEA choice filling to select B.E. EEE at JKKN.',
+    },
+    {
+      question: 'How do I check the B.E. EEE cutoff before TNEA choice filling?',
+      answer: 'Open the official TNEA cutoff portal at cutoff.tneaonline.org, search college code 2647, and read the Electrical and Electronics Engineering row for the previous years. Compare it with your own TNEA cutoff mark, then list JKKN EEE at the right position in your choice order.',
+    },
+    {
+      question: 'Where is the JKKN EEE college located?',
+      answer: 'JKKN College of Engineering and Technology is at Natarajapuram, NH-544 (Salem to Coimbatore National Highway), Komarapalayam, Namakkal District, Tamil Nadu 638183.',
+    },
+    {
       question: 'What is the eligibility criteria for B.E. EEE admission?',
       answer: 'Candidates must have passed 10+2 with Physics, Chemistry, and Mathematics with a minimum of 45% aggregate marks (40% for BC / MBC / DNC / SC / SCA / ST), as per the TNEA information brochure. Valid TNEA rank is required for Tamil Nadu learners.',
     },
@@ -510,7 +519,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
     },
     {
       question: 'What are the placement opportunities?',
-      answer: 'Our department runs on-campus recruitment drives with companies including TNEB, BHEL, Siemens, ABB, L&T, Schneider Electric and CG Power.',
+      answer: 'The JKKN Training and Placement Cell organises on-campus recruitment drives and gives aptitude, soft-skills and interview training to EEE learners. Placement data for the college is published in its NIRF filing on the NIRF page of this website.',
     },
     {
       question: 'What practical skills will I learn?',
@@ -530,11 +539,11 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
     },
     {
       question: 'What is the fee structure?',
-      answer: 'The annual fee is ₹90,000 which includes tuition, learning lab fees, library fees, and other charges. We offer various scholarships including merit-based scholarships, government scholarships, and financial assistance with up to 100% fee waiver for eligible learners.',
+      answer: 'For 2026-27 the annual tuition fee is ₹45,000 (2026-27 course fee sheet). Examination fees and caution deposit are charged as notified by the university; hostel and transport are optional and quoted by the admissions office. Merit, government and need-based scholarships are available for eligible learners.',
     },
     {
       question: 'Are internships available?',
-      answer: 'Yes, we facilitate internships at thermal power plants, substations, manufacturing companies like BHEL and Siemens, automation companies, and renewable energy installations. Industrial training is mandatory in 6th semester with full support from the department.',
+      answer: 'Yes, we facilitate internships at thermal power plants, substations, manufacturing companies, automation companies, and renewable energy installations. Industrial training is mandatory in 6th semester with full support from the department.',
     },
   ],
 
@@ -542,8 +551,8 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   // Final CTA Section
   // ==========================================
   ctaTitle: 'Ready to Power Your Future?',
-  ctaDescription: 'Join our B.E. Electrical & Electronics Engineering program and become part of the team that designs, develops, and maintains the electrical infrastructure powering our nation. Apply now and transform your career in the exciting field of electrical engineering.',
-  ctaButtonLabel: 'Apply Now for 2026-27',
+  ctaDescription: 'Join our B.E. Electrical & Electronics Engineering program and become part of the team that designs, develops, and maintains the electrical infrastructure powering our nation. 2026-27 admissions are closed; enquiries for 2027-28 are open.',
+  ctaButtonLabel: 'Send a 2027-28 Enquiry',
   ctaButtonLink: 'https://www.jkkn.ai/apply/jkkn-admission-2026',
 
   // ==========================================

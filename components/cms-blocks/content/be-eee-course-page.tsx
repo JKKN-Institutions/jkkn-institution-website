@@ -262,12 +262,14 @@ export function BEEEECoursePage(props: BEEEECoursePageProps) {
         primaryColor={primaryColor}
       />
 
-      {/* Top Recruiters */}
-      <TopRecruitersSection
-        title={recruitersTitle}
-        recruiters={recruiters}
-        primaryColor={primaryColor}
-      />
+      {/* Top Recruiters - rendered only when a verified list is present */}
+      {recruiters.length > 0 && (
+        <TopRecruitersSection
+          title={recruitersTitle}
+          recruiters={recruiters}
+          primaryColor={primaryColor}
+        />
+      )}
 
       {/* Admission Process */}
       <AdmissionProcessSection
@@ -408,7 +410,7 @@ function HeroSection({
             </div>
           </div>
 
-          {/* Right Column - Image + NAAC Badge */}
+          {/* Right Column - Image + AICTE Badge */}
           <div className="relative hidden lg:block">
             {/* EEE Lab Image */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
@@ -421,7 +423,7 @@ function HeroSection({
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
             </div>
 
-            {/* NAAC Accreditation Badge */}
+            {/* AICTE Approval Badge */}
             <div className="absolute bottom-8 left-8 bg-white rounded-xl shadow-xl p-6 max-w-[250px]">
               <div className="flex items-center gap-4">
                 <div
@@ -431,8 +433,8 @@ function HeroSection({
                   <Award className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <div className="text-xl font-bold text-gray-900">NAAC</div>
-                  <div className="text-sm text-gray-600">Accredited Program</div>
+                  <div className="text-xl font-bold text-gray-900">AICTE</div>
+                  <div className="text-sm text-gray-600">Approved Programme</div>
                 </div>
               </div>
             </div>
@@ -1057,13 +1059,12 @@ function FAQSection({
                   style={{ color: primaryColor }}
                 />
               </button>
-              {openIndex === index && (
-                <div className="px-6 pb-6 pt-0">
-                  <p className="text-gray-600 leading-relaxed">
-                    {faq.answer}
-                  </p>
-                </div>
-              )}
+              {/* Always in the HTML so crawlers read the answer; hidden only visually until opened. */}
+              <div className="px-6 pb-6 pt-0" hidden={openIndex !== index}>
+                <p className="text-gray-600 leading-relaxed">
+                  {faq.answer}
+                </p>
+              </div>
             </div>
           ))}
         </div>
