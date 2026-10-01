@@ -191,11 +191,11 @@ export const BE_EEE_ADMISSION: CourseAdmissionData = {
   affiliated: 'Affiliated to Anna University, Chennai',
   CourseIcon: Zap,
   heroIntro:
-    'Apply for B.E Electrical & Electronics Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved, NAAC accredited,',
+    'Apply for B.E Electrical & Electronics Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved,',
   applyUrl: APPLY_URL,
   admissionStatus: ADMISSION_STATUS,
   approvalsLabel: 'Approval',
-  approvalsValue: 'AICTE · NAAC',
+  approvalsValue: 'AICTE',
   eligibility: [
     ...UG_ELIGIBILITY_BASE,
     'Lateral entry to 2nd year — Diploma in Electrical / Electronics with minimum 50%',
@@ -227,7 +227,7 @@ export const BE_EEE_ADMISSION: CourseAdmissionData = {
     {
       question: 'How do I apply for B.E EEE — what is the process?',
       answer:
-        'Apply online at the JKKN Admissions Portal or visit campus admissions counter (no application fee). For GQ: register on TNEA portal and list JKKN. For MQ: contact admissions office directly — open May 1 to July 31, 2026.',
+        'Apply online at the JKKN Admissions Portal or visit campus admissions counter (no application fee). For GQ: register on TNEA portal and list JKKN (TNEA counselling code 2647). For MQ: contact admissions office directly — open May 1 to July 31, 2026.',
     },
     {
       question: 'Is TNEA counselling mandatory for B.E EEE admission?',
