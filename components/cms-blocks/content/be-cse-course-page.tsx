@@ -110,7 +110,7 @@ const PlacementStatSchema = z.object({
 const CareerPathSchema = z.object({
   icon: z.string(),
   title: z.string(),
-  salary: z.string(),
+  salary: z.string().optional(),
   description: z.string(),
   skills: z.array(z.string()),
 })
@@ -461,15 +461,15 @@ function HeroSection({
               />
             </div>
 
-            {/* NAAC Badge - Bottom right overlay */}
+            {/* AICTE Badge - Bottom right overlay */}
             <div className="absolute bottom-6 right-6 bg-white rounded-xl shadow-xl p-6">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: primaryColor }}>
                   <span className="text-white text-2xl">⭐</span>
                 </div>
                 <div>
-                  <div className="text-lg font-bold text-gray-900">NAAC</div>
-                  <div className="text-sm text-gray-600">Accredited Program</div>
+                  <div className="text-lg font-bold text-gray-900">AICTE</div>
+                  <div className="text-sm text-gray-600">Approved Programme</div>
                 </div>
               </div>
             </div>
@@ -778,7 +778,8 @@ function FeeStructureSection({
           </table>
         </div>
 
-        {/* Scholarships */}
+        {/* Scholarships - rendered only when verified slabs are present */}
+        {scholarships.length > 0 && (
         <div className="max-w-4xl mx-auto">
           <h3 className="text-2xl font-bold text-center mb-8 text-gray-800">Scholarship Opportunities</h3>
           <div className="grid md:grid-cols-4 gap-6">
@@ -792,6 +793,7 @@ function FeeStructureSection({
             ))}
           </div>
         </div>
+        )}
       </div>
     </section>
   )
@@ -819,7 +821,7 @@ function PlacementsSection({
             {title}
           </h2>
           <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
-            Our dedicated Training & Placement Cell ensures every learner receives comprehensive career support and access to top industry recruiters.
+            Our dedicated Training & Placement Cell ensures every learner receives aptitude, soft-skills and interview training and on-campus recruitment drives.
           </p>
         </div>
 
@@ -835,7 +837,8 @@ function PlacementsSection({
           ))}
         </div>
 
-        {/* Recruiters */}
+        {/* Recruiters - rendered only when a verified list is present */}
+        {recruiters.length > 0 && (
         <div>
           <h3 className="text-2xl font-bold text-center mb-8 text-gray-800">Our Top Recruiters</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -849,6 +852,7 @@ function PlacementsSection({
             ))}
           </div>
         </div>
+        )}
       </div>
     </section>
   )
@@ -860,7 +864,7 @@ function CareerOpportunitiesSection({
   primaryColor,
 }: {
   title: string
-  careers: Array<{ icon: string; title: string; salary: string; description: string; skills: string[] }>
+  careers: Array<{ icon: string; title: string; salary?: string; description: string; skills: string[] }>
   primaryColor: string
 }) {
   return (
@@ -885,9 +889,11 @@ function CareerOpportunitiesSection({
                 {renderIcon(career.icon, 'w-10 h-10')}
               </div>
               <h3 className="text-xl font-bold mb-2 text-gray-800">{career.title}</h3>
-              <p className="text-lg font-bold mb-3" style={{ color: primaryColor }}>
-                {career.salary}
-              </p>
+              {career.salary && (
+                <p className="text-lg font-bold mb-3" style={{ color: primaryColor }}>
+                  {career.salary}
+                </p>
+              )}
               <p className="text-sm text-gray-600 mb-4 leading-relaxed">{career.description}</p>
               <div className="flex flex-wrap gap-2">
                 {career.skills.map((skill, sidx) => (
@@ -1201,11 +1207,13 @@ function FAQSection({
                 />
               </button>
 
-              {openIndex === idx && (
-                <div className="px-6 py-4 border-t border-gray-100 bg-[#fbfbee]">
-                  <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
-                </div>
-              )}
+              {/* Always in the HTML so crawlers read the answer; hidden only visually until opened. */}
+              <div
+                className="px-6 py-4 border-t border-gray-100 bg-[#fbfbee]"
+                hidden={openIndex !== idx}
+              >
+                <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+              </div>
             </div>
           ))}
         </div>
