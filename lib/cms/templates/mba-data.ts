@@ -527,6 +527,10 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
       answer: 'For students from Erode, JKKN College of Engineering and Technology in Komarapalayam, Namakkal District, is 18 km from Erode on NH-544 and offers a full-time 2-year MBA with 60 AICTE-approved seats, four specializations (Marketing, Finance, HR, Operations) and an annual tuition fee of Rs 65,000. The college is in Namakkal District, not Erode District. Colleges inside Erode District also offer MBA, so compare fees, specializations and travel time before you choose.',
     },
     {
+      question: 'Is there a good MBA college near Salem?',
+      answer: 'For students from Salem, JKKN College of Engineering and Technology in Komarapalayam, Namakkal District, is 57 km from Salem on NH-544 (Salem to Coimbatore National Highway) and offers a full-time 2-year MBA with 60 AICTE-approved seats, four specializations and an annual tuition fee of Rs 65,000. Its Tamil Nadu MBA counselling code is 2647, and separate hostels are available for boys and girls. Salem District also has its own MBA colleges, so compare fees, specializations and daily travel before you choose.',
+    },
+    {
       question: 'How far is the JKKN MBA campus from Erode?',
       answer: 'The campus is at Natarajapuram, NH-544 (Salem to Coimbatore National Highway), Komarapalayam, Namakkal District, Tamil Nadu 638183 - about 18 km from Erode by road on NH-544.',
     },
