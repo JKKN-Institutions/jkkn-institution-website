@@ -72,7 +72,11 @@ export default async function PublicLayout({
         />
 
         {/* Main Content */}
-        <main className="flex-1 overflow-x-hidden min-h-screen">{children}</main>
+        {/* overflow-x-hidden makes <main> a scroll container, which stops position:sticky
+            from working for anything inside it. A page that needs sticky content marks
+            its root with data-sticky-root and gets overflow-x:clip instead — same
+            clipping, no scroll container. Pages that don't opt in are unchanged. */}
+        <main className="flex-1 overflow-x-hidden has-[[data-sticky-root]]:overflow-x-clip min-h-screen">{children}</main>
 
         {/* Analytics Page Tracker */}
         <PageTracker />

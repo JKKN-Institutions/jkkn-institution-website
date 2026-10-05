@@ -4,7 +4,8 @@
 // for why this deliberately bypasses Server Actions). Client Zod rules mirror the
 // API's field table; the API's own 400 `fields` map is merged onto the inputs.
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import Link from 'next/link'
 import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -13,6 +14,7 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { trackCareersEvent } from '@/lib/analytics/careers-events'
 import {
   buildApplyFormData, resumeClientError, submitApplication, type ApplyFailureKind, type ApplyResult,
 } from '@/lib/services/public-careers-apply'
@@ -67,6 +69,14 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl }: ApplyFormProps) {
   const [resumeError, setResumeError] = useState<string | null>(null)
   const [result, setResult] = useState<ApplyResult | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const started = useRef(false)
+
+  // First interaction with any field = the candidate has started applying.
+  function onFirstFocus() {
+    if (started.current) return
+    started.current = true
+    trackCareersEvent('careers_apply_start', { job_id: jobId })
+  }
 
   const {
     register, handleSubmit, setError, setValue, control, formState: { errors },
@@ -99,6 +109,7 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl }: ApplyFormProps) {
     const r = await submitApplication(apiBaseUrl, jobId, fd)
     setSubmitting(false)
     setResult(r)
+    if (r.ok) trackCareersEvent('careers_apply_complete', { job_id: jobId })
 
     if (!r.ok && r.kind === 'validation') {
       for (const [field, message] of Object.entries(r.fields)) {
@@ -111,13 +122,20 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl }: ApplyFormProps) {
   if (result?.ok) {
     return (
       <div role="status" className="rounded-2xl border border-primary/30 bg-card p-6 text-center shadow-sm">
-        <CheckCircle2 className="mx-auto h-10 w-10 text-primary" />
-        <h2 className="mt-3 text-lg font-semibold text-foreground">Application received</h2>
+        <CheckCircle2 className="mx-auto h-10 w-10 text-primary" aria-hidden="true" />
+        <h2 className="mt-3 text-lg font-semibold text-foreground">Application submitted</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Thank you for applying for <strong>{jobTitle}</strong>. We&apos;ve emailed you a confirmation.
         </p>
         <p className="mt-4 text-xs uppercase tracking-wide text-muted-foreground">Your reference</p>
-        <p className="font-mono text-lg font-semibold text-foreground">{result.reference}</p>
+        <p className="break-all font-mono text-lg font-semibold text-foreground">{result.reference}</p>
+        <p className="mt-3 text-xs text-muted-foreground">Keep this reference for any follow-up with our HR team.</p>
+        <Link
+          href="/careers"
+          className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-card px-5 text-sm font-semibold text-foreground hover:border-primary/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        >
+          Back to careers
+        </Link>
       </div>
     )
   }
@@ -144,7 +162,7 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl }: ApplyFormProps) {
   )
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5 rounded-2xl border border-border bg-card p-6 shadow-sm">
+    <form onSubmit={handleSubmit(onSubmit)} onFocus={onFirstFocus} noValidate className="space-y-5 rounded-2xl border border-border bg-card p-6 shadow-sm">
       <div>
         <h2 className="text-lg font-semibold text-foreground">Apply for this role</h2>
         <p className="text-sm text-muted-foreground">Takes about two minutes. No account needed.</p>

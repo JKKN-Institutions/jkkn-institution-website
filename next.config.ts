@@ -17,6 +17,16 @@ const nextConfig: NextConfig = {
   // Public routes can still use static generation via generateStaticParams
   cacheComponents: false,
 
+  // Dev only: serve dev chunks from /dev-assets/_next/... instead of /_next/...
+  // Until 2026-10-05 `/_next/static` was sent as "immutable, 1 year" in dev too
+  // (see the production-only cache rule in headers() below). A dev chunk keeps
+  // ONE url while its content changes, so every browser that opened this app
+  // locally still holds stylesheets and scripts it will not re-request for a
+  // year: new Tailwind classes never reach the tab on a normal refresh
+  // (reproduced in Chrome; `Clear-Site-Data` did not fix an open tab). A new
+  // path means no cached copy can exist. Production is untouched (undefined).
+  assetPrefix: process.env.NODE_ENV === 'production' ? undefined : '/dev-assets',
+
   // Turbopack config (Next.js 16 default bundler)
   // Empty config silences the "webpack config without turbopack config" warning
   turbopack: {},
@@ -158,16 +168,26 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // Cache Next.js static files for 1 year (immutable)
-      {
-        source: '/_next/static/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
+      // Cache Next.js static files for 1 year (immutable) — production only.
+      // Production filenames are content-hashed, so "immutable" is safe. In
+      // `next dev` the stylesheet keeps ONE url while its content changes on
+      // every edit; with this header the browser never re-requests it, and a
+      // tab renders new components against an old stylesheet until a hard
+      // refresh (new Tailwind classes silently missing). Dev uses Next's own
+      // no-cache defaults instead.
+      ...(process.env.NODE_ENV === 'production'
+        ? [
+            {
+              source: '/_next/static/:path*',
+              headers: [
+                {
+                  key: 'Cache-Control',
+                  value: 'public, max-age=31536000, immutable',
+                },
+              ],
+            },
+          ]
+        : []),
       // Cache Next.js optimized images for 1 year with revalidation
       {
         source: '/_next/image/:path*',

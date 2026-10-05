@@ -5,6 +5,9 @@
 
 import type { PublicJob } from '@/lib/schemas/public-careers'
 
+/** DOM id of the application form on a job page; "Apply now" buttons scroll to it. */
+export const APPLY_SECTION_ID = 'apply'
+
 const JOB_TYPE_LABELS: Record<string, string> = {
   full_time: 'Full-time',
   part_time: 'Part-time',
