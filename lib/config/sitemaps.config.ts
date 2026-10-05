@@ -76,12 +76,14 @@ export function getSitemapIndex(siteUrl: string, institutionId: string): Sitemap
       { loc: `${siteUrl}/sitemap-pages.xml`, lastmod: GENERATED_ON },
       { loc: `${siteUrl}/sitemap-courses.xml`, lastmod: GENERATED_ON },
       { loc: `${siteUrl}/sitemap-blog.xml`, lastmod: GENERATED_ON },
+      { loc: `${siteUrl}/sitemap-careers.xml`, lastmod: GENERATED_ON },
     ],
     main: [
       { loc: `${siteUrl}/sitemap-pages.xml`, lastmod: GENERATED_ON },
       { loc: `${siteUrl}/sitemap-institutions.xml`, lastmod: GENERATED_ON },
       { loc: `${siteUrl}/sitemap-courses.xml`, lastmod: GENERATED_ON },
       { loc: `${siteUrl}/sitemap-blog.xml`, lastmod: GENERATED_ON },
+      { loc: `${siteUrl}/sitemap-careers.xml`, lastmod: GENERATED_ON },
     ],
   }
 
