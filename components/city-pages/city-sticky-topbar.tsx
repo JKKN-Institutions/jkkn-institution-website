@@ -12,7 +12,7 @@ export function CityStickyTopbar({ cityConfig }: CityStickyTopbarProps) {
   return (
     <div className="bg-primary/90 text-white flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-medium sticky top-0 z-50 flex-wrap">
       <span className="animate-pulse w-2 h-2 bg-green-400 rounded-full inline-block" aria-hidden="true" />
-      <span className="text-sm font-semibold">Admissions Open 2026-27</span>
+      <span className="text-sm font-semibold">2027-28 Enquiry Open</span>
       <a
         href="tel:+919345855001"
         className="text-white bg-white/15 px-3.5 py-1 rounded-full font-semibold text-xs hover:bg-white/25 transition-colors"

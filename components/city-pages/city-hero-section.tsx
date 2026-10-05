@@ -21,7 +21,7 @@ export function CityHeroSection({ cityConfig }: CityHeroSectionProps) {
       <div className="hero-inner">
         {/* Badge */}
         <div className="hero-badge">
-          AICTE Approved &bull; Admissions Open
+          AICTE Approved &bull; 2027-28 Enquiry Open
         </div>
 
         {/* H1 */}
