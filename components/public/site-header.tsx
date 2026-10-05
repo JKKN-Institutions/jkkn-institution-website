@@ -252,11 +252,11 @@ export function SiteHeader({
         className={cn(
           'z-50 transition-all duration-300',
           isPreview
-            ? 'relative bg-[#faf8f0] border-b border-gray-200'
-            : 'fixed top-0 left-0 right-0',
+            ? 'relative bg-white border-b border-gray-200'
+            : 'fixed top-0 left-0 right-0 border-b border-gray-200',
           !isPreview && (isScrolled
-            ? 'bg-[#faf8f0] shadow-md'
-            : 'bg-[#faf8f0]')
+            ? 'bg-white shadow-md'
+            : 'bg-white')
         )}
       >
         <div className="container mx-auto px-4 lg:px-6">
@@ -350,7 +350,7 @@ export function SiteHeader({
 
         {/* Menu Panel - Slide from Right */}
         <div className={cn(
-          'absolute top-0 right-0 h-full w-[85%] max-w-[320px] bg-[#faf8f0] shadow-2xl transition-transform duration-300 ease-out',
+          'absolute top-0 right-0 h-full w-[85%] max-w-[320px] bg-white shadow-2xl transition-transform duration-300 ease-out',
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         )}>
           {/* Header with Logo and Close */}
