@@ -104,7 +104,7 @@ export const BECSECourseSchema = () =>
     description:
       'Bachelor of Engineering in Computer Science and Engineering. This program provides comprehensive knowledge in software development, algorithms, data structures, computer networks, database management, and emerging technologies like AI, Machine Learning, and Cloud Computing.',
     eligibility:
-      '10+2 with Mathematics, Physics, Chemistry/Computer Science/Biology/Biotechnology with minimum 50% aggregate',
+      '10+2 with Mathematics, Physics, Chemistry/Computer Science/Biology/Biotechnology with minimum 45% aggregate (40% for BC / MBC / DNC / SC / SCA / ST)',
     approvalBody: 'AICTE and affiliated to Anna University',
   })
 
@@ -117,7 +117,7 @@ export const BEECECourseSchema = () =>
     duration: 'PT4Y',
     description:
       'Bachelor of Engineering in Electronics and Communication Engineering. Covers electronic circuits, communication systems, signal processing, embedded systems, VLSI design, and wireless technologies.',
-    eligibility: '10+2 with Mathematics, Physics, Chemistry with minimum 50% aggregate',
+    eligibility: '10+2 with Mathematics, Physics, Chemistry with minimum 45% aggregate (40% for BC / MBC / DNC / SC / SCA / ST)',
     approvalBody: 'AICTE and affiliated to Anna University',
   })
 
@@ -130,7 +130,7 @@ export const BEEEECourseSchema = () =>
     duration: 'PT4Y',
     description:
       'Bachelor of Engineering in Electrical and Electronics Engineering. Focuses on power systems, electrical machines, control systems, power electronics, renewable energy, and smart grid technologies.',
-    eligibility: '10+2 with Mathematics, Physics, Chemistry with minimum 50% aggregate',
+    eligibility: '10+2 with Mathematics, Physics, Chemistry with minimum 45% aggregate (40% for BC / MBC / DNC / SC / SCA / ST)',
     approvalBody: 'AICTE and affiliated to Anna University',
   })
 
@@ -143,7 +143,7 @@ export const BEMechanicalCourseSchema = () =>
     duration: 'PT4Y',
     description:
       'Bachelor of Engineering in Mechanical Engineering. Comprehensive program covering thermodynamics, manufacturing, CAD/CAM, robotics, automobile engineering, and industrial automation.',
-    eligibility: '10+2 with Mathematics, Physics, Chemistry with minimum 50% aggregate',
+    eligibility: '10+2 with Mathematics, Physics, Chemistry with minimum 45% aggregate (40% for BC / MBC / DNC / SC / SCA / ST)',
     approvalBody: 'AICTE and affiliated to Anna University',
   })
 

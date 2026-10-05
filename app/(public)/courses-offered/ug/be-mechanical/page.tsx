@@ -3,6 +3,7 @@ import { beMechanicalCourseData } from '@/lib/cms/templates/engineering/be-mecha
 import { BEMechanicalCourseSchema } from '@/lib/seo/course-schema-generator'
 import type { Metadata } from 'next'
 import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
+import { FAQSchemaGenerator } from '@/components/seo/faq-schema-admissions'
 
 /**
  * B.E. Mechanical Engineering Course Page
@@ -11,35 +12,21 @@ import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
  */
 
 export const metadata: Metadata = {
-  title: 'B.E. Mechanical Engineering | JKKN College of Engineering',
+  title: 'B.E. Mechanical Engineering College in Namakkal, Tamil Nadu',
   description:
-    'Pursue B.E. in Mechanical Engineering at JKKN College of Engineering & Technology. NAAC accredited, AICTE approved 4-year program. Industry-aligned learning framework covering Thermal Engineering, Manufacturing, CAD/CAM, Automobile Engineering, and Robotics.',
+    'B.E. Mechanical Engineering at JKKN College of Engineering and Technology (Autonomous), Komarapalayam, Namakkal District, Tamil Nadu. 60 AICTE-approved seats, Anna University affiliated, TNEA and Management Quota admission.',
   keywords: [
     'BE Mechanical',
     'Mechanical Engineering',
     'JKKN Engineering College',
-    'Mechanical course Tamil Nadu',
-    'AICTE approved engineering',
-    'NAAC accredited Mechanical',
+    'Mechanical engineering college Tamil Nadu',
+    'Mechanical engineering college Namakkal',
     'Anna University',
-    'Engineering admission',
-    'Mechanical placements',
-    'CAD CAM engineering',
-    'Automobile Engineering',
-    'Manufacturing Engineering',
-    'Thermal Engineering',
-    'Best engineering college Tamil Nadu',
-    'Namakkal engineering college',
-    'best college for mechanical engineering in tamilnadu',
-    'mechanical engineering colleges in tamilnadu',
-    'top 10 mechanical engineering colleges in tamilnadu',
-    'top mechanical engineering colleges in tamilnadu',
-    'mechanical engineering best colleges in tamilnadu',
-    'mechanical and automation engineering colleges in tamilnadu',
-    'top 20 mechanical engineering colleges in tamilnadu',
-    'which college is best for mechanical engineering in tamilnadu',
-    'be mechanical engineering colleges in tamilnadu',
+    'TNEA mechanical engineering',
   ],
+  alternates: {
+    canonical: 'https://engg.jkkn.ac.in/courses-offered/ug/be-mechanical',
+  },
   openGraph: {
     title: 'B.E. Mechanical Engineering | JKKN College',
     description:
@@ -58,7 +45,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'B.E. Mechanical Engineering | JKKN',
     description:
-      'NAAC accredited, AICTE approved Mechanical Engineering program. Transform your future with cutting-edge engineering education.',
+      'B.E. Mechanical Engineering in Komarapalayam, Namakkal District, Tamil Nadu. 60 AICTE-approved seats, Anna University affiliated.',
     images: ['/images/courses/be-mech/labs/mech-lab-01.jpg'],
   },
 }
@@ -68,6 +55,7 @@ export default function MechanicalCoursePage() {
     <>
       <BreadcrumbSchema path="/courses-offered/ug/be-mechanical" />
       <BEMechanicalCourseSchema />
+      <FAQSchemaGenerator faqs={beMechanicalCourseData.faqs} />
       <main>
         <BEMechanicalCoursePage {...beMechanicalCourseData} />
       </main>

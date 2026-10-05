@@ -354,12 +354,14 @@ export function MBACoursePage(props: MBACoursePageProps) {
         primaryColor={primaryColor}
       />
 
-      {/* Top Recruiters */}
-      <TopRecruitersSection
-        title={recruitersTitle}
-        recruiters={recruiters}
-        primaryColor={primaryColor}
-      />
+      {/* Top Recruiters - rendered only when a verified list is present */}
+      {recruiters.length > 0 && (
+        <TopRecruitersSection
+          title={recruitersTitle}
+          recruiters={recruiters}
+          primaryColor={primaryColor}
+        />
+      )}
 
       {/* Facilities - Hidden as per requirement */}
       {/* <FacilitiesSection
@@ -1239,11 +1241,13 @@ function FAQSection({
                 />
               </button>
 
-              {openIndex === index && (
-                <div className="px-6 py-4 border-t border-gray-100 bg-gradient-to-br from-[#fbfbee] to-white">
-                  <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
-                </div>
-              )}
+              {/* Always in the HTML so crawlers read the answer; hidden only visually until opened. */}
+              <div
+                className="px-6 py-4 border-t border-gray-100 bg-gradient-to-br from-[#fbfbee] to-white"
+                hidden={openIndex !== index}
+              >
+                <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
+              </div>
             </div>
           ))}
         </div>

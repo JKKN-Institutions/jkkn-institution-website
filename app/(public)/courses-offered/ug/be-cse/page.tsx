@@ -3,6 +3,7 @@ import { BE_CSE_SAMPLE_DATA } from '@/lib/cms/templates/engineering/be-cse-data'
 import { BECSECourseSchema } from '@/lib/seo/course-schema-generator'
 import type { Metadata } from 'next'
 import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
+import { FAQSchemaGenerator } from '@/components/seo/faq-schema-admissions'
 
 /**
  * B.E Computer Science & Engineering Course Page
@@ -11,37 +12,21 @@ import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
  */
 
 export const metadata: Metadata = {
-  title: 'B.E Computer Science and Engineering | JKKN College of Engineering',
+  title: 'B.E. CSE College in Namakkal, Tamil Nadu',
   description:
-    'Pursue B.E in Computer Science and Engineering at JKKN College of Engineering & Technology. AICTE approved, NAAC accredited 4-year program. Industry-aligned learning framework covering AI, ML, Cloud Computing, Cybersecurity, and Full Stack Development.',
+    'B.E. Computer Science and Engineering at JKKN College of Engineering and Technology (Autonomous), Komarapalayam, Namakkal District, Tamil Nadu. 60 AICTE-approved seats, Anna University affiliated, TNEA code 2647.',
   keywords: [
     'BE CSE',
-    'Computer Science Engineering',
+    'Computer Science and Engineering',
     'JKKN Engineering College',
-    'CSE course Tamil Nadu',
-    'AICTE approved engineering',
-    'NAAC accredited CSE',
+    'CSE engineering college Tamil Nadu',
+    'CSE engineering college Namakkal',
     'Anna University',
-    'Engineering admission',
-    'CSE placements',
-    'AI ML engineering',
-    'Cloud Computing course',
-    'Cybersecurity program',
-    'Full Stack Development',
-    'Best engineering college Tamil Nadu',
-    'Namakkal engineering college',
-    'top ten computer science engineering colleges in tamilnadu',
-    'computer science engineering colleges in tamilnadu',
-    'best colleges in tamilnadu for computer science engineering',
-    'best engineering colleges for computer science in tamilnadu',
-    'best engineering colleges in tamilnadu for computer science',
-    'computer science engineering best college in tamilnadu',
-    'top 10 colleges in tamilnadu for computer science engineering',
-    'top 10 computer science engineering colleges in tamilnadu',
-    'top 10 engineering colleges in tamilnadu for computer science',
-    'top engineering colleges in tamilnadu for computer science',
-    'top 50 computer science engineering colleges in tamilnadu',
+    'TNEA CSE',
   ],
+  alternates: {
+    canonical: 'https://engg.jkkn.ac.in/courses-offered/ug/be-cse',
+  },
   openGraph: {
     title: 'B.E Computer Science and Engineering | JKKN College',
     description:
@@ -60,7 +45,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'B.E Computer Science and Engineering | JKKN',
     description:
-      'AICTE approved, NAAC accredited CSE program. Transform your future with cutting-edge technology education.',
+      'B.E. CSE in Komarapalayam, Namakkal District, Tamil Nadu. 60 AICTE-approved seats, Anna University affiliated.',
     images: ['/images/courses/be-cse/labs/cse-lab-01.jpg'],
   },
 }
@@ -70,6 +55,7 @@ export default function CSECoursePage() {
     <>
       <BreadcrumbSchema path="/courses-offered/ug/be-cse" />
       <BECSECourseSchema />
+      <FAQSchemaGenerator faqs={BE_CSE_SAMPLE_DATA.faqs} />
       <main>
         <BECSECoursePage {...BE_CSE_SAMPLE_DATA} />
       </main>
