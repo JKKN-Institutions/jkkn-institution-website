@@ -2,7 +2,7 @@ import { Cpu, Zap, Antenna, Cog, Code2, Server, Briefcase } from 'lucide-react'
 import type { CourseAdmissionData } from '@/components/public/admissions/course-admission-page'
 
 const APPLY_URL = 'https://www.jkkn.ai/apply/jkkn-admission-2026'
-const APPLY_DEADLINE = 'May 31, 2026'
+const ADMISSION_STATUS = '2026-27 closed · 2027-28 enquiry open'
 
 // ─── Shared building blocks ──────────────────────────────────────────────────
 
@@ -109,11 +109,11 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
   affiliated: 'Affiliated to Anna University, Chennai',
   CourseIcon: Cpu,
   heroIntro:
-    'Apply for B.E Computer Science & Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved, NAAC accredited,',
+    'Apply for B.E Computer Science & Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved,',
   applyUrl: APPLY_URL,
-  applyDeadline: APPLY_DEADLINE,
+  admissionStatus: ADMISSION_STATUS,
   approvalsLabel: 'Approval',
-  approvalsValue: 'AICTE · NAAC',
+  approvalsValue: 'AICTE',
   eligibility: [
     ...UG_ELIGIBILITY_BASE,
     'Lateral entry to 2nd year — Diploma in Computer Science / IT with minimum 50%',
@@ -122,7 +122,7 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
   documentsAdditionalLabel: 'for UG (B.E CSE) Applicants',
   feeBreakdown: [
     { item: 'Tuition Fee (Management Quota)', amount: '₹80,000', note: 'Highest demand branch — premium fee' },
-    { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norms', note: 'Fixed by Tamil Nadu Govt / Anna University' },
+    { item: 'Tuition Fee (Government Quota)', amount: '₹65,000', note: '2026-27 JKKN course fee sheet' },
     { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
@@ -140,7 +140,7 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the B.E CSE fee at JKKN?',
       answer:
-        'Management Quota: ₹80,000/year (highest among engineering branches due to demand). Government Quota: as per Tamil Nadu Government norms. Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
+        'Management Quota: ₹80,000/year (highest among engineering branches due to demand). Government Quota: ₹65,000/year (2026-27 JKKN course fee sheet). Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
     },
     {
       question: 'Does B.E CSE cover AI / Machine Learning?',
@@ -165,7 +165,7 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
     {
       question: 'When is the application deadline?',
       answer:
-        'Application portal opens April 1, 2026 and closes May 31, 2026. TNEA counselling June-July; Direct/MQ window May 1 – July 31; fee payment deadline August 15.',
+        'Admissions for 2026-27 are closed. Enquiries for 2027-28 are open on the JKKN admission portal, with no application fee. TNEA counselling dates for 2027 are announced by Anna University on tneaonline.org.',
     },
     {
       question: 'Are scholarships available for B.E CSE learners?',
@@ -191,11 +191,11 @@ export const BE_EEE_ADMISSION: CourseAdmissionData = {
   affiliated: 'Affiliated to Anna University, Chennai',
   CourseIcon: Zap,
   heroIntro:
-    'Apply for B.E Electrical & Electronics Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved, NAAC accredited,',
+    'Apply for B.E Electrical & Electronics Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved,',
   applyUrl: APPLY_URL,
-  applyDeadline: APPLY_DEADLINE,
+  admissionStatus: ADMISSION_STATUS,
   approvalsLabel: 'Approval',
-  approvalsValue: 'AICTE · NAAC',
+  approvalsValue: 'AICTE',
   eligibility: [
     ...UG_ELIGIBILITY_BASE,
     'Lateral entry to 2nd year — Diploma in Electrical / Electronics with minimum 50%',
@@ -227,7 +227,7 @@ export const BE_EEE_ADMISSION: CourseAdmissionData = {
     {
       question: 'How do I apply for B.E EEE — what is the process?',
       answer:
-        'Apply online at the JKKN Admissions Portal or visit campus admissions counter (no application fee). For GQ: register on TNEA portal and list JKKN. For MQ: contact admissions office directly — open May 1 to July 31, 2026.',
+        'Apply online at the JKKN Admissions Portal or visit campus admissions counter (no application fee). For GQ: register on TNEA portal and list JKKN (TNEA counselling code 2647). For MQ: contact admissions office directly — open May 1 to July 31, 2026.',
     },
     {
       question: 'Is TNEA counselling mandatory for B.E EEE admission?',
@@ -247,7 +247,7 @@ export const BE_EEE_ADMISSION: CourseAdmissionData = {
     {
       question: 'When does B.E EEE admission close for 2026-27?',
       answer:
-        'Application portal opens April 1, 2026. Regular last date May 31, 2026. TNEA counselling June-July 2026. Direct/MQ window May 1 – July 31, 2026. Fee deadline August 15, 2026. Classes commence August 2026.',
+        'Admissions for 2026-27 are closed. Enquiries for 2027-28 are open on the JKKN admission portal, with no application fee. TNEA counselling dates for 2027 are announced by Anna University on tneaonline.org.',
     },
     {
       question: 'Is there any application fee for B.E EEE at JKKN?',
@@ -273,11 +273,11 @@ export const BE_ECE_ADMISSION: CourseAdmissionData = {
   affiliated: 'Affiliated to Anna University, Chennai',
   CourseIcon: Antenna,
   heroIntro:
-    'Apply for B.E Electronics & Communication Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved, NAAC accredited,',
+    'Apply for B.E Electronics & Communication Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved,',
   applyUrl: APPLY_URL,
-  applyDeadline: APPLY_DEADLINE,
+  admissionStatus: ADMISSION_STATUS,
   approvalsLabel: 'Approval',
-  approvalsValue: 'AICTE · NAAC',
+  approvalsValue: 'AICTE',
   eligibility: [
     ...UG_ELIGIBILITY_BASE,
     'Lateral entry to 2nd year — Diploma in Electronics / ECE with minimum 50%',
@@ -314,7 +314,7 @@ export const BE_ECE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What are ECE career options at JKKN?',
       answer:
-        'Embedded systems engineer, VLSI engineer, RF engineer, telecom engineer, signal processing engineer. Companies: Intel, Qualcomm, Texas Instruments, Samsung, Bharti, Jio. Govt: BSNL, DRDO, ISRO.',
+        'ECE graduates work as embedded systems, VLSI, RF, telecom and signal processing engineers, in IT services, and in government jobs through GATE and PSU recruitment. The JKKN Training and Placement Cell organises on-campus recruitment drives and interview training.',
     },
     {
       question: 'Is TNEA mandatory for B.E ECE?',
@@ -328,7 +328,7 @@ export const BE_ECE_ADMISSION: CourseAdmissionData = {
     {
       question: 'When does admission close?',
       answer:
-        'Application portal: April 1 – May 31, 2026. TNEA counselling June-July. Direct/MQ window May 1 – July 31. Fee deadline August 15, 2026.',
+        'Admissions for 2026-27 are closed. Enquiries for 2027-28 are open on the JKKN admission portal, with no application fee. TNEA counselling dates for 2027 are announced by Anna University on tneaonline.org.',
     },
     {
       question: 'Scholarships for B.E ECE?',
@@ -354,11 +354,11 @@ export const BE_MECHANICAL_ADMISSION: CourseAdmissionData = {
   affiliated: 'Affiliated to Anna University, Chennai',
   CourseIcon: Cog,
   heroIntro:
-    'Apply for B.E Mechanical Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved, NAAC accredited,',
+    'Apply for B.E Mechanical Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved,',
   applyUrl: APPLY_URL,
-  applyDeadline: APPLY_DEADLINE,
+  admissionStatus: ADMISSION_STATUS,
   approvalsLabel: 'Approval',
-  approvalsValue: 'AICTE · NAAC',
+  approvalsValue: 'AICTE',
   eligibility: [
     ...UG_ELIGIBILITY_BASE,
     'Lateral entry to 2nd year — Diploma in Mechanical / Automobile / Production with minimum 50%',
@@ -395,7 +395,7 @@ export const BE_MECHANICAL_ADMISSION: CourseAdmissionData = {
     {
       question: 'What are placement opportunities for Mechanical Engineers?',
       answer:
-        'Core: TVS, Ashok Leyland, Mahindra, L&T, BHEL, Hindustan Motors. Manufacturing: Tata Motors, Bosch, Foxconn, LGB. IT-Mechanical: TCS, Infosys. Government: PSUs via GATE, Indian Railways.',
+        'Mechanical engineers work in core manufacturing, automobile, design and maintenance roles, in IT services, and in government jobs such as PSUs through GATE and Indian Railways. The JKKN Training and Placement Cell organises on-campus recruitment drives and interview training.',
     },
     {
       question: 'Is TNEA mandatory for B.E Mechanical?',
@@ -409,7 +409,7 @@ export const BE_MECHANICAL_ADMISSION: CourseAdmissionData = {
     {
       question: 'When does admission close?',
       answer:
-        'Portal: April 1 – May 31, 2026. TNEA counselling June-July. Direct/MQ window May 1 – July 31. Fee deadline August 15, 2026.',
+        'Admissions for 2026-27 are closed. Enquiries for 2027-28 are open on the JKKN admission portal, with no application fee. TNEA counselling dates for 2027 are announced by Anna University on tneaonline.org.',
     },
     {
       question: 'Scholarships for Mechanical learners?',
@@ -437,7 +437,7 @@ export const BTECH_IT_ADMISSION: CourseAdmissionData = {
   heroIntro:
     'Apply for B.Tech Information Technology at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved, NAAC accredited,',
   applyUrl: APPLY_URL,
-  applyDeadline: APPLY_DEADLINE,
+  admissionStatus: ADMISSION_STATUS,
   approvalsLabel: 'Approval',
   approvalsValue: 'AICTE · NAAC',
   eligibility: [
@@ -490,7 +490,7 @@ export const BTECH_IT_ADMISSION: CourseAdmissionData = {
     {
       question: 'When does B.Tech IT admission close?',
       answer:
-        'Portal: April 1 – May 31, 2026. TNEA counselling June-July. Direct/MQ May 1 – July 31. Fee deadline August 15, 2026. Classes from August 2026.',
+        'Admissions for 2026-27 are closed. Enquiries for 2027-28 are open on the JKKN admission portal, with no application fee. TNEA counselling dates for 2027 are announced by Anna University on tneaonline.org.',
     },
     {
       question: 'Scholarships available for B.Tech IT?',
@@ -518,7 +518,7 @@ export const ME_CSE_ADMISSION: CourseAdmissionData = {
   heroIntro:
     'Apply for M.E Computer Science & Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved, NAAC accredited,',
   applyUrl: APPLY_URL,
-  applyDeadline: APPLY_DEADLINE,
+  admissionStatus: ADMISSION_STATUS,
   approvalsLabel: 'Approval',
   approvalsValue: 'AICTE · NAAC',
   eligibility: [
@@ -578,7 +578,7 @@ export const ME_CSE_ADMISSION: CourseAdmissionData = {
     {
       question: 'When does M.E CSE admission close?',
       answer:
-        'TANCET typically held April-May 2026. JKKN application portal April 1 – May 31, 2026. Counselling June-July 2026. Direct merit admission window open till August 2026.',
+        'Admissions for 2026-27 are closed. Enquiries for 2027-28 are open on the JKKN admission portal, with no application fee. TANCET dates for 2027 are announced by Anna University on annauniv.edu.',
     },
     {
       question: 'Application fee?',
@@ -601,7 +601,7 @@ export const MBA_ADMISSION: CourseAdmissionData = {
   heroIntro:
     'Apply for M.B.A — Master of Business Administration at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved, NAAC accredited,',
   applyUrl: APPLY_URL,
-  applyDeadline: APPLY_DEADLINE,
+  admissionStatus: ADMISSION_STATUS,
   approvalsLabel: 'Approval',
   approvalsValue: 'AICTE · NAAC',
   eligibility: [
@@ -666,7 +666,7 @@ export const MBA_ADMISSION: CourseAdmissionData = {
     {
       question: 'When does MBA admission close?',
       answer:
-        'TANCET typically April-May 2026. JKKN application portal April 1 – May 31, 2026 (regular). Direct/MQ admission window open till August 2026. Classes commence August 2026.',
+        'Admissions for 2026-27 are closed. Enquiries for 2027-28 are open on the JKKN admission portal, with no application fee. TANCET dates for 2027 are announced by Anna University on annauniv.edu.',
     },
   ],
   courseDetailsUrl: '/courses-offered/pg/mba',

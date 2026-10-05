@@ -151,20 +151,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Coimbatore to be added here. Include their experience at JKKNCET, what they liked about the campus, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Coimbatore to be added here. Focus on the ease of commute/hostel life and the quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Coimbatore?',
@@ -179,7 +167,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -199,7 +187,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -211,7 +199,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Karur', slug: 'karur', distanceLabel: '84 km', emoji: '🚗' },
     ],
     seo: {
-      title: 'Best Engineering College in Coimbatore | JKKNCET — Admissions Open 2026-27',
+      title: 'Best Engineering College in Coimbatore | JKKNCET — 2027-28 Enquiry Open',
       description:
         'JKKN College of Engineering and Technology is 112 km from Coimbatore on NH-544, in Komarapalayam. AICTE approved, affiliated to Anna University. Admissions 2026-27.',
       canonicalPath: '/coimbatore',
@@ -269,20 +257,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Erode to be added here. Include their experience at JKKNCET, what they liked about the campus, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Erode to be added here. Focus on the ease of commute and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     // Names and TNEA codes copied from Anna University's own district page on 2026-09-25.
     // Kongu School of Architecture (TNEA 2344) is on that page too; it is left out because
     // this table lists engineering colleges.
@@ -354,7 +330,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -369,7 +345,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -427,20 +403,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Namakkal to be added here. Include their experience at JKKNCET, the convenience of studying locally, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Namakkal to be added here. Focus on the proximity advantage and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Namakkal?',
@@ -455,12 +419,17 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech), plus M.E. Computer Science and Engineering and a full-time MBA. All programmes are AICTE approved and affiliated to Anna University.',
+      },
+      {
+        question: 'Does JKKNCET offer MBA in Namakkal district?',
+        answer:
+          'Yes. JKKN College of Engineering and Technology in Komarapalayam, Namakkal district, offers a full-time 2-year MBA with 60 AICTE-approved seats, specializations in Marketing, Finance, HR and Operations, and an annual tuition fee of Rs 65,000 (2026-27). Its Tamil Nadu MBA counselling code is 2647. Full details are on the MBA page of this website.',
       },
       {
         question: 'What placement data has JKKNCET filed?',
@@ -475,7 +444,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 65 km from Namakkal. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 65 km from Namakkal. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -488,7 +457,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Rasipuram', slug: 'rasipuram', distanceLabel: '60 km', emoji: '🧵' },
     ],
     seo: {
-      title: 'Best Engineering College in Namakkal | JKKNCET — Admissions Open 2026-27',
+      title: 'Best Engineering College in Namakkal | JKKNCET — 2027-28 Enquiry Open',
       description:
         'JKKN College of Engineering and Technology is in Namakkal district, 65 km from Namakkal town on NH-544, in Komarapalayam. AICTE approved, affiliated to Anna University. Admissions 2026-27.',
       canonicalPath: '/namakkal',
@@ -533,20 +502,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Salem to be added here. Include their experience at JKKNCET, what they liked about the campus, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Salem to be added here. Focus on the commute experience and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Salem?',
@@ -561,12 +518,17 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
         answer:
-          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
+          'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech), plus M.E. Computer Science and Engineering and a full-time MBA. All programmes are AICTE approved and affiliated to Anna University.',
+      },
+      {
+        question: 'Does JKKNCET offer MBA for Salem students?',
+        answer:
+          'Yes. JKKN College of Engineering and Technology in Komarapalayam, Namakkal district, 57 km from Salem on NH-544, offers a full-time 2-year MBA with 60 AICTE-approved seats, specializations in Marketing, Finance, HR and Operations, and an annual tuition fee of Rs 65,000 (2026-27). Its Tamil Nadu MBA counselling code is 2647. Full details are on the MBA page of this website.',
       },
       {
         question: 'What placement data has JKKNCET filed?',
@@ -581,7 +543,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -595,7 +557,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Dharmapuri', slug: 'dharmapuri', distanceLabel: '110 km', emoji: '🌄' },
     ],
     seo: {
-      title: 'Best Engineering College in Salem | JKKNCET — Admissions Open 2026-27',
+      title: 'Best Engineering College in Salem | JKKNCET — 2027-28 Enquiry Open',
       description:
         'JKKN College of Engineering and Technology is 57 km from Salem on NH-544, in Komarapalayam. AICTE approved, affiliated to Anna University. Admissions 2026-27.',
       canonicalPath: '/salem',
@@ -640,20 +602,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Tiruppur to be added here. Include their experience at JKKNCET, what they liked about the campus, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Tiruppur to be added here. Focus on hostel life and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Tiruppur?',
@@ -668,7 +618,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -688,7 +638,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -700,7 +650,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Karur', slug: 'karur', distanceLabel: '84 km', emoji: '🚗' },
     ],
     seo: {
-      title: 'Best Engineering College in Tiruppur | JKKNCET — Admissions Open 2026-27',
+      title: 'Best Engineering College in Tiruppur | JKKNCET — 2027-28 Enquiry Open',
       description:
         'JKKN College of Engineering and Technology is 67 km from Tiruppur on NH-544, in Komarapalayam. AICTE approved, affiliated to Anna University. Admissions 2026-27.',
       canonicalPath: '/tiruppur',
@@ -747,20 +697,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Karur to be added here. Include their experience at JKKNCET, what they liked about the campus, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Karur to be added here. Focus on hostel life and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Karur?',
@@ -775,7 +713,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -795,7 +733,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -853,20 +791,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Tiruchengode to be added here. Include their experience at JKKNCET, the convenience of the short commute, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Tiruchengode to be added here. Focus on the proximity advantage and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Tiruchengode?',
@@ -881,7 +807,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -901,7 +827,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 26 km from Tiruchengode. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 26 km from Tiruchengode. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -958,20 +884,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Perundurai to be added here. Include their experience at JKKNCET, the convenience of the short commute, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Perundurai to be added here. Focus on the ease of commute and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Perundurai?',
@@ -986,7 +900,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -1006,7 +920,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 29 km from Perundurai. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 29 km from Perundurai. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -1063,20 +977,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Dharmapuri to be added here. Include their experience at JKKNCET, hostel life, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Dharmapuri to be added here. Focus on the residential campus experience and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Dharmapuri?',
@@ -1091,7 +993,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -1111,7 +1013,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -1168,20 +1070,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Rasipuram to be added here. Include their experience at JKKNCET, the same-district advantage, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Rasipuram to be added here. Focus on hostel/commute experience and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Rasipuram?',
@@ -1196,7 +1086,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -1216,7 +1106,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -1273,20 +1163,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Mettur to be added here. Include their experience at JKKNCET, what they liked about the campus, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Mettur to be added here. Focus on the commute/hostel experience and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Mettur?',
@@ -1301,7 +1179,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -1321,7 +1199,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [
@@ -1378,20 +1256,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       campusAddress: CAMPUS_ADDRESS,
       googleMapsUrl: GOOGLE_MAPS_URL,
     },
-    testimonials: [
-      {
-        quote:
-          '[Student testimonial from Trichy to be added here. Include their experience at JKKNCET, hostel life, and their career outcomes.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year] · Now at [Company]',
-      },
-      {
-        quote:
-          '[Second student testimonial from Trichy to be added here. Focus on the residential campus experience and quality of education.]',
-        author: '[Student Name]',
-        role: '[Course], Batch of [Year]',
-      },
-    ],
+    // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
+    testimonials: [],
     faqs: [
       {
         question: 'How do I choose an engineering college near Trichy?',
@@ -1406,7 +1272,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
         answer:
-          'The TNEA counselling code for JKKN College of Engineering and Technology can be found on the official TNEA website. Use this code during TNEA counselling to select JKKNCET as your preferred college. Contact the admission office for guidance.',
+          'The TNEA counselling code for JKKN College of Engineering and Technology is 2647 (listed as J.K.K. Nataraja College of Engineering and Technology in the Anna University Namakkal district list). Use code 2647 during TNEA choice filling to select JKKNCET.',
       },
       {
         question: 'Which engineering branches are available?',
@@ -1426,7 +1292,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How can I apply for admission at JKKNCET?',
         answer:
-          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are currently open. Contact the admission office for guidance.',
+          'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
     ],
     crossLinks: [

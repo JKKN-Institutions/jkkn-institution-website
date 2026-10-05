@@ -8,6 +8,8 @@ interface CityTestimonialsProps {
 }
 
 export default function CityTestimonials({ cityConfig }: CityTestimonialsProps) {
+  if (cityConfig.testimonials.length === 0) return null
+
   return (
     <section className="section">
       <div className="section-inner">

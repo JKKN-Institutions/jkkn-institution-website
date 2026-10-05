@@ -276,37 +276,37 @@ export const ADMISSION_DATES: AdmissionDateItem[] = [
   {
     event: 'Application Portal Opens',
     date: 'April 1, 2026',
-    status: 'upcoming',
+    status: 'closed',
   },
   {
     event: 'Last Date to Apply (Regular)',
     date: 'May 31, 2026',
-    status: 'upcoming',
+    status: 'closed',
   },
   {
     event: 'TNEA Counselling (Anna University)',
     date: 'June – July 2026',
-    status: 'upcoming',
+    status: 'closed',
   },
   {
     event: 'Direct / Management Quota Window',
     date: 'May 1 – July 31, 2026',
-    status: 'upcoming',
+    status: 'closed',
   },
   {
     event: 'Document Verification',
     date: 'July – August 2026',
-    status: 'upcoming',
+    status: 'closed',
   },
   {
     event: 'Fee Payment Deadline',
     date: 'August 15, 2026',
-    status: 'upcoming',
+    status: 'closed',
   },
   {
     event: 'Classes Commence',
     date: 'August 2026 (as per Anna University)',
-    status: 'upcoming',
+    status: 'closed',
   },
 ]
 
