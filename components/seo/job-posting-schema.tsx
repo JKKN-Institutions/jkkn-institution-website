@@ -30,9 +30,13 @@ const CREDENTIAL_CATEGORY: Record<string, string> = {
  * Returns null when the job has no posted date. `datePosted` is required, and
  * inventing one (the old code used "today") tells Google a years-old vacancy
  * was published this morning — no markup is better than false markup.
+ * Also null when HR ticked "Hide from Google" (job.seo.noindex) in MyJKKN.
+ *
+ * title/description stay HR's visible text even when HR wrote a separate SEO
+ * title: Google requires JobPosting markup to match what the page shows.
  */
 export function buildJobPostingJsonLd(job: PublicJob, pageUrl: string): Record<string, unknown> | null {
-  if (!job.posted_at) return null
+  if (!job.posted_at || job.seo?.noindex) return null
 
   const title = formatJobTitle(job.title)
   const description = [

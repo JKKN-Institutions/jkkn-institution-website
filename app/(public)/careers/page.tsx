@@ -10,6 +10,7 @@ import { CareersSearchTracker } from '@/components/public/careers/careers-tracke
 import { CareersUnavailable } from '@/components/public/careers/careers-unavailable'
 import { FiltersSidebar } from '@/components/public/careers/job-filters'
 import { JobList } from '@/components/public/careers/job-list'
+import { getCareersListingSeo } from '@/lib/services/careers-listing-seo'
 import { buildCareersView, getSiteCareers, type SiteCareers } from '@/lib/services/public-careers-search'
 import { getCurrentInstitution, isMainInstitution } from '@/lib/config/multi-tenant'
 import { careersHref, parseCareersParams } from '@/lib/utils/careers-params'
@@ -28,17 +29,25 @@ type RawSearchParams = Record<string, string | string[] | undefined>
 interface CareersPageProps { searchParams: Promise<RawSearchParams> }
 
 export async function generateMetadata({ searchParams }: CareersPageProps): Promise<Metadata> {
-  const sp = await searchParams
-  const title = `Careers | ${institution.name}`
-  const description = `Open teaching and non-teaching positions at ${institution.name}. Search by role, department or qualification and apply online.`
+  const [sp, cms] = await Promise.all([searchParams, getCareersListingSeo()])
+  // Admin → Content → Pages → careers → SEO settings; built-in text when unset.
+  const title = cms?.meta_title || `Careers | ${institution.name}`
+  const description = cms?.meta_description
+    || `Open teaching and non-teaching positions at ${institution.name}. Search by role, department or qualification and apply online.`
   return {
-    title,
+    title: { absolute: title },
     description,
+    keywords: cms?.meta_keywords?.length ? cms.meta_keywords : undefined,
     alternates: { canonical: `${getSiteUrl()}/careers` },
     // Every search/filter/page combination is the same list re-cut; only the
     // bare listing is indexable. Job pages are reached through the sitemap.
     robots: Object.keys(sp).length > 0 ? { index: false, follow: true } : undefined,
-    openGraph: { title, description: `Open positions at ${institution.name}. Apply online.`, type: 'website' },
+    openGraph: {
+      title: cms?.og_title || title,
+      description: cms?.og_description || cms?.meta_description || `Open positions at ${institution.name}. Apply online.`,
+      type: 'website',
+      images: cms?.og_image ? [{ url: cms.og_image, width: 1200, height: 630 }] : undefined,
+    },
   }
 }
 
