@@ -23,7 +23,8 @@ export async function GET() {
   let entries: SitemapEntry[]
   try {
     const site = await getSiteCareers()
-    entries = site.index.jobs.map(item => ({
+    // Jobs HR marked "Hide from Google" in MyJKKN stay listed but out of the sitemap.
+    entries = site.index.jobs.filter(item => !item.job.seo?.noindex).map(item => ({
       loc: `${siteUrl}/careers/${item.slug}`,
       // The posted date when HR recorded one, otherwise no lastmod at all —
       // never today's date as a filler (see sitemap-blog.xml for the reasoning).

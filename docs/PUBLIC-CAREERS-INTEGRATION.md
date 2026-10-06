@@ -48,8 +48,31 @@ project's "mutations via Server Actions" rule; see `lib/services/public-careers-
 | `lib/utils/careers-format.ts` | display formatters |
 | `components/public/careers/*` | listing cards/filters, detail, apply form |
 | `components/seo/job-posting-schema.tsx` | Google for Jobs `JobPosting` JSON-LD |
+| `lib/utils/careers-seo.ts` | `<head>` SEO per job: MyJKKN `seo` block, else automatic |
+| `lib/services/careers-listing-seo.ts` | `/careers` listing SEO from the CMS `careers` page |
 | `app/(public)/careers/**` | routes — they shadow the CMS `careers` page, which still holds the old CVViz iframe |
 | `__tests__/careers/*` | unit tests (`npm run test:unit`) |
+
+## SEO (hidden `<head>` only)
+
+Job SEO lives in **one place: MyJKKN**. HR fills the **Website SEO** card on the job form
+(`hr_recruitment_jobs.seo_title / seo_description / seo_keywords / seo_og_image / seo_noindex`,
+MyJKKN migration `20261006113500`). The API sends it as `job.seo`.
+
+| Where | Uses |
+|---|---|
+| `<title>`, meta description/keywords, Open Graph/Twitter, robots | `buildJobSeo(job)` — `lib/utils/careers-seo.ts`: HR's value per field, else built from the job |
+| Visible heading and text (`JobDetail`, cards) | HR's `title` / `description` only — **never** `job.seo` |
+| JobPosting JSON-LD | Visible `title`/`description` (Google requires markup to match the page); `closes_at` → `validThrough`. Omitted when `seo.noindex` |
+| `sitemap-careers.xml` | Leaves out `seo.noindex` jobs |
+
+`seo` is optional in the Zod contract and a malformed block degrades to automatic SEO, so the site
+works with MyJKKN releases from before and after the column was added.
+
+The `/careers` listing's SEO is the CMS page's: Admin → Content → Pages → `careers` → SEO settings
+(`cms_seo_metadata`), read by `lib/services/careers-listing-seo.ts`; built-in text when unset.
+
+**Check it live:** open a job, View Source (Ctrl+U), search `<title>`.
 
 ## Failure behaviour
 

@@ -11,6 +11,20 @@ export type JobType = (typeof JOB_TYPES)[number]
 
 const NamedRefSchema = z.object({ id: z.string(), name: z.string() }).passthrough()
 
+/**
+ * HR's website-only SEO for a job (MyJKKN hr_recruitment_jobs.seo_*, 2026-10-06).
+ * Goes into the page <head> only — never rendered on the page, which keeps
+ * showing `title` and `description`. Empty values mean "build it from the job".
+ */
+export const JobSeoSchema = z.object({
+  title: z.string().nullable().default(null),
+  description: z.string().nullable().default(null),
+  keywords: z.array(z.string()).default([]),
+  og_image: z.string().nullable().default(null),
+  noindex: z.boolean().default(false),
+}).passthrough()
+export type JobSeo = z.infer<typeof JobSeoSchema>
+
 export const PublicJobSchema = z.object({
   id: z.string(),
   job_code: z.string().nullable(),
@@ -39,6 +53,9 @@ export const PublicJobSchema = z.object({
       duration: z.string(),
     })
     .nullable(),
+  // Absent before the MyJKKN release that added it. A malformed block must not
+  // take the whole feed down, so it degrades to null ("automatic SEO").
+  seo: JobSeoSchema.nullish().catch(null),
 }).passthrough()
 export type PublicJob = z.infer<typeof PublicJobSchema>
 

@@ -11,8 +11,8 @@ import { getMyJkknBaseUrl, getPublicJob, isUuid } from '@/lib/services/public-ca
 import {
   findJobInSite, getSiteCareers, relatedJobCards, type JobCardData,
 } from '@/lib/services/public-careers-search'
-import { canonicalCity, qualificationSummary } from '@/lib/utils/careers-facets'
-import { APPLY_SECTION_ID, formatExperience } from '@/lib/utils/careers-format'
+import { APPLY_SECTION_ID } from '@/lib/utils/careers-format'
+import { buildJobSeo } from '@/lib/utils/careers-seo'
 import { jobSlug } from '@/lib/utils/careers-slug'
 import { formatJobTitle } from '@/lib/utils/careers-text'
 import { getSiteUrl } from '@/lib/utils/site-url'
@@ -65,24 +65,20 @@ export async function generateMetadata({ params }: JobPageProps): Promise<Metada
   if (!resolved) return { title: 'Job not found', robots: { index: false } }
   const { job, slug } = resolved
 
-  const where = job.institution?.name ?? 'JKKN Institutions'
-  const title = `${formatJobTitle(job.title)} at ${where}`
-  const location = [canonicalCity(job.city), job.state].filter(Boolean).join(', ')
-  const experience = formatExperience(job.min_experience_years, job.max_experience_years)
-  const qualification = qualificationSummary(job)
-  const description = [
-    `${formatJobTitle(job.title)}${job.department ? `, ${job.department.name}` : ''} at ${where}${location ? `, ${location}` : ''}.`,
-    experience && `Experience: ${experience}.`,
-    qualification && `Qualification: ${qualification}.`,
-    'Apply online, no account needed.',
-  ].filter(Boolean).join(' ')
+  // <head> only: HR's "Website SEO" from MyJKKN where set, otherwise built from
+  // the job. The page body below never sees these values.
+  const seo = buildJobSeo(job)
   const url = `${getSiteUrl()}/careers/${slug}`
+  const images = seo.ogImage ? [{ url: seo.ogImage, width: 1200, height: 630, alt: seo.title }] : undefined
 
   return {
-    title: { absolute: title },
-    description,
+    title: { absolute: seo.title },
+    description: seo.description,
+    keywords: seo.keywords,
     alternates: { canonical: url },
-    openGraph: { title, description, url, type: 'website', locale: 'en_IN' },
+    robots: seo.noindex ? { index: false, follow: true } : undefined,
+    openGraph: { title: seo.title, description: seo.description, url, type: 'website', locale: 'en_IN', images },
+    twitter: { card: 'summary_large_image', title: seo.title, description: seo.description, images: seo.ogImage ?? undefined },
   }
 }
 
