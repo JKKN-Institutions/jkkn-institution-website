@@ -279,6 +279,8 @@ function getMainPages(siteUrl: string): SitemapEntry[] {
     { loc: `${siteUrl}/vision-and-mission`, lastmod: TODAY, changefreq: 'yearly', priority: 0.7 },
     { loc: `${siteUrl}/chairman-message`, lastmod: TODAY, changefreq: 'yearly', priority: 0.6 },
     { loc: `${siteUrl}/careers`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    // Coded list page (app/(public)/careers/teaching-jobs), main site only.
+    { loc: `${siteUrl}/careers/teaching-jobs`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
     { loc: `${siteUrl}/placements`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
     { loc: `${siteUrl}/recruiters`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
     { loc: `${siteUrl}/industry-partnerships`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
