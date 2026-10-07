@@ -282,6 +282,9 @@ function getMainPages(siteUrl: string): SitemapEntry[] {
     // Coded list page (app/(public)/careers/teaching-jobs), main site only.
     { loc: `${siteUrl}/careers/teaching-jobs`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
     { loc: `${siteUrl}/careers/non-teaching-jobs`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
+    { loc: `${siteUrl}/careers/assistant-professor-jobs`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
+    { loc: `${siteUrl}/careers/lecturer-jobs`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
+    { loc: `${siteUrl}/careers/lab-library-jobs`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
     { loc: `${siteUrl}/placements`, lastmod: TODAY, changefreq: 'monthly', priority: 0.8 },
     { loc: `${siteUrl}/recruiters`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
     { loc: `${siteUrl}/industry-partnerships`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
