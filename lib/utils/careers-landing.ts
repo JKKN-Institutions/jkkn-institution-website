@@ -30,6 +30,8 @@ export interface LandingJob {
   qualification: string
   experience: string
   closesAt: string | null
+  /** Hiring institution; the designation pages group by it. */
+  institution?: string | null
 }
 
 export type FacultyKey = 'assistant-professor' | 'professor' | 'lecturer' | 'tutor'
@@ -260,6 +262,117 @@ export function buildNonTeachingFaqs<T extends LandingJob>(landing: NonTeachingL
     },
     {
       question: 'Is there a last date to apply for JKKN non-teaching jobs?',
+      answer: closing
+        ? 'Some listings show a closing date on the job page and others do not. Open the role you want and check the job page before you apply, and mention the job title exactly as it is listed.'
+        : 'The job listings on the JKKN careers page do not show a closing date. Each listing shows the institution, the qualification and the number of openings. If a role matters to you, apply through the online form and mention the job title exactly as it is listed.',
+    },
+  ]
+}
+
+// ── Designation list pages ──────────────────────────────────────────────────
+// /careers/assistant-professor-jobs, /careers/lecturer-jobs and
+// /careers/lab-library-jobs: one designation each, built the same way.
+
+export type DesignationKey = 'assistant-professor' | 'lecturer' | 'lab-library'
+
+const LAB_LIBRARY = /\blab\b|librar|research assistant/
+
+/** Lab and library support roles: not faculty, not leadership. */
+export function isLabOrLibrary(job: Pick<LandingJob, 'title' | 'roleCategory'>): boolean {
+  if (job.roleCategory === 'senior_leadership' || teachingBucket(job)) return false
+  return LAB_LIBRARY.test(job.title.toLowerCase()) && !/principal/.test(job.title.toLowerCase())
+}
+
+/** Whether a job is listed on the given designation page. */
+export function onDesignationPage(key: DesignationKey, job: Pick<LandingJob, 'title' | 'roleCategory'>): boolean {
+  return key === 'lab-library' ? isLabOrLibrary(job) : teachingBucket(job) === key
+}
+
+export interface DesignationGroup<T> { key: string; heading: string; label: string; jobs: T[]; note: string }
+export interface DesignationLanding<T> { groups: DesignationGroup<T>[]; listed: T[]; total: number }
+
+const slug = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+
+/**
+ * The jobs of one designation, grouped for the page. Faculty designations are
+ * grouped by hiring institution (largest first); lab and library roles by the
+ * kind of work. `noun` is the heading prefix, e.g. "Assistant Professor".
+ */
+export function buildDesignationLanding<T extends LandingJob>(key: DesignationKey, jobs: T[], noun: string): DesignationLanding<T> {
+  const buckets = new Map<string, { heading: string; label: string; jobs: T[] }>()
+  const add = (id: string, heading: string, label: string, job: T) => {
+    const entry = buckets.get(id) ?? { heading, label, jobs: [] }
+    entry.jobs.push(job)
+    buckets.set(id, entry)
+  }
+  for (const job of jobs) {
+    if (!onDesignationPage(key, job)) continue
+    if (key === 'lab-library') {
+      if (/librar/.test(job.title.toLowerCase())) add('library', 'Librarian and library jobs', 'library roles', job)
+      else add('lab', 'Lab assistant and lab technician jobs', 'lab roles', job)
+    } else {
+      const institution = job.institution?.trim() || 'Other JKKN institutions'
+      add(slug(institution), `${noun} jobs at ${institution}`, institution, job)
+    }
+  }
+  const groups = [...buckets.entries()]
+    .map(([id, g]) => {
+      const list = [...g.jobs].sort((a, b) => a.title.localeCompare(b.title))
+      return { key: id, heading: g.heading, label: g.label, jobs: list, note: groupNote(list) }
+    })
+    .sort((a, b) => b.jobs.length - a.jobs.length || a.label.localeCompare(b.label))
+  const listed = groups.flatMap(g => g.jobs)
+  return { groups, listed, total: listed.length }
+}
+
+/** "16 at A, 14 at B and 14 at C" - the three largest groups, then a count of the rest. */
+export function splitSummary<T>(groups: DesignationGroup<T>[], join: 'at' | 'in'): string {
+  const top = groups.slice(0, 3).map(g => `${g.jobs.length} ${join} ${g.label}`)
+  const rest = groups.slice(3).reduce((n, g) => n + g.jobs.length, 0)
+  if (rest) top.push(`${rest} ${join} other JKKN institutions`)
+  return joinList(top)
+}
+
+/** Question-and-answer block for a designation page; same rules as the other list pages. */
+export function buildDesignationFaqs<T extends LandingJob>(
+  key: DesignationKey, landing: DesignationLanding<T>, asOf: string, noun: string,
+): Faq[] {
+  const { total, listed, groups } = landing
+  const where = `${CAMPUS.locality}, ${CAMPUS.district}`
+  const lower = noun.toLowerCase()
+  const openings = plural(total, `${lower} opening`, `${lower} openings`)
+  const quals = unique(listed.map(j => j.qualification)).sort().slice(0, 6)
+  const freshers = listed.filter(j => j.experience === 'Freshers welcome').length
+  const closing = listed.some(j => j.closesAt)
+  const split = splitSummary(groups, key === 'lab-library' ? 'in' : 'at')
+
+  return [
+    {
+      question: `Are there ${lower} jobs near Erode and Namakkal?`,
+      answer: `Yes. JKKN Institutions lists ${lower} jobs at its campus in ${where}, which is ${CAMPUS.nearestCityKm} km by road from ${CAMPUS.nearestCity} city. As of ${asOf} the careers page shows ${openings}. All of them are based at ${CAMPUS.locality}.`,
+    },
+    {
+      question: `What ${lower} jobs are open at JKKN Institutions in Komarapalayam?`,
+      answer: `As of ${asOf}, the JKKN Institutions careers page lists ${openings}: ${split}. Each role has its own job page with the full description and an online application form. All are based in ${where}.`,
+    },
+    {
+      question: `What qualification do I need for ${lower} jobs at JKKN?`,
+      answer: `It differs by college and department, and each listing states its own requirement.${quals.length ? ` The current ${lower} listings show: ${quals.join('; ')}.` : ''} Check the Qualification line on the job page before you apply.`,
+    },
+    {
+      question: `Can freshers apply for ${lower} jobs at JKKN?`,
+      answer: `It depends on the role. Each listing shows the experience it asks for${freshers ? `, and ${plural(freshers, 'current listing states', 'current listings state')} that freshers are welcome` : ''}. The online application form accepts zero months of experience, so a fresher can submit an application for any role and state that clearly.`,
+    },
+    {
+      question: `How do I apply for ${lower} jobs at JKKN Institutions?`,
+      answer: 'Apply online from the job page on jkkn.ac.in/careers. Open the role, select Apply now, then enter your name, email, phone number, highest qualification and total experience. Upload a resume in PDF, DOC or DOCX format of up to 2 MB and submit. You do not need to create an account.',
+    },
+    {
+      question: 'Where is JKKN Institutions, and how far is it from Erode?',
+      answer: `JKKN Institutions is at Natarajapuram on NH-544, the Salem to Coimbatore National Highway, in ${where}, ${CAMPUS.region} ${CAMPUS.postalCode}. The campus is ${CAMPUS.nearestCityKm} km by road from ${CAMPUS.nearestCity} city. Every role listed on this page is based at this one ${CAMPUS.locality} campus.`,
+    },
+    {
+      question: `Is there a last date to apply for ${lower} jobs at JKKN?`,
       answer: closing
         ? 'Some listings show a closing date on the job page and others do not. Open the role you want and check the job page before you apply, and mention the job title exactly as it is listed.'
         : 'The job listings on the JKKN careers page do not show a closing date. Each listing shows the institution, the qualification and the number of openings. If a role matters to you, apply through the online form and mention the job title exactly as it is listed.',

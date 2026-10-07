@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import {
-  buildFaqJsonLd, buildLandingJsonLd, buildNonTeachingFaqs, buildNonTeachingLanding, buildTeachingFaqs,
-  buildTeachingLanding, groupNote, nonTeachingBucket, teachingBucket,
+  buildDesignationFaqs, buildDesignationLanding, buildFaqJsonLd, buildLandingJsonLd, buildNonTeachingFaqs,
+  buildNonTeachingLanding, buildTeachingFaqs, buildTeachingLanding, groupNote, isLabOrLibrary, nonTeachingBucket,
+  onDesignationPage, splitSummary, teachingBucket,
   type LandingJob,
 } from '@/lib/utils/careers-landing'
 
@@ -159,6 +160,74 @@ describe('careers-landing', () => {
     expect(faqs[3].answer).toContain('1 current listing states that freshers are welcome')
     const text = faqs.map(f => f.answer).join(' ').toLowerCase()
     for (const word of ['salary', 'working hours', 'pf']) expect(text).not.toContain(word)
+  })
+
+  it('puts lab and library support roles on their own page, never faculty or leadership', () => {
+    const nt = (title: string) => job(title, { roleCategory: 'non_teaching' })
+    for (const title of ['Lab Assistant', 'Lab Assisstant-Pharmacy', 'Lab technician', 'Lab Technician/Research Assistant',
+      'Librarian', 'Senior Librarian - Engineering College', 'Library Attender', 'Assistant Librarian']) {
+      expect(isLabOrLibrary(nt(title)), title).toBe(true)
+      expect(nonTeachingBucket(nt(title)), title).toBeNull()
+    }
+    expect(isLabOrLibrary(job('Assistant Professor Clinical Lab Technology'))).toBe(false)
+    expect(isLabOrLibrary(nt('Accountant'))).toBe(false)
+    expect(isLabOrLibrary(job('Lab Director', { roleCategory: 'senior_leadership' }))).toBe(false)
+  })
+
+  it('groups a faculty designation by college, largest first, from the feed', () => {
+    const at = (title: string, institution: string | null, over: Partial<LandingJob> = {}) => job(title, { institution, ...over })
+    const jobs = [
+      at('Assistant Professor - Physics', 'JKKN College of Arts and Science (Self)'),
+      at('Assistant Professor', 'JKKN College of Pharmacy', { qualification: 'M.Pharm', experience: 'Freshers welcome' }),
+      at('Asst Prof - Pharmacology - Cop', 'JKKN College of Pharmacy', { qualification: 'Ph.D' }),
+      at('Assistant Professor', null),
+      at('Senior Lecturer', 'JKKN Dental College and Hospital'),
+      at('Reader', 'JKKN Dental College and Hospital'),
+      at('Professor', 'JKKN Dental College and Hospital'),
+      job('Lab Assistant', { roleCategory: 'non_teaching', institution: 'JKKN College of Pharmacy' }),
+    ]
+    const ap = buildDesignationLanding('assistant-professor', jobs, 'Assistant Professor')
+    expect(ap.groups.map(g => [g.heading, g.jobs.length])).toEqual([
+      ['Assistant Professor jobs at JKKN College of Pharmacy', 2],
+      ['Assistant Professor jobs at JKKN College of Arts and Science (Self)', 1],
+      ['Assistant Professor jobs at Other JKKN institutions', 1],
+    ])
+    expect(ap.total).toBe(4)
+    expect(splitSummary(ap.groups, 'at')).toBe(
+      '2 at JKKN College of Pharmacy, 1 at JKKN College of Arts and Science (Self) and 1 at Other JKKN institutions',
+    )
+    const lect = buildDesignationLanding('lecturer', jobs, 'Lecturer and Reader')
+    expect(lect.listed.map(j => j.title)).toEqual(['Reader', 'Senior Lecturer'])
+    const lab = buildDesignationLanding('lab-library', [...jobs, job('Librarian', { roleCategory: 'non_teaching' })], 'Lab and library')
+    expect(lab.groups.map(g => [g.key, g.jobs.length]).sort()).toEqual([['lab', 1], ['library', 1]])
+
+    const faqs = buildDesignationFaqs('assistant-professor', ap, '7 October 2026', 'Assistant Professor')
+    expect(faqs).toHaveLength(7)
+    expect(faqs[0].question).toBe('Are there assistant professor jobs near Erode and Namakkal?')
+    expect(faqs[0].answer).toContain('4 assistant professor openings')
+    expect(faqs[2].answer).toContain('M.Pharm; Ph.D')
+    expect(faqs[3].answer).toContain('1 current listing states that freshers are welcome')
+    const text = faqs.map(f => f.answer).join(' ').toLowerCase()
+    for (const word of ['salary', 'working hours', 'ugc']) expect(text).not.toContain(word)
+  })
+
+  it('summarises more than three groups as the top three plus a remainder', () => {
+    const g = (label: string, n: number) => ({ key: label, heading: label, label, note: '', jobs: Array.from({ length: n }, () => job('x')) })
+    expect(splitSummary([g('A', 16), g('B', 14), g('C', 12), g('D', 9), g('E', 1)], 'at')).toBe(
+      '16 at A, 14 at B, 12 at C and 10 at other JKKN institutions',
+    )
+  })
+
+  it('lists every job on at most one of the designation and non-teaching pages', () => {
+    const titles = ['Assistant Professor', 'Reader', 'Lab Assistant', 'Librarian', 'Accountant', 'Tutor', 'Primary Teacher']
+    for (const roleCategory of ['teaching_faculty', 'non_teaching', 'medical']) {
+      for (const title of titles) {
+        const j = job(title, { roleCategory })
+        const pages = [onDesignationPage('assistant-professor', j), onDesignationPage('lecturer', j),
+          onDesignationPage('lab-library', j), Boolean(nonTeachingBucket(j))].filter(Boolean).length
+        expect(pages, `${title} / ${roleCategory}`).toBeLessThanOrEqual(1)
+      }
+    }
   })
 
   it('emits ItemList for the listed jobs and no JobPosting on the list page', () => {

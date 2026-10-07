@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { CampusContact, JobLanding, employerFacts } from '@/components/public/careers/job-landing'
+import { CampusContact, JobLanding, employerFacts, otherListPages } from '@/components/public/careers/job-landing'
 import { isMainInstitution } from '@/lib/config/multi-tenant'
 import { getSiteCareers, toCard, type JobCardData } from '@/lib/services/public-careers-search'
 import {
@@ -27,6 +27,12 @@ const DESCRIPTION =
 const H1 = 'Teaching Jobs at JKKN Institutions, Komarapalayam, Namakkal District'
 
 type Card = JobCardData & LandingJob
+
+// Faculty grades with their own list page; the rest link to the careers search.
+const FACULTY_PAGES: Partial<Record<string, string>> = {
+  'assistant-professor': '/careers/assistant-professor-jobs',
+  lecturer: '/careers/lecturer-jobs',
+}
 
 const today = () =>
   new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(new Date())
@@ -112,8 +118,10 @@ export default async function TeachingJobsPage() {
       tiles={landing ? {
         title: 'College faculty jobs across JKKN colleges',
         label: 'College faculty jobs',
-        intro: `Faculty jobs are listed on the main careers page. Openings as of ${asOf}:`,
-        items: landing.faculty.map(f => ({ key: f.key, count: f.count, label: f.label, href: careersHref({ q: f.search }) })),
+        intro: `Faculty jobs by designation. Openings as of ${asOf}:`,
+        items: landing.faculty.map(f => ({
+          key: f.key, count: f.count, label: f.label, href: FACULTY_PAGES[f.key] ?? careersHref({ q: f.search }),
+        })),
       } : undefined}
       whereTitle="Where are these teaching jobs in Namakkal District?"
       where={
@@ -128,7 +136,7 @@ export default async function TeachingJobsPage() {
       aboutFacts={employerFacts('teaching jobs')}
       faqTitle="Teaching jobs at JKKN: common questions"
       faqs={faqs}
-      related={[{ label: 'Non-teaching jobs', href: '/careers/non-teaching-jobs' }]}
+      related={otherListPages(PATH)}
       jsonLd={[
         ...buildLandingJsonLd({
           pageUrl,

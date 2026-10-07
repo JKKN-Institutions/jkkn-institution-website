@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { CampusContact, JobLanding, employerFacts } from '@/components/public/careers/job-landing'
+import { CampusContact, JobLanding, employerFacts, otherListPages } from '@/components/public/careers/job-landing'
 import { isMainInstitution } from '@/lib/config/multi-tenant'
 import { getSiteCareers, toCard, type JobCardData } from '@/lib/services/public-careers-search'
 import {
@@ -118,7 +118,7 @@ export default async function NonTeachingJobsPage() {
       aboutFacts={employerFacts('non-teaching jobs')}
       faqTitle="Non-teaching jobs at JKKN: common questions"
       faqs={faqs}
-      related={[{ label: 'Teaching jobs', href: '/careers/teaching-jobs' }]}
+      related={otherListPages(PATH)}
       jsonLd={[
         ...buildLandingJsonLd({
           pageUrl,

@@ -64,6 +64,17 @@ const INSTITUTIONS: LandingLink[] = [
   { label: 'JKKN College of Education', href: 'https://edu.jkkn.ac.in/' },
 ]
 
+/** Every careers list page. Each one links to the others from its footer. */
+export const LIST_PAGES: LandingLink[] = [
+  { label: 'Teaching jobs', href: '/careers/teaching-jobs' },
+  { label: 'Assistant Professor jobs', href: '/careers/assistant-professor-jobs' },
+  { label: 'Lecturer jobs', href: '/careers/lecturer-jobs' },
+  { label: 'Lab and library jobs', href: '/careers/lab-library-jobs' },
+  { label: 'Non-teaching jobs', href: '/careers/non-teaching-jobs' },
+]
+
+export const otherListPages = (path: string): LandingLink[] => LIST_PAGES.filter(p => p.href !== path)
+
 // `<` is escaped so a job title containing "</script>" cannot close the tag.
 const toScript = (data: unknown) => JSON.stringify(data).replace(/</g, '\\u003c')
 
