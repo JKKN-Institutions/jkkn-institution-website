@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
-  buildFaqJsonLd, buildLandingJsonLd, buildTeachingFaqs, buildTeachingLanding, groupNote, teachingBucket,
+  buildFaqJsonLd, buildLandingJsonLd, buildNonTeachingFaqs, buildNonTeachingLanding, buildTeachingFaqs,
+  buildTeachingLanding, groupNote, nonTeachingBucket, teachingBucket,
   type LandingJob,
 } from '@/lib/utils/careers-landing'
 
@@ -21,6 +22,9 @@ describe('careers-landing', () => {
     expect(teachingBucket(job('Senior Lecturer'))).toBe('lecturer')
     expect(teachingBucket(job('Reader - Phd - Dch'))).toBe('lecturer')
     expect(teachingBucket(job('Nursing Tutor'))).toBe('tutor')
+    // "Lab" in a faculty title must not hide the post (it did until 2026-10-07).
+    expect(teachingBucket(job('Assistant Professor Clinical Lab Technology'))).toBe('assistant-professor')
+    expect(nonTeachingBucket(job('Assistant Professor Clinical Lab Technology'))).toBeNull()
   })
 
   it('recognises a faculty grade outside the teaching category, but never in leadership', () => {
@@ -89,6 +93,72 @@ describe('careers-landing', () => {
   it('stops saying there is no closing date once a listed job has one', () => {
     const landing = buildTeachingLanding([job('Primary Teacher', { closesAt: '2026-12-31T00:00:00Z' })])
     expect(buildTeachingFaqs(landing, '6 October 2026')[6].answer).toContain('Some listings show a closing date')
+  })
+
+  it('sorts non-teaching roles into four groups and keeps other pages\' roles out', () => {
+    const nt = (title: string) => nonTeachingBucket(job(title, { roleCategory: 'non_teaching' }))
+    expect(nt('Accountant')).toBe('office')
+    expect(nt('Cashier')).toBe('office')
+    expect(nt('Marketing Manager')).toBe('office')
+    expect(nt('Placement Officer & Corporate Relations')).toBe('office')
+    expect(nt('Sytem Administrator')).toBe('technical')
+    expect(nt('Computer Technician/Assistant')).toBe('technical')
+    expect(nt('CCTV Monitoring Operator - Main Office')).toBe('technical')
+    expect(nt('Civil Supervisor')).toBe('technical')
+    expect(nt('Pharmacist')).toBe('hospital')
+    expect(nt('Ceramic Technician')).toBe('hospital')
+    expect(nt('Dental Mechanic')).toBe('hospital')
+    expect(nt('Hospital Manager')).toBe('hospital')
+    expect(nt('Hostel Warden')).toBe('campus')
+    expect(nt('House Keeping Supervisor Ladies Hostel')).toBe('campus')
+    expect(nt('Store Keeper - Pharmacy')).toBe('campus')
+    expect(nt('Stores Incharge')).toBe('campus')
+    // HR files these two under teaching; they are office roles.
+    expect(nonTeachingBucket(job('Non teaching staff'))).toBe('office')
+    expect(nonTeachingBucket(job('Human Resources Coordinator(HR)'))).toBe('office')
+    // Listed elsewhere: teaching, leadership, lab and library.
+    expect(nonTeachingBucket(job('Primary Teacher'))).toBeNull()
+    expect(nt('Assistant Professor')).toBeNull()
+    expect(nt('Lab Assistant')).toBeNull()
+    expect(nt('Lab Technician/Research Assistant')).toBeNull()
+    expect(nt('Senior Librarian')).toBeNull()
+    expect(nt('Vice Principal')).toBeNull()
+    expect(nonTeachingBucket(job('Chief Operations Officer (COO)', { roleCategory: 'senior_leadership' }))).toBeNull()
+  })
+
+  it('never lists one job on both the teaching and the non-teaching page', () => {
+    const titles = ['Accountant', 'Primary Teacher', 'Assistant Professor', 'Tutor', 'Non teaching staff', 'Lab Assistant',
+      'Hostel Warden', 'Aptitude Trainer', 'Vice Principal', 'Lecturer with MBBS', 'Pharmacist']
+    for (const roleCategory of ['teaching_faculty', 'non_teaching', 'medical', 'senior_leadership']) {
+      for (const title of titles) {
+        const j = job(title, { roleCategory })
+        expect(Boolean(teachingBucket(j)) && Boolean(nonTeachingBucket(j)), `${title} / ${roleCategory}`).toBe(false)
+      }
+    }
+  })
+
+  it('builds the non-teaching page and its answers from the feed', () => {
+    const nt = (title: string, over: Partial<LandingJob> = {}) => job(title, { roleCategory: 'non_teaching', ...over })
+    const landing = buildNonTeachingLanding([
+      nt('Cashier', { qualification: 'Any degree', experience: 'Freshers welcome' }),
+      nt('Accountant', { qualification: 'M.Com / B.Com', experience: '2+ years' }),
+      nt('Hostel Warden'),
+      nt('Pharmacist'),
+      nt('Lab Assistant'),
+      job('Primary Teacher'),
+    ])
+    expect(landing.groups.map(g => [g.key, g.jobs.map(j => j.title)])).toEqual([
+      ['office', ['Accountant', 'Cashier']], ['hospital', ['Pharmacist']], ['campus', ['Hostel Warden']],
+    ])
+    expect(landing.total).toBe(4)
+    const faqs = buildNonTeachingFaqs(landing, '7 October 2026')
+    expect(faqs).toHaveLength(7)
+    expect(faqs[0].answer).toContain('4 non-teaching openings')
+    expect(faqs[1].answer).toContain('2 in office and administration, 1 in hospital and clinical support and 1 in hostel, stores and campus')
+    expect(faqs[2].answer).toContain('Any degree; M.Com / B.Com')
+    expect(faqs[3].answer).toContain('1 current listing states that freshers are welcome')
+    const text = faqs.map(f => f.answer).join(' ').toLowerCase()
+    for (const word of ['salary', 'working hours', 'pf']) expect(text).not.toContain(word)
   })
 
   it('emits ItemList for the listed jobs and no JobPosting on the list page', () => {
