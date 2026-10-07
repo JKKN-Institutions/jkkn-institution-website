@@ -270,10 +270,22 @@ export function buildNonTeachingFaqs<T extends LandingJob>(landing: NonTeachingL
 }
 
 // ── Designation list pages ──────────────────────────────────────────────────
-// /careers/assistant-professor-jobs, /careers/lecturer-jobs and
-// /careers/lab-library-jobs: one designation each, built the same way.
+// One designation each, built the same way: assistant-professor, professor,
+// lecturer, tutor, lab-library and principal-leadership.
 
-export type DesignationKey = 'assistant-professor' | 'lecturer' | 'lab-library'
+export type DesignationKey = 'assistant-professor' | 'professor' | 'lecturer' | 'tutor' | 'lab-library' | 'leadership'
+
+/** Pages grouped by kind of work; the faculty ones are grouped by college. */
+export const groupedByKind = (key: DesignationKey): boolean => key === 'lab-library' || key === 'leadership'
+
+/**
+ * Principals, vice principals and HR's leadership category. teachingBucket()
+ * and nonTeachingBucket() both return null for these, so they are listed
+ * nowhere else.
+ */
+export function isLeadership(job: Pick<LandingJob, 'title' | 'roleCategory'>): boolean {
+  return job.roleCategory === 'senior_leadership' || /principal/.test(job.title.toLowerCase())
+}
 
 const LAB_LIBRARY = /\blab\b|librar|research assistant/
 
@@ -285,7 +297,9 @@ export function isLabOrLibrary(job: Pick<LandingJob, 'title' | 'roleCategory'>):
 
 /** Whether a job is listed on the given designation page. */
 export function onDesignationPage(key: DesignationKey, job: Pick<LandingJob, 'title' | 'roleCategory'>): boolean {
-  return key === 'lab-library' ? isLabOrLibrary(job) : teachingBucket(job) === key
+  if (key === 'lab-library') return isLabOrLibrary(job)
+  if (key === 'leadership') return isLeadership(job)
+  return teachingBucket(job) === key
 }
 
 export interface DesignationGroup<T> { key: string; heading: string; label: string; jobs: T[]; note: string }
@@ -310,6 +324,9 @@ export function buildDesignationLanding<T extends LandingJob>(key: DesignationKe
     if (key === 'lab-library') {
       if (/librar/.test(job.title.toLowerCase())) add('library', 'Librarian and library jobs', 'library roles', job)
       else add('lab', 'Lab assistant and lab technician jobs', 'lab roles', job)
+    } else if (key === 'leadership') {
+      if (/principal/.test(job.title.toLowerCase())) add('principal', 'Principal and Vice Principal jobs', 'principal roles', job)
+      else add('group', 'Group leadership jobs', 'group leadership roles', job)
     } else {
       const institution = job.institution?.trim() || 'Other JKKN institutions'
       add(slug(institution), `${noun} jobs at ${institution}`, institution, job)
@@ -344,7 +361,7 @@ export function buildDesignationFaqs<T extends LandingJob>(
   const quals = unique(listed.map(j => j.qualification)).sort().slice(0, 6)
   const freshers = listed.filter(j => j.experience === 'Freshers welcome').length
   const closing = listed.some(j => j.closesAt)
-  const split = splitSummary(groups, key === 'lab-library' ? 'in' : 'at')
+  const split = splitSummary(groups, groupedByKind(key) ? 'in' : 'at')
 
   return [
     {

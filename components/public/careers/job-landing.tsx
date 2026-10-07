@@ -68,7 +68,10 @@ const INSTITUTIONS: LandingLink[] = [
 export const LIST_PAGES: LandingLink[] = [
   { label: 'Teaching jobs', href: '/careers/teaching-jobs' },
   { label: 'Assistant Professor jobs', href: '/careers/assistant-professor-jobs' },
+  { label: 'Professor jobs', href: '/careers/professor-jobs' },
   { label: 'Lecturer jobs', href: '/careers/lecturer-jobs' },
+  { label: 'Tutor jobs', href: '/careers/tutor-jobs' },
+  { label: 'Principal and leadership jobs', href: '/careers/principal-leadership-jobs' },
   { label: 'Lab and library jobs', href: '/careers/lab-library-jobs' },
   { label: 'Non-teaching jobs', href: '/careers/non-teaching-jobs' },
 ]
