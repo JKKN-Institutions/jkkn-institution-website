@@ -3,15 +3,15 @@ import { notFound } from 'next/navigation'
 import { isMainInstitution } from '@/lib/config/multi-tenant'
 import { getSiteCareers, toCard, type JobCardData } from '@/lib/services/public-careers-search'
 import {
-  CAMPUS, buildDesignationFaqs, buildDesignationLanding, buildFaqJsonLd, buildLandingJsonLd, splitSummary,
+  CAMPUS, buildDesignationFaqs, buildDesignationLanding, buildFaqJsonLd, buildLandingJsonLd, groupedByKind, splitSummary,
   type DesignationKey, type DesignationLanding as Landing, type LandingJob,
 } from '@/lib/utils/careers-landing'
 import { getSiteUrl } from '@/lib/utils/site-url'
 import { CampusContact, JobLanding, employerFacts, otherListPages } from './job-landing'
 
 /**
- * A careers list page for one designation (Assistant Professor, Lecturer and
- * Reader, lab and library). Each route file is only its config; this renders
+ * A careers list page for one designation (Assistant Professor, Professor,
+ * Lecturer and Reader, Tutor, lab and library, principal and leadership). Each route file is only its config; this renders
  * it. Same rules as the other list pages: live MyJKKN feed, parent site only,
  * and no salary, hours or benefits in the copy.
  */
@@ -74,7 +74,7 @@ export async function DesignationLanding({ config }: { config: DesignationConfig
   const lower = config.noun.toLowerCase()
   const landing = await loadLanding(config)
   const faqs = landing && landing.total > 0 ? buildDesignationFaqs(config.key, landing, asOf, config.noun) : []
-  const join = config.key === 'lab-library' ? 'in' : 'at'
+  const join = groupedByKind(config.key) ? 'in' : 'at'
 
   return (
     <JobLanding

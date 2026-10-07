@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import {
   buildDesignationFaqs, buildDesignationLanding, buildFaqJsonLd, buildLandingJsonLd, buildNonTeachingFaqs,
-  buildNonTeachingLanding, buildTeachingFaqs, buildTeachingLanding, groupNote, isLabOrLibrary, nonTeachingBucket,
+  buildNonTeachingLanding, buildTeachingFaqs, buildTeachingLanding, groupNote, isLabOrLibrary, isLeadership,
+  nonTeachingBucket,
   onDesignationPage, splitSummary, teachingBucket,
   type LandingJob,
 } from '@/lib/utils/careers-landing'
@@ -225,6 +226,54 @@ describe('careers-landing', () => {
         const j = job(title, { roleCategory })
         const pages = [onDesignationPage('assistant-professor', j), onDesignationPage('lecturer', j),
           onDesignationPage('lab-library', j), Boolean(nonTeachingBucket(j))].filter(Boolean).length
+        expect(pages, `${title} / ${roleCategory}`).toBeLessThanOrEqual(1)
+      }
+    }
+  })
+
+  it('lists professors, tutors and leadership on their own pages', () => {
+    const at = (title: string, institution: string, over: Partial<LandingJob> = {}) => job(title, { institution, ...over })
+    const lead = (title: string) => job(title, { roleCategory: 'senior_leadership', institution: 'JKKN Main Office' })
+    const jobs = [
+      at('Professor', 'JKKN Dental College and Hospital'),
+      at('Associate Prfessor', 'JKKN College of Pharmacy'),
+      at('Professor of Practice', 'JKKN Dental College and Hospital'),
+      at('Assistant Professor', 'JKKN College of Pharmacy'),
+      at('Tutor', 'JKKN College of Allied Health Sciences'),
+      at('Nursing Tutor', 'JKKN College of Nursing and Research'),
+      lead('Principal JKKN College of Pharmacy'),
+      lead('Chief Operations Officer (COO)'),
+      at('Vice Principal', 'JKKN College of Education'),
+    ]
+    const prof = buildDesignationLanding('professor', jobs, 'Professor and Associate Professor')
+    expect(prof.groups.map(g => [g.label, g.jobs.length])).toEqual([
+      ['JKKN Dental College and Hospital', 2], ['JKKN College of Pharmacy', 1],
+    ])
+    expect(buildDesignationLanding('tutor', jobs, 'Tutor').listed.map(j => j.title).sort()).toEqual(['Nursing Tutor', 'Tutor'])
+    const leadership = buildDesignationLanding('leadership', jobs, 'Principal and leadership')
+    expect(leadership.groups.map(g => [g.key, g.jobs.map(j => j.title)])).toEqual([
+      ['principal', ['Principal JKKN College of Pharmacy', 'Vice Principal']],
+      ['group', ['Chief Operations Officer (COO)']],
+    ])
+    expect(splitSummary(leadership.groups, 'in')).toBe('2 in principal roles and 1 in group leadership roles')
+    // A "Vice Principal" HR filed under teaching is leadership, and on no other page.
+    const vp = at('Vice Principal', 'JKKN College of Education')
+    expect(isLeadership(vp)).toBe(true)
+    expect(teachingBucket(vp)).toBeNull()
+    expect(nonTeachingBucket(vp)).toBeNull()
+    expect(isLabOrLibrary(vp)).toBe(false)
+  })
+
+  it('lists every job on exactly one list page, or on none', () => {
+    const keys = ['assistant-professor', 'professor', 'lecturer', 'tutor', 'lab-library', 'leadership'] as const
+    const titles = ['Assistant Professor', 'Professor', 'Associate Professor', 'Reader', 'Tutor', 'Lab Assistant', 'Librarian',
+      'Accountant', 'Primary Teacher', 'Vice Principal', 'Principal', 'Chief Executive Officer', 'Aptitude Trainer']
+    for (const roleCategory of ['teaching_faculty', 'non_teaching', 'medical', 'senior_leadership']) {
+      for (const title of titles) {
+        const j = job(title, { roleCategory })
+        const bucket = teachingBucket(j)
+        const listedOnTeaching = bucket === 'primary' || bucket === 'high-school' || bucket === 'higher-secondary' || bucket === 'trainers'
+        const pages = keys.filter(k => onDesignationPage(k, j)).length + (nonTeachingBucket(j) ? 1 : 0) + (listedOnTeaching ? 1 : 0)
         expect(pages, `${title} / ${roleCategory}`).toBeLessThanOrEqual(1)
       }
     }

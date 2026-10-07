@@ -28,10 +28,12 @@ const H1 = 'Teaching Jobs at JKKN Institutions, Komarapalayam, Namakkal District
 
 type Card = JobCardData & LandingJob
 
-// Faculty grades with their own list page; the rest link to the careers search.
+// Every faculty grade has its own list page; the search is only a fallback.
 const FACULTY_PAGES: Partial<Record<string, string>> = {
   'assistant-professor': '/careers/assistant-professor-jobs',
+  professor: '/careers/professor-jobs',
   lecturer: '/careers/lecturer-jobs',
+  tutor: '/careers/tutor-jobs',
 }
 
 const today = () =>
