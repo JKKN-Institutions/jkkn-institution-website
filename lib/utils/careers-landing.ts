@@ -58,7 +58,10 @@ const FACULTY_RULES: [RegExp, FacultyKey][] = [
   [/lecturer|reader/, 'lecturer'],
   [/tutor/, 'tutor'],
 ]
-const NOT_TEACHING = /principal|non[\s-]?teaching|human resources|\blab\b|librar/
+const NOT_TEACHING = /principal|non[\s-]?teaching|human resources/
+// Checked only after the faculty grades: "Assistant Professor Clinical Lab
+// Technology" is a faculty post, "Lab Assistant" is not a teaching one.
+const LAB_OR_LIBRARY = /\blab\b|librar/
 
 /**
  * The teaching group a job belongs to, or null when it is not a teaching role.
@@ -69,7 +72,7 @@ export function teachingBucket(job: Pick<LandingJob, 'title' | 'roleCategory'>):
   const title = job.title.toLowerCase()
   if (job.roleCategory === 'senior_leadership' || NOT_TEACHING.test(title)) return null
   for (const [pattern, key] of FACULTY_RULES) if (pattern.test(title)) return key
-  if (job.roleCategory !== 'teaching_faculty') return null
+  if (job.roleCategory !== 'teaching_faculty' || LAB_OR_LIBRARY.test(title)) return null
   if (/post\s*graduate assistant|\bpg assistant|\bpgt\b/.test(title)) return 'higher-secondary'
   if (/b\.?\s?t\.? assistant|high school|secondary|computer teacher|\btgt\b/.test(title)) return 'high-school'
   if (/trainer|coach|physical/.test(title)) return 'trainers'
@@ -161,6 +164,102 @@ export function buildTeachingFaqs<T extends LandingJob>(landing: TeachingLanding
     },
     {
       question: 'Is there a last date to apply for JKKN teaching jobs?',
+      answer: closing
+        ? 'Some listings show a closing date on the job page and others do not. Open the role you want and check the job page before you apply, and mention the job title exactly as it is listed.'
+        : 'The job listings on the JKKN careers page do not show a closing date. Each listing shows the institution, the qualification and the number of openings. If a role matters to you, apply through the online form and mention the job title exactly as it is listed.',
+    },
+  ]
+}
+
+// ── Non-teaching list page ──────────────────────────────────────────────────
+
+export type NonTeachingKey = 'office' | 'technical' | 'hospital' | 'campus'
+
+const NON_TEACHING: { key: NonTeachingKey; heading: string; label: string }[] = [
+  { key: 'office', heading: 'Office and administration jobs', label: 'office and administration' },
+  { key: 'technical', heading: 'Technical and IT jobs', label: 'technical and IT' },
+  { key: 'hospital', heading: 'Hospital and clinical support jobs', label: 'hospital and clinical support' },
+  { key: 'campus', heading: 'Hostel, stores and campus jobs', label: 'hostel, stores and campus' },
+]
+
+// Lab and library roles have their own group in the careers plan, and
+// principals and chief officers are leadership - neither is listed here.
+const NOT_NON_TEACHING = /principal|\blab\b|librar|research assistant/
+
+/**
+ * The non-teaching group a job belongs to, or null when it is a teaching,
+ * leadership, lab or library role. Office work is the fallback, so a title HR
+ * invents tomorrow still appears on the page.
+ */
+export function nonTeachingBucket(job: Pick<LandingJob, 'title' | 'roleCategory'>): NonTeachingKey | null {
+  const title = job.title.toLowerCase()
+  if (job.roleCategory === 'senior_leadership' || NOT_NON_TEACHING.test(title)) return null
+  if (teachingBucket(job)) return null
+  if (/pharmacist|dental|ceramic|chair mechanic|surgery|hospital|nurse|clinic/.test(title)) return 'hospital'
+  if (/system|sy?s?tem admin|computer|cctv|technician|civil|electric|network|\bit\b/.test(title)) return 'technical'
+  if (/warden|house\s?keeping|stores? |store keeper|stores incharge|driver|security|canteen|transport/.test(title)) return 'campus'
+  return 'office'
+}
+
+export interface NonTeachingGroup<T> { key: NonTeachingKey; heading: string; label: string; jobs: T[]; note: string }
+export interface NonTeachingLanding<T> { groups: NonTeachingGroup<T>[]; listed: T[]; total: number }
+
+export function buildNonTeachingLanding<T extends LandingJob>(jobs: T[]): NonTeachingLanding<T> {
+  const buckets = new Map<NonTeachingKey, T[]>()
+  for (const job of jobs) {
+    const key = nonTeachingBucket(job)
+    if (key) buckets.set(key, [...(buckets.get(key) ?? []), job])
+  }
+  const groups = NON_TEACHING
+    .map(group => {
+      const list = [...(buckets.get(group.key) ?? [])].sort((a, b) => a.title.localeCompare(b.title))
+      return { ...group, jobs: list, note: groupNote(list) }
+    })
+    .filter(g => g.jobs.length > 0)
+  const listed = groups.flatMap(g => g.jobs)
+  return { groups, listed, total: listed.length }
+}
+
+const joinList = (items: string[]) =>
+  items.length <= 1 ? items.join('') : `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`
+
+/** Question-and-answer block for the non-teaching page; same rules as the teaching one. */
+export function buildNonTeachingFaqs<T extends LandingJob>(landing: NonTeachingLanding<T>, asOf: string): Faq[] {
+  const { total, listed, groups } = landing
+  const where = `${CAMPUS.locality}, ${CAMPUS.district}`
+  const openings = plural(total, 'non-teaching opening', 'non-teaching openings')
+  const quals = unique(listed.map(j => j.qualification)).sort().slice(0, 6)
+  const freshers = listed.filter(j => j.experience === 'Freshers welcome').length
+  const closing = listed.some(j => j.closesAt)
+  const split = joinList(groups.map(g => `${g.jobs.length} in ${g.label}`))
+
+  return [
+    {
+      question: 'Are there non-teaching jobs near Erode and Namakkal?',
+      answer: `Yes. JKKN Institutions lists non-teaching jobs at its campus in ${where}, which is ${CAMPUS.nearestCityKm} km by road from ${CAMPUS.nearestCity} city. As of ${asOf} the careers page shows ${openings} across office, technical, hospital support and campus roles. All of them are based at ${CAMPUS.locality}.`,
+    },
+    {
+      question: 'What non-teaching jobs are open at JKKN Institutions in Komarapalayam?',
+      answer: `As of ${asOf}, the JKKN Institutions careers page lists ${openings}: ${split}. Each role has its own job page with the full description and an online application form. All are based in ${where}.`,
+    },
+    {
+      question: 'What qualification do I need for a non-teaching job at JKKN?',
+      answer: `It differs by role, and each listing states its own requirement.${quals.length ? ` The current non-teaching listings show: ${quals.join('; ')}.` : ''} Check the Qualification line on the job page before you apply.`,
+    },
+    {
+      question: 'Can freshers apply for non-teaching jobs at JKKN?',
+      answer: `It depends on the role. Each listing shows the experience it asks for${freshers ? `, and ${plural(freshers, 'current listing states', 'current listings state')} that freshers are welcome` : ''}. The online application form accepts zero months of experience, so a fresher can submit an application for any role and state that clearly.`,
+    },
+    {
+      question: 'How do I apply for a non-teaching job at JKKN Institutions?',
+      answer: 'Apply online from the job page on jkkn.ac.in/careers. Open the role, select Apply now, then enter your name, email, phone number, highest qualification and total experience. Upload a resume in PDF, DOC or DOCX format of up to 2 MB and submit. You do not need to create an account.',
+    },
+    {
+      question: 'Where is JKKN Institutions, and how far is it from Erode?',
+      answer: `JKKN Institutions is at Natarajapuram on NH-544, the Salem to Coimbatore National Highway, in ${where}, ${CAMPUS.region} ${CAMPUS.postalCode}. The campus is ${CAMPUS.nearestCityKm} km by road from ${CAMPUS.nearestCity} city. Every non-teaching role listed on this page is based at this one ${CAMPUS.locality} campus.`,
+    },
+    {
+      question: 'Is there a last date to apply for JKKN non-teaching jobs?',
       answer: closing
         ? 'Some listings show a closing date on the job page and others do not. Open the role you want and check the job page before you apply, and mention the job title exactly as it is listed.'
         : 'The job listings on the JKKN careers page do not show a closing date. Each listing shows the institution, the qualification and the number of openings. If a role matters to you, apply through the online form and mention the job title exactly as it is listed.',
