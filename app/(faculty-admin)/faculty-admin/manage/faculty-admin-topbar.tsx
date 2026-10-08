@@ -93,7 +93,7 @@ export function FacultyAdminTopbar({ userEmail, onOpenMobileSidebar }: FacultyAd
 
             {/* Help */}
             <Link
-              href="/faculty"
+              href="/senior-learners"
               target="_blank"
               className="p-2.5 text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-xl transition-all duration-200 hidden md:flex items-center justify-center"
               aria-label="Preview faculty page"
@@ -145,7 +145,7 @@ export function FacultyAdminTopbar({ userEmail, onOpenMobileSidebar }: FacultyAd
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator className="bg-border/50" />
                 <DropdownMenuItem asChild className="cursor-pointer">
-                  <Link href="/faculty" target="_blank" className="flex items-center gap-2">
+                  <Link href="/senior-learners" target="_blank" className="flex items-center gap-2">
                     <User className="h-4 w-4" />
                     Preview Faculty Page
                   </Link>

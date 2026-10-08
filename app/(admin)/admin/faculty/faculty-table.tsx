@@ -158,7 +158,7 @@ export function FacultyTable({ faculty }: FacultyTableProps) {
               {f.status === 'published' && f.is_active && f.slug && (
                 <Button variant="ghost" size="sm" asChild title="View public page">
                   <Link
-                    href={`/faculty/${f.slug}`}
+                    href={`/senior-learners/${f.slug}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

@@ -30,11 +30,11 @@ export async function generateMetadata({ params }: FacultyDetailProps): Promise<
       description: `${faculty.designation} at JKKN College of Engineering & Technology. ${faculty.experience_years}+ years in ${faculty.department.replace('Department of ', '')}.`,
       images: faculty.photo_url ? [{ url: faculty.photo_url, width: 400, height: 400 }] : [],
       type: 'profile',
-      url: `${siteUrl}/faculty/${slug}`,
+      url: `${siteUrl}/senior-learners/${slug}`,
       locale: 'en_IN',
     },
     alternates: {
-      canonical: `${siteUrl}/faculty/${slug}`,
+      canonical: `${siteUrl}/senior-learners/${slug}`,
     },
   }
 }
@@ -63,7 +63,7 @@ export default async function FacultyDetailPage({ params }: FacultyDetailProps) 
     jobTitle: faculty.designation,
     description: faculty.professional_summary || `${faculty.designation} at JKKN College of Engineering & Technology`,
     image: faculty.photo_url || undefined,
-    url: `${siteUrl}/faculty/${slug}`,
+    url: `${siteUrl}/senior-learners/${slug}`,
     worksFor: {
       '@type': 'EducationalOrganization',
       name: 'JKKN College of Engineering & Technology',
@@ -104,7 +104,7 @@ export default async function FacultyDetailPage({ params }: FacultyDetailProps) 
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
       { '@type': 'ListItem', position: 2, name: 'Senior Learners', item: `${siteUrl}/faculty` },
-      { '@type': 'ListItem', position: 3, name: faculty.full_name, item: `${siteUrl}/faculty/${slug}` },
+      { '@type': 'ListItem', position: 3, name: faculty.full_name, item: `${siteUrl}/senior-learners/${slug}` },
     ],
   }
 

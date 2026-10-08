@@ -640,6 +640,8 @@ const ContactInfoSection = lazy(() => import('@/components/cms-blocks/content/co
 
 // Approvals and Affiliation Section
 const ApprovalsAffiliationSection = lazy(() => import('@/components/cms-blocks/content/approvals-affiliation-section'))
+const DepartmentFacultyPdf = lazy(() => import('@/components/cms-blocks/content/department-faculty-pdf'))
+const FacultyDepartmentsIndex = lazy(() => import('@/components/cms-blocks/content/faculty-departments-index'))
 
 // Engineering-specific blocks
 const EngineeringCenturySection = lazy(() => import('@/components/cms-blocks/content/engineering-century-section'))
@@ -8374,6 +8376,84 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['glassmorphic', 'solid', 'minimal'] },
       { name: 'showDecorations', type: 'boolean', label: 'Show Decorations' },
       { name: 'layout', type: 'enum', label: 'Layout', options: ['horizontal', 'vertical'] },
+    ],
+  },
+
+  DepartmentFacultyPdf: {
+    name: 'DepartmentFacultyPdf',
+    displayName: 'Department Faculty PDF',
+    category: 'content',
+    description: 'Department heading with an embedded faculty-list PDF viewer plus Open and Download buttons',
+    icon: 'FileText',
+    component: DepartmentFacultyPdf,
+    propsSchema: z.object({
+      departmentName: z.string().default('Computer Science and Engineering'),
+      eyebrow: z.string().default('Faculty'),
+      description: z.string().default('Official faculty list with AU-FIN and AICTE IDs, names and designations.'),
+      pdfUrl: z.string().default('/pdfs/faculty/cse.pdf'),
+      downloadFileName: z.string().default('faculty-list.pdf'),
+      viewerHeight: z.number().default(900),
+      backgroundColor: z.string().default('#fbfbee'),
+      accentColor: z.string().default('#0b6d41'),
+      highlightColor: z.string().default('#ffde59'),
+    }) as any,
+    defaultProps: {
+      departmentName: 'Computer Science and Engineering',
+      eyebrow: 'Faculty',
+      description: 'Official faculty list with AU-FIN and AICTE IDs, names and designations.',
+      pdfUrl: '/pdfs/faculty/cse.pdf',
+      downloadFileName: 'cse-faculty-list.pdf',
+      viewerHeight: 900,
+    },
+    supportsChildren: false,
+    editableProps: [
+      { name: 'departmentName', type: 'string', label: 'Department Name', required: true },
+      { name: 'eyebrow', type: 'string', label: 'Eyebrow Label' },
+      { name: 'description', type: 'string', label: 'Description', multiline: true },
+      { name: 'pdfUrl', type: 'url', label: 'PDF URL', required: true },
+      { name: 'downloadFileName', type: 'string', label: 'Download File Name' },
+      { name: 'viewerHeight', type: 'number', label: 'Viewer Height', min: 400, max: 1600, step: 50, unit: 'px' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'highlightColor', type: 'color', label: 'Highlight Color' },
+    ],
+  },
+
+  FacultyDepartmentsIndex: {
+    name: 'FacultyDepartmentsIndex',
+    displayName: 'Faculty Departments Index',
+    category: 'content',
+    description: 'Grid of department cards linking to each department faculty list page',
+    icon: 'Users',
+    component: FacultyDepartmentsIndex,
+    propsSchema: z.object({
+      eyebrow: z.string().default('Faculty'),
+      title: z.string().default('Our Faculty by Department'),
+      subtitle: z.string().default('Choose a department to view its official faculty list.'),
+      departments: z.array(z.object({
+        name: z.string().default('Department'),
+        shortName: z.string().default('DEPT'),
+        href: z.string().default('/faculty'),
+        description: z.string().default(''),
+      })).default([]),
+      backgroundColor: z.string().default('#fbfbee'),
+      accentColor: z.string().default('#0b6d41'),
+      highlightColor: z.string().default('#ffde59'),
+    }) as any,
+    defaultProps: {
+      eyebrow: 'Faculty',
+      title: 'Our Faculty by Department',
+      subtitle: 'Choose a department to view its official faculty list.',
+    },
+    supportsChildren: false,
+    editableProps: [
+      { name: 'eyebrow', type: 'string', label: 'Eyebrow Label' },
+      { name: 'title', type: 'string', label: 'Title', required: true },
+      { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
+      { name: 'departments', type: 'array', label: 'Departments', itemType: 'object' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'highlightColor', type: 'color', label: 'Highlight Color' },
     ],
   },
 

@@ -200,6 +200,13 @@ const engineeringOnlyPathPrefixes = [
   ...CITY_PAGES_CONFIG.map((city) => `/${city.slug}`),
 ]
 
+// Engineering department faculty-list pages served by the CMS under /faculty/<slug>.
+const FACULTY_DEPARTMENT_SLUGS = new Set(['cse', 'ece', 'eee', 'it', 'mech', 'mba', 'sh'])
+
+// The Senior Learners profile directory (/senior-learners) is hidden on the
+// Engineering deployment; the department PDF lists under /faculty replace it.
+const SENIOR_LEARNERS_HIDDEN_ON_ENGINEERING = true
+
 function isEngineeringOnlyPath(pathname: string): boolean {
   const normalized = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname
   return engineeringOnlyPathPrefixes.some(
@@ -263,6 +270,34 @@ export async function proxy(request: NextRequest) {
     return NextResponse.rewrite(rewriteUrl)
   }
 
+  // Senior Learners directory (formerly /faculty, /faculty/[slug]).
+  // The profile directory now lives under /senior-learners so that /faculty
+  // can host the department faculty-list PDFs (CMS pages, Engineering only).
+  const isEngineering = institutionId === 'engineering'
+
+  // Engineering deliberately hides the profile directory: /senior-learners*
+  // renders the branded 404. Flip SENIOR_LEARNERS_HIDDEN_ON_ENGINEERING to
+  // false to publish it again (old /faculty/<slug> URLs then redirect to it).
+  if (
+    isEngineering &&
+    SENIOR_LEARNERS_HIDDEN_ON_ENGINEERING &&
+    (pathname === '/senior-learners' || pathname.startsWith('/senior-learners/'))
+  ) {
+    const rewriteUrl = request.nextUrl.clone()
+    rewriteUrl.pathname = '/__senior_learners_hidden_404'
+    return NextResponse.rewrite(rewriteUrl)
+  }
+
+  // Legacy /faculty URLs. Engineering keeps /faculty and the department
+  // pages (/faculty/cse ...) for the CMS; every other /faculty/<slug> is an old
+  // profile link. Other deployments still serve the directory, now at
+  // /senior-learners, so their indexed URLs keep resolving via 301.
+  if (pathname === '/faculty' && !isEngineering) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/senior-learners'
+    return NextResponse.redirect(url, 301)
+  }
+
   // Faculty slug-rename redirect.
   // When MyJKKN admins rename a faculty slug, the sync engine records the
   // old->new mapping in public.faculty_slug_history. Run this BEFORE any
@@ -270,6 +305,42 @@ export async function proxy(request: NextRequest) {
   const facultySlugMatch = pathname.match(/^\/faculty\/([^/]+)\/?$/)
   if (facultySlugMatch) {
     const oldSlug = decodeURIComponent(facultySlugMatch[1])
+
+    // Engineering department pages are CMS-rendered; let them through.
+    if (isEngineering && FACULTY_DEPARTMENT_SLUGS.has(oldSlug)) {
+      return NextResponse.next()
+    }
+
+    // Engineering with the directory hidden: old profile links go to the
+    // department index rather than a dead end.
+    if (isEngineering && SENIOR_LEARNERS_HIDDEN_ON_ENGINEERING) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/faculty'
+      return NextResponse.redirect(url, 301)
+    }
+
+    let targetSlug = oldSlug
+    try {
+      const { data } = await slugLookupClient
+        .from('faculty_slug_history')
+        .select('new_slug')
+        .eq('old_slug', oldSlug)
+        .maybeSingle()
+      if (data?.new_slug) targetSlug = data.new_slug
+    } catch {
+      // Lookup failure — fall back to the requested slug so we never
+      // block a valid request because of a transient DB error.
+    }
+    const url = request.nextUrl.clone()
+    url.pathname = `/senior-learners/${targetSlug}`
+    return NextResponse.redirect(url, 301)
+  }
+
+  // Public directory pages skip the auth pipeline (renames are handled by
+  // the redirect above, which now runs on the legacy /faculty/<slug> path).
+  const seniorLearnersSlugMatch = pathname.match(/^\/senior-learners\/([^/]+)\/?$/)
+  if (seniorLearnersSlugMatch) {
+    const oldSlug = decodeURIComponent(seniorLearnersSlugMatch[1])
     try {
       const { data } = await slugLookupClient
         .from('faculty_slug_history')
@@ -278,14 +349,12 @@ export async function proxy(request: NextRequest) {
         .maybeSingle()
       if (data?.new_slug) {
         const url = request.nextUrl.clone()
-        url.pathname = `/faculty/${data.new_slug}`
+        url.pathname = `/senior-learners/${data.new_slug}`
         return NextResponse.redirect(url, 301)
       }
     } catch {
-      // Lookup failure — fall through to normal handling so we never
-      // block a valid request because of a transient DB error.
+      // Lookup failure — fall through to normal handling.
     }
-    // No history match: faculty pages are public, skip auth pipeline.
     return NextResponse.next()
   }
 

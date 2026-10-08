@@ -16,7 +16,9 @@ const FEATURE_URL_PATTERNS: Partial<Record<FeatureFlag, string[]>> = {
   events: ['/events/', '/events?'],
   gallery: ['/gallery/', '/gallery?'],
   admissions: ['/admissions/', '/admissions?', '/admission/', '/admission?'],
-  'faculty-directory': ['/faculty/', '/faculty?'],
+  // /faculty/<dept> are department PDF pages (not the profile directory), so
+  // only the relocated directory path is gated by this flag.
+  'faculty-directory': ['/senior-learners/', '/senior-learners?'],
   'course-catalog': ['/courses/', '/courses?'],
   testimonials: ['/testimonials/', '/testimonials?'],
   newsletter: ['/newsletter/', '/newsletter?'],

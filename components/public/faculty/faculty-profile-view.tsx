@@ -119,7 +119,7 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
           <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 py-6 max-[480px]:py-4 text-[0.78rem] text-[#7a8f80]">
             <Link href="/" className="hover:text-[#0b6d41] transition-colors">Home</Link>
             <span className="opacity-30">/</span>
-            <Link href="/faculty" className="hover:text-[#0b6d41] transition-colors">Senior Learners</Link>
+            <Link href="/senior-learners" className="hover:text-[#0b6d41] transition-colors">Senior Learners</Link>
             <span className="opacity-30">/</span>
             <span className="text-[#3d5443]">{faculty.full_name}</span>
           </nav>
@@ -597,7 +597,7 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
                 <Link href="/admissions/enquiry" className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-[0.88rem] bg-[#ffde59] text-[#085533] shadow-[0_4px_20px_rgba(255,222,89,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(255,222,89,0.45)]">
                   <Mail className="w-4 h-4" /> Enquire Now
                 </Link>
-                <Link href="/faculty" className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-[0.88rem] text-white/85 border border-white/20 transition-all hover:border-[#ffde59] hover:text-[#ffde59] hover:-translate-y-1">
+                <Link href="/senior-learners" className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-[0.88rem] text-white/85 border border-white/20 transition-all hover:border-[#ffde59] hover:text-[#ffde59] hover:-translate-y-1">
                   <Users className="w-4 h-4" /> View All Senior Learners
                 </Link>
               </div>
@@ -615,7 +615,7 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
                 {relatedFaculty.map(f => {
                   const fi = f.full_name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
                   return (
-                    <Link key={f.id} href={`/faculty/${f.slug}`} className="group block bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-6 text-center transition-all duration-400 hover:border-[rgba(11,109,65,0.22)] hover:-translate-y-1.5 hover:shadow-lg relative overflow-hidden">
+                    <Link key={f.id} href={`/senior-learners/${f.slug}`} className="group block bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-6 text-center transition-all duration-400 hover:border-[rgba(11,109,65,0.22)] hover:-translate-y-1.5 hover:shadow-lg relative overflow-hidden">
                       <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#0b6d41] via-[#0e8a52] to-[#12a863] scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
                       <div className="w-[60px] h-[60px] rounded-full mx-auto mb-3 flex items-center justify-center text-white text-sm font-bold overflow-hidden" style={{ background: 'linear-gradient(135deg, #0b6d41, #12a863)' }}>
                         {f.photo_url ? <img src={f.photo_url} alt={f.full_name} className="w-full h-full object-cover" /> : fi}
@@ -627,7 +627,7 @@ export function FacultyProfileView({ faculty, relatedFaculty }: FacultyProfileVi
                 })}
               </div>
               <div className="text-center mt-5">
-                <Link href="/faculty" className="inline-flex items-center gap-1.5 text-[0.85rem] font-semibold text-[#0b6d41] hover:text-[#085533] hover:gap-2.5 transition-all">
+                <Link href="/senior-learners" className="inline-flex items-center gap-1.5 text-[0.85rem] font-semibold text-[#0b6d41] hover:text-[#085533] hover:gap-2.5 transition-all">
                   View All Senior Learners <span className="transition-transform">→</span>
                 </Link>
               </div>

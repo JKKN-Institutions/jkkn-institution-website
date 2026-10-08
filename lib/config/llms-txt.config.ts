@@ -78,7 +78,7 @@ Total sanctioned intake 372 — 300 undergraduate across 5 B.E./B.Tech branches,
 ## About
 
 - [About JKKN CET](${siteUrl}/about): History, vision, mission, leadership team.
-- [Faculty](${siteUrl}/faculty): Faculty directory with qualifications, specialisations and publications.
+- [Senior Learners](${siteUrl}/senior-learners): Faculty directory with qualifications, specialisations and publications.
 - [Blog](${siteUrl}/blog): Articles on engineering education, campus updates, placement news.
 - [Contact](${siteUrl}/contact): Admissions office, campus location map, enquiry form.
 

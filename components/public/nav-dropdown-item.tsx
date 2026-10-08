@@ -308,7 +308,9 @@ export function NavDropdownItem({
         </button>
       ) : (
         item.external_url ? (
-          item.external_url.startsWith('/') ? (
+          // PDFs are files, not routes: open them in a new tab with a plain anchor
+          // (the <a> branch below) instead of a client-side <Link> navigation.
+          item.external_url.startsWith('/') && !/\.pdf($|[?#])/i.test(item.external_url) ? (
             <Link
               href={item.external_url}
               className={cn(
