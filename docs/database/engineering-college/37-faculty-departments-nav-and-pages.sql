@@ -10,6 +10,8 @@
 --          slug is free: the profile directory moved to the code route
 --          /senior-learners and is hidden on Engineering (see proxy.ts).
 -- Created: 2026-10-08
+-- Applied: 2026-10-08 via apply_migration "faculty_departments_nav_and_pages" (verified: 8 published
+--          pages + 1 hidden draft; Faculty is top-level sort_order 3)
 -- Target:  Engineering College Supabase (kyvfkyjmdbtyimtedkie) ONLY
 -- Dependencies: cms_pages, cms_page_blocks, cms_seo_metadata;
 --               CMS blocks DepartmentFacultyPdf + FacultyDepartmentsIndex
