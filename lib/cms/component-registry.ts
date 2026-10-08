@@ -8529,6 +8529,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       eyebrow: z.string().default('Faculty'),
       title: z.string().default('Our Faculty by Department'),
       subtitle: z.string().default('Choose a department to view its official faculty list.'),
+      ctaLabel: z.string().default('View faculty'),
       departments: z.array(z.object({
         name: z.string().default('Department'),
         shortName: z.string().default('DEPT'),
@@ -8549,6 +8550,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'eyebrow', type: 'string', label: 'Eyebrow Label' },
       { name: 'title', type: 'string', label: 'Title', required: true },
       { name: 'subtitle', type: 'string', label: 'Subtitle', multiline: true },
+      { name: 'ctaLabel', type: 'string', label: 'Card Button Text' },
       { name: 'departments', type: 'array', label: 'Departments', itemType: 'object' },
       { name: 'backgroundColor', type: 'color', label: 'Background Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },
