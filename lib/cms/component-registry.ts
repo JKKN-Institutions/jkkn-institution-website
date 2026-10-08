@@ -642,6 +642,7 @@ const ContactInfoSection = lazy(() => import('@/components/cms-blocks/content/co
 const ApprovalsAffiliationSection = lazy(() => import('@/components/cms-blocks/content/approvals-affiliation-section'))
 const DepartmentFacultyPdf = lazy(() => import('@/components/cms-blocks/content/department-faculty-pdf'))
 const DepartmentFacultyList = lazy(() => import('@/components/cms-blocks/content/department-faculty-list'))
+const DepartmentFacultyTable = lazy(() => import('@/components/cms-blocks/content/department-faculty-table'))
 const FacultyDepartmentsIndex = lazy(() => import('@/components/cms-blocks/content/faculty-departments-index'))
 
 // Engineering-specific blocks
@@ -8421,6 +8422,59 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'backgroundColor', type: 'color', label: 'Background Color' },
       { name: 'accentColor', type: 'color', label: 'Accent Color' },
       { name: 'highlightColor', type: 'color', label: 'Highlight Color' },
+    ],
+  },
+
+  DepartmentFacultyTable: {
+    name: 'DepartmentFacultyTable',
+    displayName: 'Department Faculty Table',
+    category: 'content',
+    description: 'Department heading with the faculty as one table (S.No., AU FIN, AICTE ID, name and designation, photo), text shown exactly as the official department list prints it',
+    icon: 'Table',
+    component: DepartmentFacultyTable,
+    propsSchema: z.object({
+      departmentName: z.string().default('DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING'),
+      listTitle: z.string().default('FACULTY LIST'),
+      snoLabel: z.string().default('S.No.'),
+      auFinLabel: z.string().default('AU FIN'),
+      aicteIdLabel: z.string().default('AICTE ID'),
+      nameLabel: z.string().default('Name & Designation'),
+      photoLabel: z.string().default('Photo'),
+      faculty: z.array(z.object({
+        sno: z.string().default(''),
+        auFin: z.string().default(''),
+        aicteId: z.string().default(''),
+        name: z.string().default(''),
+        designation: z.string().default(''),
+        photo: z.string().default(''),
+        photoWidth: z.number().default(0),
+        photoHeight: z.number().default(0),
+      })).default([]),
+      backgroundColor: z.string().default('#fbfbee'),
+      accentColor: z.string().default('#0b6d41'),
+    }) as any,
+    defaultProps: {
+      departmentName: 'DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING',
+      listTitle: 'FACULTY LIST',
+      snoLabel: 'S.No.',
+      auFinLabel: 'AU FIN',
+      aicteIdLabel: 'AICTE ID',
+      nameLabel: 'Name & Designation',
+      photoLabel: 'Photo',
+      faculty: [],
+    },
+    supportsChildren: false,
+    editableProps: [
+      { name: 'departmentName', type: 'string', label: 'Department Heading', required: true },
+      { name: 'listTitle', type: 'string', label: 'Line Under Heading' },
+      { name: 'snoLabel', type: 'string', label: 'Column 1 Heading (S.No.)' },
+      { name: 'auFinLabel', type: 'string', label: 'Column 2 Heading (AU FIN)' },
+      { name: 'aicteIdLabel', type: 'string', label: 'Column 3 Heading (AICTE ID)' },
+      { name: 'nameLabel', type: 'string', label: 'Column 4 Heading (Name & Designation)' },
+      { name: 'photoLabel', type: 'string', label: 'Column 5 Heading (Photo)' },
+      { name: 'faculty', type: 'array', label: 'Faculty Members', itemType: 'object' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
     ],
   },
 
