@@ -19,6 +19,23 @@ function toId(label: string): string {
   return label.toLowerCase().replace(/\s+/g, '-');
 }
 
+// PDFs and absolute URLs are files / other sites, not App Router pages. Passing them
+// to router.push() renders the in-app "Page Not Found" screen, so they must be
+// opened with a real browser navigation instead (desktop menu does the same).
+function isFileOrExternalHref(href: string): boolean {
+  return /^https?:\/\//i.test(href) || /\.pdf($|[?#])/i.test(href);
+}
+
+function openInNewTab(href: string): void {
+  const a = document.createElement('a');
+  a.href = href;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
 interface PublicBottomNavProps {
   navigation?: CmsNavItem[];
 }
@@ -118,6 +135,18 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
     }
   }, [currentActiveIndex, activeNavId, setActiveNav, isExpanded]);
 
+  // Navigate to a menu href: files/external links open in a new tab, pages use the router
+  const navigateTo = useCallback(
+    (href: string) => {
+      if (isFileOrExternalHref(href)) {
+        openInNewTab(href);
+      } else {
+        router.push(href);
+      }
+    },
+    [router]
+  );
+
   // Handle nav item click
   const handleNavClick = useCallback(
     (index: number) => {
@@ -125,7 +154,7 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
 
       // If this item has no submenus, navigate directly
       if (item.submenus.length === 0) {
-        router.push(item.href);
+        navigateTo(item.href);
         setExpanded(false);
         return;
       }
@@ -137,16 +166,16 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
         switchToNav(index.toString());
       }
     },
-    [primaryItems, activeNavId, isExpanded, switchToNav, setExpanded, router]
+    [primaryItems, activeNavId, isExpanded, switchToNav, setExpanded, navigateTo]
   );
 
   // Handle submenu item click
   const handleSubmenuClick = useCallback(
     (href: string) => {
-      router.push(href);
+      navigateTo(href);
       setExpanded(false);
     },
-    [router, setExpanded]
+    [navigateTo, setExpanded]
   );
 
   // Handle "More" menu toggle
@@ -158,10 +187,10 @@ export function PublicBottomNav({ navigation }: PublicBottomNavProps) {
   // Handle More menu item click
   const handleMoreItemClick = useCallback(
     (href: string) => {
-      router.push(href);
+      navigateTo(href);
       setMoreMenuOpen(false);
     },
-    [router, setMoreMenuOpen]
+    [navigateTo, setMoreMenuOpen]
   );
 
   // Close submenu when clicking outside
