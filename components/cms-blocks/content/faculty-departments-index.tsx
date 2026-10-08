@@ -35,6 +35,7 @@ export const FacultyDepartmentsIndexPropsSchema = z.object({
     .string()
     .default('Choose a department to view its official faculty list.')
     .describe('Short line under the heading'),
+  ctaLabel: z.string().default('View faculty').describe('Button text shown on every department card'),
   departments: z
     .array(FacultyDepartmentItemSchema)
     .default(DEFAULT_DEPARTMENTS)
@@ -77,6 +78,7 @@ export default function FacultyDepartmentsIndex({
   eyebrow = 'Faculty',
   title = 'Our Faculty by Department',
   subtitle = 'Choose a department to view its official faculty list.',
+  ctaLabel = 'View faculty',
   departments = DEFAULT_DEPARTMENTS,
   backgroundColor = '#fbfbee',
   accentColor = '#0b6d41',
@@ -132,7 +134,7 @@ export default function FacultyDepartmentsIndex({
                   className="inline-flex items-center gap-1.5 text-sm font-semibold transition-all group-hover:gap-2.5"
                   style={{ color: accentColor }}
                 >
-                  Open faculty list (PDF)
+                  {ctaLabel}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </span>
               </DepartmentCardLink>
