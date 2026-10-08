@@ -11,7 +11,8 @@ import { getLogoSizes, getLogoUrl, getLogoAltText } from '@/app/actions/cms/appe
 import { getFooterSettings } from '@/app/actions/cms/footer'
 import { getContactInfo } from '@/app/actions/cms/contact'
 import { getSocialLinks } from '@/app/actions/cms/social'
-import { getCurrentInstitution } from '@/lib/config/multi-tenant'
+import { getCurrentInstitution, isInstitution } from '@/lib/config/multi-tenant'
+import { applyEngineeringLogoAltOverride } from '@/lib/institutions/engineering/homepage-overrides'
 import { filterNavigationByFeatures } from '@/lib/utils/navigation-filter'
 import { EngineeringPopup } from '@/components/public/engineering-popup'
 
@@ -48,6 +49,8 @@ export default async function PublicLayout({
 
   // Get institution info for fallbacks
   const institution = getCurrentInstitution()
+  const cmsLogoAlt = logoAltText || institution.name
+  const headerLogoAlt = isInstitution('engineering') ? applyEngineeringLogoAltOverride(cmsLogoAlt) : cmsLogoAlt
 
   // Filter navigation by feature flags
   const navigation = filterNavigationByFeatures(rawNavigation)
@@ -63,7 +66,7 @@ export default async function PublicLayout({
           navigation={navigation}
           logoSizes={logoSizes}
           logoUrl={logoUrl}
-          logoAltText={logoAltText || institution.name}
+          logoAltText={headerLogoAlt}
           contactInfo={{
             phone: primaryPhone?.contact_value || null,
             email: primaryEmail?.contact_value || null
