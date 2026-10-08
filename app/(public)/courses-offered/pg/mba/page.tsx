@@ -14,7 +14,7 @@ import { FAQSchemaGenerator } from '@/components/seo/faq-schema-admissions'
 export const metadata: Metadata = {
   title: 'MBA College in Namakkal District, near Erode and Salem',
   description:
-    'Full-time 2-year MBA (Marketing, Finance, HR, Operations) at JKKN College of Engineering and Technology, Komarapalayam, Namakkal District - 18 km from Erode on NH-544. 60 AICTE-approved seats, TN MBA counselling code 2647, Rs 65,000 a year.',
+    'Full-time 2-year MBA (Marketing, Finance, HR, Operations) at JKKN College of Engineering and Technology (Autonomous), Komarapalayam, Namakkal District - 18 km from Erode on NH-544. 60 AICTE-approved seats, TN MBA counselling code 2647, Rs 65,000 a year.',
   keywords: [
     'MBA',
     'Master of Business Administration',

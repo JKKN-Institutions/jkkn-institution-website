@@ -20,7 +20,7 @@ export default function CityWhyChooseGrid({ cityConfig }: CityWhyChooseGridProps
     {
       icon: ShieldCheck,
       title: 'AICTE + Anna University',
-      desc: 'AICTE-approved engineering college, affiliated to Anna University, Chennai',
+      desc: 'AICTE-approved autonomous engineering college, affiliated to Anna University, Chennai',
     },
     {
       icon: Laptop,

@@ -43,9 +43,9 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
       component_name: 'EngineeringHeroSection',
       props: {
         title: 'Shape Your Future in Engineering & Technology',
-        subtitle: 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
-        description: 'Join an AICTE-approved, Anna University affiliated engineering college with experienced senior learners, state-of-the-art infrastructure and a dedicated on-campus placement cell.',
-        badge: 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
+        subtitle: 'AICTE Approved | Autonomous | Anna University Affiliated | NAAC Accredited',
+        description: 'Join an AICTE-approved, autonomous, Anna University affiliated engineering college with experienced senior learners, state-of-the-art infrastructure and a dedicated on-campus placement cell.',
+        badge: 'AICTE Approved | Autonomous | Anna University Affiliated | NAAC Accredited',
         stats: [
           { value: 3000, suffix: '+', label: 'Learners', icon: 'graduation' },
           { value: 95, suffix: '%', label: 'Placement', icon: 'trending' },
@@ -75,6 +75,9 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
         accreditations: [
           { name: 'All India Council for Technical Education', shortName: 'AICTE', description: 'Approved', icon: 'shield' },
           { name: 'Anna University', shortName: 'Anna University', description: 'Affiliated', icon: 'graduation' },
+          // Autonomous status: the college's own wording (site footer, Approvals page) is
+          // "conferred by UGC, New Delhi and Anna University, Chennai".
+          { name: 'University Grants Commission', shortName: 'UGC', description: 'Autonomous Status', icon: 'award' },
           // NBA removed: the AICTE Mandatory Disclosure 2026-27 records no NBA grant to this
           // college (NBA appears only in AICTE's generic boilerplate). The entry also carried
           // the wrong shortName - it said NAAC while naming the National Board of Accreditation.
@@ -104,7 +107,7 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
         subtitle: 'About Us',
         description: 'Established as part of the prestigious JKKN Institutions with over 70 years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development. Our state-of-the-art infrastructure and experienced senior learners ensure learners receive world-class technical education.',
         features: [
-          'AICTE Approved & Anna University Affiliated',
+          'AICTE Approved, Autonomous & Anna University Affiliated',
           'NAAC Accredited Programs',
           'Industry-Academia Partnerships',
           'State-of-the-Art Learning Labs',
@@ -398,6 +401,10 @@ export const engineeringModernHomeTemplate: GlobalTemplate = {
           {
             question: 'Is JKKN Engineering College AICTE approved?',
             answer: 'Yes. JKKN College of Engineering and Technology is approved by AICTE (All India Council for Technical Education), affiliated to Anna University, Chennai, and holds autonomous status conferred by UGC, New Delhi and Anna University. The college is NAAC accredited.',
+          },
+          {
+            question: 'Is JKKN College of Engineering and Technology an autonomous college?',
+            answer: 'Yes. JKKN College of Engineering and Technology (JKKNCET), Komarapalayam, is an autonomous institution: autonomous status has been conferred by UGC, New Delhi and Anna University, Chennai. The college remains affiliated to Anna University, Chennai, and is approved by AICTE for its B.E., B.Tech, M.E. and MBA programmes.',
           },
           {
             question: 'What is the admission process for B.E./B.Tech programs?',
