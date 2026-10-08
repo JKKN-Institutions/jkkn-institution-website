@@ -1,0 +1,564 @@
+[
+ {
+  "id": "e2e248bf-97d0-465c-a527-ad8729a3ce05",
+  "component_name": "EngineeringHeroSection",
+  "props": {
+   "badge": "AICTE Approved | Anna University Affiliated | NAAC Accredited",
+   "stats": [
+    {
+     "icon": "graduation",
+     "label": "Learners",
+     "value": 3000,
+     "suffix": "+"
+    },
+    {
+     "icon": "trending",
+     "label": "Placement",
+     "value": 95,
+     "suffix": "%"
+    },
+    {
+     "icon": "building",
+     "label": "Top Recruiters",
+     "value": 6,
+     "suffix": ""
+    },
+    {
+     "icon": "users",
+     "label": "Programs",
+     "value": 12,
+     "suffix": "+"
+    }
+   ],
+   "title": "Shape Your Future in Engineering & Technology",
+   "subtitle": "AICTE Approved | Anna University Affiliated | NAAC Accredited",
+   "heroImage": "https://kyvfkyjmdbtyimtedkie.supabase.co/storage/v1/object/public/media/general/1887a999-7302-4eeb-be9c-8e9095cb274d.JPG",
+   "primaryCta": {
+    "link": "https://www.jkkn.ai/apply/jkkn-admission-2026",
+    "label": "Apply Now"
+   },
+   "accentColor": "#ffde59",
+   "description": "Join one of the leading engineering colleges with 70+ years of educational excellence. World-class senior learners, state-of-the-art infrastructure, and 95% placement record.",
+   "primaryColor": "#0b6d41",
+   "secondaryCta": {
+    "link": "#programs",
+    "label": "Explore Programs"
+   },
+   "showAnimations": true
+  },
+  "sort_order": 0,
+  "parent_block_id": null,
+  "is_visible": true
+ },
+ {
+  "id": "92ac1648-2738-45f9-96b3-baf066f08af7",
+  "component_name": "EngineeringAccreditationsBar",
+  "props": {
+   "label": "Recognized & Approved By",
+   "paddingY": "md",
+   "primaryColor": "#0b6d41",
+   "accreditations": [
+    {
+     "icon": "shield",
+     "logo": "https://kyvfkyjmdbtyimtedkie.supabase.co/storage/v1/object/public/media/general/cbc3b531-4675-4aff-9534-e97910548f3a.png",
+     "name": "All India Council for Technical Education",
+     "shortName": "AICTE",
+     "description": "Approved"
+    },
+    {
+     "icon": "graduation",
+     "logo": "https://kyvfkyjmdbtyimtedkie.supabase.co/storage/v1/object/public/media/general/42e53c74-88ff-41e2-9392-71883f154694.png",
+     "name": "Anna University",
+     "shortName": "Anna University",
+     "description": "Affiliated"
+    },
+    {
+     "icon": "award",
+     "name": "National Board of Accreditation",
+     "shortName": "NAAC",
+     "description": "Accredited"
+    }
+   ],
+   "showAnimations": true,
+   "backgroundColor": "#f8f9fa"
+  },
+  "sort_order": 1,
+  "parent_block_id": null,
+  "is_visible": true
+ },
+ {
+  "id": "8ec50a7d-d4b3-4955-bacf-6314fa70951a",
+  "component_name": "EngineeringAboutSection",
+  "props": {
+   "cta": {
+    "link": "/our-institutions",
+    "label": "Learn More About Us"
+   },
+   "badge": {
+    "text": "70 Years Legacy",
+    "position": "top-left"
+   },
+   "image": "https://kyvfkyjmdbtyimtedkie.supabase.co/storage/v1/object/public/media/general/1887a999-7302-4eeb-be9c-8e9095cb274d.JPG",
+   "title": "Welcome to JKKN College of Engineering",
+   "features": [
+    "AICTE Approved & Anna University Affiliated",
+    "NAAC Accredited Programs",
+    "Industry-Academia Partnerships",
+    "State-of-the-Art Learning Learning Labs",
+    "95% Placement Record",
+    "Experienced Senior Learners"
+   ],
+   "imageAlt": "JKKN Engineering College Campus",
+   "paddingY": "lg",
+   "subtitle": "About Us",
+   "accentColor": "#ffde59",
+   "description": "Established as part of the prestigious JKKN Institutions with over 70 years of legacy, JKKN College of Engineering is committed to producing industry-ready engineers through quality education, practical training, and holistic development. Our state-of-the-art infrastructure and experienced senior learners ensure learners receive world-class technical education.",
+   "primaryColor": "#0b6d41",
+   "imagePosition": "left",
+   "showAnimations": true,
+   "backgroundColor": "#ffffff"
+  },
+  "sort_order": 2,
+  "parent_block_id": null,
+  "is_visible": true
+ },
+ {
+  "id": "45750dd0-be14-490c-ab2e-c42ded3bf328",
+  "component_name": "EngineeringProgramsSection",
+  "props": {
+   "title": "Comprehensive Engineering & Technology Programs",
+   "paddingY": "lg",
+   "programs": [
+    {
+     "icon": "cpu",
+     "link": "/courses-offered/ug/be-cse",
+     "name": "B.E Computer Science & Engineering",
+     "tags": [
+      "Popular"
+     ],
+     "type": "ug",
+     "seats": 60,
+     "duration": "4 Years",
+     "description": "AI, Data Structures, Software Development"
+    },
+    {
+     "icon": "cpu",
+     "link": "/courses-offered/ug/be-ece",
+     "name": "B.E Electronics & Communication",
+     "type": "ug",
+     "seats": 60,
+     "duration": "4 Years",
+     "description": "Embedded Systems, IoT, VLSI Design"
+    },
+    {
+     "icon": "settings",
+     "link": "/courses-offered/ug/be-mechanical",
+     "name": "B.E Mechanical Engineering",
+     "type": "ug",
+     "seats": 120,
+     "duration": "4 Years",
+     "description": "Robotics, CAD/CAM, Automation"
+    },
+    {
+     "icon": "zap",
+     "link": "/courses-offered/ug/be-eee",
+     "name": "B.E Electrical & Electronics",
+     "type": "ug",
+     "seats": 60,
+     "duration": "4 Years",
+     "description": "Power Systems, Renewable Energy"
+    },
+    {
+     "icon": "wifi",
+     "link": "/courses-offered/ug/btech-it",
+     "name": "B.Tech Information Technology",
+     "type": "ug",
+     "seats": 60,
+     "duration": "4 Years",
+     "description": "Cloud Computing, Cybersecurity, DevOps"
+    },
+    {
+     "icon": "briefcase",
+     "link": "/courses-offered/pg/mba",
+     "name": "MBA - Business Administration",
+     "type": "pg",
+     "seats": 120,
+     "duration": "2 Years",
+     "description": "Business Analytics, Marketing, Finance"
+    },
+    {
+     "icon": "graduation",
+     "link": "/courses-offered/pg/me-cse",
+     "name": "M.E Computer Science & Engineering",
+     "type": "pg",
+     "seats": 60,
+     "duration": "2 Years",
+     "description": "Advanced Computing, Research Focus"
+    }
+   ],
+   "showTabs": true,
+   "subtitle": "Choose from our wide range of AICTE approved programs designed for industry readiness",
+   "accentColor": "#ffde59",
+   "primaryColor": "#0b6d41",
+   "showAnimations": true,
+   "backgroundColor": "#ffffff"
+  },
+  "sort_order": 3,
+  "parent_block_id": null,
+  "is_visible": true
+ },
+ {
+  "id": "82afebc7-84d6-428b-a3ec-6b53b9498186",
+  "component_name": "EngineeringWhyChooseSection",
+  "props": {
+   "title": "Why Choose JKKN Engineering College?",
+   "columns": "4",
+   "features": [
+    {
+     "icon": "award",
+     "title": "70 Years Legacy",
+     "description": "Part of JKKN Institutions with seven decades of excellence in education"
+    },
+    {
+     "icon": "building",
+     "title": "Industry Connect",
+     "description": "Strong partnerships with leading IT and core industry companies"
+    },
+    {
+     "icon": "graduation",
+     "title": "Expert Learning Facilitators",
+     "description": "Highly qualified senior learners with industry experience and research background"
+    },
+    {
+     "icon": "flask",
+     "title": "Modern Learning Labs & Infrastructure",
+     "description": "State-of-the-art learning learning labs equipped with latest technology"
+    },
+    {
+     "icon": "trending",
+     "title": "95% Placements",
+     "description": "Consistently high placement rate with top recruiters visiting campus"
+    },
+    {
+     "icon": "lightbulb",
+     "title": "Innovation Hub",
+     "description": "Dedicated centers for AI, ML, IoT, and emerging technologies"
+    },
+    {
+     "icon": "globe",
+     "title": "Global Exposure",
+     "description": "International collaborations and learner exchange programs"
+    },
+    {
+     "icon": "home",
+     "title": "Excellent Hostel Facilities",
+     "description": "Separate hostels for boys and girls with modern amenities"
+    }
+   ],
+   "paddingY": "lg",
+   "subtitle": "Your Gateway to a Successful Engineering Career",
+   "accentColor": "#ffde59",
+   "primaryColor": "#0b6d41",
+   "showAnimations": true,
+   "backgroundColor": "#fbfbee"
+  },
+  "sort_order": 4,
+  "parent_block_id": null,
+  "is_visible": true
+ },
+ {
+  "id": "fd6bd259-f05f-4759-b1bb-ff9c6aca4804",
+  "component_name": "EngineeringPlacementsSection",
+  "props": {
+   "stats": [
+    {
+     "icon": "trending",
+     "label": "Placement Rate",
+     "value": 95,
+     "prefix": "",
+     "suffix": "%"
+    },
+    {
+     "icon": "award",
+     "label": "Highest Package",
+     "value": 12,
+     "prefix": "",
+     "suffix": " LPA"
+    },
+    {
+     "icon": "users",
+     "label": "Average Package",
+     "value": 4.5,
+     "prefix": "",
+     "suffix": " LPA"
+    },
+    {
+     "icon": "building",
+     "label": "Recruiters",
+     "value": 50,
+     "prefix": "",
+     "suffix": "+"
+    }
+   ],
+   "title": "Launching Careers, Building Futures",
+   "paddingY": "lg",
+   "subtitle": "Our dedicated placement cell connects talented learners with leading companies worldwide",
+   "companies": [
+    {
+     "logo": "/images/recruiters/lgb.png",
+     "name": "LGB",
+     "category": "all"
+    },
+    {
+     "logo": "/images/recruiters/foxconn.png",
+     "name": "Foxconn",
+     "category": "all"
+    },
+    {
+     "logo": "/images/recruiters/tvs-group.jpg",
+     "name": "TVS Group",
+     "category": "all"
+    },
+    {
+     "logo": "/images/recruiters/sourcesys.png",
+     "name": "Sourcesys",
+     "category": "all"
+    },
+    {
+     "logo": "/images/recruiters/infinix.png",
+     "name": "Infinix",
+     "category": "all"
+    },
+    {
+     "logo": "/images/recruiters/pronoia-insurance.jpg",
+     "name": "Pronoia Insurance",
+     "category": "all"
+    }
+   ],
+   "enableDrag": true,
+   "accentColor": "#ffde59",
+   "speedPreset": "fast",
+   "marqueeSpeed": 6,
+   "pauseOnHover": true,
+   "primaryColor": "#0b6d41",
+   "showGrayscale": false,
+   "showAnimations": true,
+   "backgroundColor": "#f9fafb",
+   "dragSensitivity": 1.2,
+   "showCategoryTabs": false
+  },
+  "sort_order": 6,
+  "parent_block_id": null,
+  "is_visible": true
+ },
+ {
+  "id": "4986c980-d4cc-4f02-8e26-2631e609754b",
+  "component_name": "EngineeringFacilitiesSection",
+  "props": {
+   "title": "World-Class Infrastructure & Facilities",
+   "columns": "3",
+   "paddingY": "lg",
+   "subtitle": "Everything you need for an exceptional learning experience",
+   "facilities": [
+    {
+     "icon": "monitor",
+     "title": "Computer Centers",
+     "highlight": "500+ Systems",
+     "description": "Modern computer learning labs with high-performance systems"
+    },
+    {
+     "icon": "wrench",
+     "title": "Engineering Workshops",
+     "description": "Hands-on training facilities for practical learning"
+    },
+    {
+     "icon": "flask",
+     "title": "Research Learning Labs",
+     "highlight": "AI/ML, IoT, Robotics",
+     "description": "Specialized learning labs for advanced research"
+    },
+    {
+     "icon": "book",
+     "title": "Digital Library",
+     "highlight": "50,000+ Books",
+     "description": "Extensive collection of books and digital resources"
+    },
+    {
+     "icon": "wifi",
+     "title": "Wi-Fi Campus",
+     "description": "High-speed internet connectivity across the campus"
+    },
+    {
+     "icon": "home",
+     "title": "Hostels",
+     "highlight": "Men & Women",
+     "description": "Comfortable accommodation with all amenities"
+    },
+    {
+     "icon": "utensils",
+     "title": "Cafeteria",
+     "description": "Hygienic food court with variety of cuisines"
+    },
+    {
+     "icon": "trophy",
+     "title": "Sports Complex",
+     "description": "Indoor and outdoor sports facilities"
+    },
+    {
+     "icon": "bus",
+     "title": "Transportation",
+     "description": "Fleet of buses covering major routes"
+    }
+   ],
+   "accentColor": "#ffde59",
+   "primaryColor": "#0b6d41",
+   "showAnimations": true,
+   "backgroundColor": "#ffffff"
+  },
+  "sort_order": 7,
+  "parent_block_id": null,
+  "is_visible": true
+ },
+ {
+  "id": "763d38d6-4a44-4cc8-967d-2f2f80b752f6",
+  "component_name": "EngineeringAdmissionSection",
+  "props": {
+   "title": "Begin Your Engineering Journey at JKKN",
+   "paddingY": "lg",
+   "subtitle": "Simple admission process with transparent eligibility criteria",
+   "ctaButton": {
+    "link": "https://www.jkkn.ai/apply/jkkn-admission-2026",
+    "label": "Apply Now"
+   },
+   "accentColor": "#ffde59",
+   "eligibility": [
+    {
+     "program": "B.E / B.Tech Programs",
+     "criteria": [
+      "Passed 10+2 with Physics, Chemistry, and Mathematics",
+      "Minimum 45% aggregate marks (40% for reserved categories)",
+      "Valid TNEA counselling rank or direct admission",
+      "Age limit: Should have completed 17 years as on July 1st"
+     ]
+    },
+    {
+     "program": "MBA / M.E Programs",
+     "criteria": [
+      "Bachelor degree in any discipline with 50% marks",
+      "Valid TANCET / CAT / MAT / XAT score",
+      "Group discussion and personal interview clearance"
+     ]
+    }
+   ],
+   "primaryColor": "#0b6d41",
+   "processSteps": [
+    {
+     "icon": "file",
+     "step": 1,
+     "title": "Online Application",
+     "description": "Fill out the online application form with your details"
+    },
+    {
+     "icon": "clipboard",
+     "step": 2,
+     "title": "Document Submission",
+     "description": "Upload required academic documents and certificates"
+    },
+    {
+     "icon": "user",
+     "step": 3,
+     "title": "Counselling",
+     "description": "Attend TNEA counselling or apply for direct admission"
+    },
+    {
+     "icon": "graduation",
+     "step": 4,
+     "title": "Fee Payment",
+     "description": "Complete fee payment online or at the campus office"
+    },
+    {
+     "icon": "badge",
+     "step": 5,
+     "title": "Enrollment",
+     "description": "Complete registration and begin your journey"
+    }
+   ],
+   "showAnimations": true,
+   "backgroundColor": "#fbfbee",
+   "secondaryCtaButton": {
+    "link": "/pdfs/brochure.pdf",
+    "label": "Download Brochure"
+   }
+  },
+  "sort_order": 8,
+  "parent_block_id": null,
+  "is_visible": true
+ },
+ {
+  "id": "c580992b-3dcb-4d50-a31b-84c97f009f4f",
+  "component_name": "FAQAccordion",
+  "props": {
+   "faqs": [
+    {
+     "answer": "We offer B.E. programs in Computer Science & Engineering, Electronics & Communication, Electrical & Electronics, Mechanical Engineering, and Civil Engineering. We also offer B.Tech programs in AI & Machine Learning and Information Technology, along with postgraduate programs MBA and MCA.",
+     "question": "What engineering courses are offered at JKKN Engineering College?"
+    },
+    {
+     "answer": "Yes, JKKN College of Engineering & Technology is approved by AICTE (All India Council for Technical Education), affiliated with Anna University, and has NAAC accreditation for multiple programs. We are also NAAC accredited with A+ grade and ISO 9001:2015 certified.",
+     "question": "Is JKKN Engineering College AICTE approved?"
+    },
+    {
+     "answer": "Admission to B.E./B.Tech programs is through TNEA counselling or direct admission. Eligibility requires passing 10+2 with Physics, Chemistry, and Mathematics with minimum 45% aggregate marks. Fill out the online application, submit documents, attend counselling, pay fees, and complete enrollment.",
+     "question": "What is the admission process for B.E./B.Tech programs?"
+    },
+    {
+     "answer": "We maintain an excellent placement record with 95%+ placement rate. The highest package offered is 12 LPA with an average package of 4.5 LPA. Over 50 companies recruit from our campus including TCS, Infosys, Wipro, Cognizant, IBM, Amazon, Zoho, and more.",
+     "question": "What is the placement record at JKKN Engineering College?"
+    },
+    {
+     "answer": "We provide state-of-the-art facilities including 500+ computer systems in modern learning labs, engineering workshops, research learning labs for AI/ML/IoT/Robotics, digital library with 50,000+ books, Wi-Fi campus, separate hostels for boys and girls, cafeteria, sports complex, and transportation services.",
+     "question": "What facilities are available for learners?"
+    },
+    {
+     "answer": "Yes, we offer a dedicated B.Tech program in Artificial Intelligence & Machine Learning with 60 seats. The program covers Deep Learning, Neural Networks, Data Science, and cutting-edge AI technologies with hands-on projects and industry internships.",
+     "question": "Does JKKN offer AI and Machine Learning courses?"
+    },
+    {
+     "answer": "The fee structure varies by program and category. Please visit our admissions page or contact the admission office for detailed fee information. We also offer scholarships for meritorious learners and fee concessions for economically weaker sections.",
+     "question": "What is the fee structure for engineering programs?"
+    },
+    {
+     "answer": "Yes, we provide separate hostel facilities for boys and girls within the campus. Hostels are equipped with furnished rooms, 24/7 security, WiFi connectivity, recreational areas, mess facilities with hygienic food, and medical support.",
+     "question": "Is hostel accommodation available?"
+    }
+   ],
+   "allowMultiple": false,
+   "searchEnabled": false
+  },
+  "sort_order": 9,
+  "parent_block_id": null,
+  "is_visible": true
+ },
+ {
+  "id": "f1cf62c6-e710-40b1-a336-5edf99100344",
+  "component_name": "EngineeringCTASection",
+  "props": {
+   "title": "Ready to Engineer Your Future?",
+   "paddingY": "lg",
+   "subtitle": "Join JKKN College of Engineering and take the first step towards a successful career in technology",
+   "showEmail": false,
+   "showPhone": true,
+   "primaryCta": {
+    "link": "https://www.jkkn.ai/apply/jkkn-admission-2026",
+    "label": "Apply Now"
+   },
+   "accentColor": "#ffde59",
+   "phoneNumber": "+91 9345855001",
+   "primaryColor": "#0b6d41",
+   "showAnimations": true
+  },
+  "sort_order": 10,
+  "parent_block_id": null,
+  "is_visible": true
+ }
+]

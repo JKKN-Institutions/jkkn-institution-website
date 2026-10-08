@@ -18,6 +18,11 @@ import { HomepageInstitutionsItemListSchema } from '@/components/seo/main-instit
 import { HOME_SPEAKABLE_SELECTORS } from '@/lib/seo/main-institution/page-content'
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { resolvePageSchemas } from '@/lib/seo/schema-resolver'
+import { isInstitution } from '@/lib/config/multi-tenant'
+import {
+  applyEngineeringHomepageOverrides,
+  applyEngineeringHomepageSeoOverrides,
+} from '@/lib/institutions/engineering/homepage-overrides'
 
 // Generate metadata for SEO
 export async function generateMetadata(): Promise<Metadata> {
@@ -49,9 +54,10 @@ export async function generateMetadata(): Promise<Metadata> {
     }
   }
 
-  const seo = Array.isArray(page.cms_seo_metadata)
+  const cmsSeo = Array.isArray(page.cms_seo_metadata)
     ? page.cms_seo_metadata[0]
     : page.cms_seo_metadata
+  const seo = isInstitution('engineering') ? applyEngineeringHomepageSeoOverrides(cmsSeo) : cmsSeo
 
   return {
     title: {
@@ -199,7 +205,7 @@ export default async function HomePage() {
     return <CmsRedirect url={homepageRedirectUrl} />
   }
 
-  const blocks = page.cms_page_blocks.map((block) => ({
+  const cmsBlocks = page.cms_page_blocks.map((block) => ({
     id: block.id,
     component_name: block.component_name,
     props: block.props,
@@ -207,6 +213,7 @@ export default async function HomePage() {
     parent_block_id: block.parent_block_id,
     is_visible: block.is_visible ?? true,
   }))
+  const blocks = isInstitution('engineering') ? applyEngineeringHomepageOverrides(cmsBlocks) : cmsBlocks
 
   // Extract typography settings from page metadata
   const pageTypography = (page.metadata as Record<string, unknown> | null)?.typography as PageTypographySettings | undefined
