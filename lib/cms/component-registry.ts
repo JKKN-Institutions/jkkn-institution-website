@@ -641,6 +641,7 @@ const ContactInfoSection = lazy(() => import('@/components/cms-blocks/content/co
 // Approvals and Affiliation Section
 const ApprovalsAffiliationSection = lazy(() => import('@/components/cms-blocks/content/approvals-affiliation-section'))
 const DepartmentFacultyPdf = lazy(() => import('@/components/cms-blocks/content/department-faculty-pdf'))
+const DepartmentFacultyList = lazy(() => import('@/components/cms-blocks/content/department-faculty-list'))
 const FacultyDepartmentsIndex = lazy(() => import('@/components/cms-blocks/content/faculty-departments-index'))
 
 // Engineering-specific blocks
@@ -8376,6 +8377,50 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       { name: 'cardStyle', type: 'enum', label: 'Card Style', options: ['glassmorphic', 'solid', 'minimal'] },
       { name: 'showDecorations', type: 'boolean', label: 'Show Decorations' },
       { name: 'layout', type: 'enum', label: 'Layout', options: ['horizontal', 'vertical'] },
+    ],
+  },
+
+  DepartmentFacultyList: {
+    name: 'DepartmentFacultyList',
+    displayName: 'Department Faculty List',
+    category: 'content',
+    description: 'Department heading with a card grid of faculty (photo, name, designation, IDs); the head of the department is highlighted first',
+    icon: 'Users',
+    component: DepartmentFacultyList,
+    propsSchema: z.object({
+      departmentName: z.string().default('Department of Computer Science and Engineering'),
+      eyebrow: z.string().default('Faculty'),
+      description: z.string().default('Meet the faculty of the department.'),
+      faculty: z.array(z.object({
+        name: z.string().default(''),
+        designation: z.string().default(''),
+        photo: z.string().default(''),
+        auFin: z.string().default(''),
+        aicteId: z.string().default(''),
+        isHead: z.boolean().default(false),
+      })).default([]),
+      showIds: z.boolean().default(true),
+      backgroundColor: z.string().default('#fbfbee'),
+      accentColor: z.string().default('#0b6d41'),
+      highlightColor: z.string().default('#ffde59'),
+    }) as any,
+    defaultProps: {
+      departmentName: 'Department of Computer Science and Engineering',
+      eyebrow: 'Faculty',
+      description: 'Meet the faculty of the department.',
+      faculty: [],
+      showIds: true,
+    },
+    supportsChildren: false,
+    editableProps: [
+      { name: 'departmentName', type: 'string', label: 'Department Heading', required: true },
+      { name: 'eyebrow', type: 'string', label: 'Eyebrow Label' },
+      { name: 'description', type: 'string', label: 'Description', multiline: true },
+      { name: 'faculty', type: 'array', label: 'Faculty Members', itemType: 'object' },
+      { name: 'showIds', type: 'boolean', label: 'Show AICTE ID / AU-FIN' },
+      { name: 'backgroundColor', type: 'color', label: 'Background Color' },
+      { name: 'accentColor', type: 'color', label: 'Accent Color' },
+      { name: 'highlightColor', type: 'color', label: 'Highlight Color' },
     ],
   },
 
