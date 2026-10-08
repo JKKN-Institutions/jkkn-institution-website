@@ -16,13 +16,13 @@ export const FacultyDepartmentItemSchema = z.object({
 export type FacultyDepartmentItem = z.infer<typeof FacultyDepartmentItemSchema>
 
 export const DEFAULT_DEPARTMENTS: FacultyDepartmentItem[] = [
-  { name: 'Computer Science and Engineering', shortName: 'CSE', href: '/faculty/cse', description: 'Faculty list for B.E CSE and M.E CSE' },
-  { name: 'Electronics and Communication Engineering', shortName: 'ECE', href: '/faculty/ece', description: 'Faculty list for B.E ECE' },
-  { name: 'Electrical and Electronics Engineering', shortName: 'EEE', href: '/faculty/eee', description: 'Faculty list for B.E EEE' },
-  { name: 'Information Technology', shortName: 'IT', href: '/faculty/it', description: 'Faculty list for B.Tech IT' },
-  { name: 'Mechanical Engineering', shortName: 'MECH', href: '/faculty/mech', description: 'Faculty list for B.E Mechanical' },
-  { name: 'Management Studies', shortName: 'MBA', href: '/faculty/mba', description: 'Faculty list for MBA' },
-  { name: 'Science and Humanities', shortName: 'S&H', href: '/faculty/sh', description: 'Faculty list for first-year Science and Humanities' },
+  { name: 'Computer Science and Engineering', shortName: 'CSE', href: '/pdfs/faculty/cse.pdf', description: 'Faculty list for B.E CSE and M.E CSE' },
+  { name: 'Electronics and Communication Engineering', shortName: 'ECE', href: '/pdfs/faculty/ece.pdf', description: 'Faculty list for B.E ECE' },
+  { name: 'Electrical and Electronics Engineering', shortName: 'EEE', href: '/pdfs/faculty/eee.pdf', description: 'Faculty list for B.E EEE' },
+  { name: 'Information Technology', shortName: 'IT', href: '/pdfs/faculty/it.pdf', description: 'Faculty list for B.Tech IT' },
+  { name: 'Mechanical Engineering', shortName: 'MECH', href: '/pdfs/faculty/mech.pdf', description: 'Faculty list for B.E Mechanical' },
+  { name: 'Management Studies', shortName: 'MBA', href: '/pdfs/faculty/mba.pdf', description: 'Faculty list for MBA' },
+  { name: 'Science and Humanities', shortName: 'S&H', href: '/pdfs/faculty/sh.pdf', description: 'Faculty list for first-year Science and Humanities' },
 ]
 
 /**
@@ -45,6 +45,33 @@ export const FacultyDepartmentsIndexPropsSchema = z.object({
 })
 
 export type FacultyDepartmentsIndexProps = z.infer<typeof FacultyDepartmentsIndexPropsSchema> & BaseBlockProps
+
+/** PDFs and absolute URLs open in a new tab; site routes use client-side <Link>. */
+function DepartmentCardLink({
+  href,
+  className,
+  style,
+  children,
+}: {
+  href: string
+  className?: string
+  style?: React.CSSProperties
+  children: React.ReactNode
+}) {
+  const opensInNewTab = /^https?:\/\//i.test(href) || /\.pdf($|[?#])/i.test(href)
+  if (opensInNewTab) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={className} style={style}>
+        {children}
+      </a>
+    )
+  }
+  return (
+    <Link href={href} className={className} style={style}>
+      {children}
+    </Link>
+  )
+}
 
 export default function FacultyDepartmentsIndex({
   eyebrow = 'Faculty',
@@ -84,7 +111,7 @@ export default function FacultyDepartmentsIndex({
         <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {departments.map((dept) => (
             <li key={dept.href}>
-              <Link
+              <DepartmentCardLink
                 href={dept.href}
                 className="group flex h-full flex-col gap-4 rounded-2xl border bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
                 style={{ borderColor: 'rgba(11,109,65,0.12)' }}
@@ -105,10 +132,10 @@ export default function FacultyDepartmentsIndex({
                   className="inline-flex items-center gap-1.5 text-sm font-semibold transition-all group-hover:gap-2.5"
                   style={{ color: accentColor }}
                 >
-                  View faculty list
+                  Open faculty list (PDF)
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </span>
-              </Link>
+              </DepartmentCardLink>
             </li>
           ))}
         </ul>
