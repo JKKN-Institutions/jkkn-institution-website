@@ -358,6 +358,14 @@ const nextConfig: NextConfig = {
         permanent: false,
       },
 
+      // Department faculty PDFs moved from /pdfs/faculty/<dept>.pdf to the
+      // shorter /faculty/<dept>.pdf; keep any already-shared links working.
+      {
+        source: '/pdfs/faculty/:file(.*\\.pdf)',
+        destination: '/faculty/:file',
+        permanent: true,
+      },
+
       // /engineering-preview was a live orphan (200, in no sitemap or nav) that advertised
       // "95%+ Placement Rate, 12 LPA Highest Package" - both refuted by NIRF 2026. Measured
       // still 200 after PR #9 on 2026-09-25; the page is deleted and the path sent home.
