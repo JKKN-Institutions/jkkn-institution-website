@@ -20,7 +20,7 @@ export const DepartmentFacultyPdfPropsSchema = z.object({
     .describe('Short line under the heading'),
   pdfUrl: z
     .string()
-    .default('/pdfs/faculty/cse.pdf')
+    .default('/faculty/cse.pdf')
     .describe('Path or URL of the faculty list PDF (same-origin paths embed best)'),
   downloadFileName: z
     .string()
@@ -41,7 +41,7 @@ export default function DepartmentFacultyPdf({
   departmentName = 'Computer Science and Engineering',
   eyebrow = 'Faculty',
   description = 'Official faculty list with AU-FIN and AICTE IDs, names and designations.',
-  pdfUrl = '/pdfs/faculty/cse.pdf',
+  pdfUrl = '/faculty/cse.pdf',
   downloadFileName = 'faculty-list.pdf',
   viewerHeight = 900,
   backgroundColor = '#fbfbee',

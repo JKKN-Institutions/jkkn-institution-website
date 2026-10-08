@@ -288,6 +288,13 @@ export async function proxy(request: NextRequest) {
     return NextResponse.rewrite(rewriteUrl)
   }
 
+  // Department faculty-list PDFs are static files in public/faculty/ (served at
+  // /faculty/<dept>.pdf). Let them through before the /faculty/<slug> profile
+  // handling below, which would otherwise treat "cse.pdf" as a profile slug.
+  if (/^\/faculty\/[^/]+\.pdf$/i.test(pathname)) {
+    return NextResponse.next()
+  }
+
   // Legacy /faculty URLs. Engineering keeps /faculty and the department
   // pages (/faculty/cse ...) for the CMS; every other /faculty/<slug> is an old
   // profile link. Other deployments still serve the directory, now at

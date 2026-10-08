@@ -16,13 +16,13 @@ export const FacultyDepartmentItemSchema = z.object({
 export type FacultyDepartmentItem = z.infer<typeof FacultyDepartmentItemSchema>
 
 export const DEFAULT_DEPARTMENTS: FacultyDepartmentItem[] = [
-  { name: 'Computer Science and Engineering', shortName: 'CSE', href: '/pdfs/faculty/cse.pdf', description: 'Faculty list for B.E CSE and M.E CSE' },
-  { name: 'Electronics and Communication Engineering', shortName: 'ECE', href: '/pdfs/faculty/ece.pdf', description: 'Faculty list for B.E ECE' },
-  { name: 'Electrical and Electronics Engineering', shortName: 'EEE', href: '/pdfs/faculty/eee.pdf', description: 'Faculty list for B.E EEE' },
-  { name: 'Information Technology', shortName: 'IT', href: '/pdfs/faculty/it.pdf', description: 'Faculty list for B.Tech IT' },
-  { name: 'Mechanical Engineering', shortName: 'MECH', href: '/pdfs/faculty/mech.pdf', description: 'Faculty list for B.E Mechanical' },
-  { name: 'Management Studies', shortName: 'MBA', href: '/pdfs/faculty/mba.pdf', description: 'Faculty list for MBA' },
-  { name: 'Science and Humanities', shortName: 'S&H', href: '/pdfs/faculty/sh.pdf', description: 'Faculty list for first-year Science and Humanities' },
+  { name: 'Computer Science and Engineering', shortName: 'CSE', href: '/faculty/cse.pdf', description: 'Faculty list for B.E CSE and M.E CSE' },
+  { name: 'Electronics and Communication Engineering', shortName: 'ECE', href: '/faculty/ece.pdf', description: 'Faculty list for B.E ECE' },
+  { name: 'Electrical and Electronics Engineering', shortName: 'EEE', href: '/faculty/eee.pdf', description: 'Faculty list for B.E EEE' },
+  { name: 'Information Technology', shortName: 'IT', href: '/faculty/it.pdf', description: 'Faculty list for B.Tech IT' },
+  { name: 'Mechanical Engineering', shortName: 'MECH', href: '/faculty/mech.pdf', description: 'Faculty list for B.E Mechanical' },
+  { name: 'Management Studies', shortName: 'MBA', href: '/faculty/mba.pdf', description: 'Faculty list for MBA' },
+  { name: 'Science and Humanities', shortName: 'S&H', href: '/faculty/sh.pdf', description: 'Faculty list for first-year Science and Humanities' },
 ]
 
 /**
