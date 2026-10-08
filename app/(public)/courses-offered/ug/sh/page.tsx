@@ -12,7 +12,7 @@ import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 export const metadata: Metadata = {
   title: 'Department of Science and Humanities | JKKN College of Engineering',
   description:
-    'Explore the Science and Humanities department at JKKN College of Engineering & Technology. Established in 2008, offering comprehensive foundation in Physics, Chemistry, Mathematics, and English with state-of-the-art learning lab facilities and outcome-based education.',
+    'Explore the Science and Humanities department at JKKN College of Engineering & Technology (Autonomous). Established in 2008, offering comprehensive foundation in Physics, Chemistry, Mathematics, and English with state-of-the-art learning lab facilities and outcome-based education.',
   keywords: [
     'Science and Humanities',
     'JKKN Engineering College',

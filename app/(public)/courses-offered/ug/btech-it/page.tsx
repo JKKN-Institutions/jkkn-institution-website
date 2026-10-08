@@ -13,7 +13,7 @@ import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 export const metadata: Metadata = {
   title: 'B.Tech Information Technology | JKKN College of Engineering',
   description:
-    'Pursue B.Tech in Information Technology at JKKN College of Engineering & Technology. AICTE approved, NAAC accredited 4-year program. Industry-aligned learning framework covering Data Science, AI/ML, Full Stack Development, UI/UX Design, Cloud Computing, and IoT.',
+    'Pursue B.Tech in Information Technology at JKKN College of Engineering & Technology (Autonomous). AICTE approved, NAAC accredited 4-year program. Industry-aligned learning framework covering Data Science, AI/ML, Full Stack Development, UI/UX Design, Cloud Computing, and IoT.',
   keywords: [
     'BTech IT',
     'Information Technology',

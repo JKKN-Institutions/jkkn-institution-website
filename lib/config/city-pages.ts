@@ -114,6 +114,14 @@ const CAMPUS_ADDRESS =
 const GOOGLE_MAPS_URL =
   'https://www.google.com/maps/search/?api=1&query=JKKN+College+of+Engineering+and+Technology%2C+Komarapalayam'
 
+// One answer on every city page. The wording is the college's own (site footer and
+// Approvals page): status conferred by UGC, New Delhi and Anna University, Chennai.
+const AUTONOMOUS_FAQ: CityFAQ = {
+  question: 'Is JKKN College of Engineering and Technology an autonomous college?',
+  answer:
+    'Yes. JKKN College of Engineering and Technology (JKKNCET), Komarapalayam, is an autonomous institution: autonomous status has been conferred by UGC, New Delhi and Anna University, Chennai. The college remains affiliated to Anna University, Chennai, and is approved by AICTE for its B.E., B.Tech, M.E. and MBA programmes.',
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // All 12 City Configurations
 // ─────────────────────────────────────────────────────────────────────────────
@@ -189,6 +197,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         answer:
           'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
+      AUTONOMOUS_FAQ,
     ],
     crossLinks: [
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '65 km', emoji: '🏠' },
@@ -347,6 +356,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         answer:
           'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
+      AUTONOMOUS_FAQ,
     ],
     crossLinks: [
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '65 km', emoji: '🏠' },
@@ -446,6 +456,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         answer:
           'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 65 km from Namakkal. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
+      AUTONOMOUS_FAQ,
     ],
     crossLinks: [
       { displayName: 'Salem', slug: 'salem', distanceLabel: '57 km', emoji: '🚌' },
@@ -545,6 +556,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         answer:
           'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
+      AUTONOMOUS_FAQ,
     ],
     crossLinks: [
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '65 km', emoji: '🏠' },
@@ -640,6 +652,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         answer:
           'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
+      AUTONOMOUS_FAQ,
     ],
     crossLinks: [
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '65 km', emoji: '🏠' },
@@ -735,6 +748,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         answer:
           'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
+      AUTONOMOUS_FAQ,
     ],
     crossLinks: [
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '65 km', emoji: '🏠' },
@@ -829,6 +843,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         answer:
           'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 26 km from Tiruchengode. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
+      AUTONOMOUS_FAQ,
     ],
     crossLinks: [
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '65 km', emoji: '🏠' },
@@ -922,6 +937,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         answer:
           'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly — 29 km from Perundurai. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
+      AUTONOMOUS_FAQ,
     ],
     crossLinks: [
       { displayName: 'Erode', slug: 'erode', distanceLabel: '18 km', emoji: '🛣️' },
@@ -1015,6 +1031,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         answer:
           'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
+      AUTONOMOUS_FAQ,
     ],
     crossLinks: [
       { displayName: 'Salem', slug: 'salem', distanceLabel: '57 km', emoji: '🚌' },
@@ -1108,6 +1125,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         answer:
           'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
+      AUTONOMOUS_FAQ,
     ],
     crossLinks: [
       { displayName: 'Namakkal', slug: 'namakkal', distanceLabel: '65 km', emoji: '🏠' },
@@ -1201,6 +1219,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         answer:
           'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
+      AUTONOMOUS_FAQ,
     ],
     crossLinks: [
       { displayName: 'Salem', slug: 'salem', distanceLabel: '57 km', emoji: '🚌' },
@@ -1294,6 +1313,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         answer:
           'You can apply online through the official website at https://engg.jkkn.ac.in/ or visit the campus directly. Admissions for 2026-27 are closed; enquiries for 2027-28 are open. Contact the admission office for guidance.',
       },
+      AUTONOMOUS_FAQ,
     ],
     crossLinks: [
       { displayName: 'Karur', slug: 'karur', distanceLabel: '84 km', emoji: '🚗' },

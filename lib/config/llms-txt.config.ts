@@ -16,6 +16,10 @@
 // content drift is visible to an AI crawler instead of being silent.
 const LAST_REVIEWED = '2026-09-04'
 
+// The engineering brief changed on its own (autonomous status lines). It carries its own
+// date so the parent brief is not stamped as reviewed when it was not.
+const ENGINEERING_LAST_REVIEWED = '2026-10-08'
+
 // =============================================================================
 // ENGINEERING INSTITUTION
 // =============================================================================
@@ -26,6 +30,8 @@ function getEngineeringLlmsTxt(siteUrl: string): string {
 > AICTE-approved autonomous engineering college in Komarapalayam, Tamil Nadu, affiliated to Anna University, Chennai, with autonomous status conferred by UGC, New Delhi and Anna University, Chennai. Established 2008. Offers B.E., B.Tech, M.E., and MBA programs across 5 departments. NAAC accredited. 70-acre residential campus.
 
 JKKN College of Engineering and Technology (JKKN CET) is part of the J.K.K. Rangammal Charitable Trust, a group operating since 1952. The college is located in Komarapalayam, Namakkal District, Tamil Nadu, on NH-544 (Salem–Coimbatore National Highway), approximately 18 km by road from Erode city.
+
+Also written as: JKKN College of Engineering and Technology (Autonomous), JKKNCET. Anna University's Namakkal district list names the college J.K.K. Nataraja College of Engineering and Technology, TNEA counselling code 2647.
 
 Contact: +91 93458 55001 | engg@jkkn.ac.in | ${siteUrl}
 
@@ -58,6 +64,7 @@ Total sanctioned intake 372 — 300 undergraduate across 5 B.E./B.Tech branches,
 ## Accreditations & Affiliations
 
 - Affiliated: Anna University, Chennai (annauniv.edu)
+- Autonomous: autonomous status conferred by UGC, New Delhi and Anna University, Chennai; the college remains affiliated to Anna University
 - Approved: All India Council for Technical Education (AICTE)
 - Accredited: National Assessment and Accreditation Council (NAAC)
 - Scheme: Unnat Bharat Abhiyan, Ministry of Education
@@ -79,7 +86,7 @@ Total sanctioned intake 372 — 300 undergraduate across 5 B.E./B.Tech branches,
 
 JKKN Institutions (jkkn.ac.in) — J.K.K. Rangammal Charitable Trust, established 1952. Operates 7 colleges and 2 schools on one integrated residential campus in Komarapalayam.
 
-Last reviewed: ${LAST_REVIEWED}
+Last reviewed: ${ENGINEERING_LAST_REVIEWED}
 `
 }
 

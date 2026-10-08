@@ -32,7 +32,7 @@ const INSTITUTION_BRANDING: Record<string, {
   },
   engineering: {
     name: 'JKKN College of Engineering',
-    tagline: 'AICTE Approved | Anna University Affiliated',
+    tagline: 'Autonomous | AICTE Approved | Anna University Affiliated',
     primaryColor: '#1e40af',
     secondaryColor: '#3b82f6',
   },

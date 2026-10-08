@@ -307,9 +307,11 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
       'JKKN CET',
       'JKKN Engineering College',
       'JKKN College of Engineering',
+      // Kept last: Google reads this list in order when it picks a site name.
+      'JKKN College of Engineering and Technology (Autonomous)',
     ],
     description:
-      'Premier engineering college in Tamil Nadu affiliated to Anna University. Established in 2008, offering UG and PG programs in Engineering, Technology and Management with excellent placement record. AICTE approved and NAAC accredited.',
+      'Premier engineering college in Tamil Nadu affiliated to Anna University, with autonomous status conferred by UGC, New Delhi and Anna University, Chennai. Established in 2008, offering UG and PG programs in Engineering, Technology and Management with excellent placement record. AICTE approved and NAAC accredited.',
     foundingDate: '2008',
     slogan: 'Engineering Excellence, Innovation First',
     schemaType: 'CollegeOrUniversity',
@@ -349,6 +351,7 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
     hasCredential: [
       { name: 'AICTE Approval', credentialCategory: 'Approval', recognizedBy: { name: 'All India Council for Technical Education', alternateName: 'AICTE' } },
       { name: 'NAAC Accreditation', credentialCategory: 'Accreditation', recognizedBy: { name: 'National Assessment and Accreditation Council', alternateName: 'NAAC' } },
+      { name: 'Autonomous Status', credentialCategory: 'Autonomous Status', recognizedBy: { name: 'University Grants Commission', alternateName: 'UGC' } },
     ],
 
     memberOf: [
@@ -398,6 +401,8 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
       'JKKN Engineering College', 'JKKN CET', 'Engineering College Namakkal',
       'Best Engineering College Near Erode', 'Anna University Affiliated College',
       'AICTE Approved Engineering College Tamil Nadu',
+      'Autonomous Engineering College Tamil Nadu',
+      'JKKN College of Engineering and Technology Autonomous',
       'B.E. CSE Admission Tamil Nadu', 'B.Tech IT College',
       'Engineering College Komarapalayam', 'Top Engineering College Tamil Nadu',
     ],

@@ -6,6 +6,14 @@ const ADMISSION_STATUS = '2026-27 closed · 2027-28 enquiry open'
 
 // ─── Shared building blocks ──────────────────────────────────────────────────
 
+// One answer on every course admission page. The wording is the college's own
+// (site footer and Approvals page): status conferred by UGC, New Delhi and Anna University, Chennai.
+const AUTONOMOUS_FAQ = {
+  question: 'Is JKKN College of Engineering and Technology an autonomous college?',
+  answer:
+    'Yes. JKKN College of Engineering and Technology (JKKNCET), Komarapalayam, is an autonomous institution: autonomous status has been conferred by UGC, New Delhi and Anna University, Chennai. The college remains affiliated to Anna University, Chennai, and is approved by AICTE for its B.E., B.Tech, M.E. and MBA programmes.',
+}
+
 const UG_ELIGIBILITY_BASE = [
   'Passed 10+2 (HSC) with Physics, Chemistry, and Mathematics from a recognized board',
   'Minimum 45% aggregate marks (40% for SC / ST / OBC / MBC reserved categories)',
@@ -106,7 +114,7 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
   fullName: 'B.E Computer Science & Engineering',
   duration: '4 Years',
   seats: 60,
-  affiliated: 'Affiliated to Anna University, Chennai',
+  affiliated: 'an Autonomous Institution affiliated to Anna University, Chennai',
   CourseIcon: Cpu,
   heroIntro:
     'Apply for B.E Computer Science & Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved,',
@@ -176,6 +184,7 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
       question: 'Is there any application fee?',
       answer: 'No. Application is completely free — online portal or campus counter, both zero cost.',
     },
+    AUTONOMOUS_FAQ,
   ],
   courseDetailsUrl: '/courses-offered/ug/be-cse',
   courseDetailsLabel: 'View full B.E CSE learning framework, learning labs, senior learners, and placements',
@@ -188,7 +197,7 @@ export const BE_EEE_ADMISSION: CourseAdmissionData = {
   fullName: 'B.E Electrical & Electronics Engineering',
   duration: '4 Years',
   seats: 60,
-  affiliated: 'Affiliated to Anna University, Chennai',
+  affiliated: 'an Autonomous Institution affiliated to Anna University, Chennai',
   CourseIcon: Zap,
   heroIntro:
     'Apply for B.E Electrical & Electronics Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved,',
@@ -258,6 +267,7 @@ export const BE_EEE_ADMISSION: CourseAdmissionData = {
       answer:
         'GQ seats allotted through TNEA counselling based on 10+2 cutoff (Anna University). MQ seats filled directly by college on merit-cum-preference basis. For B.E EEE both quotas have the same Management Quota fee — Government fee is per government norms.',
     },
+    AUTONOMOUS_FAQ,
   ],
   courseDetailsUrl: '/courses-offered/ug/be-eee',
   courseDetailsLabel: 'View full B.E EEE learning framework, learning labs, senior learners, and placements',
@@ -270,7 +280,7 @@ export const BE_ECE_ADMISSION: CourseAdmissionData = {
   fullName: 'B.E Electronics & Communication Engineering',
   duration: '4 Years',
   seats: 60,
-  affiliated: 'Affiliated to Anna University, Chennai',
+  affiliated: 'an Autonomous Institution affiliated to Anna University, Chennai',
   CourseIcon: Antenna,
   heroIntro:
     'Apply for B.E Electronics & Communication Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved,',
@@ -339,6 +349,7 @@ export const BE_ECE_ADMISSION: CourseAdmissionData = {
       question: 'Application fee for B.E ECE?',
       answer: 'Zero. Application is free at JKKN — online portal or campus.',
     },
+    AUTONOMOUS_FAQ,
   ],
   courseDetailsUrl: '/courses-offered/ug/be-ece',
   courseDetailsLabel: 'View full B.E ECE learning framework, learning labs, senior learners, and placements',
@@ -351,7 +362,7 @@ export const BE_MECHANICAL_ADMISSION: CourseAdmissionData = {
   fullName: 'B.E Mechanical Engineering',
   duration: '4 Years',
   seats: 60,
-  affiliated: 'Affiliated to Anna University, Chennai',
+  affiliated: 'an Autonomous Institution affiliated to Anna University, Chennai',
   CourseIcon: Cog,
   heroIntro:
     'Apply for B.E Mechanical Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved,',
@@ -420,6 +431,7 @@ export const BE_MECHANICAL_ADMISSION: CourseAdmissionData = {
       question: 'Application fee?',
       answer: 'Zero. Application is completely free.',
     },
+    AUTONOMOUS_FAQ,
   ],
   courseDetailsUrl: '/courses-offered/ug/be-mechanical',
   courseDetailsLabel: 'View full B.E Mechanical learning framework, learning labs, senior learners, and placements',
@@ -432,7 +444,7 @@ export const BTECH_IT_ADMISSION: CourseAdmissionData = {
   fullName: 'B.Tech Information Technology',
   duration: '4 Years',
   seats: 60,
-  affiliated: 'Affiliated to Anna University, Chennai',
+  affiliated: 'an Autonomous Institution affiliated to Anna University, Chennai',
   CourseIcon: Code2,
   heroIntro:
     'Apply for B.Tech Information Technology at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved, NAAC accredited,',
@@ -501,6 +513,7 @@ export const BTECH_IT_ADMISSION: CourseAdmissionData = {
       question: 'Application fee?',
       answer: 'Zero. Application is completely free at JKKN.',
     },
+    AUTONOMOUS_FAQ,
   ],
   courseDetailsUrl: '/courses-offered/ug/btech-it',
   courseDetailsLabel: 'View full B.Tech IT learning framework, learning labs, senior learners, and placements',
@@ -513,7 +526,7 @@ export const ME_CSE_ADMISSION: CourseAdmissionData = {
   fullName: 'M.E Computer Science & Engineering',
   duration: '2 Years',
   seats: 12,
-  affiliated: 'Affiliated to Anna University, Chennai',
+  affiliated: 'an Autonomous Institution affiliated to Anna University, Chennai',
   CourseIcon: Server,
   heroIntro:
     'Apply for M.E Computer Science & Engineering at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved, NAAC accredited,',
@@ -584,6 +597,7 @@ export const ME_CSE_ADMISSION: CourseAdmissionData = {
       question: 'Application fee?',
       answer: 'Zero. Application is completely free.',
     },
+    AUTONOMOUS_FAQ,
   ],
   courseDetailsUrl: '/courses-offered/pg/me-cse',
   courseDetailsLabel: 'View full M.E CSE learning framework, learning labs, senior learners, and research',
@@ -596,7 +610,7 @@ export const MBA_ADMISSION: CourseAdmissionData = {
   fullName: 'M.B.A — Master of Business Administration',
   duration: '2 Years',
   seats: 60,
-  affiliated: 'Affiliated to Anna University, Chennai',
+  affiliated: 'an Autonomous Institution affiliated to Anna University, Chennai',
   CourseIcon: Briefcase,
   heroIntro:
     'Apply for M.B.A — Master of Business Administration at JKKN College of Engineering & Technology, Komarapalayam — AICTE approved, NAAC accredited,',
@@ -668,6 +682,7 @@ export const MBA_ADMISSION: CourseAdmissionData = {
       answer:
         'Admissions for 2026-27 are closed. Enquiries for 2027-28 are open on the JKKN admission portal, with no application fee. TANCET dates for 2027 are announced by Anna University on annauniv.edu.',
     },
+    AUTONOMOUS_FAQ,
   ],
   courseDetailsUrl: '/courses-offered/pg/mba',
   courseDetailsLabel: 'View full MBA learning framework, senior learners, specializations, and placements',

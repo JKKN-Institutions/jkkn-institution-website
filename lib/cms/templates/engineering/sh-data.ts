@@ -22,7 +22,7 @@ export const SH_SAMPLE_DATA: SHCoursePageProps = {
     { label: 'Apply Now for 2026-27', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary' },
     { label: 'Explore Learning Framework', link: '#curriculum', variant: 'secondary' },
   ],
-  affiliatedTo: 'Affiliated to Anna University, Chennai',
+  affiliatedTo: 'Autonomous | Affiliated to Anna University, Chennai',
 
   // ==========================================
   // Course Overview
