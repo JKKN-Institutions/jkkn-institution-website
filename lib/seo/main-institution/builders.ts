@@ -211,7 +211,7 @@ export interface PersonInput {
 
 export function buildPerson(p: PersonInput) {
   const SITE_URL = getSiteUrl()
-  const url = p.slug ? `${SITE_URL}/faculty/${p.slug}` : undefined
+  const url = p.slug ? `${SITE_URL}/senior-learners/${p.slug}` : undefined
   const schema: Record<string, unknown> = {
     '@type': 'Person',
     name: p.name,

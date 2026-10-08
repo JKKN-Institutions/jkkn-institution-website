@@ -108,7 +108,7 @@ function FacultyCard({ faculty }: { faculty: FacultyRow }) {
 
   return (
     <Link
-      href={`/faculty/${faculty.slug}`}
+      href={`/senior-learners/${faculty.slug}`}
       className="group block bg-white border border-[rgba(11,109,65,0.08)] rounded-2xl p-6 text-center transition-all duration-400 hover:border-[rgba(11,109,65,0.22)] hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(11,109,65,0.08)] relative overflow-hidden"
     >
       {/* Top accent bar */}

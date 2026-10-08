@@ -92,7 +92,7 @@ export function FacultyManageTable({ faculty }: Props) {
                     <div className="flex items-center justify-end gap-1">
                       {f.status === 'published' && f.is_active && f.slug && (
                         <Button variant="ghost" size="sm" asChild>
-                          <Link href={`/faculty/${f.slug}`} target="_blank" rel="noopener noreferrer">
+                          <Link href={`/senior-learners/${f.slug}`} target="_blank" rel="noopener noreferrer">
                             <Globe className="w-4 h-4" />
                           </Link>
                         </Button>

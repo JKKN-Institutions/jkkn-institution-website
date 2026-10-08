@@ -66,7 +66,7 @@ export default async function VerifyFacultyProfilePage({ params }: Props) {
             )}
             {faculty.status === 'published' && faculty.is_active && faculty.slug && (
               <Button asChild variant="outline" size="sm">
-                <Link href={`/faculty/${faculty.slug}`} target="_blank" rel="noopener noreferrer">
+                <Link href={`/senior-learners/${faculty.slug}`} target="_blank" rel="noopener noreferrer">
                   <Globe className="w-3.5 h-3.5 mr-1" /> View live page
                 </Link>
               </Button>

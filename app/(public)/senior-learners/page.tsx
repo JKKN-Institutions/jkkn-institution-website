@@ -39,11 +39,11 @@ async function FacultyContent() {
 export default function FacultyPage() {
   return (
     <div className="min-h-screen" style={{ background: '#fbfbee' }}>
-      <BreadcrumbSchema path="/faculty" />
+      <BreadcrumbSchema path="/senior-learners" />
       {/* JSON-LD (main only): CollectionPage + BreadcrumbList + FAQ */}
       <MainInstitutionPageSchema
         webpage={{
-          path: '/faculty',
+          path: '/senior-learners',
           name: 'Senior Learners Directory | JKKN Institutions',
           description:
             'Meet the distinguished senior learners at JKKN Institutions — PhD-qualified senior learners, postgraduate specialists, and industry-experienced senior learners across dental, pharmacy, engineering, nursing, and arts & science disciplines.',
@@ -52,7 +52,7 @@ export default function FacultyPage() {
           speakableSelectors: ['h1', '[data-speakable="faculty-intro"]'],
           breadcrumbs: [
             { name: 'Home', url: '/' },
-            { name: 'Senior Learners', url: '/faculty' },
+            { name: 'Senior Learners', url: '/senior-learners' },
           ],
         }}
         faqs={FACULTY_FAQS}
