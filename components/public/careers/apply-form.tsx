@@ -8,45 +8,16 @@ import { useRef, useState } from 'react'
 import Link from 'next/link'
 import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { AlertCircle, CheckCircle2, Loader2, Send } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { trackCareersEvent } from '@/lib/analytics/careers-events'
+import { applyFormSchema, type ApplyFormValues } from '@/lib/schemas/careers-apply-form'
 import {
   buildApplyFormData, resumeClientError, submitApplication, type ApplyFailureKind, type ApplyResult,
 } from '@/lib/services/public-careers-apply'
-
-const optionalMonths = z
-  .string()
-  .trim()
-  .refine(v => v === '' || /^\d{1,3}$/.test(v), 'Whole months only.')
-  .refine(v => v === '' || Number(v) <= 720, 'Enter 0–720 months.')
-
-const schema = z.object({
-  first_name: z.string().trim().min(1, 'First name is required.').max(100),
-  last_name: z.string().trim().min(1, 'Last name is required.').max(100),
-  email: z.string().trim().email('Enter a valid email address.').max(200),
-  phone: z.string().trim().refine(
-    v => /^\d{10,15}$/.test(v.replace(/[\s+\-()]/g, '')),
-    'Enter a valid phone number (10-15 digits).',
-  ),
-  qualification: z.string().trim().min(1, 'Qualification is required.').max(200),
-  experience_months: z
-    .string()
-    .trim()
-    .refine(v => /^\d{1,3}$/.test(v), 'Enter your experience as whole months (0 for freshers).')
-    .refine(v => Number(v) <= 720, 'Enter 0–720 months.'),
-  current_job_title: z.string().trim().max(150),
-  current_company: z.string().trim().max(150),
-  current_job_duration_months: optionalMonths,
-  worked_cities: z.string().trim().max(1000),
-  consent: z.boolean().refine(v => v === true, 'Please accept the privacy consent to apply.'),
-  website: z.string().max(0), // honeypot
-})
-type FormValues = z.infer<typeof schema>
 
 interface ApplyFormProps {
   jobId: string
@@ -80,8 +51,8 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl }: ApplyFormProps) {
 
   const {
     register, handleSubmit, setError, setValue, control, formState: { errors },
-  } = useForm<FormValues>({
-    resolver: zodResolver(schema),
+  } = useForm<ApplyFormValues>({
+    resolver: zodResolver(applyFormSchema),
     defaultValues: {
       first_name: '', last_name: '', email: '', phone: '', qualification: '', experience_months: '',
       current_job_title: '', current_company: '', current_job_duration_months: '', worked_cities: '',
@@ -91,7 +62,7 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl }: ApplyFormProps) {
 
   const consent = useWatch({ control, name: 'consent' })
 
-  async function onSubmit(values: FormValues) {
+  async function onSubmit(values: ApplyFormValues) {
     const fileErr = resumeClientError(resume)
     setResumeError(fileErr)
     if (fileErr || !resume) return
@@ -114,7 +85,7 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl }: ApplyFormProps) {
     if (!r.ok && r.kind === 'validation') {
       for (const [field, message] of Object.entries(r.fields)) {
         if (field === 'resume') setResumeError(message)
-        else if (field in schema.shape) setError(field as keyof FormValues, { type: 'server', message })
+        else if (field in applyFormSchema.shape) setError(field as keyof ApplyFormValues, { type: 'server', message })
       }
     }
   }
@@ -140,7 +111,7 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl }: ApplyFormProps) {
     )
   }
 
-  type TextField = Exclude<keyof FormValues, 'consent' | 'website'>
+  type TextField = Exclude<keyof ApplyFormValues, 'consent' | 'website'>
   const field = (
     name: TextField,
     label: string,
