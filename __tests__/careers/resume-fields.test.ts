@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { ResumeExtraction } from '@/lib/schemas/resume-extraction'
-import { autofillWrites, detectResumeKind, normalizeResumeFields } from '@/lib/utils/resume-fields'
+import { autofillWrites, detectResumeKind, normalizeResumeFields, pdfPageCount } from '@/lib/utils/resume-fields'
 
 const EMPTY: ResumeExtraction = {
   first_name: null, last_name: null, email: null, phone: null, highest_qualification: null,
@@ -83,5 +83,20 @@ describe('autofillWrites', () => {
   it('replaces values from an earlier resume that the candidate did not edit', () => {
     expect(autofillWrites({ first_name: 'Old', email: 'old@example.com' }, new Set(['first_name'] as const), incoming))
       .toEqual({ first_name: 'Priya', phone: '9876543210' })
+  })
+})
+
+describe('pdfPageCount', () => {
+  const pdf = (body: string) => new TextEncoder().encode(`%PDF-1.4
+${body}
+%%EOF`)
+  it('counts page objects, not the page tree', () => {
+    expect(pdfPageCount(pdf('<</Type /Pages /Kids [3 0 R 4 0 R] /Count 2>> <</Type /Page>> <</Type/Page /Parent 2 0 R>>'))).toBe(2)
+  })
+  it('trusts a larger /Count when page objects are hidden in object streams', () => {
+    expect(pdfPageCount(pdf('<</Type /Pages /Count 48>> <</Type /ObjStm /N 60>>'))).toBe(48)
+  })
+  it('returns 0 when the bytes say nothing about pages', () => {
+    expect(pdfPageCount(pdf('<</Type /ObjStm>>'))).toBe(0)
   })
 })

@@ -3,9 +3,10 @@ import { describe, expect, it, vi } from 'vitest'
 import type { ResumeExtraction } from '@/lib/schemas/resume-extraction'
 import { MAX_RESUME_BYTES } from '@/lib/services/public-careers-apply'
 import { RESUME_MODEL, handleResumeAutofill, readResume } from '@/lib/services/resume-autofill'
+import { SMALL_DOCX, makeZip } from './zip-fixture'
 
 const PDF = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x37])
-const DOCX = new Uint8Array([0x50, 0x4b, 0x03, 0x04, 0x14, 0x00])
+const DOCX = SMALL_DOCX
 const DOC = new Uint8Array([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1])
 const NOW = () => new Date('2026-10-12T04:00:00Z')
 
@@ -17,6 +18,7 @@ const EXTRACTION: ResumeExtraction = {
 
 type ParseParams = {
   model: string
+  max_tokens: number
   fallbacks: unknown
   betas: string[]
   output_config: { effort: string }
@@ -45,6 +47,7 @@ describe('readResume', () => {
     })
     const [params, options] = parse.mock.calls[0]
     expect(params.model).toBe(RESUME_MODEL)
+    expect(params.max_tokens).toBe(16000) // thinking shares this budget; 4096 could cut the JSON
     expect(RESUME_MODEL).toBe('claude-opus-5-5')
     expect(params.output_config.effort).toBe('low')
     expect(params.fallbacks).toBe('default')
@@ -90,6 +93,29 @@ describe('readResume', () => {
     expect(await readResume(PDF, { client, now: NOW })).toEqual({ ok: false, reason: 'unreadable' })
   })
 
+  it('reports a 400 that is not about the file (configuration) as unavailable', async () => {
+    const { client } = fakeClient(() => {
+      throw new Anthropic.BadRequestError(400, undefined, 'fallbacks: not enabled for this organization', new Headers())
+    })
+    expect(await readResume(PDF, { client, now: NOW })).toEqual({ ok: false, reason: 'unavailable' })
+  })
+
+  it('refuses a DOCX that inflates past the limit (zip bomb) before extracting text', async () => {
+    const { client, parse } = fakeClient(() => reply(EXTRACTION))
+    const docxToText = vi.fn(async () => 'Priya R')
+    const bomb = makeZip([{ name: 'word/document.xml', content: Buffer.alloc(25 * 1024 * 1024) }])
+    expect(await readResume(bomb, { client, docxToText })).toEqual({ ok: false, reason: 'unreadable' })
+    expect(docxToText).not.toHaveBeenCalled()
+    expect(parse).not.toHaveBeenCalled()
+  })
+
+  it('refuses a PDF longer than 20 pages without calling Claude', async () => {
+    const { client, parse } = fakeClient(() => reply(EXTRACTION))
+    const long = new TextEncoder().encode('%PDF-1.7\n<</Type /Pages /Count 120>>\n%%EOF')
+    expect(await readResume(long, { client, now: NOW })).toEqual({ ok: false, reason: 'unreadable' })
+    expect(parse).not.toHaveBeenCalled()
+  })
+
   it('reports timeouts and service errors as unavailable', async () => {
     const { client } = fakeClient(() => { throw new Anthropic.APIConnectionTimeoutError() })
     expect(await readResume(PDF, { client, now: NOW })).toEqual({ ok: false, reason: 'unavailable' })
@@ -115,6 +141,13 @@ describe('handleResumeAutofill', () => {
       .toEqual({ ok: false, reason: 'unsupported_type' })
     expect(await handleResumeAutofill(file(new Uint8Array(MAX_RESUME_BYTES + 1)), 'ip', { enabled: true, allow }))
       .toEqual({ ok: false, reason: 'too_large' })
+    expect(allow).not.toHaveBeenCalled()
+  })
+
+  it('refuses a file type it cannot read without using a rate-limit slot', async () => {
+    const allow = vi.fn(() => true)
+    expect(await handleResumeAutofill(file(DOC, 'cv.doc'), 'ip', { enabled: true, allow }))
+      .toEqual({ ok: false, reason: 'unsupported_type' })
     expect(allow).not.toHaveBeenCalled()
   })
 

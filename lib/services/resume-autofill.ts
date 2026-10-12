@@ -12,15 +12,23 @@ import mammoth from 'mammoth'
 import { ResumeExtractionSchema } from '@/lib/schemas/resume-extraction'
 import { MAX_RESUME_BYTES } from '@/lib/services/public-careers-apply'
 import {
-  detectResumeKind, normalizeResumeFields, type ResumeAutofillResult,
+  detectResumeKind, normalizeResumeFields, pdfPageCount, type ResumeAutofillResult,
 } from '@/lib/utils/resume-fields'
 import { createRateLimiter } from '@/lib/utils/sliding-window-limit'
+import { zipInflatesWithin } from '@/lib/utils/zip-guard'
 
 export const RESUME_MODEL = 'claude-opus-5-5'
 const EFFORT = 'low' // one extraction; the candidate is waiting (spec §4.5)
-const MAX_TOKENS = 4096
+// Thinking cannot be turned off on Opus 5.5 and shares this budget with the JSON,
+// so a tight cap could cut the answer off. Billing is for tokens generated only.
+const MAX_TOKENS = 16_000
 const DEADLINE_MS = 30_000
 const MAX_DOCX_CHARS = 100_000
+// Bound the work before the expensive step (review: zip bomb, cost).
+const MAX_DOCX_INFLATED_BYTES = 20 * 1024 * 1024
+const MAX_PDF_PAGES = 20 // long academic CVs fit; a 600-page upload does not
+// 400s that are about the uploaded PDF itself rather than the request.
+const DOCUMENT_ERROR = /\bpdf\b|password|encrypt|could not process|document/i
 
 const SYSTEM_PROMPT = `You extract details from a job applicant's resume to pre-fill an application form for JKKN Institutions.
 
@@ -75,8 +83,10 @@ export async function readResume(bytes: Uint8Array, deps: ReadResumeDeps = {}): 
 
   let doc: ResumeDocument
   if (kind === 'pdf') {
+    if (pdfPageCount(bytes) > MAX_PDF_PAGES) return { ok: false, reason: 'unreadable' }
     doc = { kind, base64: Buffer.from(bytes).toString('base64') }
   } else {
+    if (!zipInflatesWithin(bytes, MAX_DOCX_INFLATED_BYTES)) return { ok: false, reason: 'unreadable' }
     const text = (await (deps.docxToText ?? mammothText)(bytes).catch(() => '')).replace(/\n{3,}/g, '\n\n').trim()
     if (!text || text.length > MAX_DOCX_CHARS) return { ok: false, reason: 'unreadable' }
     doc = { kind, text }
@@ -100,11 +110,13 @@ export async function readResume(bytes: Uint8Array, deps: ReadResumeDeps = {}): 
     return filled.length > 0 ? { ok: true, values, filled } : { ok: false, reason: 'unreadable' }
   } catch (err) {
     if (err instanceof Anthropic.BadRequestError) {
-      // Usually a PDF Claude cannot open (encrypted, corrupt). Status only — the
-      // message could quote the request. A config mistake would also land here,
-      // so it is logged rather than swallowed.
-      console.warn('[resume-autofill] request rejected', err.status)
-      return { ok: false, reason: 'unreadable' }
+      // A PDF Claude cannot open (encrypted, corrupt) is the file's problem.
+      // Any other 400 is our request (config, model, beta) — the candidate is
+      // told auto-fill is unavailable, not that their file is bad.
+      // Status only in the log: the message could quote the request.
+      const aboutFile = DOCUMENT_ERROR.test(err.message)
+      console.warn('[resume-autofill] request rejected', err.status, aboutFile ? 'document' : 'request')
+      return { ok: false, reason: aboutFile ? 'unreadable' : 'unavailable' }
     }
     // Every other SDK failure — timeouts, aborts, 429, 5xx, auth — is the service, not the file.
     if (err instanceof Anthropic.APIError) return { ok: false, reason: 'unavailable' }
@@ -128,8 +140,8 @@ export interface AutofillRequestDeps extends ReadResumeDeps {
 }
 
 /**
- * The checks in spec §4 order. Size and emptiness come before the rate limit,
- * so a bad file never uses up one of the candidate's ten reads.
+ * The checks in spec §4 order. Size, emptiness and file type come before the
+ * rate limit, so a bad file never uses up one of the candidate's ten reads.
  */
 export async function handleResumeAutofill(
   file: FormDataEntryValue | null,
@@ -139,6 +151,8 @@ export async function handleResumeAutofill(
   if (!(deps.enabled ?? isResumeAutofillEnabled())) return { ok: false, reason: 'unavailable' }
   if (!(file instanceof File) || file.size === 0) return { ok: false, reason: 'unsupported_type' }
   if (file.size > MAX_RESUME_BYTES) return { ok: false, reason: 'too_large' }
+  const bytes = new Uint8Array(await file.arrayBuffer())
+  if (!detectResumeKind(bytes)) return { ok: false, reason: 'unsupported_type' }
   if (!(deps.allow ?? allowParse)(ip)) return { ok: false, reason: 'rate_limited' }
-  return readResume(new Uint8Array(await file.arrayBuffer()), deps)
+  return readResume(bytes, deps)
 }

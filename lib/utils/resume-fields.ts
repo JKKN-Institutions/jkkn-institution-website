@@ -31,6 +31,19 @@ export function detectResumeKind(bytes: Uint8Array): ResumeKind | null {
   return null // legacy .doc (OLE), images, anything else
 }
 
+/**
+ * Best-effort page count from the raw bytes, to keep a 600-page "resume" from
+ * reaching Claude. Takes the larger of the page objects found and the largest
+ * page-tree /Count, since object streams can hide either one. 0 = unknown.
+ */
+export function pdfPageCount(bytes: Uint8Array): number {
+  const text = new TextDecoder('latin1').decode(bytes)
+  const pageObjects = text.match(/\/Type\s*\/Page(?![A-Za-z])/g)?.length ?? 0
+  let largestCount = 0
+  for (const m of text.matchAll(/\/Count\s+(\d+)/g)) largestCount = Math.max(largestCount, Number(m[1]))
+  return Math.max(pageObjects, largestCount)
+}
+
 // ── Normalisation ───────────────────────────────────────────────────────────
 
 const clean = (v: string | null | undefined): string => (v ?? '').replace(/\s+/g, ' ').trim()
