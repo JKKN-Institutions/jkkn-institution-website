@@ -166,23 +166,23 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillEnabled }: Appl
     opts: { required?: boolean; type?: string; placeholder?: string; hint?: string; inputMode?: 'numeric'; focus?: boolean } = {},
   ) => (
     <div className="space-y-1.5">
-      <Label htmlFor={name} className="flex flex-wrap items-center gap-x-2 gap-y-1">
-        <span>{label}{opts.required && <span className="text-destructive"> *</span>}</span>
-        {autofilled.has(name) && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-            <Sparkles className="h-3 w-3" aria-hidden="true" />from resume
-          </span>
-        )}
-      </Label>
+      <Label htmlFor={name}>{label}{opts.required && <span className="text-destructive"> *</span>}</Label>
       <Input
         id={name}
         type={opts.type ?? 'text'}
         inputMode={opts.inputMode}
         placeholder={opts.placeholder}
         aria-invalid={Boolean(errors[name])}
+        aria-describedby={autofilled.has(name) ? `${name}-autofilled` : undefined}
         data-apply-focus={opts.focus ? '' : undefined}
         {...register(name, { onChange: () => markEdited(name) })}
       />
+      {/* Under the box, not beside the label: in the two-column row a badge would wrap and push one input lower. */}
+      {autofilled.has(name) && (
+        <p id={`${name}-autofilled`} className="flex items-center gap-1 text-xs font-medium text-primary">
+          <Sparkles className="h-3 w-3" aria-hidden="true" />From your resume
+        </p>
+      )}
       {opts.hint && !errors[name] && <p className="text-xs text-muted-foreground">{opts.hint}</p>}
       {errors[name] && <p className="text-xs text-destructive">{errors[name]?.message}</p>}
     </div>

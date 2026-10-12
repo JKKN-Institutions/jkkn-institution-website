@@ -58,7 +58,7 @@ Under the upload card, in small text (the privacy notice, §7):
 
 - A drop zone ("Drop your resume here or **Choose file**", "PDF or DOCX, up to 2 MB") accepting drag-and-drop and a file picker (`accept=".pdf,.doc,.docx"`). The existing client check (`resumeClientError`) runs first; on failure the message shows and nothing is sent.
 - **Reading:** spinner and "Reading your resume… this usually takes a few seconds." announced through `aria-live="polite"`. The fields are visible but the panel shows the reading state above them.
-- **Done:** a file chip (name, size) with a **Change** button, and "✓ N fields filled from your resume. Please check them before submitting." Each filled field shows a small "✦ from resume" marker next to its label. The marker disappears when the candidate edits that field.
+- **Done:** a file chip (name, size) with a **Change** button, and "✓ N fields filled from your resume. Please check them before submitting." Each filled field shows a small "✦ From your resume" line under its box (linked with `aria-describedby`; under the box rather than beside the label so the two-column name row stays aligned). The marker disappears when the candidate edits that field.
 - **Couldn't read:** the file chip stays (the file is still the application's resume) with the reason's message (§5) and the empty form below.
 - The separate "Resume" file input at the bottom of the form is replaced by the file chip in this mode.
 - Below the submit button: "Prefer typing? **Enter details manually**."
