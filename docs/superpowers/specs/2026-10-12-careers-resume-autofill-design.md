@@ -17,13 +17,13 @@ exactly what it is today.
 | Topic | Decision | Why |
 |---|---|---|
 | How the resume is read | Claude (Anthropic API) on this site's server, via a Server Action | Most accurate for total experience, current role and company, and it reads scanned PDFs. Chosen over rules in the browser and a hybrid. |
-| Model | `claude-opus-5-5`, effort `low`, server-side fallback `"default"` | Product owner's choice of the most capable model. `low` effort keeps the wait short for a single extraction (one constant to tune). |
+| Model | `claude-haiku-5-5`, effort `low`, no server-side fallback (Haiku 5.5 has none) | Amended 2026-10-12 after a side-by-side test on three resumes: Haiku 5.5 matched Opus 5.5 on 29 of 30 fields at about 1/25 of the cost ($0.0005-0.0009 per read against $0.009-0.019), with the same speed. Its one miss: total experience when jobs overlap, sometimes counted twice. The candidate sees the value marked as from the resume and can correct it. Originally `claude-opus-5-5` with fallback `"default"`. |
 | Output format | Structured output (`output_config.format` with `zodOutputFormat`) | The response must match the schema, so the form never receives unknown or malformed fields. |
 | Layout | Two choice cards first; choosing one reveals the form; a link switches at any time | Clearest choice, short panel. Chosen over tabs and a drop zone with no explicit choice. |
 | Submission | Unchanged: the browser posts multipart directly to MyJKKN | MyJKKN limits applications to 5 per IP per hour; parsing on the server does not change that, because the apply POST still comes from the candidate. |
 | Resume requirement | Still required in both modes | MyJKKN requires a resume. In upload mode the uploaded file *is* the application's resume. |
 | Storage | Nothing stored: no table, no bucket, no resume content in logs | No new data to protect, no migration across six institution databases. |
-| Rate limit | 10 parses per IP per hour, counted in memory per server instance, plus an Anthropic Console spend limit | Each Opus parse costs cents. The per-instance limit stops casual abuse; the Console spend limit is the hard cap. A database-backed limiter was rejected (a migration on every institution database for a soft control). |
+| Rate limit | 10 parses per IP per hour, counted in memory per server instance, plus an Anthropic Console spend limit | Each parse costs a fraction of a cent on Haiku 5.5. The per-instance limit stops casual abuse; the Console spend limit is the hard cap. A database-backed limiter was rejected (a migration on every institution database for a soft control). |
 | Per-site on/off | On when `ANTHROPIC_API_KEY` is set for that deployment; off otherwise | A site without a key shows today's form, with no chooser and nothing broken. |
 | SDK | Upgrade `@anthropic-ai/sdk` from 0.71.0 to the current release | 0.71.0 predates `output_config` and `@anthropic-ai/sdk/helpers/zod`. |
 
@@ -92,7 +92,7 @@ browser: ApplyForm (mode: choose | upload | manual)
    │            5. readResume(kind, bytes)           lib/services/resume-autofill.ts (server-only)
    │                 PDF  → document block (base64)
    │                 DOCX → plain text (mammoth.extractRawText); empty or > 100 000 chars → 'unreadable'
-   │                 Claude: beta messages.parse, claude-opus-5-5, effort low, fallbacks "default",
+   │                 Claude: beta messages.parse, claude-haiku-5-5, effort low,
    │                         output_config.format = zodOutputFormat(ResumeExtractionSchema)
    │                 refusal / null parsed output → 'unreadable'; API error / 30 s deadline → 'unavailable'
    │            6. normalizeResumeFields(raw)        lib/utils/resume-fields.ts (pure)
@@ -157,7 +157,7 @@ The user message contains the document (PDF block or DOCX text) followed by "Tod
 
 ### 4.5 Request settings
 
-`model: 'claude-opus-5-5'`, `max_tokens: 4096`, `output_config: { effort: 'low', format: zodOutputFormat(ResumeExtractionSchema) }`, server-side fallback `fallbacks: 'default'` with beta `server-side-fallback-2026-07-01`, request `timeout` 30 s with `maxRetries: 1` under an overall 30 s deadline (`AbortSignal.timeout`). No prompt caching (the system prompt is below the cacheable minimum and traffic is sparse).
+`model: 'claude-haiku-5-5'` (amended from `claude-opus-5-5`, see §2), `max_tokens: 16000`, `output_config: { effort: 'low', format: betaZodOutputFormat(ResumeExtractionSchema) }`, no server-side fallback, request `timeout` 30 s with `maxRetries: 1` under an overall 30 s deadline (`AbortSignal.timeout`). No prompt caching (the system prompt is below the cacheable minimum and traffic is sparse).
 
 ## 5. Failure handling
 

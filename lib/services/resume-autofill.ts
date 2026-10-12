@@ -17,9 +17,12 @@ import {
 import { createRateLimiter } from '@/lib/utils/sliding-window-limit'
 import { zipInflatesWithin } from '@/lib/utils/zip-guard'
 
-export const RESUME_MODEL = 'claude-opus-5-5'
+// Haiku: ~25x cheaper than Opus 5.5, 29/30 fields matched on our test resumes
+// (it can double-count overlapping jobs in experience_months; the candidate checks it).
+// It has no server-side fallback, so none is requested.
+export const RESUME_MODEL = 'claude-haiku-5-5'
 const EFFORT = 'low' // one extraction; the candidate is waiting (spec §4.5)
-// Thinking cannot be turned off on Opus 5.5 and shares this budget with the JSON,
+// Thinking shares this budget with the JSON,
 // so a tight cap could cut the answer off. Billing is for tokens generated only.
 const MAX_TOKENS = 16_000
 const DEADLINE_MS = 30_000
@@ -38,7 +41,7 @@ Return null for anything not clearly stated. Never invent or guess values.
 - Names: put the given name(s) in first_name and the family name or initial(s) in last_name. For Indian names written with initials ("R. Priya", "Priya R"), the initial goes in last_name.
 - phone: one phone number exactly as written, including any country code.
 - highest_qualification: the highest degree with its specialisation as written (for example "M.E. Computer Science and Engineering"). If the highest degree is still in progress, append " (pursuing)".
-- total_experience_months: the sum of all employment periods (teaching, industry, research, administrative roles) up to today's date given in the message. Count overlapping periods once. Exclude education and internships. If there are no dates but the resume states a total (for example "5 years of experience"), use that.
+- total_experience_months: the sum of all employment periods (teaching, industry, research, administrative roles) up to today's date given in the message. Where two jobs overlap in time, merge their date ranges first so the overlapping months are counted only once (Mar 2015-Feb 2017 and Jan 2016-Jun 2017 together are 28 months, not 42). Exclude education and internships. If there are no dates but the resume states a total (for example "5 years of experience"), use that.
 - Current job: the role marked present, current or till date. current_job_duration_months runs from its start to today.
 - worked_cities: cities where the applicant was employed, not where they studied or live.`
 
@@ -97,8 +100,6 @@ export async function readResume(bytes: Uint8Array, deps: ReadResumeDeps = {}): 
       {
         model: RESUME_MODEL,
         max_tokens: MAX_TOKENS,
-        betas: ['server-side-fallback-2026-07-01'],
-        fallbacks: 'default',
         system: SYSTEM_PROMPT,
         messages: [{ role: 'user', content: resumeContent(doc, today((deps.now ?? (() => new Date()))())) }],
         output_config: { effort: EFFORT, format: betaZodOutputFormat(ResumeExtractionSchema) },

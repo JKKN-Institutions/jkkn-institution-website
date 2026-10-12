@@ -86,7 +86,7 @@ Spec: `docs/superpowers/specs/2026-10-12-careers-resume-autofill-design.md`.
 
 - The apply panel offers **Upload resume** (Claude fills the fields) or **Enter details manually**. The application is still posted from the browser to MyJKKN, unchanged.
 - On when the deployment has `ANTHROPIC_API_KEY`; without it the panel is the manual form only. Locally, put the key in `.env.<id>.jkkn-api`; the switcher copies it into `.env.local`.
-- Flow: `resume-autofill-panel.tsx` → Server Action `app/actions/careers/resume-autofill.ts` → `lib/services/resume-autofill.ts` (Claude Opus 5.5, structured output, PDF as a document block, DOCX via `mammoth`) → `lib/utils/resume-fields.ts` (normalised against `lib/schemas/careers-apply-form.ts`).
+- Flow: `resume-autofill-panel.tsx` → Server Action `app/actions/careers/resume-autofill.ts` → `lib/services/resume-autofill.ts` (Claude Haiku 5.5 at effort `low`, about $0.0005-0.0009 per resume, structured output, PDF as a document block, DOCX via `mammoth`) → `lib/utils/resume-fields.ts` (normalised against `lib/schemas/careers-apply-form.ts`).
 - Limits: 10 reads per IP per hour per server instance; 30 s deadline; set a spend limit on the Anthropic workspace as the hard cap.
 - Nothing is stored. Failures (`.doc`, unreadable, rate limit, outage) leave the candidate on the form with the file attached.
 - GA4: `careers_apply_mode` (`mode`), `careers_resume_autofill` (`outcome`, `fields_filled`).

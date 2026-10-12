@@ -19,8 +19,6 @@ const EXTRACTION: ResumeExtraction = {
 type ParseParams = {
   model: string
   max_tokens: number
-  fallbacks: unknown
-  betas: string[]
   output_config: { effort: string }
   messages: Array<{ role: string; content: Array<Record<string, unknown>> }>
 }
@@ -48,10 +46,10 @@ describe('readResume', () => {
     const [params, options] = parse.mock.calls[0]
     expect(params.model).toBe(RESUME_MODEL)
     expect(params.max_tokens).toBe(16000) // thinking shares this budget; 4096 could cut the JSON
-    expect(RESUME_MODEL).toBe('claude-opus-5-5')
+    expect(RESUME_MODEL).toBe('claude-haiku-5-5')
     expect(params.output_config.effort).toBe('low')
-    expect(params.fallbacks).toBe('default')
-    expect(params.betas).toEqual(['server-side-fallback-2026-07-01'])
+    expect(params).not.toHaveProperty('fallbacks') // Haiku 5.5 has no server-side fallback
+    expect(params).not.toHaveProperty('betas')
     expect(params.messages[0].content[0]).toEqual({
       type: 'document',
       source: { type: 'base64', media_type: 'application/pdf', data: Buffer.from(PDF).toString('base64') },
@@ -95,7 +93,7 @@ describe('readResume', () => {
 
   it('reports a 400 that is not about the file (configuration) as unavailable', async () => {
     const { client } = fakeClient(() => {
-      throw new Anthropic.BadRequestError(400, undefined, 'fallbacks: not enabled for this organization', new Headers())
+      throw new Anthropic.BadRequestError(400, undefined, 'output_config: unsupported value', new Headers())
     })
     expect(await readResume(PDF, { client, now: NOW })).toEqual({ ok: false, reason: 'unavailable' })
   })
