@@ -20,6 +20,8 @@ export type CareersEvent =
   | 'careers_job_save'
   | 'careers_apply_click'
   | 'careers_apply_start'
+  | 'careers_apply_mode'
+  | 'careers_resume_autofill'
   | 'careers_apply_complete'
 
 type EventParams = Record<string, string | number | undefined>
