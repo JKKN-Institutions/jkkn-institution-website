@@ -18,7 +18,10 @@ function goToForm(jobId: string, placement: string) {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   section.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' })
   // Move keyboard and screen-reader focus with the scroll.
-  section.querySelector<HTMLElement>('input:not([type="hidden"]):not([tabindex="-1"])')?.focus({ preventScroll: true })
+  // The upload card while the candidate is choosing, otherwise the first field (spec 2026-10-12 §3.6).
+  const target = section.querySelector<HTMLElement>('[data-apply-focus]')
+    ?? section.querySelector<HTMLElement>('input:not([type="hidden"]):not([tabindex="-1"])')
+  target?.focus({ preventScroll: true })
 }
 
 const HEADER_APPLY_ID = 'apply-now-header'

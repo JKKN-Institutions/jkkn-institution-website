@@ -8,6 +8,7 @@ import { JobDetail, RelatedJobs } from '@/components/public/careers/job-detail'
 import { JobPostingSchema } from '@/components/seo/job-posting-schema'
 import type { PublicJob } from '@/lib/schemas/public-careers'
 import { getMyJkknBaseUrl, getPublicJob, isUuid } from '@/lib/services/public-careers-api'
+import { isResumeAutofillEnabled } from '@/lib/services/resume-autofill'
 import {
   findJobInSite, getSiteCareers, relatedJobCards, type JobCardData,
 } from '@/lib/services/public-careers-search'
@@ -106,7 +107,12 @@ export default async function JobPage({ params }: JobPageProps) {
           aria-label="Apply for this job"
           className="scroll-mt-32 lg:sticky lg:top-32 lg:row-span-2 lg:max-h-[calc(100dvh-9rem)] lg:self-start lg:overflow-y-auto lg:rounded-2xl"
         >
-          <ApplyForm jobId={job.id} jobTitle={formatJobTitle(job.title)} apiBaseUrl={getMyJkknBaseUrl()} />
+          <ApplyForm
+            jobId={job.id}
+            jobTitle={formatJobTitle(job.title)}
+            apiBaseUrl={getMyJkknBaseUrl()}
+            autofillEnabled={isResumeAutofillEnabled()}
+          />
         </aside>
         <RelatedJobs jobs={related} />
       </div>
