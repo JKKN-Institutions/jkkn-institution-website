@@ -24,6 +24,7 @@
  *                                         JKKN_ENGINEERING_INSTITUTION_ID
  *                                         NEXT_PUBLIC_MYJKKN_URL   (optional, default https://www.jkkn.ai)
  *                                         MYJKKN_INSTITUTION_ID    (careers: this college's MyJKKN id)
+ *                                         ANTHROPIC_API_KEY        (careers: resume auto-fill on job pages)
  */
 
 import * as fs from 'fs'
