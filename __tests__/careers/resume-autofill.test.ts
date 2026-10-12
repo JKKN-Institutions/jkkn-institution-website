@@ -1,7 +1,8 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { describe, expect, it, vi } from 'vitest'
 import type { ResumeExtraction } from '@/lib/schemas/resume-extraction'
-import { RESUME_MODEL, readResume } from '@/lib/services/resume-autofill'
+import { MAX_RESUME_BYTES } from '@/lib/services/public-careers-apply'
+import { RESUME_MODEL, handleResumeAutofill, readResume } from '@/lib/services/resume-autofill'
 
 const PDF = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x37])
 const DOCX = new Uint8Array([0x50, 0x4b, 0x03, 0x04, 0x14, 0x00])
@@ -92,5 +93,51 @@ describe('readResume', () => {
   it('reports timeouts and service errors as unavailable', async () => {
     const { client } = fakeClient(() => { throw new Anthropic.APIConnectionTimeoutError() })
     expect(await readResume(PDF, { client, now: NOW })).toEqual({ ok: false, reason: 'unavailable' })
+  })
+})
+
+describe('handleResumeAutofill', () => {
+  // Uint8Array<ArrayBuffer>: TS 5.9 only accepts ArrayBuffer-backed arrays as BlobParts.
+  const file = (data: Uint8Array<ArrayBuffer>, name = 'cv.pdf') => new File([data], name)
+
+  it('does nothing when auto-fill is off', async () => {
+    const { client, parse } = fakeClient(() => reply(EXTRACTION))
+    expect(await handleResumeAutofill(file(PDF), '1.2.3.4', { enabled: false, client }))
+      .toEqual({ ok: false, reason: 'unavailable' })
+    expect(parse).not.toHaveBeenCalled()
+  })
+
+  it('rejects a missing, empty or oversize file without using a rate-limit slot', async () => {
+    const allow = vi.fn(() => true)
+    expect(await handleResumeAutofill(null, 'ip', { enabled: true, allow })).toEqual({ ok: false, reason: 'unsupported_type' })
+    expect(await handleResumeAutofill('text', 'ip', { enabled: true, allow })).toEqual({ ok: false, reason: 'unsupported_type' })
+    expect(await handleResumeAutofill(file(new Uint8Array()), 'ip', { enabled: true, allow }))
+      .toEqual({ ok: false, reason: 'unsupported_type' })
+    expect(await handleResumeAutofill(file(new Uint8Array(MAX_RESUME_BYTES + 1)), 'ip', { enabled: true, allow }))
+      .toEqual({ ok: false, reason: 'too_large' })
+    expect(allow).not.toHaveBeenCalled()
+  })
+
+  it('stops at the rate limit before calling Claude', async () => {
+    const { client, parse } = fakeClient(() => reply(EXTRACTION))
+    expect(await handleResumeAutofill(file(PDF), 'ip', { enabled: true, allow: () => false, client }))
+      .toEqual({ ok: false, reason: 'rate_limited' })
+    expect(parse).not.toHaveBeenCalled()
+  })
+
+  it('judges a renamed file by its bytes', async () => {
+    const { client } = fakeClient(() => reply(EXTRACTION))
+    expect(await handleResumeAutofill(file(DOC, 'cv.docx'), 'ip', { enabled: true, allow: () => true, client }))
+      .toEqual({ ok: false, reason: 'unsupported_type' })
+    const docxAsPdf = await handleResumeAutofill(file(DOCX, 'cv.pdf'), 'ip', {
+      enabled: true, allow: () => true, client, now: NOW, docxToText: async () => 'Priya R',
+    })
+    expect(docxAsPdf.ok).toBe(true)
+  })
+
+  it('reads an allowed file', async () => {
+    const { client } = fakeClient(() => reply(EXTRACTION))
+    const result = await handleResumeAutofill(file(PDF), 'ip', { enabled: true, allow: () => true, client, now: NOW })
+    expect(result.ok).toBe(true)
   })
 })

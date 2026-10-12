@@ -14,6 +14,7 @@ import { MAX_RESUME_BYTES } from '@/lib/services/public-careers-apply'
 import {
   detectResumeKind, normalizeResumeFields, type ResumeAutofillResult,
 } from '@/lib/utils/resume-fields'
+import { createRateLimiter } from '@/lib/utils/sliding-window-limit'
 
 export const RESUME_MODEL = 'claude-opus-5-5'
 const EFFORT = 'low' // one extraction; the candidate is waiting (spec §4.5)
@@ -109,4 +110,35 @@ export async function readResume(bytes: Uint8Array, deps: ReadResumeDeps = {}): 
     if (err instanceof Anthropic.APIError) return { ok: false, reason: 'unavailable' }
     return { ok: false, reason: 'unreadable' } // the answer did not match the schema
   }
+}
+
+// ── Request handling (used by the Server Action) ───────────────────────────
+
+const PARSES_PER_IP_PER_HOUR = 10
+const allowParse = createRateLimiter(PARSES_PER_IP_PER_HOUR, 60 * 60 * 1000)
+
+/** Auto-fill is offered on a deployment only when it has a Claude API key. */
+export function isResumeAutofillEnabled(): boolean {
+  return Boolean(process.env.ANTHROPIC_API_KEY?.trim())
+}
+
+export interface AutofillRequestDeps extends ReadResumeDeps {
+  enabled?: boolean
+  allow?: (ip: string) => boolean
+}
+
+/**
+ * The checks in spec §4 order. Size and emptiness come before the rate limit,
+ * so a bad file never uses up one of the candidate's ten reads.
+ */
+export async function handleResumeAutofill(
+  file: FormDataEntryValue | null,
+  ip: string,
+  deps: AutofillRequestDeps = {},
+): Promise<ResumeAutofillResult> {
+  if (!(deps.enabled ?? isResumeAutofillEnabled())) return { ok: false, reason: 'unavailable' }
+  if (!(file instanceof File) || file.size === 0) return { ok: false, reason: 'unsupported_type' }
+  if (file.size > MAX_RESUME_BYTES) return { ok: false, reason: 'too_large' }
+  if (!(deps.allow ?? allowParse)(ip)) return { ok: false, reason: 'rate_limited' }
+  return readResume(new Uint8Array(await file.arrayBuffer()), deps)
 }
