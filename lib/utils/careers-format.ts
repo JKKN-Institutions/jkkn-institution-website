@@ -8,6 +8,12 @@ import type { PublicJob } from '@/lib/schemas/public-careers'
 /** DOM id of the application form on a job page; "Apply now" buttons scroll to it. */
 export const APPLY_SECTION_ID = 'apply'
 
+// JKKN keeps its posts open through the year, so a job without a closing date
+// says so instead of showing the date it was first posted, which reads as stale.
+export const ALWAYS_OPEN_LABEL = 'Always open - apply anytime'
+export const ALWAYS_OPEN_NOTE =
+  'JKKN Institutions accepts applications for this post throughout the year. There is no last date.'
+
 const JOB_TYPE_LABELS: Record<string, string> = {
   full_time: 'Full-time',
   part_time: 'Part-time',

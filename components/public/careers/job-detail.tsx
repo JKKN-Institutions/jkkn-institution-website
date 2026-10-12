@@ -7,8 +7,11 @@ import type { PublicJob } from '@/lib/schemas/public-careers'
 import type { JobCardData } from '@/lib/services/public-careers-search'
 import { splitPlainDescription, type DescriptionSection } from '@/lib/utils/careers-description'
 import { canonicalCity, categoryLabel, qualificationSummary } from '@/lib/utils/careers-facets'
-import { formatDate, formatExperience, formatJobType, formatSalary } from '@/lib/utils/careers-format'
+import {
+  ALWAYS_OPEN_LABEL, ALWAYS_OPEN_NOTE, formatDate, formatExperience, formatJobType, formatSalary,
+} from '@/lib/utils/careers-format'
 import { looksLikeHtml, sanitizeJobHtml } from '@/lib/utils/careers-html'
+import type { ListPageRef } from '@/lib/utils/careers-landing'
 import { formatJobTitle } from '@/lib/utils/careers-text'
 import { ApplyNowButton } from './apply-cta'
 import { JobCard } from './job-card'
@@ -45,9 +48,11 @@ interface JobDetailProps {
   slug: string
   /** Canonical URL of this page, used for sharing. */
   pageUrl: string
+  /** The careers list page this job appears on (parent site only). */
+  listPage?: ListPageRef | null
 }
 
-export function JobDetail({ job, slug, pageUrl }: JobDetailProps) {
+export function JobDetail({ job, slug, pageUrl, listPage }: JobDetailProps) {
   const title = formatJobTitle(job.title)
   const institution = job.institution?.name ?? 'JKKN Institutions'
   const location = [canonicalCity(job.city), job.state].filter(Boolean).join(', ')
@@ -67,6 +72,12 @@ export function JobDetail({ job, slug, pageUrl }: JobDetailProps) {
           <li aria-hidden="true"><ChevronRight className="h-3.5 w-3.5" /></li>
           <li><Link href="/careers" className="hover:text-primary hover:underline">Careers</Link></li>
           <li aria-hidden="true"><ChevronRight className="h-3.5 w-3.5" /></li>
+          {listPage && (
+            <>
+              <li><Link href={listPage.href} className="hover:text-primary hover:underline">{listPage.label}</Link></li>
+              <li aria-hidden="true"><ChevronRight className="h-3.5 w-3.5" /></li>
+            </>
+          )}
           <li aria-current="page" className="line-clamp-1 text-foreground">{title}</li>
         </ol>
       </nav>
@@ -95,10 +106,18 @@ export function JobDetail({ job, slug, pageUrl }: JobDetailProps) {
           <Fact icon={GraduationCap} label="Qualification" value={qualificationSummary(job) || null} />
           <Fact icon={Users} label="Openings" value={String(job.positions_open)} />
           <Fact icon={IndianRupee} label="Salary" value={formatSalary(job.salary)} />
-          <Fact icon={CalendarDays} label="Posted" value={formatDate(job.posted_at)} />
-          <Fact icon={CalendarDays} label="Apply by" value={formatDate(job.closes_at)} />
+          {/* A closing date is shown as HR set it; without one the post is open through the year. */}
+          {job.closes_at ? (
+            <>
+              <Fact icon={CalendarDays} label="Posted" value={formatDate(job.posted_at)} />
+              <Fact icon={CalendarDays} label="Apply by" value={formatDate(job.closes_at)} />
+            </>
+          ) : (
+            <Fact icon={CalendarDays} label="Status" value={ALWAYS_OPEN_LABEL} />
+          )}
           <Fact icon={Hash} label="Job code" value={job.job_code} />
         </dl>
+        {!job.closes_at && <p className="mt-3 text-sm text-muted-foreground">{ALWAYS_OPEN_NOTE}</p>}
       </section>
 
       {/* Restates the posting's own requirements; it never judges the reader. */}
@@ -155,6 +174,14 @@ export function JobDetail({ job, slug, pageUrl }: JobDetailProps) {
           <h2 id="job-about-heading" className="text-xl font-semibold text-foreground">About the institution</h2>
           {aboutSections.map((s, i) => <PlainSection key={i} section={{ ...s, heading: null }} />)}
         </section>
+      )}
+
+      {listPage && (
+        <p className="text-sm">
+          <Link href={listPage.href} className="font-medium text-primary hover:underline">
+            More {listPage.label.toLowerCase()} at JKKN Institutions
+          </Link>
+        </p>
       )}
 
       <ShareJob jobId={job.id} title={title} institution={institution} url={pageUrl} />

@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import type { JobCardData } from '@/lib/services/public-careers-search'
-import { CAMPUS, type Faq } from '@/lib/utils/careers-landing'
+import { CAMPUS, buildDistanceBlock, type Faq } from '@/lib/utils/careers-landing'
 import { CareersUnavailable } from './careers-unavailable'
 import { JobCard } from './job-card'
 
@@ -37,6 +37,8 @@ export interface JobLandingProps {
   tiles?: { title: string; label: string; intro: string; items: LandingTile[] }
   whereTitle: string
   where: ReactNode
+  /** Plural noun of what the page lists, e.g. "teaching jobs"; used by the distance block. */
+  jobsNoun: string
   applyTitle: string
   aboutFacts: ReactNode[]
   faqTitle: string
@@ -105,11 +107,13 @@ export function CampusContact() {
 export function JobLanding(props: JobLandingProps) {
   const { groups, tiles, faqs, asOf } = props
   const listed = groups.reduce((n, g) => n + g.jobs.length, 0)
+  const distance = buildDistanceBlock(props.jobsNoun)
   const jumps: [string, string][] = [
     ['#facts', 'Quick facts'],
     ...(groups.length ? [['#jobs', props.groupsLabel] as [string, string]] : []),
     ...(tiles?.items.length ? [['#more-roles', tiles.label] as [string, string]] : []),
     ['#where', 'Campus location'],
+    ['#distance', 'Distance from towns'],
     ['#apply', 'How to apply'],
     ...(faqs.length ? [['#faq', 'Questions'] as [string, string]] : []),
   ]
@@ -224,6 +228,29 @@ export function JobLanding(props: JobLandingProps) {
           </section>
         </div>
 
+        <Section id="distance" title={distance.title}>
+          <p className="mt-3 max-w-4xl text-foreground/90">{distance.text}</p>
+          <div className="mt-5 max-w-xl overflow-hidden rounded-2xl border border-border bg-card">
+            <table className="w-full text-left text-sm sm:text-base">
+              <caption className="sr-only">Road distance from each town to the JKKN campus in {CAMPUS.locality}</caption>
+              <thead>
+                <tr>
+                  <th scope="col" className="bg-primary/10 px-4 py-3 font-semibold text-foreground">Town</th>
+                  <th scope="col" className="bg-primary/10 px-4 py-3 font-semibold text-foreground">Road distance to the JKKN campus</th>
+                </tr>
+              </thead>
+              <tbody>
+                {distance.rows.map(row => (
+                  <tr key={row.town} className="border-t border-border">
+                    <th scope="row" className="px-4 py-3 font-medium text-foreground">{row.town}</th>
+                    <td className="px-4 py-3 text-foreground/90">{row.km} km</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Section>
+
         <Section id="about" title="About JKKN Institutions as an employer">
           <ul className="mt-3 max-w-4xl list-disc space-y-2 pl-5 text-foreground/90">
             {props.aboutFacts.map((fact, i) => <li key={i}>{fact}</li>)}
@@ -241,7 +268,12 @@ export function JobLanding(props: JobLandingProps) {
             <div className="mt-4 max-w-4xl space-y-2">
               {faqs.map(faq => (
                 <details key={faq.question} className="rounded-xl border border-border bg-card px-4">
-                  <summary className="cursor-pointer py-3 font-semibold text-foreground">{faq.question}</summary>
+                  <summary className="cursor-pointer py-3 font-semibold text-foreground">
+                    {faq.question}
+                    {faq.alsoAsked && (
+                      <span className="mt-1 block text-sm font-normal text-muted-foreground">Also asked: {faq.alsoAsked}</span>
+                    )}
+                  </summary>
                   <p className="pb-4 text-foreground/90">{faq.answer}</p>
                 </details>
               ))}

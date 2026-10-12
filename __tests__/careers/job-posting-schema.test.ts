@@ -60,4 +60,15 @@ describe('buildJobBreadcrumbJsonLd', () => {
       { '@type': 'ListItem', position: 3, name: 'Lab Assistant', item: URL },
     ])
   })
+
+  it('puts the list page the job is on between Careers and the job', () => {
+    const ld = buildJobBreadcrumbJsonLd('Lab Assistant', URL, { href: '/careers/lab-library-jobs', label: 'Lab and Library Jobs' })
+    expect(ld.itemListElement).toEqual([
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://jkkn.ac.in' },
+      { '@type': 'ListItem', position: 2, name: 'Careers', item: 'https://jkkn.ac.in/careers' },
+      { '@type': 'ListItem', position: 3, name: 'Lab and Library Jobs', item: 'https://jkkn.ac.in/careers/lab-library-jobs' },
+      { '@type': 'ListItem', position: 4, name: 'Lab Assistant', item: URL },
+    ])
+    expect(buildJobBreadcrumbJsonLd('Lab Assistant', URL, null).itemListElement).toHaveLength(3)
+  })
 })

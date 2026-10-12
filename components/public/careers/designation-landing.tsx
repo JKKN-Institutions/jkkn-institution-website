@@ -6,6 +6,7 @@ import {
   CAMPUS, buildDesignationFaqs, buildDesignationLanding, buildFaqJsonLd, buildLandingJsonLd, groupedByKind, splitSummary,
   type DesignationKey, type DesignationLanding as Landing, type LandingJob,
 } from '@/lib/utils/careers-landing'
+import { ALWAYS_OPEN_LABEL } from '@/lib/utils/careers-format'
 import { getSiteUrl } from '@/lib/utils/site-url'
 import { CampusContact, JobLanding, employerFacts, otherListPages } from './job-landing'
 
@@ -94,6 +95,7 @@ export async function DesignationLanding({ config }: { config: DesignationConfig
         `${CAMPUS.locality}, ${CAMPUS.district}`,
         `${CAMPUS.nearestCityKm} km from ${CAMPUS.nearestCity}`,
         'Apply online, no account',
+        ...(landing?.alwaysOpen ? [ALWAYS_OPEN_LABEL] : []),
       ]}
       asOf={landing ? asOf : null}
       factsTitle={`${config.noun} jobs at JKKN: quick facts`}
@@ -120,6 +122,7 @@ export async function DesignationLanding({ config }: { config: DesignationConfig
           {CAMPUS.locality}.
         </>
       }
+      jobsNoun={`${lower} jobs`}
       applyTitle={`How do I apply for ${lower} jobs at JKKN?`}
       aboutFacts={employerFacts(`${lower} jobs`)}
       faqTitle={`${config.noun} jobs at JKKN: common questions`}

@@ -7,6 +7,7 @@ import {
   CAMPUS, buildFaqJsonLd, buildLandingJsonLd, buildTeachingFaqs, buildTeachingLanding,
   type LandingJob, type TeachingLanding,
 } from '@/lib/utils/careers-landing'
+import { ALWAYS_OPEN_LABEL } from '@/lib/utils/careers-format'
 import { careersHref } from '@/lib/utils/careers-params'
 import { getSiteUrl } from '@/lib/utils/site-url'
 
@@ -97,6 +98,7 @@ export default async function TeachingJobsPage() {
         `${CAMPUS.locality}, ${CAMPUS.district}`,
         `${CAMPUS.nearestCityKm} km from ${CAMPUS.nearestCity}`,
         'Apply online, no account',
+        ...(landing?.alwaysOpen ? [ALWAYS_OPEN_LABEL] : []),
       ]}
       asOf={landing ? asOf : null}
       factsTitle="Teaching jobs at JKKN: quick facts"
@@ -134,6 +136,7 @@ export default async function TeachingJobsPage() {
           teaching roles on this page are based at {CAMPUS.locality}.
         </>
       }
+      jobsNoun="teaching jobs"
       applyTitle="How do I apply for a teaching job at JKKN?"
       aboutFacts={employerFacts('teaching jobs')}
       faqTitle="Teaching jobs at JKKN: common questions"

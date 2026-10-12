@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import {
-  buildDesignationFaqs, buildDesignationLanding, buildFaqJsonLd, buildLandingJsonLd, buildNonTeachingFaqs,
-  buildNonTeachingLanding, buildTeachingFaqs, buildTeachingLanding, groupNote, isLabOrLibrary, isLeadership,
-  nonTeachingBucket,
+  TOWN_DISTANCES, buildDesignationFaqs, buildDesignationLanding, buildDistanceBlock, buildFaqJsonLd, buildLandingJsonLd,
+  buildNonTeachingFaqs, buildNonTeachingLanding, buildTeachingFaqs, buildTeachingLanding, groupNote, isLabOrLibrary, isLeadership,
+  listPageFor, nonTeachingBucket,
   onDesignationPage, splitSummary, teachingBucket,
   type LandingJob,
 } from '@/lib/utils/careers-landing'
@@ -82,19 +82,20 @@ describe('careers-landing', () => {
   it('answers with live counts and never mentions salary, hours or benefits', () => {
     const landing = buildTeachingLanding(board)
     const faqs = buildTeachingFaqs(landing, '6 October 2026')
-    expect(faqs).toHaveLength(7)
+    expect(faqs).toHaveLength(8)
     expect(faqs[0].answer).toContain('8 teaching openings')
     expect(faqs[1].answer).toContain('4 are school teacher, trainer and physical education roles, and 4 are college faculty roles')
     expect(faqs[2].answer).toContain('B.A / B.Ed; B.Sc / B.Ed')
     expect(faqs[3].answer).toContain('1 current listing states that freshers are welcome')
-    expect(faqs[6].answer).toContain('do not show a closing date')
+    expect(faqs[6].answer).toContain('58 km from Salem')
+    expect(faqs[7].answer).toContain('there is no last date')
     const text = faqs.map(f => f.answer).join(' ').toLowerCase()
     for (const word of ['salary', 'working hours', 'pf', 'hostel']) expect(text).not.toContain(word)
   })
 
-  it('stops saying there is no closing date once a listed job has one', () => {
+  it('stops saying there is no last date once a listed job has a closing date', () => {
     const landing = buildTeachingLanding([job('Primary Teacher', { closesAt: '2026-12-31T00:00:00Z' })])
-    expect(buildTeachingFaqs(landing, '6 October 2026')[6].answer).toContain('Some listings show a closing date')
+    expect(buildTeachingFaqs(landing, '6 October 2026')[7].answer).toContain('Some listings show a closing date')
   })
 
   it('sorts non-teaching roles into four groups and keeps other pages\' roles out', () => {
@@ -154,7 +155,7 @@ describe('careers-landing', () => {
     ])
     expect(landing.total).toBe(4)
     const faqs = buildNonTeachingFaqs(landing, '7 October 2026')
-    expect(faqs).toHaveLength(7)
+    expect(faqs).toHaveLength(8)
     expect(faqs[0].answer).toContain('4 non-teaching openings')
     expect(faqs[1].answer).toContain('2 in office and administration, 1 in hospital and clinical support and 1 in hostel, stores and campus')
     expect(faqs[2].answer).toContain('Any degree; M.Com / B.Com')
@@ -203,7 +204,7 @@ describe('careers-landing', () => {
     expect(lab.groups.map(g => [g.key, g.jobs.length]).sort()).toEqual([['lab', 1], ['library', 1]])
 
     const faqs = buildDesignationFaqs('assistant-professor', ap, '7 October 2026', 'Assistant Professor')
-    expect(faqs).toHaveLength(7)
+    expect(faqs).toHaveLength(8)
     expect(faqs[0].question).toBe('Are there assistant professor jobs near Erode and Namakkal?')
     expect(faqs[0].answer).toContain('4 assistant professor openings')
     expect(faqs[2].answer).toContain('M.Pharm; Ph.D')
@@ -294,5 +295,87 @@ describe('careers-landing', () => {
     expect(buildFaqJsonLd([{ question: 'Q', answer: 'A' }])).toMatchObject({
       '@type': 'FAQPage', mainEntity: [{ '@type': 'Question', name: 'Q', acceptedAnswer: { '@type': 'Answer', text: 'A' } }],
     })
+  })
+
+  it('says how far the campus is from each town, with the site-wide figures, and claims no job there', () => {
+    const block = buildDistanceBlock('teaching jobs')
+    expect(block.title).toBe('How far is JKKN from Erode, Salem, Namakkal town, Karur and Coimbatore?')
+    expect(block.text).toContain('18 km from Erode, 58 km from Salem, 62 km from Namakkal town, 84 km from Karur and 114 km from Coimbatore')
+    expect(block.text).toContain('All teaching jobs on this page are based at this one campus; none of them is located in Erode, Salem, Namakkal town, Karur or Coimbatore.')
+    expect(block.rows).toEqual(TOWN_DISTANCES)
+    expect(TOWN_DISTANCES.map(d => d.km)).toEqual([...TOWN_DISTANCES.map(d => d.km)].sort((a, b) => a - b))
+    for (const phrase of ['jobs in Salem', 'jobs in Karur', 'jobs in Coimbatore']) expect(block.text).not.toContain(phrase)
+  })
+
+  it('answers the distance and last-date questions on every list page, in 40 to 55 words', () => {
+    const pages = [
+      buildTeachingFaqs(buildTeachingLanding(board), '12 October 2026'),
+      buildNonTeachingFaqs(buildNonTeachingLanding([job('Accountant', { roleCategory: 'non_teaching' })]), '12 October 2026'),
+      buildDesignationFaqs('tutor', buildDesignationLanding('tutor', [job('Tutor')], 'Tutor'), '12 October 2026', 'Tutor'),
+    ]
+    for (const faqs of pages) {
+      expect(faqs).toHaveLength(8)
+      const [distance, lastDate] = faqs.slice(6)
+      expect(distance.question).toBe('How far is JKKN from Salem, Karur and Coimbatore?')
+      expect(distance.answer).toContain('58 km from Salem, 84 km from Karur and 114 km from Coimbatore. Erode is the nearest city, 18 km away.')
+      expect(lastDate.answer).toContain('throughout the year, so there is no last date. Every job listed on this page is open now.')
+      for (const faq of [distance, lastDate]) {
+        const words = faq.answer.split(/\s+/).length
+        expect(words, faq.question).toBeGreaterThanOrEqual(40)
+        expect(words, faq.question).toBeLessThanOrEqual(55)
+        expect(faq.alsoAsked).toBeTruthy()
+      }
+    }
+    expect(pages[0][7].alsoAsked).toBe('JKKN teaching job ku last date iruka?')
+    // The spoken form is shown on the page only; the FAQPage markup keeps question and answer.
+    expect(JSON.stringify(buildFaqJsonLd(pages[0]))).not.toContain('iruka')
+  })
+
+  it('calls a page always open only while no job on it has a closing date', () => {
+    expect(buildTeachingLanding(board).alwaysOpen).toBe(true)
+    // A faculty post is counted on the teaching page, so its closing date counts too.
+    expect(buildTeachingLanding([...board, job('Tutor', { closesAt: '2026-12-31T00:00:00Z' })]).alwaysOpen).toBe(false)
+    expect(buildNonTeachingLanding([job('Accountant', { roleCategory: 'non_teaching', closesAt: '2026-12-31T00:00:00Z' })]).alwaysOpen).toBe(false)
+    const closing = buildDesignationLanding('tutor', [job('Tutor', { closesAt: '2026-12-31T00:00:00Z' })], 'Tutor')
+    expect(closing.alwaysOpen).toBe(false)
+    expect(buildDesignationFaqs('tutor', closing, '12 October 2026', 'Tutor')[7].answer).toContain('Some listings show a closing date')
+  })
+
+  it('sends a job page back to the one list page that lists the job', () => {
+    const page = (title: string, roleCategory = 'teaching_faculty') => listPageFor(job(title, { roleCategory }))?.href ?? null
+    expect(page('Assistant Professor - Physics')).toBe('/careers/assistant-professor-jobs')
+    expect(page('Associate Prfessor')).toBe('/careers/professor-jobs')
+    expect(page('Senior Lecturer')).toBe('/careers/lecturer-jobs')
+    expect(page('Nursing Tutor')).toBe('/careers/tutor-jobs')
+    expect(page('Kg Teacher')).toBe('/careers/teaching-jobs')
+    expect(page('Aptitude Trainer')).toBe('/careers/teaching-jobs')
+    expect(page('Lab Assistant', 'non_teaching')).toBe('/careers/lab-library-jobs')
+    expect(page('Senior Librarian', 'non_teaching')).toBe('/careers/lab-library-jobs')
+    expect(page('Vice Principal')).toBe('/careers/principal-leadership-jobs')
+    expect(page('Chief Executive Officer', 'senior_leadership')).toBe('/careers/principal-leadership-jobs')
+    expect(page('Accountant', 'non_teaching')).toBe('/careers/non-teaching-jobs')
+    expect(listPageFor(job('Assistant Professor'))).toEqual({ href: '/careers/assistant-professor-jobs', label: 'Assistant Professor Jobs' })
+
+    // The link must agree with the pages' own membership rules for every kind of job.
+    const designation: Record<string, 'assistant-professor' | 'professor' | 'lecturer' | 'tutor' | 'lab-library' | 'leadership'> = {
+      '/careers/assistant-professor-jobs': 'assistant-professor', '/careers/professor-jobs': 'professor',
+      '/careers/lecturer-jobs': 'lecturer', '/careers/tutor-jobs': 'tutor',
+      '/careers/lab-library-jobs': 'lab-library', '/careers/principal-leadership-jobs': 'leadership',
+    }
+    const titles = ['Assistant Professor', 'Professor', 'Associate Professor', 'Reader', 'Tutor', 'Lab Assistant', 'Librarian',
+      'Accountant', 'Primary Teacher', 'Vice Principal', 'Principal', 'Chief Executive Officer', 'Aptitude Trainer']
+    for (const roleCategory of ['teaching_faculty', 'non_teaching', 'medical', 'senior_leadership']) {
+      for (const title of titles) {
+        const j = job(title, { roleCategory })
+        const href = listPageFor(j)?.href ?? null
+        const bucket = teachingBucket(j)
+        const onTeaching = bucket === 'primary' || bucket === 'high-school' || bucket === 'higher-secondary' || bucket === 'trainers'
+        const listedSomewhere = onTeaching || Boolean(nonTeachingBucket(j)) || Object.values(designation).some(k => onDesignationPage(k, j))
+        expect(href !== null, `${title} / ${roleCategory}`).toBe(listedSomewhere)
+        if (href === '/careers/teaching-jobs') expect(onTeaching, title).toBe(true)
+        else if (href === '/careers/non-teaching-jobs') expect(nonTeachingBucket(j), title).not.toBeNull()
+        else if (href) expect(onDesignationPage(designation[href], j), `${title} / ${roleCategory}`).toBe(true)
+      }
+    }
   })
 })

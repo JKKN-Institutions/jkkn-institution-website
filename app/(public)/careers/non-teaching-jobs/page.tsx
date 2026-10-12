@@ -7,6 +7,7 @@ import {
   CAMPUS, buildFaqJsonLd, buildLandingJsonLd, buildNonTeachingFaqs, buildNonTeachingLanding,
   type LandingJob, type NonTeachingLanding,
 } from '@/lib/utils/careers-landing'
+import { ALWAYS_OPEN_LABEL } from '@/lib/utils/careers-format'
 import { getSiteUrl } from '@/lib/utils/site-url'
 
 // A list page for people searching office, technical, hospital-support and
@@ -85,6 +86,7 @@ export default async function NonTeachingJobsPage() {
         `${CAMPUS.locality}, ${CAMPUS.district}`,
         `${CAMPUS.nearestCityKm} km from ${CAMPUS.nearestCity}`,
         'Apply online, no account',
+        ...(landing?.alwaysOpen ? [ALWAYS_OPEN_LABEL] : []),
       ]}
       asOf={landing ? asOf : null}
       factsTitle="Non-teaching jobs at JKKN: quick facts"
@@ -114,6 +116,7 @@ export default async function NonTeachingJobsPage() {
           based at {CAMPUS.locality}.
         </>
       }
+      jobsNoun="non-teaching jobs"
       applyTitle="How do I apply for a non-teaching job at JKKN?"
       aboutFacts={employerFacts('non-teaching jobs')}
       faqTitle="Non-teaching jobs at JKKN: common questions"

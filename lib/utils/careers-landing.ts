@@ -6,6 +6,8 @@
 // moves on and off the page with no edit here. Nothing in the copy states a
 // salary, working hours or benefit — the feed does not carry them.
 
+import { INSTITUTIONAL_DATA } from '@/lib/constants/institutional-data'
+
 /** The campus, as published in the site-wide organisation markup and llms.txt. */
 export const CAMPUS = {
   name: 'JKKN Institutions',
@@ -90,6 +92,8 @@ export interface TeachingLanding<T> {
   listed: T[]
   facultyTotal: number
   total: number
+  /** No teaching job, school or faculty, carries a closing date. */
+  alwaysOpen: boolean
 }
 
 const unique = (values: string[]) => [...new Set(values.filter(Boolean))]
@@ -122,10 +126,70 @@ export function buildTeachingLanding<T extends LandingJob>(jobs: T[]): TeachingL
   const faculty = FACULTY.map(f => ({ ...f, count: buckets.get(f.key)?.length ?? 0 })).filter(f => f.count > 0)
   const listed = groups.flatMap(g => g.jobs)
   const facultyTotal = faculty.reduce((sum, f) => sum + f.count, 0)
-  return { groups, faculty, listed, facultyTotal, total: listed.length + facultyTotal }
+  const alwaysOpen = [...buckets.values()].every(list => list.every(j => !j.closesAt))
+  return { groups, faculty, listed, facultyTotal, total: listed.length + facultyTotal, alwaysOpen }
 }
 
-export interface Faq { question: string; answer: string }
+export interface Faq {
+  question: string
+  answer: string
+  /** The way the question is spoken locally. Shown under it on the page, never in the FAQPage markup. */
+  alsoAsked?: string
+}
+
+const joinList = (items: string[]) =>
+  items.length <= 1 ? items.join('') : `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`
+
+// ── Distance from the towns people search from ──────────────────────────────
+// The figures are the site-wide ones, so a list page can never disagree with
+// /contact or /about. Every job is at the one campus; this block says how far
+// that is, it does not claim a job in any of these towns.
+
+const ROAD_KM = INSTITUTIONAL_DATA.distancesByRoadKm
+
+/** Nearest first. */
+export const TOWN_DISTANCES: { town: string; km: number }[] = [
+  { town: 'Erode', km: ROAD_KM.erode },
+  { town: 'Salem', km: ROAD_KM.salem },
+  { town: 'Namakkal town', km: ROAD_KM.namakkal },
+  { town: 'Karur', km: ROAD_KM.karur },
+  { town: 'Coimbatore', km: ROAD_KM.coimbatore },
+]
+
+export interface DistanceBlock { title: string; text: string; rows: { town: string; km: number }[] }
+
+/** `jobsNoun` is plural, e.g. "teaching jobs". */
+export function buildDistanceBlock(jobsNoun: string): DistanceBlock {
+  const towns = TOWN_DISTANCES.map(d => d.town)
+  return {
+    title: `How far is JKKN from ${joinList(towns)}?`,
+    text: `${CAMPUS.name} is in ${CAMPUS.locality}, ${CAMPUS.district}, ${CAMPUS.region}, on NH-544 (the Salem to Coimbatore National Highway). By road the campus is ${joinList(TOWN_DISTANCES.map(d => `${d.km} km from ${d.town}`))}. All ${jobsNoun} on this page are based at this one campus; none of them is located in ${towns.slice(0, -1).join(', ')} or ${towns[towns.length - 1]}.`,
+    rows: TOWN_DISTANCES,
+  }
+}
+
+function distanceFaq(jobsNoun: string): Faq {
+  return {
+    question: 'How far is JKKN from Salem, Karur and Coimbatore?',
+    alsoAsked: 'Salem, Karur, Coimbatore la irundhu JKKN evlo dhooram?',
+    answer: `JKKN Institutions is in ${CAMPUS.locality}, ${CAMPUS.district}, on NH-544. By road the campus is ${ROAD_KM.salem} km from Salem, ${ROAD_KM.karur} km from Karur and ${ROAD_KM.coimbatore} km from Coimbatore. ${CAMPUS.nearestCity} is the nearest city, ${CAMPUS.nearestCityKm} km away. All ${jobsNoun} listed on this page are based at the ${CAMPUS.locality} campus.`,
+  }
+}
+
+/**
+ * `postsNoun` reads in front of "posts" and "job", e.g. "teaching". With no
+ * closing date on any listing the answer is the plain one: JKKN hires for
+ * these posts through the year.
+ */
+function lastDateFaq(question: string, postsNoun: string, closing: boolean): Faq {
+  return {
+    question,
+    alsoAsked: `JKKN ${postsNoun} job ku last date iruka?`,
+    answer: closing
+      ? 'Some listings show a closing date on the job page and others do not. Open the role you want and check the job page before you apply, and mention the job title exactly as it is listed.'
+      : `No. JKKN Institutions hires for these ${postsNoun} posts throughout the year, so there is no last date. Every job listed on this page is open now. Apply through the online form on the job page and mention the job title exactly as it is listed.`,
+  }
+}
 
 /**
  * The visible question-and-answer block, also emitted as FAQPage markup.
@@ -137,7 +201,6 @@ export function buildTeachingFaqs<T extends LandingJob>(landing: TeachingLanding
   const where = `${CAMPUS.locality}, ${CAMPUS.district}`
   const quals = unique(listed.map(j => j.qualification)).sort().slice(0, 6)
   const freshers = listed.filter(j => j.experience === 'Freshers welcome').length
-  const closing = listed.some(j => j.closesAt)
 
   return [
     {
@@ -164,12 +227,8 @@ export function buildTeachingFaqs<T extends LandingJob>(landing: TeachingLanding
       question: 'Where is JKKN Institutions, and how far is it from Erode?',
       answer: `JKKN Institutions is at Natarajapuram on NH-544, the Salem to Coimbatore National Highway, in ${where}, ${CAMPUS.region} ${CAMPUS.postalCode}. The campus is ${CAMPUS.nearestCityKm} km by road from ${CAMPUS.nearestCity} city. Every teaching role listed on this page is based at this one ${CAMPUS.locality} campus.`,
     },
-    {
-      question: 'Is there a last date to apply for JKKN teaching jobs?',
-      answer: closing
-        ? 'Some listings show a closing date on the job page and others do not. Open the role you want and check the job page before you apply, and mention the job title exactly as it is listed.'
-        : 'The job listings on the JKKN careers page do not show a closing date. Each listing shows the institution, the qualification and the number of openings. If a role matters to you, apply through the online form and mention the job title exactly as it is listed.',
-    },
+    distanceFaq('teaching jobs'),
+    lastDateFaq('Is there a last date to apply for JKKN teaching jobs?', 'teaching', !landing.alwaysOpen),
   ]
 }
 
@@ -204,7 +263,13 @@ export function nonTeachingBucket(job: Pick<LandingJob, 'title' | 'roleCategory'
 }
 
 export interface NonTeachingGroup<T> { key: NonTeachingKey; heading: string; label: string; jobs: T[]; note: string }
-export interface NonTeachingLanding<T> { groups: NonTeachingGroup<T>[]; listed: T[]; total: number }
+export interface NonTeachingLanding<T> {
+  groups: NonTeachingGroup<T>[]
+  listed: T[]
+  total: number
+  /** No listed job carries a closing date. */
+  alwaysOpen: boolean
+}
 
 export function buildNonTeachingLanding<T extends LandingJob>(jobs: T[]): NonTeachingLanding<T> {
   const buckets = new Map<NonTeachingKey, T[]>()
@@ -219,11 +284,8 @@ export function buildNonTeachingLanding<T extends LandingJob>(jobs: T[]): NonTea
     })
     .filter(g => g.jobs.length > 0)
   const listed = groups.flatMap(g => g.jobs)
-  return { groups, listed, total: listed.length }
+  return { groups, listed, total: listed.length, alwaysOpen: listed.every(j => !j.closesAt) }
 }
-
-const joinList = (items: string[]) =>
-  items.length <= 1 ? items.join('') : `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`
 
 /** Question-and-answer block for the non-teaching page; same rules as the teaching one. */
 export function buildNonTeachingFaqs<T extends LandingJob>(landing: NonTeachingLanding<T>, asOf: string): Faq[] {
@@ -232,7 +294,6 @@ export function buildNonTeachingFaqs<T extends LandingJob>(landing: NonTeachingL
   const openings = plural(total, 'non-teaching opening', 'non-teaching openings')
   const quals = unique(listed.map(j => j.qualification)).sort().slice(0, 6)
   const freshers = listed.filter(j => j.experience === 'Freshers welcome').length
-  const closing = listed.some(j => j.closesAt)
   const split = joinList(groups.map(g => `${g.jobs.length} in ${g.label}`))
 
   return [
@@ -260,12 +321,8 @@ export function buildNonTeachingFaqs<T extends LandingJob>(landing: NonTeachingL
       question: 'Where is JKKN Institutions, and how far is it from Erode?',
       answer: `JKKN Institutions is at Natarajapuram on NH-544, the Salem to Coimbatore National Highway, in ${where}, ${CAMPUS.region} ${CAMPUS.postalCode}. The campus is ${CAMPUS.nearestCityKm} km by road from ${CAMPUS.nearestCity} city. Every non-teaching role listed on this page is based at this one ${CAMPUS.locality} campus.`,
     },
-    {
-      question: 'Is there a last date to apply for JKKN non-teaching jobs?',
-      answer: closing
-        ? 'Some listings show a closing date on the job page and others do not. Open the role you want and check the job page before you apply, and mention the job title exactly as it is listed.'
-        : 'The job listings on the JKKN careers page do not show a closing date. Each listing shows the institution, the qualification and the number of openings. If a role matters to you, apply through the online form and mention the job title exactly as it is listed.',
-    },
+    distanceFaq('non-teaching jobs'),
+    lastDateFaq('Is there a last date to apply for JKKN non-teaching jobs?', 'non-teaching', !landing.alwaysOpen),
   ]
 }
 
@@ -303,7 +360,13 @@ export function onDesignationPage(key: DesignationKey, job: Pick<LandingJob, 'ti
 }
 
 export interface DesignationGroup<T> { key: string; heading: string; label: string; jobs: T[]; note: string }
-export interface DesignationLanding<T> { groups: DesignationGroup<T>[]; listed: T[]; total: number }
+export interface DesignationLanding<T> {
+  groups: DesignationGroup<T>[]
+  listed: T[]
+  total: number
+  /** No listed job carries a closing date. */
+  alwaysOpen: boolean
+}
 
 const slug = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 
@@ -339,7 +402,7 @@ export function buildDesignationLanding<T extends LandingJob>(key: DesignationKe
     })
     .sort((a, b) => b.jobs.length - a.jobs.length || a.label.localeCompare(b.label))
   const listed = groups.flatMap(g => g.jobs)
-  return { groups, listed, total: listed.length }
+  return { groups, listed, total: listed.length, alwaysOpen: listed.every(j => !j.closesAt) }
 }
 
 /** "16 at A, 14 at B and 14 at C" - the three largest groups, then a count of the rest. */
@@ -360,7 +423,6 @@ export function buildDesignationFaqs<T extends LandingJob>(
   const openings = plural(total, `${lower} opening`, `${lower} openings`)
   const quals = unique(listed.map(j => j.qualification)).sort().slice(0, 6)
   const freshers = listed.filter(j => j.experience === 'Freshers welcome').length
-  const closing = listed.some(j => j.closesAt)
   const split = splitSummary(groups, groupedByKind(key) ? 'in' : 'at')
 
   return [
@@ -388,13 +450,32 @@ export function buildDesignationFaqs<T extends LandingJob>(
       question: 'Where is JKKN Institutions, and how far is it from Erode?',
       answer: `JKKN Institutions is at Natarajapuram on NH-544, the Salem to Coimbatore National Highway, in ${where}, ${CAMPUS.region} ${CAMPUS.postalCode}. The campus is ${CAMPUS.nearestCityKm} km by road from ${CAMPUS.nearestCity} city. Every role listed on this page is based at this one ${CAMPUS.locality} campus.`,
     },
-    {
-      question: `Is there a last date to apply for ${lower} jobs at JKKN?`,
-      answer: closing
-        ? 'Some listings show a closing date on the job page and others do not. Open the role you want and check the job page before you apply, and mention the job title exactly as it is listed.'
-        : 'The job listings on the JKKN careers page do not show a closing date. Each listing shows the institution, the qualification and the number of openings. If a role matters to you, apply through the online form and mention the job title exactly as it is listed.',
-    },
+    distanceFaq(`${lower} jobs`),
+    lastDateFaq(`Is there a last date to apply for ${lower} jobs at JKKN?`, lower, !landing.alwaysOpen),
   ]
+}
+
+// ── Which list page a job is on ─────────────────────────────────────────────
+// A job page links back to the list it appears on. The order mirrors the
+// pages' own rules, so the link always lands on a page that lists the job.
+
+export interface ListPageRef { href: string; label: string }
+
+const FACULTY_LIST_PAGES: Record<FacultyKey, ListPageRef> = {
+  'assistant-professor': { href: '/careers/assistant-professor-jobs', label: 'Assistant Professor Jobs' },
+  professor: { href: '/careers/professor-jobs', label: 'Professor Jobs' },
+  lecturer: { href: '/careers/lecturer-jobs', label: 'Lecturer Jobs' },
+  tutor: { href: '/careers/tutor-jobs', label: 'Tutor Jobs' },
+}
+const isFacultyKey = (key: TeachingBucket): key is FacultyKey => key in FACULTY_LIST_PAGES
+
+export function listPageFor(job: Pick<LandingJob, 'title' | 'roleCategory'>): ListPageRef | null {
+  if (isLeadership(job)) return { href: '/careers/principal-leadership-jobs', label: 'Principal and Leadership Jobs' }
+  const bucket = teachingBucket(job)
+  if (bucket) return isFacultyKey(bucket) ? FACULTY_LIST_PAGES[bucket] : { href: '/careers/teaching-jobs', label: 'Teaching Jobs' }
+  if (isLabOrLibrary(job)) return { href: '/careers/lab-library-jobs', label: 'Lab and Library Jobs' }
+  if (nonTeachingBucket(job)) return { href: '/careers/non-teaching-jobs', label: 'Non-Teaching Jobs' }
+  return null
 }
 
 // ── Structured data ─────────────────────────────────────────────────────────
