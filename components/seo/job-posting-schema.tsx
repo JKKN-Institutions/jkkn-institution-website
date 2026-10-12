@@ -8,6 +8,7 @@
 import type { PublicJob } from '@/lib/schemas/public-careers'
 import { canonicalCity } from '@/lib/utils/careers-facets'
 import { looksLikeHtml, sanitizeJobHtml } from '@/lib/utils/careers-html'
+import type { ListPageRef } from '@/lib/utils/careers-landing'
 import { formatJobTitle } from '@/lib/utils/careers-text'
 
 const EMPLOYMENT_TYPE: Record<string, string> = {
@@ -95,22 +96,28 @@ export function buildJobPostingJsonLd(job: PublicJob, pageUrl: string): Record<s
   return ld
 }
 
-export function buildJobBreadcrumbJsonLd(title: string, pageUrl: string): Record<string, unknown> {
+/** Mirrors the visible trail: Home, Careers, the list page the job is on (when there is one), the job. */
+export function buildJobBreadcrumbJsonLd(title: string, pageUrl: string, listPage?: ListPageRef | null): Record<string, unknown> {
   const origin = new URL(pageUrl).origin
-  const crumb = (position: number, name: string, item: string) => ({ '@type': 'ListItem', position, name, item })
+  const trail: [string, string][] = [
+    ['Home', origin],
+    ['Careers', `${origin}/careers`],
+    ...(listPage ? [[listPage.label, `${origin}${listPage.href}`] as [string, string]] : []),
+    [title, pageUrl],
+  ]
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: [crumb(1, 'Home', origin), crumb(2, 'Careers', `${origin}/careers`), crumb(3, title, pageUrl)],
+    itemListElement: trail.map(([name, item], i) => ({ '@type': 'ListItem', position: i + 1, name, item })),
   }
 }
 
 // `<` is escaped so a description containing "</script>" cannot close the tag.
 const toScript = (data: unknown) => JSON.stringify(data).replace(/</g, '\\u003c')
 
-export function JobPostingSchema({ job, pageUrl }: { job: PublicJob; pageUrl: string }) {
+export function JobPostingSchema({ job, pageUrl, listPage }: { job: PublicJob; pageUrl: string; listPage?: ListPageRef | null }) {
   const posting = buildJobPostingJsonLd(job, pageUrl)
-  const breadcrumb = buildJobBreadcrumbJsonLd(formatJobTitle(job.title), pageUrl)
+  const breadcrumb = buildJobBreadcrumbJsonLd(formatJobTitle(job.title), pageUrl, listPage)
   return (
     <>
       {posting && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toScript(posting) }} />}

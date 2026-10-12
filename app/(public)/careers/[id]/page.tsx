@@ -6,12 +6,14 @@ import { StickyApply } from '@/components/public/careers/apply-cta'
 import { JobViewTracker } from '@/components/public/careers/careers-trackers'
 import { JobDetail, RelatedJobs } from '@/components/public/careers/job-detail'
 import { JobPostingSchema } from '@/components/seo/job-posting-schema'
+import { isMainInstitution } from '@/lib/config/multi-tenant'
 import type { PublicJob } from '@/lib/schemas/public-careers'
 import { getMyJkknBaseUrl, getPublicJob, isUuid } from '@/lib/services/public-careers-api'
 import {
   findJobInSite, getSiteCareers, relatedJobCards, type JobCardData,
 } from '@/lib/services/public-careers-search'
 import { APPLY_SECTION_ID } from '@/lib/utils/careers-format'
+import { listPageFor } from '@/lib/utils/careers-landing'
 import { buildJobSeo } from '@/lib/utils/careers-seo'
 import { jobSlug } from '@/lib/utils/careers-slug'
 import { formatJobTitle } from '@/lib/utils/careers-text'
@@ -91,16 +93,20 @@ export default async function JobPage({ params }: JobPageProps) {
   if (slug !== segment) permanentRedirect(`/careers/${slug}`)
 
   const pageUrl = `${getSiteUrl()}/careers/${slug}`
+  // The list pages exist on the parent site only; a college site links to none.
+  const listPage = isMainInstitution()
+    ? listPageFor({ title: formatJobTitle(job.title), roleCategory: job.role_category })
+    : null
 
   return (
     // data-sticky-root: lets the form column stick (see app/(public)/layout.tsx).
     <div data-sticky-root className="min-h-screen bg-background">
-      <JobPostingSchema job={job} pageUrl={pageUrl} />
+      <JobPostingSchema job={job} pageUrl={pageUrl} listPage={listPage} />
       <JobViewTracker jobId={job.id} title={formatJobTitle(job.title)} institution={job.institution?.name ?? ''} />
 
       {/* Mobile order: job → form → similar jobs. From lg the form is a sticky second column. */}
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-8 sm:px-6 sm:py-12 lg:grid-cols-[minmax(0,1fr)_420px]">
-        <JobDetail job={job} slug={slug} pageUrl={pageUrl} />
+        <JobDetail job={job} slug={slug} pageUrl={pageUrl} listPage={listPage} />
         <aside
           id={APPLY_SECTION_ID}
           aria-label="Apply for this job"

@@ -59,12 +59,14 @@ export const INSTITUTIONAL_DATA = {
    * via OSRM / OpenStreetMap driving routes. The figures published before this
    * date (Salem 45 km, Coimbatore 70 km, Namakkal 40 km) were SHORTER than the
    * straight-line distance and were therefore impossible.
+   * Karur: to Karur Bus Stand, same method, measured 2026-10-12 (84.0 km).
    */
   distancesByRoadKm: {
     erode: 18,
     salem: 58,
     coimbatore: 114,
     namakkal: 62,
+    karur: 84,
     coimbatoreAirport: 101,
     tiruppur: 64,
   },
