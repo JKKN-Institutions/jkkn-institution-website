@@ -86,8 +86,8 @@ If the deployment has no `ANTHROPIC_API_KEY`, the panel opens directly in `manua
 browser: ApplyForm (mode: choose | upload | manual)
    │  File ─▶ Server Action extractResumeFields(formData)       app/actions/careers/resume-autofill.ts
    │            1. ANTHROPIC_API_KEY set?            no  → { ok:false, reason:'unavailable' }
-   │            2. IP under 10/hour?                 no  → 'rate_limited'
-   │            3. file present, ≤ 2 MB?             no  → 'too_large'
+   │            2. file present, ≤ 2 MB?             empty → 'unsupported_type', too big → 'too_large'
+   │            3. IP under 10/hour?                 no  → 'rate_limited'   (checked after 2, so a bad file costs no slot)
    │            4. kind by magic bytes: PDF | DOCX | other → 'unsupported_type'
    │            5. readResume(kind, bytes)           lib/services/resume-autofill.ts (server-only)
    │                 PDF  → document block (base64)
@@ -184,7 +184,7 @@ An `ok: true` result with zero filled fields is shown as `unreadable`.
 
 - The notice in §3.1 is shown at the point of upload, before anything is sent. Its wording must be confirmed by whoever owns JKKN's privacy text before release.
 - The resume is sent to the Anthropic API only to extract the fields; this site stores neither the file nor the extracted values. The consent checkbox is unchanged and still governs the submission to MyJKKN.
-- Server logs contain the outcome, latency and number of fields only, never names, contact details or resume text.
+- Server logs contain the outcome, latency and number of fields only, never names, contact details or resume text. (`next.config.ts` strips `console` calls from production builds, so these lines appear in development only; the GA event in §8 is the production signal.)
 
 ## 8. Analytics (GA4, `lib/analytics/careers-events.ts`)
 
