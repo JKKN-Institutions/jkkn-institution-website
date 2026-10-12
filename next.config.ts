@@ -40,6 +40,11 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
+  // mammoth (DOCX → text for resume auto-fill) is loaded by Node at runtime
+  // instead of being bundled — the jsdom lesson: server deps that work under
+  // `next dev` can break the production bundle.
+  serverExternalPackages: ['mammoth'],
+
   // Server Actions configuration (under experimental in Next.js 16)
   experimental: {
     serverActions: {

@@ -1,0 +1,96 @@
+import Anthropic from '@anthropic-ai/sdk'
+import { describe, expect, it, vi } from 'vitest'
+import type { ResumeExtraction } from '@/lib/schemas/resume-extraction'
+import { RESUME_MODEL, readResume } from '@/lib/services/resume-autofill'
+
+const PDF = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x37])
+const DOCX = new Uint8Array([0x50, 0x4b, 0x03, 0x04, 0x14, 0x00])
+const DOC = new Uint8Array([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1])
+const NOW = () => new Date('2026-10-12T04:00:00Z')
+
+const EXTRACTION: ResumeExtraction = {
+  first_name: 'Priya', last_name: 'R', email: 'priya@example.com', phone: '9876543210',
+  highest_qualification: 'M.Pharm', total_experience_months: 24, current_job_title: null,
+  current_company: null, current_job_duration_months: null, worked_cities: [],
+}
+
+type ParseParams = {
+  model: string
+  fallbacks: unknown
+  betas: string[]
+  output_config: { effort: string }
+  messages: Array<{ role: string; content: Array<Record<string, unknown>> }>
+}
+type ParseOptions = { signal?: AbortSignal }
+
+function fakeClient(impl: () => unknown) {
+  const parse = vi.fn(async (_params: ParseParams, _options: ParseOptions) => impl())
+  return { client: { beta: { messages: { parse } } } as unknown as Anthropic, parse }
+}
+const reply = (parsed: ResumeExtraction | null, stop_reason = 'end_turn') => ({ parsed_output: parsed, stop_reason })
+
+describe('readResume', () => {
+  it('sends a PDF as a document block, with today\'s date and the agreed settings', async () => {
+    const { client, parse } = fakeClient(() => reply(EXTRACTION))
+    const result = await readResume(PDF, { client, now: NOW })
+
+    expect(result).toEqual({
+      ok: true,
+      values: {
+        first_name: 'Priya', last_name: 'R', email: 'priya@example.com', phone: '9876543210',
+        qualification: 'M.Pharm', experience_months: '24',
+      },
+      filled: ['first_name', 'last_name', 'email', 'phone', 'qualification', 'experience_months'],
+    })
+    const [params, options] = parse.mock.calls[0]
+    expect(params.model).toBe(RESUME_MODEL)
+    expect(RESUME_MODEL).toBe('claude-opus-5-5')
+    expect(params.output_config.effort).toBe('low')
+    expect(params.fallbacks).toBe('default')
+    expect(params.betas).toEqual(['server-side-fallback-2026-07-01'])
+    expect(params.messages[0].content[0]).toEqual({
+      type: 'document',
+      source: { type: 'base64', media_type: 'application/pdf', data: Buffer.from(PDF).toString('base64') },
+    })
+    expect(params.messages[0].content[1].text).toContain('2026-10-12')
+    expect(options.signal).toBeInstanceOf(AbortSignal)
+  })
+
+  it('sends DOCX as text', async () => {
+    const { client, parse } = fakeClient(() => reply(EXTRACTION))
+    await readResume(DOCX, { client, now: NOW, docxToText: async () => 'Priya R\npriya@example.com' })
+    const text = parse.mock.calls[0][0].messages[0].content[0]
+    expect(text.type).toBe('text')
+    expect(String(text.text)).toContain('priya@example.com')
+  })
+
+  it('does not call Claude for .doc, empty DOCX text or a DOCX that will not open', async () => {
+    const { client, parse } = fakeClient(() => reply(EXTRACTION))
+    expect(await readResume(DOC, { client })).toEqual({ ok: false, reason: 'unsupported_type' })
+    expect(await readResume(DOCX, { client, docxToText: async () => '   ' })).toEqual({ ok: false, reason: 'unreadable' })
+    expect(await readResume(DOCX, { client, docxToText: async () => { throw new Error('not a docx') } }))
+      .toEqual({ ok: false, reason: 'unreadable' })
+    expect(await readResume(DOCX, { client, docxToText: async () => 'x'.repeat(100_001) }))
+      .toEqual({ ok: false, reason: 'unreadable' })
+    expect(parse).not.toHaveBeenCalled()
+  })
+
+  it('treats a refusal, an empty answer or nothing usable as unreadable', async () => {
+    for (const answer of [reply(EXTRACTION, 'refusal'), reply(null), reply({ ...EXTRACTION, first_name: null, last_name: null, email: null, phone: null, highest_qualification: null, total_experience_months: null })]) {
+      const { client } = fakeClient(() => answer)
+      expect(await readResume(PDF, { client, now: NOW })).toEqual({ ok: false, reason: 'unreadable' })
+    }
+  })
+
+  it('reports an encrypted or corrupt PDF (400) as unreadable, not as an outage', async () => {
+    const { client } = fakeClient(() => {
+      throw new Anthropic.BadRequestError(400, undefined, 'The PDF could not be processed', new Headers())
+    })
+    expect(await readResume(PDF, { client, now: NOW })).toEqual({ ok: false, reason: 'unreadable' })
+  })
+
+  it('reports timeouts and service errors as unavailable', async () => {
+    const { client } = fakeClient(() => { throw new Anthropic.APIConnectionTimeoutError() })
+    expect(await readResume(PDF, { client, now: NOW })).toEqual({ ok: false, reason: 'unavailable' })
+  })
+})
