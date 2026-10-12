@@ -13,8 +13,8 @@ export async function extractResumeFields(formData: FormData): Promise<ResumeAut
   const started = Date.now()
   const ip = (await headers()).get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
   const result = await handleResumeAutofill(formData.get('resume'), ip)
-  // Outcome, time and a count only. (Stripped from production builds by
+  // Outcome, time and a count only — warn because lint allows only warn/error. (Stripped from production builds by
   // next.config.ts `removeConsole`; GA's careers_resume_autofill is the production signal.)
-  console.info('[resume-autofill]', result.ok ? `filled ${result.filled.length}` : result.reason, `${Date.now() - started}ms`)
+  console.warn('[resume-autofill]', result.ok ? `filled ${result.filled.length}` : result.reason, `${Date.now() - started}ms`)
   return result
 }
