@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { maxResultToValues, readResumeViaMax, type MaxResumeFill } from '@/lib/services/resume-autofill-max'
 
 const BASE = 'https://www.jkkn.ai/'
@@ -107,5 +107,27 @@ describe('readResumeViaMax', () => {
     const { calls, opts } = fakeMyJkkn(reply(202, { status: 'pending', job_id: 'j', token: 't', quick: null }), [])
     await readResumeViaMax(FILE, { ...opts, isCurrent: () => false })
     expect(calls).toHaveLength(1)
+  })
+})
+
+describe('resumeAutofillMode', () => {
+  const env = { ...process.env }
+  afterEach(() => { process.env = { ...env } })
+
+  it('treats an unset institution id as the main site (Max lane)', async () => {
+    delete process.env.NEXT_PUBLIC_INSTITUTION_ID
+    delete process.env.RESUME_AUTOFILL_MAX
+    const { resumeAutofillMode } = await import('@/lib/services/resume-autofill')
+    expect(resumeAutofillMode()).toBe('max')
+  })
+
+  it('keeps other sites on the API reader, and honours the off switch', async () => {
+    const { resumeAutofillMode } = await import('@/lib/services/resume-autofill')
+    process.env.NEXT_PUBLIC_INSTITUTION_ID = 'engineering'
+    process.env.ANTHROPIC_API_KEY = 'k'
+    expect(resumeAutofillMode()).toBe('api')
+    process.env.NEXT_PUBLIC_INSTITUTION_ID = 'main'
+    process.env.RESUME_AUTOFILL_MAX = 'off'
+    expect(resumeAutofillMode()).toBe('api')
   })
 })

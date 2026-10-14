@@ -9,6 +9,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { betaZodOutputFormat } from '@anthropic-ai/sdk/helpers/beta/zod'
 import type { BetaContentBlockParam } from '@anthropic-ai/sdk/resources/beta'
 import mammoth from 'mammoth'
+import { getInstitutionId } from '@/lib/config/multi-tenant'
 import { ResumeExtractionSchema } from '@/lib/schemas/resume-extraction'
 import { MAX_RESUME_BYTES } from '@/lib/services/public-careers-apply'
 import {
@@ -144,7 +145,8 @@ export function isResumeAutofillEnabled(): boolean {
  */
 export type ResumeAutofillMode = 'max' | 'api'
 export function resumeAutofillMode(): ResumeAutofillMode | null {
-  if (process.env.NEXT_PUBLIC_INSTITUTION_ID === 'main' && process.env.RESUME_AUTOFILL_MAX?.trim() !== 'off') {
+  // getInstitutionId(): an unset NEXT_PUBLIC_INSTITUTION_ID means the main site, as everywhere else.
+  if (getInstitutionId() === 'main' && process.env.RESUME_AUTOFILL_MAX?.trim() !== 'off') {
     return 'max'
   }
   return isResumeAutofillEnabled() ? 'api' : null
