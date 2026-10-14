@@ -130,9 +130,24 @@ export async function readResume(bytes: Uint8Array, deps: ReadResumeDeps = {}): 
 const PARSES_PER_IP_PER_HOUR = 10
 const allowParse = createRateLimiter(PARSES_PER_IP_PER_HOUR, 60 * 60 * 1000)
 
-/** Auto-fill is offered on a deployment only when it has a Claude API key. */
+/** This deployment has a Claude API key for the paid reader above. */
 export function isResumeAutofillEnabled(): boolean {
   return Boolean(process.env.ANTHROPIC_API_KEY?.trim())
+}
+
+/**
+ * How this deployment reads resumes, or null when auto-fill is not offered.
+ * 'max' — the main website (jkkn.ac.in): MyJKKN reads it on the Claude Max lane,
+ *         no API key or per-call cost (lib/services/resume-autofill-max.ts).
+ *         RESUME_AUTOFILL_MAX=off switches it back.
+ * 'api' — any other deployment with ANTHROPIC_API_KEY: the paid reader above.
+ */
+export type ResumeAutofillMode = 'max' | 'api'
+export function resumeAutofillMode(): ResumeAutofillMode | null {
+  if (process.env.NEXT_PUBLIC_INSTITUTION_ID === 'main' && process.env.RESUME_AUTOFILL_MAX?.trim() !== 'off') {
+    return 'max'
+  }
+  return isResumeAutofillEnabled() ? 'api' : null
 }
 
 export interface AutofillRequestDeps extends ReadResumeDeps {

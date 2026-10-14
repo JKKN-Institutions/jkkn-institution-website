@@ -9,7 +9,7 @@ import { JobPostingSchema } from '@/components/seo/job-posting-schema'
 import { isMainInstitution } from '@/lib/config/multi-tenant'
 import type { PublicJob } from '@/lib/schemas/public-careers'
 import { getMyJkknBaseUrl, getPublicJob, isUuid } from '@/lib/services/public-careers-api'
-import { isResumeAutofillEnabled } from '@/lib/services/resume-autofill'
+import { resumeAutofillMode } from '@/lib/services/resume-autofill'
 import {
   findJobInSite, getSiteCareers, relatedJobCards, type JobCardData,
 } from '@/lib/services/public-careers-search'
@@ -117,7 +117,7 @@ export default async function JobPage({ params }: JobPageProps) {
             jobId={job.id}
             jobTitle={formatJobTitle(job.title)}
             apiBaseUrl={getMyJkknBaseUrl()}
-            autofillEnabled={isResumeAutofillEnabled()}
+            autofillVia={resumeAutofillMode()}
           />
         </aside>
         <RelatedJobs jobs={related} />

@@ -8,8 +8,9 @@ import { useEffect, useId, useRef, useState, type DragEvent } from 'react'
 import { CheckCircle2, FileText, FileUp, Info, Loader2 } from 'lucide-react'
 import { extractResumeFields } from '@/app/actions/careers/resume-autofill'
 import { resumeClientError } from '@/lib/services/public-careers-apply'
+import { readResumeViaMax } from '@/lib/services/resume-autofill-max'
 import type { AutofillFailure, ResumeAutofillResult } from '@/lib/utils/resume-fields'
-import { AUTOFILL_PRIVACY_NOTICE } from './apply-mode-chooser'
+import { AUTOFILL_PRIVACY_NOTICE, AUTOFILL_PRIVACY_NOTICE_MAX } from './apply-mode-chooser'
 
 export const AUTOFILL_FAILURE_MESSAGES: Record<AutofillFailure, string> = {
   unsupported_type: "We can't read this file type automatically. Your resume is attached. Please fill in the fields below.",
@@ -18,6 +19,9 @@ export const AUTOFILL_FAILURE_MESSAGES: Record<AutofillFailure, string> = {
   rate_limited: "Auto-fill isn't available right now. Please fill in the fields below.",
   unavailable: "Auto-fill isn't available right now. Please fill in the fields below.",
 }
+
+/** 'max': MyJKKN's Claude Max lane (main website). 'api': this site's paid reader (Server Action). */
+export type AutofillVia = 'max' | 'api'
 
 type Status =
   | { kind: 'idle' }
@@ -69,10 +73,13 @@ interface ResumeAutofillPanelProps {
   /** Attach a file as the application's resume, with its client-check error if any. */
   onFile: (file: File | null, error: string | null) => void
   /** Apply a reading's result to the form; returns how many fields were written. */
-  onResult: (result: ResumeAutofillResult) => number
+  onResult: (result: ResumeAutofillResult, opts?: { partial?: boolean }) => number
+  via: AutofillVia
+  /** MyJKKN origin, for the Max-lane reader. */
+  apiBaseUrl: string
 }
 
-export function ResumeAutofillPanel({ file, fileError, onFile, onResult }: ResumeAutofillPanelProps) {
+export function ResumeAutofillPanel({ file, fileError, onFile, onResult, via, apiBaseUrl }: ResumeAutofillPanelProps) {
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [dragging, setDragging] = useState(false)
   const inputId = useId()
@@ -95,9 +102,18 @@ export function ResumeAutofillPanel({ file, fileError, onFile, onResult }: Resum
     setStatus({ kind: 'reading' })
     let result: ResumeAutofillResult
     try {
-      const fd = new FormData()
-      fd.set('resume', next)
-      result = await extractResumeFields(fd)
+      if (via === 'max') {
+        // Email and phone arrive at once; the rest when the Max lane answers.
+        result = await readResumeViaMax(next, {
+          baseUrl: apiBaseUrl,
+          isCurrent: () => id === latest.current,
+          onQuick: quick => { onResultRef.current(quick, { partial: true }) },
+        })
+      } else {
+        const fd = new FormData()
+        fd.set('resume', next)
+        result = await extractResumeFields(fd)
+      }
     } catch {
       result = { ok: false, reason: 'unavailable' } // network drop or the action failed
     }
@@ -152,7 +168,9 @@ export function ResumeAutofillPanel({ file, fileError, onFile, onResult }: Resum
         {status.kind === 'reading' && (
           <p className="flex items-center gap-2 text-sm text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-            Reading your resume… this usually takes a few seconds.
+            {via === 'max'
+              ? 'Reading your resume… this can take up to a minute. You can keep filling in the form.'
+              : 'Reading your resume… this usually takes a few seconds.'}
           </p>
         )}
         {status.kind === 'done' && (
@@ -181,7 +199,11 @@ export function ResumeAutofillPanel({ file, fileError, onFile, onResult }: Resum
           <FileUp className="h-4 w-4" aria-hidden="true" /> Fill the form from this file
         </button>
       )}
-      {status.kind === 'idle' && <p className="text-xs leading-relaxed text-muted-foreground">{AUTOFILL_PRIVACY_NOTICE}</p>}
+      {status.kind === 'idle' && (
+        <p className="text-xs leading-relaxed text-muted-foreground">
+          {via === 'max' ? AUTOFILL_PRIVACY_NOTICE_MAX : AUTOFILL_PRIVACY_NOTICE}
+        </p>
+      )}
     </div>
   )
 }
