@@ -9,11 +9,15 @@ export type ApplyMode = 'upload' | 'manual'
 export const AUTOFILL_PRIVACY_NOTICE =
   "Your resume is read by AI (Anthropic's Claude) to fill in this form. We don't keep it. It's only sent to JKKN HR when you submit."
 
+/** Main website: the text is read on JKKN's own system (MyJKKN) and deleted after reading. */
+export const AUTOFILL_PRIVACY_NOTICE_MAX =
+  "Your resume's text is read by AI (Anthropic's Claude) on JKKN's own system to fill in this form, and deleted after reading. The resume is only sent to JKKN HR when you submit."
+
 const card =
   'flex w-full items-start gap-3 rounded-xl border border-border bg-card p-4 text-left transition-colors hover:border-primary/60 hover:bg-primary/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
 const icon = 'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary'
 
-export function ApplyModeChooser({ onChoose }: { onChoose: (mode: ApplyMode) => void }) {
+export function ApplyModeChooser({ onChoose, maxLane = false }: { onChoose: (mode: ApplyMode) => void; maxLane?: boolean }) {
   return (
     <div className="space-y-3">
       <p id="apply-mode-heading" className="text-sm font-medium text-foreground">How would you like to apply?</p>
@@ -30,7 +34,9 @@ export function ApplyModeChooser({ onChoose }: { onChoose: (mode: ApplyMode) => 
               <span className="mt-0.5 block text-sm text-muted-foreground">We fill in the form for you</span>
             </span>
           </button>
-          <p className="px-1 text-xs leading-relaxed text-muted-foreground">{AUTOFILL_PRIVACY_NOTICE}</p>
+          <p className="px-1 text-xs leading-relaxed text-muted-foreground">
+            {maxLane ? AUTOFILL_PRIVACY_NOTICE_MAX : AUTOFILL_PRIVACY_NOTICE}
+          </p>
         </div>
         <button type="button" onClick={() => onChoose('manual')} className={card}>
           <span className={icon}><PenLine className="h-5 w-5" aria-hidden="true" /></span>

@@ -23,14 +23,14 @@ import {
 } from '@/lib/services/public-careers-apply'
 import { autofillWrites, type ResumeAutofillResult } from '@/lib/utils/resume-fields'
 import { ApplyModeChooser, type ApplyMode } from './apply-mode-chooser'
-import { ResumeAutofillPanel, ResumeChip } from './resume-autofill-panel'
+import { ResumeAutofillPanel, ResumeChip, type AutofillVia } from './resume-autofill-panel'
 
 interface ApplyFormProps {
   jobId: string
   jobTitle: string
   apiBaseUrl: string
-  /** This deployment can read resumes (ANTHROPIC_API_KEY is set). */
-  autofillEnabled: boolean
+  /** How this deployment reads resumes (resumeAutofillMode()), or null when it does not. */
+  autofillVia: AutofillVia | null
 }
 
 const FAILURE_TITLES: Record<ApplyFailureKind, string> = {
@@ -46,7 +46,8 @@ const FAILURE_TITLES: Record<ApplyFailureKind, string> = {
 const switchLink =
   'font-medium text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
 
-export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillEnabled }: ApplyFormProps) {
+export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFormProps) {
+  const autofillEnabled = autofillVia !== null
   const [mode, setMode] = useState<'choose' | ApplyMode>(autofillEnabled ? 'choose' : 'manual')
   const [resume, setResume] = useState<File | null>(null)
   const [resumeError, setResumeError] = useState<string | null>(null)
@@ -87,7 +88,7 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillEnabled }: Appl
   }
 
   /** Writes a reading's values into fields the candidate has not typed; returns how many. */
-  function applyAutofill(r: ResumeAutofillResult): number {
+  function applyAutofill(r: ResumeAutofillResult, opts: { partial?: boolean } = {}): number {
     if (!r.ok) {
       trackCareersEvent('careers_resume_autofill', { job_id: jobId, outcome: r.reason, fields_filled: 0 })
       return 0
@@ -96,6 +97,7 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillEnabled }: Appl
     const written = Object.keys(writes) as AutofillField[]
     for (const field of written) setValue(field, writes[field] as string, { shouldValidate: true })
     setAutofilled(prev => new Set([...prev, ...written]))
+    if (opts.partial) return written.length // email/phone ahead of the Max-lane answer; tracked once at the end
     trackCareersEvent('careers_resume_autofill', {
       job_id: jobId, outcome: written.length > 0 ? 'filled' : 'none', fields_filled: written.length,
     })
@@ -196,7 +198,7 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillEnabled }: Appl
       </div>
 
       {mode === 'choose' ? (
-        <ApplyModeChooser onChoose={chooseMode} />
+        <ApplyModeChooser onChoose={chooseMode} maxLane={autofillVia === 'max'} />
       ) : (
         <>
           {result && !result.ok && result.kind !== 'validation' && (
@@ -210,7 +212,14 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillEnabled }: Appl
           )}
 
           {mode === 'upload' && (
-            <ResumeAutofillPanel file={resume} fileError={resumeError} onFile={attachResume} onResult={applyAutofill} />
+            <ResumeAutofillPanel
+              file={resume}
+              fileError={resumeError}
+              onFile={attachResume}
+              onResult={applyAutofill}
+              via={autofillVia ?? 'api'}
+              apiBaseUrl={apiBaseUrl}
+            />
           )}
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
