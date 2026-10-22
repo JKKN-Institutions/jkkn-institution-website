@@ -6,7 +6,9 @@
 //
 // No auth: the endpoints are public by design (MyJKKN whitelists columns and
 // only returns jobs HR marked "Show on website"). Responses are cached by
-// Next's data cache for 300s, matching the API's own s-maxage.
+// Next's data cache for 300s, matching the API's own s-maxage. Every fetch is
+// tagged CAREERS_CACHE_TAG so MyJKKN can expire it the moment HR saves a job
+// (POST /api/revalidate/careers); the 300s window is only the fallback.
 // Contract: MyJKKN docs/public-careers-api.md
 
 import {
@@ -19,6 +21,7 @@ import {
 
 const DEFAULT_BASE = 'https://www.jkkn.ai'
 const REVALIDATE_SECONDS = 300
+export const CAREERS_CACHE_TAG = 'myjkkn-careers'
 
 // Env reads are function-level so the module is safe to import in tests/CLIs.
 export function getMyJkknBaseUrl(): string {
@@ -43,7 +46,7 @@ export interface JobListFilters {
 async function getJson(url: string, fetchImpl: typeof fetch): Promise<{ status: number; body: unknown }> {
   const res = await fetchImpl(url, {
     headers: { Accept: 'application/json' },
-    next: { revalidate: REVALIDATE_SECONDS },
+    next: { revalidate: REVALIDATE_SECONDS, tags: [CAREERS_CACHE_TAG] },
   })
   // A real "job not found" is a JSON 404 from the route. An HTML 404 means the
   // route itself is missing (API not deployed) — that is an outage, not a
