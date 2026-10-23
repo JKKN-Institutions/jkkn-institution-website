@@ -158,7 +158,7 @@ export default function MainAdmissionsPage() {
               JKKN is pioneering the next era of higher education in India — every program in every college is being redesigned around an AI-integrated learning workflow. Critical thinking is the foundation. AI is the amplifier.
             </p>
             <blockquote className="relative max-w-3xl mx-auto mb-16 px-8">
-              <span className="absolute -top-4 left-0 text-[#ffde59]/30 text-7xl md:text-8xl font-serif leading-none select-none" aria-hidden="true">&ldquo;</span>
+              <span className="absolute -top-4 left-0 md:-left-6 text-[#ffde59]/30 text-7xl md:text-8xl font-serif leading-none select-none" aria-hidden="true">&ldquo;</span>
               <p className="text-xl md:text-2xl lg:text-3xl text-white italic font-light leading-relaxed">
                 Every program develops critical thinking first — then introduces AI as a tool that amplifies human judgement.
               </p>
