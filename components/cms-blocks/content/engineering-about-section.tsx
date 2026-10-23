@@ -149,8 +149,8 @@ export default function EngineeringAboutSection({
     >
       {/* Main image container with extra padding for badge visibility */}
       <div className="relative pt-6 px-6 sm:pt-8 sm:px-8">
-        <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-          <div className="aspect-[4/3] relative">
+        <div className="relative rounded-2xl shadow-2xl">
+          <div className="aspect-[4/3] relative overflow-hidden rounded-2xl">
             <Image
               src={image}
               alt={imageAlt}
