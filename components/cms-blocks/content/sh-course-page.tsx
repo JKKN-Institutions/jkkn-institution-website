@@ -383,7 +383,7 @@ function HeroSection({
             )}
 
             {/* Stats Row */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               {stats.map((stat, index) => (
                 <div key={index} className="text-left">
                   <div className="flex items-center gap-2 mb-1">
@@ -391,7 +391,7 @@ function HeroSection({
                       {renderIcon(stat.icon, 'w-5 h-5')}
                     </div>
                   </div>
-                  <div className="text-3xl font-bold mb-1" style={{ color: primaryColor }}>
+                  <div className="text-2xl sm:text-3xl font-bold mb-1" style={{ color: primaryColor }}>
                     {stat.value}
                   </div>
                   <div className="text-sm text-gray-600 font-medium">
