@@ -826,7 +826,7 @@ function PlacementsSection({
         </div>
 
         {/* Stats */}
-        <div className="grid md:grid-cols-4 gap-6 mb-16">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {stats.map((stat, idx) => (
             <div key={idx} className="bg-white rounded-xl p-6 text-center shadow-md">
               <div className="text-4xl font-bold mb-2" style={{ color: primaryColor }}>
