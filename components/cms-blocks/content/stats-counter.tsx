@@ -74,7 +74,7 @@ export function StatsCounter({
   stats = [],
   tagline,
   columns = '6',
-  rows = '2',
+  rows: _rows = '2',
   variant = 'modern-dark',
   showAnimation = true,
   showDecorations = true,
@@ -88,12 +88,13 @@ export function StatsCounter({
   const isDark = variant === 'modern-dark'
   const isModern = variant !== 'classic'
 
-  // Grid classes based on rows setting
+  // Grid classes per column count. Six stats always wrap to 3 + 3: in one row a card is 124 px
+  // at 1280 and a number like "50,000+" needs 200 px, so it ran into the next card.
   const columnClasses = {
     '2': 'grid-cols-1 sm:grid-cols-2',
     '3': 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
     '4': 'grid-cols-2 lg:grid-cols-4',
-    '6': rows === '1' ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-6' : 'grid-cols-2 sm:grid-cols-3',
+    '6': 'grid-cols-2 sm:grid-cols-3',
   }
 
   const defaultStats: StatItem[] = [
