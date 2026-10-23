@@ -811,7 +811,7 @@ function EligibilityAdmissionSection({
               {requiredDocuments.map((doc, index) => (
                 <li key={index} className="flex items-start gap-3">
                   <FileText className="w-5 h-5 mt-1 flex-shrink-0" style={{ color: primaryColor }} />
-                  <span className="text-gray-700">{doc}</span>
+                  <span className="min-w-0 break-words text-gray-700">{doc}</span>
                 </li>
               ))}
             </ul>
