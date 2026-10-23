@@ -493,7 +493,7 @@ export function CourseAdmissionPage(props: CourseAdmissionData) {
       {/* ── Fee Structure ─────────────────────────────────────────────────── */}
       <Section>
         <SectionHeading kicker="Step 5" title={`${shortName} Fee Structure`} />
-        <div className="overflow-hidden border border-gray-200 rounded-xl">
+        <div className="overflow-x-auto border border-gray-200 rounded-xl">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-[#0b6d41] text-white text-xs uppercase tracking-wider">
@@ -506,7 +506,7 @@ export function CourseAdmissionPage(props: CourseAdmissionData) {
               {feeBreakdown.map((row) => (
                 <tr key={row.item} className="hover:bg-[#f6faf7]">
                   <td className="px-5 py-3.5 text-gray-800 font-medium">{row.item}</td>
-                  <td className="px-5 py-3.5 text-right text-[#0b6d41] font-bold whitespace-nowrap">
+                  <td className="px-5 py-3.5 text-right text-[#0b6d41] font-bold sm:whitespace-nowrap">
                     {row.amount}
                   </td>
                   <td className="px-5 py-3.5 text-gray-500 hidden md:table-cell">{row.note}</td>
