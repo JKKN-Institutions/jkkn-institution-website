@@ -20,6 +20,10 @@ export interface InstitutionSEOConfig {
   name: string
   /** Alternate names for schema.org */
   alternateName: string[]
+  /** Spellings used by official lists (AICTE, UGC, NAAC ...) - added to the organization schema only */
+  officialNames?: string[]
+  /** Official registry codes (AICTE Permanent ID, AISHE code ...) - schema.org identifier */
+  identifiers?: Array<{ propertyID: string; value: string }>
   /** Legal entity name */
   legalName?: string
   /** One-line description for schema */
@@ -310,8 +314,20 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
       // Kept last: Google reads this list in order when it picks a site name.
       'JKKN College of Engineering and Technology (Autonomous)',
     ],
+    // As AICTE, UGC / Anna University / DoTE, AISHE and NAAC print the name (read 2026-10-29).
+    officialNames: [
+      'J.K.K. Natraja College of Engineering & Technology',
+      'J.K.K. Nataraja College of Engineering and Technology',
+      'J.K.K. Nattraja College of Engineering & Technology',
+      'JKK Nattraja College of Engineering and Technology',
+    ],
+    identifiers: [
+      { propertyID: 'AICTE Permanent ID', value: '1-8323181' },
+      { propertyID: 'AISHE code', value: 'C-37096' },
+      { propertyID: 'TNEA counselling code', value: '2647' },
+    ],
     description:
-      'Premier engineering college in Tamil Nadu affiliated to Anna University, with autonomous status conferred by UGC, New Delhi and Anna University, Chennai. Established in 2008, offering UG and PG programs in Engineering, Technology and Management with excellent placement record. AICTE approved and NAAC accredited.',
+      'Premier engineering college in Tamil Nadu affiliated to Anna University, with autonomous status conferred by UGC, New Delhi and Anna University, Chennai. Established in 2008, offering UG and PG programs in Engineering, Technology and Management. AICTE approved and NAAC accredited with Grade B+.',
     foundingDate: '2008',
     slogan: 'Engineering Excellence, Innovation First',
     schemaType: 'CollegeOrUniversity',
@@ -350,7 +366,7 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
 
     hasCredential: [
       { name: 'AICTE Approval', credentialCategory: 'Approval', recognizedBy: { name: 'All India Council for Technical Education', alternateName: 'AICTE' } },
-      { name: 'NAAC Accreditation', credentialCategory: 'Accreditation', recognizedBy: { name: 'National Assessment and Accreditation Council', alternateName: 'NAAC' } },
+      { name: 'NAAC Accreditation, Grade B+ (CGPA 2.67)', credentialCategory: 'Accreditation', recognizedBy: { name: 'National Assessment and Accreditation Council', alternateName: 'NAAC' } },
       { name: 'Autonomous Status', credentialCategory: 'Autonomous Status', recognizedBy: { name: 'University Grants Commission', alternateName: 'UGC' } },
     ],
 
@@ -376,7 +392,7 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
     ],
 
     awards: [
-      'NAAC Accredited',
+      'NAAC Accredited (Grade B+)',
       'AICTE Approved',
       'Anna University Affiliated',
       'Autonomous Status conferred by UGC, New Delhi and Anna University, Chennai',
@@ -390,7 +406,7 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
       { question: 'What are the eligibility criteria for B.E./B.Tech admission?', answer: 'A pass in 10+2 with Mathematics, Physics and Chemistry, with a minimum average of 45% for General Category and 40% for BC / MBC / DNC / SC / SCA / ST, as per the TNEA 2026 information brochure. Admission is through TNEA counselling or direct Management Quota.' },
       { question: 'What is the fee structure for engineering courses?', answer: 'For the 2026-27 academic year, Management Quota annual tuition ranges from ₹30,000 to ₹80,000 depending on the programme. Government Quota tuition is as per Tamil Nadu Government norms. Hostel, transport, examination fees and caution deposit are charged separately. Scholarships and fee concessions are available for eligible learners.' },
       { question: 'Does JKKN Engineering College provide hostel facilities?', answer: 'Yes, separate hostels for boys and girls with 24/7 security, Wi-Fi, mess facilities, and recreational rooms. Hostel and mess charges are quoted by the admissions office.' },
-      { question: 'Is JKKN Engineering College AICTE approved and Anna University affiliated?', answer: 'Yes, JKKN College of Engineering & Technology is AICTE approved and affiliated to Anna University, Chennai. We are also NAAC accredited, and hold autonomous status conferred by UGC, New Delhi and Anna University, Chennai.' },
+      { question: 'Is JKKN Engineering College AICTE approved and Anna University affiliated?', answer: 'Yes, JKKN College of Engineering & Technology is AICTE approved and affiliated to Anna University, Chennai. We are also NAAC accredited with Grade B+, and hold autonomous status conferred by UGC, New Delhi and Anna University, Chennai.' },
       { question: 'What is the placement record of JKKN Engineering College?', answer: 'JKKN Engineering College runs a Training & Placement Cell that coordinates on-campus recruitment drives and interview preparation. Recruiters who have visited campus include TCS, Infosys, Wipro, Cognizant, HCL and Tech Mahindra.' },
             { question: 'What courses are offered at JKKN College of Engineering?', answer: 'JKKN offers B.E. in CSE, ECE, EEE, Mechanical, and B.Tech in IT. Postgraduate programs include M.E. CSE and MBA. All programs are AICTE approved and affiliated to Anna University.' },
       { question: 'Where is JKKN College of Engineering located?', answer: 'JKKN College of Engineering & Technology is located in Komarapalayam, Namakkal District, Tamil Nadu, on the Salem-Coimbatore National Highway (NH-544). Just 15 km from Erode city.' },

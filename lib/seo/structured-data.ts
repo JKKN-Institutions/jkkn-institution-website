@@ -32,7 +32,13 @@ export function generateOrganizationSchema(): Record<string, unknown> {
     '@type': config.schemaType,
     '@id': `${SITE_URL}/#organization`,
     'name': config.name,
-    'alternateName': config.alternateName,
+    // officialNames go on the organization only, not the WebSite schema that Google reads for the site name.
+    'alternateName': [...config.alternateName, ...(config.officialNames ?? [])],
+    ...(config.identifiers?.length
+      ? {
+          identifier: config.identifiers.map((id) => ({ '@type': 'PropertyValue', propertyID: id.propertyID, value: id.value })),
+        }
+      : {}),
     'url': `${SITE_URL}/`,
     'logo': {
       '@type': 'ImageObject',
