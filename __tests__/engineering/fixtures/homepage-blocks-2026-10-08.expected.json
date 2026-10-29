@@ -3,35 +3,35 @@
   "id": "e2e248bf-97d0-465c-a527-ad8729a3ce05",
   "component_name": "EngineeringHeroSection",
   "props": {
-   "badge": "AICTE Approved | Autonomous | Anna University Affiliated | NAAC Accredited",
+   "badge": "AICTE Approved | Autonomous | Anna University Affiliated | NAAC Accredited (B+)",
    "stats": [
     {
      "icon": "graduation",
-     "label": "Learners",
-     "value": 3000,
-     "suffix": "+"
-    },
-    {
-     "icon": "trending",
-     "label": "Placement",
-     "value": 95,
-     "suffix": "%"
-    },
-    {
-     "icon": "building",
-     "label": "Top Recruiters",
-     "value": 6,
+     "label": "AICTE-approved seats 2026-27",
+     "value": 372,
      "suffix": ""
     },
     {
      "icon": "users",
-     "label": "Programs",
-     "value": 12,
-     "suffix": "+"
+     "label": "AICTE-approved courses",
+     "value": 7,
+     "suffix": ""
+    },
+    {
+     "icon": "building",
+     "label": "B.E. / B.Tech branches",
+     "value": 5,
+     "suffix": ""
+    },
+    {
+     "icon": "trending",
+     "label": "TNEA code",
+     "value": 2647,
+     "suffix": ""
     }
    ],
    "title": "Shape Your Future in Engineering & Technology",
-   "subtitle": "AICTE Approved | Autonomous | Anna University Affiliated | NAAC Accredited",
+   "subtitle": "AICTE Approved | Autonomous | Anna University Affiliated | NAAC Accredited (B+)",
    "heroImage": "https://kyvfkyjmdbtyimtedkie.supabase.co/storage/v1/object/public/media/general/1887a999-7302-4eeb-be9c-8e9095cb274d.JPG",
    "primaryCta": {
     "link": "https://www.jkkn.ai/apply/jkkn-admission-2026",
@@ -74,9 +74,9 @@
     },
     {
      "icon": "award",
-     "name": "National Board of Accreditation",
+     "name": "National Assessment and Accreditation Council",
      "shortName": "NAAC",
-     "description": "Accredited"
+     "description": "Accredited (B+)"
     },
     {
      "icon": "award",
@@ -108,10 +108,10 @@
    "title": "Welcome to JKKN College of Engineering and Technology (Autonomous)",
    "features": [
     "AICTE Approved, Autonomous & Anna University Affiliated",
-    "NAAC Accredited Programs",
+    "NAAC Accredited (B+)",
     "Industry-Academia Partnerships",
     "State-of-the-Art Learning Learning Labs",
-    "95% Placement Record",
+    "Placement Cell and Training Support",
     "Experienced Senior Learners"
    ],
    "imageAlt": "JKKN Engineering College Campus",
@@ -161,7 +161,7 @@
      "link": "/courses-offered/ug/be-mechanical",
      "name": "B.E Mechanical Engineering",
      "type": "ug",
-     "seats": 120,
+     "seats": 60,
      "duration": "4 Years",
      "description": "Robotics, CAD/CAM, Automation"
     },
@@ -188,7 +188,7 @@
      "link": "/courses-offered/pg/mba",
      "name": "MBA - Business Administration",
      "type": "pg",
-     "seats": 120,
+     "seats": 60,
      "duration": "2 Years",
      "description": "Business Analytics, Marketing, Finance"
     },
@@ -197,7 +197,7 @@
      "link": "/courses-offered/pg/me-cse",
      "name": "M.E Computer Science & Engineering",
      "type": "pg",
-     "seats": 60,
+     "seats": 12,
      "duration": "2 Years",
      "description": "Advanced Computing, Research Focus"
     }
@@ -276,36 +276,7 @@
   "id": "fd6bd259-f05f-4759-b1bb-ff9c6aca4804",
   "component_name": "EngineeringPlacementsSection",
   "props": {
-   "stats": [
-    {
-     "icon": "trending",
-     "label": "Placement Rate",
-     "value": 95,
-     "prefix": "",
-     "suffix": "%"
-    },
-    {
-     "icon": "award",
-     "label": "Highest Package",
-     "value": 12,
-     "prefix": "",
-     "suffix": " LPA"
-    },
-    {
-     "icon": "users",
-     "label": "Average Package",
-     "value": 4.5,
-     "prefix": "",
-     "suffix": " LPA"
-    },
-    {
-     "icon": "building",
-     "label": "Recruiters",
-     "value": 50,
-     "prefix": "",
-     "suffix": "+"
-    }
-   ],
+   "stats": [],
    "title": "Launching Careers, Building Futures",
    "paddingY": "lg",
    "subtitle": "Our dedicated placement cell connects talented learners with leading companies worldwide",
@@ -506,11 +477,11 @@
   "props": {
    "faqs": [
     {
-     "answer": "We offer B.E. programs in Computer Science & Engineering, Electronics & Communication, Electrical & Electronics, Mechanical Engineering, and Civil Engineering. We also offer B.Tech programs in AI & Machine Learning and Information Technology, along with postgraduate programs MBA and MCA.",
+     "answer": "For 2026-27 AICTE has approved seven programmes: B.E. Computer Science and Engineering, B.E. Electronics and Communication Engineering, B.E. Electrical and Electronics Engineering, B.E. Mechanical Engineering and B.Tech Information Technology (60 seats each), M.E. Computer Science and Engineering (12 seats) and MBA (60 seats).",
      "question": "What engineering courses are offered at JKKN Engineering College?"
     },
     {
-     "answer": "Yes. JKKN College of Engineering and Technology is approved by AICTE (All India Council for Technical Education) and affiliated to Anna University, Chennai. It is an autonomous institution, with autonomous status conferred by UGC, New Delhi and Anna University, Chennai, and it is NAAC accredited.",
+     "answer": "Yes. JKKN College of Engineering and Technology is approved by AICTE (All India Council for Technical Education) for 2026-27 and affiliated to Anna University, Chennai. It is an autonomous institution, with autonomous status conferred by UGC, New Delhi and Anna University, Chennai, and it is accredited by NAAC with Grade B+.",
      "question": "Is JKKN Engineering College AICTE approved?"
     },
     {
@@ -522,7 +493,7 @@
      "question": "What is the admission process for B.E./B.Tech programs?"
     },
     {
-     "answer": "We maintain an excellent placement record with 95%+ placement rate. The highest package offered is 12 LPA with an average package of 4.5 LPA. Over 50 companies recruit from our campus including TCS, Infosys, Wipro, Cognizant, IBM, Amazon, Zoho, and more.",
+     "answer": "JKKN College of Engineering and Technology has a Training and Placement Cell that runs placement training and organises campus recruitment drives for final-year learners. The placement data the college files with NIRF every year is published on the NIRF page of the IQAC section of this website.",
      "question": "What is the placement record at JKKN Engineering College?"
     },
     {
@@ -530,8 +501,8 @@
      "question": "What facilities are available for learners?"
     },
     {
-     "answer": "Yes, we offer a dedicated B.Tech program in Artificial Intelligence & Machine Learning with 60 seats. The program covers Deep Learning, Neural Networks, Data Science, and cutting-edge AI technologies with hands-on projects and industry internships.",
-     "question": "Does JKKN offer AI and Machine Learning courses?"
+     "answer": "Not for 2026-27. The AICTE Extension of Approval for 2026-27 lists seven programmes: B.E. CSE, ECE, EEE and Mechanical, B.Tech IT, M.E. CSE and MBA. There is no B.Tech AI & ML intake this year. For course questions, contact the admissions office at engg@jkkn.ac.in or +91 93458 55001.",
+     "question": "Does JKKN offer a B.Tech in AI & Machine Learning?"
     },
     {
      "answer": "The fee structure varies by program and category. Please visit our admissions page or contact the admission office for detailed fee information. We also offer scholarships for meritorious learners and fee concessions for economically weaker sections.",
