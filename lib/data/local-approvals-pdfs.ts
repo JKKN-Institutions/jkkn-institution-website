@@ -31,6 +31,23 @@ export const LOCAL_APPROVALS_PDFS: LocalPdfLinkConfig[] = [
     year: '2023-2024',
     fileSize: '557 KB',
   },
+  // 2026-27 and 2025-26: AICTE letter pages 11-14 and 15-18 of the Mandatory Disclosure PDF, copied unchanged.
+  {
+    title: 'EOA Report 2026-2027',
+    pdfPath: 'approvals/EOA-Report-2026-2027.pdf',
+    description: 'Extension of Approval (EOA) for academic year 2026-2027, dated 16-03-2026',
+    category: 'AICTE Approvals',
+    year: '2026-2027',
+    fileSize: '215 KB',
+  },
+  {
+    title: 'EOA Report 2025-2026',
+    pdfPath: 'approvals/EOA-Report-2025-2026.pdf',
+    description: 'Extension of Approval (EOA) for academic year 2025-2026, dated 03-01-2025',
+    category: 'AICTE Approvals',
+    year: '2025-2026',
+    fileSize: '213 KB',
+  },
   {
     title: 'EOA Report 2024-2025',
     pdfPath: 'approvals/EOA-Report-2024-2025.pdf',
