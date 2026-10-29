@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Science and Humanities Department | JKKN',
     description:
-      'AICTE approved, NAAC accredited program providing strong foundation in fundamental sciences. Expert senior learners and excellent learning lab facilities.',
+      'Science and Humanities at an AICTE-approved, NAAC-accredited institution: a strong foundation in fundamental sciences, expert senior learners and learning labs.',
     images: ['/images/engineering/library/library-01.jpg'],
   },
 }
