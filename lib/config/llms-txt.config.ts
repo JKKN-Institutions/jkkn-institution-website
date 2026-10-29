@@ -16,9 +16,10 @@
 // content drift is visible to an AI crawler instead of being silent.
 const LAST_REVIEWED = '2026-09-04'
 
-// The engineering brief changed on its own (autonomous status lines). It carries its own
-// date so the parent brief is not stamped as reviewed when it was not.
-const ENGINEERING_LAST_REVIEWED = '2026-10-08'
+// The engineering brief changed on its own (autonomous status lines; 2026-10-29 official codes and
+// NAAC grade from the regulators' own lists). It carries its own date so the parent brief is not
+// stamped as reviewed when it was not.
+const ENGINEERING_LAST_REVIEWED = '2026-10-29'
 
 // =============================================================================
 // ENGINEERING INSTITUTION
@@ -27,11 +28,11 @@ const ENGINEERING_LAST_REVIEWED = '2026-10-08'
 function getEngineeringLlmsTxt(siteUrl: string): string {
   return `# JKKN College of Engineering and Technology
 
-> AICTE-approved autonomous engineering college in Komarapalayam, Tamil Nadu, affiliated to Anna University, Chennai, with autonomous status conferred by UGC, New Delhi and Anna University, Chennai. Established 2008. Offers B.E., B.Tech, M.E., and MBA programs across 5 departments. NAAC accredited. 70-acre residential campus.
+> AICTE-approved autonomous engineering college in Komarapalayam, Tamil Nadu, affiliated to Anna University, Chennai, with autonomous status conferred by UGC, New Delhi and Anna University, Chennai. Established 2008. Offers B.E., B.Tech, M.E., and MBA programs across 5 departments. NAAC accredited with Grade B+. 70-acre residential campus.
 
 JKKN College of Engineering and Technology (JKKN CET) is part of the J.K.K. Rangammal Charitable Trust, a group operating since 1952. The college is located in Komarapalayam, Namakkal District, Tamil Nadu, on NH-544 (Salem–Coimbatore National Highway), approximately 18 km by road from Erode city.
 
-Also written as: JKKN College of Engineering and Technology (Autonomous), JKKNCET. Anna University's Namakkal district list names the college J.K.K. Nataraja College of Engineering and Technology, TNEA counselling code 2647.
+Also written as: JKKN College of Engineering and Technology (Autonomous), JKKNCET. Anna University's Namakkal district list names the college J.K.K. Nataraja College of Engineering and Technology, TNEA counselling code 2647. Official lists also print: J.K.K. Natraja College of Engineering & Technology (AICTE), J.K.K. Nataraja College of Engineering and Technology (UGC, DoTE), J.K.K. Nattraja College of Engineering & Technology (AISHE), JKK Nattraja College of Engineering and Technology (NAAC).
 
 Contact: +91 93458 55001 | engg@jkkn.ac.in | ${siteUrl}
 
@@ -68,6 +69,16 @@ Total sanctioned intake 372 — 300 undergraduate across 5 B.E./B.Tech branches,
 - Approved: All India Council for Technical Education (AICTE)
 - Accredited: National Assessment and Accreditation Council (NAAC)
 - Scheme: Unnat Bharat Abhiyan, Ministry of Education
+
+## Official data (as the regulators print it)
+
+- [Approvals, affiliation and official data](${siteUrl}/approvals-and-affiliation): documents, key facts and sources.
+- AICTE: Extension of Approval for 2026-27, F.No. Southern/1-46224546036/2026/EOA, dated 16 March 2026; 372 seats. AICTE Permanent ID 1-8323181.
+- UGC: listed in the UGC List of Approved Autonomous Colleges (as on 28 February 2026), S.No. 1174, under Anna University, Chennai. Listed by UGC under Section 2(f).
+- NAAC: Grade B+ (CGPA 2.67), first cycle, result declared 26 December 2024 (NAAC list of institutions with valid accreditation, as on 14 August 2025).
+- Counselling codes: TNEA 2647; Tamil Nadu MBA / MCA 2647 (Directorate of Technical Education, Tamil Nadu).
+- AISHE code: C-37096. NIRF institute ID: IR-E-C-37096.
+- Not offered in 2026-27: B.Tech Artificial Intelligence and Machine Learning, B.E. Civil Engineering, MCA (not in the AICTE Extension of Approval 2026-27).
 
 ## Facilities
 
