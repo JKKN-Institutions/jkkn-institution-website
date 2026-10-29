@@ -16,9 +16,15 @@ import { FAQSchemaAdmissions, FAQSchemaPlacements, FAQSchemaAbout, HowToSchemaAd
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { resolvePageSchemas } from '@/lib/seo/schema-resolver'
 import { getCityConfig } from '@/lib/config/city-pages'
-import { getInstitutionId } from '@/lib/config/multi-tenant'
+import { getInstitutionId, isInstitution } from '@/lib/config/multi-tenant'
 import { CityLandingPage } from '@/components/city-pages/city-landing-page'
 import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
+import {
+  APPROVALS_SLUG,
+  applyEngineeringCmsPageOverrides,
+  applyEngineeringCmsSeoOverrides,
+} from '@/lib/institutions/engineering/cms-page-overrides'
+import { EngineeringOfficialDataSection } from '@/components/public/engineering/official-data-section'
 
 // Dynamic rendering for 404 handling - automatically handled with cacheComponents
 // Cache Components ensures proper 404 status codes without force-dynamic
@@ -66,9 +72,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: 'Page Not Found' }
   }
 
-  const seo = Array.isArray(page.cms_seo_metadata)
+  const cmsSeo = Array.isArray(page.cms_seo_metadata)
     ? page.cms_seo_metadata[0]
     : page.cms_seo_metadata
+  const seo = isInstitution('engineering') ? applyEngineeringCmsSeoOverrides(slugPath, cmsSeo) : cmsSeo
 
   // Build comprehensive metadata from SEO fields with proper fallback chain
   return {
@@ -229,7 +236,7 @@ export default async function DynamicPage({ params }: PageProps) {
   }
 
   // Transform blocks to the format expected by PageRenderer
-  const blocks = page.cms_page_blocks.map((block) => ({
+  const cmsBlocks = page.cms_page_blocks.map((block) => ({
     id: block.id,
     component_name: block.component_name,
     props: block.props,
@@ -237,6 +244,8 @@ export default async function DynamicPage({ params }: PageProps) {
     parent_block_id: block.parent_block_id,
     is_visible: block.is_visible ?? true,
   }))
+  const isEngineering = isInstitution('engineering')
+  const blocks = isEngineering ? applyEngineeringCmsPageOverrides(slugPath, cmsBlocks) : cmsBlocks
 
   // Extract typography settings from page metadata
   const pageTypography = (page.metadata as Record<string, unknown> | null)?.typography as PageTypographySettings | undefined
@@ -250,6 +259,7 @@ export default async function DynamicPage({ params }: PageProps) {
             <PageRenderer blocks={blocks} pageTypography={pageTypography} />
           </CustomComponentRegistrar>
         </Suspense>
+        {isEngineering && slugPath === APPROVALS_SLUG && <EngineeringOfficialDataSection />}
       </article>
     </>
   )

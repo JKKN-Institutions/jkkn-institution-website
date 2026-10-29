@@ -1,0 +1,58 @@
+{
+ "id": "0b43a760-74f9-4b39-81e5-c8049bdcb6c9",
+ "component_name": "ApprovalsAffiliationSection",
+ "props": {
+  "homeUrl": "/",
+  "variant": "cream",
+  "sections": [
+   {
+    "id": "1",
+    "title": "AICTE Extension of Approval (EOA)",
+    "documents": [
+     {
+      "id": "1-1",
+      "pdfUrl": "/pdfs/approvals/Anna-University-Affiliation-order-2008-2023.pdf",
+      "buttonLabel": "AICTE EOA 2008-2023"
+     },
+     {
+      "id": "1-2",
+      "pdfUrl": "/pdfs/approvals/EOA-Report-2024-2025.pdf",
+      "buttonLabel": "AICTE EOA 2024-2025"
+     }
+    ]
+   },
+   {
+    "id": "2",
+    "title": "Anna University Affiliation order 2008-2023",
+    "documents": [
+     {
+      "id": "2-1",
+      "pdfUrl": "/pdfs/approvals/AU-Aff-23-24.pdf",
+      "buttonLabel": "Anna-University-Affiliation-order-2023-2024"
+     },
+     {
+      "id": "2-2",
+      "pdfUrl": "/pdfs/approvals/Anna-University-Affiliation-order-2008-2023.pdf",
+      "buttonLabel": "Anna-University-Affiliation-order-2008-2023"
+     }
+    ]
+   },
+   {
+    "id": "3",
+    "title": "Statutory Declaration under section 4(1)(b) of the RTI Act-2005",
+    "documents": [
+     {
+      "id": "3-1",
+      "pdfUrl": "/pdfs/approvals/RTI-Final.pdf",
+      "buttonLabel": "Section 4(1)(b) of the RTI Act-2005"
+     }
+    ]
+   }
+  ],
+  "pageTitle": "APPROVALS AND AFFILIATION",
+  "buttonStyle": "gradient",
+  "pdfOpenMode": "same-tab",
+  "showBreadcrumb": true,
+  "breadcrumbLabel": "APPROVALS AND AFFILIATION"
+ }
+}
