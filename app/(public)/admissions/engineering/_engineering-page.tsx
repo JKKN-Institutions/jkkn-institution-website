@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ExternalLink, Phone, Mail, Check } from 'lucide-react'
 import { EngineeringAdmissionsFAQ } from '@/components/public/admissions/engineering-admissions-faq'
 import { CONTACT_INFO } from '@/lib/institutions/engineering/admissions-data'
+import { NAAC_LABEL, UGC_SECTION_LABEL } from '@/lib/institutions/engineering/official-data'
 import { fetchEngineeringAdmissionsData } from '@/lib/institutions/engineering/fetch-admissions'
 
 // ─── Schema.org JSON-LD ───────────────────────────────────────────────────────
@@ -164,9 +165,10 @@ export default async function EngineeringAdmissionsMain() {
           {[
             'AICTE Approved',
             'Anna University Affiliated',
-            'NAAC Accredited',
+            NAAC_LABEL,
             'Autonomous College',
-            'UGC Recognized',
+            // UGC's colleges list shows Section 2(f) for this college (not 12B).
+            UGC_SECTION_LABEL,
           ].map((badge) => (
             <span
               key={badge}

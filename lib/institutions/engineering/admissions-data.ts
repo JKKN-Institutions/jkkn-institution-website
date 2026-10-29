@@ -10,7 +10,7 @@ export interface TrustStat {
 
 export const TRUST_STATS: TrustStat[] = [
   { label: 'Approved Intake', value: '372', verifiedOn: '2026' },
-  { label: 'Accreditation', value: 'NAAC Accredited', verifiedOn: '2024' },
+  { label: 'Accreditation', value: 'NAAC Accredited (B+)', verifiedOn: '2024' },
   { label: 'Affiliation', value: 'Anna University', verifiedOn: '2026' },
 ]
 
