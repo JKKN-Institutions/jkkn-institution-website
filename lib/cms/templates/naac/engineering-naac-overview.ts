@@ -1,4 +1,5 @@
 import type { NAACPageProps } from './types'
+import { ENGG_OFFICIAL, ENGG_SOURCES, sourceLine } from '@/lib/institutions/engineering/official-data'
 
 /**
  * NAAC Overview Data for Engineering College
@@ -20,6 +21,15 @@ export const ENGINEERING_NAAC_OVERVIEW_DATA: NAACPageProps = {
   heroSubtitle: 'National Assessment and Accreditation Council',
   heroDescription:
     'Comprehensive documentation of NAAC accreditation process, quality benchmarks, and institutional excellence at JKKN College of Engineering.',
+
+  // NAAC's own list (no validity date printed - add "valid up to" only from the NAAC certificate).
+  accreditationResult: {
+    grade: ENGG_OFFICIAL.naac.grade,
+    cgpa: ENGG_OFFICIAL.naac.cgpa,
+    cycle: 'Cycle 1',
+    declared: ENGG_OFFICIAL.naac.declared,
+    source: sourceLine(ENGG_SOURCES.naac),
+  },
 
   navigationSections: [
     {

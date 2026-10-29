@@ -60,11 +60,22 @@ export const ContactInfoSchema = z.object({
   officeHours: z.string().optional(),
 })
 
+// Accreditation result as NAAC's own list prints it (shown above the documents)
+export const AccreditationResultSchema = z.object({
+  grade: z.string(),
+  cgpa: z.string(),
+  cycle: z.string(),
+  declared: z.string(),
+  /** "Source: <body>, <link>, as on <date>" */
+  source: z.string(),
+})
+
 // Main page props schema
 export const NAACPagePropsSchema = z.object({
   heroTitle: z.string(),
   heroSubtitle: z.string().optional(),
   heroDescription: z.string().optional(),
+  accreditationResult: AccreditationResultSchema.optional(),
   navigationSections: z.array(NavItemSchema),
   contentSections: z.array(NAACContentSectionSchema),
   contactInfo: ContactInfoSchema.optional(),

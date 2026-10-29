@@ -400,6 +400,20 @@ export function NAACPage(props: NAACPageProps) {
 
           {/* Main Content Area - Simple, no cards */}
           <main className="flex-1 min-w-0 bg-white/40 p-6 md:p-8 lg:p-12 min-h-[80vh]">
+            {/* Accreditation result - visible on every tab */}
+            {props.accreditationResult && (
+              <div className="mb-8 rounded-xl border border-[#0b6d41]/20 bg-white p-4 md:p-5 shadow-sm">
+                <p className="text-lg font-bold text-[#0b6d41]">
+                  NAAC accreditation: Grade {props.accreditationResult.grade} (CGPA{' '}
+                  {props.accreditationResult.cgpa}), {props.accreditationResult.cycle}, declared{' '}
+                  {props.accreditationResult.declared}.
+                </p>
+                <p className="mt-2 text-xs text-gray-500 [overflow-wrap:anywhere]">
+                  {props.accreditationResult.source}
+                </p>
+              </div>
+            )}
+
             {/* Active Section Content Only */}
             {activeSection && (
               <div
