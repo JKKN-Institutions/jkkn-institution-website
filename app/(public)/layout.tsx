@@ -14,7 +14,9 @@ import { getSocialLinks } from '@/app/actions/cms/social'
 import { getCurrentInstitution, isInstitution } from '@/lib/config/multi-tenant'
 import { applyEngineeringLogoAltOverride } from '@/lib/institutions/engineering/homepage-overrides'
 import { filterNavigationByFeatures } from '@/lib/utils/navigation-filter'
-import { EngineeringPopup } from '@/components/public/engineering-popup'
+import { EnquiryModalProvider } from '@/components/lead/enquiry-modal'
+import { EnquirySection } from '@/components/lead/enquiry-section'
+import { HomepageEnquiryPopup } from '@/components/lead/homepage-enquiry-popup'
 
 /**
  * Cache Components handles revalidation automatically
@@ -60,6 +62,10 @@ export default async function PublicLayout({
   const primaryEmail = contactInfo.find(c => c.contact_type === 'email' && c.is_primary)
 
   return (
+    // The enquiry provider wraps every public page (user's choice 2026-10-31, same as the six
+    // college sites): every jkkn.ai "Apply" link opens the site's own enquiry form, which posts to
+    // the jkkn.ai CRM. On an institution other than main / engineering it renders children only.
+    <EnquiryModalProvider>
     <div className='min-h-screen bg-cream flex flex-col relative'>
         {/* Site Header with CMS Navigation and Logo Settings - Fixed glassmorphic */}
         <SiteHeader
@@ -81,6 +87,9 @@ export default async function PublicLayout({
             clipping, no scroll container. Pages that don't opt in are unchanged. */}
         <main className="flex-1 overflow-x-hidden has-[[data-sticky-root]]:overflow-x-clip min-h-screen">{children}</main>
 
+        {/* Enquiry form section above the footer - posts to the jkkn.ai CRM */}
+        <EnquirySection />
+
         {/* Analytics Page Tracker */}
         <PageTracker />
 
@@ -99,8 +108,9 @@ export default async function PublicLayout({
         {/* Mobile Bottom Navbar */}
         <PublicBottomNav navigation={navigation as any} />
 
-        {/* Engineering College Popup */}
-        <EngineeringPopup />
+        {/* Homepage enquiry popup (main + engineering); replaces the old Engineering poster popup */}
+        <HomepageEnquiryPopup />
       </div>
+    </EnquiryModalProvider>
   );
 }
