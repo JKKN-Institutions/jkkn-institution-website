@@ -146,6 +146,21 @@ describe('submit to CRM (faked)', () => {
     expect(crm).not.toHaveBeenCalled()
   })
 
+  it('a number that is not an Indian mobile never reaches the CRM', async () => {
+    // Two such numbers reached the CRM in the 2026-10-31 live test (0000000000, 0101010101).
+    for (const phone of ['0000000000', '0101010101', '1234567890', '5999999999']) {
+      const crm = fakeCrm(200)
+      const state = await submitEnquiryToCrm(form({ ...good, phone }), engg, crm)
+      expect(state.success).toBe(false)
+      expect(state.fieldErrors?.phone).toMatch(/starts with 6, 7, 8 or 9/)
+      expect(crm).not.toHaveBeenCalled()
+    }
+    for (const phone of ['6000000000', '9876543210', '+91 98765 43210'.slice(4)]) {
+      const state = await submitEnquiryToCrm(form({ ...good, phone }), engg, fakeCrm(200))
+      expect(state.success).toBe(true)
+    }
+  })
+
   it('a programme from another college is refused on the engineering site', async () => {
     const crm = fakeCrm(200)
     const state = await submitEnquiryToCrm(form({ ...good, programme: BDS }), engg, crm)

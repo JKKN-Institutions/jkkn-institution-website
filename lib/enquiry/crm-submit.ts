@@ -34,7 +34,7 @@ export type EnquiryState = {
 
 const EnquirySchema = z.object({
   name: z.string().trim().min(2, 'Please enter your full name.').max(100, 'Please shorten the name.'),
-  phone: z.string().regex(/^\d{10}$/, 'Please enter a 10-digit mobile number, digits only.'),
+  phone: z.string().regex(/^[6-9]\d{9}$/, 'Please enter a valid 10-digit mobile number (it starts with 6, 7, 8 or 9).'),
   programme: z.string().min(1, 'Please choose a programme.'),
   district: z.string().trim().max(60),
   question: z.string().trim().max(300),

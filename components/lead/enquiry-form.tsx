@@ -168,7 +168,8 @@ export function EnquiryForm({
             name="phone"
             required
             inputMode="numeric"
-            pattern="[0-9]{10}"
+            pattern="[6-9][0-9]{9}"
+            title="10-digit mobile number starting with 6, 7, 8 or 9"
             maxLength={10}
             autoComplete="tel-national"
             placeholder="10-digit mobile number"
