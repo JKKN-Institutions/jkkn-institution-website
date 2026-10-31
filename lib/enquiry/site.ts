@@ -13,7 +13,7 @@ export type EnquirySiteId = 'main' | 'engineering'
 
 export type EnquirySite = {
   id: EnquirySiteId
-  /** utm_source on every lead from this site - the same shape the six college sites send. */
+  /** utm_source of a lead from this site when the visitor brought none - same as the six college sites. */
   host: string
   /** Prefix of utm_campaign, e.g. engg-admissions-be-cse. */
   campaignPrefix: string
@@ -71,11 +71,14 @@ export function currentEnquirySite(): EnquirySite | null {
 
 const APPLY_BASE = 'https://www.jkkn.ai/apply/jkkn-admission-2026'
 
-/** The full jkkn.ai application, tagged with this site and the page it was opened from. */
+/**
+ * The full jkkn.ai application, tagged with this site and the page it was opened from. No utm_medium:
+ * a fixed "organic" filed ad and WhatsApp visitors as organic (Step 2, 2026-10-31). The visit's own
+ * campaign tags replace these on the click (enquiry-modal.tsx).
+ */
 export function fullApplicationHref(site: EnquirySite, sourcePage: string): string {
   const q = new URLSearchParams({
     utm_source: site.host,
-    utm_medium: 'organic',
     utm_campaign: `${site.campaignPrefix}-${sourcePage}`.slice(0, 80),
   })
   return `${APPLY_BASE}?${q.toString()}`

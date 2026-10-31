@@ -8,7 +8,8 @@
 // CORS check. The endpoint is public - no key, no auth - so nothing secret lives here.
 //
 // SAME CONTRACT AS THE SIX COLLEGE SITES (app/actions/<college>-enquiry.ts on each): same body,
-// same honeypot key, utmSource = site host, utmMedium = site-form, utmCampaign = <prefix>-<page>,
+// same honeypot key, utmSource = the visitor's own utm_source or else the site host, utmMedium =
+// site-form, utmCampaign = <prefix>-<page> (lib/enquiry/campaign-tags.ts, 2026-10-31),
 // 409 = "this phone already applied", shown as success. Unlike the old admission_inquiries form,
 // nothing is written to this site's own Supabase: the CRM is the one list counsellors work from.
 //
@@ -16,6 +17,7 @@
 
 import { z } from 'zod'
 import { institutionForProgramme } from '@/lib/enquiry/crm-programmes'
+import { crmCampaign } from '@/lib/enquiry/campaign-tags'
 import type { EnquirySite } from '@/lib/enquiry/site'
 
 const CRM_SLUG = 'jkkn-admission-2026'
@@ -92,9 +94,12 @@ export async function submitEnquiryToCrm(
     // off-screen; a person never fills it.
     honeypot: text(formData, 'company_website'),
     sessionId: crypto.randomUUID(),
-    utmSource: site.host,
-    utmMedium: 'site-form',
-    utmCampaign: `${site.campaignPrefix}-${sourcePage}`.slice(0, 80),
+    // The visitor's own campaign tags win when they brought some (lib/enquiry/campaign-tags.ts).
+    ...crmCampaign(formData, {
+      utmSource: site.host,
+      utmMedium: 'site-form',
+      utmCampaign: `${site.campaignPrefix}-${sourcePage}`.slice(0, 80),
+    }),
     campaignLinkId: null,
     referrerUrl: d.question ? `question: ${d.question}` : '',
   }

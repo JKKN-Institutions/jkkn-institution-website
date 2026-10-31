@@ -16,6 +16,7 @@ import { X } from 'lucide-react'
 import { EnquiryForm } from '@/components/lead/enquiry-form'
 import { currentEnquirySite, fullApplicationHref, sourcePageFromPath } from '@/lib/enquiry/site'
 import { sendLeadEvent } from '@/lib/enquiry/lead-events'
+import { campaignTagsSnapshot, parseCampaignTags, tagApplyHref } from '@/lib/enquiry/campaign-tags'
 
 type OpenState = { sourcePage: string }
 type EnquiryModalApi = { openEnquiry: (sourcePage: string) => void }
@@ -67,33 +68,31 @@ export function EnquiryModalProvider({ children }: { children: ReactNode }) {
       openEnquiry(`apply-link-${sourcePageFromPath(window.location.pathname)}`.slice(0, 60))
     }
 
-    // A link that does go through to jkkn.ai (new-tab click, long-press, right-click) is tagged
-    // first, so the CRM can tell it came from this site and this page. None of the apply links in
-    // this codebase carried a utm before (repo scan 2026-10-31). Tags already present are kept.
+    // A link that does go through to jkkn.ai (new-tab click, long-press, right-click, keyboard) is
+    // tagged first: with the visit's own campaign tags when it arrived with some (lib/enquiry/
+    // campaign-tags.ts, 2026-10-31), else with this site and page. None of the apply links in this
+    // codebase carried a utm before (repo scan 2026-10-31); a fixed utm_medium=organic in CMS content
+    // is dropped. The dialog's full-application link is included, so an ad visitor keeps the ad tag.
+    campaignTagsSnapshot()
     const tag = (e: Event) => {
       const link = (e.target as Element | null)?.closest?.(APPLY_LINK) as HTMLAnchorElement | null
-      if (!link || link.hasAttribute('data-full-application')) return
-      try {
-        const url = new URL(link.href)
-        if (url.searchParams.has('utm_source')) return
-        const tagged = new URL(
-          fullApplicationHref(site, `apply-link-${sourcePageFromPath(window.location.pathname)}`.slice(0, 60))
-        )
-        // Only the utm values are added; the link keeps its own path and any other parameters.
-        tagged.searchParams.forEach((value, key) => url.searchParams.set(key, value))
-        link.href = url.toString()
-      } catch {
-        /* leave an unparseable href alone */
-      }
+      if (!link) return
+      const next = tagApplyHref(link.href, parseCampaignTags(campaignTagsSnapshot()), {
+        utmSource: site.host,
+        utmCampaign: `${site.campaignPrefix}-apply-link-${sourcePageFromPath(window.location.pathname)}`,
+      })
+      if (next !== link.href) link.href = next
     }
 
     document.addEventListener('click', onClick, true)
     document.addEventListener('pointerdown', tag, true)
     document.addEventListener('contextmenu', tag, true)
+    document.addEventListener('focusin', tag, true)
     return () => {
       document.removeEventListener('click', onClick, true)
       document.removeEventListener('pointerdown', tag, true)
       document.removeEventListener('contextmenu', tag, true)
+      document.removeEventListener('focusin', tag, true)
     }
   }, [site, openEnquiry])
 

@@ -72,6 +72,8 @@ describe('site helpers', () => {
     expect(href.origin + href.pathname).toBe('https://www.jkkn.ai/apply/jkkn-admission-2026')
     expect(href.searchParams.get('utm_source')).toBe('engg.jkkn.ac.in')
     expect(href.searchParams.get('utm_campaign')).toBe('engg-home-popup')
+    // No fixed utm_medium=organic any more (Step 2, 2026-10-31).
+    expect(href.searchParams.has('utm_medium')).toBe(false)
   })
 })
 
@@ -99,6 +101,19 @@ describe('submit to CRM (faked)', () => {
       campaignLinkId: null,
       referrerUrl: '',
     })
+  })
+
+  it('the campaign tags the visitor arrived with reach the CRM; the site host is only the fallback', async () => {
+    const sent = async (fields: Record<string, string>) => {
+      const crm = fakeCrm(200)
+      await submitEnquiryToCrm(form({ ...good, ...fields }), engg, crm)
+      return JSON.parse(String((crm.mock.calls[0] as unknown as [string, RequestInit])[1].body))
+    }
+    expect(await sent({ utm_source: 'Facebook', utm_medium: 'paid-social', utm_campaign: '2026 - Engineering Lead - CSE' }))
+      .toMatchObject({ utmSource: 'facebook', utmMedium: 'paid-social', utmCampaign: '2026-engineering-lead-cse' })
+    expect(await sent({ gclid: 'Cj0KCQ' })).toMatchObject({ utmSource: 'google', utmMedium: 'cpc', utmCampaign: 'engg-admissions-be-cse' })
+    expect(await sent({ utm_source: 'whatsapp' })).toMatchObject({ utmSource: 'whatsapp', utmMedium: 'site-form' })
+    expect(await sent({ utm_source: '<>' })).toMatchObject({ utmSource: 'engg.jkkn.ac.in', utmMedium: 'site-form' })
   })
 
   it('on the main site files a BDS enquiry under Dental', async () => {
