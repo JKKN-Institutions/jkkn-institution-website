@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { submitWebMCPCallbackRequest, submitWebMCPNewsletterSubscription } from '@/app/actions/webmcp-leads'
+import { submitWebMCPNewsletterSubscription } from '@/app/actions/webmcp-leads'
 
 /**
  * API route for WebMCP lead capture tools.
@@ -7,6 +7,10 @@ import { submitWebMCPCallbackRequest, submitWebMCPNewsletterSubscription } from 
  * WebMCP tools run in the browser and cannot call Server Actions directly
  * via dynamic import. This thin API route delegates to the same Server Action
  * logic (validation, rate limiting, database insert).
+ *
+ * 'request_callback' is gone (2026-11-02): it wrote admission leads into this site's own
+ * admission_inquiries table, which the jkkn.ai CRM never reads. It now answers 400 like any
+ * unknown action; the tool sends students to the CRM enquiry link (start_application).
  */
 export async function POST(request: NextRequest) {
   try {
@@ -21,11 +25,6 @@ export async function POST(request: NextRequest) {
     }
 
     switch (action) {
-      case 'request_callback': {
-        const result = await submitWebMCPCallbackRequest(data)
-        return NextResponse.json(result)
-      }
-
       case 'subscribe_newsletter': {
         const result = await submitWebMCPNewsletterSubscription(data)
         return NextResponse.json(result)
