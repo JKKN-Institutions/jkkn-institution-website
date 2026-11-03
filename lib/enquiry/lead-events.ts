@@ -30,6 +30,33 @@ export function sendLeadEvent(eventName: string, params: Record<string, string>)
 /** Set after a CRM-accepted submit, so the homepage popup stops interrupting this visitor. */
 export const ENQUIRY_DONE_KEY = 'jkkn_enquiry_done'
 
+// Engineering's homepage carries the enquiry form inside its hero since 2026-11-03 (Step 3 of the
+// 10,300-lead plan, user's choice). A popup over a form the visitor can already see is noise, so
+// there the popup waits 20 s and never opens over a visitor who has started on the hero form. The
+// main site keeps its 1 s popup - it has no form in its hero.
+export const TOP_FORM_TOUCHED_KEY = 'jkkn_top_form_touched'
+
+export function homePopupDelayMs(siteId: string | undefined): number {
+  return siteId === 'engineering' ? 20_000 : 1_000
+}
+
+/** Per tab (sessionStorage): a new visit gets the popup again unless it submitted. */
+export function markTopFormTouched(): void {
+  try {
+    window.sessionStorage.setItem(TOP_FORM_TOUCHED_KEY, '1')
+  } catch {
+    /* storage unavailable - the popup may still open; nothing breaks */
+  }
+}
+
+export function topFormTouched(): boolean {
+  try {
+    return window.sessionStorage.getItem(TOP_FORM_TOUCHED_KEY) === '1'
+  } catch {
+    return false
+  }
+}
+
 // localStorage throws in some private windows and when site data is blocked. A popup rule must
 // never take the page down with it, so every access is wrapped.
 export function readStore(key: string): string | null {
