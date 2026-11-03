@@ -42,6 +42,12 @@ describe('buildApplyFormData', () => {
     expect((fd.get('resume') as File).name).toBe('cv.pdf')
     expect(fd.get('website')).toBe('')          // honeypot always present, always empty
     expect(fd.has('current_job_title')).toBe(false) // blanks are omitted
+    expect(fd.has('github_username')).toBe(false)   // not sent unless given
+  })
+
+  it('sends the GitHub link when the candidate gave one', () => {
+    const fd = buildApplyFormData({ ...VALUES, github_username: 'https://github.com/octo-cat' })
+    expect(fd.get('github_username')).toBe('octo-cat')
   })
 })
 

@@ -56,6 +56,9 @@ export const PublicJobSchema = z.object({
   // Absent before the MyJKKN release that added it. A malformed block must not
   // take the whole feed down, so it degrades to null ("automatic SEO").
   seo: JobSeoSchema.nullish().catch(null),
+  // MyJKKN 2026-11-02: true on technology jobs, which show the optional GitHub
+  // box on the apply form. Absent on older MyJKKN releases; a bad value reads as absent.
+  asks_github: z.boolean().optional().catch(undefined),
 }).passthrough()
 export type PublicJob = z.infer<typeof PublicJobSchema>
 

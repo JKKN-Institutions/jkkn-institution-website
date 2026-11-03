@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { AUTOFILL_FIELDS, applyFormSchema } from '@/lib/schemas/careers-apply-form'
+import { AUTOFILL_FIELDS, applyFormSchema, githubNameFrom } from '@/lib/schemas/careers-apply-form'
 
 const VALID = {
   first_name: 'Priya', last_name: 'R', email: 'priya@example.com', phone: '+91 98765 43210',
   qualification: 'M.Pharm', experience_months: '24', current_job_title: '', current_company: '',
-  current_job_duration_months: '', worked_cities: '', consent: true, website: '',
+  current_job_duration_months: '', worked_cities: '', github_username: '', consent: true, website: '',
 }
 
 describe('applyFormSchema', () => {
@@ -19,6 +19,8 @@ describe('applyFormSchema', () => {
     ['experience_months', '2.5'],
     ['current_job_duration_months', 'x'],
     ['website', 'spam'],
+    ['github_username', 'not a user/name'],
+    ['github_username', 'https://gitlab.com/someone'],
   ])('rejects %s = %j', (field, value) => {
     expect(applyFormSchema.safeParse({ ...VALID, [field]: value }).success).toBe(false)
   })
@@ -28,5 +30,19 @@ describe('applyFormSchema', () => {
     expect(AUTOFILL_FIELDS).toHaveLength(10)
     expect(AUTOFILL_FIELDS).not.toContain('consent')
     expect(AUTOFILL_FIELDS).not.toContain('website')
+  })
+})
+
+describe('optional GitHub link (Director 3 Nov 2026)', () => {
+  it.each([
+    'https://github.com/vijaygeetha568-ctrl', 'https://www.github.com/octo-cat/', 'github.com/octo-cat',
+    '@octo-cat', 'octo-cat', '',
+  ])('accepts %j', v => {
+    expect(applyFormSchema.safeParse({ ...VALID, github_username: v }).success).toBe(true)
+  })
+
+  it('reads the name out of a profile link', () => {
+    expect(githubNameFrom('https://github.com/vijaygeetha568-ctrl')).toBe('vijaygeetha568-ctrl')
+    expect(githubNameFrom(' @octo-cat ')).toBe('octo-cat')
   })
 })
