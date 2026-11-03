@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { FooterSettings } from '@/app/actions/cms/footer'
+import { withoutUnsourcedFooterClaim } from '@/lib/institutions/engineering/footer-copy'
 import { LazyFooterMap } from './footer-map-lazy'
 
 interface SiteFooterProps {
@@ -92,7 +93,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
               </div>
             </Link>
             <p className="text-white/80 text-sm mb-8 leading-relaxed max-w-md">
-              {settings.description || 'JKKN Institutions is committed to providing quality education and fostering innovation, research, and holistic development of learners to prepare them for global challenges.'}
+              {withoutUnsourcedFooterClaim(settings.description) || 'JKKN Institutions is committed to providing quality education and fostering innovation, research, and holistic development of learners to prepare them for global challenges.'}
             </p>
 
             {/* Contact Info */}
