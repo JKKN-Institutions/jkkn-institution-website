@@ -8965,9 +8965,9 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         {
           program: 'MBA Program',
           criteria: [
-            'Bachelor\'s degree in any discipline with 50% marks',
-            'Valid TANCET / CAT / MAT / XAT score',
-            'Group discussion and personal interview clearance',
+            "MBA: any bachelor's degree (3 years) with 50% marks (45% for reserved communities of Tamil Nadu)",
+            'MBA Government Quota: TANCET (MBA) marks in Tamil Nadu MBA / MCA Admissions, college code 2647',
+            'Management Quota and M.E.: ask the admission office about the entrance test it accepts',
           ],
         },
       ],

@@ -81,7 +81,7 @@ const COURSES: Course[] = [
     intake: 60,
     duration: '2 Years',
     level: 'PG',
-    eligibility: 'Any degree; TANCET/MAT/CAT',
+    eligibility: 'Any degree, 50%; TANCET for Govt Quota',
   },
 ]
 

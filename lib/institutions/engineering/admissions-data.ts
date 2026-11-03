@@ -105,10 +105,11 @@ export const ELIGIBILITY_CRITERIA: EligibilityCriteriaItem[] = [
   {
     program: 'M.B.A (Master of Business Administration)',
     qualification:
-      "Bachelor's degree in any discipline — minimum 50% marks",
+      "Bachelor's degree (3 years) in any discipline — minimum 50% marks (45% for reserved communities of Tamil Nadu)",
     ageLimit: 'No upper limit',
+    // Official sources only: lib/institutions/engineering/mba-admission-facts.ts (2026-11-03).
     otherRequirements:
-      'TANCET / CAT / MAT / XAT score. Group Discussion + Personal Interview',
+      'Government Quota: TANCET (MBA) marks, college code 2647. Management Quota: ask the admission office',
     category: 'engineering',
   },
 ]
@@ -142,10 +143,10 @@ export const DETAILED_ELIGIBILITY: DetailedEligibilityItem[] = [
   {
     programme: 'For M.B.A — Master of Business Administration',
     criteria: [
-      "Bachelor's degree in any discipline from a recognized university",
-      'Minimum 50% aggregate marks in the qualifying degree',
-      'Valid score in TANCET / CAT / MAT / XAT (any one)',
-      'Shortlisted candidates appear for Group Discussion (GD) + Personal Interview (PI)',
+      "Bachelor's degree of at least 3 years in any discipline from a recognised university",
+      'Minimum 50% marks in the qualifying degree (45% for Tamil Nadu BC, BCM, MBC & DNC, SC, SCA and ST candidates)',
+      'Government Quota: a TANCET (MBA) mark sheet is compulsory; seats are allotted in Tamil Nadu MBA / MCA Admissions, college code 2647',
+      'Management Quota: ask the admission office which entrance scores it accepts',
     ],
   },
 ]
@@ -187,7 +188,7 @@ export const ADMISSION_STEPS: AdmissionStep[] = [
     number: 5,
     title: 'Counselling & Selection',
     description:
-      'UG candidates attend TNEA counselling conducted by Anna University. Management Quota and PG candidates attend direct counselling / GD+PI at the JKKN campus.',
+      'UG Government Quota seats are allotted in TNEA counselling, and MBA Government Quota seats in Tamil Nadu MBA / MCA Admissions on TANCET marks. Management Quota seats are filled at the college: ask the admission office about the current process.',
   },
   {
     number: 6,
@@ -237,7 +238,7 @@ export const REQUIRED_DOCUMENTS: {
   ],
   pgOnly: [
     { name: 'Degree Certificate & Consolidated Marksheet' },
-    { name: 'TANCET / CAT / MAT / XAT Score Card' },
+    { name: 'TANCET (MBA) mark sheet', note: 'For MBA Government Quota seats' },
     { name: 'Character Certificate', note: 'From graduating college' },
     { name: 'Migration Certificate', note: 'If from outside Tamil Nadu' },
   ],

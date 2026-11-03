@@ -5,15 +5,14 @@ import { MBA_ADMISSION } from '@/lib/institutions/engineering/course-admissions-
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: 'MBA Admission 2026-27 | Eligibility, Fees, TANCET/CAT/MAT — JKKN Engineering',
+  title: 'MBA Admission 2026-27 | Eligibility, Fees, TANCET — JKKN Engineering',
   description:
-    'Apply for M.B.A — Master of Business Administration at JKKN College of Engineering & Technology for 2026-27. AICTE approved, NAAC accredited. 60 seats, ₹65,000 fee, TANCET/CAT/MAT/XAT entrance, GD/PI selection. Finance, Marketing, HRM specializations.',
+    'MBA at JKKN College of Engineering and Technology: 60 AICTE seats, ₹65,000 a year. Government Quota through TANCET counselling, college code 2647.',
   keywords: [
     'MBA admission 2026',
     'JKKN MBA admission',
     'MBA admission Tamil Nadu',
     'TANCET MBA counselling 2026',
-    'CAT MAT XAT MBA admission',
     'MBA management quota admission',
     'MBA eligibility JKKN',
     'MBA fee structure 2026',
@@ -23,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'MBA Admission 2026-27 — Apply Online | JKKN Engineering',
     description:
-      '60 seats · ₹65,000/yr · TANCET / CAT / MAT / XAT · Finance · Marketing · HRM. GD + PI selection. Industry-aligned learning framework and placements.',
+      '60 seats · ₹65,000/yr · Government Quota through TANCET counselling, college code 2647 · Finance · Marketing · HRM.',
     type: 'website',
     images: [{ url: '/og/engineering-admissions.jpg', width: 1200, height: 630, alt: 'JKKN MBA Admissions 2026-27' }],
   },

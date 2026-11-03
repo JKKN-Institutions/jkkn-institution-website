@@ -20,6 +20,7 @@
  */
 
 import { courseCatalogConfig } from '@/lib/seo/course-catalog-config'
+import { MBA_ELIGIBILITY_SHORT } from '@/lib/institutions/engineering/mba-admission-facts'
 
 export function CourseCatalogSchema() {
   const config = courseCatalogConfig
@@ -584,7 +585,7 @@ export function CourseCatalogSchema() {
             "courseCode": "MBA",
             "educationalCredentialAwarded": "Master of Business Administration",
             "timeRequired": "P2Y",
-            "coursePrerequisites": "Any bachelor's degree with valid TANCET/CAT/MAT score",
+            "coursePrerequisites": MBA_ELIGIBILITY_SHORT,
             "teaches": [
               "Marketing Management",
               "Financial Management",

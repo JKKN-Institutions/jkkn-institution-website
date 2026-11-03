@@ -1,4 +1,9 @@
 import type { MBACoursePageProps } from '@/components/cms-blocks/content/mba-course-page'
+import {
+  MBA_ELIGIBILITY,
+  MBA_GOVT_QUOTA,
+  MBA_MGMT_QUOTA,
+} from '@/lib/institutions/engineering/mba-admission-facts'
 
 /**
  * Comprehensive MBA Course Data
@@ -7,6 +12,7 @@ import type { MBACoursePageProps } from '@/components/cms-blocks/content/mba-cou
  * Master of Business Administration program with specializations in
  * Marketing, Finance, HR, and Operations Management
  */
+// Admission lines below follow lib/institutions/engineering/mba-admission-facts.ts (official sources, 2026-11-03).
 export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   // ==========================================
   // Hero Section
@@ -219,31 +225,24 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   eligibilityTitle: 'Eligibility Criteria',
   eligibilityItems: [
     {
-      criteria:
-        'Bachelor\'s degree in any discipline from a recognized university with minimum 50% marks (45% for SC/ST candidates)',
+      criteria: MBA_ELIGIBILITY,
+    },
+    {
+      criteria: MBA_GOVT_QUOTA,
+    },
+    {
+      criteria: MBA_MGMT_QUOTA,
     },
     {
       criteria:
-        'Valid scores in entrance learning assessments: TANCET, CAT, MAT, XAT, CMAT, or ATMA',
-    },
-    {
-      criteria:
-        'Work experience is not mandatory but preferred (especially for Executive MBA track)',
-    },
-    {
-      criteria:
-        'Candidates appearing for final year learning assessments can apply provisionally',
-    },
-    {
-      criteria:
-        'Group discussion and personal interview performance will be considered for final selection',
+        'Final-year students may apply and show the passed degree at admission. There is no age limit, and work experience is not required.',
     },
   ],
   documentsTitle: 'Required Documents',
   requiredDocuments: [
     'UG Degree Certificate and Mark Sheets (all semesters)',
     '10th and 12th Standard Mark Sheets & Certificates',
-    'Entrance Learning Assessment Scorecard (TANCET/CAT/MAT/XAT/CMAT/ATMA)',
+    'TANCET (MBA) mark sheet and hall ticket (Government Quota)',
     'Transfer Certificate (TC) from previous institution',
     'Community Certificate (if applicable for reserved category)',
     'Passport size photographs (8 copies)',
@@ -258,30 +257,29 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   admissionSteps: [
     {
       step: 1,
-      title: 'Online Application',
+      title: 'Write TANCET (MBA)',
       description:
-        'Fill out the online application form with personal and academic details. Upload required documents and entrance learning assessment scores.',
+        'Anna University conducts TANCET. Government Quota MBA seats in Tamil Nadu are allotted on TANCET marks.',
       icon: 'FileText',
     },
     {
       step: 2,
-      title: 'Entrance Learning Assessment',
+      title: 'Tamil Nadu MBA / MCA Admissions',
       description:
-        'Submit valid TANCET/CAT/MAT/XAT/CMAT/ATMA scores. Candidates will be shortlisted based on entrance learning assessment performance.',
+        'Apply in the single-window counselling of the Directorate of Technical Education and upload your certificates.',
       icon: 'UserCheck',
     },
     {
       step: 3,
-      title: 'Group Discussion',
+      title: 'Choose college code 2647',
       description:
-        'Shortlisted candidates participate in group discussions to assess communication skills, teamwork, and analytical thinking.',
+        'In choice filling, choose JKKN College of Engineering and Technology, college code 2647.',
       icon: 'Users',
     },
     {
       step: 4,
-      title: 'Personal Interview',
-      description:
-        'Face-to-face interview with selection committee to evaluate motivation, career goals, and overall fit for the program.',
+      title: 'Management Quota',
+      description: MBA_MGMT_QUOTA,
       icon: 'Clock',
     },
     {
@@ -540,7 +538,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     },
     {
       question: 'How do I get MBA admission at JKKN?',
-      answer: 'Take TANCET (conducted by Anna University) or another accepted entrance test such as CAT, MAT, XAT, CMAT or ATMA. Government Quota MBA seats in Tamil Nadu are allotted through the Tamil Nadu MBA / MCA Admissions counselling based on TANCET scores (JKKN college code 2647); Management Quota admission is direct at the college. A bachelor\'s degree in any discipline with at least 50% marks (45% for SC / ST) is required.',
+      answer: `${MBA_GOVT_QUOTA} ${MBA_MGMT_QUOTA} Eligibility: ${MBA_ELIGIBILITY.charAt(0).toLowerCase()}${MBA_ELIGIBILITY.slice(1)}.`,
     },
     {
       question: 'What is the duration of the MBA program?',
@@ -555,7 +553,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     {
       question: 'What are the eligibility criteria for MBA admission?',
       answer:
-        'Candidates must have a bachelor\'s degree in any discipline from a recognized university with minimum 50% marks (45% for SC/ST). Valid scores in TANCET, CAT, MAT, XAT, CMAT, or ATMA are required. Work experience is preferred but not mandatory.',
+        `${MBA_ELIGIBILITY}. For Government Quota seats a TANCET (MBA) mark sheet is compulsory; for Management Quota seats, ask the admission office which entrance scores it accepts. Work experience is not required.`,
     },
     {
       question: 'How much is the MBA program fee?',
@@ -570,12 +568,12 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     {
       question: 'Can I pursue MBA without work experience?',
       answer:
-        'Yes, work experience is not mandatory for admission. However, candidates with relevant work experience may have an advantage during the selection process and can bring practical perspectives to learning studio discussions. We welcome both fresh graduates and experienced professionals.',
+        'Yes. The Tamil Nadu MBA / MCA Admissions rules ask for a qualifying degree, not work experience, and Government Quota seats are allotted on TANCET marks. Fresh graduates and working professionals are both welcome to apply.',
     },
     {
       question: 'What is the admission process?',
       answer:
-        'The admission process includes online application submission with entrance learning assessment scores, followed by group discussion and personal interview for shortlisted candidates. Final selection is based on entrance learning assessment scores, GD-PI performance, and academic records. Document verification is done before final admission.',
+        `${MBA_GOVT_QUOTA} ${MBA_MGMT_QUOTA} Original certificates are verified at the college before admission.`,
     },
     {
       question: 'Are there internship opportunities during the MBA program?',

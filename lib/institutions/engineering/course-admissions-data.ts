@@ -1,5 +1,10 @@
 import { Cpu, Zap, Antenna, Cog, Code2, Server, Briefcase } from 'lucide-react'
 import type { CourseAdmissionData } from '@/components/public/admissions/course-admission-page'
+import {
+  MBA_ELIGIBILITY,
+  MBA_GOVT_QUOTA,
+  MBA_MGMT_QUOTA,
+} from '@/lib/institutions/engineering/mba-admission-facts'
 
 const APPLY_URL = 'https://www.jkkn.ai/apply/jkkn-admission-2026'
 const ADMISSION_STATUS = '2026-27 closed · 2027-28 enquiry open'
@@ -77,30 +82,28 @@ const PG_ME_COUNSELLING_PATHS = [
   },
 ]
 
+// Official sources only (lib/institutions/engineering/mba-admission-facts.ts, 2026-11-03). The earlier
+// "TANCET / CAT / MAT / XAT + GD + PI" and "limited seats without entrance" routes had no source.
 const MBA_COUNSELLING_PATHS = [
   {
-    type: 'Entrance Learning Assessment Route',
-    badge: 'TANCET / CAT / MAT / XAT',
+    type: 'Government Quota (Tamil Nadu MBA / MCA Admissions)',
+    badge: 'TANCET (MBA) · code 2647',
     color: 'blue' as const,
     points: [
-      'Appear for any one: TANCET (Anna Univ) / CAT / MAT / XAT',
-      'Apply to JKKN MBA with valid entrance learning assessment score',
-      'Get shortlisted based on score + academic background',
-      'Attend Group Discussion (GD) + Personal Interview (PI) at JKKN campus',
-      'Final selection based on combined score (entrance + GD + PI + academics)',
-      'Fee payment and enrolment confirmation',
+      'Write TANCET (MBA), conducted by Anna University',
+      'Apply in Tamil Nadu MBA / MCA Admissions, the single-window counselling of the Directorate of Technical Education',
+      'The merit list is made on TANCET marks',
+      'In choice filling, choose JKKN College of Engineering and Technology, college code 2647',
     ],
   },
   {
-    type: 'Direct Admission (Management Quota)',
-    badge: 'Limited seats',
+    type: 'Management Quota',
+    badge: 'Filled by the college',
     color: 'green' as const,
     points: [
-      'Apply directly to JKKN MBA with Bachelor\'s degree (50%+)',
-      'Submit application + statement of purpose',
-      'Attend personal interview with MBA senior learners / Director',
-      'Provisional admission based on academic merit + interview',
-      'Fee payment and seat confirmation',
+      'Management Quota seats are filled by the college',
+      'Ask the admission office (+91 93458 55001) about the current process and the entrance scores it accepts',
+      'Eligibility is the same: a 3-year degree with 50% marks (45% for reserved communities of Tamil Nadu)',
     ],
   },
 ]
@@ -619,11 +622,10 @@ export const MBA_ADMISSION: CourseAdmissionData = {
   approvalsLabel: 'Approval',
   approvalsValue: 'AICTE · NAAC',
   eligibility: [
-    "Bachelor's degree in any discipline from a recognized university (Engineering, Arts, Science, Commerce all eligible)",
-    'Minimum 50% aggregate marks in the qualifying degree',
-    'Valid score in TANCET / CAT / MAT / XAT (any one entrance learning assessment)',
-    'Shortlisted candidates appear for Group Discussion (GD) + Personal Interview (PI)',
-    'No upper age limit; final-year learners may apply provisionally',
+    MBA_ELIGIBILITY,
+    'Government Quota: a TANCET (MBA) mark sheet is compulsory (Tamil Nadu MBA / MCA Admissions rules)',
+    'Management Quota: ask the admission office which entrance scores it accepts',
+    'No age limit; final-year students may apply and show the passed degree at admission',
   ],
   counsellingPaths: MBA_COUNSELLING_PATHS,
   documentsAdditionalLabel: 'for PG (MBA) Applicants',
@@ -636,7 +638,7 @@ export const MBA_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the eligibility for MBA at JKKN?',
       answer:
-        "Bachelor's degree in ANY discipline (Engineering, Arts, Science, Commerce) with minimum 50% aggregate from a recognized university. Valid score in TANCET / CAT / MAT / XAT required. Final-year learners may apply provisionally.",
+        `${MBA_ELIGIBILITY}. Final-year students may apply. For Government Quota seats a TANCET (MBA) mark sheet is compulsory.`,
     },
     {
       question: 'How many MBA seats at JKKN?',
@@ -648,9 +650,8 @@ export const MBA_ADMISSION: CourseAdmissionData = {
         '₹65,000/year for both quotas. Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
     },
     {
-      question: 'Which entrance learning assessment is accepted for MBA?',
-      answer:
-        'Any one of: TANCET (Anna University), CAT, MAT, XAT. TANCET is most common for Tamil Nadu candidates. Direct Management Quota admission also available for limited seats.',
+      question: 'Which entrance exam is needed for MBA at JKKN?',
+      answer: `${MBA_GOVT_QUOTA} ${MBA_MGMT_QUOTA}`,
     },
     {
       question: 'What MBA specializations are offered?',
@@ -658,19 +659,14 @@ export const MBA_ADMISSION: CourseAdmissionData = {
         'Finance, Marketing, Human Resource Management (HRM), Operations Management, Business Analytics, Entrepreneurship. Dual specialization possible in 2nd year.',
     },
     {
-      question: 'Is GD/PI conducted at JKKN for MBA?',
-      answer:
-        'Yes. Shortlisted candidates (based on entrance score + academic record) appear for Group Discussion (GD) and Personal Interview (PI) at JKKN campus. Final selection combines entrance + GD + PI + academics.',
-    },
-    {
       question: 'What are MBA placement opportunities at JKKN?',
       answer:
         'Recruiters across finance (HDFC, ICICI, Axis), marketing (Asian Paints, ITC), HR (TCS, Cognizant), consulting (Deloitte, KPMG), retail (Reliance, Tata). Average package ₹4L+; placement support throughout 2 years.',
     },
     {
-      question: 'Can I do MBA without an entrance learning assessment?',
+      question: 'Can I do MBA without an entrance exam?',
       answer:
-        'Limited direct Management Quota seats available without entrance learning assessment — apply with Bachelor\'s degree (50%+), statement of purpose, and personal interview. Contact admissions office for availability.',
+        'Not for Government Quota seats: Tamil Nadu MBA / MCA Admissions requires a TANCET (MBA) mark sheet. For Management Quota seats, ask the admission office (+91 93458 55001) about this year\'s rule before you apply.',
     },
     {
       question: 'Scholarships for MBA learners?',

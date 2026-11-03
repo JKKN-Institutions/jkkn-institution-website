@@ -14,6 +14,7 @@ import {
   Check,
 } from 'lucide-react'
 import Link from 'next/link'
+import { MBA_ME_CARD_CRITERIA, officialPgCriteria } from '@/lib/institutions/engineering/mba-admission-facts'
 
 // ==========================================
 // Intersection Observer Hook
@@ -72,11 +73,7 @@ export const EngineeringAdmissionSectionPropsSchema = z.object({
     },
     {
       program: 'MBA / ME Programs',
-      criteria: [
-        'Bachelor\'s degree in any discipline with 50% marks',
-        'Valid TANCET / CAT / MAT / XAT score',
-        'Group discussion and personal interview clearance',
-      ],
+      criteria: [...MBA_ME_CARD_CRITERIA],
     },
   ]),
 
@@ -161,11 +158,7 @@ export default function EngineeringAdmissionSection({
     },
     {
       program: 'MBA / ME Programs',
-      criteria: [
-        'Bachelor\'s degree in any discipline with 50% marks',
-        'Valid TANCET / CAT / MAT / XAT score',
-        'Group discussion and personal interview clearance',
-      ],
+      criteria: [...MBA_ME_CARD_CRITERIA],
     },
   ],
   processSteps = [
@@ -271,7 +264,7 @@ export default function EngineeringAdmissionSection({
 
                   {/* Criteria List */}
                   <ul className="space-y-2.5">
-                    {item.criteria.map((criterion, criterionIndex) => (
+                    {officialPgCriteria(item.criteria).map((criterion, criterionIndex) => (
                       <li key={criterionIndex} className="flex items-start gap-3">
                         <div
                           className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"

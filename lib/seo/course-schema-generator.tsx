@@ -7,6 +7,7 @@
 
 import { getSiteUrl } from '@/lib/utils/site-url'
 import { getCurrentInstitution } from '@/lib/config/multi-tenant'
+import { MBA_ELIGIBILITY_SHORT } from '@/lib/institutions/engineering/mba-admission-facts'
 
 export interface CourseSchemaData {
   courseName: string
@@ -170,7 +171,7 @@ export const MBACourseSchema = () =>
     description:
       'Master of Business Administration. Two-year postgraduate program covering management principles, finance, marketing, human resources, operations management, and business strategy.',
     eligibility:
-      'Bachelor\'s degree in any discipline with minimum 50% aggregate. Valid TANCET/CAT/MAT score preferred.',
+      MBA_ELIGIBILITY_SHORT,
     approvalBody: 'AICTE and affiliated to Anna University',
   })
 
