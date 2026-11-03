@@ -19,6 +19,7 @@ import {
   type FAQItem,
 } from './admissions-data'
 import type { AdmissionDateItem } from '@/lib/cms/registry-types'
+import { withOfficialMbaText } from './admissions-mba-override'
 
 export interface EngineeringAdmissionsData {
   overview: string
@@ -77,7 +78,8 @@ export async function fetchEngineeringAdmissionsData(): Promise<EngineeringAdmis
           'category' in f
       )
 
-    return {
+    // DB rows can still carry unsourced MBA lines; map them to the official text (2026-11-03, GL6-376).
+    return withOfficialMbaText({
       overview:          (map.admissions_overview          as string)                                                ?? OVERVIEW,
       programs:          (map.admissions_programs          as ProgramTableRow[])                                     ?? PROGRAMS_TABLE,
       eligibility:       (map.admissions_eligibility       as DetailedEligibilityItem[])                             ?? DETAILED_ELIGIBILITY,
@@ -88,7 +90,7 @@ export async function fetchEngineeringAdmissionsData(): Promise<EngineeringAdmis
       dates:             (map.admissions_dates             as AdmissionDateItem[])                                   ?? ADMISSION_DATES,
       scholarshipGroups: (map.admissions_scholarship_groups as ScholarshipGroup[])                                   ?? SCHOLARSHIP_GROUPS,
       faqs:              (map.admissions_faqs              as FAQItem[])                                             ?? FAQS,
-    }
+    })
   } catch {
     // Network error or misconfigured env — silently fall back to static data
     return staticFallback()

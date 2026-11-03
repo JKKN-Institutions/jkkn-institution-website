@@ -9,6 +9,12 @@ import {
   MBA_ME_CARD_CRITERIA,
   officialPgCriteria,
 } from '@/lib/institutions/engineering/mba-admission-facts'
+import { withOfficialMbaText } from '@/lib/institutions/engineering/admissions-mba-override'
+import {
+  ADMISSION_STEPS,
+  DETAILED_ELIGIBILITY,
+  REQUIRED_DOCUMENTS,
+} from '@/lib/institutions/engineering/admissions-data'
 
 const UNSOURCED = [
   /\bCAT\b/,
@@ -70,5 +76,76 @@ describe('homepage admission card', () => {
   it('leaves every other card alone', () => {
     const ug = ['Passed 10+2 with Physics, Chemistry, and Mathematics', 'Valid TNEA counselling rank or direct admission']
     expect(officialPgCriteria(ug)).toEqual(ug)
+  })
+})
+
+describe('admissions hub (Supabase site_settings rows)', () => {
+  // The four lines as they were live on https://engg.jkkn.ac.in/admissions on 2026-11-03 after 20fca53.
+  const dbRows = {
+    eligibility: [
+      {
+        programme: 'For M.E Computer Science & Engineering',
+        criteria: ['Minimum 50% aggregate marks in the qualifying degree', 'TANCET score preferred; direct merit-based admission also available'],
+      },
+      {
+        programme: 'For M.B.A — Master of Business Administration',
+        criteria: [
+          'Bachelor’s degree in any discipline from a recognized university',
+          'Minimum 50% aggregate marks in the qualifying degree',
+          'Valid score in TANCET / CAT / MAT / XAT (any one)',
+          'Shortlisted candidates appear for Group Discussion (GD) + Personal Interview (PI)',
+        ],
+      },
+    ],
+    steps: [
+      { number: 4, title: 'Application Screening', description: 'The admissions team verifies eligibility and document completeness.' },
+      {
+        number: 5,
+        title: 'Counselling & Selection',
+        description:
+          'UG candidates attend TNEA counselling conducted by Anna University. Management Quota and PG candidates attend direct counselling / GD+PI at the JKKN campus.',
+      },
+    ],
+    documents: {
+      common: [{ name: 'Aadhaar Card' }],
+      ugOnly: [{ name: 'TNEA Rank Card / Allotment Order', note: 'For TNEA counselling seats' }],
+      pgOnly: [
+        { name: 'Degree Certificate & Consolidated Marksheet' },
+        { name: 'TANCET / CAT / MAT / XAT Score Card' },
+        { name: 'Character Certificate', note: 'From graduating college' },
+      ],
+    },
+    overview: 'unchanged',
+  }
+
+  it('replaces the four unsourced MBA lines with the official ones', () => {
+    const out = withOfficialMbaText(dbRows)
+    const t = text({ e: out.eligibility[1], s: out.steps, d: out.documents.pgOnly })
+    for (const re of UNSOURCED) expect(t).not.toMatch(re)
+    expect(t).toContain('TANCET (MBA)')
+    expect(t).toContain('2647')
+    expect(out.documents.pgOnly[1]).toEqual({ name: 'TANCET (MBA) mark sheet', note: 'For MBA Government Quota seats' })
+    expect(out.steps[1].title).toBe('Counselling & Selection')
+  })
+
+  it('leaves the M.E. card, other steps, other documents and other fields alone', () => {
+    const out = withOfficialMbaText(dbRows)
+    expect(out.eligibility[0]).toEqual(dbRows.eligibility[0])
+    expect(out.steps[0]).toEqual(dbRows.steps[0])
+    expect(out.documents.pgOnly[0]).toEqual(dbRows.documents.pgOnly[0])
+    expect(out.documents.pgOnly[2]).toEqual(dbRows.documents.pgOnly[2])
+    expect(out.documents.common).toEqual(dbRows.documents.common)
+    expect(out.overview).toBe('unchanged')
+  })
+
+  it('does not change its input', () => {
+    const before = JSON.stringify(dbRows)
+    withOfficialMbaText(dbRows)
+    expect(JSON.stringify(dbRows)).toBe(before)
+  })
+
+  it('is a no-op on the static fallback, which already carries the official text', () => {
+    const fallback = { eligibility: DETAILED_ELIGIBILITY, steps: ADMISSION_STEPS, documents: REQUIRED_DOCUMENTS }
+    expect(withOfficialMbaText(fallback)).toEqual(fallback)
   })
 })
