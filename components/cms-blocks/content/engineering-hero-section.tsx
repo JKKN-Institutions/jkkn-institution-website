@@ -7,6 +7,9 @@ import { useRef, useState, useEffect } from 'react'
 import { GraduationCap, Users, TrendingUp, Building2, ChevronRight, Phone } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { HeroEnquiryCard } from '@/components/lead/hero-enquiry-card'
+import { currentEnquirySite } from '@/lib/enquiry/site'
 
 // ==========================================
 // Intersection Observer Hook
@@ -196,6 +199,36 @@ function StatCard({
   )
 }
 
+// The stats row. Its own component so the homepage can place it under the left column (desktop)
+// or below the hero form (phones) without a second copy of the markup.
+function HeroStats({
+  stats,
+  className,
+  isInView,
+  accentColor,
+  primaryColor,
+}: {
+  stats: Array<{ value: number; suffix: string; label: string; icon: string }>
+  className: string
+  isInView: boolean
+  accentColor: string
+  primaryColor: string
+}) {
+  return (
+    <div className={className} style={{ transitionDelay: '400ms' }}>
+      {stats.map((stat, index) => (
+        <StatCard
+          key={index}
+          stat={stat}
+          isInView={isInView}
+          accentColor={accentColor}
+          primaryColor={primaryColor}
+        />
+      ))}
+    </div>
+  )
+}
+
 // ==========================================
 // Main Component
 // ==========================================
@@ -221,14 +254,22 @@ export default function EngineeringHeroSection({
   isEditing,
 }: EngineeringHeroSectionProps) {
   // Hero is always above the fold - initialize as visible to prevent CLS
-  const sectionRef = useInView(0.1, true)
+  const { ref: sectionNodeRef, isInView: statsInView } = useInView(0.1, true)
 
   // No entrance animations for above-the-fold hero content (prevents CLS)
   const animateClass = (_delay: number) => ''
 
+  // Step 3 of the 10,300-lead plan (user's choices 2026-11-03): on the homepage the enquiry form
+  // takes the hero's right column on desktop and sits right under the buttons on phones. The campus
+  // photo then shows on phones only, below the stats. Any other page using this block, and the CMS
+  // editor, render exactly as before.
+  const pathname = usePathname()
+  const showForm = !isEditing && pathname === '/' && currentEnquirySite()?.id === 'engineering'
+  const statsClass = cn('grid grid-cols-2 sm:grid-cols-4 gap-3', animateClass(400))
+
   return (
     <section
-      ref={sectionRef.ref}
+      ref={sectionNodeRef}
       className={cn('relative w-full overflow-hidden', className)}
       style={{
         backgroundColor: '#fbfbee',
@@ -253,7 +294,7 @@ export default function EngineeringHeroSection({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[calc(100vh-5rem)] pt-2 pb-6 lg:pt-4 lg:pb-10">
           {/* Left Content - No opacity animation on above-the-fold LCP elements */}
-          <div>
+          <div className={cn(showForm && 'lg:col-start-1 lg:row-start-1 lg:self-end')}>
             {/* Badge */}
             <div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
@@ -284,7 +325,7 @@ export default function EngineeringHeroSection({
 
             {/* CTAs */}
             <div
-              className="flex flex-wrap gap-4 mb-10"
+              className={cn('flex flex-wrap gap-4', showForm ? 'mb-0' : 'mb-10')}
             >
               <Link
                 href={primaryCta.link}
@@ -308,29 +349,40 @@ export default function EngineeringHeroSection({
               </Link>
             </div>
 
-            {/* Stats Grid */}
-            <div
-              className={cn(
-                'grid grid-cols-2 sm:grid-cols-4 gap-3',
-                animateClass(400)
-              )}
-              style={{ transitionDelay: '400ms' }}
-            >
-              {stats.map((stat, index) => (
-                <StatCard
-                  key={index}
-                  stat={stat}
-                  isInView={sectionRef.isInView}
-                  accentColor={accentColor}
-                  primaryColor={primaryColor}
-                />
-              ))}
-            </div>
+            {/* Stats Grid (homepage with the form: rendered under the left column below instead) */}
+            {!showForm && (
+              <HeroStats
+                stats={stats}
+                className={statsClass}
+                isInView={statsInView}
+                accentColor={accentColor}
+                primaryColor={primaryColor}
+              />
+            )}
           </div>
 
-          {/* Right Content - Image - No opacity animation (LCP critical) */}
+          {showForm && (
+            <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
+              <HeroEnquiryCard />
+            </div>
+          )}
+
+          {showForm && (
+            <div className="lg:col-start-1 lg:row-start-2 lg:self-start">
+              <HeroStats
+                stats={stats}
+                className={statsClass}
+                isInView={statsInView}
+                accentColor={accentColor}
+                primaryColor={primaryColor}
+              />
+            </div>
+          )}
+
+          {/* Right Content - Image - No opacity animation (LCP critical). Homepage with the form:
+              phones only, below the stats, so it is no longer the first-screen image. */}
           <div
-            className="relative block"
+            className={cn('relative block', showForm && 'lg:hidden')}
           >
             <div className="relative">
               {/* Decorative frame */}
@@ -349,9 +401,9 @@ export default function EngineeringHeroSection({
                     alt="JKKN Engineering College Campus"
                     fill
                     className="object-cover"
-                    priority
-                    fetchPriority="high"
-                    loading="eager"
+                    priority={!showForm}
+                    fetchPriority={showForm ? 'auto' : 'high'}
+                    loading={showForm ? 'lazy' : 'eager'}
                     sizes="(max-width: 768px) 88vw, (max-width: 1024px) 85vw, 40vw"
                     quality={75}
                   />
