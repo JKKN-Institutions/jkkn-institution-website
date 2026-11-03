@@ -31,6 +31,8 @@ interface ApplyFormProps {
   apiBaseUrl: string
   /** How this deployment reads resumes (resumeAutofillMode()), or null when it does not. */
   autofillVia: AutofillVia | null
+  /** Technology job: show the optional GitHub box (MyJKKN `asks_github`). */
+  asksGitHub?: boolean
 }
 
 const FAILURE_TITLES: Record<ApplyFailureKind, string> = {
@@ -46,7 +48,7 @@ const FAILURE_TITLES: Record<ApplyFailureKind, string> = {
 const switchLink =
   'font-medium text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
 
-export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFormProps) {
+export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia, asksGitHub = false }: ApplyFormProps) {
   const autofillEnabled = autofillVia !== null
   const [mode, setMode] = useState<'choose' | ApplyMode>(autofillEnabled ? 'choose' : 'manual')
   const [resume, setResume] = useState<File | null>(null)
@@ -70,7 +72,7 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFor
     resolver: zodResolver(applyFormSchema),
     defaultValues: {
       first_name: '', last_name: '', email: '', phone: '', qualification: '', experience_months: '',
-      current_job_title: '', current_company: '', current_job_duration_months: '', worked_cities: '',
+      current_job_title: '', current_company: '', current_job_duration_months: '', worked_cities: '', github_username: '',
       consent: false, website: '',
     },
   })
@@ -122,6 +124,7 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFor
     setResult(null)
     const fd = buildApplyFormData({
       ...values,
+      github_username: asksGitHub ? values.github_username : '',
       experience_months: Number(values.experience_months),
       current_job_duration_months: values.current_job_duration_months === '' ? null : Number(values.current_job_duration_months),
       consent: true,
@@ -240,6 +243,29 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFor
               {field('worked_cities', 'Cities you have worked in', { hint: 'Comma-separated, e.g. Salem, Erode' })}
             </div>
           </details>
+
+          {asksGitHub && (
+            <div className="space-y-1.5">
+              <Label htmlFor="github_username">GitHub link (optional)</Label>
+              <Input
+                id="github_username"
+                inputMode="url"
+                autoComplete="off"
+                placeholder="https://github.com/your-name"
+                aria-invalid={Boolean(errors.github_username)}
+                aria-describedby="github_username-hint"
+                {...register('github_username')}
+              />
+              {errors.github_username ? (
+                <p className="text-xs text-destructive">{errors.github_username.message}</p>
+              ) : (
+                <p id="github_username-hint" className="text-xs text-muted-foreground">
+                  Show us what you have built. We read only public repositories. No GitHub? That is fine;
+                  it is never a reason to turn down an application.
+                </p>
+              )}
+            </div>
+          )}
 
           {mode === 'manual' && (
             <div className="space-y-1.5">

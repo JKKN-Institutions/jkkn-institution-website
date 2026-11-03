@@ -118,6 +118,7 @@ export default async function JobPage({ params }: JobPageProps) {
             jobTitle={formatJobTitle(job.title)}
             apiBaseUrl={getMyJkknBaseUrl()}
             autofillVia={resumeAutofillMode()}
+            asksGitHub={job.asks_github === true}
           />
         </aside>
         <RelatedJobs jobs={related} />
