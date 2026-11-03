@@ -29,8 +29,9 @@ export interface CityHeroStat {
 }
 
 // An official list of the engineering colleges inside a district, rendered as a table on
-// that city's page. Only for a district the campus is NOT in: it answers the "colleges in
-// <district>" searches honestly and says where JKKNCET sits relative to that list.
+// that city's page. It answers the "colleges in <district>" searches honestly: for a district
+// the campus is NOT in (Erode) it says where JKKNCET sits relative to that list; for the
+// campus's own district (Namakkal, added 2026-11-03) JKKNCET's row is marked in the table.
 export interface CityDistrictColleges {
   heading: string
   intro: string
@@ -268,9 +269,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     },
     // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
     testimonials: [],
-    // Names and TNEA codes copied from Anna University's own district page on 2026-09-25.
-    // Kongu School of Architecture (TNEA 2344) is on that page too; it is left out because
-    // this table lists engineering colleges.
+    // Names and TNEA codes copied from Anna University's own district page on 2026-09-25;
+    // re-read 2026-11-03: the same 14 rows, no change. Kongu School of Architecture (TNEA 2344)
+    // is on that page too; it is left out because this table lists engineering colleges.
     districtColleges: {
       heading: 'Engineering Colleges in Erode District',
       intro:
@@ -295,7 +296,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       ],
       sourceLabel: 'Anna University, Centre for Affiliation of Institutions — Erode district list',
       sourceUrl: 'https://www.annauniv.edu/cai/District%20wise/district/Erode.php',
-      readOn: '25 September 2026',
+      readOn: '3 November 2026',
       jkknNote:
         'JKKN College of Engineering and Technology — Komarapalayam, Namakkal district, 18 km from Erode on NH-544.',
     },
@@ -329,7 +330,10 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'How far is JKKNCET from Erode?',
         answer:
-          'JKKNCET is 18 km from Erode bus stand, about 30 minutes by road on NH-544 via Komarapalayam. Erode Junction railway station is about 21 km from the campus. Regular buses run from Erode New Bus Stand to Komarapalayam.',
+          // Bhavani: 7.6 km by road from the same Natarajapuram campus to Bhavani town (OSRM,
+          // OpenStreetMap place/town point, 2026-09-23; SEO project
+          // artefacts/keywords/pharmacy-town-distances-2026-09-23.json), written as "about 8 km".
+          'JKKNCET is 18 km from Erode bus stand, about 30 minutes by road on NH-544 via Komarapalayam. Erode Junction railway station is about 21 km from the campus, and Bhavani town, also in Erode district, about 8 km. Regular buses run from Erode New Bus Stand to Komarapalayam.',
       },
       {
         question: 'What placement data has JKKNCET filed?',
@@ -374,7 +378,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       canonicalPath: '/erode',
       ogImage: '/images/city/erode-og.jpg',
       twitterDescription:
-        'Engineering college near Erode: JKKNCET, 18 km on NH-544. AICTE approved. Admissions 2026-27.',
+        'Engineering college near Erode: JKKNCET, 18 km on NH-544. AICTE approved. 2027-28 enquiries open.',
     },
     schema: {
       breadcrumbLabel: 'Engineering Colleges near Erode',
@@ -390,8 +394,15 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     displayName: 'Namakkal',
     distanceKm: '65 km',
     travelTime: 'About 1 hour 20 minutes',
+    // Step 5 of the 10,300-lead plan (user's choices 2026-11-03): no "Best" without a source
+    // (title, H1 and breadcrumb said "Best Engineering College in/near Namakkal"), and the
+    // campus's own district gets Anna University's official college list, as Erode has.
+    // The campus is on NH-544 (Salem - Coimbatore); Namakkal town is off that highway, so the
+    // sentence no longer reads "65 km ... on NH-544". 65 km = Google Maps 65.3 km to Namakkal
+    // (the same campus, measured for the pharmacy pages 2026-10-29).
+    h1: 'Engineering College in Namakkal District — Komarapalayam on NH-544',
     heroSubheading:
-      'JKKN College of Engineering and Technology is in Komarapalayam, Namakkal district, 65 km from Namakkal town on NH-544. AICTE approved and affiliated to Anna University, with support from the Training and Placement Cell.',
+      'JKKN College of Engineering and Technology is in Komarapalayam, Namakkal district, on NH-544, 65 km from Namakkal town. AICTE approved and affiliated to Anna University, TNEA code 2647.',
     heroStats: {
       distanceStat: '65km',
       distanceLabel: 'from Namakkal',
@@ -415,7 +426,58 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
     },
     // Placeholder testimonials removed 2026-10-01 (GL6-371); add only real, consented ones.
     testimonials: [],
+    // Names and TNEA codes copied from Anna University's own Namakkal district page on
+    // 2026-11-03 (27 rows). Left out, as on the Erode table: Excel College of Architecture and
+    // Planning (TNEA 2667, architecture) and three rows with no TNEA code (SSM College of
+    // Engineering (M.C.A. stand alone), SSM School of Management and Computer Applications,
+    // Vivekanandha Institute of Information and Management Studies). Spacing before
+    // "(Autonomous)" normalised; names otherwise as on the page.
+    districtColleges: {
+      heading: 'Engineering Colleges in Namakkal District',
+      intro:
+        'Anna University lists these 23 engineering colleges in Namakkal district. JKKNCET is one of them, as J.K.K. Nataraja College of Engineering and Technology, TNEA code 2647.',
+      colleges: [
+        { name: 'Annai Mathammal Sheela Engineering College', tneaCode: '2602' },
+        { name: 'CMS College of Engineering', tneaCode: '2635' },
+        { name: 'Excel Engineering College (Autonomous)', tneaCode: '2634' },
+        { name: 'Gnanamani College of Technology', tneaCode: '2624' },
+        { name: 'J.K.K. Nataraja College of Engineering and Technology', tneaCode: '2647' },
+        { name: 'K.S. Rangasamy College of Technology (Autonomous)', tneaCode: '2607' },
+        { name: 'K.S.R. College of Engineering (Autonomous)', tneaCode: '2613' },
+        { name: 'K.S.R. Institute for Engineering and Technology (Autonomous)', tneaCode: '2328' },
+        { name: 'Mahendra Engineering College (Autonomous)', tneaCode: '2609' },
+        { name: 'Mahendra Engineering College for Women', tneaCode: '2638' },
+        { name: 'Mahendra Institute of Technology (Autonomous)', tneaCode: '2632' },
+        { name: 'Muthayammal Engineering College (Autonomous)', tneaCode: '2610' },
+        { name: 'Muthayammal College of Engineering', tneaCode: '2314' },
+        { name: 'P.G.P. College of Engineering and Technology', tneaCode: '2612' },
+        { name: 'Paavai College of Engineering', tneaCode: '2628' },
+        { name: 'Paavai Engineering College (Autonomous)', tneaCode: '2611' },
+        { name: 'Selvam College of Technology', tneaCode: '2627' },
+        { name: 'Sengunthar Engineering College (Autonomous)', tneaCode: '2617' },
+        { name: 'SRG Engineering College', tneaCode: '2767' },
+        { name: 'S.S.M. College of Engineering', tneaCode: '2614' },
+        { name: 'Vidyaa Vikas College of Engineering and Technology', tneaCode: '2633' },
+        { name: 'Vivekanandha College of Engineering for Women (Autonomous)', tneaCode: '2620' },
+        { name: 'Vivekanandha College of Technology for women', tneaCode: '2661' },
+      ],
+      sourceLabel: 'Anna University, Centre for Affiliation of Institutions — Namakkal district list',
+      sourceUrl: 'https://www.annauniv.edu/cai/District%20wise/district/Namakkal.php',
+      readOn: '3 November 2026',
+      jkknNote:
+        'JKKN College of Engineering and Technology — Komarapalayam, Namakkal district, on NH-544. TNEA code 2647.',
+    },
     faqs: [
+      {
+        question: 'Is JKKN College of Engineering and Technology in Namakkal district?',
+        answer:
+          "Yes. JKKN College of Engineering and Technology is in Komarapalayam, Namakkal district, on NH-544, 65 km from Namakkal town and 18 km from Erode bus stand. It is on Anna University's Namakkal district list as J.K.K. Nataraja College of Engineering and Technology, TNEA code 2647.",
+      },
+      {
+        question: 'How many engineering colleges are there in Namakkal district?',
+        answer:
+          "Anna University's district list names 23 engineering colleges in Namakkal district, plus one college of architecture. JKKN College of Engineering and Technology in Komarapalayam is one of them, with TNEA code 2647. The full list, with each college's TNEA code, is on this page.",
+      },
       {
         question: 'How do I choose an engineering college near Namakkal?',
         answer:
@@ -468,16 +530,16 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Rasipuram', slug: 'rasipuram', distanceLabel: '60 km', emoji: '🧵' },
     ],
     seo: {
-      title: 'Best Engineering College in Namakkal | JKKNCET — 2027-28 Enquiry Open',
+      title: 'Engineering Colleges in Namakkal District - JKKNCET',
       description:
-        'JKKN College of Engineering and Technology is in Namakkal district, 65 km from Namakkal town on NH-544, in Komarapalayam. AICTE approved, affiliated to Anna University. Admissions 2026-27.',
+        'JKKNCET is in Komarapalayam, Namakkal district: TNEA code 2647, AICTE approved, Anna University affiliated. With the official Namakkal district college list.',
       canonicalPath: '/namakkal',
       ogImage: '/images/city/namakkal-og.jpg',
       twitterDescription:
-        'JKKNCET, Komarapalayam: 65 km from Namakkal on NH-544. AICTE approved. Admissions 2026-27.',
+        'JKKNCET, Komarapalayam, Namakkal district. TNEA code 2647. AICTE approved. 2027-28 enquiries open.',
     },
     schema: {
-      breadcrumbLabel: 'Best Engineering College in Namakkal',
+      breadcrumbLabel: 'Engineering Colleges in Namakkal District',
       areaServedCity: 'Namakkal',
     },
   },

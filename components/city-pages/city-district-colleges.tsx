@@ -2,6 +2,7 @@
 // Server Component — props: cityConfig. Renders only when the city carries districtColleges.
 
 import type { CityPageConfig } from '@/lib/config/city-pages'
+import { ENGG_OFFICIAL } from '@/lib/institutions/engineering/official-data'
 
 interface CityDistrictCollegesProps {
   cityConfig: CityPageConfig
@@ -32,7 +33,14 @@ export default function CityDistrictColleges({ cityConfig }: CityDistrictCollege
               {list.colleges.map((college, index) => (
                 <tr key={college.tneaCode}>
                   <td>{index + 1}</td>
-                  <td>{college.name}</td>
+                  {/* On the campus's own district list (Namakkal) JKKNCET's row is marked. */}
+                  <td>
+                    {college.tneaCode === ENGG_OFFICIAL.codes.tnea ? (
+                      <strong>{college.name} (this college)</strong>
+                    ) : (
+                      college.name
+                    )}
+                  </td>
                   <td>{college.tneaCode}</td>
                 </tr>
               ))}
