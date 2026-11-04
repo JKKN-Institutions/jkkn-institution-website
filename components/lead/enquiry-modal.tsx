@@ -15,11 +15,54 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { X } from 'lucide-react'
 import { EnquiryForm } from '@/components/lead/enquiry-form'
 import { currentEnquirySite, fullApplicationHref, sourcePageFromPath } from '@/lib/enquiry/site'
-import { sendLeadEvent } from '@/lib/enquiry/lead-events'
+import { ENQUIRY_DONE_KEY, readStore, sendLeadEvent } from '@/lib/enquiry/lead-events'
 import { campaignTagsSnapshot, parseCampaignTags, tagApplyHref } from '@/lib/enquiry/campaign-tags'
+import {
+  gateIntentForHref,
+  isGateNumber,
+  isGateOffPath,
+  isUngatedPath,
+  numberAtOffset,
+  pageTag,
+  programmeForPath,
+  telUrlFor,
+  type GateIntent,
+} from '@/lib/call-gate'
 
-type OpenState = { sourcePage: string }
-type EnquiryModalApi = { openEnquiry: (sourcePage: string) => void }
+type OpenOptions = { programmeId?: string; intent?: GateIntent }
+type OpenState = { sourcePage: string; programmeId?: string; intent?: GateIntent }
+type EnquiryModalApi = { openEnquiry: (sourcePage: string, options?: OpenOptions) => void }
+
+/** GA4 event-name stem per gate: event NAMES split call from WhatsApp in every report, with no
+ *  custom dimension to register first. */
+const GATE_EVENT: Record<GateIntent, string> = { call: 'gate_call', whatsapp: 'gate_wa' }
+
+/** Editable content (SPEC section 6, 2026-11-04): a click inside a rich-text editor or a form box
+ *  is editing or typing, never a call. */
+const EDITABLE = 'input, textarea, select, [contenteditable], [role=textbox]'
+
+function isEditable(target: Element): boolean {
+  return (target instanceof HTMLElement && target.isContentEditable) || !!target.closest(EDITABLE)
+}
+
+/** The text node + character offset under a tap, in Chrome / Safari (caretRangeFromPoint) and
+ *  Firefox (caretPositionFromPoint). null when the browser has neither. */
+function textAtPoint(x: number, y: number): { text: string; offset: number } | null {
+  const d = document as Document & {
+    caretRangeFromPoint?: (x: number, y: number) => Range | null
+    caretPositionFromPoint?: (x: number, y: number) => { offsetNode: Node; offset: number } | null
+  }
+  if (typeof d.caretPositionFromPoint === 'function') {
+    const pos = d.caretPositionFromPoint(x, y)
+    if (pos && pos.offsetNode.nodeType === Node.TEXT_NODE) return { text: pos.offsetNode.textContent ?? '', offset: pos.offset }
+  }
+  if (typeof d.caretRangeFromPoint === 'function') {
+    const range = d.caretRangeFromPoint(x, y)
+    if (range && range.startContainer.nodeType === Node.TEXT_NODE)
+      return { text: range.startContainer.textContent ?? '', offset: range.startOffset }
+  }
+  return null
+}
 
 const EnquiryModalContext = createContext<EnquiryModalApi | null>(null)
 
@@ -34,10 +77,12 @@ export function EnquiryModalProvider({ children }: { children: ReactNode }) {
   const site = currentEnquirySite()
   const [open, setOpen] = useState<OpenState | null>(null)
 
-  const openEnquiry = useCallback((source: string) => {
-    // Only where the dialog was opened from - no name, no phone.
-    sendLeadEvent('enquiry_open', { source_page: source, page_path: window.location.pathname })
-    setOpen({ sourcePage: source })
+  const openEnquiry = useCallback((source: string, options?: OpenOptions) => {
+    // Only where the dialog was opened from - no name, no phone. A gate open is counted under its
+    // own name, so enquiry_open keeps meaning what it meant before 2026-11-04 (popup + Apply links).
+    const event = options?.intent ? `${GATE_EVENT[options.intent]}_open` : 'enquiry_open'
+    sendLeadEvent(event, { source_page: source, page_path: window.location.pathname })
+    setOpen({ sourcePage: source, programmeId: options?.programmeId, intent: options?.intent })
   }, [])
 
   const close = useCallback(() => setOpen(null), [])
@@ -96,21 +141,118 @@ export function EnquiryModalProvider({ children }: { children: ReactNode }) {
     }
   }, [site, openEnquiry])
 
+  // Call / WhatsApp gate (lib/call-gate.ts, ported 2026-11-04 from the Dental site). A tap on any
+  // link to 93458 55001 - tel: or WhatsApp, from page code or CMS content - opens this form first;
+  // its button sends the lead and opens the dialer / WhatsApp in the same tap. Same shape as the
+  // Apply listener above: the links stay real <a href>s, so without JavaScript, or on a Ctrl /
+  // Shift / middle click, they still dial or open WhatsApp directly, and nothing in the page HTML
+  // (or the phone number in it) changes. ConversionTracking still counts the tap itself as
+  // phone_click / whatsapp_click.
+  // Not gated: links inside the dialog, careers and the school pages (isUngatedPath), staff routes
+  // (isGateOffPath), a link marked data-no-gate, a link inside editable content, and a visitor
+  // whose enquiry the CRM already accepted on this browser (they are a lead already).
+  useEffect(() => {
+    if (!site) return
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+      const target = e.target as Element | null
+      const link = target?.closest?.('a[href]') as HTMLAnchorElement | null
+      if (!link || link.hasAttribute('data-no-gate') || link.closest('[role=dialog]') || isEditable(link)) return
+      const intent = gateIntentForHref(link.getAttribute('href') ?? '')
+      if (!intent) return
+      const pathname = window.location.pathname
+      if (isGateOffPath(pathname) || isUngatedPath(pathname)) return
+      if (readStore(ENQUIRY_DONE_KEY)) {
+        sendLeadEvent(`${GATE_EVENT[intent]}_bypass`, { reason: 'already_enquired', page_path: pathname })
+        return
+      }
+      e.preventDefault()
+      const source = `${intent === 'call' ? 'call-gate' : 'wa-gate'}${pageTag(pathname)}`.slice(0, 60)
+      openEnquiry(source, { intent, programmeId: programmeForPath(pathname) })
+    }
+    document.addEventListener('click', onClick, true)
+    return () => document.removeEventListener('click', onClick, true)
+  }, [site, openEnquiry])
+
+  // A tap on a phone number written as PLAIN TEXT (FAQ answers, the admission pages, page copy),
+  // user's choice 2026-11-04: it goes the same way as a Call button. The root layout switches
+  // iPhone's own number detection off (it dialled outside the gate), so this listener is now what
+  // makes such a number tappable - on Android too, where it never was. Nothing in the page changes:
+  // the tap position is read with caretRangeFromPoint, no text is wrapped or rewritten.
+  // The admission number opens the call gate (or dials, on the ungated pages and for a visitor who
+  // already enquired); any other mobile dials directly, as iPhone did before. Nothing at all happens
+  // on a staff route or inside editable content (SPEC section 6: a CMS editor clicking a number).
+  useEffect(() => {
+    if (!site) return
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+      const target = e.target as Element | null
+      if (!target || target.closest('a, button, label, [role=dialog]') || isEditable(target)) return
+      const pathname = window.location.pathname
+      if (isGateOffPath(pathname)) return
+      if (window.getSelection()?.toString()) return // the visitor is selecting text, not tapping
+      const hit = textAtPoint(e.clientX, e.clientY)
+      if (!hit) return
+      const digits = numberAtOffset(hit.text, hit.offset)
+      if (!digits) return
+      if (!isGateNumber(digits) || isUngatedPath(pathname)) {
+        window.location.assign(telUrlFor(digits))
+        return
+      }
+      if (readStore(ENQUIRY_DONE_KEY)) {
+        sendLeadEvent('gate_call_bypass', { reason: 'already_enquired', page_path: pathname })
+        window.location.assign(telUrlFor(digits))
+        return
+      }
+      e.preventDefault()
+      openEnquiry(`call-gate-text${pageTag(pathname)}`.slice(0, 60), {
+        intent: 'call',
+        programmeId: programmeForPath(pathname),
+      })
+    }
+    document.addEventListener('click', onClick, true)
+    return () => document.removeEventListener('click', onClick, true)
+  }, [site, openEnquiry])
+
   if (!site) return children
 
   return (
     <EnquiryModalContext.Provider value={api}>
       {children}
-      {open && <EnquiryDialog sourcePage={open.sourcePage} onClose={close} />}
+      {open && (
+        <EnquiryDialog
+          sourcePage={open.sourcePage}
+          programmeId={open.programmeId}
+          intent={open.intent}
+          onClose={close}
+        />
+      )}
     </EnquiryModalContext.Provider>
   )
 }
 
 // The backdrop does NOT close the dialog: on a phone a thumb near the edge would throw away a
 // half-typed form. Close = the 44 px X button or Escape.
-function EnquiryDialog({ sourcePage, onClose }: { sourcePage: string; onClose: () => void }) {
+function EnquiryDialog({
+  sourcePage,
+  programmeId,
+  intent,
+  onClose,
+}: {
+  sourcePage: string
+  programmeId?: string
+  intent?: GateIntent
+  onClose: () => void
+}) {
   const site = currentEnquirySite()
   if (!site) return null
+
+  const title =
+    intent === 'call'
+      ? 'Talk to our admission counsellor'
+      : intent === 'whatsapp'
+        ? 'Chat with our admission team on WhatsApp'
+        : site.dialogTitle
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4">
@@ -130,25 +272,28 @@ function EnquiryDialog({ sourcePage, onClose }: { sourcePage: string; onClose: (
         </button>
 
         <p id="enquiry-dialog-title" className="font-bold leading-snug text-[#032816] text-lg pr-12 mb-4">
-          {site.dialogTitle}
+          {title}
         </p>
 
-        <EnquiryForm sourcePage={sourcePage} compact bare />
+        <EnquiryForm sourcePage={sourcePage} defaultProgrammeId={programmeId} compact bare gate={intent} />
 
         {/* The full jkkn.ai application stays one tap away for people ready to apply now.
-            data-full-application keeps the site-wide apply-link listener off it. */}
-        <p className="mt-3 text-center text-xs text-[#4b5563]">
-          Ready to apply now?{' '}
-          <a
-            href={fullApplicationHref(site, sourcePage)}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-full-application
-            className="text-[#0b6d41] font-semibold underline"
-          >
-            Fill the full application form
-          </a>
-        </p>
+            data-full-application keeps the site-wide apply-link listener off it.
+            Not in a Call / WhatsApp gate: there the visitor came to talk, not to apply. */}
+        {!intent && (
+          <p className="mt-3 text-center text-xs text-[#4b5563]">
+            Ready to apply now?{' '}
+            <a
+              href={fullApplicationHref(site, sourcePage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-full-application
+              className="text-[#0b6d41] font-semibold underline"
+            >
+              Fill the full application form
+            </a>
+          </p>
+        )}
       </div>
     </div>
   )

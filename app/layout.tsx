@@ -98,6 +98,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
     // Google Search Console verification — per-institution from config
     verification: googleVerification ? { google: googleVerification } : undefined,
+
+    // iPhone Safari turns any phone number in plain text into a dial link of its own, which skipped
+    // the Call / WhatsApp form gate (user's choice 2026-11-04: those taps must also go form -> dialer).
+    // Off here; the enquiry modal's plain-number tap listener takes those taps instead.
+    formatDetection: { telephone: false },
   }
 }
 
