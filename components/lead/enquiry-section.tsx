@@ -50,7 +50,7 @@ export function EnquirySection() {
           {site.sectionHeading}
         </h2>
         <p className="text-white/80 text-center text-sm mb-8">
-          Leave your details and our admission team will contact you within 24 hours.
+          Fill your details, then call or WhatsApp our admission team right away.
         </p>
         {/* key: a client-side page change must give a fresh form, not the last page's success state. */}
         <EnquiryForm key={pathname} sourcePage={sourcePageFromPath(pathname)} defaultProgrammeId={programmeId} />
