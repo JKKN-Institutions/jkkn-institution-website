@@ -17,6 +17,14 @@ import { filterNavigationByFeatures } from '@/lib/utils/navigation-filter'
 import { EnquiryModalProvider } from '@/components/lead/enquiry-modal'
 import { EnquirySection } from '@/components/lead/enquiry-section'
 import { HomepageEnquiryPopup } from '@/components/lead/homepage-enquiry-popup'
+import { ConversionTracking } from '@/components/analytics/conversion-tracking'
+
+// Analytics load only in a real production build (2026-11-04). ANALYTICS_OFF=1 is for a LOCAL test
+// only (the Call / WhatsApp gate test runs `next build` + `next start` on a laptop): it must not
+// write test taps into the live GA4 properties or the Meta pixel. Set it for `next start` too - a
+// page rendered at request time reads it then. Vercel never sets it, so production and preview
+// builds are unaffected.
+const IS_PRODUCTION_BUILD = process.env.NODE_ENV === 'production' && process.env.ANALYTICS_OFF !== '1'
 
 /**
  * Cache Components handles revalidation automatically
@@ -94,10 +102,13 @@ export default async function PublicLayout({
         <PageTracker />
 
         {/* Meta Pixel for Facebook Ads */}
-        <MetaPixel />
+        {IS_PRODUCTION_BUILD && <MetaPixel />}
 
         {/* Google Analytics 4 */}
-        <GoogleAnalytics />
+        {IS_PRODUCTION_BUILD && <GoogleAnalytics />}
+
+        {/* phone_click / whatsapp_click on every tel: and WhatsApp link (2026-11-04) */}
+        <ConversionTracking />
 
         {/* Site Footer with CMS Settings */}
         <SiteFooter settings={footerSettings} />
