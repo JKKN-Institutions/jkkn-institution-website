@@ -627,7 +627,8 @@ const LibraryPage = lazy(() => import('@/components/cms-blocks/content/library-p
 const DigitalClassroomPage = lazy(() => import('@/components/cms-blocks/content/digital-classroom-page'))
 
 // Admission Inquiry Form
-const AdmissionInquiryForm = lazy(() => import('@/components/cms-blocks/content/admission-inquiry-form'))
+// Lead option 12 (2026-11-05): the block renders the CRM enquiry form; the old Supabase-only form is no longer loaded.
+const AdmissionInquiryForm = lazy(() => import('@/components/cms-blocks/content/admission-inquiry-crm'))
 
 // Our Courses Section
 const OurCoursesSection = lazy(() => import('@/components/cms-blocks/content/our-courses-section'))

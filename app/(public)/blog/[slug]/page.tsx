@@ -22,6 +22,8 @@ import { ShareButtons } from './share-buttons'
 import { CommentsSection } from './comments-section'
 import { GalleryBlock } from '@/components/public/blog/gallery-block'
 import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
+import { BlogEnquiryBox } from '@/components/lead/blog-enquiry-box'
+import { blogSourcePage, secondH2Index, splitBeforeNthH2 } from '@/lib/blog-inline-cta'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -104,10 +106,27 @@ function getAuthorInitials(author: {
 }
 
 // Content Renderer - Renders TipTap JSON or HTML content
-function ContentRenderer({ content }: { content: Record<string, unknown> }) {
+// Lead option 2 (2026-11-05): `inlineBox` (the enquiry box) goes after the post's first answer section - before
+// its 2nd <h2> / level-2 heading (lib/blog-inline-cta.ts) - or after the whole post when there is no safe cut.
+function ContentRenderer({ content, inlineBox }: { content: Record<string, unknown>; inlineBox?: React.ReactNode }) {
   // Handle HTML content format from rich text editor
   if (content?.type === 'html' && typeof content.html === 'string') {
-    return <div dangerouslySetInnerHTML={{ __html: content.html }} />
+    const parts = inlineBox ? splitBeforeNthH2(content.html, 2) : null
+    if (parts) {
+      return (
+        <>
+          <div dangerouslySetInnerHTML={{ __html: parts.before }} />
+          {inlineBox}
+          <div dangerouslySetInnerHTML={{ __html: parts.after }} />
+        </>
+      )
+    }
+    return (
+      <>
+        <div dangerouslySetInnerHTML={{ __html: content.html }} />
+        {inlineBox}
+      </>
+    )
   }
 
   const renderNode = (node: Record<string, unknown>, index: number): React.ReactNode => {
@@ -389,8 +408,19 @@ function ContentRenderer({ content }: { content: Record<string, unknown> }) {
 
   // Wrap rendering in error handling for malformed content
   try {
+    const top = content?.type === 'doc' ? (content.content as Record<string, unknown>[] | undefined) : undefined
+    const cut = inlineBox && top ? secondH2Index(top) : -1
+    if (inlineBox && top && cut > 0) {
+      return (
+        <>
+          {top.slice(0, cut).map((child, i) => renderNode(child, i))}
+          {inlineBox}
+          {top.slice(cut).map((child, i) => renderNode(child, cut + i))}
+        </>
+      )
+    }
     return (
-      <>{renderNode(content, 0)}</>
+      <>{renderNode(content, 0)}{inlineBox}</>
     )
   } catch (error) {
     console.error('Error rendering blog content:', error)
@@ -603,7 +633,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {/* Content - Light card for white background */}
             <article className="bg-gray-50 rounded-2xl p-6 md:p-8 shadow-lg border border-gray-200">
               <div className="prose prose-lg max-w-none">
-                <ContentRenderer content={post.content} />
+                <ContentRenderer content={post.content} inlineBox={<BlogEnquiryBox sourcePage={blogSourcePage(slug)} />} />
               </div>
             </article>
 

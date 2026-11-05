@@ -69,9 +69,9 @@ export const LazyProgressiveVideoPlayer = dynamic(
   }
 )
 
-// Admission Inquiry Form - Heavy form with validation
+// Admission Inquiry Form - since 2026-11-05 the CRM form (admission-inquiry-crm.tsx), not the Supabase-only one
 export const LazyAdmissionInquiryForm = dynamic(
-  () => import('./content/admission-inquiry-form'),
+  () => import('./content/admission-inquiry-crm'),
   {
     loading: () => <FormSkeleton />,
     ssr: true // Forms need SSR for accessibility

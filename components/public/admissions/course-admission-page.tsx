@@ -1,5 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
+import { BlogEnquiryBox } from '@/components/lead/blog-enquiry-box'
+import { ENGG_DEFAULT_PROGRAMME_BY_SLUG } from '@/lib/enquiry/crm-programmes'
 import {
   ArrowRight,
   Award,
@@ -332,6 +334,17 @@ export function CourseAdmissionPage(props: CourseAdmissionData) {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Lead option 1 (2026-11-05): the enquiry form near the top, course pre-selected. Before this the only
+          form on these pages was the section above the footer, 13.2 phone screens down on /admissions/be-cse
+          (live 375 px scan, 2026-11-05). */}
+      <section className="bg-[#f6faf7] px-4">
+        <BlogEnquiryBox
+          sourcePage={`admissions-${slug}-top`}
+          programmeId={ENGG_DEFAULT_PROGRAMME_BY_SLUG[slug]}
+          title={`Get ${shortName} Fee & Admission Details`}
+        />
       </section>
 
       {/* ── Eligibility ───────────────────────────────────────────────────── */}
