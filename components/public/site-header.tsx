@@ -6,6 +6,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { useEnquiryModal } from '@/components/lead/enquiry-modal'
+import { isGateOffPath, isUngatedPath } from '@/lib/call-gate'
 // chunkArray removed - navigation now uses flex-wrap instead of fixed row chunking
 import { NavDropdownItem } from './nav-dropdown-item'
 import { NavMobileItem } from './nav-mobile-item'
@@ -124,6 +126,13 @@ export function SiteHeader({
   socialLinks = []
 }: SiteHeaderProps) {
   const pathname = usePathname()
+  // "Enquire Now" in the fixed header on phones and tablets (lead options round 2, 2026-11-06): the
+  // five college sites carry one; Main and Engineering carried none (checked live at 375 px after a
+  // 3-screen scroll). null outside the enquiry provider / on an institution with no enquiry site.
+  // Not on careers and school pages (job seekers, school parents) or staff routes - the same
+  // paths the call gate leaves alone.
+  const enquiry = useEnquiryModal()
+  const showEnquire = !!enquiry && !isPreview && !isUngatedPath(pathname ?? '/') && !isGateOffPath(pathname ?? '/')
   const isSvgLogo = logoUrl.toLowerCase().endsWith('.svg')
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -260,7 +269,7 @@ export function SiteHeader({
         )}
       >
         <div className="container mx-auto px-4 lg:px-6">
-          <div className="flex items-center justify-center py-1 md:py-1.5 lg:py-3 max-w-full">
+          <div className="relative flex items-center justify-center py-1 md:py-1.5 lg:py-3 max-w-full">
             {/* Logo */}
             <Link href="/" className="flex-shrink-0 flex items-center group relative z-10">
               <div
@@ -283,6 +292,16 @@ export function SiteHeader({
                 />
               </div>
             </Link>
+
+            {showEnquire && (
+              <button
+                type="button"
+                onClick={() => enquiry?.openEnquiry('header-enquire')}
+                className="lg:hidden absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-[#0b6d41] hover:bg-[#085032] text-white font-semibold text-sm px-3.5 py-2 rounded-md min-h-[40px] whitespace-nowrap touch-manipulation"
+              >
+                Enquire Now
+              </button>
+            )}
 
             {/* Desktop Navigation - Flex wrap, fills remaining space */}
             <nav className="hidden lg:flex flex-wrap items-center justify-start gap-x-2 xl:gap-x-4 gap-y-1 min-w-0 pl-8 lg:pl-10 xl:pl-12">

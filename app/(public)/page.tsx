@@ -19,6 +19,7 @@ import { HOME_SPEAKABLE_SELECTORS } from '@/lib/seo/main-institution/page-conten
 import type { PageTypographySettings } from '@/lib/cms/page-typography-types'
 import { resolvePageSchemas } from '@/lib/seo/schema-resolver'
 import { isInstitution } from '@/lib/config/multi-tenant'
+import { HeroEnquiryCard } from '@/components/lead/hero-enquiry-card'
 import {
   applyEngineeringHomepageOverrides,
   applyEngineeringHomepageSeoOverrides,
@@ -218,13 +219,25 @@ export default async function HomePage() {
   // Extract typography settings from page metadata
   const pageTypography = (page.metadata as Record<string, unknown> | null)?.typography as PageTypographySettings | undefined
 
+  // Main homepage enquiry card right under the hero (lead options round 2, 2026-11-06). Measured live
+  // at 375 px that day: the hero block ends at 0.8 phone screens, and the page's first form sat 16.1
+  // screens down. Engineering keeps the card inside its own hero (engineering-hero-section.tsx), so it
+  // gets none here. HeroEnquiryCard renders nothing on an institution without an enquiry site.
+  const homeEnquiry = isInstitution('engineering') ? undefined : (
+    <section aria-label="Admission enquiry" className="px-4 py-6 sm:py-8">
+      <div className="max-w-md mx-auto">
+        <HeroEnquiryCard />
+      </div>
+    </section>
+  )
+
   return (
     <>
       <HomepageSchemas />
       <article>
         <Suspense fallback={<BlocksSkeleton />}>
           <CustomComponentRegistrar components={customComponents}>
-            <PageRenderer blocks={blocks} pageTypography={pageTypography} />
+            <PageRenderer blocks={blocks} pageTypography={pageTypography} afterFirstBlock={homeEnquiry} />
           </CustomComponentRegistrar>
         </Suspense>
       </article>

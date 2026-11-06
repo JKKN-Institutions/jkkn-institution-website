@@ -24,6 +24,7 @@ import { CampaignFields } from '@/components/lead/campaign-fields'
 import { institutionsForSite } from '@/lib/enquiry/crm-programmes'
 import { currentEnquirySite } from '@/lib/enquiry/site'
 import { ENQUIRY_DONE_KEY, sendLeadEvent, writeStore } from '@/lib/enquiry/lead-events'
+import { sendMetaLead } from '@/lib/enquiry/meta-lead'
 import { GATE_PHONE_DISPLAY, telGateUrl, whatsappGateUrl, type GateIntent } from '@/lib/call-gate'
 
 type Props = {
@@ -81,6 +82,7 @@ export function EnquiryForm({
       destination: 'crm',
       page_path: window.location.pathname,
     })
+    if (!state.duplicate) sendMetaLead(sourcePage)
   }, [state, sourcePage, site])
 
   // A form that silently fails and a form nobody used both read 0. This is what separates them.
@@ -162,6 +164,7 @@ export function EnquiryForm({
           page_path: window.location.pathname,
         })
         sendLeadEvent(`${gateEvent}_lead`, { source_page: sourcePage, page_path: window.location.pathname })
+        if (!result.duplicate) sendMetaLead(sourcePage)
         setGatePhase((p) => (p.step === 'opened' ? { ...p, result: 'saved' } : p))
       })
       .catch(() => {

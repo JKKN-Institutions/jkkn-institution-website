@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense } from 'react'
+import { Fragment, Suspense, type ReactNode } from 'react'
 import { getComponent, getComponentEntry, isFullWidthComponent } from '@/lib/cms/component-registry'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
@@ -67,6 +67,9 @@ interface PageRendererProps {
   blocks: BlockData[]
   /** Page-level typography settings from cms_pages.metadata.typography */
   pageTypography?: PageTypographySettings
+  /** Rendered right after the first top-level block (the hero), inside the same tree. Used by the
+   *  homepage for its enquiry card (lead options round 2, 2026-11-06). */
+  afterFirstBlock?: ReactNode
 }
 
 function BlockSkeleton() {
@@ -263,7 +266,7 @@ function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?:
   )
 }
 
-export function PageRenderer({ blocks, pageTypography }: PageRendererProps) {
+export function PageRenderer({ blocks, pageTypography, afterFirstBlock }: PageRendererProps) {
   // Filter to only visible blocks
   const visibleBlocks = blocks.filter((block) => block.is_visible)
 
@@ -289,8 +292,11 @@ export function PageRenderer({ blocks, pageTypography }: PageRendererProps) {
     <DynamicFontLoader fontFamily={fontFamily}>
       <PageTypographyProvider typography={pageTypography}>
         <div className="page-content">
-          {blockTree.map((block) => (
-            <RenderBlock key={block.id} block={block} />
+          {blockTree.map((block, i) => (
+            <Fragment key={block.id}>
+              <RenderBlock block={block} />
+              {i === 0 && afterFirstBlock}
+            </Fragment>
           ))}
         </div>
       </PageTypographyProvider>
