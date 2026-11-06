@@ -4,6 +4,8 @@
 // enquiry heading (lib/enquiry/site.ts). It is not a heading element, so the article's H2 outline stays as written.
 // Inside a blog post the global `.prose ol / ul / li` rules (app/globals.css, @layer base) would number the form's
 // 3-step list and indent it; the [&_ol] / [&_ul] / [&_li] utilities on the card switch that off (live 375 px check).
+// No margin reset on ol / ul: the form's own space-y-4 (utilities layer) already beats .prose's margins, and a
+// [&_ol]:mb-0 would cancel that space-y gap (seen live 2026-11-06: steps sat ~4 px above the Name box).
 import { EnquiryForm } from '@/components/lead/enquiry-form'
 import { currentEnquirySite } from '@/lib/enquiry/site'
 
@@ -22,7 +24,7 @@ export function BlogEnquiryBox({ sourcePage, programmeId, title }: Props) {
   return (
     <aside
       aria-label="Admission enquiry"
-      className="not-prose [&_ol]:list-none [&_ol]:pl-0 [&_ol]:mb-0 [&_ul]:list-none [&_ul]:pl-0 [&_ul]:mb-0 [&_li]:mb-0 my-10 max-w-xl mx-auto rounded-[20px] bg-white border border-[#d4f1e4] shadow-[0_18px_40px_rgba(3,40,22,0.35)] p-5 sm:p-6 lg:p-7"
+      className="not-prose [&_ol]:list-none [&_ol]:pl-0 [&_ul]:list-none [&_ul]:pl-0 [&_li]:mb-0 my-10 max-w-xl mx-auto rounded-[20px] bg-white border border-[#d4f1e4] shadow-[0_18px_40px_rgba(3,40,22,0.35)] p-5 sm:p-6 lg:p-7"
     >
       <div className="mb-4">
         <div className="text-xl lg:text-2xl font-bold text-[#032816] leading-snug">{title ?? site.sectionHeading}</div>
