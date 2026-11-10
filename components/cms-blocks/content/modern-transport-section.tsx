@@ -24,6 +24,7 @@ import {
     Quote
 } from 'lucide-react'
 import Image from 'next/image'
+import { BlogEnquiryBox } from '@/components/lead/blog-enquiry-box'
 
 export type ModernTransportSectionProps = z.infer<typeof ModernTransportSectionPropsSchema> & BaseBlockProps
 
@@ -96,7 +97,8 @@ export function ModernTransportSection({
     transportInchargePhone = '+91 9976772223, 9655177177',
     showPattern = true,
     className,
-}: ModernTransportSectionProps) {
+    isEditing,
+}: ModernTransportSectionProps & { isEditing?: boolean }) {
     const [inView, setInView] = useState(false)
     const sectionRef = useRef<HTMLDivElement>(null)
 
@@ -246,6 +248,16 @@ export function ModernTransportSection({
                         </div>
                     </div>
                 </div>
+
+                {/* Enquiry box (lead options round 2, 2026-11-10): parents land on /transport to check bus
+                    routes, and the page's only form sat 8.3 phone screens down. The live /transport page is
+                    this block (ModernTransportSection), not TransportPage - the 11-06 box went into
+                    TransportPage, which no live page uses. Not in the page builder's edit view. */}
+                {!isEditing && (
+                    <div className="mb-20 [&_aside]:my-0">
+                        <BlogEnquiryBox sourcePage="transport-top" />
+                    </div>
+                )}
 
                 {/* Features Grid (Updated to Management Theme) */}
                 <div className="mb-24">

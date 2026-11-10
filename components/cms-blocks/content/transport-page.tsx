@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { z } from 'zod'
 import { Bus } from 'lucide-react'
 import { RichTextInlineEditor } from '@/components/page-builder/elementor/inline-editor'
-import { BlogEnquiryBox } from '@/components/lead/blog-enquiry-box'
 
 // Custom hook for intersection observer animations
 function useInView(threshold = 0.1) {
@@ -316,15 +315,6 @@ export function TransportPage({
                 />
               )}
             </div>
-          </div>
-        )}
-
-        {/* Enquiry box (lead options round 2, 2026-11-06): parents land here to check bus routes, and
-            the page's only form sat 8.3 phone screens down, after the whole block. Not in the page
-            builder's edit view. The wrapper resets this block's white text colour for the card. */}
-        {!isEditing && (
-          <div className="text-[#032816] mb-12 md:mb-16 [&_aside]:my-0">
-            <BlogEnquiryBox sourcePage="transport-top" />
           </div>
         )}
 
