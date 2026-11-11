@@ -5,7 +5,7 @@ import { z } from 'zod'
 import type { BaseBlockProps } from '@/lib/cms/registry-types'
 import { useEffect, useRef, useState } from 'react'
 import { GraduationCap, BookOpen, Clock, CheckCircle2 } from 'lucide-react'
-import DOMPurify from 'isomorphic-dompurify'
+import { sanitizeRichTextHtml } from '@/lib/utils/rich-text-html'
 import { RichTextInlineEditor } from '@/components/page-builder/elementor/inline-editor'
 
 /**
@@ -202,10 +202,10 @@ export function CoursePage({
     sanitizedTitle = '<span>JKKN College</span>'
   } else if (collegeTitle.includes('<')) {
     // Already contains HTML tags → sanitize as-is
-    sanitizedTitle = DOMPurify.sanitize(collegeTitle)
+    sanitizedTitle = sanitizeRichTextHtml(collegeTitle)
   } else {
     // Plain text → wrap in span (backward compatibility)
-    sanitizedTitle = `<span>${DOMPurify.sanitize(collegeTitle)}</span>`
+    sanitizedTitle = `<span>${sanitizeRichTextHtml(collegeTitle)}</span>`
   }
 
   // Sanitize description - support both plain text and HTML
@@ -216,10 +216,10 @@ export function CoursePage({
     sanitizedDescription = ''
   } else if (description.includes('<')) {
     // Already contains HTML tags → sanitize as-is
-    sanitizedDescription = DOMPurify.sanitize(description)
+    sanitizedDescription = sanitizeRichTextHtml(description)
   } else {
     // Plain text → sanitize as-is (no wrapping needed)
-    sanitizedDescription = DOMPurify.sanitize(description)
+    sanitizedDescription = sanitizeRichTextHtml(description)
   }
 
   const headerRef = useInView()
