@@ -263,13 +263,17 @@ export function EnquiryForm({
       <input type="hidden" name="source_page" value={sourcePage} />
       <CampaignFields />
 
-      {/* Honeypot. Off-screen rather than display:none - a real browser autofill will not reach it
-          and a bot will. Never remove: the CRM scores this field. */}
+      {/* Honeypot. Off-screen rather than display:none so a bot still fills it. Never remove: the
+          CRM scores this field. autoComplete is a made-up token ON PURPOSE - measured 2026-11-12 on
+          Chrome 156 (www /admissions and engg /admissions/be-cse): with "off", Chrome read
+          "company_website" as Company name and filled a parent's saved company into it, which would
+          mark a real lead as a bot. Chrome does not fill a field whose token it does not recognise.
+          Do not change it back to "off". */}
       <input
         type="text"
         name="company_website"
         tabIndex={-1}
-        autoComplete="off"
+        autoComplete="hp-ignore"
         aria-hidden="true"
         className="absolute left-[-9999px] h-0 w-0 opacity-0"
       />
