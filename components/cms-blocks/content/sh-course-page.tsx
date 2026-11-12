@@ -365,7 +365,7 @@ function HeroSection({
           <div className="space-y-8">
             {/* Badge */}
             <div className="inline-block text-white rounded-full px-6 py-2" style={{ backgroundColor: primaryColor }}>
-              <span className="text-sm font-medium">⭐ #JKKN100 Centenary Year Admissions Open 2025-26</span>
+              <span className="text-sm font-medium">⭐ #JKKN100 Centenary Year Admissions</span>
             </div>
 
             {/* Title */}
