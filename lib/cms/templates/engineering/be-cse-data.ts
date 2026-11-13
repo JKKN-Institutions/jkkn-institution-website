@@ -311,13 +311,13 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
   feeTable: {
     headers: ['Fee Component', 'Government Quota', 'Management Quota', 'NRI Quota'],
     rows: [
-      { component: 'Tuition Fee (Annual, 2026-27)', govt: '₹65,000', mgmt: '₹80,000', nri: 'Not offered' },
+      { component: 'Tuition Fee (Annual, 2026-27)', govt: 'As Per Government Norm', mgmt: '₹80,000', nri: 'Not offered' },
       { component: 'Examination Fee & Caution Deposit', govt: 'As notified by the university', mgmt: 'As notified by the university', nri: 'Not offered' },
       { component: 'Hostel Fee (Optional)', govt: 'As quoted by the admissions office', mgmt: 'As quoted by the admissions office', nri: 'Not offered' },
     ],
     totals: {
       component: 'Annual Tuition',
-      govt: '₹65,000',
+      govt: 'As Per Government Norm',
       mgmt: '₹80,000',
       nri: 'Not offered',
     },
@@ -593,7 +593,7 @@ export const BE_CSE_SAMPLE_DATA: BECSECoursePageProps = {
     },
     {
       question: 'What are the fee structure and scholarship options?',
-      answer: 'For 2026-27 the annual tuition fee for B.E. CSE is ₹65,000 under Government Quota and ₹80,000 under Management Quota (JKKN course fee sheet). Examination fees and caution deposit are charged as notified by the university; hostel is optional. Government scholarships for SC / ST / BC / MBC categories and first-graduate scholarships apply for eligible learners.',
+      answer: 'For 2026-27 the annual tuition fee for B.E. CSE is ₹80,000 under Management Quota (JKKN course fee sheet); the Government Quota fee is As Per Government Norm. Examination fees and caution deposit are charged as notified by the university; hostel is optional. Government scholarships for SC / ST / BC / MBC categories and first-graduate scholarships apply for eligible learners.',
     },
     {
       question: 'Does JKKN provide hostel facilities for B.E. CSE learners?',

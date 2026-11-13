@@ -345,7 +345,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
   feeTitle: 'Fee Structure (Annual)',
   feeBreakdown: [
     { component: 'Tuition Fee (Management Quota, 2026-27)', amount: '₹45,000' },
-    { component: 'Tuition Fee (Government Quota)', amount: 'As per Govt. norms' },
+    { component: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norm' },
     { component: 'Examination Fee & Caution Deposit', amount: 'As notified by the university' },
     { component: 'Hostel Fee (Optional)', amount: 'As quoted by the admissions office' },
     { component: 'Annual Tuition (Management Quota)', amount: '₹45,000', isTotal: true },
@@ -539,7 +539,7 @@ export const BE_EEE_SAMPLE_DATA: BEEEECoursePageProps = {
     },
     {
       question: 'What is the fee structure?',
-      answer: 'For 2026-27 the annual tuition fee is ₹45,000 (2026-27 course fee sheet). Examination fees and caution deposit are charged as notified by the university; hostel and transport are optional and quoted by the admissions office. Merit, government and need-based scholarships are available for eligible learners.',
+      answer: 'For 2026-27 the Management Quota annual tuition fee is ₹45,000 (2026-27 course fee sheet); Government Quota tuition is As Per Government Norm. Examination fees and caution deposit are charged as notified by the university; hostel and transport are optional and quoted by the admissions office. Merit, government and need-based scholarships are available for eligible learners.',
     },
     {
       question: 'Are internships available?',

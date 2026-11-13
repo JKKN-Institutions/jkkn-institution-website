@@ -52,7 +52,7 @@ Total sanctioned intake 372 — 300 undergraduate across 5 B.E./B.Tech branches,
 ## Admissions
 
 - [Admissions 2026-27](${siteUrl}/admissions): B.E./B.Tech via TNEA counselling (tnea.ac.in) or direct admission. Eligibility: a pass in 10+2 with Mathematics, Physics and Chemistry, minimum average 45% for General Category and 40% for BC / MBC / DNC / SC / SCA / ST, as per the TNEA 2026 information brochure. Lateral entry for Diploma holders into 2nd year.
-- [Fee structure](${siteUrl}/admissions/fee-structure): Annual tuition for the 2026-27 academic year. Government quota — as per Tamil Nadu Government norms; fees are regulated by the State and may be revised each academic year. Management quota — B.E. CSE and B.Tech IT ₹80,000, B.E. ECE ₹70,000, B.E. EEE and B.E. Mechanical ₹45,000, MBA ₹65,000, M.E. CSE ₹30,000. Lateral entry — government quota as per Government norms, management quota ₹60,000. Examination fees, caution deposit and other university-mandated fees are charged additionally.
+- [Fee structure](${siteUrl}/admissions/fee-structure): Annual tuition for the 2026-27 academic year. Government quota — As Per Government Norm. Management quota — B.E. CSE and B.Tech IT ₹80,000, B.E. ECE ₹70,000, B.E. EEE and B.E. Mechanical ₹45,000, MBA ₹65,000, M.E. CSE ₹30,000. Lateral entry — government quota As Per Government Norm, management quota ₹60,000. Examination fees, caution deposit and other university-mandated fees are charged additionally.
 - [Hostel](${siteUrl}/hostel): Separate hostels for boys and girls. Hostel and mess charges are quoted by the admissions office.
 - Scholarships: Government schemes, merit-based, management concessions available.
 

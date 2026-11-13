@@ -561,7 +561,7 @@ export const meCSECourseData: MECSECoursePageProps = {
       },
       {
         question: 'What is the fee structure for the ME CSE program?',
-        answer: 'For 2026-27 the annual tuition fee is ₹30,000 (Management Quota); Government Quota tuition is as per Tamil Nadu Government norms. Examination fees and caution deposit are charged as notified by the university. Scholarships and financial aid are available for eligible learners.'
+        answer: 'For 2026-27 the annual tuition fee is ₹30,000 (Management Quota); Government Quota tuition is As Per Government Norm. Examination fees and caution deposit are charged as notified by the university. Scholarships and financial aid are available for eligible learners.'
       },
       {
         question: 'What is the placement record for ME CSE graduates?',

@@ -503,7 +503,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     },
     {
       component: 'Tuition Fee (Government Quota)',
-      amount: 'As per Govt. norms',
+      amount: 'As Per Government Norm',
     },
     {
       component: 'Examination Fee & Caution Deposit',
@@ -544,7 +544,7 @@ export const beMechanicalCourseData: BEMechanicalCoursePageProps = {
     },
     {
       question: 'How many B.E. Mechanical seats and what fees does JKKN have?',
-      answer: 'B.E. Mechanical Engineering has 60 seats approved by AICTE for 2026-27. Management Quota tuition is Rs 45,000 a year; Government Quota tuition is as per Tamil Nadu Government norms. There is no application fee.',
+      answer: 'B.E. Mechanical Engineering has 60 seats approved by AICTE for 2026-27. Management Quota tuition is Rs 45,000 a year; Government Quota tuition is As Per Government Norm. There is no application fee.',
     },
     {
       question: 'Where is the JKKN Mechanical Engineering college located?',

@@ -354,7 +354,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
   feeTitle: 'Fee Structure (Annual)',
   feeBreakdown: [
     { component: 'Tuition Fee (Management Quota, 2026-27)', amount: '₹70,000' },
-    { component: 'Tuition Fee (Government Quota)', amount: 'As per Govt. norms' },
+    { component: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norm' },
     { component: 'Examination Fee & Caution Deposit', amount: 'As notified by the university' },
     { component: 'Hostel Fee (Optional)', amount: 'As quoted by the admissions office' },
     { component: 'Annual Tuition (Management Quota)', amount: '₹70,000', isTotal: true },
@@ -571,7 +571,7 @@ export const BE_ECE_SAMPLE_DATA: BEECECoursePageProps = {
     },
     {
       question: 'What is the total fee structure for B.E. ECE program?',
-      answer: 'For 2026-27 the Management Quota annual tuition is ₹70,000; Government Quota tuition is as per Tamil Nadu Government norms. Examination fees and caution deposit are charged as notified by the university. Hostel and transport are optional and quoted by the admissions office.',
+      answer: 'For 2026-27 the Management Quota annual tuition is ₹70,000; Government Quota tuition is As Per Government Norm. Examination fees and caution deposit are charged as notified by the university. Hostel and transport are optional and quoted by the admissions office.',
     },
   ],
 

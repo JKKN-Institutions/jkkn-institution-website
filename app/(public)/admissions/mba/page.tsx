@@ -7,7 +7,7 @@ export const revalidate = 86400
 export const metadata: Metadata = {
   title: 'MBA Admission 2026-27 | Eligibility, Fees, TANCET — JKKN Engineering',
   description:
-    'MBA at JKKN College of Engineering and Technology: 60 AICTE seats, ₹65,000 a year. Government Quota through TANCET counselling, college code 2647.',
+    'MBA at JKKN College of Engineering and Technology: 60 AICTE seats, Management Quota ₹65,000 a year. Government Quota through TANCET counselling, college code 2647.',
   keywords: [
     'MBA admission 2026',
     'JKKN MBA admission',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'MBA Admission 2026-27 — Apply Online | JKKN Engineering',
     description:
-      '60 seats · ₹65,000/yr · Government Quota through TANCET counselling, college code 2647 · Finance · Marketing · HRM.',
+      '60 seats · Management Quota ₹65,000/yr · Government Quota through TANCET counselling, college code 2647 · Finance · Marketing · HRM.',
     type: 'website',
     images: [{ url: '/og/engineering-admissions.jpg', width: 1200, height: 630, alt: 'JKKN MBA Admissions 2026-27' }],
   },

@@ -304,7 +304,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   feeTitle: 'Fee Structure (Annual)',
   feeBreakdown: [
     { component: 'Tuition Fee (Management Quota, 2026-27)', amount: '₹65,000' },
-    { component: 'Tuition Fee (Government Quota)', amount: 'As per Govt. norms' },
+    { component: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norm' },
     { component: 'Examination Fee & Caution Deposit', amount: 'As notified by the university' },
     { component: 'Hostel Fee (Optional)', amount: 'As quoted by the admissions office' },
     { component: 'Annual Tuition (Management Quota)', amount: '₹65,000', isTotal: true },
@@ -514,11 +514,11 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
   faqs: [
     {
       question: 'How do I choose an MBA college in Tamil Nadu?',
-      answer: 'For learners from Namakkal, Erode and Salem districts, JKKN College of Engineering and Technology in Komarapalayam offers a full-time 2-year MBA with 60 AICTE-approved seats, four specializations (Marketing, Finance, HR, Operations) and an annual tuition fee of Rs 65,000 for both Government and Management Quota (2026-27 fee sheet). To compare MBA colleges across Tamil Nadu, check AICTE approval, the NIRF data each college files, the specializations offered, the annual fee, and the previous year allotment in the Tamil Nadu MBA counselling.',
+      answer: 'For learners from Namakkal, Erode and Salem districts, JKKN College of Engineering and Technology in Komarapalayam offers a full-time 2-year MBA with 60 AICTE-approved seats, four specializations (Marketing, Finance, HR, Operations) and an annual Management Quota tuition fee of Rs 65,000 (2026-27 fee sheet); the Government Quota fee is As Per Government Norm. To compare MBA colleges across Tamil Nadu, check AICTE approval, the NIRF data each college files, the specializations offered, the annual fee, and the previous year allotment in the Tamil Nadu MBA counselling.',
     },
     {
       question: 'Is JKKN an MBA college in Namakkal district?',
-      answer: 'Yes. JKKN College of Engineering and Technology is in Komarapalayam, Namakkal District, and offers a full-time 2-year MBA with 60 AICTE-approved seats, specializations in Marketing, Finance, HR and Operations, and an annual tuition fee of Rs 65,000 (2026-27). Its Tamil Nadu MBA counselling code is 2647. The campus is 65 km from Namakkal town and 18 km from Erode on NH-544.',
+      answer: 'Yes. JKKN College of Engineering and Technology is in Komarapalayam, Namakkal District, and offers a full-time 2-year MBA with 60 AICTE-approved seats, specializations in Marketing, Finance, HR and Operations, and an annual Management Quota tuition fee of Rs 65,000 (2026-27). Its Tamil Nadu MBA counselling code is 2647. The campus is 65 km from Namakkal town and 18 km from Erode on NH-544.',
     },
     {
       question: 'What is the Tamil Nadu MBA counselling code of JKKN?',
@@ -526,11 +526,11 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     },
     {
       question: 'Is JKKN a good MBA college for students from Erode?',
-      answer: 'For students from Erode, JKKN College of Engineering and Technology in Komarapalayam, Namakkal District, is 18 km from Erode on NH-544 and offers a full-time 2-year MBA with 60 AICTE-approved seats, four specializations (Marketing, Finance, HR, Operations) and an annual tuition fee of Rs 65,000. The college is in Namakkal District, not Erode District. Colleges inside Erode District also offer MBA, so compare fees, specializations and travel time before you choose.',
+      answer: 'For students from Erode, JKKN College of Engineering and Technology in Komarapalayam, Namakkal District, is 18 km from Erode on NH-544 and offers a full-time 2-year MBA with 60 AICTE-approved seats, four specializations (Marketing, Finance, HR, Operations) and an annual Management Quota tuition fee of Rs 65,000. The college is in Namakkal District, not Erode District. Colleges inside Erode District also offer MBA, so compare fees, specializations and travel time before you choose.',
     },
     {
       question: 'Is there a good MBA college near Salem?',
-      answer: 'For students from Salem, JKKN College of Engineering and Technology in Komarapalayam, Namakkal District, is 57 km from Salem on NH-544 (Salem to Coimbatore National Highway) and offers a full-time 2-year MBA with 60 AICTE-approved seats, four specializations and an annual tuition fee of Rs 65,000. Its Tamil Nadu MBA counselling code is 2647, and separate hostels are available for boys and girls. Salem District also has its own MBA colleges, so compare fees, specializations and daily travel before you choose.',
+      answer: 'For students from Salem, JKKN College of Engineering and Technology in Komarapalayam, Namakkal District, is 57 km from Salem on NH-544 (Salem to Coimbatore National Highway) and offers a full-time 2-year MBA with 60 AICTE-approved seats, four specializations and an annual Management Quota tuition fee of Rs 65,000. Its Tamil Nadu MBA counselling code is 2647, and separate hostels are available for boys and girls. Salem District also has its own MBA colleges, so compare fees, specializations and daily travel before you choose.',
     },
     {
       question: 'How far is the JKKN MBA campus from Erode?',
@@ -558,7 +558,7 @@ export const MBA_SAMPLE_DATA: MBACoursePageProps = {
     {
       question: 'How much is the MBA program fee?',
       answer:
-        'For 2026-27 the annual tuition fee for MBA is ₹65,000 for both Government and Management Quota (JKKN course fee sheet). Examination fees and caution deposit are charged as notified by the university; hostel is optional and quoted by the admissions office. Government scholarships apply for eligible learners.',
+        'For 2026-27 the annual tuition fee for MBA is ₹65,000 under Management Quota (JKKN course fee sheet); the Government Quota fee is As Per Government Norm. Examination fees and caution deposit are charged as notified by the university; hostel is optional and quoted by the admissions office. Government scholarships apply for eligible learners.',
     },
     {
       question: 'What is the placement record for MBA graduates?',

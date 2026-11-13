@@ -501,7 +501,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Does JKKNCET offer MBA in Namakkal district?',
         answer:
-          'Yes. JKKN College of Engineering and Technology in Komarapalayam, Namakkal district, offers a full-time 2-year MBA with 60 AICTE-approved seats, specializations in Marketing, Finance, HR and Operations, and an annual tuition fee of Rs 65,000 (2026-27). Its Tamil Nadu MBA counselling code is 2647. Full details are on the MBA page of this website.',
+          'Yes. JKKN College of Engineering and Technology in Komarapalayam, Namakkal district, offers a full-time 2-year MBA with 60 AICTE-approved seats, specializations in Marketing, Finance, HR and Operations, and an annual Management Quota tuition fee of Rs 65,000 (2026-27). Its Tamil Nadu MBA counselling code is 2647. Full details are on the MBA page of this website.',
       },
       {
         question: 'What placement data has JKKNCET filed?',
@@ -601,7 +601,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       {
         question: 'Does JKKNCET offer MBA for Salem students?',
         answer:
-          'Yes. JKKN College of Engineering and Technology in Komarapalayam, Namakkal district, 57 km from Salem on NH-544, offers a full-time 2-year MBA with 60 AICTE-approved seats, specializations in Marketing, Finance, HR and Operations, and an annual tuition fee of Rs 65,000 (2026-27). Its Tamil Nadu MBA counselling code is 2647. Full details are on the MBA page of this website.',
+          'Yes. JKKN College of Engineering and Technology in Komarapalayam, Namakkal district, 57 km from Salem on NH-544, offers a full-time 2-year MBA with 60 AICTE-approved seats, specializations in Marketing, Finance, HR and Operations, and an annual Management Quota tuition fee of Rs 65,000 (2026-27). Its Tamil Nadu MBA counselling code is 2647. Full details are on the MBA page of this website.',
       },
       {
         question: 'What placement data has JKKNCET filed?',

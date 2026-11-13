@@ -147,7 +147,7 @@ function FeeTable({ rows }: { rows: FeeEntry[] }) {
                 </td>
                 <td className="px-5 py-4 text-right whitespace-nowrap">
                   <span className="inline-block text-gray-600 text-xs italic bg-gray-100 px-2.5 py-1 rounded-md">
-                    As per Govt. norms
+                    As Per Government Norm
                   </span>
                 </td>
                 <td className="px-6 py-4 text-right whitespace-nowrap bg-[#ffde59]/5 group-hover:bg-[#ffde59]/15 transition-colors">
@@ -185,7 +185,7 @@ function FeeTable({ rows }: { rows: FeeEntry[] }) {
                   Govt. Quota
                 </div>
                 <div className="mt-1 text-sm font-semibold text-gray-800 tabular-nums">
-                  As per Govt. norms
+                  As Per Government Norm
                 </div>
               </div>
               <div className="rounded-lg border border-[#0b6d41]/25 bg-[#ffde59]/10 px-3 py-2.5">
@@ -264,7 +264,7 @@ export default function EngineeringFeeStructurePage() {
               <h3 className="text-base font-semibold text-gray-900">Government Quota</h3>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed">
-              Allotted through TNEA counselling by Anna University, Chennai. Tuition fees are regulated by the Tamil Nadu Government and may be revised each academic year. Eligible learners pay as per government norms.
+              Allotted through TNEA counselling by Anna University, Chennai. Tuition fees are regulated by the Tamil Nadu Government and may be revised each academic year. Government Quota fee: As Per Government Norm.
             </p>
           </div>
           <div className="rounded-xl border border-[#0b6d41]/15 bg-[#f6faf7] p-6">

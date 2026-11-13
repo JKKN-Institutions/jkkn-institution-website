@@ -248,27 +248,27 @@ export const REQUIRED_DOCUMENTS: {
 
 export interface FeeEntry {
   program: string
-  gqFee: number
+  gqFee: string
   mqFee: number
   category: 'UG' | 'PG' | 'Lateral Entry'
 }
 
 export const FEE_STRUCTURE: FeeEntry[] = [
   // Engineering UG
-  { program: 'CSE', gqFee: 65000, mqFee: 80000, category: 'UG' },
-  { program: 'B.Tech IT', gqFee: 65000, mqFee: 80000, category: 'UG' },
-  { program: 'ECE', gqFee: 60000, mqFee: 70000, category: 'UG' },
-  { program: 'EEE', gqFee: 45000, mqFee: 45000, category: 'UG' },
-  { program: 'MECH', gqFee: 45000, mqFee: 45000, category: 'UG' },
+  { program: 'CSE', gqFee: 'As Per Government Norm', mqFee: 80000, category: 'UG' },
+  { program: 'B.Tech IT', gqFee: 'As Per Government Norm', mqFee: 80000, category: 'UG' },
+  { program: 'ECE', gqFee: 'As Per Government Norm', mqFee: 70000, category: 'UG' },
+  { program: 'EEE', gqFee: 'As Per Government Norm', mqFee: 45000, category: 'UG' },
+  { program: 'MECH', gqFee: 'As Per Government Norm', mqFee: 45000, category: 'UG' },
   // Engineering PG
-  { program: 'MBA', gqFee: 65000, mqFee: 65000, category: 'PG' },
-  { program: 'ME CSE', gqFee: 30000, mqFee: 30000, category: 'PG' },
+  { program: 'MBA', gqFee: 'As Per Government Norm', mqFee: 65000, category: 'PG' },
+  { program: 'ME CSE', gqFee: 'As Per Government Norm', mqFee: 30000, category: 'PG' },
   // Engineering Lateral Entry
-  { program: 'CSE', gqFee: 50000, mqFee: 60000, category: 'Lateral Entry' },
-  { program: 'B.Tech IT', gqFee: 50000, mqFee: 60000, category: 'Lateral Entry' },
-  { program: 'ECE', gqFee: 50000, mqFee: 60000, category: 'Lateral Entry' },
-  { program: 'EEE', gqFee: 50000, mqFee: 60000, category: 'Lateral Entry' },
-  { program: 'MECH', gqFee: 50000, mqFee: 60000, category: 'Lateral Entry' },
+  { program: 'CSE', gqFee: 'As Per Government Norm', mqFee: 60000, category: 'Lateral Entry' },
+  { program: 'B.Tech IT', gqFee: 'As Per Government Norm', mqFee: 60000, category: 'Lateral Entry' },
+  { program: 'ECE', gqFee: 'As Per Government Norm', mqFee: 60000, category: 'Lateral Entry' },
+  { program: 'EEE', gqFee: 'As Per Government Norm', mqFee: 60000, category: 'Lateral Entry' },
+  { program: 'MECH', gqFee: 'As Per Government Norm', mqFee: 60000, category: 'Lateral Entry' },
 ]
 
 // ─── Admission Dates ─────────────────────────────────────────────────────────
@@ -373,7 +373,7 @@ export const SCHOLARSHIP_GROUPS: ScholarshipGroup[] = [
     schemes: [
       {
         name: 'PMSS (Community Scholarship)',
-        benefit: 'BE/BTech: ₹50,000/Yr · MBA: ₹35,000/Yr · ME: ₹50,000/Yr',
+        benefit: 'BE/BTech, MBA, ME: As Per Government Norm',
         eligibility: 'SC/SCA/ST/BC-CC category learners admitted under Government Quota (GQ)',
       },
       {
@@ -457,7 +457,7 @@ export const SCHOLARSHIP_TABLE: ScholarshipTableRow[] = [
     sNo: 1,
     course: 'BE / B.Tech',
     courseFull: 'Bachelor of Engineering / Bachelor of Technology',
-    pmssGQ: '₹50,000 / Yr',
+    pmssGQ: 'As Per Government Norm',
     maintenanceMQ: '₹5K – ₹10K / Yr',
     bcFirstGraduate: '₹25,000 / Yr',
     bcCommunity: '₹5K – ₹10K / Yr',
@@ -469,7 +469,7 @@ export const SCHOLARSHIP_TABLE: ScholarshipTableRow[] = [
     sNo: 2,
     course: 'MBA',
     courseFull: 'Master of Business Administration',
-    pmssGQ: '₹35,000 / Yr',
+    pmssGQ: 'As Per Government Norm',
     maintenanceMQ: '₹5K – ₹10K / Yr',
     bcFirstGraduate: null,
     bcCommunity: '₹5K – ₹10K / Yr',
@@ -481,7 +481,7 @@ export const SCHOLARSHIP_TABLE: ScholarshipTableRow[] = [
     sNo: 3,
     course: 'M.E',
     courseFull: 'Master of Engineering',
-    pmssGQ: '₹50,000 / Yr',
+    pmssGQ: 'As Per Government Norm',
     maintenanceMQ: '₹5K – ₹10K / Yr',
     bcFirstGraduate: null,
     bcCommunity: '₹5K – ₹10K / Yr',
@@ -663,7 +663,7 @@ export const FAQS: FAQItem[] = [
   {
     question: 'What is the total cost of education including hostel?',
     answer:
-      'For 2026-27, B.E / B.Tech Management Quota annual tuition ranges from ₹45,000 (EEE / MECH) to ₹80,000 (CSE / IT); Government Quota tuition is as per Tamil Nadu Government norms. Hostel accommodation (optional, all-inclusive with meals and utilities) is quoted by the admissions office. Scholarships can significantly reduce tuition costs for eligible learners.',
+      'For 2026-27, B.E / B.Tech Management Quota annual tuition ranges from ₹45,000 (EEE / MECH) to ₹80,000 (CSE / IT); Government Quota tuition is As Per Government Norm. Hostel accommodation (optional, all-inclusive with meals and utilities) is quoted by the admissions office. Scholarships can significantly reduce tuition costs for eligible learners.',
     audience: 'parent',
   },
   {

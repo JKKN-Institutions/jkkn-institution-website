@@ -216,7 +216,7 @@ export const BE_EEE_ADMISSION: CourseAdmissionData = {
   documentsAdditionalLabel: 'for UG (B.E EEE) Applicants',
   feeBreakdown: [
     { item: 'Tuition Fee (Management Quota)', amount: '₹45,000', note: 'One of our most affordable branches' },
-    { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norms', note: 'Fixed by Tamil Nadu Govt / Anna University' },
+    { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norm', note: '' },
     { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
@@ -234,7 +234,7 @@ export const BE_EEE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the fee for B.E EEE — Government and Management Quota?',
       answer:
-        'Management Quota: ₹45,000/year (one of the most affordable engineering branches at JKKN). Government Quota: as per Tamil Nadu Government norms. Hostel (optional, all-inclusive): as quoted by the admissions office.',
+        'Management Quota: ₹45,000/year (one of the most affordable engineering branches at JKKN). Government Quota: As Per Government Norm. Hostel (optional, all-inclusive): as quoted by the admissions office.',
     },
     {
       question: 'How do I apply for B.E EEE — what is the process?',
@@ -268,7 +268,7 @@ export const BE_EEE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the difference between Government Quota and Management Quota?',
       answer:
-        'GQ seats allotted through TNEA counselling based on 10+2 cutoff (Anna University). MQ seats filled directly by college on merit-cum-preference basis. For B.E EEE both quotas have the same Management Quota fee — Government fee is per government norms.',
+        'GQ seats allotted through TNEA counselling based on 10+2 cutoff (Anna University). MQ seats filled directly by college on merit-cum-preference basis. For B.E EEE the Government Quota fee is As Per Government Norm.',
     },
     AUTONOMOUS_FAQ,
   ],
@@ -299,7 +299,7 @@ export const BE_ECE_ADMISSION: CourseAdmissionData = {
   documentsAdditionalLabel: 'for UG (B.E ECE) Applicants',
   feeBreakdown: [
     { item: 'Tuition Fee (Management Quota)', amount: '₹70,000', note: 'High-demand electronics branch' },
-    { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norms', note: 'Fixed by Tamil Nadu Govt / Anna University' },
+    { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norm', note: '' },
     { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
@@ -317,7 +317,7 @@ export const BE_ECE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the B.E ECE fee?',
       answer:
-        'Management Quota: ₹70,000/year. Government Quota: as per Tamil Nadu Government norms. Hostel (optional): as quoted by the admissions office. Zero application fee.',
+        'Management Quota: ₹70,000/year. Government Quota: As Per Government Norm. Hostel (optional): as quoted by the admissions office. Zero application fee.',
     },
     {
       question: 'What specializations does B.E ECE offer?',
@@ -381,7 +381,7 @@ export const BE_MECHANICAL_ADMISSION: CourseAdmissionData = {
   documentsAdditionalLabel: 'for UG (B.E Mechanical) Applicants',
   feeBreakdown: [
     { item: 'Tuition Fee (Management Quota)', amount: '₹45,000', note: 'Most affordable engineering branch' },
-    { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norms', note: 'Fixed by Tamil Nadu Govt / Anna University' },
+    { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norm', note: '' },
     { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
@@ -399,7 +399,7 @@ export const BE_MECHANICAL_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the fee for B.E Mechanical?',
       answer:
-        'Management Quota: ₹45,000/year — most affordable engineering branch at JKKN. Government Quota: as per Tamil Nadu Government norms. Hostel (optional): as quoted by the admissions office. Zero application fee.',
+        'Management Quota: ₹45,000/year — most affordable engineering branch at JKKN. Government Quota: As Per Government Norm. Hostel (optional): as quoted by the admissions office. Zero application fee.',
     },
     {
       question: 'What specializations does B.E Mechanical offer?',
@@ -463,7 +463,7 @@ export const BTECH_IT_ADMISSION: CourseAdmissionData = {
   documentsAdditionalLabel: 'for UG (B.Tech IT) Applicants',
   feeBreakdown: [
     { item: 'Tuition Fee (Management Quota)', amount: '₹80,000', note: 'High-demand IT branch' },
-    { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norms', note: 'Fixed by Tamil Nadu Govt / Anna University' },
+    { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norm', note: '' },
     { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
@@ -481,7 +481,7 @@ export const BTECH_IT_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the B.Tech IT fee at JKKN?',
       answer:
-        'Management Quota: ₹80,000/year. Government Quota: as per Tamil Nadu Government norms. Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
+        'Management Quota: ₹80,000/year. Government Quota: As Per Government Norm. Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
     },
     {
       question: 'What is the difference between B.E CSE and B.Tech IT?',
@@ -547,7 +547,8 @@ export const ME_CSE_ADMISSION: CourseAdmissionData = {
   counsellingPaths: PG_ME_COUNSELLING_PATHS,
   documentsAdditionalLabel: 'for PG (M.E CSE) Applicants',
   feeBreakdown: [
-    { item: 'Tuition Fee (All Quotas)', amount: '₹30,000', note: 'Subsidized PG fee — most affordable PG engineering' },
+    { item: 'Tuition Fee (Management Quota)', amount: '₹30,000', note: 'Subsidized PG fee — most affordable PG engineering' },
+    { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norm', note: '' },
     { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
@@ -564,7 +565,7 @@ export const ME_CSE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the M.E CSE fee?',
       answer:
-        '₹30,000/year — the most affordable PG engineering fee. Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
+        'Management Quota: ₹30,000/year — the most affordable PG engineering fee. Government Quota: As Per Government Norm. Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
     },
     {
       question: 'Is TANCET mandatory for M.E CSE?',
@@ -630,7 +631,8 @@ export const MBA_ADMISSION: CourseAdmissionData = {
   counsellingPaths: MBA_COUNSELLING_PATHS,
   documentsAdditionalLabel: 'for PG (MBA) Applicants',
   feeBreakdown: [
-    { item: 'Tuition Fee (All Quotas)', amount: '₹65,000', note: 'Affordable MBA fee — industry-aligned learning framework' },
+    { item: 'Tuition Fee (Management Quota)', amount: '₹65,000', note: 'Affordable MBA fee — industry-aligned learning framework' },
+    { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norm', note: '' },
     { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
@@ -647,7 +649,7 @@ export const MBA_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the MBA fee?',
       answer:
-        '₹65,000/year for both quotas. Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
+        'Management Quota: ₹65,000/year. Government Quota: As Per Government Norm. Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
     },
     {
       question: 'Which entrance exam is needed for MBA at JKKN?',

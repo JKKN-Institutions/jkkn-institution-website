@@ -323,7 +323,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
   feeTitle: 'Fee Structure 2026-27',
   feeBreakdown: [
     { component: 'Tuition Fee (Management Quota, 2026-27)', amount: '₹80,000' },
-    { component: 'Tuition Fee (Government Quota)', amount: 'As per Govt. norms' },
+    { component: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norm' },
     { component: 'Examination Fee & Caution Deposit', amount: 'As notified by the university' },
     { component: 'Annual Tuition (Management Quota)', amount: '₹80,000', isTotal: true },
     { component: 'Hostel Fee (Optional)', amount: 'As quoted by the admissions office' },
@@ -470,7 +470,7 @@ export const BE_IT_SAMPLE_DATA: BEITCoursePageProps = {
     },
     {
       question: 'What is the fee structure for B.Tech IT at JKKN?',
-      answer: 'For 2026-27 the Management Quota annual tuition is ₹80,000; Government Quota tuition is as per Tamil Nadu Government norms. Examination fees and caution deposit are charged as notified by the university. Merit-based scholarships are available for eligible learners. Hostel is optional and quoted by the admissions office.',
+      answer: 'For 2026-27 the Management Quota annual tuition is ₹80,000; Government Quota tuition is As Per Government Norm. Examination fees and caution deposit are charged as notified by the university. Merit-based scholarships are available for eligible learners. Hostel is optional and quoted by the admissions office.',
     },
   ],
 

@@ -76,7 +76,7 @@ export function FeeScholarshipsSection({ fees, scholarships }: FeeScholarshipsSe
                       {fee.program}
                     </td>
                     <td className="px-5 py-4 text-right text-gray-300">
-                      {formatCurrency(fee.gqFee)}
+                      As Per Government Norm
                     </td>
                     <td className="px-5 py-4 text-right text-[#ffde59] font-bold">
                       {formatCurrency(fee.mqFee)}

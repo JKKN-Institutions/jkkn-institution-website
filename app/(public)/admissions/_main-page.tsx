@@ -420,7 +420,7 @@ export default function MainAdmissionsPage() {
             icon: 'Building2',
             title: 'PMSS Community Scholarship',
             description: 'Post Matric Scholarship Scheme for SC/SCA/ST/BC-CC category learners (GQ)',
-            eligibility: ['BE/BTech: ₹50,000/Year', 'MBA: ₹35,000/Year', 'ME: ₹50,000/Year'],
+            eligibility: ['BE/BTech, MBA, ME: As Per Government Norm'],
             type: 'government',
           },
           {
