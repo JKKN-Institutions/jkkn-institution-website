@@ -12,6 +12,10 @@
 // (lib/institutions/engineering/official-data.ts). Re-check before each deploy: a dead
 // program_id is a lead that never lands.
 //
+// 2026-11-13 (DEP-110): the CRM form no longer holds B.E. ECE as a8816345-afbd-4a0b-b1cc-c2d147ef5660;
+// its ECE row now has the id 894b702c-c7ca-49a8-8b10-bf286169ba7d (same name, Engineering institution).
+// The other 69 ids matched the live form definition that day. A CRM row can come back under a new id.
+//
 // LEFT OUT ON PURPOSE. "B.Ed (Historical Aggregate)" - a data-migration bucket in the CRM, not a
 // programme anyone applies to (the Education site leaves it out for the same reason). The CRM has
 // no school institution, so the Matriculation and CBSE schools are not in this form (user's choice
@@ -66,7 +70,7 @@ export const CRM_INSTITUTIONS: ReadonlyArray<CrmInstitution> = [
     id: '5de4fba1-4564-41ed-8c73-5d948b74b843',
     programmes: [
       { id: '7bf53be0-1cc5-407d-9a14-c1b6b39e874a', label: 'B.E. Computer Science and Engineering' },
-      { id: 'a8816345-afbd-4a0b-b1cc-c2d147ef5660', label: 'B.E. Electronics and Communication Engineering' },
+      { id: '894b702c-c7ca-49a8-8b10-bf286169ba7d', label: 'B.E. Electronics and Communication Engineering' },
       { id: 'b65f9aa8-66e4-4e71-bebd-30683b3016ff', label: 'B.E. Electrical and Electronics Engineering' },
       { id: '353f2c9e-7385-4e01-9aee-29c5b4fa0e6c', label: 'B.E. Mechanical Engineering' },
       { id: '5acfd400-da68-4fb6-8886-40e8b27c6a7c', label: 'B.Tech Information Technology' },
@@ -173,7 +177,7 @@ export function institutionForProgramme(siteId: string, programmeId: string): st
 // read 2026-10-31). Every other page opens on "Select a Programme".
 export const ENGG_DEFAULT_PROGRAMME_BY_SLUG: Readonly<Record<string, string>> = {
   'be-cse': '7bf53be0-1cc5-407d-9a14-c1b6b39e874a',
-  'be-ece': 'a8816345-afbd-4a0b-b1cc-c2d147ef5660',
+  'be-ece': '894b702c-c7ca-49a8-8b10-bf286169ba7d',
   'be-eee': 'b65f9aa8-66e4-4e71-bebd-30683b3016ff',
   'be-mechanical': '353f2c9e-7385-4e01-9aee-29c5b4fa0e6c',
   'btech-it': '5acfd400-da68-4fb6-8886-40e8b27c6a7c',
