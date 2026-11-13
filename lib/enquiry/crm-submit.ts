@@ -15,9 +15,12 @@
 //
 // PII: name and phone go to the CRM and nowhere else. Never log them, never send them to GA4.
 
+import { cookies } from 'next/headers'
+import { after } from 'next/server'
 import { z } from 'zod'
 import { institutionForProgramme } from '@/lib/enquiry/crm-programmes'
 import { crmCampaign } from '@/lib/enquiry/campaign-tags'
+import { sendServerLeadEvent, type ServerLeadEvent } from '@/lib/enquiry/ga4-server-event'
 import type { EnquirySite } from '@/lib/enquiry/site'
 
 const CRM_SLUG = 'jkkn-admission-2026'
@@ -49,6 +52,29 @@ const EnquirySchema = z.object({
 function text(formData: FormData, key: string): string {
   const v = formData.get(key)
   return typeof v === 'string' ? v : ''
+}
+
+// DEP-100 (2026-11-13). Tells GA4, from this server, what the CRM did with the lead - see
+// lib/enquiry/ga4-server-event.ts. after() runs it once the parent already has the answer, so it can
+// never slow or break a submit, and it does nothing until the site's secret is set. No name, no phone.
+async function scheduleServerLeadEvent(
+  site: EnquirySite,
+  name: ServerLeadEvent,
+  tracking: { source_page: string; programme_id: string }
+) {
+  try {
+    const gaCookie = (await cookies()).get('_ga')?.value ?? null
+    after(() =>
+      sendServerLeadEvent({
+        siteId: site.id,
+        name,
+        gaCookie,
+        params: { form_name: site.formName, source_page: tracking.source_page, programme: tracking.programme_id },
+      })
+    )
+  } catch {
+    // Outside a request (a unit test, a script): tracking must never touch the lead.
+  }
 }
 
 export async function submitEnquiryToCrm(
@@ -130,6 +156,7 @@ export async function submitEnquiryToCrm(
 
     if (res.status === 409) {
       // This phone has already applied. Not a failure for the parent - they are in the list.
+      if (!payload.honeypot) await scheduleServerLeadEvent(site, 'lead_crm_duplicate', tracking)
       return {
         success: true,
         duplicate: true,
@@ -144,6 +171,8 @@ export async function submitEnquiryToCrm(
       return { success: false, error: `We could not submit your enquiry just now. ${callUs}` }
     }
 
+    // A filled honeypot means the CRM scores this as a bot - it is not a lead, so GA4 is not told one.
+    if (!payload.honeypot) await scheduleServerLeadEvent(site, 'lead_crm_accepted', tracking)
     return {
       success: true,
       message: 'Thank you. Our admission team will contact you within 24 hours on WhatsApp or by phone.',
