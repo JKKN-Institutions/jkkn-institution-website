@@ -75,7 +75,9 @@ export function EnquiryForm({
     if (!site || !state?.success || fired.current) return
     fired.current = true
     writeStore(ENQUIRY_DONE_KEY, new Date().toISOString())
-    sendLeadEvent('lead_form_submit', {
+    // DEP-100 (2026-11-13), same rule as the college sites: a 409 (phone already applied) is not a new
+    // CRM lead, so it is lead_form_duplicate and lead_form_submit counts new leads only.
+    sendLeadEvent(state.duplicate ? 'lead_form_duplicate' : 'lead_form_submit', {
       form_name: site.formName,
       source_page: sourcePage,
       programme: state.tracking?.programme_id ?? 'not_selected',
@@ -155,8 +157,9 @@ export function EnquiryForm({
       .then((result) => {
         if (!result.success) throw new Error('not accepted')
         writeStore(ENQUIRY_DONE_KEY, new Date().toISOString())
-        // Same event, same params as the ordinary form, so lead_form_submit stays one series.
-        sendLeadEvent('lead_form_submit', {
+        // Same event, same params as the ordinary form, so lead_form_submit stays one series
+        // (a 409 is lead_form_duplicate here too - DEP-100).
+        sendLeadEvent(result.duplicate ? 'lead_form_duplicate' : 'lead_form_submit', {
           form_name: formName,
           source_page: sourcePage,
           programme: result.tracking?.programme_id ?? 'not_selected',
