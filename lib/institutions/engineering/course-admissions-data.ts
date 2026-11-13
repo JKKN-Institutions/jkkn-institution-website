@@ -133,7 +133,7 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
   documentsAdditionalLabel: 'for UG (B.E CSE) Applicants',
   feeBreakdown: [
     { item: 'Tuition Fee (Management Quota)', amount: '₹80,000', note: 'Highest demand branch — premium fee' },
-    { item: 'Tuition Fee (Government Quota)', amount: '₹65,000', note: '2026-27 JKKN course fee sheet' },
+    { item: 'Tuition Fee (Government Quota)', amount: 'As Per Government Norm', note: '' },
     { item: 'Hostel (Optional)', amount: 'As quoted by the admissions office', note: 'All-inclusive: meals, utilities, Wi-Fi' },
     { item: 'Application Fee', amount: 'FREE', note: 'No charge for application' },
   ],
@@ -151,7 +151,7 @@ export const BE_CSE_ADMISSION: CourseAdmissionData = {
     {
       question: 'What is the B.E CSE fee at JKKN?',
       answer:
-        'Management Quota: ₹80,000/year (highest among engineering branches due to demand). Government Quota: ₹65,000/year (2026-27 JKKN course fee sheet). Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
+        'Management Quota: ₹80,000/year (highest among engineering branches due to demand). Government Quota: As Per Government Norm. Hostel (optional, all-inclusive): as quoted by the admissions office. Zero application fee.',
     },
     {
       question: 'Does B.E CSE cover AI / Machine Learning?',
