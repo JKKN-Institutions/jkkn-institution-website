@@ -28,6 +28,8 @@ const HIDDEN_FIRST_SEGMENTS = new Set([
   'mandatory-disclosure',
   'iqac',
   'naac',
+  // 2026-11-14 (user's call after the www forms check): legal page, same as privacy-policy.
+  'terms-and-conditions',
 ])
 
 export function EnquirySection() {
