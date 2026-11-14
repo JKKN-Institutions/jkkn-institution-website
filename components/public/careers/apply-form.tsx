@@ -22,7 +22,7 @@ import {
   buildApplyFormData, resumeClientError, submitApplication, type ApplyFailureKind, type ApplyResult,
 } from '@/lib/services/public-careers-apply'
 import { autofillWrites, type ResumeAutofillResult } from '@/lib/utils/resume-fields'
-import { EMPTY_RESUME_LISTS, resumeListsAreEmpty, type ResumeLists } from '@/lib/utils/resume-lists'
+import { EMPTY_RESUME_LISTS, type ResumeLists } from '@/lib/utils/resume-lists'
 import { ApplyModeChooser, type ApplyMode } from './apply-mode-chooser'
 import { ResumeAutofillPanel, ResumeChip, type AutofillVia } from './resume-autofill-panel'
 import { ResumeListsEditor } from './resume-lists-editor'
@@ -92,6 +92,9 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFor
 
   function chooseMode(next: ApplyMode) {
     trackCareersEvent('careers_apply_mode', { job_id: jobId, mode: next })
+    // Leaving upload mode abandons any reading in flight, so it will never
+    // report back; the lists stay for the applicant but stop saying "reading".
+    if (next === 'manual') setListsReading(false)
     setMode(next)
   }
 
@@ -114,7 +117,10 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFor
       return
     }
     setListsReading(false)
-    if (listsEdited || resumeListsAreEmpty(incoming)) return
+    // Rows the applicant has touched are theirs. Untouched rows always mirror
+    // the latest reading — including an empty one, so swapping in a different
+    // resume cannot leave the previous file's rows behind to be submitted.
+    if (listsEdited) return
     setLists(incoming)
   }
 
@@ -126,6 +132,7 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFor
   /** Writes a reading's values into fields the candidate has not typed; returns how many. */
   function applyAutofill(r: ResumeAutofillResult, opts: { partial?: boolean } = {}): number {
     if (!r.ok) {
+      setListsReading(false)
       trackCareersEvent('careers_resume_autofill', { job_id: jobId, outcome: r.reason, fields_filled: 0 })
       return 0
     }
@@ -133,6 +140,10 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFor
     const written = Object.keys(writes) as AutofillField[]
     for (const field of written) setValue(field, writes[field] as string, { shouldValidate: true })
     setAutofilled(prev => new Set([...prev, ...written]))
+    // A settled reading — however it ended — stops the "still reading" line.
+    // Without this a resume MyJKKN cannot read leaves the section saying it is
+    // still working, forever: the failure paths never carry lists.
+    setListsReading(false)
     if (opts.partial) return written.length // email/phone ahead of the Max-lane answer; tracked once at the end
     trackCareersEvent('careers_resume_autofill', {
       job_id: jobId, outcome: written.length > 0 ? 'filled' : 'none', fields_filled: written.length,

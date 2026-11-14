@@ -139,3 +139,21 @@ describe('serializeResumeLists', () => {
     expect(JSON.parse(out.education)).toHaveLength(RESUME_LIST_LIMITS.educationItems)
   })
 })
+
+// Regression, 14 Nov 2026: the editor used to say "still reading your resume"
+// forever when the reading failed, because every failure path reports the
+// switch with no lists and nothing ever cleared the flag. The form now clears
+// it on any settled reading. These cover the pure rules the form leans on.
+describe('a reading that cannot help', () => {
+  it('gives empty lists, not junk, so the editor starts blank for the applicant', () => {
+    expect(listsFromFill(undefined)).toEqual(EMPTY_RESUME_LISTS)
+    expect(resumeListsAreEmpty(listsFromFill(undefined))).toBe(true)
+  })
+
+  it('an empty reading is still a real answer: it must be able to replace untouched rows', () => {
+    // The form writes `listsFromFill(incoming)` over untouched rows whatever it
+    // holds, so swapping in a second resume cannot leave the first one's rows
+    // behind to be submitted. Serialising the empty result sends nothing.
+    expect(serializeResumeLists(listsFromFill({ work_history: [], education: [], skills: [] }))).toEqual({})
+  })
+})
