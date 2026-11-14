@@ -153,7 +153,10 @@ export function EnquiryForm({
     setGatePhase({ step: 'opened', result: 'waiting', programmeId, intent })
 
     request
-      .then((res) => res.json() as Promise<EnquiryState>)
+      .then((res) => {
+        if (!res.ok) throw new Error('not accepted')
+        return res.json() as Promise<EnquiryState>
+      })
       .then((result) => {
         if (!result.success) throw new Error('not accepted')
         writeStore(ENQUIRY_DONE_KEY, new Date().toISOString())
@@ -170,13 +173,18 @@ export function EnquiryForm({
         if (!result.duplicate) sendMetaLead(sourcePage)
         setGatePhase((p) => (p.step === 'opened' ? { ...p, result: 'saved' } : p))
       })
-      .catch(() => {
-        sendLeadEvent('lead_form_error', {
+      .catch((err: unknown) => {
+        // "not accepted" = the server answered no (422 / 400 / a non-JSON 5xx): a real failure. Anything else = the
+        // browser lost the answer - WhatsApp or the dialer took the screen, or the same-tab fallback left the page -
+        // and the keepalive request has usually reached the CRM anyway (2026-11-07 08:29 IST, Nursing: a B.Sc lead in
+        // the CRM and lead_form_error in GA4 the same minute). Counted apart, so lead_form_error stays a real failure.
+        const refused = err instanceof Error && err.message === 'not accepted'
+        sendLeadEvent(refused ? 'lead_form_error' : 'lead_form_unconfirmed', {
           form_name: formName,
           source_page: sourcePage,
           page_path: window.location.pathname,
         })
-        sendLeadEvent(`${gateEvent}_fail`, { source_page: sourcePage, page_path: window.location.pathname })
+        sendLeadEvent(`${gateEvent}_${refused ? 'fail' : 'unconfirmed'}`, { source_page: sourcePage, page_path: window.location.pathname })
         setGatePhase((p) => (p.step === 'opened' ? { ...p, result: 'failed' } : p))
       })
   }
