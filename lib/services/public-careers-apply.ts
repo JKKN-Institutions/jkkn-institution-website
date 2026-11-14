@@ -6,6 +6,8 @@
 // Server Action would put every applicant behind one Vercel egress IP.
 // Contract: MyJKKN docs/public-careers-api.md §3.
 
+import { serializeResumeLists, type ResumeLists } from '@/lib/utils/resume-lists'
+
 export const MAX_RESUME_BYTES = 2 * 1024 * 1024
 export const RESUME_EXTENSIONS = ['pdf', 'doc', 'docx'] as const
 
@@ -34,6 +36,13 @@ export interface ApplyValues {
   /** Honeypot. Rendered hidden; a real user never fills it. */
   website?: string
   resume: File
+  /**
+   * Work history, education and skills the applicant checked on the form.
+   * Sent only while MyJKKN has hr.recruitment.resume_lists.enabled on (the
+   * form learns that from resume-read). Left out otherwise, so the request is
+   * byte-for-byte what it was before this existed.
+   */
+  resume_lists?: ResumeLists
 }
 
 export function buildApplyFormData(v: ApplyValues): FormData {
@@ -57,6 +66,12 @@ export function buildApplyFormData(v: ApplyValues): FormData {
   fd.set('consent', v.consent ? 'true' : 'false')
   fd.set('website', v.website ?? '')
   fd.set('resume', v.resume, v.resume.name)
+  // work_history / education as JSON arrays, skills as a comma-separated line:
+  // the shape MyJKKN's parseResumeListsForm reads. Nothing is set when the
+  // applicant left all three empty.
+  if (v.resume_lists) {
+    for (const [key, value] of Object.entries(serializeResumeLists(v.resume_lists))) fd.set(key, value)
+  }
   return fd
 }
 

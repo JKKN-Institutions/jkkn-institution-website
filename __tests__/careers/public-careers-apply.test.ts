@@ -82,3 +82,63 @@ describe('submitApplication', () => {
     expect(r).toMatchObject({ ok: false, kind: 'error' })
   })
 })
+
+// ── Work history, education and skills (Director, 14 Nov 2026) ──────────────
+// Ships OFF: the form sends resume_lists only once MyJKKN's resume-read has
+// said the feature is on. With it absent the request must be exactly what it
+// was before this existed, or every applicant on every one of the six sites is
+// affected by a feature nobody has switched on.
+
+describe('buildApplyFormData — the three lists', () => {
+  const KEYS_WITHOUT_LISTS = [
+    'first_name', 'last_name', 'email', 'phone', 'qualification', 'experience_months',
+    'worked_cities', 'utm_source', 'consent', 'website', 'resume',
+  ]
+
+  it('sends no list field at all when MyJKKN has the switch off', () => {
+    const fd = buildApplyFormData(VALUES)
+    expect([...fd.keys()].sort()).toEqual([...KEYS_WITHOUT_LISTS].sort())
+    expect(fd.get('work_history')).toBeNull()
+    expect(fd.get('education')).toBeNull()
+    expect(fd.get('skills')).toBeNull()
+  })
+
+  it('sends nothing extra when the switch is on but the applicant left all three empty', () => {
+    const fd = buildApplyFormData({
+      ...VALUES,
+      resume_lists: { work_history: [], education: [], skills: '' },
+    })
+    expect([...fd.keys()].sort()).toEqual([...KEYS_WITHOUT_LISTS].sort())
+  })
+
+  it('sends the lists in the shape MyJKKN parses: JSON arrays, skills as a line', () => {
+    const fd = buildApplyFormData({
+      ...VALUES,
+      resume_lists: {
+        work_history: [{ employer: 'ABC College', role: 'Assistant Professor', from: '2019-06', to: 'present' }],
+        education: [{ degree: 'M.Pharm', subject: 'Pharmaceutics', institution: 'JKKN', year: '2021' }],
+        skills: 'HPLC, Teaching',
+      },
+    })
+    expect(JSON.parse(String(fd.get('work_history')))).toEqual([
+      { employer: 'ABC College', role: 'Assistant Professor', from: '2019-06', to: 'present' },
+    ])
+    expect(JSON.parse(String(fd.get('education')))).toEqual([
+      { degree: 'M.Pharm', subject: 'Pharmaceutics', institution: 'JKKN', year: '2021' },
+    ])
+    expect(fd.get('skills')).toBe('HPLC, Teaching')
+    // The rest of the application is untouched.
+    expect(fd.get('first_name')).toBe('Priya')
+    expect(fd.get('consent')).toBe('true')
+  })
+
+  it('sends only the lists that have something in them', () => {
+    const fd = buildApplyFormData({
+      ...VALUES,
+      resume_lists: { work_history: [], education: [], skills: 'HPLC' },
+    })
+    expect(fd.get('skills')).toBe('HPLC')
+    expect(fd.get('work_history')).toBeNull()
+    expect(fd.get('education')).toBeNull()
+  })
+})

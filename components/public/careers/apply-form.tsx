@@ -22,8 +22,10 @@ import {
   buildApplyFormData, resumeClientError, submitApplication, type ApplyFailureKind, type ApplyResult,
 } from '@/lib/services/public-careers-apply'
 import { autofillWrites, type ResumeAutofillResult } from '@/lib/utils/resume-fields'
+import { EMPTY_RESUME_LISTS, type ResumeLists } from '@/lib/utils/resume-lists'
 import { ApplyModeChooser, type ApplyMode } from './apply-mode-chooser'
 import { ResumeAutofillPanel, ResumeChip, type AutofillVia } from './resume-autofill-panel'
+import { ResumeListsEditor } from './resume-lists-editor'
 
 interface ApplyFormProps {
   jobId: string
@@ -56,6 +58,17 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFor
   const [result, setResult] = useState<ApplyResult | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const started = useRef(false)
+  /**
+   * Work history, education and skills (Director, 14 Nov 2026). MyJKKN tells us
+   * on its resume-read reply whether the feature is on; there is no other way
+   * to know, so a candidate who types instead of uploading never sees this —
+   * deliberate, and noted on the PR.
+   */
+  const [listsOn, setListsOn] = useState(false)
+  const [lists, setLists] = useState<ResumeLists>(EMPTY_RESUME_LISTS)
+  /** True once the candidate has touched the lists: a late reading must not overwrite them. */
+  const [listsEdited, setListsEdited] = useState(false)
+  const [listsReading, setListsReading] = useState(false)
 
   // First interaction with the panel (a choice card or any field) = the candidate has started applying.
   function onFirstFocus() {
@@ -79,6 +92,9 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFor
 
   function chooseMode(next: ApplyMode) {
     trackCareersEvent('careers_apply_mode', { job_id: jobId, mode: next })
+    // Leaving upload mode abandons any reading in flight, so it will never
+    // report back; the lists stay for the applicant but stop saying "reading".
+    if (next === 'manual') setListsReading(false)
     setMode(next)
   }
 
@@ -87,9 +103,36 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFor
     setResumeError(error)
   }
 
+  /**
+   * (on, null) the moment MyJKKN answers the upload — show the three lists at
+   * once so an unreadable resume still gets them. (on, lists) when a reading
+   * carries them: written only while the candidate has not touched them, the
+   * same rule the flat fields follow. A reading can take over two minutes.
+   */
+  function onResumeLists(on: boolean, incoming: ResumeLists | null) {
+    if (!on) return
+    setListsOn(true)
+    if (!incoming) {
+      setListsReading(true)
+      return
+    }
+    setListsReading(false)
+    // Rows the applicant has touched are theirs. Untouched rows always mirror
+    // the latest reading — including an empty one, so swapping in a different
+    // resume cannot leave the previous file's rows behind to be submitted.
+    if (listsEdited) return
+    setLists(incoming)
+  }
+
+  function editLists(next: ResumeLists) {
+    setListsEdited(true)
+    setLists(next)
+  }
+
   /** Writes a reading's values into fields the candidate has not typed; returns how many. */
   function applyAutofill(r: ResumeAutofillResult, opts: { partial?: boolean } = {}): number {
     if (!r.ok) {
+      setListsReading(false)
       trackCareersEvent('careers_resume_autofill', { job_id: jobId, outcome: r.reason, fields_filled: 0 })
       return 0
     }
@@ -97,6 +140,10 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFor
     const written = Object.keys(writes) as AutofillField[]
     for (const field of written) setValue(field, writes[field] as string, { shouldValidate: true })
     setAutofilled(prev => new Set([...prev, ...written]))
+    // A settled reading — however it ended — stops the "still reading" line.
+    // Without this a resume MyJKKN cannot read leaves the section saying it is
+    // still working, forever: the failure paths never carry lists.
+    setListsReading(false)
     if (opts.partial) return written.length // email/phone ahead of the Max-lane answer; tracked once at the end
     trackCareersEvent('careers_resume_autofill', {
       job_id: jobId, outcome: written.length > 0 ? 'filled' : 'none', fields_filled: written.length,
@@ -127,6 +174,7 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFor
       consent: true,
       resume,
       utm_source: typeof window !== 'undefined' ? window.location.hostname : undefined,
+      resume_lists: listsOn ? lists : undefined,
     })
     const r = await submitApplication(apiBaseUrl, jobId, fd)
     setSubmitting(false)
@@ -217,6 +265,7 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFor
               fileError={resumeError}
               onFile={attachResume}
               onResult={applyAutofill}
+              onLists={onResumeLists}
               via={autofillVia ?? 'api'}
               apiBaseUrl={apiBaseUrl}
             />
@@ -240,6 +289,8 @@ export function ApplyForm({ jobId, jobTitle, apiBaseUrl, autofillVia }: ApplyFor
               {field('worked_cities', 'Cities you have worked in', { hint: 'Comma-separated, e.g. Salem, Erode' })}
             </div>
           </details>
+
+          {listsOn && <ResumeListsEditor lists={lists} onChange={editLists} reading={listsReading} />}
 
           {mode === 'manual' && (
             <div className="space-y-1.5">
