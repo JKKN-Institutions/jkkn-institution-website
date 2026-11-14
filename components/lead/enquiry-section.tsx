@@ -30,6 +30,10 @@ const HIDDEN_FIRST_SEGMENTS = new Set([
   'naac',
   // 2026-11-14 (user's call after the www forms check): legal page, same as privacy-policy.
   'terms-and-conditions',
+  // Same day: www /nirf (its twin /iqac/nirf is already hidden) and /others - www
+  // /others/academic-calendar, engg /others and /others/academic-calendar (student-service pages).
+  'nirf',
+  'others',
 ])
 
 export function EnquirySection() {
