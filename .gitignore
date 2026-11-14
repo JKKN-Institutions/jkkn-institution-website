@@ -50,3 +50,6 @@ next-env.d.ts
 
 # scratch / working files (not part of the build)
 .tmp/
+
+# Browser-downloaded settings files ("env (2).download" etc.) - never commit (2026-11-14)
+*.download
