@@ -36,6 +36,25 @@ const HIDDEN_FIRST_SEGMENTS = new Set([
   'others',
 ])
 
+// Engineering only (DEP-112, user's call 2026-11-14: "12 pages la erukura form ah remove paniru"): these
+// pages answer 200 and then send the browser on to a Google Drive PDF (committee lists, NSS, R&D cell,
+// the assessment manual), so the form was never seen there - 160 views and 0 submits in 6 months
+// (GA4, 2026-11-13). www pages with the same path are not touched.
+const ENGG_HIDDEN_FIRST_SEGMENTS = new Set([
+  'anti-drug-club',
+  'anti-drug-committee',
+  'anti-ragging-squad',
+  'drug-free-tamilnadu-orientation-program',
+  'examination-manual',
+  'internal-compliant-committee',
+  'library-advisory-committee',
+  'library-committee',
+  'minority-committee',
+  'nss',
+  'research-and-development-cell',
+  'sc-st-committee',
+])
+
 export function EnquirySection() {
   const pathname = usePathname() || '/'
   const site = currentEnquirySite()
@@ -43,6 +62,7 @@ export function EnquirySection() {
 
   const segments = pathname.toLowerCase().split('/').filter(Boolean)
   if (segments[0] && HIDDEN_FIRST_SEGMENTS.has(segments[0])) return null
+  if (site.id === 'engineering' && segments[0] && ENGG_HIDDEN_FIRST_SEGMENTS.has(segments[0])) return null
 
   const programmeId =
     site.id === 'engineering' && segments[0] === 'admissions' && segments[1]
