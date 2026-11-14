@@ -9,6 +9,16 @@ import { z } from 'zod'
 
 export const MAX_CITIES_LENGTH = 1000
 
+/**
+ * The GitHub name inside what the candidate typed: a name, @name, or a
+ * github.com profile link (Director 3 Nov 2026: "just submit their GitHub link").
+ * Same trimming as MyJKKN's apply validation; MyJKKN re-checks it.
+ */
+export function githubNameFrom(raw: string): string {
+  return raw.trim().replace(/^(https?:\/\/)?(www\.)?github\.com\//i, '').replace(/^@/, '').replace(/\/+$/, '')
+}
+const GITHUB_NAME_RE = /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/
+
 const optionalMonths = z
   .string()
   .trim()
@@ -33,6 +43,11 @@ export const applyFormSchema = z.object({
   current_company: z.string().trim().max(150),
   current_job_duration_months: optionalMonths,
   worked_cities: z.string().trim().max(MAX_CITIES_LENGTH),
+  // Optional; only shown on jobs with asks_github.
+  github_username: z.string().trim().max(200).refine(
+    v => v === '' || GITHUB_NAME_RE.test(githubNameFrom(v)),
+    'Paste your GitHub profile link (github.com/your-name) or your GitHub username, or leave it empty.',
+  ),
   consent: z.boolean().refine(v => v === true, 'Please accept the privacy consent to apply.'),
   website: z.string().max(0), // honeypot
 })

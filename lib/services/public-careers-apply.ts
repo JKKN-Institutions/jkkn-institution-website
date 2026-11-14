@@ -6,6 +6,8 @@
 // Server Action would put every applicant behind one Vercel egress IP.
 // Contract: MyJKKN docs/public-careers-api.md §3.
 
+import { githubNameFrom } from '@/lib/schemas/careers-apply-form'
+
 export const MAX_RESUME_BYTES = 2 * 1024 * 1024
 export const RESUME_EXTENSIONS = ['pdf', 'doc', 'docx'] as const
 
@@ -29,6 +31,8 @@ export interface ApplyValues {
   current_company?: string
   current_job_duration_months?: number | null
   worked_cities?: string
+  /** Optional GitHub name or profile link; MyJKKN trims a link to the name. */
+  github_username?: string
   consent: boolean
   utm_source?: string
   /** Honeypot. Rendered hidden; a real user never fills it. */
@@ -53,6 +57,8 @@ export function buildApplyFormData(v: ApplyValues): FormData {
   set('current_company', v.current_company)
   set('current_job_duration_months', v.current_job_duration_months)
   set('worked_cities', v.worked_cities)
+  // Sent as the bare name, so MyJKKN gets the same value however it was typed.
+  set('github_username', v.github_username ? githubNameFrom(v.github_username) : v.github_username)
   set('utm_source', v.utm_source)
   fd.set('consent', v.consent ? 'true' : 'false')
   fd.set('website', v.website ?? '')
