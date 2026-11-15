@@ -103,12 +103,34 @@ describe('buildApplyFormData — the three lists', () => {
     expect(fd.get('skills')).toBeNull()
   })
 
-  it('sends nothing extra when the switch is on but the applicant left all three empty', () => {
+  // Changed 15 Nov 2026. MyJKKN's apply route now gates on resumeListsShown(form):
+  // it saves the lists only when a list field OR the marker is present. Without
+  // the marker, an applicant who deliberately emptied all three sends nothing,
+  // MyJKKN stores NULL instead of a confirmed empty list, and its backfill of
+  // older applications fills AI-read work history over a deliberate blank.
+  it('sends the shown-marker even when the applicant emptied all three lists', () => {
     const fd = buildApplyFormData({
       ...VALUES,
       resume_lists: { work_history: [], education: [], skills: '' },
     })
-    expect([...fd.keys()].sort()).toEqual([...KEYS_WITHOUT_LISTS].sort())
+    expect(fd.get('resume_lists_shown')).toBe('1')
+    expect(fd.get('work_history')).toBeNull()
+    expect(fd.get('education')).toBeNull()
+    expect(fd.get('skills')).toBeNull()
+    expect([...fd.keys()].sort()).toEqual([...KEYS_WITHOUT_LISTS, 'resume_lists_shown'].sort())
+  })
+
+  it('sends the shown-marker alongside lists that do have content', () => {
+    const fd = buildApplyFormData({
+      ...VALUES,
+      resume_lists: { work_history: [], education: [], skills: 'HPLC' },
+    })
+    expect(fd.get('resume_lists_shown')).toBe('1')
+    expect(fd.get('skills')).toBe('HPLC')
+  })
+
+  it('sends NO marker when the switch is off, so the request is unchanged', () => {
+    expect(buildApplyFormData(VALUES).get('resume_lists_shown')).toBeNull()
   })
 
   it('sends the lists in the shape MyJKKN parses: JSON arrays, skills as a line', () => {

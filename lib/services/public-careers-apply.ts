@@ -67,9 +67,17 @@ export function buildApplyFormData(v: ApplyValues): FormData {
   fd.set('website', v.website ?? '')
   fd.set('resume', v.resume, v.resume.name)
   // work_history / education as JSON arrays, skills as a comma-separated line:
-  // the shape MyJKKN's parseResumeListsForm reads. Nothing is set when the
-  // applicant left all three empty.
+  // the shape MyJKKN's parseResumeListsForm reads. Only the lists that have
+  // something in them are sent.
+  //
+  // `resume_lists_shown` is sent whenever the applicant SAW the three lists,
+  // even if they emptied all of them. MyJKKN's apply route gates on
+  // resumeListsShown(form): without this marker, an applicant who deliberately
+  // cleared all three sends no list field at all, so MyJKKN stores NULL rather
+  // than a confirmed empty list — and its backfill of older applications then
+  // fills in AI-read work history over a blank the applicant chose on purpose.
   if (v.resume_lists) {
+    fd.set('resume_lists_shown', '1')
     for (const [key, value] of Object.entries(serializeResumeLists(v.resume_lists))) fd.set(key, value)
   }
   return fd
