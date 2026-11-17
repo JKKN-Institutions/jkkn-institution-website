@@ -8,7 +8,7 @@
 import type { PublicJob } from '@/lib/schemas/public-careers'
 import { canonicalCity } from '@/lib/utils/careers-facets'
 import { looksLikeHtml, sanitizeJobHtml } from '@/lib/utils/careers-html'
-import type { ListPageRef } from '@/lib/utils/careers-landing'
+import { CAMPUS, type ListPageRef } from '@/lib/utils/careers-landing'
 import { formatJobTitle } from '@/lib/utils/careers-text'
 
 const EMPLOYMENT_TYPE: Record<string, string> = {
@@ -40,6 +40,13 @@ export function buildJobPostingJsonLd(job: PublicJob, pageUrl: string): Record<s
   if (!job.posted_at || job.seo?.noindex) return null
 
   const title = formatJobTitle(job.title)
+  const city = canonicalCity(job.city)
+  // Every JKKN job is on the one campus, so a job in its town gets the campus
+  // street and PIN (Google warns "Missing field streetAddress / postalCode"
+  // without them). A job in any other town keeps town-level detail only.
+  const campusAddress = city === CAMPUS.locality
+    ? { streetAddress: CAMPUS.street, postalCode: CAMPUS.postalCode }
+    : {}
   const description = [
     // Google accepts HTML in JobPosting.description; ship the sanitised markup.
     job.description ? (looksLikeHtml(job.description) ? sanitizeJobHtml(job.description) : job.description) : '',
@@ -63,7 +70,8 @@ export function buildJobPostingJsonLd(job: PublicJob, pageUrl: string): Record<s
       '@type': 'Place',
       address: {
         '@type': 'PostalAddress',
-        addressLocality: canonicalCity(job.city) ?? undefined,
+        ...campusAddress,
+        addressLocality: city ?? undefined,
         addressRegion: job.state ?? undefined,
         addressCountry: job.country ? (COUNTRY_CODE[job.country.toLowerCase()] ?? job.country) : 'IN',
       },
@@ -90,7 +98,9 @@ export function buildJobPostingJsonLd(job: PublicJob, pageUrl: string): Record<s
   if (credential) {
     ld.educationRequirements = { '@type': 'EducationalOccupationalCredential', credentialCategory: credential }
   }
-  if (job.min_experience_years !== null) {
+  // 0 years means "no experience needed"; Google rejects monthsOfExperience 0
+  // ("must be positive"), so the property is left out instead.
+  if (job.min_experience_years !== null && job.min_experience_years > 0) {
     ld.experienceRequirements = { '@type': 'OccupationalExperienceRequirements', monthsOfExperience: job.min_experience_years * 12 }
   }
   return ld
