@@ -176,6 +176,28 @@ function distanceFaq(jobsNoun: string): Faq {
   }
 }
 
+// ── Staff transport ─────────────────────────────────────────────────────────
+// Districts are the ones the /transport page lists as covered (read 2026-11-17).
+// That teaching and non-teaching staff may use the college buses was confirmed
+// by the website team on 2026-11-17. Routes, distances and timings stay on
+// /transport so this block cannot drift from it.
+
+export const STAFF_TRANSPORT = {
+  href: '/transport',
+  districts: ['Namakkal', 'Salem', 'Erode', 'Tiruppur'],
+} as const
+
+export const staffTransportText = (): string =>
+  `JKKN college buses run routes across ${joinList([...STAFF_TRANSPORT.districts])} districts, and teaching and non-teaching staff can use them.`
+
+function transportFaq(): Faq {
+  return {
+    question: 'Is there a college bus for staff from Salem or Erode?',
+    alsoAsked: 'Salem, Erode la irundhu staff ku college bus irukka?',
+    answer: `Yes. ${staffTransportText()} The buses bring staff to the ${CAMPUS.locality} campus. Bus routes and distances are listed on the JKKN Transport page (jkkn.ac.in/transport), and the transport department shares the timings.`,
+  }
+}
+
 /**
  * `postsNoun` reads in front of "posts" and "job", e.g. "teaching". With no
  * closing date on any listing the answer is the plain one: JKKN hires for
@@ -228,6 +250,7 @@ export function buildTeachingFaqs<T extends LandingJob>(landing: TeachingLanding
       answer: `JKKN Institutions is at Natarajapuram on NH-544, the Salem to Coimbatore National Highway, in ${where}, ${CAMPUS.region} ${CAMPUS.postalCode}. The campus is ${CAMPUS.nearestCityKm} km by road from ${CAMPUS.nearestCity} city. Every teaching role listed on this page is based at this one ${CAMPUS.locality} campus.`,
     },
     distanceFaq('teaching jobs'),
+    transportFaq(),
     lastDateFaq('Is there a last date to apply for JKKN teaching jobs?', 'teaching', !landing.alwaysOpen),
   ]
 }
@@ -322,6 +345,7 @@ export function buildNonTeachingFaqs<T extends LandingJob>(landing: NonTeachingL
       answer: `JKKN Institutions is at Natarajapuram on NH-544, the Salem to Coimbatore National Highway, in ${where}, ${CAMPUS.region} ${CAMPUS.postalCode}. The campus is ${CAMPUS.nearestCityKm} km by road from ${CAMPUS.nearestCity} city. Every non-teaching role listed on this page is based at this one ${CAMPUS.locality} campus.`,
     },
     distanceFaq('non-teaching jobs'),
+    transportFaq(),
     lastDateFaq('Is there a last date to apply for JKKN non-teaching jobs?', 'non-teaching', !landing.alwaysOpen),
   ]
 }
@@ -451,6 +475,7 @@ export function buildDesignationFaqs<T extends LandingJob>(
       answer: `JKKN Institutions is at Natarajapuram on NH-544, the Salem to Coimbatore National Highway, in ${where}, ${CAMPUS.region} ${CAMPUS.postalCode}. The campus is ${CAMPUS.nearestCityKm} km by road from ${CAMPUS.nearestCity} city. Every role listed on this page is based at this one ${CAMPUS.locality} campus.`,
     },
     distanceFaq(`${lower} jobs`),
+    transportFaq(),
     lastDateFaq(`Is there a last date to apply for ${lower} jobs at JKKN?`, lower, !landing.alwaysOpen),
   ]
 }

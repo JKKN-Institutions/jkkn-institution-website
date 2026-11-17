@@ -13,7 +13,7 @@ const CONFIG: DesignationConfig = {
   title: 'Lecturer Jobs in Namakkal, near Erode | JKKN Careers',
   description:
     'Lecturer, Senior Lecturer and Reader jobs at JKKN Institutions, Komarapalayam, Namakkal District, 18 km from Erode. Apply online.',
-  h1: 'Lecturer, Senior Lecturer and Reader Jobs at JKKN Institutions, Komarapalayam',
+  h1: 'Lecturer, Senior Lecturer and Reader Jobs at JKKN Institutions, Komarapalayam, Namakkal District',
   crumb: 'Lecturer Jobs',
   noun: 'Lecturer and Reader',
   introTail: 'The list covers Lecturer, Senior Lecturer and Reader posts.',

@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import type { JobCardData } from '@/lib/services/public-careers-search'
-import { CAMPUS, buildDistanceBlock, type Faq } from '@/lib/utils/careers-landing'
+import { CAMPUS, STAFF_TRANSPORT, buildDistanceBlock, staffTransportText, type Faq } from '@/lib/utils/careers-landing'
 import { CareersUnavailable } from './careers-unavailable'
 import { JobCard } from './job-card'
 
@@ -249,6 +249,13 @@ export function JobLanding(props: JobLandingProps) {
               </tbody>
             </table>
           </div>
+          <p className="mt-4 max-w-4xl text-foreground/90">
+            {staffTransportText()}{' '}
+            <Link href={STAFF_TRANSPORT.href} className="font-semibold text-primary underline underline-offset-4">
+              See bus routes and distances
+            </Link>
+            .
+          </p>
         </Section>
 
         <Section id="about" title="About JKKN Institutions as an employer">
