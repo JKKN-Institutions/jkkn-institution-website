@@ -12,12 +12,25 @@
 import { NextResponse } from 'next/server'
 import { generateSitemapXML, type SitemapEntry } from '@/lib/config/sitemaps.config'
 import { getSiteCareers } from '@/lib/services/public-careers-search'
+import { isMainInstitution } from '@/lib/config/multi-tenant'
 import { getSiteUrl } from '@/lib/utils/site-url'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 3600 // 1-hour edge cache; env vars read at request time
 
+const XML_HEADERS = {
+  'Content-Type': 'application/xml; charset=utf-8',
+  'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+}
+
 export async function GET() {
+  // Job pages are canonical on the parent site only (see getMainSiteUrl), so a
+  // college site lists none: an empty, valid sitemap tells Google its old
+  // college-host job URLs are not the ones to index (2026-11-17).
+  if (!isMainInstitution()) {
+    return new NextResponse(generateSitemapXML([]), { headers: XML_HEADERS })
+  }
+
   const siteUrl = getSiteUrl()
 
   let entries: SitemapEntry[]
