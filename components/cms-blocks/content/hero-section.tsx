@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import type { HeroSectionProps } from '@/lib/cms/registry-types'
-import { useEffect, useState, useRef, useMemo } from 'react'
+import { useEffect, useState, useRef, useMemo, type ReactNode } from 'react'
 import { ChevronDown, ArrowRight, Award, TrendingUp, Users, Calendar } from 'lucide-react'
 import Image from 'next/image'
 
@@ -69,6 +69,27 @@ const fontSizeClasses: Record<string, string> = {
   '6xl': 'text-3xl sm:text-5xl lg:text-6xl xl:text-7xl',
 }
 
+const textAlignClasses: Record<string, string> = {
+  left: 'text-left',
+  center: 'text-center',
+  right: 'text-right',
+  justify: 'text-justify',
+}
+
+/**
+ * Optional right-hand column (www homepage enquiry card, 2026-11-17). From xl (1280 px) up the hero
+ * splits into text left + aside right; below xl the aside is not shown and the hero looks exactly as
+ * before. Only app/(public)/page.tsx passes it (through PageRenderer's firstBlockAside), so every
+ * other page that uses this block renders the same DOM as before. PageRenderer hides its
+ * afterFirstBlock card at the same xl breakpoint - keep the two in step.
+ */
+type HeroAsideProps = { aside?: ReactNode }
+
+function TextColumn({ split, children }: { split: boolean; children: ReactNode }): ReactNode {
+  if (!split) return children
+  return <div className="flex w-full min-w-0 flex-col items-center xl:items-start xl:text-left">{children}</div>
+}
+
 const fontWeightClasses: Record<string, string> = {
   normal: 'font-normal',
   medium: 'font-medium',
@@ -119,7 +140,9 @@ export default function HeroSection({
   minHeight = '100vh',
   className,
   isEditing,
-}: HeroSectionProps) {
+  aside,
+}: HeroSectionProps & HeroAsideProps) {
+  const split = Boolean(aside)
   const [isMounted, setIsMounted] = useState(false)
   const [scrollY, setScrollY] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
@@ -256,7 +279,13 @@ export default function HeroSection({
 
 
       {/* Main Content */}
-      <div className="container relative z-10 mx-auto px-4 py-16 flex flex-col items-center">
+      <div
+        className={cn(
+          'container relative z-10 mx-auto px-4 py-16 flex flex-col items-center',
+          split && 'xl:grid xl:grid-cols-[minmax(0,1fr)_28rem] xl:items-center xl:gap-12 xl:py-10'
+        )}
+      >
+        <TextColumn split={split}>
         {/* Logo Badge - Custom logo or default AI badge (hidden when trust badges are shown) */}
         {(logoImage || (showAiBadge && !showTrustBadges)) && (
           <div
@@ -307,13 +336,14 @@ export default function HeroSection({
             fontSizeClasses[titleFontSize] || 'text-5xl',
             fontWeightClasses[titleFontWeight] || 'font-bold',
             titleFontStyle === 'italic' && 'italic',
+            split && cn(textAlignClasses[titleTextAlign] || 'text-center', 'xl:text-left'),
           )}
           style={{
             color: titleColor,
             textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
             lineHeight: titleLineHeight,
             letterSpacing: `${titleLetterSpacing}px`,
-            textAlign: titleTextAlign as React.CSSProperties['textAlign'],
+            textAlign: split ? undefined : (titleTextAlign as React.CSSProperties['textAlign']),
           }}
         >
           {useMemo(() => {
@@ -337,13 +367,14 @@ export default function HeroSection({
               alignment === 'center' && 'mx-auto',
               fontWeightClasses[subtitleFontWeight] || 'font-normal',
               subtitleFontStyle === 'italic' && 'italic',
+              split && cn(textAlignClasses[subtitleTextAlign] || 'text-center', 'xl:text-left xl:mx-0'),
             )}
             style={{
               color: subtitleColor,
               fontSize: getFontSize(subtitleFontSize),
               lineHeight: subtitleLineHeight,
               letterSpacing: `${subtitleLetterSpacing}px`,
-              textAlign: subtitleTextAlign as React.CSSProperties['textAlign'],
+              textAlign: split ? undefined : (subtitleTextAlign as React.CSSProperties['textAlign']),
             }}
           >
             {subtitle}
@@ -356,6 +387,7 @@ export default function HeroSection({
             className={cn(
               'mt-6 flex flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-4xl transition-opacity duration-1000 delay-400 will-change-opacity',
               alignment === 'center' && 'mx-auto',
+              split && 'xl:justify-start xl:mx-0',
               isMounted ? "opacity-100" : "opacity-0"
             )}
           >
@@ -414,6 +446,7 @@ export default function HeroSection({
             className={cn(
               'mt-4 mb-6 flex flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-4xl transition-opacity duration-1000 delay-300 will-change-opacity',
               alignment === 'center' && 'mx-auto',
+              split && 'xl:justify-start xl:mx-0',
               isMounted ? "opacity-100" : "opacity-0"
             )}
           >
@@ -470,6 +503,7 @@ export default function HeroSection({
             alignment === 'center' && 'justify-center',
             alignment === 'left' && 'justify-start',
             alignment === 'right' && 'justify-end',
+            split && 'xl:justify-start',
             isMounted ? "opacity-100" : "opacity-0"
           )}
         >
@@ -493,12 +527,16 @@ export default function HeroSection({
             </a>
           ))}
         </div>
+        </TextColumn>
+
+        {split && <div className="hidden xl:block">{aside}</div>}
       </div>
 
       {/* Scroll Indicator */}
       <div
         className={cn(
           "absolute bottom-8 left-1/2 -translate-x-1/2 transition-opacity duration-1000 delay-700 will-change-opacity",
+          split && 'xl:hidden',
           isMounted ? "opacity-100" : "opacity-0"
         )}
       >

@@ -43,6 +43,9 @@ type Props = {
    *  TWO buttons, "Call Counsellor" + "Chat on WhatsApp". Either way ONE tap sends the lead and
    *  opens the app. */
   gate?: GateIntent
+  /** The 1-2-3 "what happens next" strip. Default on. The www homepage hero card leaves it out
+   *  (2026-11-17): without it the Call / WhatsApp buttons fit a 1366x768 laptop's first screen. */
+  showSteps?: boolean
 }
 
 type GatePhase =
@@ -56,6 +59,7 @@ export function EnquiryForm({
   compact = false,
   bare = false,
   gate,
+  showSteps = true,
 }: Props) {
   const site = currentEnquirySite()
   // Unique per instance: a page can show this form twice (section + popup).
@@ -293,22 +297,24 @@ export function EnquiryForm({
         {gate === 'call' ? 'Call our admission counsellor' : gate === 'whatsapp' ? 'Chat with us on WhatsApp' : heading}
       </h2>
 
-      <ol aria-label="What happens next" className="grid grid-cols-3 gap-1.5">
-        {steps.map((step, i) => (
-          <li
-            key={step}
-            className="rounded-xl bg-[#f1f7f3] px-1.5 py-2.5 text-center text-xs font-semibold leading-tight text-[#032816] hyphens-auto"
-          >
-            <span
-              aria-hidden="true"
-              className="mx-auto mb-1.5 grid h-6 w-6 place-items-center rounded-full bg-[#ffde59] text-xs font-bold"
+      {showSteps && (
+        <ol aria-label="What happens next" className="grid grid-cols-3 gap-1.5">
+          {steps.map((step, i) => (
+            <li
+              key={step}
+              className="rounded-xl bg-[#f1f7f3] px-1.5 py-2.5 text-center text-xs font-semibold leading-tight text-[#032816] hyphens-auto"
             >
-              {i + 1}
-            </span>
-            {step}
-          </li>
-        ))}
-      </ol>
+              <span
+                aria-hidden="true"
+                className="mx-auto mb-1.5 grid h-6 w-6 place-items-center rounded-full bg-[#ffde59] text-xs font-bold"
+              >
+                {i + 1}
+              </span>
+              {step}
+            </li>
+          ))}
+        </ol>
+      )}
 
       <div className={twoCol}>
         <div>

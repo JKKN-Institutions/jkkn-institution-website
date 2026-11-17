@@ -1,6 +1,7 @@
 'use client'
 
 import { Fragment, Suspense, type ReactNode } from 'react'
+import { asideForBlock, type FirstBlockAside } from '@/lib/cms/first-block-aside'
 import { getComponent, getComponentEntry, isFullWidthComponent } from '@/lib/cms/component-registry'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
@@ -70,6 +71,11 @@ interface PageRendererProps {
   /** Rendered right after the first top-level block (the hero), inside the same tree. Used by the
    *  homepage for its enquiry card (lead options round 2, 2026-11-06). */
   afterFirstBlock?: ReactNode
+  /** Passed as the `aside` prop of the first top-level block, but only when that block is
+   *  `component` (www homepage enquiry card in the hero, 2026-11-17). When it lands, afterFirstBlock
+   *  is hidden from xl (1280 px) up - the hero shows the aside from xl up (hero-section.tsx), so a
+   *  visitor sees one card, never two. When the first block is anything else, nothing changes. */
+  firstBlockAside?: FirstBlockAside<ReactNode>
 }
 
 function BlockSkeleton() {
@@ -139,7 +145,7 @@ function buildBlockTree(blocks: BlockData[]): BlockData[] {
 /**
  * Recursively render a block and its children
  */
-function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?: boolean }) {
+function RenderBlock({ block, isNested = false, aside }: { block: BlockData; isNested?: boolean; aside?: ReactNode }) {
   const Component = getComponent(block.component_name)
   const entry = getComponentEntry(block.component_name)
 
@@ -238,7 +244,11 @@ function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?:
         <BlockWrapper>
           <BlockErrorBoundary componentName={block.component_name}>
             <Suspense fallback={<BlockSkeleton />}>
-              <Component {...block.props} id={typeof block.props?.id === 'string' ? block.props.id : block.id}>
+              <Component
+                {...block.props}
+                {...(aside ? { aside } : {})}
+                id={typeof block.props?.id === 'string' ? block.props.id : block.id}
+              >
                 {block.children
                   .filter((child) => child.is_visible)
                   .map((child) => (
@@ -258,7 +268,11 @@ function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?:
       <BlockWrapper>
         <BlockErrorBoundary componentName={block.component_name}>
           <Suspense fallback={<BlockSkeleton />}>
-            <Component {...block.props} id={typeof block.props?.id === 'string' ? block.props.id : block.id} />
+            <Component
+              {...block.props}
+              {...(aside ? { aside } : {})}
+              id={typeof block.props?.id === 'string' ? block.props.id : block.id}
+            />
           </Suspense>
         </BlockErrorBoundary>
       </BlockWrapper>
@@ -266,7 +280,7 @@ function RenderBlock({ block, isNested = false }: { block: BlockData; isNested?:
   )
 }
 
-export function PageRenderer({ blocks, pageTypography, afterFirstBlock }: PageRendererProps) {
+export function PageRenderer({ blocks, pageTypography, afterFirstBlock, firstBlockAside }: PageRendererProps) {
   // Filter to only visible blocks
   const visibleBlocks = blocks.filter((block) => block.is_visible)
 
@@ -292,12 +306,15 @@ export function PageRenderer({ blocks, pageTypography, afterFirstBlock }: PageRe
     <DynamicFontLoader fontFamily={fontFamily}>
       <PageTypographyProvider typography={pageTypography}>
         <div className="page-content">
-          {blockTree.map((block, i) => (
-            <Fragment key={block.id}>
-              <RenderBlock block={block} />
-              {i === 0 && afterFirstBlock}
-            </Fragment>
-          ))}
+          {blockTree.map((block, i) => {
+            const aside = asideForBlock(i, block.component_name, firstBlockAside)
+            return (
+              <Fragment key={block.id}>
+                <RenderBlock block={block} aside={aside} />
+                {i === 0 && afterFirstBlock && (aside ? <div className="xl:hidden">{afterFirstBlock}</div> : afterFirstBlock)}
+              </Fragment>
+            )
+          })}
         </div>
       </PageTypographyProvider>
     </DynamicFontLoader>

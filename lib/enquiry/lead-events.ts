@@ -32,12 +32,18 @@ export const ENQUIRY_DONE_KEY = 'jkkn_enquiry_done'
 
 // Engineering's homepage carries the enquiry form inside its hero since 2026-11-03 (Step 3 of the
 // 10,300-lead plan, user's choice). A popup over a form the visitor can already see is noise, so
-// there the popup waits 20 s and never opens over a visitor who has started on the hero form. The
-// main site keeps its 1 s popup - it has no form in its hero.
+// there the popup waits 20 s and never opens over a visitor who has started on the hero form.
+//
+// MAIN SITE, 2026-11-17 (user's choice via /ask): the form moved into the www homepage hero's right
+// column on laptops and desktops (xl, 1280 px and up); phones keep the card under the hero. The
+// homepage popup is OFF on the main site - null means "never open". Measured on "/" before the
+// change, GA4 370981341, 2026-11-06..16: popup_view 177, lead_form_submit 5 (all mobile); GA4 has
+// no source_page dimension, so how many of the 5 came through the popup is not known.
 export const TOP_FORM_TOUCHED_KEY = 'jkkn_top_form_touched'
 
-export function homePopupDelayMs(siteId: string | undefined): number {
-  return siteId === 'engineering' ? 20_000 : 1_000
+/** Milliseconds before the homepage popup opens, or null when this site has no homepage popup. */
+export function homePopupDelayMs(siteId: string | undefined): number | null {
+  return siteId === 'engineering' ? 20_000 : null
 }
 
 /** Per tab (sessionStorage): a new visit gets the popup again unless it submitted. */

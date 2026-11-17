@@ -33,9 +33,10 @@ describe('homePopupDelayMs', () => {
     expect(homePopupDelayMs('engineering')).toBe(20_000)
   })
 
-  it('the main site keeps its 1 s popup', () => {
-    expect(homePopupDelayMs('main')).toBe(1_000)
-    expect(homePopupDelayMs(undefined)).toBe(1_000)
+  it('the main site has no homepage popup since its hero carries the form (2026-11-17)', () => {
+    expect(homePopupDelayMs('main')).toBeNull()
+    // An unset NEXT_PUBLIC_INSTITUTION_ID is the main site (lib/enquiry/site.ts enquirySiteFor).
+    expect(homePopupDelayMs(undefined)).toBeNull()
   })
 })
 

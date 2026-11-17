@@ -7,7 +7,10 @@
 // ENGINEERING, 2026-11-03: the form now sits in Engineering's hero (components/lead/
 // hero-enquiry-card.tsx), so there the popup waits 20 s and stays away from a visitor who has
 // started typing in the hero form (lib/enquiry/lead-events.ts homePopupDelayMs / topFormTouched).
-// The main site is unchanged.
+//
+// MAIN SITE, 2026-11-17: the form moved into the www homepage hero, and the user chose to switch the
+// main site's homepage popup OFF (homePopupDelayMs returns null there). The Apply-link dialog
+// (enquiry-modal.tsx) is a different thing and stays.
 //
 // NO POSTER, ON PURPOSE (2026-10-31). The college sites show their admission poster beside the
 // form. Engineering's only poster, /images/engineering/campaign-2026.jpg, prints "Admissions Open
@@ -33,14 +36,15 @@ export function HomepageEnquiryPopup() {
   const siteId = currentEnquirySite()?.id
 
   useEffect(() => {
-    if (!modal || !isHome || readStore(ENQUIRY_DONE_KEY)) return
+    const delay = homePopupDelayMs(siteId)
+    if (delay === null || !modal || !isHome || readStore(ENQUIRY_DONE_KEY)) return
     const timer = window.setTimeout(() => {
       // Checked again when the timer fires: within 20 s the visitor may have submitted or started
       // on the hero form.
       if (readStore(ENQUIRY_DONE_KEY) || topFormTouched()) return
       sendLeadEvent('popup_view', { popup_variant: 'form', page_path: window.location.pathname })
       modal.openEnquiry('home-popup')
-    }, homePopupDelayMs(siteId))
+    }, delay)
     return () => window.clearTimeout(timer)
   }, [modal, isHome, siteId])
 

@@ -223,6 +223,15 @@ export default async function HomePage() {
   // at 375 px that day: the hero block ends at 0.8 phone screens, and the page's first form sat 16.1
   // screens down. Engineering keeps the card inside its own hero (engineering-hero-section.tsx), so it
   // gets none here. HeroEnquiryCard renders nothing on an institution without an enquiry site.
+  //
+  // 2026-11-17 (user's choice via /ask): from xl (1280 px) up the same card sits in the hero's right
+  // column instead - text left, form right - and this under-hero copy hides there (PageRenderer
+  // firstBlockAside). Phones and tablets keep the card under the hero, unchanged. Measured live
+  // that morning at 1366x625: the card's top sat at 722 px, below the first screen. The hero-column
+  // card drops the 1-2-3 strip so its Call / WhatsApp buttons fit the first screen.
+  const heroAside = isInstitution('engineering')
+    ? undefined
+    : { component: 'HeroSection', node: <HeroEnquiryCard showSteps={false} /> }
   const homeEnquiry = isInstitution('engineering') ? undefined : (
     <section aria-label="Admission enquiry" className="px-4 py-6 sm:py-8">
       <div className="max-w-md mx-auto">
@@ -237,7 +246,12 @@ export default async function HomePage() {
       <article>
         <Suspense fallback={<BlocksSkeleton />}>
           <CustomComponentRegistrar components={customComponents}>
-            <PageRenderer blocks={blocks} pageTypography={pageTypography} afterFirstBlock={homeEnquiry} />
+            <PageRenderer
+              blocks={blocks}
+              pageTypography={pageTypography}
+              afterFirstBlock={homeEnquiry}
+              firstBlockAside={heroAside}
+            />
           </CustomComponentRegistrar>
         </Suspense>
       </article>
