@@ -1,7 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { getMyJkknBaseUrl, getPublicJob, isUuid, listPublicJobs } from '@/lib/services/public-careers-api'
+import { HIDDEN_JOB_IDS, getMyJkknBaseUrl, getPublicJob, isUuid, listPublicJobs } from '@/lib/services/public-careers-api'
 
 const JOB_ID = '11111111-1111-4111-8111-111111111111'
+const HIDDEN_ID = '6a957709-c5cd-4e94-8ca7-6415243606cd'
 const INST_ID = '22222222-2222-4222-8222-222222222222'
 const JOB = {
   id: JOB_ID, job_code: 'JOB-007', title: 'Lab Assistant', role_category: 'non_teaching', job_type: 'full_time',
@@ -82,5 +83,34 @@ describe('getPublicJob', () => {
   it('returns the parsed job on 200', async () => {
     const { impl } = fetchStub(200, { data: JOB })
     expect((await getPublicJob(JOB_ID, impl))?.job_code).toBe('JOB-007')
+  })
+  it('returns null for a hidden job without fetching', async () => {
+    const { impl } = fetchStub(200, { data: { ...JOB, id: HIDDEN_ID } })
+    expect(await getPublicJob(HIDDEN_ID, impl)).toBeNull()
+    expect(impl).not.toHaveBeenCalled()
+  })
+  it('shows the public employer name on a job page', async () => {
+    const { impl } = fetchStub(200, { data: { ...JOB, institution: { id: 'm1', name: 'JKKN Main Office' } } })
+    expect((await getPublicJob(JOB_ID, impl))?.institution?.name).toBe('JKKN Institutions')
+  })
+})
+
+describe('website-side feed corrections', () => {
+  it('drops hidden jobs from the list and from their college count', async () => {
+    const hidden = { ...JOB, id: HIDDEN_ID, title: 'testing' }
+    const { impl } = fetchStub(200, { data: [JOB, hidden], institutions: [{ id: 'i1', name: 'JKKN College of Pharmacy', open_jobs: 2 }] })
+    const res = await listPublicJobs({}, impl)
+    expect(res.data.map(j => j.id)).toEqual([JOB_ID])
+    expect(res.institutions[0].open_jobs).toBe(1)
+  })
+  it('renames JKKN Main Office in jobs and in the college list', async () => {
+    const main = { ...JOB, institution: { id: 'm1', name: 'JKKN Main Office' } }
+    const { impl } = fetchStub(200, { data: [main], institutions: [{ id: 'm1', name: 'JKKN Main Office', open_jobs: 1 }] })
+    const res = await listPublicJobs({}, impl)
+    expect(res.data[0].institution?.name).toBe('JKKN Institutions')
+    expect(res.institutions[0].name).toBe('JKKN Institutions')
+  })
+  it('keeps the test record id in the hidden list', () => {
+    expect(HIDDEN_JOB_IDS.has(HIDDEN_ID)).toBe(true)
   })
 })
