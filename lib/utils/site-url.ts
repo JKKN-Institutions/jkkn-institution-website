@@ -136,6 +136,19 @@ export function getSiteUrl(): string {
 }
 
 /**
+ * Origin of the parent (main) site, from any deployment.
+ *
+ * College deployments serve the same MyJKKN job pages as the parent site.
+ * One job must have one canonical address, and it is the parent's
+ * (www.jkkn.ac.in/careers/<slug>, where Google Jobs already shows them) -
+ * decided by the website team 2026-11-17. On the parent deployment this is
+ * simply getSiteUrl().
+ */
+export function getMainSiteUrl(): string {
+  return getInstitutionId() === 'main' ? getSiteUrl() : FALLBACK_OVERRIDES.main.replace(/\/$/, '')
+}
+
+/**
  * Builds an absolute URL from a path
  * @param path - The path to append to the site URL (with or without leading slash)
  * @returns Full absolute URL

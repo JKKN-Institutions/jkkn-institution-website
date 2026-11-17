@@ -14,7 +14,7 @@
 
 // Bump this whenever a brief below changes. It is emitted into every llms.txt so
 // content drift is visible to an AI crawler instead of being silent.
-const LAST_REVIEWED = '2026-09-04'
+const LAST_REVIEWED = '2026-11-17'
 
 // The engineering brief changed on its own (autonomous status lines; 2026-10-29 official codes and
 // NAAC grade from the regulators' own lists). It carries its own date so the parent brief is not
@@ -135,6 +135,20 @@ Contact: +91 93458 55001 | info@jkkn.ac.in | ${siteUrl}
 - [Admissions 2026-27](${siteUrl}/admissions): Programs across all 7 colleges. NEET required for Dental (BDS/MDS); TNEA counselling for Engineering; TNTEU counselling for B.Ed; merit-based for Arts & Science, Pharmacy, Nursing and Allied Health Sciences.
 - Online application: jkkn.ai/apply/jkkn-admission-2026.
 - Contact admissions: +91 93458 55001.
+
+## Careers
+
+- [Careers at JKKN](${siteUrl}/careers): Teaching, faculty and staff jobs at all JKKN colleges and schools. Every job is on the one campus at Natarajapuram, NH-544, Komarapalayam, Namakkal District, Tamil Nadu 638183. Always open - apply online any time from the job page; no account is needed.
+- [Teaching jobs](${siteUrl}/careers/teaching-jobs): School teacher and college faculty posts.
+- [Assistant Professor jobs](${siteUrl}/careers/assistant-professor-jobs)
+- [Professor and Associate Professor jobs](${siteUrl}/careers/professor-jobs)
+- [Lecturer, Senior Lecturer and Reader jobs](${siteUrl}/careers/lecturer-jobs)
+- [Tutor jobs](${siteUrl}/careers/tutor-jobs)
+- [Lab Assistant, Lab Technician and Librarian jobs](${siteUrl}/careers/lab-library-jobs)
+- [Principal and leadership jobs](${siteUrl}/careers/principal-leadership-jobs)
+- [Non-teaching jobs](${siteUrl}/careers/non-teaching-jobs): Administration, technical and IT, hospital support and campus roles.
+- Road distance to the campus: Erode 18 km, Salem 58 km, Namakkal town 62 km, Karur 84 km, Coimbatore 114 km.
+- [Staff transport](${siteUrl}/transport): JKKN college buses run routes across Namakkal, Salem, Erode and Tiruppur districts; teaching and non-teaching staff can use them.
 
 ## Accreditations
 

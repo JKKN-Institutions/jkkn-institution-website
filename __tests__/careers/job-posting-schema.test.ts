@@ -44,6 +44,20 @@ describe('buildJobPostingJsonLd', () => {
     expect(ld.jobLocation).toMatchObject({ address: { addressLocality: 'Komarapalayam' } })
   })
 
+  it('gives a campus job the street and PIN, and a job elsewhere only its town', () => {
+    expect(buildJobPostingJsonLd({ ...JOB, city: 'Kumarapalayam' }, URL)!.jobLocation).toMatchObject({
+      address: { streetAddress: 'Natarajapuram, NH-544 (Salem to Coimbatore National Highway)', postalCode: '638183', addressLocality: 'Komarapalayam' },
+    })
+    const other = buildJobPostingJsonLd({ ...JOB, city: 'Chennai' }, URL)!.jobLocation as { address: Record<string, unknown> }
+    expect(other.address).not.toHaveProperty('streetAddress')
+    expect(other.address).not.toHaveProperty('postalCode')
+  })
+
+  it('leaves experienceRequirements out for 0 years (Google wants a positive value)', () => {
+    expect(buildJobPostingJsonLd({ ...JOB, min_experience_years: 0 }, URL)).not.toHaveProperty('experienceRequirements')
+    expect(buildJobPostingJsonLd(JOB, URL)!.experienceRequirements).toMatchObject({ monthsOfExperience: 12 })
+  })
+
   it("uses Google's credential categories, and none for a level it cannot map", () => {
     expect(buildJobPostingJsonLd(JOB, URL)!.educationRequirements).toMatchObject({ credentialCategory: 'bachelor degree' })
     expect(buildJobPostingJsonLd({ ...JOB, education_level: 'phd' }, URL)!.educationRequirements).toMatchObject({ credentialCategory: 'postgraduate degree' })

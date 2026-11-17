@@ -13,7 +13,7 @@ const CONFIG: DesignationConfig = {
   title: 'Lab Assistant & Librarian Jobs in Namakkal | JKKN Careers',
   description:
     'Lab Assistant, Lab Technician and Librarian jobs at JKKN Institutions, Komarapalayam, Namakkal District, 18 km from Erode. Apply online.',
-  h1: 'Lab Assistant, Lab Technician and Librarian Jobs at JKKN Institutions, Komarapalayam',
+  h1: 'Lab Assistant, Lab Technician and Librarian Jobs at JKKN Institutions, Komarapalayam, Namakkal District',
   crumb: 'Lab and Library Jobs',
   noun: 'Lab and library',
   introTail: 'The list covers Lab Assistant, Lab Technician and Librarian posts at the JKKN colleges.',

@@ -18,7 +18,7 @@ import { listPageFor } from '@/lib/utils/careers-landing'
 import { buildJobSeo } from '@/lib/utils/careers-seo'
 import { jobSlug } from '@/lib/utils/careers-slug'
 import { formatJobTitle } from '@/lib/utils/careers-text'
-import { getSiteUrl } from '@/lib/utils/site-url'
+import { getMainSiteUrl } from '@/lib/utils/site-url'
 
 export const dynamic = 'force-dynamic'
 
@@ -71,7 +71,7 @@ export async function generateMetadata({ params }: JobPageProps): Promise<Metada
   // <head> only: HR's "Website SEO" from MyJKKN where set, otherwise built from
   // the job. The page body below never sees these values.
   const seo = buildJobSeo(job)
-  const url = `${getSiteUrl()}/careers/${slug}`
+  const url = `${getMainSiteUrl()}/careers/${slug}`
   const images = seo.ogImage ? [{ url: seo.ogImage, width: 1200, height: 630, alt: seo.title }] : undefined
 
   return {
@@ -93,7 +93,7 @@ export default async function JobPage({ params }: JobPageProps) {
   // Old UUID links and outdated slugs land on the one canonical address.
   if (slug !== segment) permanentRedirect(`/careers/${slug}`)
 
-  const pageUrl = `${getSiteUrl()}/careers/${slug}`
+  const pageUrl = `${getMainSiteUrl()}/careers/${slug}`
   // The list pages exist on the parent site only; a college site links to none.
   const listPage = isMainInstitution()
     ? listPageFor({ title: formatJobTitle(job.title), roleCategory: job.role_category })

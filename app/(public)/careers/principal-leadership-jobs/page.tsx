@@ -13,7 +13,7 @@ const CONFIG: DesignationConfig = {
   title: 'Principal & Leadership Jobs in Namakkal | JKKN Careers',
   description:
     'Principal, Vice Principal and leadership jobs at JKKN Institutions, Komarapalayam, Namakkal District, 18 km from Erode. Apply online.',
-  h1: 'Principal and Leadership Jobs at JKKN Institutions, Komarapalayam',
+  h1: 'Principal and Leadership Jobs at JKKN Institutions, Komarapalayam, Namakkal District',
   crumb: 'Principal and Leadership Jobs',
   noun: 'Principal and leadership',
   introTail: 'The list covers Principal and Vice Principal posts at the JKKN colleges and school, and group leadership posts.',

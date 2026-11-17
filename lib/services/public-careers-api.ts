@@ -74,12 +74,61 @@ export async function listPublicJobs(
     url.searchParams.set('institution_id', filters.institutionId)
   }
   const { body } = await getJson(url.toString(), fetchImpl)
-  return JobListResponseSchema.parse(body)
+  return toPublicList(JobListResponseSchema.parse(body))
 }
 
 export async function getPublicJob(id: string, fetchImpl: typeof fetch = fetch): Promise<PublicJob | null> {
-  if (!isUuid(id)) return null
+  if (!isUuid(id) || HIDDEN_JOB_IDS.has(id.toLowerCase())) return null
   const { status, body } = await getJson(`${getMyJkknBaseUrl()}/api/public/careers/jobs/${id}`, fetchImpl)
   if (status === 404) return null
-  return JobDetailResponseSchema.parse(body).data
+  return toPublicJob(JobDetailResponseSchema.parse(body).data)
+}
+
+// ── Website-side corrections to the feed (added 2026-11-17) ─────────────────
+// The website team has no MyJKKN access, so two fixes live here until MyJKKN
+// is corrected at the source. Both apply at this one boundary, so the list,
+// the job page, the sitemap, search, facets and JobPosting all agree.
+
+/**
+ * Jobs kept off the website although MyJKKN still returns them. Remove an id
+ * once MyJKKN stops returning it.
+ *  - 6a957709-...: title "testing", job code "adfsd" - a test record, not a vacancy.
+ */
+export const HIDDEN_JOB_IDS: ReadonlySet<string> = new Set([
+  '6a957709-c5cd-4e94-8ca7-6415243606cd',
+])
+
+/**
+ * Public employer names. "JKKN Main Office" is MyJKKN's internal name for the
+ * group office; candidates (and Google Jobs) see "JKKN Institutions", the name
+ * used everywhere else on the site.
+ */
+const PUBLIC_INSTITUTION_NAME: Readonly<Record<string, string>> = {
+  'JKKN Main Office': 'JKKN Institutions',
+}
+
+const publicName = (name: string) => PUBLIC_INSTITUTION_NAME[name] ?? name
+
+export function toPublicJob(job: PublicJob): PublicJob {
+  if (!job.institution) return job
+  const name = publicName(job.institution.name)
+  return name === job.institution.name ? job : { ...job, institution: { ...job.institution, name } }
+}
+
+function toPublicList(res: JobListResponse): JobListResponse {
+  const hiddenPerInstitution = new Map<string, number>()
+  for (const j of res.data) {
+    if (j.institution && HIDDEN_JOB_IDS.has(j.id.toLowerCase())) {
+      hiddenPerInstitution.set(j.institution.id, (hiddenPerInstitution.get(j.institution.id) ?? 0) + 1)
+    }
+  }
+  return {
+    ...res,
+    data: res.data.filter(j => !HIDDEN_JOB_IDS.has(j.id.toLowerCase())).map(toPublicJob),
+    institutions: res.institutions.map(i => ({
+      ...i,
+      name: publicName(i.name),
+      open_jobs: Math.max(0, i.open_jobs - (hiddenPerInstitution.get(i.id) ?? 0)),
+    })),
+  }
 }

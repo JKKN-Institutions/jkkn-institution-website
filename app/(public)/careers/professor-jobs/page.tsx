@@ -13,7 +13,7 @@ const CONFIG: DesignationConfig = {
   title: 'Professor Jobs in Namakkal, near Erode | JKKN Careers',
   description:
     'Professor and Associate Professor jobs at JKKN Institutions, Komarapalayam, Namakkal District, 18 km from Erode. Apply online.',
-  h1: 'Professor and Associate Professor Jobs at JKKN Institutions, Komarapalayam',
+  h1: 'Professor and Associate Professor Jobs at JKKN Institutions, Komarapalayam, Namakkal District',
   crumb: 'Professor Jobs',
   noun: 'Professor and Associate Professor',
   introTail: 'The list covers Professor and Associate Professor posts across the JKKN colleges.',

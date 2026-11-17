@@ -76,7 +76,7 @@ export function getSitemapIndex(siteUrl: string, institutionId: string): Sitemap
       { loc: `${siteUrl}/sitemap-pages.xml`, lastmod: GENERATED_ON },
       { loc: `${siteUrl}/sitemap-courses.xml`, lastmod: GENERATED_ON },
       { loc: `${siteUrl}/sitemap-blog.xml`, lastmod: GENERATED_ON },
-      { loc: `${siteUrl}/sitemap-careers.xml`, lastmod: GENERATED_ON },
+      // No sitemap-careers.xml: job pages are canonical on the parent site (2026-11-17).
     ],
     main: [
       { loc: `${siteUrl}/sitemap-pages.xml`, lastmod: GENERATED_ON },
