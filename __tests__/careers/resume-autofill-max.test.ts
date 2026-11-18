@@ -131,3 +131,71 @@ describe('resumeAutofillMode', () => {
     expect(resumeAutofillMode()).toBe('api')
   })
 })
+
+// ── Work history, education and skills (Director, 14 Nov 2026) ──────────────
+// MyJKKN sends `lists: true` on the POST reply only, and the three lists inside
+// `fill` on a finished reading. Every case below is one the three lists must
+// survive: they are the whole point of the flag when the reading cannot help.
+
+describe('readResumeViaMax — the three lists', () => {
+  const LISTS = {
+    work_history: [{ employer: 'ABC College', role: 'Assistant Professor', from: '2019-06', to: 'present' }],
+    education: [{ degree: 'M.Pharm', subject: 'Pharmaceutics', institution: 'JKKN', year: 2021 }],
+    skills: ['HPLC', 'Teaching'],
+  }
+
+  it('reports the switch before polling, then the lists when the reading lands', async () => {
+    const { opts } = fakeMyJkkn(
+      reply(202, { status: 'pending', job_id: 'j', token: 't', quick: QUICK, lists: true }),
+      [reply(200, { status: 'done', fill: { ...FILL, ...LISTS } })],
+    )
+    const onLists = vi.fn()
+    await readResumeViaMax(FILE, { ...opts, onLists })
+
+    expect(onLists.mock.calls[0]).toEqual([true, null])
+    const [on, lists] = onLists.mock.calls[1]
+    expect(on).toBe(true)
+    expect(lists.work_history).toHaveLength(1)
+    expect(lists.education[0]).toMatchObject({ degree: 'M.Pharm', year: '2021' })
+    expect(lists.skills).toBe('HPLC, Teaching')
+  })
+
+  it('still reports the switch when the resume cannot be read at all', async () => {
+    const { opts } = fakeMyJkkn(reply(200, { status: 'manual', reason: 'no_text', quick: null, lists: true }), [])
+    const onLists = vi.fn()
+    const r = await readResumeViaMax(FILE, { ...opts, onLists })
+
+    expect(r).toEqual({ ok: false, reason: 'unreadable' })
+    expect(onLists).toHaveBeenCalledWith(true, null) // the applicant types the lists instead
+  })
+
+  it('hands over the lists even when the flat fields gave nothing usable', async () => {
+    const { opts } = fakeMyJkkn(
+      reply(202, { status: 'pending', job_id: 'j', token: 't', quick: null, lists: true }),
+      [reply(200, { status: 'done', fill: { ...LISTS } })],
+    )
+    const onLists = vi.fn()
+    const r = await readResumeViaMax(FILE, { ...opts, onLists })
+
+    expect(r.ok).toBe(false) // nothing for the flat fields
+    expect(onLists).toHaveBeenCalledTimes(2)
+    expect(onLists.mock.calls[1][1].skills).toBe('HPLC, Teaching')
+  })
+
+  it('says nothing when MyJKKN has the switch off', async () => {
+    const { opts } = fakeMyJkkn(
+      reply(202, { status: 'pending', job_id: 'j', token: 't', quick: QUICK }),
+      [reply(200, { status: 'done', fill: FILL })],
+    )
+    const onLists = vi.fn()
+    await readResumeViaMax(FILE, { ...opts, onLists })
+    expect(onLists).not.toHaveBeenCalled()
+  })
+
+  it('says nothing on a refused file, where MyJKKN sends no flag', async () => {
+    const { opts } = fakeMyJkkn(reply(413, {}), [])
+    const onLists = vi.fn()
+    expect(await readResumeViaMax(FILE, { ...opts, onLists })).toEqual({ ok: false, reason: 'too_large' })
+    expect(onLists).not.toHaveBeenCalled()
+  })
+})

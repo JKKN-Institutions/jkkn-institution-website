@@ -18,9 +18,14 @@ import type { ResumeExtraction } from '@/lib/schemas/resume-extraction'
 import {
   normalizeResumeFields, type AutofillFailure, type ResumeAutofillResult,
 } from '@/lib/utils/resume-fields'
+import { listsFromFill, type MaxResumeFillLists, type ResumeLists } from '@/lib/utils/resume-lists'
 
-/** What MyJKKN's resume-read returns as `fill`. */
-export interface MaxResumeFill {
+/**
+ * What MyJKKN's resume-read returns as `fill`. The three list keys arrive only
+ * from a lists reading while MyJKKN's hr.recruitment.resume_lists.enabled is
+ * on; every other answer leaves them out, so they are optional here.
+ */
+export interface MaxResumeFill extends MaxResumeFillLists {
   first_name: string | null
   last_name: string | null
   qualification: string | null
@@ -39,6 +44,15 @@ export interface ReadViaMaxOptions {
   baseUrl: string
   /** Email/phone, as soon as MyJKKN has them (before the AI answers). */
   onQuick?: (result: ResumeAutofillResult) => void
+  /**
+   * Whether MyJKKN has work history, education and skills switched on, and the
+   * lists themselves once a reading carries them. Called with (on, null) the
+   * moment the POST answers, so the form can show the three lists for the
+   * applicant to type even when the reading cannot help; then with the lists
+   * if any arrive. Deliberately a callback and not part of the return value:
+   * a failed reading throws its result away, and the lists must survive that.
+   */
+  onLists?: (on: boolean, lists: ResumeLists | null) => void
   /** False once the candidate picked another file or left upload mode. */
   isCurrent?: () => boolean
   fetchImpl?: typeof fetch
@@ -103,6 +117,7 @@ export async function readResumeViaMax(file: File, opts: ReadViaMaxOptions): Pro
   const endpoint = `${opts.baseUrl.replace(/\/+$/, '')}/api/public/careers/resume-read`
 
   let quick: Quick = null
+  let listsOn = false
   let job: { id: string; token: string }
   try {
     const fd = new FormData()
@@ -112,13 +127,22 @@ export async function readResumeViaMax(file: File, opts: ReadViaMaxOptions): Pro
     if (res.status === 413) return { ok: false, reason: 'too_large' }
     if (res.status === 400) return { ok: false, reason: 'unsupported_type' }
     quick = body.quick as Quick
+    // `lists: true` rides on the POST answer only (never on a poll), and only
+    // from MyJKKN's per-IP limit on — so a refused file or a rate limit says
+    // nothing about the switch and leaves this false.
+    listsOn = body.lists === true
     if (res.status !== 202 || typeof body.job_id !== 'string' || typeof body.token !== 'string') {
+      if (listsOn) opts.onLists?.(true, null)
       return settle(quick, failureFor(body.reason))
     }
     job = { id: body.job_id, token: body.token }
   } catch {
     return { ok: false, reason: 'unavailable' } // network / CORS
   }
+
+  // Before the first poll: the applicant can start typing the three lists now
+  // rather than waiting out a reading that may take over two minutes.
+  if (listsOn && isCurrent()) opts.onLists?.(true, null)
 
   const early = maxResultToValues(quick, null)
   if (early && isCurrent()) opts.onQuick?.(early)
@@ -133,7 +157,11 @@ export async function readResumeViaMax(file: File, opts: ReadViaMaxOptions): Pro
       const body = await json(res)
       if (res.status === 202) continue
       if (body.status === 'done' && body.fill && typeof body.fill === 'object') {
-        return maxResultToValues(quick, body.fill as MaxResumeFill) ?? settle(quick, 'unreadable')
+        const fill = body.fill as MaxResumeFill
+        // Before the return, so the lists land even when the flat fields gave
+        // nothing usable and this call settles as a failure.
+        if (listsOn) opts.onLists?.(true, listsFromFill(fill))
+        return maxResultToValues(quick, fill) ?? settle(quick, 'unreadable')
       }
       return settle(quick, res.ok ? failureFor(body.reason) : 'unavailable')
     } catch {

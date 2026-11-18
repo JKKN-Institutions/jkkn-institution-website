@@ -6,6 +6,8 @@
 // Server Action would put every applicant behind one Vercel egress IP.
 // Contract: MyJKKN docs/public-careers-api.md §3.
 
+import { serializeResumeLists, type ResumeLists } from '@/lib/utils/resume-lists'
+
 export const MAX_RESUME_BYTES = 2 * 1024 * 1024
 export const RESUME_EXTENSIONS = ['pdf', 'doc', 'docx'] as const
 
@@ -34,6 +36,13 @@ export interface ApplyValues {
   /** Honeypot. Rendered hidden; a real user never fills it. */
   website?: string
   resume: File
+  /**
+   * Work history, education and skills the applicant checked on the form.
+   * Sent only while MyJKKN has hr.recruitment.resume_lists.enabled on (the
+   * form learns that from resume-read). Left out otherwise, so the request is
+   * byte-for-byte what it was before this existed.
+   */
+  resume_lists?: ResumeLists
 }
 
 export function buildApplyFormData(v: ApplyValues): FormData {
@@ -57,6 +66,20 @@ export function buildApplyFormData(v: ApplyValues): FormData {
   fd.set('consent', v.consent ? 'true' : 'false')
   fd.set('website', v.website ?? '')
   fd.set('resume', v.resume, v.resume.name)
+  // work_history / education as JSON arrays, skills as a comma-separated line:
+  // the shape MyJKKN's parseResumeListsForm reads. Only the lists that have
+  // something in them are sent.
+  //
+  // `resume_lists_shown` is sent whenever the applicant SAW the three lists,
+  // even if they emptied all of them. MyJKKN's apply route gates on
+  // resumeListsShown(form): without this marker, an applicant who deliberately
+  // cleared all three sends no list field at all, so MyJKKN stores NULL rather
+  // than a confirmed empty list — and its backfill of older applications then
+  // fills in AI-read work history over a blank the applicant chose on purpose.
+  if (v.resume_lists) {
+    fd.set('resume_lists_shown', '1')
+    for (const [key, value] of Object.entries(serializeResumeLists(v.resume_lists))) fd.set(key, value)
+  }
   return fd
 }
 

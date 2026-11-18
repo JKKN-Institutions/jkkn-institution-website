@@ -10,6 +10,7 @@ import { extractResumeFields } from '@/app/actions/careers/resume-autofill'
 import { resumeClientError } from '@/lib/services/public-careers-apply'
 import { readResumeViaMax } from '@/lib/services/resume-autofill-max'
 import type { AutofillFailure, ResumeAutofillResult } from '@/lib/utils/resume-fields'
+import type { ResumeLists } from '@/lib/utils/resume-lists'
 import { AUTOFILL_PRIVACY_NOTICE, AUTOFILL_PRIVACY_NOTICE_MAX } from './apply-mode-chooser'
 
 export const AUTOFILL_FAILURE_MESSAGES: Record<AutofillFailure, string> = {
@@ -74,12 +75,19 @@ interface ResumeAutofillPanelProps {
   onFile: (file: File | null, error: string | null) => void
   /** Apply a reading's result to the form; returns how many fields were written. */
   onResult: (result: ResumeAutofillResult, opts?: { partial?: boolean }) => number
+  /**
+   * Whether MyJKKN has work history, education and skills switched on, and the
+   * lists once a reading carries them. Only the Max lane reports this. The
+   * parent holds the result, not this panel: the panel unmounts when the
+   * applicant switches to typing, and the lists must survive that.
+   */
+  onLists?: (on: boolean, lists: ResumeLists | null) => void
   via: AutofillVia
   /** MyJKKN origin, for the Max-lane reader. */
   apiBaseUrl: string
 }
 
-export function ResumeAutofillPanel({ file, fileError, onFile, onResult, via, apiBaseUrl }: ResumeAutofillPanelProps) {
+export function ResumeAutofillPanel({ file, fileError, onFile, onResult, onLists, via, apiBaseUrl }: ResumeAutofillPanelProps) {
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [dragging, setDragging] = useState(false)
   const inputId = useId()
@@ -88,6 +96,8 @@ export function ResumeAutofillPanel({ file, fileError, onFile, onResult, via, ap
   // The result arrives after an await: apply it with the form's current state.
   const onResultRef = useRef(onResult)
   useEffect(() => { onResultRef.current = onResult })
+  const onListsRef = useRef(onLists)
+  useEffect(() => { onListsRef.current = onLists })
   // Leaving upload mode abandons a reading in flight.
   useEffect(() => () => { latest.current += 1 }, [])
 
@@ -108,6 +118,7 @@ export function ResumeAutofillPanel({ file, fileError, onFile, onResult, via, ap
           baseUrl: apiBaseUrl,
           isCurrent: () => id === latest.current,
           onQuick: quick => { onResultRef.current(quick, { partial: true }) },
+          onLists: (on, lists) => { onListsRef.current?.(on, lists) },
         })
       } else {
         const fd = new FormData()
