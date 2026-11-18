@@ -16,7 +16,7 @@ import { X } from 'lucide-react'
 import { EnquiryForm } from '@/components/lead/enquiry-form'
 import { currentEnquirySite, fullApplicationHref, sourcePageFromPath } from '@/lib/enquiry/site'
 import { ENQUIRY_DONE_KEY, readStore, sendLeadEvent } from '@/lib/enquiry/lead-events'
-import { campaignTagsSnapshot, parseCampaignTags, tagApplyHref } from '@/lib/enquiry/campaign-tags'
+import { CAMPAIGN_KEYS, campaignTagsSnapshot, parseCampaignTags, tagApplyHref } from '@/lib/enquiry/campaign-tags'
 import {
   gateIntentForHref,
   isGateNumber,
@@ -71,7 +71,25 @@ export function useEnquiryModal() {
   return useContext(EnquiryModalContext)
 }
 
-const APPLY_LINK = 'a[href*="jkkn.ai/apply"]'
+// Apply-first (user's choice 2026-11-18: "ella submit um firstu en form valiyathaan jkkn.ai ku
+// poganum, direct ah jkkn.ai form ku poga koodathu"). An Apply link is any jkkn.ai/apply link, or
+// one whose jkkn.ai address is parked in data-apply-href while a right-click / long-press menu is open.
+const APPLY_LINK = 'a[href*="jkkn.ai/apply"], a[data-apply-href]'
+/** The query word that opens this form when a page loads (a new tab opened from an Apply link). */
+const ENQUIRE_PARAM = 'enquire'
+
+/** THIS page + ?enquire=1 + the visit's own campaign tags (campaign words only, never a name or a
+ *  phone): what a new tab, a middle click or "Copy link" on an Apply link opens instead of jkkn.ai. */
+function enquireHereUrl(): string {
+  const url = new URL(window.location.pathname, window.location.origin)
+  const tags = parseCampaignTags(campaignTagsSnapshot())
+  for (const key of CAMPAIGN_KEYS) {
+    const value = tags[key]
+    if (value) url.searchParams.set(key, value)
+  }
+  url.searchParams.set(ENQUIRE_PARAM, '1')
+  return url.toString()
+}
 
 export function EnquiryModalProvider({ children }: { children: ReactNode }) {
   const site = currentEnquirySite()
@@ -102,26 +120,53 @@ export function EnquiryModalProvider({ children }: { children: ReactNode }) {
 
     // Every jkkn.ai/apply link on the site opens this form instead (user's choice 2026-10-31, same
     // as the six college sites). One listener rather than dozens of edited links - most of them
-    // come from CMS content - so the links stay real <a href>s: without JavaScript, or on a Ctrl /
-    // Shift / Meta / Alt / middle click, they still open jkkn.ai. A link marked
-    // data-full-application (the small one in the dialog) is never caught.
-    const onClick = (e: MouseEvent) => {
-      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    // come from CMS content. Apply-first (2026-11-18): a Ctrl / Shift / Meta click or a middle click
+    // no longer opens jkkn.ai either - it opens THIS page in a new tab with ?enquire=1, and the form
+    // opens there (effect below). The links stay real jkkn.ai <a href>s, so the GA4 apply_click rule
+    // still reads jkkn.ai on a click and, without JavaScript, they still open jkkn.ai. A link marked
+    // data-full-application (the small one in the dialog, shown only after an accepted enquiry) is
+    // never caught.
+    const applyLink = (e: MouseEvent) => {
       const link = (e.target as Element | null)?.closest?.(APPLY_LINK)
-      if (!link || link.hasAttribute('data-full-application')) return
+      return link && !link.hasAttribute('data-full-application') ? link : null
+    }
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || !applyLink(e)) return
       e.preventDefault()
+      if (e.metaKey || e.ctrlKey || e.shiftKey) {
+        window.open(enquireHereUrl(), '_blank', 'noopener')
+        return
+      }
       openEnquiry(`apply-link-${sourcePageFromPath(window.location.pathname)}`.slice(0, 60))
     }
+    // A middle click fires auxclick, not click; cancelling it stops the browser's own new tab.
+    const onAuxClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 1 || !applyLink(e)) return
+      e.preventDefault()
+      window.open(enquireHereUrl(), '_blank', 'noopener')
+    }
 
-    // A link that does go through to jkkn.ai (new-tab click, long-press, right-click, keyboard) is
-    // tagged first: with the visit's own campaign tags when it arrived with some (lib/enquiry/
-    // campaign-tags.ts, 2026-10-31), else with this site and page. None of the apply links in this
-    // codebase carried a utm before (repo scan 2026-10-31); a fixed utm_medium=organic in CMS content
-    // is dropped. The dialog's full-application link is included, so an ad visitor keeps the ad tag.
+    // Before a jkkn.ai link is followed it is tagged with the visit's own campaign tags when it
+    // arrived with some (lib/enquiry/campaign-tags.ts, 2026-10-31), else with this site and page; a
+    // fixed utm_medium=organic in CMS content is dropped. Apply-first (2026-11-18): a right-click or
+    // an Android long-press (contextmenu - "Open in new tab", "Copy link") points an Apply link at
+    // THIS page + ?enquire=1 instead. Its jkkn.ai address waits in data-apply-href and comes back on
+    // the next pointerdown / focus, so an ordinary click still shows jkkn.ai to the GA4 apply_click
+    // rule. The dialog's full-application link keeps going to jkkn.ai with the visit's tags.
     campaignTagsSnapshot()
     const tag = (e: Event) => {
       const link = (e.target as Element | null)?.closest?.(APPLY_LINK) as HTMLAnchorElement | null
       if (!link) return
+      if (e.type === 'contextmenu' && !link.hasAttribute('data-full-application')) {
+        if (!link.dataset.applyHref) link.dataset.applyHref = link.href
+        link.href = enquireHereUrl()
+        return
+      }
+      const parked = link.dataset.applyHref
+      if (parked) {
+        link.href = parked
+        delete link.dataset.applyHref
+      }
       const next = tagApplyHref(link.href, parseCampaignTags(campaignTagsSnapshot()), {
         utmSource: site.host,
         utmCampaign: `${site.campaignPrefix}-apply-link-${sourcePageFromPath(window.location.pathname)}`,
@@ -130,15 +175,37 @@ export function EnquiryModalProvider({ children }: { children: ReactNode }) {
     }
 
     document.addEventListener('click', onClick, true)
+    document.addEventListener('auxclick', onAuxClick, true)
     document.addEventListener('pointerdown', tag, true)
     document.addEventListener('contextmenu', tag, true)
     document.addEventListener('focusin', tag, true)
     return () => {
       document.removeEventListener('click', onClick, true)
+      document.removeEventListener('auxclick', onAuxClick, true)
       document.removeEventListener('pointerdown', tag, true)
       document.removeEventListener('contextmenu', tag, true)
       document.removeEventListener('focusin', tag, true)
     }
+  }, [site, openEnquiry])
+
+  // Apply-first: a page opened with ?enquire=1 (an Apply link opened in a new tab, middle-clicked or
+  // copied) opens this form once. The word leaves the address bar as the form opens, so a reload or a
+  // link copied from the bar does not open it again; the campaign tags next to it stay. Opened from a
+  // timer, not the effect body: the effect only subscribes.
+  useEffect(() => {
+    if (!site || !new URLSearchParams(window.location.search).has(ENQUIRE_PARAM)) return
+    const timer = window.setTimeout(() => {
+      const params = new URLSearchParams(window.location.search)
+      params.delete(ENQUIRE_PARAM)
+      const rest = params.toString()
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${window.location.pathname}${rest ? `?${rest}` : ''}${window.location.hash}`
+      )
+      openEnquiry(`apply-newtab-${sourcePageFromPath(window.location.pathname)}`.slice(0, 60))
+    }, 0)
+    return () => window.clearTimeout(timer)
   }, [site, openEnquiry])
 
   // Call / WhatsApp gate (lib/call-gate.ts, ported 2026-11-04 from the Dental site). A tap on any
@@ -244,6 +311,20 @@ function EnquiryDialog({
   intent?: GateIntent
   onClose: () => void
 }) {
+  // Apply-first (2026-11-18): has this browser sent an enquiry the CRM accepted? The form writes
+  // ENQUIRY_DONE_KEY on that answer. The dialog only ever renders in the browser (it opens after a
+  // click or the ?enquire effect), so reading storage for the first value is safe; localStorage has
+  // no same-tab change event, so it is re-read every second while the dialog is open, until it is set.
+  // Above the early return below: hooks run on every render.
+  const [enquired, setEnquired] = useState(() => !!readStore(ENQUIRY_DONE_KEY))
+  useEffect(() => {
+    if (enquired) return
+    const timer = window.setInterval(() => {
+      if (readStore(ENQUIRY_DONE_KEY)) setEnquired(true)
+    }, 1000)
+    return () => window.clearInterval(timer)
+  }, [enquired])
+
   const site = currentEnquirySite()
   if (!site) return null
 
@@ -277,12 +358,13 @@ function EnquiryDialog({
 
         <EnquiryForm sourcePage={sourcePage} defaultProgrammeId={programmeId} compact bare gate={intent} />
 
-        {/* The full jkkn.ai application stays one tap away for people ready to apply now.
-            data-full-application keeps the site-wide apply-link listener off it.
+        {/* The full jkkn.ai application, as a small link. Since 2026-11-18 (apply-first) it shows
+            only AFTER this browser has an enquiry the CRM accepted, so every lead comes through this
+            form first. data-full-application keeps the site-wide apply-link listener off it.
             Not in a Call / WhatsApp gate: there the visitor came to talk, not to apply. */}
-        {!intent && (
+        {!intent && enquired && (
           <p className="mt-3 text-center text-xs text-[#4b5563]">
-            Ready to apply now?{' '}
+            Want to send the full application too?{' '}
             <a
               href={fullApplicationHref(site, sourcePage)}
               target="_blank"
