@@ -1,6 +1,7 @@
 'use server'
 
 import { createServerSupabaseClient } from '@/lib/supabase/server'
+import { blogFromMyJkkn, listPosts } from '@/lib/blog/myjkkn'
 
 // Types for homepage sections
 export interface HomepageNewsItem {
@@ -178,6 +179,30 @@ export async function getBlogPostsByCategory(
   category: { id: string; name: string; slug: string; color: string | null } | null
 }> {
   console.log(`[getBlogPostsByCategory] Called with: categorySlug="${categorySlug}", limit=${limit}`)
+
+  // BLOG_SOURCE=myjkkn: the home page sections read the same category from MyJKKN.
+  // An unknown category gives no posts, as it does below. Never throws.
+  if (blogFromMyJkkn()) {
+    const { posts, categories } = await listPosts({ category: categorySlug, limit })
+    const found = categories.find((c) => c.slug === categorySlug)
+    if (!found) return { posts: [], category: null }
+    return {
+      posts: posts.map((post) => ({
+        id: post.id,
+        title: post.title,
+        slug: post.slug,
+        excerpt: post.excerpt,
+        featured_image: post.featured_image,
+        published_at: post.published_at,
+        reading_time_minutes: post.reading_time_minutes,
+        metadata: null,
+        category: post.category
+          ? { name: post.category.name, slug: post.category.slug, color: post.category.color }
+          : null,
+      })),
+      category: { id: found.slug, name: found.name, slug: found.slug, color: found.color },
+    }
+  }
 
   const supabase = await createServerSupabaseClient()
 

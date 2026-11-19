@@ -996,6 +996,12 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'jkkn.ac.in',
       },
+      // Blog images when posts come from MyJKKN (BLOG_SOURCE=myjkkn, lib/blog/myjkkn.ts)
+      {
+        protocol: 'https',
+        hostname: 'www.jkkn.ai',
+        pathname: '/api/public/blog/image/**',
+      },
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',

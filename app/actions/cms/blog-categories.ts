@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { logActivity } from '@/lib/utils/activity-logger'
 import { checkPermission } from '../permissions'
+import { blogFromMyJkkn, listCategories } from '@/lib/blog/myjkkn'
 
 // Validation schemas
 const CreateCategorySchema = z.object({
@@ -136,6 +137,11 @@ export async function getBlogCategory(id: string) {
  * Get a single blog category by slug
  */
 export async function getBlogCategoryBySlug(slug: string) {
+  // BLOG_SOURCE=myjkkn: the public category page reads this website's categories from MyJKKN.
+  if (blogFromMyJkkn()) {
+    return (await listCategories()).find((category) => category.slug === slug) ?? null
+  }
+
   const supabase = await createServerSupabaseClient()
 
   const { data, error } = await supabase

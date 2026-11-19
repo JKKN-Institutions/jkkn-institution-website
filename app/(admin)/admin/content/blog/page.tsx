@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ResponsivePageHeader } from '@/components/ui/responsive-page-header'
+import { blogFromMyJkkn, myJkknBlogAdminUrl } from '@/lib/blog/myjkkn'
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -26,6 +27,25 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
   return (
     <div className="space-y-4 sm:space-y-6">
+      {/* BLOG_SOURCE=myjkkn: the website reads posts from MyJKKN, so anything saved here no longer shows. */}
+      {blogFromMyJkkn() && (
+        <div className="rounded-xl sm:rounded-2xl border border-amber-200 bg-amber-50 p-4 sm:p-5">
+          <p className="text-sm font-semibold text-amber-900">Blog posts are now written in MyJKKN</p>
+          <p className="mt-1 text-sm text-amber-800">
+            The college website shows the posts published in MyJKKN (Website Blog). A post added or
+            changed on this page will not appear on the website.{' '}
+            <a
+              href={myJkknBlogAdminUrl()}
+              className="font-semibold underline"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open Website Blog in MyJKKN
+            </a>
+          </p>
+        </div>
+      )}
+
       {/* Page Header - Mobile Responsive */}
       <ResponsivePageHeader
         icon={<Newspaper className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />}
