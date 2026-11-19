@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { logActivity } from '@/lib/utils/activity-logger'
 import { checkPermission } from '../permissions'
+import { blogFromMyJkkn, listAllPosts, listPosts } from '@/lib/blog/myjkkn'
 
 // Resolves true if the user holds `permission` OR is the post's author/creator/co-author.
 // Used so faculty-admin users (typically `guest` role) can manage their own posts without
@@ -257,6 +258,11 @@ export async function getPublishedBlogPosts(options?: {
   author_id?: string
   search?: string
 }) {
+  // BLOG_SOURCE=myjkkn: posts are written in MyJKKN (Website Blog) and read from its API.
+  if (blogFromMyJkkn()) {
+    return getPublishedBlogPostsFromMyJkkn(options)
+  }
+
   const supabase = await createServerSupabaseClient()
   const {
     page = 1,
@@ -346,6 +352,48 @@ export async function getPublishedBlogPosts(options?: {
     page,
     limit,
     totalPages: Math.ceil((count || 0) / limit),
+  }
+}
+
+/**
+ * The same list from MyJKKN. `tag_slug` is the exact tag text there. The API has
+ * no text search, so a search reads every published post (a few dozen, cached)
+ * and matches title and excerpt here, as the old query did. `author_id` has no
+ * meaning in MyJKKN and is ignored. Never throws: an outage shows an empty list.
+ */
+async function getPublishedBlogPostsFromMyJkkn(options?: {
+  page?: number
+  limit?: number
+  category_slug?: string
+  tag_slug?: string
+  search?: string
+}) {
+  const { page = 1, limit = 10, category_slug, tag_slug, search } = options || {}
+
+  let data: BlogPostWithRelations[]
+  let total: number
+  const term = search?.trim().toLowerCase()
+  if (term) {
+    const matches = (await listAllPosts()).filter(
+      (post) =>
+        (!category_slug || post.category?.slug === category_slug) &&
+        (!tag_slug || (post.tags ?? []).some((tag) => tag.name === tag_slug)) &&
+        (post.title.toLowerCase().includes(term) || (post.excerpt ?? '').toLowerCase().includes(term))
+    )
+    total = matches.length
+    data = matches.slice((page - 1) * limit, page * limit)
+  } else {
+    const result = await listPosts({ page, limit, category: category_slug, tag: tag_slug })
+    data = result.posts
+    total = result.total
+  }
+
+  return {
+    data,
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
   }
 }
 

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { getPublishedBlogPosts } from '@/app/actions/cms/blog'
 import { getBlogCategories } from '@/app/actions/cms/blog-categories'
 import { getPopularBlogTags } from '@/app/actions/cms/blog-tags'
+import { blogFromMyJkkn, listCategories } from '@/lib/blog/myjkkn'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -144,7 +145,8 @@ function BlogPostCard({ post }: { post: {
 // Sidebar Component
 async function BlogSidebar() {
   const [categories, tags] = await Promise.all([
-    getBlogCategories({ includeInactive: false }),
+    // BLOG_SOURCE=myjkkn: this website's categories come from MyJKKN (the admin keeps its own list).
+    blogFromMyJkkn() ? listCategories() : getBlogCategories({ includeInactive: false }),
     getPopularBlogTags(15),
   ])
 

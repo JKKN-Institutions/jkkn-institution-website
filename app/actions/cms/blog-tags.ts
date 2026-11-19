@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { logActivity } from '@/lib/utils/activity-logger'
 import { checkPermission } from '../permissions'
+import { blogFromMyJkkn, decodeTag, listPopularTags, listPosts } from '@/lib/blog/myjkkn'
 
 // Validation schemas
 const CreateTagSchema = z.object({
@@ -84,6 +85,11 @@ export async function getBlogTags(options?: {
  * Get popular tags (by usage count)
  */
 export async function getPopularBlogTags(limit: number = 10) {
+  // BLOG_SOURCE=myjkkn: the tags used on the posts published in MyJKKN.
+  if (blogFromMyJkkn()) {
+    return listPopularTags(limit)
+  }
+
   const supabase = await createServerSupabaseClient()
 
   const { data, error } = await supabase
@@ -124,6 +130,23 @@ export async function getBlogTag(id: string) {
  * Get a single blog tag by slug
  */
 export async function getBlogTagBySlug(slug: string) {
+  // BLOG_SOURCE=myjkkn: a tag is plain text there, and it exists when a published post carries it.
+  if (blogFromMyJkkn()) {
+    const name = decodeTag(slug)
+    const { total } = await listPosts({ tag: name, limit: 1 })
+    if (total === 0) return null
+    const tag: BlogTag = {
+      id: name,
+      name,
+      slug: encodeURIComponent(name),
+      description: null,
+      color: null,
+      usage_count: total,
+      created_at: null,
+    }
+    return tag
+  }
+
   const supabase = await createServerSupabaseClient()
 
   const { data, error } = await supabase

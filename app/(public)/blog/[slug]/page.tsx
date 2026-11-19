@@ -24,14 +24,30 @@ import { GalleryBlock } from '@/components/public/blog/gallery-block'
 import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 import { BlogEnquiryBox } from '@/components/lead/blog-enquiry-box'
 import { blogSourcePage, secondH2Index, splitBeforeNthH2 } from '@/lib/blog-inline-cta'
+import { blogCommentsUrl, blogFromMyJkkn, blogSiteKey, getPost, type MyJkknComment } from '@/lib/blog/myjkkn'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
+  /** ?preview=<token>: the Preview button in MyJKKN opens a draft (BLOG_SOURCE=myjkkn only). */
+  searchParams?: Promise<{ preview?: string | string[] }>
 }
 
-export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+/**
+ * BLOG_SOURCE=myjkkn: the post, its related posts and its approved comments come from
+ * MyJKKN in one call (shared by generateMetadata and the page). null = this site's own
+ * tables, as before; `detail` null = not published on this website.
+ */
+async function loadFromMyJkkn(slug: string, searchParams: BlogPostPageProps['searchParams']) {
+  if (!blogFromMyJkkn()) return null
+  const preview = (await searchParams)?.preview
+  return { detail: await getPost(slug, typeof preview === 'string' && preview ? preview : undefined) }
+}
+
+export async function generateMetadata({ params, searchParams }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params
-  const post = await getBlogPostBySlug(slug, false)
+  const myJkkn = await loadFromMyJkkn(slug, searchParams)
+  const detail = myJkkn?.detail ?? null
+  const post = myJkkn ? detail?.post : await getBlogPostBySlug(slug, false)
 
   if (!post) {
     return {
@@ -41,11 +57,17 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   // Get site URL from environment (institution-specific)
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://jkkn.ac.in'
-  const canonical = `${siteUrl}/blog/${slug}`
+  // From MyJKKN the canonical is the one the writer set (or the post's own address).
+  const canonical = (detail && post.canonical_url) || `${siteUrl}/blog/${slug}`
 
   return {
     title: `${post.seo_title || post.title} | JKKN Blog`,
     description: post.seo_description || post.excerpt || '',
+    ...(detail && post.seo_keywords && post.seo_keywords.length > 0 && { keywords: post.seo_keywords }),
+    // A draft preview, or a post the writer marked "no index", stays out of search engines.
+    ...(detail && (detail.preview || detail.post.noindex) && {
+      robots: { index: false, follow: !detail.preview },
+    }),
     alternates: {
       canonical,
     },
@@ -74,6 +96,12 @@ function formatDate(dateString: string | null): string {
     month: 'long',
     day: 'numeric',
   })
+}
+
+/** Words in a post's HTML (for the article schema when the post comes from MyJKKN). */
+function htmlWordCount(html: unknown): number {
+  if (typeof html !== 'string') return 0
+  return html.replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length
 }
 
 // Author display helper functions
@@ -435,8 +463,15 @@ function ContentRenderer({ content, inlineBox }: { content: Record<string, unkno
 }
 
 // Related Posts Component
-async function RelatedPosts({ postId }: { postId: string }) {
-  const posts = await getRelatedBlogPosts(postId, 3)
+// `fromMyJkkn`: the related posts MyJKKN sent with the post (BLOG_SOURCE=myjkkn).
+async function RelatedPosts({
+  postId,
+  fromMyJkkn,
+}: {
+  postId: string
+  fromMyJkkn?: Array<{ id: string; slug: string; title: string; featured_image: string | null }>
+}) {
+  const posts = fromMyJkkn ?? (await getRelatedBlogPosts(postId, 3))
 
   if (!posts || posts.length === 0) return null
 
@@ -481,35 +516,64 @@ async function RelatedPosts({ postId }: { postId: string }) {
 }
 
 // Comments Wrapper - Fetches comments and passes to collapsible CommentsSection
-async function CommentsWrapper({ postId, allowComments }: { postId: string; allowComments: boolean }) {
+// `fromMyJkkn` (BLOG_SOURCE=myjkkn): the approved comments MyJKKN sent with the post, and
+// where the form sends a new one (saved as pending, approved in MyJKKN).
+async function CommentsWrapper({
+  postId,
+  allowComments,
+  fromMyJkkn,
+}: {
+  postId: string
+  allowComments: boolean
+  fromMyJkkn?: { comments: MyJkknComment[]; commentsVia: { api: string; site: string; slug: string } }
+}) {
   if (!allowComments) return null
 
-  const comments = await getPostComments(postId)
+  const comments = fromMyJkkn ? fromMyJkkn.comments : await getPostComments(postId)
 
   return (
     <CommentsSection
       postId={postId}
       comments={comments}
       allowComments={allowComments}
+      commentsVia={fromMyJkkn?.commentsVia}
     />
   )
 }
 
-export default async function BlogPostPage({ params }: BlogPostPageProps) {
+export default async function BlogPostPage({ params, searchParams }: BlogPostPageProps) {
   const { slug } = await params
-  const post = await getBlogPostBySlug(slug)
+  const myJkkn = await loadFromMyJkkn(slug, searchParams)
+  const detail = myJkkn?.detail ?? null
+  // From MyJKKN there is no view counter to add to.
+  const post = myJkkn ? detail?.post : await getBlogPostBySlug(slug)
 
   if (!post) {
     notFound()
   }
 
   const postUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://jkkn.ac.in'}/blog/${slug}`
+  // A draft opened with its preview link: no structured data, no enquiry box, no comments.
+  const isPreview = detail?.preview === true
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
-      {/* Article Schema for Rich Snippets */}
-      <ArticleSchema post={post} />
-      <BreadcrumbSchema path={`/blog/${slug}`} label={post.title} />
+      {isPreview ? (
+        <div className="relative z-10 bg-secondary/20 border-b border-secondary/40">
+          <p className="container mx-auto px-4 py-2.5 text-sm font-semibold text-primary">
+            Draft preview: this post is not published yet and is hidden from search engines.
+          </p>
+        </div>
+      ) : (
+        <>
+          {/* Article Schema for Rich Snippets */}
+          <ArticleSchema
+            post={post}
+            wordCount={detail ? htmlWordCount(post.content.html) : undefined}
+          />
+          <BreadcrumbSchema path={`/blog/${slug}`} label={post.title} />
+        </>
+      )}
 
       {/* Hero Section */}
       <section className="relative py-12 md:py-16 z-10">
@@ -570,13 +634,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
               )}
 
-              <Separator orientation="vertical" className="h-4 bg-primary/30" />
+              {/* Views (MyJKKN keeps no view count, so nothing is shown then) */}
+              {!myJkkn && (
+                <>
+                  <Separator orientation="vertical" className="h-4 bg-primary/30" />
 
-              {/* Views */}
-              <div className="flex items-center gap-1">
-                <Eye className="h-4 w-4" />
-                <span>{post.view_count || 0} views</span>
-              </div>
+                  <div className="flex items-center gap-1">
+                    <Eye className="h-4 w-4" />
+                    <span>{post.view_count || 0} views</span>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Tags */}
@@ -633,7 +701,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {/* Content - Light card for white background */}
             <article className="bg-gray-50 rounded-2xl p-6 md:p-8 shadow-lg border border-gray-200">
               <div className="prose prose-lg max-w-none">
-                <ContentRenderer content={post.content} inlineBox={<BlogEnquiryBox sourcePage={blogSourcePage(slug)} />} />
+                <ContentRenderer content={post.content} inlineBox={isPreview ? undefined : <BlogEnquiryBox sourcePage={blogSourcePage(slug)} />} />
               </div>
             </article>
 
@@ -665,7 +733,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <div className="h-24 bg-gray-100 rounded-lg animate-pulse" />
               </div>
             }>
-              <CommentsWrapper postId={post.id} allowComments={post.allow_comments || false} />
+              <CommentsWrapper
+                postId={post.id}
+                allowComments={(post.allow_comments || false) && !isPreview}
+                fromMyJkkn={
+                  detail
+                    ? {
+                        comments: detail.comments,
+                        commentsVia: { api: blogCommentsUrl(), site: blogSiteKey(), slug },
+                      }
+                    : undefined
+                }
+              />
             </Suspense>
 
             {/* Related Posts - CLS-optimized fallback with grid skeleton */}
@@ -683,7 +762,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
               </div>
             }>
-              <RelatedPosts postId={post.id} />
+              <RelatedPosts postId={post.id} fromMyJkkn={detail?.related} />
             </Suspense>
           </div>
         </div>

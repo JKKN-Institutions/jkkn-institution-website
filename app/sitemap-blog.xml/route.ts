@@ -11,6 +11,7 @@ import { getBlogSitemap, generateSitemapXML, type SitemapEntry } from '@/lib/con
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import { getSiteUrl } from '@/lib/utils/site-url'
+import { blogFromMyJkkn, listAllPosts } from '@/lib/blog/myjkkn'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 3600 // 1-hour edge cache; env vars read at request time
@@ -23,13 +24,16 @@ export async function GET() {
 
   // Try to fetch blog posts from database (real lastmod dates)
   try {
-    const supabase = await createServerSupabaseClient()
-    const { data: posts } = await supabase
-      .from('blog_posts')
-      .select('slug, published_at, updated_at')
-      .eq('status', 'published')
-      .eq('visibility', 'public')
-      .not('slug', 'is', null)
+    // BLOG_SOURCE=myjkkn: the published posts come from MyJKKN (never throws; empty on an
+    // outage, which falls back to the static list below). Posts marked "no index" are left out.
+    const { data: posts } = blogFromMyJkkn()
+      ? { data: (await listAllPosts()).filter((post) => !post.noindex) }
+      : await (await createServerSupabaseClient())
+          .from('blog_posts')
+          .select('slug, published_at, updated_at')
+          .eq('status', 'published')
+          .eq('visibility', 'public')
+          .not('slug', 'is', null)
 
     if (posts && posts.length > 0) {
       entries = posts

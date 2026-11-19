@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { MessageCircle, ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { CommentForm } from './comment-form'
+import { CommentForm, type CommentsVia } from './comment-form'
 
 interface Comment {
   id: string
@@ -18,6 +18,8 @@ interface CommentsSectionProps {
   postId: string
   comments: Comment[]
   allowComments: boolean
+  /** Set when posts come from MyJKKN: a new comment is sent to its public API. */
+  commentsVia?: CommentsVia
 }
 
 function formatDate(dateString: string | null): string {
@@ -29,7 +31,7 @@ function formatDate(dateString: string | null): string {
   })
 }
 
-export function CommentsSection({ postId, comments, allowComments }: CommentsSectionProps) {
+export function CommentsSection({ postId, comments, allowComments, commentsVia }: CommentsSectionProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   if (!allowComments) return null
@@ -115,7 +117,7 @@ export function CommentsSection({ postId, comments, allowComments }: CommentsSec
       </div>
 
       {/* Comment Form - Always visible */}
-      <CommentForm postId={postId} />
+      <CommentForm postId={postId} commentsVia={commentsVia} />
     </section>
   )
 }

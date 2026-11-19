@@ -10,17 +10,65 @@ import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, Send, CheckCircle, AlertCircle, MessageSquare } from 'lucide-react'
 
+/**
+ * Set when posts come from MyJKKN (BLOG_SOURCE=myjkkn): the comment is then sent to the
+ * MyJKKN public blog API (saved as pending, approved in MyJKKN) instead of this site's
+ * own table. Passed down as props because this file runs in the browser.
+ */
+export interface CommentsVia {
+  api: string
+  site: string
+  slug: string
+}
+
 interface CommentFormProps {
   postId: string
   parentId?: string
   onSuccess?: () => void
   onCancel?: () => void
+  commentsVia?: CommentsVia
 }
 
 const initialState: FormState = {}
 
-export function CommentForm({ postId, parentId, onSuccess, onCancel }: CommentFormProps) {
-  const [state, formAction, isPending] = useActionState(createComment, initialState)
+/** The same form action as createComment, posting to MyJKKN. */
+async function sendCommentToMyJkkn(via: CommentsVia, formData: FormData): Promise<FormState> {
+  const failed = 'Failed to create comment'
+  try {
+    const res = await fetch(via.api, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        site: via.site,
+        slug: via.slug,
+        author_name: String(formData.get('author_name') ?? '').trim(),
+        author_email: String(formData.get('author_email') ?? '').trim(),
+        content: String(formData.get('content') ?? '').trim(),
+      }),
+    })
+    if (res.ok) return { success: true, message: 'Comment submitted for review' }
+    if (res.status === 429) {
+      return { success: false, message: 'Too many comments from this connection. Please try again later.' }
+    }
+    if (res.status === 422) {
+      return { success: false, message: 'Please check your name and comment. The comment may be too long.' }
+    }
+    if (res.status === 404) {
+      return { success: false, message: 'Comments are disabled for this post' }
+    }
+    return { success: false, message: failed }
+  } catch {
+    return { success: false, message: failed }
+  }
+}
+
+export function CommentForm({ postId, parentId, onSuccess, onCancel, commentsVia }: CommentFormProps) {
+  const [state, formAction, isPending] = useActionState(
+    commentsVia
+      ? (_prev: FormState, formData: FormData) => sendCommentToMyJkkn(commentsVia, formData)
+      : createComment,
+    initialState
+  )
   const formRef = useRef<HTMLFormElement>(null)
 
   // Reset form on success

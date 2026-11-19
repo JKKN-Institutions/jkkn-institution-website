@@ -3,6 +3,7 @@ import { PenLine, Newspaper, Globe, Eye, FileText, Plus, BarChart3 } from 'lucid
 import { Button } from '@/components/ui/button'
 import { BlogManageTable } from './blog-manage-table'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
+import { blogFromMyJkkn, myJkknBlogAdminUrl } from '@/lib/blog/myjkkn'
 
 export default async function FacultyBlogPage() {
   const supabase = await createServerSupabaseClient()
@@ -21,6 +22,25 @@ export default async function FacultyBlogPage() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
+      {/* BLOG_SOURCE=myjkkn: the website reads posts from MyJKKN, so anything saved here no longer shows. */}
+      {blogFromMyJkkn() && (
+        <div className="rounded-xl sm:rounded-2xl border border-amber-200 bg-amber-50 p-4 sm:p-5">
+          <p className="text-sm font-semibold text-amber-900">Blog posts are now written in MyJKKN</p>
+          <p className="mt-1 text-sm text-amber-800">
+            The college website shows the posts published in MyJKKN (Website Blog). A post added or
+            changed on this page will not appear on the website.{' '}
+            <a
+              href={myJkknBlogAdminUrl()}
+              className="font-semibold underline"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open Website Blog in MyJKKN
+            </a>
+          </p>
+        </div>
+      )}
+
       {/* Professional Header with Stats */}
       <div className="glass-card rounded-2xl p-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
