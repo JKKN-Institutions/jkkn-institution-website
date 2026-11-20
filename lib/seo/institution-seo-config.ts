@@ -192,7 +192,7 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
     ],
     legalName: 'J.K.K. Rangammal Charitable Trust',
     description:
-      'JKKN Institutions is a premier educational group established in 1952 by the J.K.K. Rangammal Charitable Trust. Located in Komarapalayam, Tamil Nadu, India, JKKN offers 50+ career-focused programs across 7 colleges including Dental, Pharmacy, Nursing, Allied Health Sciences, Engineering, Arts & Science, and Education with 92%+ placement success rate. NAAC accredited institution with 74+ years of excellence in education.',
+      'JKKN Institutions is a premier educational group established in 1952 by the J.K.K. Rangammal Charitable Trust. Located in Komarapalayam, Tamil Nadu, India, JKKN offers 50+ career-focused programs across 7 colleges including Dental, Pharmacy, Nursing, Allied Health Sciences, Engineering, Arts & Science, and Education, 5 of them NAAC accredited, with 74+ years of excellence in education.',
     foundingDate: '1952',
     slogan: 'Dream Big, Achieve Bigger',
     schemaType: 'EducationalOrganization',
@@ -276,21 +276,21 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
     ],
 
     faqs: [
-      { question: 'What is JKKN Institutions?', answer: 'JKKN Institutions (JKKN) is a premier educational group in Komarapalayam, Tamil Nadu, comprising 7 colleges and 2 schools. Established in 1952, JKKN offers 50+ programs in dental, pharmacy, engineering, nursing, allied health sciences, and arts with 92%+ placement success.' },
-      { question: 'Why is JKKN the best college near Erode?', answer: 'JKKN is recognized as the best college near Erode due to 74+ years of excellence, NAAC accreditation, 92%+ placement rate, and 50,000+ successful alumni. Top recruiters include Foxconn, Apex Pharma, Apotex, Cipla and Bosch.' },
+      { question: 'What is JKKN Institutions?', answer: 'JKKN Institutions (JKKN) is a premier educational group in Komarapalayam, Tamil Nadu, comprising 7 colleges and 2 schools. Established in 1952, JKKN offers 50+ programs in dental, pharmacy, engineering, nursing, allied health sciences, and arts.' },
+      { question: 'Is JKKN near Erode?', answer: 'Yes. JKKN Institutions is at Komarapalayam in Namakkal district, on NH-544 near Erode; JKKN College of Engineering lists the distance as about 18 km. The group has 74+ years of history, 5 NAAC-accredited colleges and 50,000+ alumni.' },
       { question: 'Who founded JKKN Institutions?', answer: "JKKN was founded by visionary Kodai Vallal Shri. J.K.K. Natarajah, who started a school in 1952 to promote girls' education. His vision led to J.K.K. Rangammal Trust (1969), now led by Chairperson Smt. N. Sendamaraai and Director Shri. S. Ommsharravana." },
       { question: 'How many colleges are under JKKN?', answer: 'JKKN comprises 9 institutions: Dental College, Pharmacy College, Engineering College, Allied Health Sciences, Arts & Science College (Autonomous), Education College, Nursing College, JKKN Matriculation School, and Nattraja Vidhyalaya — all located on one integrated residential campus in Komarapalayam.' },
       { question: 'What courses does JKKN offer?', answer: 'JKKN offers 50+ programs including BDS/MDS (Dental), B.Pharm/M.Pharm/Pharm.D (Pharmacy), B.E./B.Tech/MBA (Engineering), B.Sc/M.Sc Nursing, Allied Health Sciences, B.Ed, and various UG/PG Arts & Science degrees.' },
       { question: 'Which universities is JKKN affiliated with?', answer: 'JKKN colleges are affiliated with Tamil Nadu Dr. M.G.R. Medical University (Dental/Nursing/Pharmacy), Anna University Chennai (Engineering), and Periyar University Salem (Arts & Science). All programs are approved by AICTE, DCI, PCI, INC, and NAAC.' },
       { question: 'How do I apply for JKKN admission 2026-27?', answer: 'Apply online at jkkn.ai/apply/jkkn-admission-2026 for 2026-27 admissions. Submit required documents, complete fee payment, and attend counseling if applicable. For Dental/Nursing, NEET scores are required; for Engineering, TNEA counseling applies.' },
-      { question: "What is JKKN's placement rate?", answer: 'JKKN maintains an impressive 90%+ placement rate across institutions. The Dental College achieved 92% placements in 2024. The dedicated Placement Cell organizes campus drives, skill development programs, and mock interviews.' },
+      { question: "What is JKKN's placement rate?", answer: 'Placement data differs by college; each JKKN college publishes it in its NIRF report. The dedicated Placement Cell organizes campus drives, skill development programs, and mock interviews.' },
       { question: 'How do I reach JKKN from Erode?', answer: 'JKKN is located just 15 km from Erode City on NH-544 (Salem-Coimbatore Highway). Reach by bus from Erode Bus Stand (30 minutes), train to Erode Junction (18 km), or air via Salem Airport (60 km) or Coimbatore Airport (100 km).' },
       { question: "What is JKKN's address?", answer: 'JKKN Institutions, Natarajapuram, NH-544 (Salem-Coimbatore Highway), Komarapalayam, Namakkal District, Tamil Nadu - 638183. Contact: 9345855001 | Email: info@jkkn.ac.in.' },
       { question: 'Which areas does JKKN serve?', answer: 'JKKN primarily serves learners from Erode, Salem, Namakkal, Komarapalayam, Tiruchengode, Sankagiri, Bhavani, Perundurai, and Gobichettipalayam. Learners from across Tamil Nadu and neighboring states attend due to its excellent reputation.' },
     ],
 
     keywords: [
-      'JKKN', 'JKKN Institutions', 'Best College Near Erode',
+      'JKKN', 'JKKN Institutions', 'College Near Erode',
       'colleges in erode district', 'top colleges in erode',
       'Dental College Komarapalayam', 'Pharmacy College Tamil Nadu',
       'Engineering College Namakkal', 'Nursing College Erode',

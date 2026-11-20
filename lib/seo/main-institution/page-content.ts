@@ -156,7 +156,7 @@ export const ACHIEVEMENTS_FAQS: FAQ[] = [
   },
   {
     q: 'What are JKKN learner placement records?',
-    a: 'JKKN records 92%+ placement success across programmes. Top recruiters include Foxconn, Apex Pharma, Apotex, Cipla, Bosch, and leading hospitals across South India. Campus drives begin in the pre-final year with placement training.',
+    a: 'Placement data differs by college; each JKKN college publishes it in its NIRF report. Top recruiters include Foxconn, Apex Pharma, Apotex, Cipla, Bosch, and leading hospitals across South India. Campus drives begin in the pre-final year with placement training.',
   },
 ]
 
@@ -186,7 +186,7 @@ export const ACCREDITATION_FAQS: FAQ[] = [
 export const DISTINCTIVENESS_FAQS: FAQ[] = [
   {
     q: 'What makes JKKN Institutions unique?',
-    a: 'JKKN was founded in 1952 to advance girls\' education in rural Tamil Nadu. 74+ years later it runs 7 colleges and 2 schools on a single campus, produces 50,000+ alumni, and keeps a 92%+ placement rate with NAAC-accredited quality.',
+    a: 'JKKN was founded in 1952 to advance girls\' education in rural Tamil Nadu. 74+ years later it runs 7 colleges and 2 schools on a single campus, produces 50,000+ alumni, and 5 of its colleges are NAAC accredited.',
   },
   {
     q: 'Who founded JKKN Institutions?',

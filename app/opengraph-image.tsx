@@ -143,16 +143,16 @@ export default function OGImage() {
             <div style={{ fontSize: '14px', opacity: 0.8 }}>Programs</div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <div style={{ fontSize: '28px', fontWeight: 700 }}>92%+</div>
-            <div style={{ fontSize: '14px', opacity: 0.8 }}>Placement</div>
+            <div style={{ fontSize: '28px', fontWeight: 700 }}>5</div>
+            <div style={{ fontSize: '14px', opacity: 0.8 }}>NAAC Colleges</div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <div style={{ fontSize: '28px', fontWeight: 700 }}>74+</div>
             <div style={{ fontSize: '14px', opacity: 0.8 }}>Years</div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <div style={{ fontSize: '28px', fontWeight: 700 }}>NAAC A</div>
-            <div style={{ fontSize: '14px', opacity: 0.8 }}>Accredited</div>
+            <div style={{ fontSize: '28px', fontWeight: 700 }}>7</div>
+            <div style={{ fontSize: '14px', opacity: 0.8 }}>Colleges</div>
           </div>
         </div>
 

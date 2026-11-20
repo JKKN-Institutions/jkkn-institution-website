@@ -264,8 +264,8 @@ export const DEFINED_TERMS: DefinedTerm[] = [
     description: 'J.K.K. Nattraja Educational Institutions — a group of 9 educational institutions in Komarapalayam, Tamil Nadu, operated by the J.K.K. Rangammal Charitable Trust since 1952.',
   },
   {
-    term: 'NAAC A',
-    description: 'Grade A accreditation by the National Assessment and Accreditation Council, the UGC body that evaluates higher education institutions in India. A-grade indicates very good quality.',
+    term: 'NAAC',
+    description: 'National Assessment and Accreditation Council, the UGC body that grades higher education institutions in India. JKKN college grades (NAAC list as on 14 August 2025): Dental A, Pharmacy A, Nursing B++, Engineering B+ and Arts and Science B.',
   },
   {
     term: 'Komarapalayam',

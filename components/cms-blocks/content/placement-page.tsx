@@ -58,7 +58,7 @@ export const PlacementPageSchema = z.object({
       icon: z.enum(['Briefcase', 'TrendingUp', 'Users', 'Award', 'Target', 'MessageSquare', 'Mic2', 'Code2']),
     })
   ).default([
-    { label: 'Placement Rate', value: '95%', icon: 'Target' },
+    { label: 'NIRF placement data', value: 'Yearly', icon: 'Target' },
     { label: 'Highest Package', value: '₹24 LPA', icon: 'TrendingUp' },
     { label: 'Average Package', value: '₹6.2 LPA', icon: 'Briefcase' },
     { label: 'Recruiters', value: '150+', icon: 'Users' },

@@ -21,14 +21,14 @@ export const INSTITUTIONAL_DATA = {
   },
 
   accreditations: {
-    naacGrade: 'A',
-    displayText: 'NAAC A Accredited',
-    shortText: 'NAAC A',
+    naacGrade: 'Per college: Dental A, Pharmacy A, Nursing B++, Engineering B+ and Arts and Science B',
+    displayText: '5 NAAC-Accredited Colleges',
+    shortText: 'NAAC Accredited',
   },
 
   statistics: {
-    placementRate: '92%+',
-    placementRateNumeric: 92,
+    placementRate: 'Varies by college - see each college NIRF report',
+    placementRateNumeric: null,
     facultyCount: '400+',
     facultyCountNumeric: 400,
     alumniCount: '50,000+',

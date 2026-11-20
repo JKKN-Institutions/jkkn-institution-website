@@ -199,7 +199,7 @@ export default function HeroSection({
   // Trust badges data
   const trustBadges = [
     { icon: Award, text: "NAAC Accredited" },
-    { icon: TrendingUp, text: "95%+ Placements" },
+    { icon: TrendingUp, text: "Placement Support" },
     { icon: Users, text: "100+ Top Recruiters" },
     { icon: Calendar, text: "39 Years of Excellence" }
   ]

@@ -33,7 +33,7 @@ export default function MainAdmissionsPage() {
           path: '/admissions',
           name: 'Admissions 2026-27 | JKKN Institutions',
           description:
-            'Apply for JKKN Institutions admission 2026-27 — NAAC accredited, 7 colleges, 92%+ placements, scholarships available. Komarapalayam, Namakkal, Tamil Nadu.',
+            'Apply for JKKN Institutions admission 2026-27 — 7 colleges (5 NAAC accredited), scholarships available. Komarapalayam, Namakkal, Tamil Nadu.',
           keywords: [
             'JKKN admissions 2026',
             'JKKN Institutions admission',
@@ -79,7 +79,7 @@ export default function MainAdmissionsPage() {
           { label: 'Apply Now', link: 'https://www.jkkn.ai/apply/jkkn-admission-2026', variant: 'primary', isExternal: true, icon: 'external' },
         ]}
         trustBadges={[
-          { icon: 'check', label: 'NAAC A Accredited' },
+          { icon: 'check', label: '5 NAAC-Accredited Colleges' },
           { icon: 'check', label: 'AICTE Approved' },
           { icon: 'check', label: 'UGC Recognized' },
           { icon: 'check', label: '74+ Years of Excellence' },

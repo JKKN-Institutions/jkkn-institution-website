@@ -21,7 +21,7 @@ const ADMISSIONS_FAQS = [
   {
     question: 'Is JKKN approved by AICTE, UGC, and other regulatory bodies?',
     answer:
-      'Yes! JKKN is fully approved by AICTE (Engineering & Pharmacy), UGC (Arts & Science), DCI (Dental), PCI (Pharmacy), INC (Nursing), ISO 9001, and is NAAC A accredited. Our colleges are affiliated with Anna University and Periyar University.',
+      'Yes! JKKN is fully approved by AICTE (Engineering & Pharmacy), UGC (Arts & Science), DCI (Dental), PCI (Pharmacy), INC (Nursing) and ISO 9001. Five JKKN colleges are NAAC accredited: Dental A, Pharmacy A, Nursing B++, Engineering B+ and Arts and Science B. Our colleges are affiliated with Anna University and Periyar University.',
   },
   {
     question: 'What scholarships are available for learners?',
@@ -36,7 +36,7 @@ const ADMISSIONS_FAQS = [
   {
     question: "What is JKKN's placement rate?",
     answer:
-      "JKKN boasts an impressive 92%+ placement rate across all programs. Our dedicated Career Development Center (CDC) partners with 100+ companies including TCS, Infosys, Wipro, Cognizant, HCL, Dell, HP, Zoho and leading healthcare organizations.",
+      "Placement data differs by college; each JKKN college publishes it in its NIRF report. Our dedicated Career Development Center (CDC) partners with 100+ companies including TCS, Infosys, Wipro, Cognizant, HCL, Dell, HP, Zoho and leading healthcare organizations.",
   },
   {
     question: 'Where is JKKN campus located?',

@@ -35,7 +35,7 @@ export function CourseCatalogSchema() {
         "@type": "ItemList",
         "@id": `${config.site.url}/#course-catalog`,
         "name": `JKKN Institutions Course Catalog ${config.academicYear}`,
-        "description": `Complete list of 50+ career-focused courses offered at JKKN Institutions, Komarapalayam - Best College Near Erode for Dental, Pharmacy, Engineering, Nursing, Allied Health Sciences, Arts & Science, and Education programs`,
+        "description": `Complete list of 50+ career-focused courses offered at JKKN Institutions, Komarapalayam, near Erode, in Dental, Pharmacy, Engineering, Nursing, Allied Health Sciences, Arts & Science, and Education programs`,
         "numberOfItems": 7,
         "itemListOrder": "https://schema.org/ItemListOrderDescending",
         "itemListElement": [
@@ -112,7 +112,7 @@ export function CourseCatalogSchema() {
         "@type": "EducationalOccupationalProgram",
         "@id": `${config.site.url}/#dental-programs`,
         "name": "Dental Programs at JKKN Dental College",
-        "description": "Comprehensive dental education programs including BDS and MDS with 5 specializations at JKKN Dental College & Hospital, Komarapalayam. DCI recognized, affiliated to Tamil Nadu Dr. M.G.R. Medical University with 92%+ placement rate.",
+        "description": "Comprehensive dental education programs including BDS and MDS with 5 specializations at JKKN Dental College & Hospital, Komarapalayam. DCI recognized, affiliated to Tamil Nadu Dr. M.G.R. Medical University.",
         "url": `${config.site.url}/courses-offered/dental-courses`,
         "provider": {
           "@type": "CollegeOrUniversity",
@@ -1195,7 +1195,7 @@ export function CourseCatalogSchema() {
         "@type": "WebPage",
         "@id": `${config.site.url}/courses-offered`,
         "name": `Courses Offered at JKKN Institutions | 50+ Programs | Best College Erode`,
-        "description": "Explore 50+ courses at JKKN Institutions - Dental (BDS/MDS), Pharmacy (B.Pharm/M.Pharm/Pharm.D), Engineering (B.E./B.Tech/MBA), Nursing, Allied Health Sciences, Arts & Science, Education. NAAC accredited, 92%+ placements.",
+        "description": "Explore 50+ courses at JKKN Institutions - Dental (BDS/MDS), Pharmacy (B.Pharm/M.Pharm/Pharm.D), Engineering (B.E./B.Tech/MBA), Nursing, Allied Health Sciences, Arts & Science, Education. 5 NAAC-accredited colleges.",
         "url": `${config.site.url}/courses-offered`,
         "isPartOf": {
           "@id": `${config.site.url}/#website`

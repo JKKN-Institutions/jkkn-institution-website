@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
     return {
       title: 'Our Institutions — 9 Pillars of JKKN Excellence',
       description:
-        'JKKN Institutions comprises 7 colleges and 2 schools on one integrated 70-acre campus in Komarapalayam, Tamil Nadu. Established 1952. NAAC A accredited. 92%+ placements.',
+        'JKKN Institutions comprises 7 colleges and 2 schools on one integrated 70-acre campus in Komarapalayam, Tamil Nadu. Established 1952. 5 NAAC-accredited colleges.',
       keywords: [
         'JKKN institutions list',
         'JKKN colleges',
@@ -41,7 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
         'Nattraja Vidhyalya',
         'Komarapalayam colleges',
         'Namakkal colleges',
-        'NAAC A accredited Tamil Nadu',
+        'NAAC accredited colleges Tamil Nadu',
       ],
       alternates: {
         canonical: 'https://www.jkkn.ac.in/our-institutions',
@@ -54,7 +54,7 @@ export async function generateMetadata(): Promise<Metadata> {
       openGraph: {
         title: 'Our Institutions — 9 Pillars of JKKN Excellence',
         description:
-          'JKKN comprises 7 colleges and 2 schools on one integrated 70-acre campus. 50+ programs. NAAC A. 92%+ placements.',
+          'JKKN comprises 7 colleges and 2 schools on one integrated 70-acre campus. 50+ programs. 5 NAAC-accredited colleges.',
         url: 'https://www.jkkn.ac.in/our-institutions',
         siteName: 'JKKN Institutions',
         type: 'website',
@@ -74,7 +74,7 @@ export async function generateMetadata(): Promise<Metadata> {
         creator: '@jkkninstitution',
         title: 'Our Institutions — 9 Pillars of JKKN Excellence',
         description:
-          'JKKN comprises 7 colleges and 2 schools on one integrated 70-acre campus. 50+ programs. NAAC A. 92%+ placements.',
+          'JKKN comprises 7 colleges and 2 schools on one integrated 70-acre campus. 50+ programs. 5 NAAC-accredited colleges.',
         images: ['https://www.jkkn.ac.in/og-image.png'],
       },
       robots: {

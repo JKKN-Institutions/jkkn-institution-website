@@ -56,7 +56,7 @@ export default async function AchievementsPage({
           path: '/achievements',
           name: 'Our Achievements | JKKN Institutions',
           description:
-            'Explore the outstanding achievements of JKKN Institutions senior learners and learners across research, teaching, competitions, and awards — 74+ years of academic excellence, 92%+ placement success, and 50,000+ alumni.',
+            'Explore the outstanding achievements of JKKN Institutions senior learners and learners across research, teaching, competitions, and awards — 74+ years of academic excellence and 50,000+ alumni.',
           pageType: 'CollectionPage',
           keywords: [
             'JKKN achievements',

@@ -308,7 +308,7 @@ export const LAYOUT_PRESETS: LayoutPreset[] = [
             },
             {
               question: 'What is the campus placement record?',
-              answer: 'We have a strong placement cell with over 95% placement rate. Top companies like TCS, Infosys, Wipro, and many more recruit from our campus.'
+              answer: 'We have a strong placement cell; placement data is published every year in the NIRF report. Top companies like TCS, Infosys, Wipro, and many more recruit from our campus.'
             },
             {
               question: 'Is hostel accommodation available?',

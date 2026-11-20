@@ -128,9 +128,9 @@ const COLLEGES: Institution[] = [
     schemaType: 'CollegeOrUniversity',
     schemaId: 'https://engg.jkkn.ac.in/#organization',
     schemaDescription:
-      'Autonomous engineering college affiliated with Anna University. B.E./B.Tech/M.E./M.Tech/MBA programs across CSE, ECE, Mechanical, EEE, Civil, AI/ML. Established 2008.',
+      'Autonomous engineering college affiliated with Anna University. B.E. CSE, ECE, EEE and Mechanical, B.Tech IT, M.E. CSE and MBA. Established 2008.',
     foundedYear: 2008,
-    approval: 'AICTE · Autonomous · NAAC A',
+    approval: 'AICTE · Autonomous · NAAC B+',
     affiliation: 'Anna University',
     keyPrograms: 'B.E./B.Tech, M.E./M.Tech, MBA',
     applyUrl: 'https://engg.jkkn.ac.in/admissions',
@@ -279,7 +279,7 @@ const ALL_INSTITUTIONS = [...COLLEGES, ...SCHOOLS]
 const STATS = [
   { number: '9', label: 'Institutions' },
   { number: '50+', label: 'Programs Offered' },
-  { number: '92%+', label: 'Placement Rate' },
+  { number: '5', label: 'NAAC-Accredited Colleges' },
   { number: '50,000+', label: 'Successful Alumni' },
 ]
 
@@ -309,7 +309,7 @@ const FAQS = [
   },
   {
     q: 'Is JKKN NAAC accredited?',
-    a: 'Yes. JKKN holds NAAC A grade accreditation. Individual institutions also hold their respective regulatory approvals: AICTE (Engineering, Pharmacy, MBA), DCI (Dental), PCI (Pharmacy), INC (Nursing), NCTE (Education), and Tamil Nadu State Board / CBSE recognition (schools).',
+    a: 'Yes. Five JKKN colleges hold NAAC accreditation (NAAC list as on 14 August 2025): Dental A, Pharmacy A, Nursing B++, Engineering B+ and Arts and Science B. Individual institutions also hold their respective regulatory approvals: AICTE (Engineering, Pharmacy, MBA), DCI (Dental), PCI (Pharmacy), INC (Nursing), NCTE (Education), and Tamil Nadu State Board / CBSE recognition (schools).',
   },
   {
     q: 'How many programs does JKKN offer?',
@@ -317,11 +317,11 @@ const FAQS = [
   },
   {
     q: 'What is JKKN\'s placement rate?',
-    a: 'JKKN Institutions reports 92%+ placement across professional courses, with 100+ recruiting partners including TCS, Infosys, Wipro, Cognizant, and major dental/pharma/healthcare employers. Specific placement data varies by college and is published annually in each institution\'s placement report.',
+    a: 'JKKN Institutions has 100+ recruiting partners including TCS, Infosys, Wipro, Cognizant, and major dental/pharma/healthcare employers. Specific placement data varies by college and is published annually in each institution\'s placement report.',
   },
   {
     q: 'Which JKKN college is best for engineering?',
-    a: 'JKKN College of Engineering and Technology (Autonomous), established 2008, is the engineering institution — AICTE approved, Anna University affiliated, NAAC A graded. It offers B.E./B.Tech/M.E./M.Tech/MBA across CSE, ECE, EEE, Mechanical, Civil, and AI/ML branches with a strong placement record.',
+    a: 'JKKN College of Engineering and Technology (Autonomous), established 2008, is the engineering institution — AICTE approved, Anna University affiliated, NAAC Accredited (B+). It offers B.E. CSE, ECE, EEE and Mechanical, B.Tech IT, M.E. CSE and MBA.',
   },
   {
     q: 'How big is the JKKN campus?',
@@ -375,7 +375,7 @@ function pageGraphSchema() {
         url: PAGE_URL,
         name: 'Our Institutions — 9 Pillars of JKKN Excellence',
         description:
-          'JKKN Institutions comprises 7 colleges and 2 schools on one integrated 70-acre campus in Komarapalayam, Tamil Nadu. Established 1952. NAAC A accredited. 92%+ placements.',
+          'JKKN Institutions comprises 7 colleges and 2 schools on one integrated 70-acre campus in Komarapalayam, Tamil Nadu. Established 1952. 5 NAAC-accredited colleges.',
         isPartOf: { '@id': `${SITE_URL}/#website` },
         about: { '@id': ORG_ID },
         mainEntity: { '@id': 'https://jkkn.ac.in/#institutions-catalog' },
@@ -437,7 +437,7 @@ function pageGraphSchema() {
         ],
         slogan: 'Your Success — Our Tradition',
         description:
-          'JKKN Institutions is a group of 9 educational institutions — 7 colleges and 2 schools — on a 70-acre integrated campus in Komarapalayam, Tamil Nadu, India. Established 1952. NAAC A accredited. 50,000+ alumni.',
+          'JKKN Institutions is a group of 9 educational institutions — 7 colleges and 2 schools — on a 70-acre integrated campus in Komarapalayam, Tamil Nadu, India. Established 1952. 5 NAAC-accredited colleges. 50,000+ alumni.',
         address: {
           '@type': 'PostalAddress',
           streetAddress: 'Natarajapuram, NH-544 (Salem–Coimbatore Highway)',
@@ -504,7 +504,7 @@ function pageGraphSchema() {
           {
             '@type': 'EducationalOccupationalCredential',
             credentialCategory: 'Accreditation',
-            name: 'NAAC A Grade',
+            name: 'NAAC accreditation of 5 JKKN colleges (NAAC list as on 14 August 2025): Dental A, Pharmacy A, Nursing B++, Engineering B+ and Arts and Science B',
             recognizedBy: {
               '@type': 'Organization',
               name: 'National Assessment and Accreditation Council',
@@ -572,7 +572,7 @@ function pageGraphSchema() {
           { '@type': 'PropertyValue', name: 'Number of Schools', value: 2 },
           { '@type': 'PropertyValue', name: 'Founded Year', value: 1952 },
           { '@type': 'PropertyValue', name: 'Programs Offered', value: '50+' },
-          { '@type': 'PropertyValue', name: 'Placement Rate', value: '92%+' },
+          { '@type': 'PropertyValue', name: 'NAAC-Accredited Colleges', value: 5 },
           { '@type': 'PropertyValue', name: 'Alumni Count', value: '50,000+' },
         ],
       },
@@ -904,7 +904,7 @@ export default function MainOurInstitutionsPage() {
         <div className="relative mx-auto max-w-7xl">
           <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-secondary/30 bg-secondary/15 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-secondary">
             <Award className="h-3.5 w-3.5" />
-            NAAC A Accredited · Est. 1952
+            5 NAAC-Accredited Colleges · Est. 1952
           </span>
 
           <h1
@@ -927,8 +927,8 @@ export default function MainOurInstitutionsPage() {
             </strong>{' '}
             on one integrated 70-acre campus in Komarapalayam, Tamil Nadu — offering 50+
             career-focused programs from school education through doctoral research.
-            Established 1952 by the J.K.K. Rangammal Charitable Trust, NAAC A accredited
-            with 92%+ placement success and 50,000+ successful alumni.
+            Established 1952 by the J.K.K. Rangammal Charitable Trust, with 5 NAAC-accredited
+            colleges and 50,000+ successful alumni.
           </p>
 
           <div className="mt-5 flex flex-wrap items-center gap-3">
@@ -1044,7 +1044,7 @@ export default function MainOurInstitutionsPage() {
             <strong>J.K.K. Rangammal Charitable Trust</strong> on a{' '}
             <strong>70-acre integrated campus</strong> in{' '}
             <strong>Komarapalayam, Tamil Nadu, India</strong>. Established in{' '}
-            <strong>1952</strong>, the group is <strong>NAAC A accredited</strong> and
+            <strong>1952</strong>, the group has <strong>5 NAAC-accredited colleges</strong> and
             serves <strong>50,000+ alumni</strong> with <strong>50+ academic programs</strong>{' '}
             from school education through doctoral research — making it one of Tamil
             Nadu&apos;s longest-running and most comprehensive education groups.

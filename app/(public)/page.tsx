@@ -138,7 +138,7 @@ function HomepageSchemas() {
           path: '/',
           name: 'JKKN Institutions | 74+ Years of Educational Excellence',
           description:
-            'JKKN Institutions — 7 colleges and 2 schools on one 70-acre campus in Komarapalayam, Tamil Nadu. 50+ programmes, 92%+ placements, 50,000+ alumni. NAAC accredited; established 1952 by the J.K.K. Rangammal Charitable Trust.',
+            'JKKN Institutions — 7 colleges and 2 schools on one 70-acre campus in Komarapalayam, Tamil Nadu. 50+ programmes, 50,000+ alumni. NAAC accredited; established 1952 by the J.K.K. Rangammal Charitable Trust.',
           keywords: [
             'JKKN Institutions',
             'JKKN',
@@ -146,7 +146,7 @@ function HomepageSchemas() {
             'JKKN colleges list',
             'Komarapalayam college',
             'Namakkal college',
-            'best college near Erode',
+            'college near Erode',
             'NAAC accredited college Tamil Nadu',
           ],
           speakableSelectors: HOME_SPEAKABLE_SELECTORS,

@@ -367,7 +367,7 @@ export const HeroSectionPropsSchema = z.object({
   trustBadgesStyle: z.enum(['glass', 'solid', 'outline']).default('glass'),
   trustBadgesPosition: z.enum(['below-subtitle', 'below-title', 'below-logo']).default('below-subtitle'),
   trustBadge1Text: z.string().default('NAAC Accredited'),
-  trustBadge2Text: z.string().default('95%+ Placements'),
+  trustBadge2Text: z.string().default('Placement Support'),
   trustBadge3Text: z.string().default('100+ Top Recruiters'),
   trustBadge4Text: z.string().default('39 Years of Excellence'),
   // Background settings
@@ -463,11 +463,11 @@ export const FAQSectionPropsSchema = z.object({
     },
     {
       question: 'Is JKKN approved by AICTE, UGC, and other regulatory bodies?',
-      answer: 'Yes, all JKKN institutions are fully approved and recognized by respective regulatory bodies. Our colleges hold approvals from AICTE (All India Council for Technical Education), UGC (University Grants Commission), NAAC (National Assessment and Accreditation Council), DCI (Dental Council of India), PCI (Pharmacy Council of India), and INC (Indian Nursing Council). JKKN has achieved NAAC A+ Accreditation, reflecting our commitment to quality education.',
+      answer: 'Yes, all JKKN institutions are fully approved and recognized by respective regulatory bodies. Our colleges hold approvals from AICTE (All India Council for Technical Education), UGC (University Grants Commission), NAAC (National Assessment and Accreditation Council), DCI (Dental Council of India), PCI (Pharmacy Council of India), and INC (Indian Nursing Council). Five JKKN colleges hold NAAC accreditation (NAAC list as on 14 August 2025): Dental A, Pharmacy A, Nursing B++, Engineering B+ and Arts and Science B.',
     },
     {
       question: 'What is the placement rate at JKKN?',
-      answer: 'JKKN maintains an impressive 95%+ placement rate across all colleges. Our dedicated placement cell has strong partnerships with 100+ industry recruiters including TCS, Infosys, Wipro, Zoho, Cognizant, HCL, Dell, and leading hospitals. Over 50,000+ alumni are successfully placed in top organizations worldwide. We offer comprehensive placement training, mock interviews, and industry internship programs.',
+      answer: 'Placement data differs by college; each JKKN college publishes it in its NIRF report. Our dedicated placement cell has strong partnerships with 100+ industry recruiters including TCS, Infosys, Wipro, Zoho, Cognizant, HCL, Dell, and leading hospitals. We offer comprehensive placement training, mock interviews, and industry internship programs.',
     },
     {
       question: 'How can I apply for admission at JKKN for 2025-26?',
@@ -487,7 +487,7 @@ export const FAQSectionPropsSchema = z.object({
     },
     {
       question: 'What makes JKKN different from other colleges in Tamil Nadu?',
-      answer: 'JKKN stands apart with its 74+ years of educational legacy, industry-integrated curriculum, 95% placement record, NAAC A+ accreditation, 500+ expert Learning Facilitators, affordable fee structure, and a value-based education philosophy. Our Founder\'s vision of "Excellence without Elitism" ensures quality education is accessible to all deserving Learners regardless of their economic background.',
+      answer: 'JKKN stands apart with its 74+ years of educational legacy, industry-integrated curriculum, 5 NAAC-accredited colleges, 500+ expert Learning Facilitators, affordable fee structure, and a value-based education philosophy. Our Founder\'s vision of "Excellence without Elitism" ensures quality education is accessible to all deserving Learners regardless of their economic background.',
     },
     {
       question: 'Where is JKKN located and how can I visit the campus?',
@@ -884,7 +884,7 @@ export type TrustBadgeItem = z.infer<typeof TrustBadgeItemSchema>
 export const TrustBadgesPropsSchema = z.object({
   badges: z.array(TrustBadgeItemSchema).default([
     { icon: 'Award', text: 'NAAC Accredited' },
-    { icon: 'TrendingUp', text: '95%+ Placements' },
+    { icon: 'TrendingUp', text: 'Placement Support' },
     { icon: 'Users', text: '100+ Top Recruiters' },
     { icon: 'Calendar', text: '39 Years of Excellence' }
   ]),
@@ -944,8 +944,8 @@ export const AccreditationsSectionPropsSchema = z.object({
   accreditationCards: z.array(AccreditationCardSchema).default([
     {
       icon: 'Trophy',
-      name: 'NAAC A+ Accredited',
-      description: 'Awarded the prestigious A+ Grade by the National Assessment and Accreditation Council, recognizing excellence in curriculum, infrastructure, Learning outcomes, and governance.',
+      name: 'NAAC Accredited Colleges',
+      description: 'Five JKKN colleges hold NAAC accreditation (NAAC list as on 14 August 2025): Dental A, Pharmacy A, Nursing B++, Engineering B+ and Arts and Science B.',
       order: 1,
     },
     {
@@ -1089,8 +1089,8 @@ export type LegacyCard = z.infer<typeof LegacyCardSchema>
  * Placement Card schema (Placement Success Rate)
  */
 export const PlacementCardSchema = z.object({
-  statValue: z.string().default('95%'),
-  statLabel: z.string().default('Placement Success Rate'),
+  statValue: z.string().default('Yearly'),
+  statLabel: z.string().default('Placement data in NIRF reports'),
   bulletPoints: z.array(z.string()).default([
     '100+ leading recruiters.',
     'Soft skills training & mock interviews.',
@@ -1140,8 +1140,8 @@ export const WhyChooseJKKNPropsSchema = z.object({
   // USP Cards
   uspCards: z.array(USPCardSchema).default([
     { icon: 'heritage', title: '74+ Years of Educational Legacy' },
-    { icon: 'career', title: '92% Placement Success Rate' },
-    { icon: 'excellence', title: 'NAAC A Accredited Quality' },
+    { icon: 'career', title: 'Dedicated Placement Cell' },
+    { icon: 'excellence', title: '5 NAAC-Accredited Colleges' },
     { icon: 'expertise', title: '400+ Expert Learning Facilitators' },
     { icon: 'facilities', title: 'State-of-the-Art Infrastructure' },
     { icon: 'value', title: 'Affordable & Accessible Education' },

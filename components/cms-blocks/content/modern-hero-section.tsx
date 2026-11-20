@@ -176,7 +176,7 @@ export default function ModernHeroSection({
                 <div className="container mx-auto px-4">
                     <div className="flex justify-center gap-12 opacity-60">
                         <div className="flex items-center gap-2 text-sm font-semibold text-[#1A1A1A]">
-                            <TrendingUp className="w-4 h-4 text-[#C5A059]" /> 95% Placements
+                            <TrendingUp className="w-4 h-4 text-[#C5A059]" /> Placement Support
                         </div>
                         <div className="flex items-center gap-2 text-sm font-semibold text-[#1A1A1A]">
                             <Users className="w-4 h-4 text-[#C5A059]" /> 100+ Top Recruiters

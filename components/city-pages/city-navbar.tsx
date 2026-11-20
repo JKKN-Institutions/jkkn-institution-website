@@ -30,7 +30,7 @@ export default function CityNavbar() {
             </div>
             <div className="hidden sm:block">
               <p className="text-sm font-bold text-gray-900 leading-tight">JKKN Engineering</p>
-              <p className="text-[10px] text-gray-500 leading-tight">Autonomous | NAAC A</p>
+              <p className="text-[10px] text-gray-500 leading-tight">Autonomous | NAAC B+</p>
             </div>
           </a>
 

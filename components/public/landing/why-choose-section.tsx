@@ -19,8 +19,8 @@ export function WhyChooseSection() {
       tagline="Where Legacy Meets Innovation | Excellence Without Elitism"
       uspCards={[
         { icon: 'heritage', title: '73+ Years of Educational Legacy' },
-        { icon: 'career', title: '92%+ Placement Success Rate' },
-        { icon: 'excellence', title: 'NAAC A Accredited Quality' },
+        { icon: 'career', title: 'Dedicated Placement Cell' },
+        { icon: 'excellence', title: '5 NAAC-Accredited Colleges' },
         { icon: 'expertise', title: '400+ Expert Learning Facilitators' },
         { icon: 'facilities', title: 'State-of-the-Art Infrastructure' },
         { icon: 'value', title: 'Affordable & Accessible Education' },

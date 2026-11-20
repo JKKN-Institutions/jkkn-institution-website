@@ -886,7 +886,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
       trustBadgesStyle: 'glass',
       trustBadgesPosition: 'below-subtitle',
       trustBadge1Text: 'NAAC Accredited',
-      trustBadge2Text: '95%+ Placements',
+      trustBadge2Text: 'Placement Support',
       trustBadge3Text: '100+ Top Recruiters',
       trustBadge4Text: '39 Years of Excellence',
       backgroundType: 'gradient',
@@ -1271,7 +1271,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
               type: 'string',
               label: 'Name',
               required: true,
-              placeholder: 'e.g., NAAC A Accredited',
+              placeholder: 'e.g., NAAC Accredited',
             },
             description: {
               type: 'string',
@@ -2310,7 +2310,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     defaultProps: {
       badges: [
         { icon: 'Award', text: 'NAAC Accredited' },
-        { icon: 'TrendingUp', text: '95%+ Placements' },
+        { icon: 'TrendingUp', text: 'Placement Support' },
         { icon: 'Users', text: '100+ Top Recruiters' },
         { icon: 'Calendar', text: '39 Years of Excellence' }
       ],
@@ -9011,7 +9011,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
     defaultProps: {
       title: 'Shape Your Future in Engineering & Technology',
       subtitle: 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
-      description: 'Join one of the leading engineering colleges with 100+ years of educational excellence. World-class faculty, state-of-the-art infrastructure, and 95%+ placement record.',
+      description: 'Join JKKN College of Engineering and Technology (Autonomous), Komarapalayam - AICTE approved and affiliated to Anna University, Chennai.',
       badge: 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
       stats: [
         { value: 3000, suffix: '+', label: 'Learners', icon: 'graduation' },
@@ -9156,7 +9156,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         'NAAC Accredited Programs',
         'Industry-Academia Partnerships',
         'State-of-the-Art Laboratories',
-        '95%+ Placement Record',
+        'Placement Cell and Training Support',
         'Experienced Faculty Members',
       ],
       image: '/images/engineering/about-campus.jpg',
@@ -9237,7 +9237,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         { title: 'Industry Connect', description: 'Strong partnerships with leading IT and core industry companies', icon: 'building' },
         { title: 'Expert Learning Facilitators', description: 'Highly qualified faculty with industry experience and research background', icon: 'graduation' },
         { title: 'Modern Labs & Infrastructure', description: 'State-of-the-art laboratories equipped with latest technology', icon: 'flask' },
-        { title: '95%+ Placements', description: 'Consistently high placement rate with top recruiters visiting campus', icon: 'trending' },
+        { title: 'Placement Cell and Training Support', description: 'Placement training and campus recruitment drives for final-year learners', icon: 'trending' },
         { title: 'Innovation Hub', description: 'Dedicated centers for AI, ML, IoT, and emerging technologies', icon: 'lightbulb' },
         { title: 'Global Exposure', description: 'International collaborations and student exchange programs', icon: 'globe' },
         { title: 'Excellent Hostel Facilities', description: 'Separate hostels for boys and girls with modern amenities', icon: 'home' },
@@ -9476,7 +9476,7 @@ export const COMPONENT_REGISTRY: ComponentRegistry = {
         backgroundImage: '/images/engineering/placement-hero.jpg',
       },
       stats: [
-        { label: 'Placement Rate', value: '95%', icon: 'Target' },
+        { label: 'NIRF placement data', value: 'Yearly', icon: 'Target' },
         { label: 'Highest Package', value: '₹24 LPA', icon: 'TrendingUp' },
         { label: 'Average Package', value: '₹6.2 LPA', icon: 'Briefcase' },
         { label: 'Recruiters', value: '150+', icon: 'Users' },

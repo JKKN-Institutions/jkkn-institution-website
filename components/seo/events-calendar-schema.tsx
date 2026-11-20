@@ -30,7 +30,7 @@ export function EventsCalendarSchema() {
         "@type": "ItemList",
         "@id": "https://jkkn.ac.in/#events-calendar",
         "name": "JKKN Institutions Events Calendar 2025-26",
-        "description": "Comprehensive calendar of academic events, admission drives, placement activities, and #JKKN100 centenary celebrations at JKKN Institutions, Komarapalayam - Best College Near Erode, Tamil Nadu",
+        "description": "Comprehensive calendar of academic events, admission drives, placement activities, and #JKKN100 centenary celebrations at JKKN Institutions, Komarapalayam, near Erode, Tamil Nadu",
         "numberOfItems": 12,
         "itemListOrder": "https://schema.org/ItemListOrderAscending",
         "itemListElement": [
@@ -461,13 +461,13 @@ export function EventsCalendarSchema() {
       {
         "@type": "Event",
         "@id": "https://jkkn.ac.in/#event-placement-drive",
-        "name": "JKKN Campus Recruitment Drive 2026 | 100+ Companies | 92%+ Placement Rate",
+        "name": "JKKN Campus Recruitment Drive 2026 | 100+ Companies",
         "alternateName": [
           "JKKN Placement Fair 2026",
           "Campus Hiring Event Erode",
           "JKKN Job Fair"
         ],
-        "description": "Annual mega campus recruitment drive at JKKN Institutions featuring 100+ top recruiters including Foxconn, Bosch, TCS, Cipla, Apex Pharma, Apotex, Apollo Hospitals, and more. Open to final year Learners and recent graduates from all 7 JKKN colleges. Excellent opportunities across IT, Healthcare, Pharmaceutical, Manufacturing, and Service sectors. JKKN maintains 92%+ placement success rate with competitive salary packages.",
+        "description": "Annual mega campus recruitment drive at JKKN Institutions featuring 100+ top recruiters including Foxconn, Bosch, TCS, Cipla, Apex Pharma, Apotex, Apollo Hospitals, and more. Open to final year Learners and recent graduates from all 7 JKKN colleges. Excellent opportunities across IT, Healthcare, Pharmaceutical, Manufacturing, and Service sectors.",
         "url": "https://jkkn.ac.in/events/campus-recruitment-drive-2026",
         "image": [
           "https://jkkn.ac.in/images/events/placement-drive-2026.jpg",
@@ -1528,7 +1528,7 @@ export function EventsCalendarSchema() {
         "@type": "WebPage",
         "@id": "https://jkkn.ac.in/events",
         "name": "Events at JKKN Institutions | Academic & Cultural Events | Best College Erode",
-        "description": "Discover upcoming events at JKKN Institutions - admissions open house, placement drives, technical fests, cultural programs, health camps, conferences, and #JKKN100 centenary celebrations. Stay updated with events at the best college in Erode, Tamil Nadu.",
+        "description": "Discover upcoming events at JKKN Institutions - admissions open house, placement drives, technical fests, cultural programs, health camps, conferences, and #JKKN100 centenary celebrations. Stay updated with events at JKKN Institutions, Komarapalayam, near Erode, Tamil Nadu.",
         "url": "https://jkkn.ac.in/events",
         "isPartOf": {
           "@id": "https://jkkn.ac.in/#website"

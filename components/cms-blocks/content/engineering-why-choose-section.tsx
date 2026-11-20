@@ -83,8 +83,8 @@ export const EngineeringWhyChooseSectionPropsSchema = z.object({
       icon: 'flask',
     },
     {
-      title: '95%+ Placements',
-      description: 'Consistently high placement rate with top recruiters visiting campus',
+      title: 'Placement Cell and Training Support',
+      description: 'Placement training and campus recruitment drives for final-year learners',
       icon: 'trending',
     },
     {
@@ -179,8 +179,8 @@ export default function EngineeringWhyChooseSection({
       icon: 'flask',
     },
     {
-      title: '95%+ Placements',
-      description: 'Consistently high placement rate with top recruiters visiting campus',
+      title: 'Placement Cell and Training Support',
+      description: 'Placement training and campus recruitment drives for final-year learners',
       icon: 'trending',
     },
     {

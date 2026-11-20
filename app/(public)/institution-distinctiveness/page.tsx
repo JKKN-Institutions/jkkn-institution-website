@@ -76,7 +76,7 @@ export default async function InstitutionDistinctivenessPageRoute() {
           path: '/institution-distinctiveness',
           name: 'Institution Distinctiveness | JKKN Institutions',
           description:
-            "Discover what makes JKKN Institutions distinctive — 74+ years of educational excellence since 1952, a founder's vision for girls' education, NAAC accreditation, 92%+ placements, 50,000+ alumni, and 7 colleges on one 70-acre campus.",
+            "Discover what makes JKKN Institutions distinctive — 74+ years of educational excellence since 1952, a founder's vision for girls' education, NAAC accreditation, 50,000+ alumni, and 7 colleges on one 70-acre campus.",
           pageType: 'AboutPage',
           keywords: [
             'JKKN institution distinctiveness',

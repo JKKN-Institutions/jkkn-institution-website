@@ -172,8 +172,8 @@ function getIconComponent(iconType: USPCard['icon']) {
 // Default USP Cards
 const defaultUspCards: USPCard[] = [
   { icon: 'heritage', title: 'Years of Educational Legacy', stat: '73+' },
-  { icon: 'career', title: 'Placement Success Rate', stat: '92%+' },
-  { icon: 'excellence', title: 'NAAC A Accredited Quality' },
+  { icon: 'career', title: 'Dedicated Placement Cell' },
+  { icon: 'excellence', title: 'NAAC-Accredited Colleges', stat: '5' },
   { icon: 'expertise', title: 'Expert Learning Facilitators', stat: '400+' },
   { icon: 'facilities', title: 'State-of-the-Art Infrastructure' },
   { icon: 'value', title: 'Affordable & Accessible Education' },

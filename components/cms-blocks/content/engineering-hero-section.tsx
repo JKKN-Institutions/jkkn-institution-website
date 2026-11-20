@@ -96,7 +96,7 @@ export const EngineeringHeroSectionPropsSchema = z.object({
   // Title
   title: z.string().default('Shape Your Future in Engineering & Technology'),
   subtitle: z.string().default('AICTE Approved | Anna University Affiliated | NAAC Accredited'),
-  description: z.string().default('Join one of the leading engineering colleges with 70+ years of educational excellence. World-class senior learners, state-of-the-art infrastructure, and 95%+ placement record.'),
+  description: z.string().default('Join JKKN College of Engineering and Technology (Autonomous), Komarapalayam - AICTE approved and affiliated to Anna University, Chennai.'),
 
   // Badge
   badge: z.string().default('AICTE Approved | Anna University Affiliated | NAAC Accredited'),
@@ -236,7 +236,7 @@ function HeroStats({
 export default function EngineeringHeroSection({
   title = 'Shape Your Future in Engineering & Technology',
   subtitle = 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
-  description = 'Join one of the leading engineering colleges with 70+ years of educational excellence. World-class senior learners, state-of-the-art infrastructure, and 95%+ placement record.',
+  description = 'Join JKKN College of Engineering and Technology (Autonomous), Komarapalayam - AICTE approved and affiliated to Anna University, Chennai.',
   badge = 'AICTE Approved | Anna University Affiliated | NAAC Accredited',
   stats = [
     { value: 3000, suffix: '+', label: 'Learners', icon: 'graduation' },

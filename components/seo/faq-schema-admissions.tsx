@@ -94,7 +94,7 @@ export function FAQSchemaAdmissionsMain() {
     },
     {
       question: 'Is JKKN Institutions NAAC accredited?',
-      answer: 'Yes, JKKN Institutions is NAAC A accredited. All colleges are approved by their respective regulatory bodies including AICTE, UGC, PCI, DCI, and INC. The colleges are affiliated to Anna University (Engineering), TN Dr. M.G.R. Medical University (Dental, Nursing, Allied Health), and Periyar University (Arts & Science).'
+      answer: 'Yes. Five JKKN colleges are NAAC accredited (NAAC list as on 14 August 2025): Dental A, Pharmacy A, Nursing B++, Engineering B+ and Arts and Science B. All colleges are approved by their respective regulatory bodies including AICTE, UGC, PCI, DCI, and INC. The colleges are affiliated to Anna University (Engineering), TN Dr. M.G.R. Medical University (Dental, Nursing, Allied Health), and Periyar University (Arts & Science).'
     },
     {
       question: 'What is the fee structure at JKKN colleges?',
@@ -106,7 +106,7 @@ export function FAQSchemaAdmissionsMain() {
     },
     {
       question: 'What is the placement record at JKKN Institutions?',
-      answer: 'JKKN Institutions maintains a 92%+ placement success rate. Top recruiters include Apollo Hospitals, Infosys, TCS, Wipro, HCL, Cipla, Sun Pharma, L&T, Ashok Leyland, Cognizant, Tech Mahindra, and 500+ more companies. A dedicated Placement Cell provides campus drives, skill development, and mock interviews.'
+      answer: 'Placement data differs by college; each JKKN college publishes it in its NIRF report. Top recruiters include Apollo Hospitals, Infosys, TCS, Wipro, HCL, Cipla, Sun Pharma, L&T, Ashok Leyland, Cognizant, Tech Mahindra, and 500+ more companies. A dedicated Placement Cell provides campus drives, skill development, and mock interviews.'
     },
     {
       question: 'Where is JKKN Institutions located?',

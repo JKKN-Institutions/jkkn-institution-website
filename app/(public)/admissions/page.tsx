@@ -15,7 +15,7 @@ export function generateMetadata(): Metadata {
     return {
       title: 'Admissions 2026-27 | JKKN Institutions — Apply Now',
       description:
-        'Apply for JKKN Institutions admission 2026-27. NAAC A accredited, 7 colleges, 95%+ placements, scholarships available. Komarapalayam, Namakkal, Tamil Nadu.',
+        'Apply for JKKN Institutions admission 2026-27. 7 colleges (5 NAAC accredited), scholarships available. Komarapalayam, Namakkal, Tamil Nadu.',
       keywords: [
         'JKKN admissions 2026',
         'JKKN Institutions admission',
@@ -34,7 +34,7 @@ export function generateMetadata(): Metadata {
       openGraph: {
         title: 'Admissions 2026-27 | JKKN Institutions — Apply Now',
         description:
-          'Apply for JKKN Institutions admission 2026-27. NAAC A accredited, 7 colleges, 95%+ placements, scholarships available.',
+          'Apply for JKKN Institutions admission 2026-27. 7 colleges (5 NAAC accredited), scholarships available.',
         url: 'https://www.jkkn.ac.in/admissions',
         siteName: 'JKKN Institutions',
         type: 'website',
@@ -47,7 +47,7 @@ export function generateMetadata(): Metadata {
     return {
       title: 'Admission Process 2026 | JKKN College of Engineering and Technology',
       description:
-        'Complete guide to admissions for B.E / B.Tech and M.E / MBA programmes at JKKN College of Engineering — AICTE approved, Anna University affiliated, NAAC A accredited.',
+        'Complete guide to admissions for B.E / B.Tech and M.E / MBA programmes at JKKN College of Engineering — AICTE approved, Anna University affiliated, NAAC Accredited (B+).',
       keywords: [
         'JKKN engineering admissions 2026',
         'engineering college admissions Tamil Nadu',
@@ -60,7 +60,7 @@ export function generateMetadata(): Metadata {
       openGraph: {
         title: 'JKKN Engineering Admissions 2026 — Complete Admission Guide',
         description:
-          'NAAC A accredited · 5 UG + 2 PG programmes · 95%+ placement · Eligibility, fee, dates, scholarships.',
+          'NAAC Accredited (B+) · 5 UG + 2 PG programmes · TNEA code 2647 · Eligibility, fee, dates, scholarships.',
         type: 'website',
         images: [
           {

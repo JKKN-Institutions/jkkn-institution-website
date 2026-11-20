@@ -62,7 +62,7 @@ export const EngineeringAboutSectionPropsSchema = z.object({
     'NAAC Accredited Programs',
     'Industry-Academia Partnerships',
     'State-of-the-Art Learning Labs',
-    '95%+ Placement Record',
+    'Placement Cell and Training Support',
     'Experienced Senior Learners',
   ]),
 
@@ -107,7 +107,7 @@ export default function EngineeringAboutSection({
     'NAAC Accredited Programs',
     'Industry-Academia Partnerships',
     'State-of-the-Art Learning Labs',
-    '95%+ Placement Record',
+    'Placement Cell and Training Support',
     'Experienced Senior Learners',
   ],
   image = '/images/engineering/about-campus.jpg',
