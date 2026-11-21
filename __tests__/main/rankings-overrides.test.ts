@@ -70,7 +70,7 @@ describe('main /rankings-and-recognitions overrides', () => {
   })
 
   it('leaves other blocks, other features and other pages alone', () => {
-    expect((out[1].props as { features: unknown[] }).features[1]).toBe(LIVE_BLOCKS[1].props.features[1])
+    expect((out[1].props as { features: unknown[] }).features[1]).toBe((LIVE_BLOCKS[1].props as { features: unknown[] }).features[1])
     expect(applyMainCmsPageOverrides('about', LIVE_BLOCKS)).toBe(LIVE_BLOCKS)
     expect(LIVE_BLOCKS[0].props.subtitle).toMatch(/NBA/)
   })

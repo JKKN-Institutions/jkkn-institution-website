@@ -91,7 +91,7 @@ function overrideCta(props: Props): Props {
   }
 }
 
-const RANKINGS_BLOCK_OVERRIDES: Record<string, (props: Props) => Props> = {
+const RANKINGS_BLOCK_OVERRIDES: Partial<Record<string, (props: Props) => Props>> = {
   HeroSection: overrideHero,
   WhyChooseSection: overrideWhyChoose,
   StatsCounter: overrideStats,
