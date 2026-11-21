@@ -11,6 +11,22 @@ const bundleAnalyzer = withBundleAnalyzer({
 // Keep in sync with getMyJkknBaseUrl() in lib/services/public-careers-api.ts.
 const MYJKKN_ORIGIN = new URL(process.env.NEXT_PUBLIC_MYJKKN_URL || 'https://www.jkkn.ai').origin;
 
+// Engineering CMS pages that render only "This page has no content yet." -> the real page a parent wanted
+// (engineering perception audit F3, user's choice 2026-11-21). Same list as
+// lib/institutions/engineering/empty-page-redirects.ts (kept as a literal here; a test keeps them equal).
+// Applied only on the engineering deployment, so the main site's /about, /placements etc. are untouched.
+const ENGG_EMPTY_PAGE_REDIRECTS = [
+  { source: '/placements', destination: '/iqac/nirf/nirf-2026' },
+  { source: '/about', destination: '/approvals-and-affiliation' },
+  { source: '/courses-offered', destination: '/admissions' },
+  { source: '/courses-offered/ug', destination: '/admissions' },
+  { source: '/courses-offered/pg', destination: '/admissions' },
+  { source: '/why-students-choose-jkkn', destination: '/admissions' },
+  { source: '/committee', destination: '/mandatory-disclosure' },
+  { source: '/others', destination: '/others/academic-calendar' },
+  { source: '/facilities', destination: '/hostel' },
+]
+
 const nextConfig: NextConfig = {
   // Cache Components disabled - incompatible with admin layout that accesses cookies/auth
   // The admin layout requires dynamic rendering for all routes
@@ -362,6 +378,11 @@ const nextConfig: NextConfig = {
         destination: '/auth/callback?code=:code',
         permanent: false,
       },
+
+      // === Engineering: empty CMS pages -> real pages (F3, 2026-11-21) ===
+      ...(process.env.NEXT_PUBLIC_INSTITUTION_ID === 'engineering'
+        ? ENGG_EMPTY_PAGE_REDIRECTS.map((redirect) => ({ ...redirect, permanent: true }))
+        : []),
 
       // Department faculty PDFs moved from /pdfs/faculty/<dept>.pdf to the
       // shorter /faculty/<dept>.pdf; keep any already-shared links working.

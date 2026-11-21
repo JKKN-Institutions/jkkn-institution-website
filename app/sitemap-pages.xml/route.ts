@@ -18,6 +18,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import { getSiteUrl } from '@/lib/utils/site-url'
 import { CITY_PAGES_CONFIG } from '@/lib/config/city-pages'
+import { ENGG_EMPTY_PAGE_SLUGS } from '@/lib/institutions/engineering/empty-page-redirects'
 
 // City slugs belong to the engineering site only. The parent's CMS has rows with some of
 // these slugs, but proxy.ts answers them with 404 on every non-engineering deployment, so
@@ -52,8 +53,12 @@ export async function GET() {
   const institutionId = process.env.NEXT_PUBLIC_INSTITUTION_ID || 'main'
   const siteUrl = getSiteUrl()
 
-  // Start with static config entries (known routes)
-  const staticEntries = getPagesSitemap(siteUrl, institutionId)
+  // Start with static config entries (known routes). Engineering's empty CMS pages 301 to real pages
+  // (next.config.ts, F3 2026-11-21), so they are left out of this sitemap.
+  const isEmptyEnggPage = (slug: string) => institutionId === 'engineering' && ENGG_EMPTY_PAGE_SLUGS.has(slug)
+  const staticEntries = getPagesSitemap(siteUrl, institutionId).filter(
+    (entry) => !isEmptyEnggPage(entry.loc.replace(siteUrl, '').replace(/^\//, '').replace(/\/$/, ''))
+  )
 
   // Build a unified exclusion set: pages already in this sitemap PLUS slugs that
   // live in the other sub-sitemaps (institutions, courses) so we never emit the
@@ -107,6 +112,7 @@ export async function GET() {
           const normalized = p.slug.replace(/^\//, '').replace(/\/$/, '')
           if (RESERVED_CMS_SLUGS.has(normalized)) return false
           if (MIDDLEWARE_REDIRECTED_SLUGS.has(normalized)) return false
+          if (isEmptyEnggPage(normalized)) return false
           if (otherSitemapSlugs.has(normalized)) return false
           // Engineering: legacy long-form city URLs are 301-redirected to short
           // canonicals (/{city}) by next.config.ts. Sitemap must never advertise
