@@ -323,7 +323,12 @@ export default function EngineeringFeeStructurePage() {
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#0b6d41] mt-2" />
-              <span><strong>Hostel accommodation is optional</strong> and charged separately — all-inclusive (meals, utilities, Wi-Fi, laundry). Separate hostels for boys and girls with 24/7 security.</span>
+              <span><strong>Hostel accommodation is optional</strong> and charged separately — all-inclusive (meals, utilities, Wi-Fi, laundry). Separate hostels for boys and girls with 24/7 security. For the hostel fee, please ask the admissions office on +91 93458 55001.</span>
+            </li>
+            {/* F7 of the perception audit (2026-11-21): bus fee from the college office via the user. */}
+            <li className="flex gap-3">
+              <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#0b6d41] mt-2" />
+              <span><strong>College bus:</strong> ₹5,500 a year, the same on every route.</span>
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#0b6d41] mt-2" />

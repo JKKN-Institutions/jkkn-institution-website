@@ -9,6 +9,9 @@
  *   affiliation order, and the EoA letters for 2025-26 and 2026-27 were not linked at all.
  * - Every page with an AdmissionHero that keeps the component's default trust badges: the
  *   defaults read "UGC Recognized" (UGC lists the college under Section 2(f)) and repeat NAAC.
+ * - /facilities/transport (F7 of the perception audit, 2026-11-21): "an affordable fee calculated based on
+ *   the distance" gave parents no number. The college office (via the user, 2026-11-21): the bus fee is
+ *   ₹5,500 a year, the same on every route.
  */
 
 import { APPROVALS_DIRECT_ANSWER, NAAC_LABEL, UGC_SECTION_LABEL } from './official-data'
@@ -99,6 +102,26 @@ function overrideApprovalsSection(props: Props): Props {
   }
 }
 
+const TRANSPORT_FEE_DESCRIPTION_OLD =
+  'The transport facility is available to all learners and senior learners at an affordable fee calculated based on the distance from the campus.'
+export const TRANSPORT_FEE_FEATURE_NEW = {
+  title: 'Bus Fee',
+  description: 'The college bus fee is ₹5,500 a year, the same on every route listed on this page.',
+}
+
+function overrideTransport(props: Props): Props {
+  if (!Array.isArray(props.features)) return props
+  let changed = false
+  const features = props.features.map((feature) => {
+    if (isRecord(feature) && feature.description === TRANSPORT_FEE_DESCRIPTION_OLD) {
+      changed = true
+      return { ...feature, ...TRANSPORT_FEE_FEATURE_NEW }
+    }
+    return feature
+  })
+  return changed ? { ...props, features } : props
+}
+
 function overrideAdmissionHero(props: Props): Props {
   return props.trustBadges === undefined ? { ...props, trustBadges: ENGG_TRUST_BADGES } : props
 }
@@ -109,6 +132,7 @@ function overrideBlock(slug: string, block: CmsBlock): Props | null {
     return overrideApprovalsSection(block.props)
   }
   if (block.component_name === 'AdmissionHero') return overrideAdmissionHero(block.props)
+  if (block.component_name === 'ModernTransportSection') return overrideTransport(block.props)
   return null
 }
 
