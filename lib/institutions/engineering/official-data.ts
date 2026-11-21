@@ -3,9 +3,9 @@
  * regulators and government lists print it. Read live on 2026-10-29.
  *
  * Every value names its source. Change a value only from a newer official document - never from
- * memory, an aggregator or our own older pages. Things the lists do not print (NAAC validity, the
- * autonomy period, a fee committee order) are left out on purpose until the office supplies the
- * document.
+ * memory, an aggregator or our own older pages. Things the lists do not print (NAAC validity, a fee
+ * committee order) are left out on purpose until the office supplies the document. The autonomy period
+ * IS printed by the UGC list as on 30-06-2026 and is shown with the user's OK of 2026-11-21.
  */
 
 export const ENGG_SOURCES = {
@@ -17,7 +17,7 @@ export const ENGG_SOURCES = {
   ugcAutonomous: {
     body: 'University Grants Commission (UGC), List of Approved Autonomous Colleges',
     url: 'https://www.ugc.gov.in/pdfnews/8688705_List-of-Autonomous-Colleges.pdf',
-    asOn: '28-02-2026',
+    asOn: '30-06-2026',
   },
   ugcColleges: {
     body: 'University Grants Commission (UGC), Colleges list under Section 2(f) and 12(B)',
@@ -62,7 +62,7 @@ export const ENGG_OFFICIAL = {
   programmeCount: 7,
   ugBranchCount: 5,
   naac: { grade: 'B+', cgpa: '2.67', cycle: 'first cycle', declared: '26 December 2024' },
-  ugc: { autonomousSerialNo: '1174', section: '2(f)' },
+  ugc: { autonomousSerialNo: '1239', autonomyPeriod: '2025-26 to 2029-30', section: '2(f)' },
   codes: { tnea: '2647', tnMba: '2647', aishe: 'C-37096', nirf: 'IR-E-C-37096' },
   /** The spellings each official list uses for this college. */
   officialNames: [
@@ -108,7 +108,7 @@ export const APPROVALS_KEY_FACTS: OfficialFact[] = [
   },
   {
     label: 'Autonomous status',
-    value: `Autonomous status conferred by UGC, New Delhi and Anna University, Chennai. Listed in the UGC List of Approved Autonomous Colleges (S.No. ${ENGG_OFFICIAL.ugc.autonomousSerialNo}) under Anna University, Chennai.`,
+    value: `Autonomous status conferred by UGC, New Delhi and Anna University, Chennai. Listed in the UGC List of Approved Autonomous Colleges (S.No. ${ENGG_OFFICIAL.ugc.autonomousSerialNo}) under Anna University, Chennai, period of validity ${ENGG_OFFICIAL.ugc.autonomyPeriod}.`,
     source: sourceLine(ENGG_SOURCES.ugcAutonomous),
   },
   {
@@ -162,7 +162,7 @@ export const APPROVALS_FAQS: OfficialFaq[] = [
     question: 'Is JKKN College of Engineering and Technology an autonomous college?',
     alsoAsked: 'JKKN engineering college autonomous ah?',
     answer:
-      'Yes. Autonomous status has been conferred by UGC, New Delhi and Anna University, Chennai. The college is listed in the UGC List of Approved Autonomous Colleges (as on 28 February 2026) under Anna University, Chennai, and it remains affiliated to Anna University.',
+      'Yes. Autonomous status has been conferred by UGC, New Delhi and Anna University, Chennai. The college is listed in the UGC List of Approved Autonomous Colleges (as on 30 June 2026, S.No. 1239) under Anna University, Chennai, with a period of validity of 2025-26 to 2029-30, and it remains affiliated to Anna University.',
   },
   {
     question: 'What is the NAAC grade of JKKN College of Engineering and Technology?',

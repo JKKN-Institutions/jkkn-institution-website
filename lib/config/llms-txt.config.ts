@@ -74,7 +74,7 @@ Total sanctioned intake 372 — 300 undergraduate across 5 B.E./B.Tech branches,
 
 - [Approvals, affiliation and official data](${siteUrl}/approvals-and-affiliation): documents, key facts and sources.
 - AICTE: Extension of Approval for 2026-27, F.No. Southern/1-46224546036/2026/EOA, dated 16 March 2026; 372 seats. AICTE Permanent ID 1-8323181.
-- UGC: listed in the UGC List of Approved Autonomous Colleges (as on 28 February 2026), S.No. 1174, under Anna University, Chennai. Listed by UGC under Section 2(f).
+- UGC: listed in the UGC List of Approved Autonomous Colleges (as on 30 June 2026), S.No. 1239, under Anna University, Chennai, period of validity 2025-26 to 2029-30. Listed by UGC under Section 2(f).
 - NAAC: Grade B+ (CGPA 2.67), first cycle, result declared 26 December 2024 (NAAC list of institutions with valid accreditation, as on 14 August 2025).
 - Counselling codes: TNEA 2647; Tamil Nadu MBA / MCA 2647 (Directorate of Technical Education, Tamil Nadu).
 - AISHE code: C-37096. NIRF institute ID: IR-E-C-37096.
