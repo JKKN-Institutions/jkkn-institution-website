@@ -133,6 +133,8 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
   // ──────────────────────────────────────────────────────────────────────────
   {
     slug: 'coimbatore',
+    // F4 of the engineering perception audit (2026-11-21): no unsourced "Best"; the campus is not in Coimbatore.
+    h1: 'Engineering College near Coimbatore — 112 km',
     displayName: 'Coimbatore',
     distanceKm: '112 km',
     travelTime: 'About 2.5 hours',
@@ -209,7 +211,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Karur', slug: 'karur', distanceLabel: '84 km', emoji: '🚗' },
     ],
     seo: {
-      title: 'Best Engineering College in Coimbatore | JKKNCET — 2027-28 Enquiry Open',
+      title: 'Engineering College near Coimbatore - JKKNCET, 112 km on NH-544',
       description:
         'JKKN College of Engineering and Technology is 112 km from Coimbatore on NH-544, in Komarapalayam. AICTE approved, affiliated to Anna University. Admissions 2026-27.',
       canonicalPath: '/coimbatore',
@@ -218,7 +220,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         'JKKNCET, Komarapalayam: 112 km from Coimbatore on NH-544. AICTE approved. Admissions 2026-27.',
     },
     schema: {
-      breadcrumbLabel: 'Best Engineering College in Coimbatore',
+      breadcrumbLabel: 'Engineering College near Coimbatore',
       areaServedCity: 'Coimbatore',
     },
   },
@@ -549,6 +551,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
   // ──────────────────────────────────────────────────────────────────────────
   {
     slug: 'salem',
+    h1: 'Engineering College near Salem — 57 km',
     displayName: 'Salem',
     distanceKm: '57 km',
     travelTime: 'About 1 hour',
@@ -631,7 +634,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Dharmapuri', slug: 'dharmapuri', distanceLabel: '110 km', emoji: '🌄' },
     ],
     seo: {
-      title: 'Best Engineering College in Salem | JKKNCET — 2027-28 Enquiry Open',
+      title: 'Engineering College near Salem - JKKNCET, 57 km on NH-544',
       description:
         'JKKN College of Engineering and Technology is 57 km from Salem on NH-544, in Komarapalayam. AICTE approved, affiliated to Anna University. Admissions 2026-27.',
       canonicalPath: '/salem',
@@ -640,7 +643,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         'JKKNCET, Komarapalayam: 57 km from Salem on NH-544. AICTE approved. Admissions 2026-27.',
     },
     schema: {
-      breadcrumbLabel: 'Best Engineering College in Salem',
+      breadcrumbLabel: 'Engineering College near Salem',
       areaServedCity: 'Salem',
     },
   },
@@ -650,6 +653,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
   // ──────────────────────────────────────────────────────────────────────────
   {
     slug: 'tiruppur',
+    h1: 'Engineering College near Tiruppur — 67 km',
     displayName: 'Tiruppur',
     distanceKm: '67 km',
     travelTime: 'About 1.5 hours',
@@ -725,7 +729,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       { displayName: 'Karur', slug: 'karur', distanceLabel: '84 km', emoji: '🚗' },
     ],
     seo: {
-      title: 'Best Engineering College in Tiruppur | JKKNCET — 2027-28 Enquiry Open',
+      title: 'Engineering College near Tiruppur - JKKNCET, 67 km on NH-544',
       description:
         'JKKN College of Engineering and Technology is 67 km from Tiruppur on NH-544, in Komarapalayam. AICTE approved, affiliated to Anna University. Admissions 2026-27.',
       canonicalPath: '/tiruppur',
@@ -734,7 +738,7 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
         'JKKNCET, Komarapalayam: 67 km from Tiruppur on NH-544. AICTE approved. Admissions 2026-27.',
     },
     schema: {
-      breadcrumbLabel: 'Best Engineering College in Tiruppur',
+      breadcrumbLabel: 'Engineering College near Tiruppur',
       areaServedCity: 'Tiruppur',
     },
   },

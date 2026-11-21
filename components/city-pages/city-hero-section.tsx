@@ -28,7 +28,7 @@ export function CityHeroSection({ cityConfig }: CityHeroSectionProps) {
         <h1>
           {cityConfig.h1 ?? (
             <>
-              Best Engineering College Near{' '}
+              Engineering College near{' '}
               <span className="city-highlight">{cityConfig.displayName}</span>
             </>
           )}

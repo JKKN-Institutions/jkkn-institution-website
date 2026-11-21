@@ -154,8 +154,14 @@ const META_DESCRIPTION_OLD =
   'JKKNCET — one of the best private engineering colleges in Tamilnadu. A top engineering college with NAAC accreditation, excellent placements & affordable fees.'
 const META_DESCRIPTION_AUTONOMOUS =
   'JKKNCET (Autonomous) — one of the best private engineering colleges in Tamilnadu. AICTE approved, affiliated to Anna University, Chennai, and NAAC accredited.'
-const META_DESCRIPTION_NEW =
+// Until 2026-11-21 this override itself wrote "one of the best private engineering colleges"; F4 of the
+// perception audit (user's choice: no unsourced "Best") replaced it, and the old output is swapped too.
+const META_DESCRIPTION_B_PLUS =
   'JKKNCET (Autonomous) — one of the best private engineering colleges in Tamilnadu. AICTE approved, affiliated to Anna University, Chennai, NAAC accredited (B+).'
+const META_DESCRIPTION_NEW =
+  'JKKN College of Engineering and Technology (Autonomous), Komarapalayam - AICTE approved, Anna University affiliated, NAAC B+, TNEA code 2647.'
+const META_TITLE_OLD = 'Best Private Engineering Colleges in Tamilnadu | JKKNCET'
+const META_TITLE_NEW = 'JKKN College of Engineering and Technology, Komarapalayam'
 
 const LOGO_ALT_OLD = 'JKKN Engineering College'
 const LOGO_ALT_NEW = 'JKKN College of Engineering and Technology (Autonomous)'
@@ -309,15 +315,18 @@ export function applyEngineeringHomepageOverrides<T extends HomepageBlock>(block
   })
 }
 
-/** Homepage meta description and its share-text copies (cms_seo_metadata). */
+/** Homepage meta title, meta description and their share-text copies (cms_seo_metadata). */
 export function applyEngineeringHomepageSeoOverrides<T extends object>(
   seo: T | null | undefined
 ): T | null | undefined {
   if (!seo) return seo
   const row = seo as Props
-  const olds = [META_DESCRIPTION_OLD, META_DESCRIPTION_AUTONOMOUS]
+  const olds = [META_DESCRIPTION_OLD, META_DESCRIPTION_AUTONOMOUS, META_DESCRIPTION_B_PLUS]
   return {
     ...seo,
+    ...('meta_title' in row && { meta_title: swap(row.meta_title, META_TITLE_OLD, META_TITLE_NEW) }),
+    ...('og_title' in row && { og_title: swap(row.og_title, META_TITLE_OLD, META_TITLE_NEW) }),
+    ...('twitter_title' in row && { twitter_title: swap(row.twitter_title, META_TITLE_OLD, META_TITLE_NEW) }),
     ...('meta_description' in row && {
       meta_description: swap(row.meta_description, olds, META_DESCRIPTION_NEW),
     }),

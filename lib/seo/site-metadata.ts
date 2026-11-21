@@ -16,6 +16,8 @@
 
 import { Metadata } from 'next'
 import { createPublicSupabaseClient } from '@/lib/supabase/server'
+import { isInstitution } from '@/lib/config/multi-tenant'
+import { applyEngineeringSiteDefaultSeo } from '@/lib/institutions/engineering/site-default-seo'
 
 // =============================================================================
 // TYPES
@@ -127,6 +129,12 @@ function getDefaultSEOSettings(): SiteSEOSettings {
  * - appearance: logo, colors, favicon
  */
 export async function getSiteSEOSettings(): Promise<SiteSEOSettings> {
+  const settings = await readSiteSEOSettings()
+  // Engineering: the CMS defaults said "Best ... Near Erode" and "95%+ placement rate" (F4 / F1, 2026-11-21).
+  return isInstitution('engineering') ? applyEngineeringSiteDefaultSeo(settings) : settings
+}
+
+async function readSiteSEOSettings(): Promise<SiteSEOSettings> {
   const defaults = getDefaultSEOSettings()
 
   try {

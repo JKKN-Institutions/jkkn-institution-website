@@ -15,7 +15,7 @@ export default function CityCrossLinks({ cityConfig }: CityCrossLinksProps) {
       <div className="section-inner">
         <h2 className="section-title">Explore More Cities</h2>
         <p className="section-subtitle">
-          Find the best engineering college near your city
+          Find an engineering college near your city
         </p>
         <span className="section-accent" aria-hidden="true" />
         <div className="section-spacer" />

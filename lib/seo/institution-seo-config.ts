@@ -415,12 +415,12 @@ const INSTITUTION_SEO_CONFIGS: Record<string, InstitutionSEOConfig> = {
 
     keywords: [
       'JKKN Engineering College', 'JKKN CET', 'Engineering College Namakkal',
-      'Best Engineering College Near Erode', 'Anna University Affiliated College',
+      'Engineering College Near Erode', 'Anna University Affiliated College',
       'AICTE Approved Engineering College Tamil Nadu',
       'Autonomous Engineering College Tamil Nadu',
       'JKKN College of Engineering and Technology Autonomous',
       'B.E. CSE Admission Tamil Nadu', 'B.Tech IT College',
-      'Engineering College Komarapalayam', 'Top Engineering College Tamil Nadu',
+      'Engineering College Komarapalayam',
     ],
 
     // Account-scoped Google Search Console tag (same value as Main — Google

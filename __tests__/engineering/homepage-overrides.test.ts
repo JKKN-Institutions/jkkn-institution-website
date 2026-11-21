@@ -20,8 +20,12 @@ const OLD_META =
   'JKKNCET — one of the best private engineering colleges in Tamilnadu. A top engineering college with NAAC accreditation, excellent placements & affordable fees.'
 const OCT08_META =
   'JKKNCET (Autonomous) — one of the best private engineering colleges in Tamilnadu. AICTE approved, affiliated to Anna University, Chennai, and NAAC accredited.'
-const NEW_META =
+const B_PLUS_META =
   'JKKNCET (Autonomous) — one of the best private engineering colleges in Tamilnadu. AICTE approved, affiliated to Anna University, Chennai, NAAC accredited (B+).'
+const NEW_META =
+  'JKKN College of Engineering and Technology (Autonomous), Komarapalayam - AICTE approved, Anna University affiliated, NAAC B+, TNEA code 2647.'
+const OLD_TITLE = 'Best Private Engineering Colleges in Tamilnadu | JKKNCET'
+const NEW_TITLE = 'JKKN College of Engineering and Technology, Komarapalayam'
 
 describe('engineering homepage official-data rules (2026-10-29)', () => {
   const result = applyEngineeringHomepageOverrides(clone(liveBlocks))
@@ -148,13 +152,25 @@ describe('engineering homepage block overrides', () => {
 })
 
 describe('engineering homepage SEO and logo overrides', () => {
-  it('swaps the description and its share-text copies, and nothing else', () => {
-    const row = { meta_title: 'Best Private Engineering Colleges in Tamilnadu | JKKNCET', meta_description: OLD_META, og_description: OLD_META, twitter_description: null }
+  it('swaps the title, the description and their share-text copies, and nothing else', () => {
+    const row = { meta_title: OLD_TITLE, og_title: OLD_TITLE, meta_description: OLD_META, og_description: OLD_META, twitter_description: null, canonical_url: 'https://engg.jkkn.ac.in/' }
     expect(applyEngineeringHomepageSeoOverrides(row)).toEqual({
       ...row,
+      meta_title: NEW_TITLE,
+      og_title: NEW_TITLE,
       meta_description: NEW_META,
       og_description: NEW_META,
     })
+  })
+
+  it('replaces the earlier override output that still said "best" (F4, 2026-11-21)', () => {
+    expect(applyEngineeringHomepageSeoOverrides({ meta_description: B_PLUS_META })).toEqual({ meta_description: NEW_META })
+    expect(NEW_META).not.toMatch(/best/i)
+    expect(NEW_META.length).toBeLessThanOrEqual(160)
+  })
+
+  it('keeps a title that was edited in the CMS', () => {
+    expect(applyEngineeringHomepageSeoOverrides({ meta_title: 'Edited title' })).toEqual({ meta_title: 'Edited title' })
   })
 
   it('upgrades the 2026-10-08 description too', () => {
