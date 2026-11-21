@@ -20,6 +20,7 @@ import {
 } from './admissions-data'
 import type { AdmissionDateItem } from '@/lib/cms/registry-types'
 import { withOfficialMbaText } from './admissions-mba-override'
+import { withHonestAdmissionsFaqs } from './admissions-faq-override'
 
 export interface EngineeringAdmissionsData {
   overview: string
@@ -89,7 +90,7 @@ export async function fetchEngineeringAdmissionsData(): Promise<EngineeringAdmis
       feeStructure:      isValidFeeStructure ? (rawFees as FeeEntry[]) : FEE_STRUCTURE,
       dates:             (map.admissions_dates             as AdmissionDateItem[])                                   ?? ADMISSION_DATES,
       scholarshipGroups: (map.admissions_scholarship_groups as ScholarshipGroup[])                                   ?? SCHOLARSHIP_GROUPS,
-      faqs:              (map.admissions_faqs              as FAQItem[])                                             ?? FAQS,
+      faqs:              withHonestAdmissionsFaqs((map.admissions_faqs as FAQItem[]) ?? FAQS),
     })
   } catch {
     // Network error or misconfigured env — silently fall back to static data
@@ -108,6 +109,6 @@ function staticFallback(): EngineeringAdmissionsData {
     feeStructure:      FEE_STRUCTURE,
     dates:             ADMISSION_DATES,
     scholarshipGroups: SCHOLARSHIP_GROUPS,
-    faqs:              FAQS,
+    faqs:              withHonestAdmissionsFaqs(FAQS),
   }
 }
