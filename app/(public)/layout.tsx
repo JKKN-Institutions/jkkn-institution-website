@@ -13,6 +13,7 @@ import { getContactInfo } from '@/app/actions/cms/contact'
 import { getSocialLinks } from '@/app/actions/cms/social'
 import { getCurrentInstitution, isInstitution } from '@/lib/config/multi-tenant'
 import { applyEngineeringLogoAltOverride } from '@/lib/institutions/engineering/homepage-overrides'
+import { applyEngineeringNavOverrides } from '@/lib/institutions/engineering/nav-overrides'
 import { filterNavigationByFeatures } from '@/lib/utils/navigation-filter'
 import { EnquiryModalProvider } from '@/components/lead/enquiry-modal'
 import { EnquirySection } from '@/components/lead/enquiry-section'
@@ -62,8 +63,10 @@ export default async function PublicLayout({
   const cmsLogoAlt = logoAltText || institution.name
   const headerLogoAlt = isInstitution('engineering') ? applyEngineeringLogoAltOverride(cmsLogoAlt) : cmsLogoAlt
 
-  // Filter navigation by feature flags
-  const navigation = filterNavigationByFeatures(rawNavigation)
+  // Filter navigation by feature flags (engineering: PLACEMENTS opens its NIRF page, not the group portal)
+  const navigation = filterNavigationByFeatures(
+    isInstitution('engineering') ? applyEngineeringNavOverrides(rawNavigation) : rawNavigation
+  )
 
   // Extract primary contact info
   const primaryPhone = contactInfo.find(c => c.contact_type === 'phone' && c.is_primary)
