@@ -118,8 +118,11 @@ describe('engineering official data copy', () => {
 
   it('says nothing about an effective year, syllabus or examinations', () => {
     const text = JSON.stringify([APPROVALS_DIRECT_ANSWER, APPROVALS_KEY_FACTS, APPROVALS_FAQS])
-    for (const banned of ['w.e.f', '2029', 'syllabus', 'examination', 'own curriculum']) {
+    for (const banned of ['w.e.f', 'syllabus', 'examination', 'own curriculum']) {
       expect(text.toLowerCase()).not.toContain(banned)
     }
+    // The UGC list as on 30-06-2026 prints the period of validity; the user OK'd showing it on 2026-11-21
+    // (perception audit F6). Any other 2029 (an effective year, an exam batch) is still not allowed.
+    expect(text.replace(/2025-26 to 2029-30/g, '')).not.toContain('2029')
   })
 })
