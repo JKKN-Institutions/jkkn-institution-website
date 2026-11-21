@@ -6,6 +6,8 @@ import { getPublishedBlogPosts } from '@/app/actions/cms/blog'
 import { getBlogCategories } from '@/app/actions/cms/blog-categories'
 import { getPopularBlogTags } from '@/app/actions/cms/blog-tags'
 import { blogFromMyJkkn, listCategories } from '@/lib/blog/myjkkn'
+import { isInstitution } from '@/lib/config/multi-tenant'
+import { engineeringBlogExcerpt } from '@/lib/institutions/engineering/blog-claims-override'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -100,7 +102,7 @@ function BlogPostCard({ post }: { post: {
         </Link>
         {post.excerpt && (
           <CardDescription className="line-clamp-2 mt-1">
-            {post.excerpt}
+            {isInstitution('engineering') ? engineeringBlogExcerpt(post.slug, post.excerpt) : post.excerpt}
           </CardDescription>
         )}
       </CardHeader>

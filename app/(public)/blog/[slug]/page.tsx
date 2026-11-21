@@ -25,6 +25,8 @@ import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 import { BlogEnquiryBox } from '@/components/lead/blog-enquiry-box'
 import { blogSourcePage, secondH2Index, splitBeforeNthH2 } from '@/lib/blog-inline-cta'
 import { blogCommentsUrl, blogFromMyJkkn, blogSiteKey, getPost, type MyJkknComment } from '@/lib/blog/myjkkn'
+import { isInstitution } from '@/lib/config/multi-tenant'
+import { applyEngineeringBlogClaims } from '@/lib/institutions/engineering/blog-claims-override'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -47,7 +49,8 @@ export async function generateMetadata({ params, searchParams }: BlogPostPagePro
   const { slug } = await params
   const myJkkn = await loadFromMyJkkn(slug, searchParams)
   const detail = myJkkn?.detail ?? null
-  const post = myJkkn ? detail?.post : await getBlogPostBySlug(slug, false)
+  const rawPost = myJkkn ? detail?.post : await getBlogPostBySlug(slug, false)
+  const post = rawPost && isInstitution('engineering') ? applyEngineeringBlogClaims(slug, rawPost) : rawPost
 
   if (!post) {
     return {
@@ -546,7 +549,9 @@ export default async function BlogPostPage({ params, searchParams }: BlogPostPag
   const myJkkn = await loadFromMyJkkn(slug, searchParams)
   const detail = myJkkn?.detail ?? null
   // From MyJKKN there is no view counter to add to.
-  const post = myJkkn ? detail?.post : await getBlogPostBySlug(slug)
+  const rawPost = myJkkn ? detail?.post : await getBlogPostBySlug(slug)
+  // F10 (engineering perception audit, 2026-11-21): NIRF 2026 figures in place of unsourced placement claims.
+  const post = rawPost && isInstitution('engineering') ? applyEngineeringBlogClaims(slug, rawPost) : rawPost
 
   if (!post) {
     notFound()
