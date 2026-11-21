@@ -1,5 +1,6 @@
 import { BEMechanicalCoursePage } from '@/components/cms-blocks/content/be-mechanical-course-page'
 import { beMechanicalCourseData } from '@/lib/cms/templates/engineering/be-mechanical-data'
+import { withVerifiedMechanicalClaims } from '@/lib/institutions/engineering/course-claims-override'
 import { BEMechanicalCourseSchema } from '@/lib/seo/course-schema-generator'
 import type { Metadata } from 'next'
 import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
@@ -57,7 +58,7 @@ export default function MechanicalCoursePage() {
       <BEMechanicalCourseSchema />
       <FAQSchemaGenerator faqs={beMechanicalCourseData.faqs} />
       <main>
-        <BEMechanicalCoursePage {...beMechanicalCourseData} />
+        <BEMechanicalCoursePage {...withVerifiedMechanicalClaims(beMechanicalCourseData)} />
       </main>
     </>
   )

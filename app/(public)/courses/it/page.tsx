@@ -1,5 +1,6 @@
 import { BEITCoursePage } from '@/components/cms-blocks/content/be-it-course-page'
 import { BE_IT_SAMPLE_DATA } from '@/lib/cms/templates/engineering/be-it-data'
+import { withVerifiedItClaims } from '@/lib/institutions/engineering/course-claims-override'
 import type { Metadata } from 'next'
 
 /**
@@ -55,7 +56,7 @@ export const metadata: Metadata = {
 export default function ITCoursePage() {
   return (
     <main>
-      <BEITCoursePage {...BE_IT_SAMPLE_DATA} />
+      <BEITCoursePage {...withVerifiedItClaims(BE_IT_SAMPLE_DATA)} />
     </main>
   )
 }
