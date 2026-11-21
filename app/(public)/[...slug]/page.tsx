@@ -24,6 +24,7 @@ import {
   applyEngineeringCmsPageOverrides,
   applyEngineeringCmsSeoOverrides,
 } from '@/lib/institutions/engineering/cms-page-overrides'
+import { applyMainCmsPageOverrides, applyMainCmsSeoOverrides } from '@/lib/institutions/main/cms-page-overrides'
 import { EngineeringOfficialDataSection } from '@/components/public/engineering/official-data-section'
 
 // Dynamic rendering for 404 handling - automatically handled with cacheComponents
@@ -75,7 +76,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const cmsSeo = Array.isArray(page.cms_seo_metadata)
     ? page.cms_seo_metadata[0]
     : page.cms_seo_metadata
-  const seo = isInstitution('engineering') ? applyEngineeringCmsSeoOverrides(slugPath, cmsSeo) : cmsSeo
+  const seo = isInstitution('engineering')
+    ? applyEngineeringCmsSeoOverrides(slugPath, cmsSeo)
+    : isInstitution('main')
+      ? applyMainCmsSeoOverrides(slugPath, cmsSeo)
+      : cmsSeo
 
   // Build comprehensive metadata from SEO fields with proper fallback chain
   return {
@@ -245,7 +250,11 @@ export default async function DynamicPage({ params }: PageProps) {
     is_visible: block.is_visible ?? true,
   }))
   const isEngineering = isInstitution('engineering')
-  const blocks = isEngineering ? applyEngineeringCmsPageOverrides(slugPath, cmsBlocks) : cmsBlocks
+  const blocks = isEngineering
+    ? applyEngineeringCmsPageOverrides(slugPath, cmsBlocks)
+    : isInstitution('main')
+      ? applyMainCmsPageOverrides(slugPath, cmsBlocks)
+      : cmsBlocks
 
   // Extract typography settings from page metadata
   const pageTypography = (page.metadata as Record<string, unknown> | null)?.typography as PageTypographySettings | undefined
