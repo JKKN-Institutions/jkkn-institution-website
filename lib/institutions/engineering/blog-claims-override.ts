@@ -96,9 +96,9 @@ export const ENGG_BLOG_CLAIM_RULES: Readonly<Record<string, readonly Rule[]>> = 
       '<tr><th colspan="1" rowspan="1"><p>Category</p></th><th colspan="1" rowspan="1"><p>Package</p></th></tr>' +
         row('Average Package', '₹4 LPA+') +
         row('Highest Package', '₹7–8 LPA'),
-      '<tr><th colspan="1" rowspan="1"><p>MBA batch (NIRF 2026)</p></th><th colspan="1" rowspan="1"><p>Placed</p></th></tr>' +
-        row('Graduated 2024-25', '1 of 20, salary ₹2.8 LPA') +
-        row('Graduated 2023-24', '4 of 10, median salary ₹3 LPA'),
+      '<tr><th colspan="1" rowspan="1"><p>Category</p></th><th colspan="1" rowspan="1"><p>Details</p></th></tr>' +
+        row('Placed, 2024-25 batch (NIRF 2026)', '1 of 20, salary ₹2.8 LPA') +
+        row('Placed, 2023-24 batch (NIRF 2026)', '4 of 10, median salary ₹3 LPA'),
     ],
     [
       '<p>With 120 sanctioned seats, the MBA program offers a diverse peer</p>',

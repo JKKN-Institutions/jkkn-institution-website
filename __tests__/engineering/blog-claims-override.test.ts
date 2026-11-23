@@ -68,9 +68,13 @@ describe('engineering blog claims (F10)', () => {
     const live =
       '<tr><th colspan="1" rowspan="1"><p>Category</p></th><th colspan="1" rowspan="1"><p>Package</p></th></tr><tr><td><p>Average Package</p></td><td><p>₹4 LPA+</p></td></tr><tr><td><p>Highest Package</p></td><td><p>₹7–8 LPA</p></td></tr>'
     const text = html(applyEngineeringBlogClaims(`mba${SUFFIX}`, { content: { type: 'html', html: live } }))
-    expect(text).toContain('<td><p>Graduated 2024-25</p></td><td><p>1 of 20, salary ₹2.8 LPA</p></td>')
-    expect(text).toContain('<td><p>Graduated 2023-24</p></td><td><p>4 of 10, median salary ₹3 LPA</p></td>')
+    expect(text).toContain('<td><p>Placed, 2024-25 batch (NIRF 2026)</p></td><td><p>1 of 20, salary ₹2.8 LPA</p></td>')
+    expect(text).toContain('<td><p>Placed, 2023-24 batch (NIRF 2026)</p></td><td><p>4 of 10, median salary ₹3 LPA</p></td>')
     expect(text).not.toMatch(/LPA\+|7–8/)
+    // The table also holds a 'Top Domains' row, so the header must not label every row as NIRF data.
+    expect(text).toContain('<p>Category</p>')
+    expect(text).toContain('<p>Details</p>')
+    expect(text).not.toContain('MBA batch')
   })
 
   it('EEE, Mechanical and M.E. CSE: no comparison with other colleges, only the fee-page fact', () => {
