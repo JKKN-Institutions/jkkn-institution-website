@@ -12,6 +12,7 @@
 // engineering the provider renders its children only, so nothing changes there.
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useDialogFocus } from '@/lib/use-dialog-focus'
 import { useDialogScrollLock } from '@/lib/use-dialog-scroll-lock'
 import { X } from 'lucide-react'
 import { EnquiryForm } from '@/components/lead/enquiry-form'
@@ -312,6 +313,7 @@ function EnquiryDialog({
   intent?: GateIntent
   onClose: () => void
 }) {
+  const dialogRef = useDialogFocus<HTMLDivElement>()
   useDialogScrollLock()
   // Apply-first (2026-11-18): has this browser sent an enquiry the CRM accepted? The form writes
   // ENQUIRY_DONE_KEY on that answer. The dialog only ever renders in the browser (it opens after a
@@ -340,10 +342,12 @@ function EnquiryDialog({
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4">
       <div
+        ref={dialogRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby="enquiry-dialog-title"
-        className="relative w-full max-w-sm lg:max-w-md max-h-[90vh] overflow-y-auto overscroll-contain rounded-[20px] bg-white p-5 min-[640px]:p-6 shadow-2xl"
+        className="relative w-full max-w-sm lg:max-w-md max-h-[90vh] overflow-y-auto overscroll-contain outline-none rounded-[20px] bg-white p-5 min-[640px]:p-6 shadow-2xl"
       >
         <button
           type="button"
