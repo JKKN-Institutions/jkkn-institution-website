@@ -467,6 +467,21 @@
       overflow-x: auto;
       white-space: nowrap;
     }
+
+    /* Engineering blog posts only (user's choice 2026-11-23): the text wraps, so the value column stays on a phone
+       screen. With nowrap, "23 of 53" sat 206-434 px past the edge at 375 px. */
+    .prose.engg-blog-tables table {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+      white-space: normal;
+    }
+
+    .prose.engg-blog-tables table th,
+    .prose.engg-blog-tables table td {
+      padding: 0.625rem 0.5rem;
+      overflow-wrap: anywhere;
+    }
   }
 
   /* Custom scrollbar */

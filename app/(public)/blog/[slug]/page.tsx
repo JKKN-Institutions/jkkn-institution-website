@@ -705,7 +705,7 @@ export default async function BlogPostPage({ params, searchParams }: BlogPostPag
 
             {/* Content - Light card for white background */}
             <article className="bg-gray-50 rounded-2xl p-6 md:p-8 shadow-lg border border-gray-200">
-              <div className="prose prose-lg max-w-none">
+              <div className={`prose prose-lg max-w-none${isInstitution('engineering') ? ' engg-blog-tables' : ''}`}>
                 <ContentRenderer content={post.content} inlineBox={isPreview ? undefined : <BlogEnquiryBox sourcePage={blogSourcePage(slug)} />} />
               </div>
             </article>
