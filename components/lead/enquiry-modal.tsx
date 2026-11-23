@@ -12,6 +12,7 @@
 // engineering the provider renders its children only, so nothing changes there.
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import PhoneContactBar from '@/components/lead/PhoneContactBar'
 import { useDialogFocus } from '@/lib/use-dialog-focus'
 import { useDialogScrollLock } from '@/lib/use-dialog-scroll-lock'
 import { X } from 'lucide-react'
@@ -288,6 +289,7 @@ export function EnquiryModalProvider({ children }: { children: ReactNode }) {
   return (
     <EnquiryModalContext.Provider value={api}>
       {children}
+      <PhoneContactBar />
       {open && (
         <EnquiryDialog
           sourcePage={open.sourcePage}
