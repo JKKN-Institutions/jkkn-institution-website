@@ -37,6 +37,12 @@ const packages = (average: string, highest: string, strong = false): Rule => [
 
 const SLUG_SUFFIX = '-at-jkkn-career-curriculum-fees-admission-guide-for-2026'
 
+// User's choice 2026-11-23: no comparison with other colleges (no document supports it); the fee page does show
+// EEE and Mechanical at Rs 45,000 against CSE / IT Rs 80,000 and ECE Rs 70,000. M.E. CSE (Rs 30,000) is lower, so
+// the line says "B.E. / B.Tech branches".
+const LOWEST_UG_FEE_LINE =
+  "<p>At ₹45,000 a year, EEE and Mechanical have the lowest Management Quota tuition among JKKN's B.E. / B.Tech branches.</p>"
+
 export const ENGG_BLOG_CLAIM_RULES: Readonly<Record<string, readonly Rule[]>> = {
   [`b-e-cse${SLUG_SUFFIX}`]: [
     placementRate('92%+', true),
@@ -56,18 +62,35 @@ export const ENGG_BLOG_CLAIM_RULES: Readonly<Record<string, readonly Rule[]>> = 
     ],
     ['<p>Highest Package: ₹7.5 LPA+ for VLSI and Embedded Systems roles</p><p></p>', ''],
   ],
-  [`b-e-eee${SLUG_SUFFIX}`]: [placementRate('88%+'), packages('₹3.2 LPA', '₹6.5 LPA+')],
+  [`b-e-eee${SLUG_SUFFIX}`]: [
+    placementRate('88%+'),
+    packages('₹3.2 LPA', '₹6.5 LPA+'),
+    [
+      '<p>At ₹45,000 per year under Management Quota, B.E EEE is among the most affordable engineering programmes in western Tamil Nadu.</p>',
+      LOWEST_UG_FEE_LINE,
+    ],
+  ],
   [`b-e-mechanical${SLUG_SUFFIX}`]: [
     [row('Sanctioned Seats', '120', true), row('Sanctioned Seats', '60', true)],
     placementRate('85%+', true),
     packages('₹3.0 LPA', '₹6 LPA+', true),
+    [
+      '<p>At ₹45,000/year under Management Quota, B.E Mechanical at JKKN is among the most affordable engineering programs in western Tamil Nadu.</p>',
+      LOWEST_UG_FEE_LINE,
+    ],
     [
       '<h2>1. Largest Mechanical Batch</h2><p>With 120 sanctioned seats, JKKN Mechanical has one of the largest engineering batches on campus. A larger batch creates:</p><p></p><p>Stronger peer learning</p><p>Bigger alumni networks</p><p>Active SAE &amp; ASME learner chapters</p><p>Better project collaboration</p>',
       '<h2>1. Batch Size</h2><p>AICTE has approved 60 seats a year for B.E. Mechanical Engineering at JKKN (approval for 2026-27). A batch of this size supports:</p><p></p><p>Peer learning</p><p>Project collaboration</p>',
     ],
   ],
   [`b-tech-it${SLUG_SUFFIX}`]: [placementRate('90%+', true), packages('₹3.5 LPA', '₹8 LPA+', true)],
-  [`m-e-cse${SLUG_SUFFIX}`]: [[row('Sanctioned Seats', '60'), row('Sanctioned Seats', '12')]],
+  [`m-e-cse${SLUG_SUFFIX}`]: [
+    [row('Sanctioned Seats', '60'), row('Sanctioned Seats', '12')],
+    [
+      'With a tuition fee of only ₹30,000 per year, JKKN offers one of the most affordable M.E CSE programs in Tamil Nadu.',
+      'The M.E. CSE tuition fee at JKKN is ₹30,000 a year.',
+    ],
+  ],
   [`mba${SLUG_SUFFIX}`]: [
     [
       '<tr><th colspan="1" rowspan="1"><p>Category</p></th><th colspan="1" rowspan="1"><p>Package</p></th></tr>' +

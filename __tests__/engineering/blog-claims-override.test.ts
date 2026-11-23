@@ -73,6 +73,18 @@ describe('engineering blog claims (F10)', () => {
     expect(text).not.toMatch(/LPA\+|7–8/)
   })
 
+  it('EEE, Mechanical and M.E. CSE: no comparison with other colleges, only the fee-page fact', () => {
+    const line = "<p>At ₹45,000 a year, EEE and Mechanical have the lowest Management Quota tuition among JKKN's B.E. / B.Tech branches.</p>"
+    const eee = '<p>At ₹45,000 per year under Management Quota, B.E EEE is among the most affordable engineering programmes in western Tamil Nadu.</p>'
+    const mech = '<p>At ₹45,000/year under Management Quota, B.E Mechanical at JKKN is among the most affordable engineering programs in western Tamil Nadu.</p>'
+    expect(html(applyEngineeringBlogClaims(`b-e-eee${SUFFIX}`, { content: { type: 'html', html: eee } }))).toBe(line)
+    expect(html(applyEngineeringBlogClaims(`b-e-mechanical${SUFFIX}`, { content: { type: 'html', html: mech } }))).toBe(line)
+    const me = '<p>With a tuition fee of only ₹30,000 per year, JKKN offers one of the most affordable M.E CSE programs in Tamil Nadu. Combined with the AICTE PG Scholarship, many learners can complete their postgraduate education with minimal financial burden.</p>'
+    expect(html(applyEngineeringBlogClaims(`m-e-cse${SUFFIX}`, { content: { type: 'html', html: me } }))).toBe(
+      '<p>The M.E. CSE tuition fee at JKKN is ₹30,000 a year. Combined with the AICTE PG Scholarship, many learners can complete their postgraduate education with minimal financial burden.</p>'
+    )
+  })
+
   it('lets an edited post win and leaves other posts alone', () => {
     const edited = { content: { type: 'html', html: '<tr><td><p>Placement Rate</p></td><td><p>See NIRF</p></td></tr>' } }
     expect(applyEngineeringBlogClaims(`b-e-eee${SUFFIX}`, edited).content).toBe(edited.content)
