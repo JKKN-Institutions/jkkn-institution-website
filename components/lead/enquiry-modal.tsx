@@ -12,6 +12,7 @@
 // engineering the provider renders its children only, so nothing changes there.
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useDialogScrollLock } from '@/lib/use-dialog-scroll-lock'
 import { X } from 'lucide-react'
 import { EnquiryForm } from '@/components/lead/enquiry-form'
 import { currentEnquirySite, fullApplicationHref, sourcePageFromPath } from '@/lib/enquiry/site'
@@ -311,6 +312,7 @@ function EnquiryDialog({
   intent?: GateIntent
   onClose: () => void
 }) {
+  useDialogScrollLock()
   // Apply-first (2026-11-18): has this browser sent an enquiry the CRM accepted? The form writes
   // ENQUIRY_DONE_KEY on that answer. The dialog only ever renders in the browser (it opens after a
   // click or the ?enquire effect), so reading storage for the first value is safe; localStorage has
@@ -341,7 +343,7 @@ function EnquiryDialog({
         role="dialog"
         aria-modal="true"
         aria-labelledby="enquiry-dialog-title"
-        className="relative w-full max-w-sm lg:max-w-md max-h-[90vh] overflow-y-auto rounded-[20px] bg-white p-5 min-[640px]:p-6 shadow-2xl"
+        className="relative w-full max-w-sm lg:max-w-md max-h-[90vh] overflow-y-auto overscroll-contain rounded-[20px] bg-white p-5 min-[640px]:p-6 shadow-2xl"
       >
         <button
           type="button"
