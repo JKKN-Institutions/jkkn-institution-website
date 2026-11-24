@@ -27,6 +27,12 @@ const ENGG_EMPTY_PAGE_REDIRECTS = [
   { source: '/facilities', destination: '/hostel' },
 ]
 
+// Engineering's careers LIST page -> the parent site's careers list (user's choice 2026-11-24). Only the
+// exact /careers path: job pages (/careers/<slug>) still render on engg with a www canonical, because job
+// links shared on social media land there. Same value as lib/institutions/engineering/careers-list-redirect.ts
+// (a test keeps them equal). Engineering deployment only - on the parent site it would redirect to itself.
+const ENGG_CAREERS_LIST_REDIRECT = { source: '/careers', destination: 'https://www.jkkn.ac.in/careers' }
+
 const nextConfig: NextConfig = {
   // Cache Components disabled - incompatible with admin layout that accesses cookies/auth
   // The admin layout requires dynamic rendering for all routes
@@ -382,6 +388,12 @@ const nextConfig: NextConfig = {
       // === Engineering: empty CMS pages -> real pages (F3, 2026-11-21) ===
       ...(process.env.NEXT_PUBLIC_INSTITUTION_ID === 'engineering'
         ? ENGG_EMPTY_PAGE_REDIRECTS.map((redirect) => ({ ...redirect, permanent: true }))
+        : []),
+
+      // === Engineering: careers list page -> www careers list (2026-11-24) ===
+      // Query strings pass through to the destination (Next default), so a filtered link keeps its filters.
+      ...(process.env.NEXT_PUBLIC_INSTITUTION_ID === 'engineering'
+        ? [{ ...ENGG_CAREERS_LIST_REDIRECT, permanent: true }]
         : []),
 
       // Department faculty PDFs moved from /pdfs/faculty/<dept>.pdf to the
