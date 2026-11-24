@@ -10,29 +10,25 @@
 // Same contract as the other engineering overrides: exact strings read from the live posts on 2026-11-21, swapped
 // at render time. A post edited in the CMS / MyJKKN no longer matches, so the edit always wins. Nothing is written
 // to any database. Recruiter lists and the scholarship lines are NOT touched here (management memo, skipped).
+//
+// User's choice 2026-11-24: the website shows no placement numbers at all - no placed count, rate, salary or
+// recruiter count, and no market salary figure. The 2026-11-21 NIRF rows are therefore dropped too: the placement
+// rows are removed, recruiter names and the other table rows stay.
 
 type Rule = readonly [old: string, next: string]
-
-const UG_PLACED = 'Placed (all UG branches, 2024-25, NIRF 2026)'
-const UG_PLACED_VALUE = '23 of 53 graduates'
-const UG_MEDIAN = 'Median salary (all UG branches, 2024-25, NIRF 2026)'
-const UG_MEDIAN_VALUE = '₹2.4 LPA'
 
 const row = (label: string, value: string, strong = false) =>
   strong
     ? `<tr><td><p><strong>${label}</strong></p></td><td><p>${value}</p></td></tr>`
     : `<tr><td><p>${label}</p></td><td><p>${value}</p></td></tr>`
 
-const placedRow = (strong = false) => row(UG_PLACED, UG_PLACED_VALUE, strong)
-const medianRow = (strong = false) => row(UG_MEDIAN, UG_MEDIAN_VALUE, strong)
+/** "Placement Rate | 85%+" in a highlights table -> the row is removed. */
+const placementRate = (rate: string, strong = false): Rule => [row('Placement Rate', rate, strong), '']
 
-/** "Placement Rate | 85%+" in a highlights table -> the NIRF 2026 placed count. */
-const placementRate = (rate: string, strong = false): Rule => [row('Placement Rate', rate, strong), placedRow(strong)]
-
-/** "Average Package" + "Highest Package" rows -> one NIRF 2026 median row. */
+/** "Average Package" + "Highest Package" rows -> both rows are removed. */
 const packages = (average: string, highest: string, strong = false): Rule => [
   row('Average Package', average, strong) + row('Highest Package', highest, strong),
-  medianRow(strong),
+  '',
 ]
 
 const SLUG_SUFFIX = '-at-jkkn-career-curriculum-fees-admission-guide-for-2026'
@@ -51,15 +47,16 @@ export const ENGG_BLOG_CLAIM_RULES: Readonly<Record<string, readonly Rule[]>> = 
         row('Recruiters Visiting Campus', '60+') +
         row('Average Package', '₹3.5 LPA') +
         row('Highest Package', '₹8.5 LPA+'),
-      placedRow() + medianRow(),
+      '',
+    ],
+    [
+      '<p>A ₹3.5 LPA fresher package is currently the baseline for many IT-services roles. However, learners who build:</p>',
+      '<p>Starting salaries in many IT-services roles are modest. However, learners who build:</p>',
     ],
   ],
   [`b-e-ece${SLUG_SUFFIX}`]: [
     placementRate('85%+'),
-    [
-      '<p>Average Salary Package: ₹3.5 LPA</p>',
-      '<p>Median salary, all UG branches, 2024-25: ₹2.4 LPA (NIRF 2026 filing)</p>',
-    ],
+    ['<p>Average Salary Package: ₹3.5 LPA</p><p></p>', ''],
     ['<p>Highest Package: ₹7.5 LPA+ for VLSI and Embedded Systems roles</p><p></p>', ''],
   ],
   [`b-e-eee${SLUG_SUFFIX}`]: [
@@ -96,10 +93,10 @@ export const ENGG_BLOG_CLAIM_RULES: Readonly<Record<string, readonly Rule[]>> = 
       '<tr><th colspan="1" rowspan="1"><p>Category</p></th><th colspan="1" rowspan="1"><p>Package</p></th></tr>' +
         row('Average Package', '₹4 LPA+') +
         row('Highest Package', '₹7–8 LPA'),
-      '<tr><th colspan="1" rowspan="1"><p>Category</p></th><th colspan="1" rowspan="1"><p>Details</p></th></tr>' +
-        row('Placed, 2024-25 batch (NIRF 2026)', '1 of 20, salary ₹2.8 LPA') +
-        row('Placed, 2023-24 batch (NIRF 2026)', '4 of 10, median salary ₹3 LPA'),
+      '<tr><th colspan="1" rowspan="1"><p>Category</p></th><th colspan="1" rowspan="1"><p>Details</p></th></tr>',
     ],
+    // The table keeps only its "Top Domains" row, so the heading no longer promises salaries.
+    ['<h3>Salary Insights</h3>', '<h3>Career Domains</h3>'],
     [
       '<p>With 120 sanctioned seats, the MBA program offers a diverse peer</p>',
       '<p>With 60 seats a year approved by AICTE, the MBA program offers a diverse peer</p>',

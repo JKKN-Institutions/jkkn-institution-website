@@ -23,29 +23,32 @@ describe('engineering blog claims (F10)', () => {
     )
   })
 
-  it('CSE: rate, recruiters, average and highest become the NIRF 2026 placed count and median', () => {
+  it('CSE: rate, recruiters, average and highest rows are removed, no NIRF number is added', () => {
     const out = applyEngineeringBlogClaims(`b-e-cse${SUFFIX}`, { content: { type: 'html', html: CSE_METRICS } })
-    const text = html(out)
-    expect(text).toContain('<td><p>Placed (all UG branches, 2024-25, NIRF 2026)</p></td><td><p>23 of 53 graduates</p></td>')
-    expect(text).toContain('<td><p>Median salary (all UG branches, 2024-25, NIRF 2026)</p></td><td><p>₹2.4 LPA</p></td>')
-    for (const gone of ['92%+', 'Recruiters Visiting', 'Average Package', 'Highest Package', '8.5 LPA']) {
-      expect(text).not.toContain(gone)
-    }
-    expect(text).toContain('Mandatory 8-week internship')
+    expect(html(out)).toBe(
+      '<tbody><tr><td><p>Internship Requirement</p></td><td><p>Mandatory 8-week internship</p></td></tr></tbody>'
+    )
   })
 
-  it('Mechanical: AICTE intake 60, bold rows stay bold', () => {
+  it('CSE: the market fresher-salary line keeps its point without a figure', () => {
+    const line =
+      '<h2>Reality Check on Salaries</h2><p>A ₹3.5 LPA fresher package is currently the baseline for many IT-services roles. However, learners who build:</p><p></p>'
+    const text = html(applyEngineeringBlogClaims(`b-e-cse${SUFFIX}`, { content: { type: 'html', html: line } }))
+    expect(text).toBe(
+      '<h2>Reality Check on Salaries</h2><p>Starting salaries in many IT-services roles are modest. However, learners who build:</p><p></p>'
+    )
+  })
+
+  it('Mechanical: AICTE intake 60, the placement row is removed, bold rows stay bold', () => {
     const out = applyEngineeringBlogClaims(`b-e-mechanical${SUFFIX}`, { content: { type: 'html', html: MECH_HIGHLIGHTS } })
     expect(html(out)).toBe(
-      '<tr><td><p><strong>Sanctioned Seats</strong></p></td><td><p>60</p></td></tr><tr><td><p><strong>Placed (all UG branches, 2024-25, NIRF 2026)</strong></p></td><td><p>23 of 53 graduates</p></td></tr><tr><td><p><strong>Management Quota Tuition</strong></p></td><td><p>₹45K/year</p></td></tr>'
+      '<tr><td><p><strong>Sanctioned Seats</strong></p></td><td><p>60</p></td></tr><tr><td><p><strong>Management Quota Tuition</strong></p></td><td><p>₹45K/year</p></td></tr>'
     )
   })
 
-  it('ECE: the salary line becomes the NIRF median and the highest-package line goes', () => {
+  it('ECE: the average and highest salary lines go, with their spacer paragraphs', () => {
     const out = applyEngineeringBlogClaims(`b-e-ece${SUFFIX}`, { content: { type: 'html', html: ECE_LINES } })
-    expect(html(out)).toBe(
-      '<p></p><p>Median salary, all UG branches, 2024-25: ₹2.4 LPA (NIRF 2026 filing)</p><p></p><p>Mandatory Internship: 8-week internship during Semester 7</p>'
-    )
+    expect(html(out)).toBe('<p></p><p>Mandatory Internship: 8-week internship during Semester 7</p>')
   })
 
   it('M.E. CSE: intake 12 and no "most affordable" in the summary', () => {
@@ -64,17 +67,20 @@ describe('engineering blog claims (F10)', () => {
     expect(engineeringBlogExcerpt(slug, excerpt)).toBe(out.excerpt)
   })
 
-  it('MBA: NIRF 2026 Management figures replace the package rows', () => {
+  it('MBA: the package rows go, the Top Domains row and a neutral header stay', () => {
     const live =
-      '<tr><th colspan="1" rowspan="1"><p>Category</p></th><th colspan="1" rowspan="1"><p>Package</p></th></tr><tr><td><p>Average Package</p></td><td><p>₹4 LPA+</p></td></tr><tr><td><p>Highest Package</p></td><td><p>₹7–8 LPA</p></td></tr>'
+      '<h3>Salary Insights</h3><table><tbody><tr><th colspan="1" rowspan="1"><p>Category</p></th><th colspan="1" rowspan="1"><p>Package</p></th></tr><tr><td><p>Average Package</p></td><td><p>₹4 LPA+</p></td></tr><tr><td><p>Highest Package</p></td><td><p>₹7–8 LPA</p></td></tr><tr><td><p>Top Domains</p></td><td><p>BFSI, Consulting, Analytics</p></td></tr></tbody></table>'
     const text = html(applyEngineeringBlogClaims(`mba${SUFFIX}`, { content: { type: 'html', html: live } }))
-    expect(text).toContain('<td><p>Placed, 2024-25 batch (NIRF 2026)</p></td><td><p>1 of 20, salary ₹2.8 LPA</p></td>')
-    expect(text).toContain('<td><p>Placed, 2023-24 batch (NIRF 2026)</p></td><td><p>4 of 10, median salary ₹3 LPA</p></td>')
-    expect(text).not.toMatch(/LPA\+|7–8/)
-    // The table also holds a 'Top Domains' row, so the header must not label every row as NIRF data.
-    expect(text).toContain('<p>Category</p>')
-    expect(text).toContain('<p>Details</p>')
-    expect(text).not.toContain('MBA batch')
+    expect(text).toBe(
+      '<h3>Career Domains</h3><table><tbody><tr><th colspan="1" rowspan="1"><p>Category</p></th><th colspan="1" rowspan="1"><p>Details</p></th></tr><tr><td><p>Top Domains</p></td><td><p>BFSI, Consulting, Analytics</p></td></tr></tbody></table>'
+    )
+    expect(text).not.toMatch(/LPA|Placed|NIRF|Salary/)
+  })
+
+  it('no rule writes a placement or salary figure (user choice 2026-11-24)', () => {
+    for (const rules of Object.values(ENGG_BLOG_CLAIM_RULES)) {
+      for (const [, next] of rules) expect(next).not.toMatch(/LPA|NIRF|placed|of 53|median|salary ₹/i)
+    }
   })
 
   it('EEE, Mechanical and M.E. CSE: no comparison with other colleges, only the fee-page fact', () => {
