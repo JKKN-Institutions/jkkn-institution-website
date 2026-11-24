@@ -1,9 +1,10 @@
-// F1 + F11 of the engineering perception audit (2026-11-21): the /admissions FAQ must carry the college's own
-// NIRF 2026 placement figures, the fee page's tuition, the bus fee and no unsourced percentage.
+// F1 + F11 of the engineering perception audit (2026-11-21): the /admissions FAQ must carry the fee page's tuition,
+// the bus fee and no unsourced percentage. Since 2026-11-24 (user's choice) the placement answer carries no
+// placement number at all - only the Training and Placement Cell.
 import { describe, expect, it } from 'vitest'
 import {
   COST_ANSWER,
-  NIRF_PLACEMENT_ANSWER,
+  PLACEMENT_CELL_ANSWER,
   SCHOLARSHIP_ANSWER,
   withHonestAdmissionsFaqs,
 } from '@/lib/institutions/engineering/admissions-faq-override'
@@ -57,11 +58,12 @@ describe('withHonestAdmissionsFaqs', () => {
     for (const pattern of UNSOURCED) expect(text).not.toMatch(pattern)
   })
 
-  it('answers the placement question with the NIRF 2026 figures', () => {
+  it('answers the placement question with the placement cell and no number', () => {
     const placement = out.find((faq) => /placed after graduation/i.test(faq.question))
-    expect(placement?.answer).toBe(NIRF_PLACEMENT_ANSWER)
-    expect(NIRF_PLACEMENT_ANSWER).toContain('23 of the 53')
-    expect(NIRF_PLACEMENT_ANSWER).toContain('₹2,40,000')
+    expect(placement?.answer).toBe(PLACEMENT_CELL_ANSWER)
+    expect(PLACEMENT_CELL_ANSWER).toContain('Training and Placement Cell')
+    expect(PLACEMENT_CELL_ANSWER).not.toMatch(/\d/)
+    expect(text).not.toMatch(/23 of|2,40,000|median/i)
   })
 
   it('gives the fee page tuition, the ₹5,500 bus fee and sends the hostel fee to the office', () => {

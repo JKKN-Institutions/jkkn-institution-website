@@ -2,38 +2,27 @@
 // supports. The B.Tech IT page printed market salary ranges per role (₹4-15 LPA ... ₹10-30 LPA) next to the
 // college's name; the B.E. Mechanical page said "projects funded by government agencies" and "strong
 // partnerships with leading automotive, aerospace ... companies". The college's NIRF 2026 filing records
-// sponsored research of ₹20,000 (2024-25) and a median UG salary of ₹2,40,000 (23 of 53 placed, 2024-25).
+// sponsored research of ₹20,000 (2024-25).
+//
+// User's choice 2026-11-24: the website shows no placement numbers at all, so the B.Tech IT placement FAQ no
+// longer gains a NIRF placed-count / median-salary line; its own Training & Placement Cell answer stays.
 //
 // The template data files hold Tamil-script subject titles, and a local guard blocks edits to such files, so the
 // pages map the data at render time instead. Exact-match rules: a line already edited stays as it is.
 
-export const NIRF_UG_SALARY_LINE =
-  "In the data the college filed with NIRF 2026, 23 of the 53 B.E. / B.Tech graduates of 2024-25 were placed, at a median salary of ₹2,40,000 a year."
-
 interface CareerPath {
   avgSalary?: string
-}
-interface Faq {
-  question: string
-  answer: string
 }
 interface Benefit {
   title: string
   description: string
 }
 
-const IT_PLACEMENT_QUESTION = 'Does JKKN provide placement support for B.Tech IT learners?'
-
-/** B.Tech IT: no per-role salary ranges; the placement FAQ gains the NIRF 2026 line. */
-export function withVerifiedItClaims<T extends { careerPaths?: CareerPath[]; faqs?: Faq[] }>(data: T): T {
+/** B.Tech IT: no per-role salary ranges. */
+export function withVerifiedItClaims<T extends { careerPaths?: CareerPath[] }>(data: T): T {
   return {
     ...data,
     careerPaths: data.careerPaths?.map(({ avgSalary: _avgSalary, ...path }) => path),
-    faqs: data.faqs?.map((faq) =>
-      faq.question === IT_PLACEMENT_QUESTION && !faq.answer.includes('NIRF')
-        ? { ...faq, answer: `${faq.answer} ${NIRF_UG_SALARY_LINE}` }
-        : faq
-    ),
   }
 }
 

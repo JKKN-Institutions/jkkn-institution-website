@@ -7,14 +7,17 @@
 // (Search Console, 12 months: "autonomous or not", NAAC grade, counselling code). No database row is edited.
 // The FAQPage JSON-LD on the page is built from the same list, so it follows automatically.
 //
-// Sources: NIRF 2026 Engineering filing (engg.jkkn.ac.in/documents/nirf/2026/engineering.pdf); fee page
-// /admissions/fee-structure (2026-27); /scholarships; bus fee ₹5,500 a year on every route = college office via
-// the user, 2026-11-21; NAAC / UGC / DoTE facts = ./official-data.ts.
+// Sources: fee page /admissions/fee-structure (2026-27); /scholarships; bus fee ₹5,500 a year on every route =
+// college office via the user, 2026-11-21; NAAC / UGC / DoTE facts = ./official-data.ts.
+//
+// User's choice 2026-11-24: the website shows no placement numbers at all (no placed count, rate or salary). The
+// placement answer therefore names the Training and Placement Cell only. The mapping itself stays: without it the
+// unsourced "92%+ placement rate" row in Supabase would show again.
 import type { FAQItem } from './admissions-data'
 import { APPROVALS_FAQS } from './official-data'
 
-export const NIRF_PLACEMENT_ANSWER =
-  'In the data the college filed with NIRF 2026, 23 of the 53 B.E. / B.Tech graduates of 2024-25 were placed, at a median salary of ₹2,40,000 a year. For the earlier batches the figures were 35 of 89 (2023-24, median ₹2,20,000) and 29 of 126 (2022-23, median ₹1,68,000). The full NIRF filings are on the IQAC - NIRF page of this website.'
+export const PLACEMENT_CELL_ANSWER =
+  'JKKN College of Engineering and Technology has a Training and Placement Cell that runs placement training and organises campus recruitment drives for final-year learners.'
 
 export const COST_ANSWER =
   'For 2026-27, Management Quota tuition is ₹80,000 a year for B.E. CSE and B.Tech IT, ₹70,000 for ECE and ₹45,000 for EEE and Mechanical; Government Quota tuition is as per Government norms. The college bus costs ₹5,500 a year on every route. For the hostel fee (food included), please ask the admissions office on +91 93458 55001. Examination fees, the caution deposit and other university fees are charged separately.'
@@ -48,7 +51,7 @@ function honestAnswer(faq: FAQItem): FAQItem {
   const question = faq?.question ?? ''
   const answer = faq?.answer ?? ''
   if (PLACEMENT_QUESTION.test(question) || UNSOURCED_PLACEMENT.test(answer)) {
-    return { ...faq, answer: NIRF_PLACEMENT_ANSWER }
+    return { ...faq, answer: PLACEMENT_CELL_ANSWER }
   }
   if (COST_QUESTION.test(question)) return { ...faq, answer: COST_ANSWER }
   if (SCHOLARSHIP_QUESTION.test(question)) return { ...faq, answer: SCHOLARSHIP_ANSWER }

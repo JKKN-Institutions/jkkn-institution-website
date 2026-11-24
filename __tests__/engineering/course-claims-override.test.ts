@@ -3,11 +3,7 @@
 import { describe, expect, it } from 'vitest'
 import { BE_IT_SAMPLE_DATA } from '@/lib/cms/templates/engineering/be-it-data'
 import { beMechanicalCourseData } from '@/lib/cms/templates/engineering/be-mechanical-data'
-import {
-  NIRF_UG_SALARY_LINE,
-  withVerifiedItClaims,
-  withVerifiedMechanicalClaims,
-} from '@/lib/institutions/engineering/course-claims-override'
+import { withVerifiedItClaims, withVerifiedMechanicalClaims } from '@/lib/institutions/engineering/course-claims-override'
 
 describe('B.Tech IT page', () => {
   const out = withVerifiedItClaims(BE_IT_SAMPLE_DATA)
@@ -17,11 +13,11 @@ describe('B.Tech IT page', () => {
     expect(out.careerPaths).toHaveLength(BE_IT_SAMPLE_DATA.careerPaths.length)
   })
 
-  it('adds the NIRF 2026 line to the placement FAQ once', () => {
+  it('keeps the placement FAQ free of placement numbers (user choice 2026-11-24)', () => {
     const faq = out.faqs.find((f) => /placement support/i.test(f.question))
-    expect(faq?.answer.endsWith(NIRF_UG_SALARY_LINE)).toBe(true)
-    const again = withVerifiedItClaims(out).faqs.find((f) => /placement support/i.test(f.question))
-    expect(again?.answer).toBe(faq?.answer)
+    expect(faq?.answer).toContain('Training & Placement Cell')
+    expect(faq?.answer).not.toMatch(/NIRF|23 of|₹|LPA/)
+    expect(out.faqs).toEqual(BE_IT_SAMPLE_DATA.faqs)
   })
 
   it('does not change the source data', () => {

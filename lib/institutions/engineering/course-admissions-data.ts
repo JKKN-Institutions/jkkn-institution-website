@@ -663,7 +663,7 @@ export const MBA_ADMISSION: CourseAdmissionData = {
     {
       question: 'What are MBA placement opportunities at JKKN?',
       answer:
-        'Recruiters across finance (HDFC, ICICI, Axis), marketing (Asian Paints, ITC), HR (TCS, Cognizant), consulting (Deloitte, KPMG), retail (Reliance, Tata). Average package ₹4L+; placement support throughout 2 years.',
+        'Recruiters across finance (HDFC, ICICI, Axis), marketing (Asian Paints, ITC), HR (TCS, Cognizant), consulting (Deloitte, KPMG), retail (Reliance, Tata). Placement support throughout 2 years.',
     },
     {
       question: 'Can I do MBA without an entrance exam?',
