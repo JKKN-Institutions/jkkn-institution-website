@@ -3,16 +3,9 @@
 
 import Image from 'next/image'
 
-// Read from the college's own NIRF 2026 filing, IR-E-C-37096 (/documents/nirf/2026/engineering.pdf),
-// UG 4-year programmes. The filing gives graduates, placed and median salary per batch; it gives
-// no highest salary and no recruiter count, so neither is shown. Update with the next filing.
-const STATS = [
-  { value: '23 / 53', label: 'Graduates placed, 2024-25' },
-  { value: '₹2.40 L', label: 'Median salary, 2024-25' },
-  { value: '35 / 89', label: 'Graduates placed, 2023-24' },
-  { value: '29 / 126', label: 'Graduates placed, 2022-23' },
-] as const
-
+// User's choice 2026-11-24: the website shows no placement numbers (no placed count, rate or salary). This
+// section names the Training and Placement Cell and keeps the recruiter logos. The college's NIRF filings stay
+// on the IQAC - NIRF page.
 const RECRUITERS = [
   { name: 'LGB', logo: '/images/recruiters/lgb.png' },
   { name: 'Foxconn', logo: '/images/recruiters/foxconn.png' },
@@ -26,22 +19,13 @@ export default function CityPlacementStats() {
   return (
     <section className="section bg-white">
       <div className="section-inner">
-        <h2 className="section-title">Placement Record</h2>
+        <h2 className="section-title">Placement Support</h2>
         <p className="section-subtitle">
-          As filed by the college in NIRF 2026 (IR-E-C-37096), UG 4-year programmes
+          The Training and Placement Cell runs placement training and organises campus recruitment drives for
+          final-year learners.
         </p>
         <span className="section-accent" aria-hidden="true" />
         <div className="section-spacer" />
-
-        {/* Stats grid */}
-        <div className="placement-grid">
-          {STATS.map((stat) => (
-            <div key={stat.label} className="placement-stat">
-              <div className="stat-value">{stat.value}</div>
-              <div className="stat-label">{stat.label}</div>
-            </div>
-          ))}
-        </div>
 
         {/* Recruiter logos */}
         <div className="recruiters-wrap">

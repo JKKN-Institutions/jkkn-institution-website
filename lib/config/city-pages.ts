@@ -186,9 +186,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
           'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
-        question: 'What placement data has JKKNCET filed?',
+        question: 'Does JKKNCET have a placement cell?',
         answer:
-          'In NIRF 2026 the college filed that 23 of 53 UG graduates were placed in 2024-25 (median salary Rs 2.40 lakh), 35 of 89 in 2023-24 (Rs 2.20 lakh) and 29 of 126 in 2022-23 (Rs 1.68 lakh).',
+          'Yes. JKKNCET has a Training and Placement Cell that runs placement training and organises campus recruitment drives for final-year learners.',
       },
       {
         question: 'Does JKKNCET provide hostel for Coimbatore students?',
@@ -245,13 +245,13 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
       programmes: '7',
     },
     // Every figure here is read from a document hosted on this site:
-    // AICTE EOA 2026-27 (/pdfs/mandatory-disclosure/Mandatory-Disclosure.pdf) for the seats,
-    // NIRF 2026 IR-E-C-37096 (/documents/nirf/2026/engineering.pdf) for the placement row.
+    // AICTE EOA 2026-27 (/pdfs/mandatory-disclosure/Mandatory-Disclosure.pdf) for the seats; autonomous
+    // status conferred by UGC (site footer + UGC autonomous list). No placement number (user's choice 2026-11-24).
     heroStatItems: [
       { num: '18 km', label: 'from Erode bus stand' },
       { num: '372', label: 'AICTE-approved seats, 2026-27' },
       { num: '7', label: 'UG + PG programmes' },
-      { num: '23 of 53', label: 'placed, 2024-25 (NIRF 2026)' },
+      { num: 'Autonomous', label: 'status conferred by UGC' },
     ],
     whatsappMessage:
       "Hi%2C%20I'm%20from%20Erode%20and%20interested%20in%20Engineering%20programmes%20at%20JKKNCET.%20Please%20share%20admission%20details%20for%202026-27.",
@@ -338,9 +338,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
           'JKKNCET is 18 km from Erode bus stand, about 30 minutes by road on NH-544 via Komarapalayam. Erode Junction railway station is about 21 km from the campus, and Bhavani town, also in Erode district, about 8 km. Regular buses run from Erode New Bus Stand to Komarapalayam.',
       },
       {
-        question: 'What placement data has JKKNCET filed?',
+        question: 'Does JKKNCET have a placement cell?',
         answer:
-          'In NIRF 2026 the college filed that 23 of 53 UG graduates were placed in 2024-25 (median salary Rs 2.40 lakh), 35 of 89 in 2023-24 (Rs 2.20 lakh) and 29 of 126 in 2022-23 (Rs 1.68 lakh).',
+          'Yes. JKKNCET has a Training and Placement Cell that runs placement training and organises campus recruitment drives for final-year learners.',
       },
       {
         question: 'What is the TNEA counselling code for JKKNCET?',
@@ -506,9 +506,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
           'Yes. JKKN College of Engineering and Technology in Komarapalayam, Namakkal district, offers a full-time 2-year MBA with 60 AICTE-approved seats, specializations in Marketing, Finance, HR and Operations, and an annual Management Quota tuition fee of Rs 65,000 (2026-27). Its Tamil Nadu MBA counselling code is 2647. Full details are on the MBA page of this website.',
       },
       {
-        question: 'What placement data has JKKNCET filed?',
+        question: 'Does JKKNCET have a placement cell?',
         answer:
-          'In NIRF 2026 the college filed that 23 of 53 UG graduates were placed in 2024-25 (median salary Rs 2.40 lakh), 35 of 89 in 2023-24 (Rs 2.20 lakh) and 29 of 126 in 2022-23 (Rs 1.68 lakh).',
+          'Yes. JKKNCET has a Training and Placement Cell that runs placement training and organises campus recruitment drives for final-year learners.',
       },
       {
         question: 'Does JKKNCET provide hostel for Namakkal students?',
@@ -607,9 +607,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
           'Yes. JKKN College of Engineering and Technology in Komarapalayam, Namakkal district, 57 km from Salem on NH-544, offers a full-time 2-year MBA with 60 AICTE-approved seats, specializations in Marketing, Finance, HR and Operations, and an annual Management Quota tuition fee of Rs 65,000 (2026-27). Its Tamil Nadu MBA counselling code is 2647. Full details are on the MBA page of this website.',
       },
       {
-        question: 'What placement data has JKKNCET filed?',
+        question: 'Does JKKNCET have a placement cell?',
         answer:
-          'In NIRF 2026 the college filed that 23 of 53 UG graduates were placed in 2024-25 (median salary Rs 2.40 lakh), 35 of 89 in 2023-24 (Rs 2.20 lakh) and 29 of 126 in 2022-23 (Rs 1.68 lakh).',
+          'Yes. JKKNCET has a Training and Placement Cell that runs placement training and organises campus recruitment drives for final-year learners.',
       },
       {
         question: 'Does JKKNCET provide hostel for Salem students?',
@@ -704,9 +704,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
           'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
-        question: 'What placement data has JKKNCET filed?',
+        question: 'Does JKKNCET have a placement cell?',
         answer:
-          'In NIRF 2026 the college filed that 23 of 53 UG graduates were placed in 2024-25 (median salary Rs 2.40 lakh), 35 of 89 in 2023-24 (Rs 2.20 lakh) and 29 of 126 in 2022-23 (Rs 1.68 lakh).',
+          'Yes. JKKNCET has a Training and Placement Cell that runs placement training and organises campus recruitment drives for final-year learners.',
       },
       {
         question: 'Does JKKNCET provide hostel for Tiruppur students?',
@@ -800,9 +800,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
           'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
-        question: 'What placement data has JKKNCET filed?',
+        question: 'Does JKKNCET have a placement cell?',
         answer:
-          'In NIRF 2026 the college filed that 23 of 53 UG graduates were placed in 2024-25 (median salary Rs 2.40 lakh), 35 of 89 in 2023-24 (Rs 2.20 lakh) and 29 of 126 in 2022-23 (Rs 1.68 lakh).',
+          'Yes. JKKNCET has a Training and Placement Cell that runs placement training and organises campus recruitment drives for final-year learners.',
       },
       {
         question: 'Does JKKNCET provide hostel for Karur students?',
@@ -895,9 +895,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
           'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
-        question: 'What placement data has JKKNCET filed?',
+        question: 'Does JKKNCET have a placement cell?',
         answer:
-          'In NIRF 2026 the college filed that 23 of 53 UG graduates were placed in 2024-25 (median salary Rs 2.40 lakh), 35 of 89 in 2023-24 (Rs 2.20 lakh) and 29 of 126 in 2022-23 (Rs 1.68 lakh).',
+          'Yes. JKKNCET has a Training and Placement Cell that runs placement training and organises campus recruitment drives for final-year learners.',
       },
       {
         question: 'Does JKKNCET provide hostel for Tiruchengode students?',
@@ -989,9 +989,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
           'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
-        question: 'What placement data has JKKNCET filed?',
+        question: 'Does JKKNCET have a placement cell?',
         answer:
-          'In NIRF 2026 the college filed that 23 of 53 UG graduates were placed in 2024-25 (median salary Rs 2.40 lakh), 35 of 89 in 2023-24 (Rs 2.20 lakh) and 29 of 126 in 2022-23 (Rs 1.68 lakh).',
+          'Yes. JKKNCET has a Training and Placement Cell that runs placement training and organises campus recruitment drives for final-year learners.',
       },
       {
         question: 'Does JKKNCET provide hostel for Perundurai students?',
@@ -1083,9 +1083,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
           'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
-        question: 'What placement data has JKKNCET filed?',
+        question: 'Does JKKNCET have a placement cell?',
         answer:
-          'In NIRF 2026 the college filed that 23 of 53 UG graduates were placed in 2024-25 (median salary Rs 2.40 lakh), 35 of 89 in 2023-24 (Rs 2.20 lakh) and 29 of 126 in 2022-23 (Rs 1.68 lakh).',
+          'Yes. JKKNCET has a Training and Placement Cell that runs placement training and organises campus recruitment drives for final-year learners.',
       },
       {
         question: 'Does JKKNCET provide hostel for Dharmapuri students?',
@@ -1177,9 +1177,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
           'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
-        question: 'What placement data has JKKNCET filed?',
+        question: 'Does JKKNCET have a placement cell?',
         answer:
-          'In NIRF 2026 the college filed that 23 of 53 UG graduates were placed in 2024-25 (median salary Rs 2.40 lakh), 35 of 89 in 2023-24 (Rs 2.20 lakh) and 29 of 126 in 2022-23 (Rs 1.68 lakh).',
+          'Yes. JKKNCET has a Training and Placement Cell that runs placement training and organises campus recruitment drives for final-year learners.',
       },
       {
         question: 'Does JKKNCET provide hostel for Rasipuram students?',
@@ -1271,9 +1271,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
           'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
-        question: 'What placement data has JKKNCET filed?',
+        question: 'Does JKKNCET have a placement cell?',
         answer:
-          'In NIRF 2026 the college filed that 23 of 53 UG graduates were placed in 2024-25 (median salary Rs 2.40 lakh), 35 of 89 in 2023-24 (Rs 2.20 lakh) and 29 of 126 in 2022-23 (Rs 1.68 lakh).',
+          'Yes. JKKNCET has a Training and Placement Cell that runs placement training and organises campus recruitment drives for final-year learners.',
       },
       {
         question: 'Does JKKNCET provide hostel for Mettur students?',
@@ -1365,9 +1365,9 @@ export const CITY_PAGES_CONFIG: CityPageConfig[] = [
           'JKKN College of Engineering and Technology offers B.E. programmes in Computer Science and Engineering (CSE), Electronics and Communication (ECE), Mechanical Engineering, Electrical and Electronics (EEE), and Information Technology (B.Tech). All programmes are AICTE approved and affiliated to Anna University.',
       },
       {
-        question: 'What placement data has JKKNCET filed?',
+        question: 'Does JKKNCET have a placement cell?',
         answer:
-          'In NIRF 2026 the college filed that 23 of 53 UG graduates were placed in 2024-25 (median salary Rs 2.40 lakh), 35 of 89 in 2023-24 (Rs 2.20 lakh) and 29 of 126 in 2022-23 (Rs 1.68 lakh).',
+          'Yes. JKKNCET has a Training and Placement Cell that runs placement training and organises campus recruitment drives for final-year learners.',
       },
       {
         question: 'Does JKKNCET provide hostel for Trichy students?',

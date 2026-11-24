@@ -8,12 +8,13 @@ interface CityHeroSectionProps {
 
 export function CityHeroSection({ cityConfig }: CityHeroSectionProps) {
   // A city that carries its own stat row uses it. The template row is sourced too:
-  // 372 seats = AICTE EOA 2026-27, 23 of 53 = NIRF 2026 (IR-E-C-37096), 2024-25 batch.
+  // 372 seats = AICTE EOA 2026-27; autonomous status conferred by UGC (UGC autonomous list). No placement
+  // number is shown (user's choice 2026-11-24).
   const stats = cityConfig.heroStatItems ?? [
     { num: cityConfig.heroStats.distanceStat, label: cityConfig.heroStats.distanceLabel },
     { num: '372', label: 'AICTE-approved seats, 2026-27' },
     { num: cityConfig.heroStats.programmes, label: 'UG + PG programmes' },
-    { num: '23 of 53', label: 'placed, 2024-25 (NIRF 2026)' },
+    { num: 'Autonomous', label: 'status conferred by UGC' },
   ]
 
   return (
