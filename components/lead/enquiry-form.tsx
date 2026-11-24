@@ -262,8 +262,10 @@ export function EnquiryForm({
   const err = state?.fieldErrors
   // 16 px text in every box: below 16 px, iPhone Safari zooms the page on focus. Border #75867e is
   // 3.84:1 on white and the hint text #5f6b66 is 5.55:1 (WCAG minimums 3:1 and 4.5:1).
+  // rounded-[12px], not rounded-xl: this repo's theme makes rounded-xl 14 px (--radius 0.625rem + 4px); the
+  // other seven sites' boxes are 12 px (form UI audit, 2026-11-23).
   const inputCls =
-    'w-full bg-white border-[1.5px] border-[#75867e] rounded-xl px-4 py-3 text-base text-[#1f2a24] placeholder:text-[#5f6b66] focus:outline-none focus:border-[#0b6d41] focus:ring-[3px] focus:ring-[#0b6d41]/20'
+    'w-full bg-white border-[1.5px] border-[#75867e] rounded-[12px] px-4 py-3 text-base text-[#1f2a24] placeholder:text-[#5f6b66] focus:outline-none focus:border-[#0b6d41] focus:ring-[3px] focus:ring-[#0b6d41]/20'
   const labelCls = 'block text-[#032816] text-sm font-semibold mb-1.5'
   const errCls = 'text-[#b42318] text-xs mt-1'
   const twoCol = compact ? 'grid grid-cols-1 gap-4' : 'grid grid-cols-1 min-[640px]:grid-cols-2 gap-4'
