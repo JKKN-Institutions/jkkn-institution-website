@@ -18,6 +18,7 @@ import {
   type JobListResponse,
   type PublicJob,
 } from '@/lib/schemas/public-careers'
+import { HR_SALARY } from '@/lib/services/careers-hr-salary'
 
 const DEFAULT_BASE = 'https://www.jkkn.ai'
 const REVALIDATE_SECONDS = 300
@@ -85,9 +86,10 @@ export async function getPublicJob(id: string, fetchImpl: typeof fetch = fetch):
 }
 
 // ── Website-side corrections to the feed (added 2026-11-17) ─────────────────
-// The website team has no MyJKKN access, so two fixes live here until MyJKKN
-// is corrected at the source. Both apply at this one boundary, so the list,
-// the job page, the sitemap, search, facets and JobPosting all agree.
+// The website team has no MyJKKN access, so these fixes live here until MyJKKN
+// is corrected at the source (HR's salary sheet joined them 2026-11-24). All of
+// them apply at this one boundary, so the list, the job page, the sitemap,
+// search, facets and JobPosting all agree.
 
 /**
  * Jobs kept off the website although MyJKKN still returns them. Remove an id
@@ -109,10 +111,25 @@ const PUBLIC_INSTITUTION_NAME: Readonly<Record<string, string>> = {
 
 const publicName = (name: string) => PUBLIC_INSTITUTION_NAME[name] ?? name
 
+/**
+ * HR's salary for a job, from HR's own sheet (added 2026-11-24). It replaces
+ * MyJKKN's salary for the listed jobs; see lib/services/careers-hr-salary.ts.
+ */
+function hrSalary(id: string): PublicJob['salary'] | undefined {
+  const s = HR_SALARY[id.toLowerCase()]
+  if (!s) return undefined
+  return { min: s.min, max: s.max, currency: 'INR', duration: 'per_month', ...(s.basis ? { basis: s.basis } : {}) }
+}
+
 export function toPublicJob(job: PublicJob): PublicJob {
-  if (!job.institution) return job
-  const name = publicName(job.institution.name)
-  return name === job.institution.name ? job : { ...job, institution: { ...job.institution, name } }
+  let out = job
+  const salary = hrSalary(job.id)
+  if (salary) out = { ...out, salary }
+  if (out.institution) {
+    const name = publicName(out.institution.name)
+    if (name !== out.institution.name) out = { ...out, institution: { ...out.institution, name } }
+  }
+  return out
 }
 
 function toPublicList(res: JobListResponse): JobListResponse {

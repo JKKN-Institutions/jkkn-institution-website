@@ -28,6 +28,16 @@ describe('buildJobPostingJsonLd', () => {
     expect(ld.url).toBe(URL)
   })
 
+  it('gives one salary figure as a single value and an open-top figure as a minimum', () => {
+    const single = buildJobPostingJsonLd({ ...JOB, salary: { min: 8000, max: 8000, currency: 'INR', duration: 'per_month', basis: 'starting_basic' } }, URL)!
+    expect(single.baseSalary).toEqual({
+      '@type': 'MonetaryAmount', currency: 'INR', value: { '@type': 'QuantitativeValue', value: 8000, unitText: 'MONTH' },
+    })
+    const open = buildJobPostingJsonLd({ ...JOB, salary: { min: 24000, max: null, currency: 'INR', duration: 'per_month' } }, URL)!
+    expect(open.baseSalary).toMatchObject({ value: { minValue: 24000, unitText: 'MONTH' } })
+    expect((open.baseSalary as { value: Record<string, unknown> }).value.maxValue).toBeUndefined()
+  })
+
   it('omits salary and validThrough when unknown', () => {
     const ld = buildJobPostingJsonLd({ ...JOB, salary: null, closes_at: null }, URL)
     expect(ld).not.toHaveProperty('baseSalary')

@@ -30,6 +30,16 @@ describe('careers-format', () => {
     expect(formatSalary({ min: 1000, max: 2000, currency: 'USD', duration: 'per_year' })).toBe('USD 1,000 – USD 2,000 per year')
   })
 
+  it("shows HR's one-figure starting basic pay without a zero-width range", () => {
+    expect(formatSalary({ min: 8000, max: 8000, currency: 'INR', duration: 'per_month', basis: 'starting_basic' }))
+      .toBe('₹8,000 per month (starting basic pay)')
+    expect(formatSalary({ min: 24000, max: null, currency: 'INR', duration: 'per_month', basis: 'starting_basic' }))
+      .toBe('₹24,000+ per month (starting basic pay)')
+    expect(formatSalary({ min: 150000, max: 180000, currency: 'INR', duration: 'per_month' }))
+      .toBe('₹1,50,000 – ₹1,80,000 per month')
+    expect(formatSalary({ min: 15000, max: 15000, currency: 'INR', duration: 'per_month' })).toBe('₹15,000 per month')
+  })
+
   it('formats location from available parts', () => {
     expect(formatLocation({ city: 'Komarapalayam', state: 'Tamil Nadu', country: 'India' })).toBe('Komarapalayam, Tamil Nadu')
     expect(formatLocation({ city: null, state: 'Tamil Nadu', country: 'India' })).toBe('Tamil Nadu')

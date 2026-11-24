@@ -114,3 +114,37 @@ describe('website-side feed corrections', () => {
     expect(HIDDEN_JOB_IDS.has(HIDDEN_ID)).toBe(true)
   })
 })
+
+describe("HR's salary sheet (2026-11-24)", () => {
+  // Real ids from lib/services/careers-hr-salary.ts, one per shape HR used.
+  const RANGE_ID = '8e529d01-5448-4fa9-a350-8255670d8895' // Engg CSE Assistant Professor: sheet 15000 | 18000
+  const SINGLE_ID = '195b0eb2-c8fe-48ce-bc05-c1812c4e4e66' // Pharmacy tutor: sheet "| 10000"
+  const OPEN_ID = '72304771-fd49-4752-a5c0-5c921eef85ce' // Nursing Asst Prof: sheet "| 24000 +"
+
+  it("replaces MyJKKN's salary with HR's range", async () => {
+    const myjkkn = { min: 45000, max: 75000, currency: 'INR', duration: 'per_month' }
+    const { impl } = fetchStub(200, { data: [{ ...JOB, id: RANGE_ID, salary: myjkkn }], institutions: [] })
+    const res = await listPublicJobs({}, impl)
+    expect(res.data[0].salary).toEqual({ min: 15000, max: 18000, currency: 'INR', duration: 'per_month' })
+  })
+  it('marks a single figure and an open-top figure as starting basic pay', async () => {
+    const { impl } = fetchStub(200, { data: [{ ...JOB, id: SINGLE_ID }, { ...JOB, id: OPEN_ID }], institutions: [] })
+    const [single, open] = (await listPublicJobs({}, impl)).data
+    expect(single.salary).toEqual({ min: 10000, max: 10000, currency: 'INR', duration: 'per_month', basis: 'starting_basic' })
+    expect(open.salary).toEqual({ min: 24000, max: null, currency: 'INR', duration: 'per_month', basis: 'starting_basic' })
+  })
+  it('applies on the job page too', async () => {
+    const { impl } = fetchStub(200, { data: { ...JOB, id: RANGE_ID } })
+    expect((await getPublicJob(RANGE_ID, impl))?.salary).toMatchObject({ min: 15000, max: 18000 })
+  })
+  it("leaves a job the sheet does not list on MyJKKN's salary", async () => {
+    const myjkkn = { min: 20000, max: null, currency: 'INR', duration: 'per_month' }
+    const { impl } = fetchStub(200, { data: { ...JOB, salary: myjkkn } })
+    expect((await getPublicJob(JOB_ID, impl))?.salary).toEqual(myjkkn)
+  })
+  it('ignores a basis MyJKKN might send instead of failing the feed', async () => {
+    const odd = { min: 20000, max: null, currency: 'INR', duration: 'per_month', basis: 'gross' }
+    const { impl } = fetchStub(200, { data: { ...JOB, salary: odd } })
+    expect((await getPublicJob(JOB_ID, impl))?.salary?.basis).toBeUndefined()
+  })
+})
