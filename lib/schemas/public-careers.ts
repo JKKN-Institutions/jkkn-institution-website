@@ -51,6 +51,9 @@ export const PublicJobSchema = z.object({
       max: z.number().nullable(),
       currency: z.string(),
       duration: z.string(),
+      // Set by the website from HR's salary sheet (lib/services/careers-hr-salary.ts),
+      // never sent by MyJKKN; anything else here degrades to "not set".
+      basis: z.literal('starting_basic').optional().catch(undefined),
     })
     .nullable(),
   // Absent before the MyJKKN release that added it. A malformed block must not

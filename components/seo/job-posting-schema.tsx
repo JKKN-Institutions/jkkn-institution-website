@@ -83,13 +83,17 @@ export function buildJobPostingJsonLd(job: PublicJob, pageUrl: string): Record<s
   if (job.job_type && EMPLOYMENT_TYPE[job.job_type]) ld.employmentType = EMPLOYMENT_TYPE[job.job_type]
   if (job.job_code) ld.identifier = { '@type': 'PropertyValue', name: 'Job code', value: job.job_code }
   if (job.salary && (job.salary.min !== null || job.salary.max !== null)) {
+    const { min, max } = job.salary
+    // One figure (min equals max) is a single value, not a zero-width range.
+    const amount = min !== null && min === max
+      ? { value: min }
+      : { minValue: min ?? undefined, maxValue: max ?? undefined }
     ld.baseSalary = {
       '@type': 'MonetaryAmount',
       currency: job.salary.currency,
       value: {
         '@type': 'QuantitativeValue',
-        minValue: job.salary.min ?? undefined,
-        maxValue: job.salary.max ?? undefined,
+        ...amount,
         unitText: UNIT_TEXT[job.salary.duration] ?? 'MONTH',
       },
     }

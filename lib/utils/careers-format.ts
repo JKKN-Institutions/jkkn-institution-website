@@ -57,9 +57,16 @@ function money(amount: number, currency: string): string {
 export function formatSalary(s: PublicJob['salary']): string | null {
   if (!s || (s.min === null && s.max === null)) return null
   const duration = DURATION_LABELS[s.duration] ?? s.duration.replace(/_/g, ' ')
-  if (s.min !== null && s.max !== null) return `${money(s.min, s.currency)} – ${money(s.max, s.currency)} ${duration}`
-  if (s.min !== null) return `${money(s.min, s.currency)}+ ${duration}`
-  return `Up to ${money(s.max as number, s.currency)} ${duration}`
+  // HR gave some posts one "starting basic" figure instead of a range; say so.
+  const basis = s.basis === 'starting_basic' ? ' (starting basic pay)' : ''
+  if (s.min !== null && s.max !== null) {
+    const amount = s.min === s.max
+      ? money(s.min, s.currency)
+      : `${money(s.min, s.currency)} – ${money(s.max, s.currency)}`
+    return `${amount} ${duration}${basis}`
+  }
+  if (s.min !== null) return `${money(s.min, s.currency)}+ ${duration}${basis}`
+  return `Up to ${money(s.max as number, s.currency)} ${duration}${basis}`
 }
 
 /** City + state; country is implied for an Indian institution group. */
