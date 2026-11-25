@@ -344,7 +344,7 @@ export function CourseCatalogSchema() {
             "@type": "Course",
             "@id": `${config.site.url}/#course-mpharm`,
             "name": "M.Pharm - Master of Pharmacy",
-            "description": "2-year postgraduate pharmacy program with specializations in Pharmaceutics, Pharmaceutical Chemistry, Pharmacology, and Pharmaceutical Analysis at JKKN College of Pharmacy.",
+            "description": "2-year postgraduate pharmacy program with six specializations - Pharmaceutics, Pharmaceutical Chemistry, Pharmacology, Pharmaceutical Analysis, Pharmacy Practice and Pharmaceutical Regulatory Affairs (new for 2026-27) - at JKKN College of Pharmacy.",
             "url": `${config.site.url}/courses-offered/pharmacy-courses/mpharm`,
             "courseCode": "M.PHARM",
             "educationalCredentialAwarded": "Master of Pharmacy (M.Pharm)",
